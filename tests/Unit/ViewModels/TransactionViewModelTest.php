@@ -267,6 +267,14 @@ describe('HasPayload trait', function () {
         expect($transaction->utf8Payload())->toBe('testing');
     });
 
+    it('should get null for utf-8 formatted payload if raw payload is null', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('')
+            ->create());
+
+        expect($transaction->utf8Payload())->toBeNull();
+    });
+
     it('should get formatted payload', function () {
         $transaction = new TransactionViewModel(Transaction::factory()
             ->withPayload('6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de')
@@ -276,6 +284,14 @@ describe('HasPayload trait', function () {
 
 MethodID: 0x6dd7d8ea
 [0]: 0x44083669cf29374D548b71c558EBD1e2F5DCC4De');
+    });
+
+    it('should fail to get formatted payload if no method data', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('')
+            ->create());
+
+        expect($transaction->formattedPayload())->toBeNull();
     });
 
     it('should get formatted payload without arguments', function () {
