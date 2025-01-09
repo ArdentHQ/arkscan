@@ -25,7 +25,9 @@ final class PopulateHistoricMarketCap extends Command
 
     public function handle(StatisticsCache $cache): void
     {
+        /** @var string[] $currencies */
         $currencies = array_keys(config('currencies'));
+
         foreach ($currencies as $currency) {
             $currencyPath = database_path('/seeders/pricing/marketcap/'.$currency.'.json');
             if (! file_exists($currencyPath)) {
@@ -34,11 +36,23 @@ final class PopulateHistoricMarketCap extends Command
                 continue;
             }
 
-            $data = collect(json_decode(file_get_contents($currencyPath), true)['stats'])
+            $fileContent = file_get_contents($currencyPath);
+            if ($fileContent === false) {
+                $this->output->writeln('Failed to read currency file for '.$currency);
+
+                continue;
+            }
+
+            /** @var array{stats:array{0:int, 1:float}[]} $jsonData */
+            $jsonData = json_decode($fileContent, true);
+
+            $data = collect($jsonData['stats'])
                 ->map(fn ($item) => ['timestamp' => $item[0] / 1000, 'value' => floatval($item[1])])
                 ->sortBy('value');
 
+            /** @var array{timestamp: int, value: float} $atlValue */
             $atlValue = $data->first();
+            /** @var array{timestamp: int, value: float} $athValue */
             $athValue = $data->last();
 
             $cache->setMarketCapAtl(strtoupper($currency), $atlValue['timestamp'], $atlValue['value']);

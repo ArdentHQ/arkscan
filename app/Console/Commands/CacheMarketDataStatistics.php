@@ -214,7 +214,7 @@ final class CacheMarketDataStatistics extends Command
 
         /** @var array{timestamp: int, value: int|float|null} $marketCapAtl */
         $marketCapAtl = $marketCapSorted->first();
-        /** @var array{timestamp: int, value: float|null} $marketCapAth */
+        /** @var array{timestamp: int, value: int|float|null} $marketCapAth */
         $marketCapAth = $marketCapSorted->last();
 
         if ($marketCapAtl['value'] !== null) {
