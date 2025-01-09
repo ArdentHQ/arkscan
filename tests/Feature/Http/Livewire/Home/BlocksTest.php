@@ -7,7 +7,6 @@ use App\Facades\Settings;
 use App\Http\Livewire\Home\Blocks;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
-use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
