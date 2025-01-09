@@ -6,6 +6,8 @@ use App\Events\Statistics\MarketData;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
+use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 
@@ -25,13 +27,24 @@ it('should cache market data statistics', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    $priceData = $crypto->getPriceData(Network::currency());
 
     $this->artisan('explorer:cache-market-data-statistics');
 
     expect($cache->getPriceRangeDaily($currency))->toBe(['low' => 0.0339403, 'high' => 10.2219]);
     expect($cache->getPriceRange52($currency))->toBe(['low' => 0.23108521034764695, 'high' => 1.795718158629526]);
-    expect($cache->getPriceAth($currency))->toBe(['timestamp' => 1515542400, 'value' => 10.2219]);
-    expect($cache->getPriceAtl($currency))->toBe(['timestamp' => 1490140800, 'value' => 0.0339403]);
+
+    expect($cache->getPriceAth($currency))->toBe([
+        'timestamp' => Carbon::parse(Arr::get($priceData, 'market_data.ath_date.usd'))->timestamp,
+        'value'     => Arr::get($priceData, 'market_data.ath.usd'),
+    ]);
+
+    expect($cache->getPriceAtl($currency))->toBe([
+        'timestamp' => Carbon::parse(Arr::get($priceData, 'market_data.atl_date.usd'))->timestamp,
+        'value'     => Arr::get($priceData, 'market_data.atl.usd'),
+    ]);
 
     expect($cache->getVolumeAtl($currency))->toBe(['timestamp' => 1688774400, 'value' => 40548.95038391039]);
     expect($cache->getVolumeAth($currency))->toBe(['timestamp' => 1698710400, 'value' => 443956833.91000223]);
@@ -94,12 +107,12 @@ it('should should not dispatch event if no changes', function () {
     Event::fake();
 
     Config::set('arkscan.networks.development.canBeExchanged', true);
-    $cache  = new StatisticsCache();
     $crypto = new CryptoDataCache();
 
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -122,6 +135,7 @@ it('should should dispatch event if price atl changes', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -154,6 +168,7 @@ it('should should dispatch event if price ath changes', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -186,6 +201,7 @@ it('should should dispatch event if 52 week range changes', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -220,6 +236,7 @@ it('should should dispatch event if daily range changes', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -252,6 +269,7 @@ it('should should dispatch event if volume atl changes', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -284,6 +302,7 @@ it('should should dispatch event if volume ath changes', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -316,6 +335,7 @@ it('should should dispatch event if market cap atl changes', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -348,6 +368,7 @@ it('should should dispatch event if market cap ath changes', function () {
     $currency = 'USD';
     $crypto->setHistoricalFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
     $crypto->setHistoricalHourlyFullResponse(Network::currency(), $currency, json_decode(file_get_contents(base_path('tests/fixtures/coingecko/historical_all.json')), true));
+    $crypto->setPriceData(Network::currency(), json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
 
     $this->artisan('explorer:cache-market-data-statistics');
 
