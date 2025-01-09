@@ -17,7 +17,6 @@ use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
 use Tests\Stubs\RoundsMock;
@@ -699,7 +698,7 @@ it('should get known wallet name for wallet name', function () {
 
     $wallet = Wallet::factory()->create([
         'attributes' => [],
-        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
     ]);
 
     $this->subject = new WalletViewModel($wallet);
