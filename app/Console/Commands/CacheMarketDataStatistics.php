@@ -218,29 +218,21 @@ final class CacheMarketDataStatistics extends Command
         $marketCapAth = $marketCapSorted->last();
 
         if ($marketCapAtl['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getMarketCapAtl($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $marketCapAtl['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== (float) $marketCapAtl['value']) {
-                    $this->hasChanges = true;
-                }
-            }
+            $existingValue = Arr::get($cache->getMarketCapAtl($currency) ?? [], 'value');
+            if ($existingValue === null || (float) $marketCapAtl['value'] < (float) $existingValue) {
+                $this->hasChanges = true;
 
-            $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
+                $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
+            }
         }
 
         if ($marketCapAth['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getMarketCapAth($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $marketCapAth['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $marketCapAth['value']) {
-                    $this->hasChanges = true;
-                }
-            }
+            $existingValue = Arr::get($cache->getMarketCapAth($currency) ?? [], 'value');
+            if ($existingValue === null || (float) $marketCapAth['value'] > (float) $existingValue) {
+                $this->hasChanges = true;
 
-            $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
+                $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
+            }
         }
     }
 }
