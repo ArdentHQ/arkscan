@@ -7,13 +7,23 @@ use App\Facades\Settings;
 use App\Http\Livewire\Home\Blocks;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
+use App\Models\Wallet;
+use App\Services\Cache\WalletCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should list the first page of blocks', function () {
-    Block::factory(30)->create();
+    $cache = new WalletCache();
+
+    foreach (range(0, 30) as $index) {
+        $this->travel(8)->seconds();
+
+        $block = Block::factory()->create();
+
+        $cache->setWalletNameByAddress($block->generator_address, 'test-username-'.($index + 1));
+    }
 
     $component = Livewire::test(Blocks::class)
         ->call('setIsReady');

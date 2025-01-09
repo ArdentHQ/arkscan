@@ -17,7 +17,6 @@ use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeKnownWallets;
@@ -696,40 +695,25 @@ it('should get that non validator is not an active validator', function () {
 });
 
 it('should get known wallet name for wallet name', function () {
+    fakeKnownWallets();
+
     $wallet = Wallet::factory()->create([
         'attributes' => [],
-    ]);
-
-    Http::fake([
-        'githubusercontent.com/*' => [
-            [
-                'type'    => 'exchange',
-                'name'    => 'Test Wallet',
-                'address' => $wallet->address,
-            ],
-        ],
+        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
     ]);
 
     $this->subject = new WalletViewModel($wallet);
 
-    expect($this->subject->usernameBeforeKnown())->toBe('Test Wallet');
+    expect($this->subject->usernameBeforeKnown())->toBe('ACF Hot Wallet');
 });
 
 it('should get validator name before known wallet name for a wallet', function () {
+    fakeKnownWallets();
+
     $wallet = Wallet::factory()->create([
         'attributes' => [
             'username'      => 'John',
             'validatorRank' => 50,
-        ],
-    ]);
-
-    Http::fake([
-        'githubusercontent.com/*' => [
-            [
-                'type'    => 'exchange',
-                'name'    => 'Test Wallet',
-                'address' => $wallet->address,
-            ],
         ],
     ]);
 
