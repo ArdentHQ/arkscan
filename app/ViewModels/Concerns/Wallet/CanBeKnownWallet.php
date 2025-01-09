@@ -16,15 +16,6 @@ trait CanBeKnownWallet
         return $this->wallet->username();
     }
 
-    public function hasUsernameOrIsKnown(): bool
-    {
-        if ($this->hasUsername()) {
-            return true;
-        }
-
-        return ! is_null($this->findWalletByKnown());
-    }
-
     public function usernameIfNotKnown(): ?string
     {
         $knownWallet = $this->findWalletByKnown();
