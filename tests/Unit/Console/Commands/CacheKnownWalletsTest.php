@@ -10,23 +10,6 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
-it('should cache the username for the public key', function () {
-    $wallet = Wallet::factory()->create([
-        'attributes->username' => 'testuser',
-    ]);
-
-    expect(Cache::tags('wallet')->has(md5("username_by_address/$wallet->address")))->toBeFalse();
-    expect(Cache::tags('wallet')->has(md5("username_by_public_key/$wallet->public_key")))->toBeFalse();
-
-    (new CacheKnownWallets())->handle();
-
-    expect(Cache::tags('wallet')->has(md5("username_by_address/$wallet->address")))->toBeTrue();
-    expect(Cache::tags('wallet')->has(md5("username_by_public_key/$wallet->public_key")))->toBeTrue();
-
-    expect(Cache::tags('wallet')->get(md5("username_by_address/$wallet->address")))->toBeString();
-    expect(Cache::tags('wallet')->get(md5("username_by_public_key/$wallet->public_key")))->toBeString();
-});
-
 it('should cache the known wallet name if defined', function () {
     $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
 
@@ -50,8 +33,8 @@ it('should cache the known wallet name if defined', function () {
 
     (new CacheKnownWallets())->handle();
 
-    expect(Cache::tags('wallet')->get(md5("username_by_address/$knownWallet->address")))->toBe('Hot Wallet');
-    expect(Cache::tags('wallet')->get(md5("username_by_address/$regularWallet->address")))->toBe('regular');
+    expect(Cache::tags('wallet')->get(md5("name_by_address/$knownWallet->address")))->toBe('Hot Wallet');
+    expect(Cache::tags('wallet')->get(md5("name_by_address/$regularWallet->address")))->toBe('regular');
 });
 
 it('should cache the known wallet name if doesnt have validator name', function () {
@@ -74,22 +57,43 @@ it('should cache the known wallet name if doesnt have validator name', function 
 
     (new CacheKnownWallets())->handle();
 
-    expect(Cache::tags('wallet')->get(md5("username_by_address/$wallet->address")))->toBe('Hot Wallet');
+    expect(Cache::tags('wallet')->get(md5("name_by_address/$wallet->address")))->toBe('Hot Wallet');
 });
 
 it('should forget wallets with resigned usernames', function () {
+    $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
+
+    Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
+
+    Http::fake(Http::response([
+        [],
+    ], 200));
+
     $cache  = new WalletCache();
     $wallet = Wallet::factory()->create([
-        'address'              => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
-        'attributes->username' => 'joeblogs',
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+
+        'attributes' => [
+            'username' => 'joeblogs',
+        ],
     ]);
 
     (new CacheKnownWallets())->handle();
 
     expect($cache->getWalletNameByAddress($wallet->address))->toBe('joeblogs');
 
+    $wallet->fresh()->forceFill([
+        'attributes' => [
+            'username' => null,
+        ],
+    ])->save();
+
+    (new CacheKnownWallets())->handle();
+
+    expect($cache->getWalletNameByAddress($wallet->address))->toBe('joeblogs');
+
     Transaction::factory()->usernameResignation()->create([
-        'sender_public_key' => $wallet->public_key,
+        'sender_address' => $wallet->address,
     ]);
 
     (new CacheKnownWallets())->handle();
