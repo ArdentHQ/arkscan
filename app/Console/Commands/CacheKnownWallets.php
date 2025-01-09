@@ -6,6 +6,8 @@ namespace App\Console\Commands;
 
 use App\Facades\Network;
 use App\Facades\Wallets;
+use App\Models\Scopes\UsernameResignationScope;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
@@ -35,6 +37,21 @@ final class CacheKnownWallets extends Command
         $cache->setKnown(fn () => Http::get(Network::knownWalletsUrl())->json());
 
         $knownWallets = collect(Network::knownWallets());
+
+        /** @var Transaction[] $transactions */
+        $resignedAddresses = Transaction::withScope(UsernameResignationScope::class)
+            ->select('sender_address')
+            ->groupBy('sender_address')
+            ->get()
+            ->pluck('sender_address');
+
+        $resignedWallets = Wallet::whereIn('address', $resignedAddresses)
+            ->where('attributes->username', null)
+            ->get();
+
+        foreach ($resignedWallets as $wallet) {
+            $cache->forgetWalletNameByAddress($wallet->address);
+        }
 
         Wallets::allWithUsername()
             ->orWhereIn('address', $knownWallets->pluck('address'))
