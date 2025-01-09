@@ -37,9 +37,7 @@ it('should search for a wallet', function () {
 it('should search for a wallet username over a block generator', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'validator' => [
-                'username' => 'pieface',
-            ],
+            'username' => 'pieface',
         ],
     ]);
     $block = Block::factory()->create([
