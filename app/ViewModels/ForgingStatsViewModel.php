@@ -31,7 +31,7 @@ final class ForgingStatsViewModel implements ViewModel
 
     public function hasUsername(): bool
     {
-        return $this->validator()?->hasUsername();
+        return $this->validator()?->hasUsername() !== null;
     }
 
     public function username(): ?string
