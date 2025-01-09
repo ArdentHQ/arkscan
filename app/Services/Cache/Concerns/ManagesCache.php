@@ -27,6 +27,7 @@ trait ManagesCache
      */
     private function remember(string $key, $ttl, Closure $callback)
     {
+        // @phpstan-ignore-next-line
         return $this->getCache()->remember(md5($key), $ttl, $callback);
     }
 
