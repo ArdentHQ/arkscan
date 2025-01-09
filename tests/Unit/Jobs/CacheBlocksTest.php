@@ -80,7 +80,7 @@ it('should not trigger event if no change', function () {
 
     (new CacheBlocks())->handle($cache);
 
-    Event::assertDispatchedTimes(TransactionDetails::class, 0);
+    Event::assertNotDispatched(TransactionDetails::class);
 });
 
 it('should trigger event if largest block by amount changes', function () {
@@ -171,9 +171,11 @@ it('should trigger event if largest block by fee changes', function () {
 
     (new CacheBlocks())->handle($cache);
 
-    Event::assertDispatchedTimes(TransactionDetails::class, 0);
+    Event::assertNotDispatched(TransactionDetails::class);
 
     $updatedLargestByFees = Block::factory()->create([
+        // same amount, but higher fee
+        'total_amount'           => 1 * 1e8,
         'total_fee'              => 1000 * 1e8,
         'number_of_transactions' => 1,
     ]);
@@ -220,9 +222,11 @@ it('should trigger event if largest block by transaction count changes', functio
 
     (new CacheBlocks())->handle($cache);
 
-    Event::assertDispatchedTimes(TransactionDetails::class, 0);
+    Event::assertNotDispatched(TransactionDetails::class);
 
     $updatedLargestByTransactions = Block::factory()->create([
+        // same amount, but more transactions
+        'total_amount'           => 1 * 1e8,
         'total_fee'              => 1 * 1e8,
         'number_of_transactions' => 5,
     ]);
