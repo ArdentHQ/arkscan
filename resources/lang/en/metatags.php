@@ -97,7 +97,7 @@ return [
     '500'           => [
         'title'       => '500 Internal Server Error | :name Blockchain Explorer',
     ],
-    
+
     'support'       => [
         'title'       => 'Support | :name Blockchain Explorer',
         'description' => 'Get help with the use of the :name Blockchain Explorer.',
