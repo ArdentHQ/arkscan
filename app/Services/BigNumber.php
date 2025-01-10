@@ -78,13 +78,19 @@ final class BigNumber implements Stringable
      *
      * @return float
      */
-    public function toFloat(?float $divisor = null): float
+    public function toFloat(?float $divisor = null, ?int $scale = null): float
     {
         if ($divisor === null) {
             $divisor = config('currencies.notation.crypto', 1e18);
         }
 
-        return $this->value->exactlyDividedBy($divisor)->toFloat();
+        $value = $this->value->exactlyDividedBy($divisor);
+
+        if ($scale !== null) {
+            $value = $value->toScale($scale, RoundingMode::DOWN);
+        }
+
+        return $value->toFloat();
     }
 
     public function valueOf(): BigDecimal

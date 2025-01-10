@@ -63,7 +63,7 @@ final class WalletViewModel implements ViewModel
 
     public function balance(): float
     {
-        return $this->wallet->balance->toFloat();
+        return $this->wallet->balance->toFloat(scale: 8);
     }
 
     public function balanceFiat(): string
