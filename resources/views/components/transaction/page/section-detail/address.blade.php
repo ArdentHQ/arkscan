@@ -3,7 +3,7 @@
     'isContract' => false,
 ])
 
-<div class="flex items-center justify-end sm:justify-start">
+<div class="flex justify-end items-center sm:justify-start">
     <a
         href="{{ route('wallet', $address) }}"
         class="min-w-0 link"
