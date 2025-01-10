@@ -36,12 +36,8 @@ final class PopulateHistoricMarketCap extends Command
                 continue;
             }
 
+            /** @var string $fileContent */
             $fileContent = file_get_contents($currencyPath);
-            if ($fileContent === false) {
-                $this->output->writeln('Failed to read currency file for '.$currency);
-
-                continue;
-            }
 
             /** @var array{stats:array{0:int, 1:float}[]} $jsonData */
             $jsonData = json_decode($fileContent, true);
