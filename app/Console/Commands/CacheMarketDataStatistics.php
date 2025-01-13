@@ -196,29 +196,21 @@ final class CacheMarketDataStatistics extends Command
         $volumeAth = $volumeSorted->last();
 
         if ($volumeAtl['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getVolumeAtl($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $volumeAtl['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $volumeAtl['value']) {
-                    $this->hasChanges = true;
-                }
-            }
+            $existingValue = Arr::get($cache->getVolumeAtl($currency) ?? [], 'value');
+            if ($existingValue === null || (float) $volumeAtl['value'] < (float) $existingValue) {
+                $this->hasChanges = true;
 
-            $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
+                $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
+            }
         }
 
         if ($volumeAth['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getVolumeAth($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $volumeAth['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $volumeAth['value']) {
-                    $this->hasChanges = true;
-                }
-            }
+            $existingValue = Arr::get($cache->getVolumeAth($currency) ?? [], 'value');
+            if ($existingValue === null || (float) $volumeAth['value'] > (float) $existingValue) {
+                $this->hasChanges = true;
 
-            $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
+                $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
+            }
         }
     }
 
