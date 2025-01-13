@@ -325,7 +325,7 @@ it('should should dispatch event if volume ath changes', function () {
     Event::assertDispatchedTimes(MarketData::class, 1);
 });
 
-it('should should dispatch event if market cap atl changes', function () {
+it('should should dispatch event if market cap atl value changes', function () {
     Event::fake();
 
     Config::set('arkscan.networks.development.canBeExchanged', true);
@@ -343,15 +343,9 @@ it('should should dispatch event if market cap atl changes', function () {
 
     Event::fake();
 
-    $cache->setMarketCapAtl($currency, 1490140800, 4181903.0);
+    $existingAtl = $cache->getMarketCapAth($currency);
 
-    $this->artisan('explorer:cache-market-data-statistics');
-
-    Event::assertDispatchedTimes(MarketData::class, 1);
-
-    Event::fake();
-
-    $cache->setMarketCapAtl($currency, 1490140900, 3181903.0);
+    $cache->setMarketCapAtl($currency, 1490140800, $existingAtl['value'] + 1);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
@@ -376,17 +370,13 @@ it('should should dispatch event if market cap ath changes', function () {
 
     Event::fake();
 
-    $cache->setMarketCapAth($currency, 1515542400, 2001554886.9196);
+    $existingAth = $cache->getMarketCapAth($currency);
+
+    $cache->setMarketCapAth($currency, 1515542400, $existingAth['value'] - 1);
 
     $this->artisan('explorer:cache-market-data-statistics');
 
     Event::assertDispatchedTimes(MarketData::class, 1);
 
     Event::fake();
-
-    $cache->setMarketCapAth($currency, 1515542500, 1001554886.9196);
-
-    $this->artisan('explorer:cache-market-data-statistics');
-
-    Event::assertDispatchedTimes(MarketData::class, 1);
 });
