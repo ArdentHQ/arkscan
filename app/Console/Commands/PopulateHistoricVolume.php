@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Services\Cache\StatisticsCache;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 final class PopulateHistoricVolume extends Command
