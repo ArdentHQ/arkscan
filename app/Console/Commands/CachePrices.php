@@ -80,9 +80,9 @@ final class CachePrices extends Command
                     $periodPrices = $hourlyPrices;
 
                     $crypto->setPrices($currency.'.'.$period, $periodPrices);
-                } else if ($periodPrices->isEmpty()) {
+                } elseif ($periodPrices->isEmpty()) {
                     continue;
-                } else if ($period === StatsPeriods::WEEK) {
+                } elseif ($period === StatsPeriods::WEEK) {
                     /** @var Collection $priceMapping */
                     $priceMapping = collect($periodPrices)
                         ->map(fn (float $value, string $timestamp) => [

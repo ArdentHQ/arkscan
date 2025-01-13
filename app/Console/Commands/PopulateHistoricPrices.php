@@ -51,8 +51,8 @@ final class PopulateHistoricPrices extends Command
             $data = collect($jsonData['stats'])
                 ->map(fn ($item) => [
                     'timestamp' => Carbon::createFromTimestampMs($item[0])->format('Y-m-d 00:00:00'),
-                    'currency' => $capitalisedCurrency,
-                    'value' => floatval($item[1]),
+                    'currency'  => $capitalisedCurrency,
+                    'value'     => floatval($item[1]),
                 ]);
 
             if ($data->last()['timestamp'] === $data->get($data->count() - 2)['timestamp']) {
