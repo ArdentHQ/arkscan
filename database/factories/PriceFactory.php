@@ -16,7 +16,7 @@ final class PriceFactory extends Factory
         return [
             'timestamp' => $this->faker->dateTimeBetween('-1 year', 'now')->getTimestamp(),
             'currency'  => $this->faker->publicKey,
-            'value'     => $this->faker->randomFloat(14),
+            'value'     => $this->faker->randomFloat(max: 10),
         ];
     }
 }
