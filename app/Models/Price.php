@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Services\Cache\PriceCache;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
