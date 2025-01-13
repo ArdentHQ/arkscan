@@ -11,6 +11,8 @@ trait HasTablePagination
 {
     use HasPagination;
 
+    public ?int $page  = null;
+
     public ?int $perPage = null;
 
     final public function mountHasTablePagination(): void
