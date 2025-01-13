@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Price;
+use App\Services\Cache\PriceCache;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -61,5 +62,7 @@ final class PopulateHistoricPrices extends Command
 
             Price::upsert($data->toArray(), ['timestamp', 'currency'], ['value']);
         }
+
+        (new PriceCache())->setLastUpdated([]);
     }
 }
