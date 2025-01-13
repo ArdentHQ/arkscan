@@ -91,10 +91,6 @@ final class CachePrices extends Command
                             'value'     => $value,
                         ])->values();
 
-                    if ($priceMapping->last()['timestamp'] === $priceMapping->get($priceMapping->count() - 2)['timestamp']) {
-                        $priceMapping->pop();
-                    }
-
                     Price::upsert($priceMapping->toArray(), ['timestamp', 'currency'], ['value']);
 
                     $allPrices = Price::where('currency', $currency)
