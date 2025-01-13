@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Facades\Network;
 use App\Facades\Settings;
-use App\Models\Price;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Support\Arr;
