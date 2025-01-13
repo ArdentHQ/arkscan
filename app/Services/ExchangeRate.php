@@ -9,8 +9,6 @@ use App\Facades\Settings;
 use App\Models\Price;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
-use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 final class ExchangeRate

@@ -48,7 +48,7 @@ final class Price extends Model
      */
     protected $casts = [
         'timestamp' => 'datetime',
-        'value' => 'float',
+        'value'     => 'float',
     ];
 
     public static function getForTimestampAndCurrency(string $currency, Carbon $timestamp): float
