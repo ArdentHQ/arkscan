@@ -21,6 +21,14 @@ trait ManagesCache
     }
 
     /**
+     * @return bool
+     */
+    private function has(string $key)
+    {
+        return $this->getCache()->has(md5($key));
+    }
+
+    /**
      * @param Carbon|int $ttl
      *
      * @return mixed
