@@ -50,27 +50,4 @@ final class Price extends Model
         'timestamp' => 'datetime',
         'value'     => 'float',
     ];
-
-    public static function getForTimestampAndCurrency(string $currency, Carbon $timestamp): float
-    {
-        $cache = new PriceCache();
-
-        $timestamp->setTime(0, 0, 0, 0);
-        $unixTimestamp = $timestamp->getTimestamp();
-        if ($cache->hasDailyPriceForCurrency($currency, $unixTimestamp)) {
-            return $cache->getDailyPriceForCurrency($currency, $unixTimestamp);
-        }
-
-        $priceData = self::where('currency', $currency)
-            ->where('timestamp', $timestamp)
-            ->first();
-
-        if ($priceData === null) {
-            return 0;
-        }
-
-        $cache->setDailyPriceForCurrency($currency, $unixTimestamp, $priceData->value);
-
-        return $priceData->value;
-    }
 }

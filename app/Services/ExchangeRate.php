@@ -9,6 +9,7 @@ use App\Facades\Settings;
 use App\Models\Price;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 final class ExchangeRate
@@ -22,13 +23,10 @@ final class ExchangeRate
     {
         $exchangeRate = 0;
         if ($timestamp !== null) {
-            $exchangeRate = Price::getForTimestampAndCurrency(Settings::currency(), Timestamp::fromGenesis($timestamp));
+            $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
+            $exchangeRate = Arr::get($prices, Timestamp::fromGenesis($timestamp)->format('Y-m-d'), 0);
         } else {
             $exchangeRate = static::currentRate();
-        }
-
-        if ($exchangeRate === null) {
-            return 0;
         }
 
         return $amount * $exchangeRate;
