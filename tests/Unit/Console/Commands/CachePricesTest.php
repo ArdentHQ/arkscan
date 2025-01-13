@@ -261,7 +261,7 @@ it('should not have duplicate entries for the current day', function () {
     $chartsCache->getCache()->flush();
     $priceCache->getCache()->flush();
 
-    $mockPrices = [];
+    $mockPrices     = [];
     $expectedCrypto = [];
     $expectedPrices = [
         'labels'   => [],
