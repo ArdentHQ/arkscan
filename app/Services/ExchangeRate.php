@@ -29,6 +29,10 @@ final class ExchangeRate
             $exchangeRate = static::currentRate();
         }
 
+        if ($exchangeRate === null) {
+            return 0;
+        }
+
         return $amount * $exchangeRate;
     }
 
