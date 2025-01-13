@@ -190,9 +190,9 @@ final class CacheMarketDataStatistics extends Command
 
         $volumeSorted = $volumes->sortBy('value');
 
-        /** @var array{timestamp: int, value: float|null} $volumeAtl */
+        /** @var array{timestamp: int, value: int|float|null} $volumeAtl */
         $volumeAtl = $volumeSorted->first();
-        /** @var array{timestamp: int, value: float|null} $volumeAth */
+        /** @var array{timestamp: int, value: int|float|null} $volumeAth */
         $volumeAth = $volumeSorted->last();
 
         if ($volumeAtl['value'] !== null) {
