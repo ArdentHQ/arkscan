@@ -8,6 +8,7 @@ use App\Contracts\MarketDataProvider;
 use App\Enums\StatsPeriods;
 use App\Events\CurrencyUpdate;
 use App\Facades\Network;
+use App\Models\Price;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceCache;
 use App\Services\Cache\PriceChartCache;
@@ -72,14 +73,34 @@ final class CachePrices extends Command
             foreach (self::PERIODS as $period) {
                 $periodPrices = $prices;
                 if ($period === StatsPeriods::DAY) {
+                    if ($hourlyPrices->isEmpty()) {
+                        continue;
+                    }
+
                     $periodPrices = $hourlyPrices;
-                }
 
-                if ($periodPrices->isEmpty()) {
+                    $crypto->setPrices($currency.'.'.$period, $periodPrices);
+                } elseif ($periodPrices->isEmpty()) {
                     continue;
+                } elseif ($period === StatsPeriods::WEEK) {
+                    /** @var Collection $priceMapping */
+                    $priceMapping = collect($periodPrices)
+                        ->map(fn (float $value, string $timestamp) => [
+                            'timestamp' => $timestamp.' 00:00:00',
+                            'currency'  => $currency,
+                            'value'     => $value,
+                        ])->values();
+
+                    Price::upsert($priceMapping->toArray(), ['timestamp', 'currency'], ['value']);
+
+                    $allPrices = Price::where('currency', $currency)
+                        ->orderBy('timestamp')
+                        ->get()
+                        ->mapWithKeys(fn (Price $price) => [$price->timestamp->format('Y-m-d') => $price['value']]);
+
+                    $crypto->setPrices($currency.'.'.$period, $allPrices);
                 }
 
-                $crypto->setPrices($currency.'.'.$period, $periodPrices);
                 $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $periodPrices));
                 $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $periodPrices));
 
