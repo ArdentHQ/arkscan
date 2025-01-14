@@ -101,8 +101,13 @@ final class CachePrices extends Command
 
                     $crypto->setPrices($currency.'.'.$period, $allPrices);
 
-                    $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $allPrices));
-                    $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $allPrices));
+                    if ($period === StatsPeriods::ALL) {
+                        $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $allPrices));
+                        $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $allPrices));
+                    } else {
+                        $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $periodPrices));
+                        $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $periodPrices));
+                    }
                 } else {
                     $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $periodPrices));
                     $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $periodPrices));
