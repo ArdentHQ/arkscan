@@ -24,17 +24,6 @@ final class TransactionTable extends Component
     use HasTableFilter;
     use HasTablePagination;
 
-    /**
-     * Query string parameters.
-     */
-    public bool $transfers = true;
-
-    public bool $votes = true;
-
-    public bool $multipayments = true;
-
-    public bool $others = true;
-
     public array $filter = [
         'transfers'     => true,
         'votes'         => true,
@@ -51,10 +40,10 @@ final class TransactionTable extends Component
     public function queryString(): array
     {
         return [
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
+            'filter.transfers'     => ['as' => 'transfers', 'except' => true],
+            'filter.votes'         => ['as' => 'votes', 'except' => true],
+            'filter.multipayments' => ['as' => 'multipayments', 'except' => true],
+            'filter.others'        => ['as' => 'others', 'except' => true],
         ];
     }
 

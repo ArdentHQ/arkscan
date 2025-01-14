@@ -30,15 +30,6 @@ final class Delegates extends TabbedTableComponent
 
     public const INITIAL_SORT_DIRECTION = SortDirection::ASC;
 
-    /**
-     * Query string parameters.
-     */
-    public bool $active = true;
-
-    public bool $standby = true;
-
-    public bool $resigned = false;
-
     public array $filter = [
         'active'   => true,
         'standby'  => true,
@@ -53,9 +44,9 @@ final class Delegates extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'active'   => ['except' => true],
-            'standby'  => ['except' => true],
-            'resigned' => ['except' => true],
+            'filter.active'   => ['as' => 'active', 'except' => true],
+            'filter.standby'  => ['as' => 'standby', 'except' => true],
+            'filter.resigned' => ['as' => 'resigned', 'except' => true],
         ];
     }
 

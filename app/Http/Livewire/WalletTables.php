@@ -34,21 +34,6 @@ final class WalletTables extends Component
         'voters'       => false,
     ];
 
-    /**
-     * Query string parameters.
-     */
-    public bool $outgoing = true;
-
-    public bool $incoming = true;
-
-    public bool $transfers = true;
-
-    public bool $votes = true;
-
-    public bool $multipayments = true;
-
-    public bool $others = true;
-
     public function queryString(): array
     {
         $params = [
