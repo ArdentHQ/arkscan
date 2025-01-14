@@ -8,7 +8,12 @@
 
     <x-wallet.overview.item-entry :title="trans('pages.wallet.balance')">
         <x-slot name="value">
-            <x-general.network-currency :value="$wallet->balance()" />
+            <span class="sm:hidden">
+                <x-general.network-currency :value="$wallet->balance()" :decimals="2" />
+            </span>
+            <span class="hidden sm:inline">
+                <x-general.network-currency :value="$wallet->balance()" />
+            </span>
         </x-slot>
     </x-wallet.overview.item-entry>
 
