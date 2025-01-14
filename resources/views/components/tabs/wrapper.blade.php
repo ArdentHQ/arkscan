@@ -1,5 +1,5 @@
 @props([
-    'xData' => '{}',
+    'alpineData' => '{}',
     'onSelected' => null,
     'defaultSelected' => '',
     'noData' => false,
@@ -11,7 +11,7 @@
     @unless($noData)
         x-data="Tabs(
             '{{ $defaultSelected }}',
-            {{ $xData }}
+            {{ $alpineData }}
             @if($onSelected)
             , {{ $onSelected }}
             @endif
