@@ -30,6 +30,15 @@ final class Delegates extends TabbedTableComponent
 
     public const INITIAL_SORT_DIRECTION = SortDirection::ASC;
 
+    /**
+     * Query string parameters.
+     */
+    public bool $active = true;
+
+    public bool $standby = true;
+
+    public bool $resigned = false;
+
     public array $filter = [
         'active'   => true,
         'standby'  => true,

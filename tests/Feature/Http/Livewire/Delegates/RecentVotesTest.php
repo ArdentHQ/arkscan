@@ -83,7 +83,7 @@ it('should toggle all filters when "select all" is selected', function () {
         ->assertSet('filter', [
             'vote'      => true,
             'unvote'    => true,
-            'vote-swap' => true,
+            'voteSwap' => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.vote', true)
@@ -92,13 +92,13 @@ it('should toggle all filters when "select all" is selected', function () {
         ->assertSet('filter', [
             'vote'      => false,
             'unvote'    => false,
-            'vote-swap' => false,
+            'voteSwap' => false,
         ])
         ->set('selectAllFilters', true)
         ->assertSet('filter', [
             'vote'      => true,
             'unvote'    => true,
-            'vote-swap' => true,
+            'voteSwap' => true,
         ]);
 });
 
@@ -108,7 +108,7 @@ it('should toggle "select all" when all filters are selected', function () {
         ->assertSet('filter', [
             'vote'      => true,
             'unvote'    => true,
-            'vote-swap' => true,
+            'voteSwap' => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.vote', false)
@@ -151,7 +151,7 @@ it('should filter vote transactions', function () {
         ->set('filter', [
             'vote'      => true,
             'unvote'    => false,
-            'vote-swap' => false,
+            'voteSwap' => false,
         ])
         ->assertSee($vote->id)
         ->assertDontSee($unvote->id)
@@ -192,7 +192,7 @@ it('should filter unvote transactions', function () {
         ->set('filter', [
             'vote'      => false,
             'unvote'    => true,
-            'vote-swap' => false,
+            'voteSwap' => false,
         ])
         ->assertSee($unvote->id)
         ->assertDontSee($vote->id)
@@ -233,7 +233,7 @@ it('should filter vote swap transactions', function () {
         ->set('filter', [
             'vote'      => false,
             'unvote'    => false,
-            'vote-swap' => true,
+            'voteSwap' => true,
         ])
         ->assertSee($voteSwap->id)
         ->assertDontSee($vote->id)
@@ -246,7 +246,7 @@ it('should show correct message when no filters are selected', function () {
         ->set('filter', [
             'vote'      => false,
             'unvote'    => false,
-            'vote-swap' => false,
+            'voteSwap' => false,
         ])
         ->assertSee(trans('tables.recent-votes.no_results.no_filters'));
 });

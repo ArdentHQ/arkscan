@@ -26,7 +26,7 @@
             />
 
             <x-tables.filters.includes.checkbox
-                name="vote-swap"
+                name="voteSwap"
                 :label="trans('tables.filters.recent-votes.vote_swap')"
             />
         </x-tables.filters.includes.group>
