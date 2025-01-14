@@ -20,13 +20,25 @@
     </label>
 
     {{--desktop: buttons group--}}
-    <div class="hidden relative z-0 lg:inline-flex">
+    <div
+        class="hidden relative z-0 lg:inline-flex"
+        x-data="Tabs(
+            '{{ $selected }}',
+            {
+                selected: @entangle('period'),
+            },
+            function (value) {
+                this.$wire.set('period', value);
+            }
+        )"
+    >
         <x-tabs.wrapper
             class="px-2"
             default-selected="{{ $selected }}"
             on-selected="function (value) {
                 this.$wire.set('period', value);
             }"
+            no-data
         >
             @foreach($options as $val => $label)
                 @unless ($loop->first)
