@@ -77,12 +77,13 @@ final class CachePrices extends Command
                         continue;
                     }
 
-                    $periodPrices = $hourlyPrices;
+                    $crypto->setPrices($currency.'.'.$period, $hourlyPrices);
 
-                    $crypto->setPrices($currency.'.'.$period, $periodPrices);
+                    $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $hourlyPrices));
+                    $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $hourlyPrices));
                 } elseif ($periodPrices->isEmpty()) {
                     continue;
-                } elseif ($period === StatsPeriods::WEEK) {
+                } elseif ($period === StatsPeriods::WEEK || $period === StatsPeriods::ALL) {
                     /** @var Collection $priceMapping */
                     $priceMapping = collect($periodPrices)
                         ->map(fn (float $value, string $timestamp) => [
@@ -99,10 +100,18 @@ final class CachePrices extends Command
                         ->mapWithKeys(fn (Price $price) => [$price->timestamp->format('Y-m-d') => $price['value']]);
 
                     $crypto->setPrices($currency.'.'.$period, $allPrices);
-                }
 
-                $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $periodPrices));
-                $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $periodPrices));
+                    if ($period === StatsPeriods::ALL) {
+                        $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $allPrices));
+                        $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $allPrices));
+                    } else {
+                        $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $periodPrices));
+                        $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $periodPrices));
+                    }
+                } else {
+                    $cache->setHistorical($currency, $period, $this->statsByPeriod($period, $periodPrices));
+                    $cache->setHistoricalRaw($currency, $period, $this->statsByPeriodRaw($period, $periodPrices));
+                }
 
                 $currencyLastUpdated[$currency] = Carbon::now()->unix();
 

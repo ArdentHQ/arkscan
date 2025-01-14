@@ -110,6 +110,7 @@ it('should consolidate historic and recent prices in cache', function () {
     }
 
     expect($cryptoCache->getPrices('USD.week')->count())->toBe(1310 + 500);
+    expect($cryptoCache->getPrices('USD.all')->count())->toBe(1310 + 500);
 });
 
 it('should not update prices if coingecko returns an empty response', function () {
