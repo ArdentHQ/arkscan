@@ -1,3 +1,5 @@
+@use('\Brick\Math\BigDecimal')
+
 @props([
     'transaction' => null,
     'wallet' => null,
@@ -15,6 +17,9 @@
     $sentToSelfClass = null;
 
     $isSentToSelf = $amountForItself !== null && $amountForItself > 0;
+
+    $isAllSentToSelf =  $amountForItself !== null ? BigDecimal::of((string) $amountForItself)->isEqualTo(BigDecimal::of((string) $amount)) : false;
+
     if (! $withoutStyling) {
         if(! $isSent && ! $isReceived) {
             $class[] = 'text-theme-secondary-900 dark:text-theme-dark-50';
@@ -45,6 +50,10 @@
             }
         }
     }
+
+    // Show a negative sign if the transaction is a sent payment and the entire
+    // amount is not sent to self.
+    $showMinus = $isSent && !($isSentToSelf && $isAllSentToSelf);
 @endphp
 
 <span {{ $attributes->class($class) }}>
@@ -67,7 +76,7 @@
             data-tippy-content="{{ $fiat }}"
         @endif
     >
-        {{ $isSent && ! $isSentToSelf ? '-' : ($isReceived ? '+' : '')}}
+        {{ $showMinus ? '-' : ($isReceived ? '+' : '')}}
 
         @if (is_numeric($amount))
             {{ ExplorerNumberFormatter::networkCurrency($amount) }}
