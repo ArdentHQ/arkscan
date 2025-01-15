@@ -53,12 +53,17 @@ trait HasTableFilter
         }
     }
 
-    public function updatedFilter(bool $value, string $key): void
+    public function updatingFilter(bool $value, string $key): void
+    {
+        if (Arr::get($this->filter, $key) === $value) {
+            return;
+        }
+
+        $this->gotoPage(1);
+    }
+
+    public function updatedFilter(): void
     {
         $this->selectAllFilters = $this->isAllSelected;
-
-        if (Arr::get($this->filter, $key) !== $value) {
-            $this->setPage(1);
-        }
     }
 }
