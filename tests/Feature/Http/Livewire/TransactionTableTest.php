@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Facades\Settings;
 use App\Http\Livewire\TransactionTable;
-use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -12,8 +11,6 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Route;
-use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 
 it('should list the first page of records', function () {
@@ -74,40 +71,32 @@ it('should update the records fiat tooltip when currency changed', function () {
 it('should toggle all filters when "select all" is selected', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->assertSet('filter', [
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
-        ])
+        ->set('filter.transfers', true)
+        ->set('filter.votes', true)
+        ->set('filter.multipayments', true)
+        ->set('filter.others', true)
         ->assertSet('selectAllFilters', true)
         ->set('filter.transfers', true)
         ->assertSet('selectAllFilters', true)
         ->set('selectAllFilters', false)
-        ->assertSet('filter', [
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
-        ])
+        ->set('filter.transfers', false)
+        ->set('filter.votes', false)
+        ->set('filter.multipayments', false)
+        ->set('filter.others', false)
         ->set('selectAllFilters', true)
-        ->assertSet('filter', [
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
-        ]);
+        ->set('filter.transfers', true)
+        ->set('filter.votes', true)
+        ->set('filter.multipayments', true)
+        ->set('filter.others', true);
 });
 
 it('should toggle "select all" when all filters are selected', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->assertSet('filter', [
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
-        ])
+        ->set('filter.transfers', true)
+        ->set('filter.votes', true)
+        ->set('filter.multipayments', true)
+        ->set('filter.others', true)
         ->assertSet('selectAllFilters', true)
         ->set('filter.transfers', false)
         ->assertSet('selectAllFilters', false)
@@ -128,12 +117,10 @@ it('should filter by transfer transactions', function () {
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'transfers'     => true,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
-        ])
+        ->set('filter.transfers', true)
+        ->set('filter.votes', false)
+        ->set('filter.multipayments', false)
+        ->set('filter.others', false)
         ->assertSee($transfer->id)
         ->assertDontSee($vote->id);
 });
@@ -151,12 +138,10 @@ it('should filter by vote transactions', function () {
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'transfers'     => false,
-            'votes'         => true,
-            'multipayments' => false,
-            'others'        => false,
-        ])
+        ->set('filter.transfers', false)
+        ->set('filter.votes', true)
+        ->set('filter.multipayments', false)
+        ->set('filter.others', false)
         ->assertSee($vote->id)
         ->assertDontSee($transfer->id);
 });
@@ -172,12 +157,10 @@ it('should filter by multipayment transactions', function () {
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => true,
-            'others'        => false,
-        ])
+        ->set('filter.transfers', false)
+        ->set('filter.votes', false)
+        ->set('filter.multipayments', true)
+        ->set('filter.others', false)
         ->assertSee($multipayment->id)
         ->assertDontSee($transfer->id);
 });
@@ -191,12 +174,10 @@ it('should filter by other transactions', function () {
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => true,
-        ])
+        ->set('filter.transfers', false)
+        ->set('filter.votes', false)
+        ->set('filter.multipayments', false)
+        ->set('filter.others', true)
         ->assertSee($delegateRegistration->id)
         ->assertSee($entityRegistration->id)
         ->assertDontSee($transfer->id);
@@ -211,12 +192,10 @@ it('should show no transactions if no type filter', function () {
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
-        ])
+        ->set('filter.transfers', false)
+        ->set('filter.votes', false)
+        ->set('filter.multipayments', false)
+        ->set('filter.others', false)
         ->assertDontSee($transfer->id)
         ->assertDontSee($delegateRegistration->id)
         ->assertDontSee($entityRegistration->id)
@@ -226,12 +205,10 @@ it('should show no transactions if no type filter', function () {
 it('should get the filter values via a getter', function () {
     $instance = Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'transfers'     => false,
-            'votes'         => true,
-            'multipayments' => false,
-            'others'        => true,
-        ])
+        ->set('filter.transfers', false)
+        ->set('filter.votes', true)
+        ->set('filter.multipayments', false)
+        ->set('filter.others', true)
         ->instance();
 
     expect($instance->transfers)->toBeFalse();
@@ -243,12 +220,10 @@ it('should get the filter values via a getter', function () {
 it('should set the filter values via a setter', function () {
     $instance = Livewire::test(TransactionTable::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
-        ])
+        ->set('filter.transfers', false)
+        ->set('filter.votes', false)
+        ->set('filter.multipayments', false)
+        ->set('filter.others', false)
         ->instance();
 
     $instance->transfers     = true;
