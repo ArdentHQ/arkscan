@@ -42,9 +42,9 @@ final class RecentVotes extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'vote'      => ['except' => true],
-            'unvote'    => ['except' => true],
-            'vote-swap' => ['except' => true],
+            'filter.vote'      => ['as' => 'vote', 'except' => true],
+            'filter.unvote'    => ['as' => 'unvote', 'except' => true],
+            'filter.vote-swap' => ['as' => 'vote-swap', 'except' => true],
         ];
     }
 
