@@ -274,12 +274,12 @@ it('should not reset to page 1 when going back/forward in history', function () 
         ->test(TransactionTable::class)
         ->call('setIsReady')
         ->update(updates: [
-            'paginators.page' => '3',
-            'perPage' => 25,
-            'filter.transfers' => true,
-            'filter.votes' => true,
+            'paginators.page'      => '3',
+            'perPage'              => 25,
+            'filter.transfers'     => true,
+            'filter.votes'         => true,
             'filter.multipayments' => true,
-            'filter.others' => true
+            'filter.others'        => true,
         ])
         ->assertSet('paginators.page', 3);
 });
