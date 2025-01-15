@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Facades\Settings;
 use App\Http\Livewire\TransactionTable;
-use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -12,8 +11,6 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Route;
-use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 
 it('should list the first page of records', function () {
@@ -299,12 +296,12 @@ it('should not reset to page 1 when going back/forward in history', function () 
         ->test(TransactionTable::class)
         ->call('setIsReady')
         ->update(updates: [
-            'paginators.page' => '3',
-            'perPage' => 25,
-            'filter.transfers' => true,
-            'filter.votes' => true,
+            'paginators.page'      => '3',
+            'perPage'              => 25,
+            'filter.transfers'     => true,
+            'filter.votes'         => true,
             'filter.multipayments' => true,
-            'filter.others' => true
+            'filter.others'        => true,
         ])
         ->assertSet('paginators.page', 3);
 });
