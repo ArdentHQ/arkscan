@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
+use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
 
 trait HasPayload
@@ -99,7 +100,9 @@ trait HasPayload
         }
 
         try {
-            $method = (new AbiDecoder())->decodeFunctionData($payload);
+            $method = (new AbiDecoder(
+                $this->isMultiPayment() ? ContractAbiType::MULTIPAYMENT : ContractAbiType::CONSENSUS,
+            ))->decodeFunctionData($payload);
 
             // @codeCoverageIgnoreStart
             // Unreachable on tests as all the methods in the `AbiDecoder` class
@@ -110,7 +113,7 @@ trait HasPayload
             // @codeCoverageIgnoreEnd
 
             $arguments = $method['args'];
-        } catch (\Throwable) {
+        } catch (\Throwable $e) {
             $arguments = $this->payloadArguments($payload);
         }
 

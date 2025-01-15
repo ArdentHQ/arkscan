@@ -58,6 +58,11 @@ trait HasMethod
         return $this->method->isContractDeployment();
     }
 
+    public function isMultiPayment(): bool
+    {
+        return $this->method->isMultiPayment();
+    }
+
     public function isSelfReceiving(): bool
     {
         if ($this->isValidatorRegistration()) {
