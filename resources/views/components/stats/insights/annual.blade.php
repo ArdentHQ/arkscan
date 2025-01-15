@@ -78,23 +78,13 @@
                                     <div class="flex justify-between space-x-3">
                                         <span>@lang('pages.statistics.insights.annual.header.volume'):</span>
                                         <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                            {{ ExplorerNumberFormatter::currencyWithDecimals(
-                                                value: $year['volume'],
-                                                currency: Network::currency(),
-                                                decimals: 2,
-                                                maxIntegerDigitsForDecimals: 7
-                                            ) }}
+                                            {{ ExplorerNumberFormatter::currencyWithDecimals($year['volume'], Network::currency(), 2) }}
                                         </span>
                                     </div>
                                     <div class="flex justify-between space-x-3">
                                         <span>@lang('pages.statistics.insights.annual.header.fees'):</span>
                                         <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                            {{ ExplorerNumberFormatter::currencyWithDecimals(
-                                                value: $year['fees'],
-                                                currency: Network::currency(),
-                                                decimals: 2,
-                                                maxIntegerDigitsForDecimals: 7
-                                            ) }}
+                                            {{ ExplorerNumberFormatter::currencyWithDecimals($year['fees'], Network::currency(), 2) }}
                                         </span>
                                     </div>
                                 </div>
@@ -129,12 +119,7 @@
                                     <div class="flex justify-between px-8 space-x-3">
                                         <span>@lang('pages.statistics.insights.annual.header.volume'):</span>
                                         <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                            {{ ExplorerNumberFormatter::currencyWithDecimals(
-                                                value: $year['volume'],
-                                                currency: Network::currency(),
-                                                decimals: 2,
-                                                maxIntegerDigitsForDecimals: 7
-                                            ) }}
+                                            {{ ExplorerNumberFormatter::currencyWithDecimals($year['volume'], Network::currency(), 2) }}
                                         </span>
                                     </div>
                                 </td>
@@ -142,12 +127,7 @@
                                     <div class="flex justify-between px-8 space-x-3">
                                         <span>@lang('pages.statistics.insights.annual.header.fees'):</span>
                                         <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                                            {{ ExplorerNumberFormatter::currencyWithDecimals(
-                                                value: $year['fees'],
-                                                currency: Network::currency(),
-                                                decimals: 2,
-                                                maxIntegerDigitsForDecimals: 7
-                                            ) }}
+                                            {{ ExplorerNumberFormatter::currencyWithDecimals($year['fees'], Network::currency(), 2) }}
                                         </span>
                                     </div>
                                 </td>

@@ -65,37 +65,19 @@ final class NumberFormatter
     /**
      * @param string|int|float $value
      */
-    public static function currencyWithDecimals(
-        $value,
-        string $currency,
-        ?int $decimals = 4,
-        ?int $maxIntegerDigitsForDecimals = null
-    ): string {
-        $floatValue      = (float) str_replace(',', '.', (string) $value);
-        $intLen          = strlen((string) (int) abs($floatValue));
-
-        if ($maxIntegerDigitsForDecimals !== null && $intLen >= $maxIntegerDigitsForDecimals) {
-            $decimals = 0;
-        }
-
-        if ($decimals === null) {
-            // Default decimals if not provided
-            $decimals = self::isFiat($currency) ? 4 : 8;
-        }
-
-        // Workaround for rounding (e.g., 1.00005 => 1.0001)
-        $roundedValue = (float) number_format($floatValue, $decimals, '.', '');
-
+    public static function currencyWithDecimals($value, string $currency, ?int $decimals = 4): string
+    {
         $formatter = BetterNumberFormatter::new()
             ->withLocale('en-US')
-            ->withFractionDigits($decimals)
-            ->withMinFractionDigits($decimals > 0 ? 2 : 0);
+            ->withFractionDigits($decimals ?? 4)
+            ->withMinFractionDigits(2);
 
         if (self::isFiat($currency)) {
-            return $formatter->formatCurrency($roundedValue, $currency);
+            // Workaround to fix 5 rounding down (e.g. 1.00005 > 1 instead of 1.0001)
+            return $formatter->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), $currency);
         }
 
-        return $formatter->formatWithCurrencyCustom($roundedValue, $currency, $decimals);
+        return $formatter->formatWithCurrencyCustom($value, $currency, $decimals ?? 8);
     }
 
     /**
