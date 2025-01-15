@@ -55,7 +55,7 @@ it('should find a wallet by case sensitive username', function () {
         $this->subject->findByUsername('johndoe');
 
         $this->fail();
-    } catch (\Throwable) {
+    } catch (Throwable) {
         //
     }
 
