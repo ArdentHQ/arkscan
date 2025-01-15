@@ -179,7 +179,7 @@ it('should hide decimals for numbers exceeding the digits count', function () {
     expect(NumberFormatter::currencyWithDecimals(1234567, 'USD', null, 7))->toBe('$1,234,567');
     expect(NumberFormatter::currencyWithDecimals(12345678, 'USD', null, 7))->toBe('$12,345,678');
     expect(NumberFormatter::currencyWithDecimals(123456, 'USD', null, 6))->toBe('$123,456');
-    expect(NumberFormatter::currencyWithDecimals(123456, 'USD', 4, 6))->toBe('$123,456.00');
+    expect(NumberFormatter::currencyWithDecimals(123456, 'USD', 4, 6))->toBe('$123,456');
     expect(NumberFormatter::currencyWithDecimals(12345.678, 'USD', null, 6))->toBe('$12,345.678');
     expect(NumberFormatter::currencyWithDecimals(123456.789, 'USD', null, 6))->toBe('$123,457');
 });

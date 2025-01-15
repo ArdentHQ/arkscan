@@ -73,15 +73,14 @@ final class NumberFormatter
     ): string {
         $floatValue      = (float) str_replace(',', '.', (string) $value);
         $intLen          = strlen((string) (int) abs($floatValue));
-        $decimalsWasNull = $decimals === null;
-
-        if ($decimalsWasNull) {
-            // Default decimals if not provided
-            $decimals = self::isFiat($currency) ? 4 : 8;
+        
+        if ($maxIntegerDigitsForDecimals !== null && $intLen >= $maxIntegerDigitsForDecimals) {
+            $decimals = 0;
         }
 
-        if ($maxIntegerDigitsForDecimals !== null && $decimalsWasNull && $intLen >= $maxIntegerDigitsForDecimals) {
-            $decimals = 0;
+        if ($decimals === null) {
+            // Default decimals if not provided
+            $decimals = self::isFiat($currency) ? 4 : 8;
         }
 
         // Workaround for rounding (e.g., 1.00005 => 1.0001)
