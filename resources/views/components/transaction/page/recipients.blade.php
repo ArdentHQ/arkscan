@@ -22,7 +22,7 @@
         @foreach($recepients as $recipient)
             <x-ark-tables.row wire:key="recipient-{{ $recipient['address'] }}-{{ $recipient['amount'] }}-{{ $loop->index }}">
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.address :address="$recipient['address']" />
+                    <x-tables.rows.desktop.encapsulated.address truncateBreakpoint="lg" :address="$recipient['address']" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">

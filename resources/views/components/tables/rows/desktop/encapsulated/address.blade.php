@@ -15,11 +15,13 @@
 
     $truncateHiddenBreakpoint = [
         'sm' => 'sm:hidden',
+        'lg' => 'lg:hidden',
         'xl' => 'xl:hidden',
     ][$truncateBreakpoint];
 
     $truncateShowBreakpoint = [
         'sm' => 'hidden sm:inline',
+        'lg' => 'hidden lg:inline',
         'xl' => 'hidden xl:inline',
     ][$truncateBreakpoint];
 
