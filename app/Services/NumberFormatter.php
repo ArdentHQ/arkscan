@@ -73,7 +73,7 @@ final class NumberFormatter
     ): string {
         $floatValue      = (float) str_replace(',', '.', (string) $value);
         $intLen          = strlen((string) (int) abs($floatValue));
-        
+
         if ($maxIntegerDigitsForDecimals !== null && $intLen >= $maxIntegerDigitsForDecimals) {
             $decimals = 0;
         }
