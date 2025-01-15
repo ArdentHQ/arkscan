@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
+use Illuminate\Support\Arr;
+
 trait HasTableFilter
 {
     public bool $selectAllFilters = true;
@@ -51,10 +53,17 @@ trait HasTableFilter
         }
     }
 
+    public function updatingFilter(bool $value, string $key): void
+    {
+        if (Arr::get($this->filter, $key) === $value) {
+            return;
+        }
+
+        $this->gotoPage(1);
+    }
+
     public function updatedFilter(): void
     {
         $this->selectAllFilters = $this->isAllSelected;
-
-        $this->setPage(1);
     }
 }
