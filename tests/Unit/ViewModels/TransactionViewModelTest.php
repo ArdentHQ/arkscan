@@ -312,6 +312,33 @@ MethodID: 0x6dd7d8ea');
 
         expect($transaction->formattedPayload())->toBe('MethodID: 0x12341234');
     });
+
+    it('should get formatted multi payment receipts', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('084ce708000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000b693449adda7efc015d87944eae8b7c37eb1690a000000000000000000000000b693449adda7efc015d87944eae8b7c37eb1690a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000005f5e100000000000000000000000000000000000000000000000000000000000bebc200')
+            ->create());
+
+        expect($transaction->multiPaymentRecipients())->toEqual([
+            '0' => [
+                'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+                'amount'  => '100000000',
+            ],
+            '1' => [
+                'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+                'amount'  => '200000000',
+            ],
+        ]);
+    });
+
+    it('should fail to get formatted multi payment receipts if not a multi payment', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('123456')
+            ->create());
+
+        expect(function () use ($transaction) {
+            $transaction->multiPaymentRecipients();
+        })->toThrow(Exception::class);
+    });
 });
 
 it('should calculate fee with receipt', function () {

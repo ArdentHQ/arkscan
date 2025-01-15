@@ -85,6 +85,33 @@ trait HasPayload
         ])->render());
     }
 
+    public function multiPaymentRecipients(): ?array
+    {
+        if (! $this->isMultiPayment()) {
+            throw new \Exception('This transaction is not a multi-payment.');
+        }
+
+        $payload = $this->rawPayload();
+
+        $method = (new AbiDecoder(ContractAbiType::MULTIPAYMENT))->decodeFunctionData($payload);
+
+        $recipients = [];
+
+        $addresses = $method['args'][0];
+        $amounts   = $method['args'][1];
+
+        foreach ($addresses as $index => $address) {
+            if (isset($amounts[$index])) {
+                $recipients[] = [
+                    'address' => $address,
+                    'amount'  => $amounts[$index],
+                ];
+            }
+        }
+
+        return $recipients;
+    }
+
     private function getMethodData(): ?array
     {
         $payload = $this->rawPayload();
@@ -100,9 +127,7 @@ trait HasPayload
         }
 
         try {
-            $method = (new AbiDecoder(
-                $this->isMultiPayment() ? ContractAbiType::MULTIPAYMENT : ContractAbiType::CONSENSUS,
-            ))->decodeFunctionData($payload);
+            $method = (new AbiDecoder())->decodeFunctionData($payload);
 
             // @codeCoverageIgnoreStart
             // Unreachable on tests as all the methods in the `AbiDecoder` class
@@ -113,7 +138,7 @@ trait HasPayload
             // @codeCoverageIgnoreEnd
 
             $arguments = $method['args'];
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             $arguments = $this->payloadArguments($payload);
         }
 
