@@ -91,9 +91,4 @@ final class BigNumber implements Stringable
     {
         return $this->value;
     }
-
-    public function toHex(): string
-    {
-        return $this->value->toScale(0, RoundingMode::DOWN)->toBigInteger()->toBase(16);
-    }
 }
