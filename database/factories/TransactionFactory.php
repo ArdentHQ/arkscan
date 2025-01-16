@@ -11,6 +11,9 @@ use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
+use ArkEcosystem\Crypto\Enums\AbiFunction;
+use ArkEcosystem\Crypto\Enums\ContractAbiType;
+use ArkEcosystem\Crypto\Utils\AbiEncoder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use function Tests\faker;
 
@@ -77,12 +80,19 @@ final class TransactionFactory extends Factory
      */
     public function multiPayment(array $recipients, array $amounts): Factory
     {
-        $method  = ContractMethod::multiPayment();
+        $pay = [];
 
-        $method .= implode('', array_map(fn (string $recipient) => str_pad(preg_replace('/^0x/', '', $recipient), 64, '0', STR_PAD_LEFT), $recipients));
-        $method .= implode('', array_map(fn (BigNumber $amount) => str_pad($amount->toHex(), 64, '0', STR_PAD_LEFT), $amounts));
+        foreach ($recipients as $index => $recipient) {
+            $pay[0][] = $recipient;
+            $pay[1][] = $amounts[$index]->__toString();
+        }
 
-        return $this->withPayload($method)
+        $payload = (new AbiEncoder(ContractAbiType::MULTIPAYMENT))
+            ->encodeFunctionCall(AbiFunction::MULTIPAYMENT->value, $pay);
+
+        $payload = preg_replace('/^0x/', '', $payload);
+
+        return $this->withPayload($payload)
             ->state(fn () => [
                 'recipient_address' => Network::knownContract('multipayment'),
             ]);

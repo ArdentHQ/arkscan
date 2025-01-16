@@ -7,6 +7,7 @@ use App\Models\Block;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
@@ -315,8 +316,15 @@ MethodID: 0x6dd7d8ea');
 
     it('should get formatted multi payment receipts', function () {
         $transaction = new TransactionViewModel(Transaction::factory()
-            ->withPayload('084ce708000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000b693449adda7efc015d87944eae8b7c37eb1690a000000000000000000000000b693449adda7efc015d87944eae8b7c37eb1690a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000005f5e100000000000000000000000000000000000000000000000000000000000bebc200')
-            ->create());
+        ->multiPayment([
+            '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+            '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+            '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
+        ], [
+            BigNumber::new(100000000),
+            BigNumber::new(200000000),
+            BigNumber::new(1234567),
+        ])->create());
 
         expect($transaction->multiPaymentRecipients())->toEqual([
             '0' => [
@@ -326,6 +334,10 @@ MethodID: 0x6dd7d8ea');
             '1' => [
                 'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
                 'amount'  => '200000000',
+            ],
+            '2' => [
+                'address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
+                'amount'  => '1234567',
             ],
         ]);
     });

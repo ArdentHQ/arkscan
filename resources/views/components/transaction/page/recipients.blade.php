@@ -5,7 +5,7 @@
 @endphp
 
 <x-general.page-section.container
-    :title="trans('general.confirmations_only')"
+    :title="trans('general.recipients')"
     wrapper-class="flex flex-col flex-1 whitespace-nowrap"
     no-border
 >
@@ -15,7 +15,6 @@
             <x-tables.headers.desktop.address name="general.address" class="w-full" />
 
             <x-tables.headers.desktop.number name="general.transaction.amount" class="text-right" />
-
         </tr>
     </thead>
     <tbody>

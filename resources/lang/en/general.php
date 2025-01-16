@@ -5,6 +5,7 @@ declare(strict_types=1);
 return [
     'ardent'              => 'Ardent',
     'address'             => 'Address',
+    'recipients'          => 'Recipients',
     'beta_uppercase'      => 'BETA',
     'optional'            => 'Optional',
     'or'                  => 'or',
