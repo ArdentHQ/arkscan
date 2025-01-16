@@ -42,16 +42,5 @@ final class CacheFees extends Command
         ])->each(function ($period) use ($cache): void {
             $cache->setHistorical($period, HistoricalAggregateFactory::make($period)->aggregate());
         });
-
-        collect(Forms::getTransactionOptions())->except(['all'])->keys()->each(function (string $type) use ($cache): void {
-            $result = (new LastFeeAggregate())
-                ->setLimit(self::LIMIT_COUNT)
-                ->setType($type)
-                ->aggregate();
-
-            $cache->setMinimum($type, $result['minimum']);
-            $cache->setAverage($type, $result['average']);
-            $cache->setMaximum($type, $result['maximum']);
-        });
     }
 }
