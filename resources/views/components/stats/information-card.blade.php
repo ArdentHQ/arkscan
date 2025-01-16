@@ -14,7 +14,7 @@
     'selected',
 ])
 
-<x-general.card class="flex flex-col py-4 w-full md:flex-col md:items-stretch md:pr-6 md:py-4">
+<x-general.card class="flex flex-col py-4 w-full md:flex-col md:items-stretch md:py-4 md:pr-6">
     <div class="flex flex-col flex-1 mb-4 space-y-2 md:pb-4 md:mb-4">
         <div class="mb-0 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
             {{ $mainTitle }}
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <div class="p-4 -mx-4 -mb-4 rounded-b md:px-6 md:-mx-6 md:-my-4 md:w-auto md:rounded-b-xl md:rounded-tr-none bg-theme-secondary-100 dark:bg-theme-dark-950">
+    <div class="p-4 -mx-4 -mb-4 rounded-b md:px-6 md:-my-4 md:-mx-6 md:w-auto md:rounded-b-xl md:rounded-tr-none bg-theme-secondary-100 dark:bg-theme-dark-950">
         <div wire:ignore>
             <x-rich-select
                 wire:model.live="{{ $model }}"
