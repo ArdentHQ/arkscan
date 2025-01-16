@@ -8,7 +8,7 @@
 ])
 
 <x-general.page-section.row
-    header-width="w-[132px]"
+    :header-width="$transaction->recipient()->isContract() ? 'sm:w-[151px]' : 'sm:w-[132px]'"
     :title="$title"
     :value="$value"
     :value-class="$valueClass"

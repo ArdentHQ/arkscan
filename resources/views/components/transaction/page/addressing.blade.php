@@ -15,7 +15,7 @@
     </x-transaction.page.section-detail.row>
 
     <x-transaction.page.section-detail.row
-        :title="trans('pages.transaction.header.to')"
+        :title="$transaction->recipient()->isContract() ? trans('pages.transaction.header.interacted_with_to') : trans('pages.transaction.header.to')"
         :transaction="$transaction"
         value-class="min-w-0"
     >
