@@ -113,6 +113,7 @@ return [
             'hash'                 => 'Hash',
             'from'                 => 'From',
             'to'                   => 'To',
+            'interacted_with_to'   => 'Interacted With (To)',
             'amount'               => 'Amount',
             'fee'                  => 'Fee',
             'value'                => 'Value',
