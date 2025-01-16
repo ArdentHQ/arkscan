@@ -1,5 +1,6 @@
 @props([
-    'model',
+    'model' => null,
+    'address' => null,
     'prefix'          => false,
     'isListing'       => false,
     'address'         => false,
@@ -15,7 +16,15 @@
     'validatorNameClass' => null,
 ])
 
-@php ($hasUsername = $model->hasUsername())
+@php
+    if ($model === null && $address === null) {
+        throw new Exception('You must provide a model or an address');
+    }
+
+    $address = $model ? $model->address() : $address;
+
+    $hasUsername = $model ? $model->hasUsername() : false;
+@endphp
 
 <div @class($containerClass)>
     <div {{ $attributes->class('flex items-center md:flex-row md:justify-start') }}>
@@ -31,42 +40,44 @@
                 <div @class(['font-semibold sm:hidden md:flex', $linkClass])>
             @else
                 <a
-                    href="{{ route('wallet', $model->address()) }}"
+                    href="{{ route('wallet', $address) }}"
                     @class(['font-semibold sm:hidden md:flex link', $linkClass])
                 >
             @endif
-                @if ($hasUsername && !$withoutUsername)
-                    @if ($prefix)
-                        <div @class([
-                            'validator-name-truncate-prefix',
-                            $validatorNameClass,
-                        ])>
-                    @elseif ($isListing)
-                        <div @class([
-                            'validator-name-truncate-listing',
-                            $validatorNameClass,
-                        ])>
-                    @else
-                        <div @class([
-                            'validator-name-truncate',
-                            $validatorNameClass,
-                        ])>
-                    @endif
-                        {{ $model->username() }}
-                    </div>
+
+            @if ($hasUsername && !$withoutUsername)
+                @if ($prefix)
+                    <div @class([
+                        'validator-name-truncate-prefix',
+                        $validatorNameClass,
+                    ])>
+                @elseif ($isListing)
+                    <div @class([
+                        'validator-name-truncate-listing',
+                        $validatorNameClass,
+                    ])>
                 @else
-                    @if ($address)
+                    <div @class([
+                        'validator-name-truncate',
+                        $validatorNameClass,
+                    ])>
+                @endif
+                    {{ $model->username() }}
+                </div>
+            @else
+                @if ($address)
+                    {{ $address }}
+                @else
+                    @if($withoutTruncate)
                         {{ $address }}
                     @else
-                        @if($withoutTruncate)
-                            {{ $model->address() }}
-                        @else
-                            <x-truncate-middle :length="$truncateLength">
-                                {{ $model->address() }}
-                            </x-truncate-middle>
-                        @endisset
-                    @endif
+                        <x-truncate-middle :length="$truncateLength">
+                            {{ $address }}
+                        </x-truncate-middle>
+                    @endisset
                 @endif
+            @endif
+
             @if ($withoutLink)
                 </div>
             @else
@@ -77,15 +88,17 @@
                 <div @class(['hidden font-semibold sm:flex md:hidden', $linkClass])>
             @else
                 <a
-                    href="{{ route('wallet', $model->address()) }}"
+                    href="{{ route('wallet', $address) }}"
                     @class(['hidden font-semibold sm:flex md:hidden link', $linkClass])
                 >
             @endif
-                @if ($hasUsername && !$withoutUsername)
-                    {{ $model->username() }}
-                @else
-                    {{ $model->address() }}
-                @endif
+
+            @if ($hasUsername && !$withoutUsername)
+                {{ $model->username() }}
+            @else
+                {{ $address }}
+            @endif
+
             @if ($withoutLink)
                 </div>
             @else
