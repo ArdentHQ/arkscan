@@ -12,7 +12,10 @@ trait CanBeValidatorRegistration
             return null;
         }
 
-        [2 => $arguments] = $this->getMethodData();
+        /** @var array $methodData */
+        $methodData = $this->getMethodData();
+
+        [2 => $arguments] = $methodData;
 
         return $arguments[0];
     }
