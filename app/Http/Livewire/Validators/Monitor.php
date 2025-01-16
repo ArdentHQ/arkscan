@@ -143,11 +143,9 @@ final class Monitor extends Component
                 ->first();
         }
 
-        // @codeCoverageIgnoreStart
         if ($lastRoundBlock === null) {
             return [];
         }
-        // @codeCoverageIgnoreEnd
 
         $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
             ->orderBy('height', 'asc')
