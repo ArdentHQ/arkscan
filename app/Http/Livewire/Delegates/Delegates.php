@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Delegates;
 use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Models\Wallet;
@@ -22,7 +21,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class Delegates extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableFilter;
     use HasTableSorting;
 
@@ -46,9 +44,9 @@ final class Delegates extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'active'   => ['except' => true],
-            'standby'  => ['except' => true],
-            'resigned' => ['except' => true],
+            'filter.active'   => ['as' => 'active', 'except' => true],
+            'filter.standby'  => ['as' => 'standby', 'except' => true],
+            'filter.resigned' => ['as' => 'resigned', 'except' => true],
         ];
     }
 

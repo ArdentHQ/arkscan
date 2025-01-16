@@ -2,6 +2,8 @@ import { sortRow } from "./includes/sorting";
 
 // Variation of https://codepen.io/ryangjchandler/pen/WNQQKeR
 const MobileSorting = (
+    tableId,
+    componentId,
     sortBy = "",
     sortDirection = "asc",
     secondarySortBy = null,
@@ -16,35 +18,72 @@ const MobileSorting = (
                 this.update();
             });
 
-            this.windowEvent = this.update.bind(this);
+            this.windowEvent = () => {
+                this.update();
+            };
 
             window.addEventListener("updateTableSorting", this.windowEvent);
 
             if (typeof Livewire !== "undefined") {
-                this.livewireHook = Livewire.hook("message.processed", () => {
-                    this.update();
+                Livewire.hook("morph.updating", ({ component, toEl }) => {
+                    if (component.name !== componentId) {
+                        return;
+                    }
+
+                    if (
+                        !toEl.getAttribute("wire:id") &&
+                        toEl.getAttribute("id") !== tableId &&
+                        !toEl.classList.contains("table-container")
+                    ) {
+                        return;
+                    }
+
+                    toEl.querySelectorAll(".table-list-mobile").forEach(
+                        (tbody) => {
+                            Alpine.morph(
+                                tbody,
+                                this.update(tbody.cloneNode(true)).outerHTML
+                            );
+                        }
+                    );
                 });
             }
         },
 
-        update() {
+        update(table) {
             this.getRows().forEach((row, index) => {
                 row.dataset["rowIndex"] = index;
             });
 
-            this.sort();
+            return this.sort(table);
         },
 
-        sort() {
-            this.getRows()
+        table() {
+            return this.$el
+                .closest(`#${tableId}`)
+                .querySelector(".table-list-mobile");
+        },
+
+        sort(table) {
+            if (table === undefined) {
+                table = this.table();
+            }
+
+            this.getRows(table)
                 .sort(this.sortCallback(sortBy))
                 .forEach((row) => {
-                    this.$el.appendChild(row);
+                    table.appendChild(row);
                 });
+
+            return table;
         },
 
-        getRows() {
-            return Array.from(this.$el.children);
+        getRows(table) {
+            if (table !== undefined) {
+                return Array.from(table.children);
+            }
+
+            return Array.from(this.table().children);
         },
 
         getValue(row, sortBy) {
@@ -63,6 +102,7 @@ const MobileSorting = (
                     sortBy,
                     sortDirection === "asc"
                 );
+
                 if (sortResult === 0 && secondarySortBy !== null) {
                     return this.sortRows(
                         row1,

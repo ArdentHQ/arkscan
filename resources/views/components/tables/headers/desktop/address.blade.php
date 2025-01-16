@@ -18,8 +18,7 @@
         :name="$name"
         :livewire-sort="$livewireSort"
         :sorting-id="$sortingId"
-        :class="Arr::toCssClasses([
-            'text-left',
+        :class="Arr::toCssClasses(['text-left',
             $class,
         ])"
     />
@@ -29,8 +28,7 @@
         :breakpoint="$breakpoint"
         :first-on="$firstOn"
         :last-on="$lastOn"
-        :class="Arr::toCssClasses([
-            'text-left',
+        :class="Arr::toCssClasses(['text-left',
             $class,
         ])"
         :name="$name"

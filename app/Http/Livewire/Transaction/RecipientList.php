@@ -54,9 +54,9 @@ final class RecipientList extends Component
         $totalCount = $recipients->count();
 
         $items = $recipients->chunk($this->perPage)
-            ->get($this->page - 1);
+            ->get($this->getPage() - 1);
 
-        return new LengthAwarePaginator($items, $totalCount, $this->perPage, $this->page, [
+        return new LengthAwarePaginator($items, $totalCount, $this->perPage, $this->getPage(), [
             'pageName' => 'page',
         ]);
     }

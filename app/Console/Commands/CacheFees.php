@@ -13,7 +13,7 @@ use Illuminate\Console\Command;
 
 final class CacheFees extends Command
 {
-    private const LAST_20 = 'last20';
+    private const LIMIT_COUNT = 20;
 
     /**
      * The name and signature of the console command.
@@ -44,10 +44,8 @@ final class CacheFees extends Command
         });
 
         collect(Forms::getTransactionOptions())->except(['all'])->keys()->each(function (string $type) use ($cache): void {
-            preg_match('/^[a-z]+(\d+)$/', self::LAST_20, $match);
-
             $result = (new LastFeeAggregate())
-                ->setLimit((int) $match[1])
+                ->setLimit(self::LIMIT_COUNT)
                 ->setType($type)
                 ->aggregate();
 

@@ -115,8 +115,8 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.2"
-                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+                  php-version: "8.3"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov, gmp
                   coverage: pcov
 
             - name: Cache dependencies

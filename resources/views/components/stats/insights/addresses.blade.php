@@ -117,7 +117,7 @@
                                 @if ($item === 'most_transactions')
                                     <x-number>{{ $unique->{Str::camel($item)}['value'] }}</x-number>
                                 @elseif ($item === 'largest')
-                                    {{ ExplorerNumberFormatter::currencyWithDecimals($unique->{Str::camel($item)}['value'], Network::currency(), 2) }}
+                                    {{ ExplorerNumberFormatter::currencyWithDecimals($unique->{Str::camel($item)}['value'], Network::currency(), 0) }}
                                 @else
                                     {{ $unique->{Str::camel($item)}['value'] }}
                                 @endif

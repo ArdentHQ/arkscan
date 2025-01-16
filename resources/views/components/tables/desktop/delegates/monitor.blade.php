@@ -5,7 +5,8 @@
 ])
 
 <x-tables.encapsulated-table
-    x-data="TableSorting('header-favorite', 'desc', 'header-order', 'asc')"
+    id="delegate-monitor"
+    x-data="TableSorting('delegate-monitor', 'delegates.monitor', 'header-favorite', 'desc', 'header-order', 'asc')"
     wire:key="{{ Helpers::generateId('delegate-monitor', $round) }}"
     class="hidden w-full md:block delegate-monitor"
     sticky
@@ -57,11 +58,11 @@
         </tr>
     </thead>
 
-    <tbody x-ref="tbody">
+    <tbody>
         @foreach($delegates as $delegate)
             <x-ark-tables.row
                 x-data="Delegate('{{ $delegate->publicKey() }}')"
-                wire:key="delegate-{{ $delegate->order() }}-{{ $delegate->wallet()->address() }}-{{ $delegate->roundNumber() }}"
+                wire:key="delegate-{{ $delegate->order() }}-{{ $delegate->wallet()->address() }}-{{ $delegate->roundNumber() }}-{{ microtime(true) }}"
                 ::class="{
                     'delegate-monitor-favorite': isFavorite === true,
                 }"
@@ -81,8 +82,7 @@
                         <x-tables.rows.desktop.encapsulated.address
                             :model="$delegate->wallet()"
                             without-clipboard
-                            :delegate-name-class="Arr::toCssClasses([
-                                'md-lg:w-auto',
+                            :delegate-name-class="Arr::toCssClasses(['md-lg:w-auto',
                                 'md:w-[200px]' => ! $delegate->keepsMissing(),
                             ])"
                         />

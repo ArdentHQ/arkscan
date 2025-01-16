@@ -26,8 +26,7 @@
         :initial-sort="$initialSort"
         :sort-disabled="$sortDisabled"
         sort-icon-alignment="left"
-        :class="Arr::toCssClasses([
-            'leading-4.25 items-center',
+        :class="Arr::toCssClasses(['leading-4.25 items-center',
             'text-right' => $livewireSort || $sortingId === null,
             $class,
         ])"
@@ -44,8 +43,7 @@
         :breakpoint="$breakpoint"
         :first-on="$firstOn"
         :last-on="$lastOn"
-        :class="Arr::toCssClasses([
-            'text-right',
+        :class="Arr::toCssClasses(['text-right',
             $class,
         ])"
     >

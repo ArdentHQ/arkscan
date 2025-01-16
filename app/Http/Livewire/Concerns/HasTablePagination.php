@@ -11,9 +11,11 @@ trait HasTablePagination
 {
     use HasPagination;
 
+    public ?int $page  = null;
+
     public ?int $perPage = null;
 
-    final public function bootHasTablePagination(): void
+    final public function mountHasTablePagination(): void
     {
         if ($this->perPage === null) {
             $this->perPage = static::defaultPerPage();

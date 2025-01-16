@@ -56,8 +56,8 @@ it('should change querystring if different view', function () {
 it('should change view with event', function () {
     Livewire::test(Tabs::class)
         ->assertSet('view', 'delegates')
-        ->emit('showDelegatesView', 'missed-blocks')
+        ->dispatch('showDelegatesView', 'missed-blocks')
         ->assertSet('view', 'missed-blocks')
-        ->emit('showDelegatesView', 'delegates')
+        ->dispatch('showDelegatesView', 'delegates')
         ->assertSet('view', 'delegates');
 });

@@ -1,4 +1,5 @@
 import { WalletsApi } from "./api/wallets";
+import { Alpine } from "../../vendor/livewire/livewire/dist/livewire.esm";
 
 Object.defineProperties(window, {
     _arkconnect: {
@@ -181,10 +182,20 @@ const Wallet = (network, xData = {}) => {
         },
 
         async updateVote() {
-            const publicKey = await WalletsApi.getVote(
-                network.api,
-                await this.address
-            );
+            let publicKey = null;
+            try {
+                publicKey = await WalletsApi.getVote(
+                    network.api,
+                    await this.address
+                );
+            } catch (e) {
+                if (e.response?.status === 404) {
+                    // Expected error when the wallet is not registered in the network
+                    return;
+                }
+
+                throw e;
+            }
 
             if (!publicKey) {
                 this.votingFor = null;

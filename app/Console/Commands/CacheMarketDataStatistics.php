@@ -58,6 +58,8 @@ final class CacheMarketDataStatistics extends Command
             $this->cacheMarketCapStats($currency, $allTimeData, $cache);
         });
 
+        $this->cacheAllTimePrices($currencies, $cache, $crypto);
+
         $this->dispatchEvent(MarketData::class);
     }
 
@@ -70,41 +72,59 @@ final class CacheMarketDataStatistics extends Command
         $prices = collect($allTimeData['prices'])
             ->map(fn ($item) => ['timestamp' => $item[0], 'value' => $item[1]]);
 
-        $pricesSorted = $prices->sortBy('value');
-
-        /** @var array{timestamp: int, value: float|null} $priceAtl */
-        $priceAtl = $pricesSorted->first();
-        /** @var array{timestamp: int, value: float|null} $priceAth */
-        $priceAth = $pricesSorted->last();
-
-        if ($priceAtl['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getPriceAtl($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $priceAtl['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $priceAtl['value']) {
-                    $this->hasChanges = true;
-                }
-            }
-
-            $cache->setPriceAtl($currency, $priceAtl['timestamp'] / 1000, $priceAtl['value']);
-        }
-
-        if ($priceAth['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getPriceAth($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $priceAth['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $priceAth['value']) {
-                    $this->hasChanges = true;
-                }
-            }
-
-            $cache->setPriceAth($currency, $priceAth['timestamp'] / 1000, $priceAth['value']);
-        }
-
         $this->cache52WeekPriceStats($currency, $prices, $cache);
         $this->cacheDailyPriceStats($currency, $dailyData, $cache);
+    }
+
+    private function cacheAllTimePrices(Collection $currencies, StatisticsCache $statisticsCache, CryptoDataCache $cryptoCache): void
+    {
+        $priceData = $cryptoCache->getPriceData(Network::currency());
+
+        foreach ($currencies as $currency) {
+            /** @var float|null $priceAtl */
+            $priceAtl = Arr::get($priceData, 'market_data.atl.'.strtolower($currency));
+
+            /** @var string|null $priceAtlDate */
+            $priceAtlDate = Arr::get($priceData, 'market_data.atl_date.'.strtolower($currency));
+
+            $priceAtlTimestamp = null;
+            if ($priceAtlDate !== null) {
+                $priceAtlTimestamp = Carbon::parse($priceAtlDate)->getTimestamp();
+            }
+
+            /** @var float|null $priceAth */
+            $priceAth = Arr::get($priceData, 'market_data.ath.'.strtolower($currency));
+
+            /** @var string|null $priceAtlDate */
+            $priceAthDate = Arr::get($priceData, 'market_data.ath_date.'.strtolower($currency));
+
+            $priceAthTimestamp = null;
+            if ($priceAthDate !== null) {
+                $priceAthTimestamp = Carbon::parse($priceAthDate)->getTimestamp();
+            }
+
+            if ($priceAtl !== null && $priceAtlTimestamp !== null) {
+                $existingValue = $statisticsCache->getPriceAtl($currency) ?? [];
+                if (Arr::get($existingValue, 'timestamp') !== $priceAtlTimestamp) {
+                    $this->hasChanges = true;
+                } elseif (Arr::get($existingValue, 'value') !== floatval($priceAtl)) {
+                    $this->hasChanges = true;
+                }
+
+                $statisticsCache->setPriceAtl($currency, $priceAtlTimestamp, $priceAtl);
+            }
+
+            if ($priceAth !== null && $priceAthTimestamp !== null) {
+                $existingValue = $statisticsCache->getPriceAth($currency) ?? [];
+                if (Arr::get($existingValue, 'timestamp') !== $priceAthTimestamp) {
+                    $this->hasChanges = true;
+                } elseif (Arr::get($existingValue, 'value') !== floatval($priceAth)) {
+                    $this->hasChanges = true;
+                }
+
+                $statisticsCache->setPriceAth($currency, $priceAthTimestamp, $priceAth);
+            }
+        }
     }
 
     private function cache52WeekPriceStats(string $currency, Collection $data, StatisticsCache $cache): void
@@ -170,35 +190,27 @@ final class CacheMarketDataStatistics extends Command
 
         $volumeSorted = $volumes->sortBy('value');
 
-        /** @var array{timestamp: int, value: float|null} $volumeAtl */
+        /** @var array{timestamp: int, value: int|float|null} $volumeAtl */
         $volumeAtl = $volumeSorted->first();
-        /** @var array{timestamp: int, value: float|null} $volumeAth */
+        /** @var array{timestamp: int, value: int|float|null} $volumeAth */
         $volumeAth = $volumeSorted->last();
 
         if ($volumeAtl['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getVolumeAtl($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $volumeAtl['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $volumeAtl['value']) {
-                    $this->hasChanges = true;
-                }
-            }
+            $existingValue = Arr::get($cache->getVolumeAtl($currency) ?? [], 'value');
+            if ($existingValue === null || (float) $volumeAtl['value'] < (float) $existingValue) {
+                $this->hasChanges = true;
 
-            $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
+                $cache->setVolumeAtl($currency, $volumeAtl['timestamp'] / 1000, $volumeAtl['value']);
+            }
         }
 
         if ($volumeAth['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getVolumeAth($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $volumeAth['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $volumeAth['value']) {
-                    $this->hasChanges = true;
-                }
-            }
+            $existingValue = Arr::get($cache->getVolumeAth($currency) ?? [], 'value');
+            if ($existingValue === null || (float) $volumeAth['value'] > (float) $existingValue) {
+                $this->hasChanges = true;
 
-            $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
+                $cache->setVolumeAth($currency, $volumeAth['timestamp'] / 1000, $volumeAth['value']);
+            }
         }
     }
 
@@ -214,33 +226,25 @@ final class CacheMarketDataStatistics extends Command
 
         /** @var array{timestamp: int, value: int|float|null} $marketCapAtl */
         $marketCapAtl = $marketCapSorted->first();
-        /** @var array{timestamp: int, value: float|null} $marketCapAth */
+        /** @var array{timestamp: int, value: int|float|null} $marketCapAth */
         $marketCapAth = $marketCapSorted->last();
 
         if ($marketCapAtl['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getMarketCapAtl($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $marketCapAtl['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== (float) $marketCapAtl['value']) {
-                    $this->hasChanges = true;
-                }
-            }
+            $existingValue = Arr::get($cache->getMarketCapAtl($currency) ?? [], 'value');
+            if ($existingValue === null || (float) $marketCapAtl['value'] < (float) $existingValue) {
+                $this->hasChanges = true;
 
-            $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
+                $cache->setMarketCapAtl($currency, $marketCapAtl['timestamp'] / 1000, $marketCapAtl['value']);
+            }
         }
 
         if ($marketCapAth['value'] !== null) {
-            if (! $this->hasChanges) {
-                $existingValue = $cache->getMarketCapAth($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $marketCapAth['timestamp'] / 1000) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== $marketCapAth['value']) {
-                    $this->hasChanges = true;
-                }
-            }
+            $existingValue = Arr::get($cache->getMarketCapAth($currency) ?? [], 'value');
+            if ($existingValue === null || (float) $marketCapAth['value'] > (float) $existingValue) {
+                $this->hasChanges = true;
 
-            $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
+                $cache->setMarketCapAth($currency, $marketCapAth['timestamp'] / 1000, $marketCapAth['value']);
+            }
         }
     }
 }
