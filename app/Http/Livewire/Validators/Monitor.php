@@ -135,12 +135,6 @@ final class Monitor extends Component
                 ->filter(fn (Slot $validator) => $validator->hasForged())
                 ->last();
 
-            // @codeCoverageIgnoreStart
-            if ($lastSuccessfulForger === null) {
-                return [];
-            }
-            // @codeCoverageIgnoreEnd
-
             /** @var ?Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
                 ->where('generator_address', $lastSuccessfulForger->address())
