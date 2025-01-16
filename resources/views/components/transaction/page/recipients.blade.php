@@ -15,7 +15,6 @@
             <x-tables.headers.desktop.address name="general.address" class="w-full" />
 
             <x-tables.headers.desktop.number name="general.transaction.amount" class="text-right" />
-
         </tr>
     </thead>
     <tbody>
