@@ -91,6 +91,9 @@ trait HasPayload
             throw new \Exception('This transaction is not a multi-payment.');
         }
 
+        /**
+         * @var string $payload
+         */
         $payload = $this->rawPayload();
 
         $method = (new AbiDecoder(ContractAbiType::MULTIPAYMENT))->decodeFunctionData($payload);
