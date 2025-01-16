@@ -1,3 +1,5 @@
+@use('\Brick\Math\BigDecimal')
+
 @props([
     'transaction' => null,
     'wallet' => null,
@@ -15,6 +17,9 @@
     $sentToSelfClass = null;
 
     $isSentToSelf = $amountForItself !== null && $amountForItself > 0;
+
+    $isAllSentToSelf =  $amountForItself !== null ? BigDecimal::of((string) $amountForItself)->isEqualTo(BigDecimal::of((string) $amount)) : false;
+
     if (! $withoutStyling) {
         if(! $isSent && ! $isReceived) {
             $class[] = 'text-theme-secondary-900 dark:text-theme-dark-50';
@@ -45,12 +50,16 @@
             }
         }
     }
+
+    // Show a negative sign if the transaction is a sent payment and the entire
+    // amount is not sent to self.
+    $showMinus = $isSent && !($isSentToSelf && $isAllSentToSelf);
 @endphp
 
 <span {{ $attributes->class($class) }}>
     @if($amountForItself !== null && $amountForItself > 0)
         <div
-            class="flex items-center py-[4.5px] px-1.5 mr-1.5 h-full text-[#A56D4C] bg-[#F6DFB5] dark:bg-[#AA6868] dim:bg-[#AB8282] dark:text-theme-dark-50"
+            class="flex items-center px-1.5 mr-1.5 h-full py-[4.5px] text-[#A56D4C] bg-[#F6DFB5] dim:bg-[#AB8282] dark:bg-[#AA6868] dark:text-theme-dark-50"
             data-tippy-content="{{ trans('general.fiat_excluding_self', [
                 'amount' => ExplorerNumberFormatter::currency($amountForItself, Network::currency())
             ]) }}"
@@ -67,7 +76,7 @@
             data-tippy-content="{{ $fiat }}"
         @endif
     >
-        {{ $isSent && ! $isSentToSelf ? '-' : ($isReceived ? '+' : '')}}
+        {{ $showMinus ? '-' : ($isReceived ? '+' : '')}}
 
         @if (is_numeric($amount))
             {{ ExplorerNumberFormatter::networkCurrency($amount) }}

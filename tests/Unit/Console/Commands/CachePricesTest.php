@@ -6,6 +6,7 @@ use App\Console\Commands\CachePrices;
 use App\Contracts\MarketDataProvider;
 use App\Contracts\Network;
 use App\Events\CurrencyUpdate;
+use App\Models\Price;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceCache;
@@ -22,6 +23,8 @@ use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-18 13:00:00'));
+
+    Price::truncate();
 });
 
 function generateMockPrices(&$expectedCrypto, &$expectedPrices): array
@@ -62,15 +65,53 @@ it('should execute the command', function (string $network) {
     $priceCache         = app(PriceCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
 
+    expect(Price::count())->toBe(0);
+
     app(CachePrices::class)->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
 
-    expect($cryptoCache->getPrices('USD'))->toBeInstanceOf(Collection::class);
-    expect($chartsCache->getHistorical('USD', 'day'))->toBeArray();
-    expect($chartsCache->getHistorical('USD', 'week'))->toBeArray();
-    expect($chartsCache->getHistorical('USD', 'month'))->toBeArray();
-    expect($chartsCache->getHistorical('USD', 'quarter'))->toBeArray();
-    expect($chartsCache->getHistorical('USD', 'year'))->toBeArray();
+    expect(Price::count())->toBe(19650);
+
+    foreach (CachePrices::PERIODS as $period) {
+        expect($cryptoCache->getPrices('USD.'.$period))->toBeInstanceOf(Collection::class);
+        expect($chartsCache->getHistorical('USD', $period))->toBeArray();
+    }
+
+    expect($cryptoCache->getPrices('USD.week')->count())->toBe(1310);
 })->with(['arkscan.networks.development', 'arkscan.networks.production']);
+
+it('should consolidate historic and recent prices in cache', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    fakeCryptoCompare();
+
+    $this->app->singleton(Network::class, fn () => new Blockchain(config('arkscan.networks.production')));
+
+    $cryptoCache        = app(CryptoDataCache::class);
+    $chartsCache        = app(PriceChartCache::class);
+    $priceCache         = app(PriceCache::class);
+    $marketDataProvider = app(MarketDataProvider::class);
+
+    for ($i = 0; $i < 500; $i++) {
+        Price::factory()->create([
+            'currency'  => 'USD',
+            'timestamp' => Carbon::now()->sub('days', $i)->format('Y-m-d 00:00:00'),
+        ]);
+    }
+
+    expect(Price::count())->toBe(500);
+
+    app(CachePrices::class)->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
+
+    expect(Price::count())->toBe(19650 + 500);
+
+    foreach (CachePrices::PERIODS as $period) {
+        expect($cryptoCache->getPrices('USD.'.$period))->toBeInstanceOf(Collection::class);
+        expect($chartsCache->getHistorical('USD', $period))->toBeArray();
+    }
+
+    expect($cryptoCache->getPrices('USD.week')->count())->toBe(1310 + 500);
+    expect($cryptoCache->getPrices('USD.all')->count())->toBe(1310 + 500);
+});
 
 it('should not update prices if coingecko returns an empty response', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
@@ -94,7 +135,11 @@ it('should not update prices if coingecko returns an empty response', function (
         '14:00' => 3,
     ]));
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+
+    expect(Price::count())->toBe(0);
 
     expect($cryptoCache->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
     expect($chartsCache->getHistorical('USD', 'day'))->toEqual([
@@ -135,7 +180,11 @@ it('should not update prices if coingecko throws an exception', function () {
         '14:00' => 3,
     ]));
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+
+    expect(Price::count())->toBe(0);
 
     expect($cryptoCache->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
     expect($chartsCache->getHistorical('USD', 'day'))->toEqual([
@@ -170,8 +219,6 @@ it('should update prices if coingecko does return a response', function () {
     $chartsCache->getCache()->flush();
     $priceCache->getCache()->flush();
 
-    $now = Carbon::now();
-
     $mockPrices = generateMockPrices($expectedCrypto, $expectedPrices);
 
     Http::fake([
@@ -187,10 +234,83 @@ it('should update prices if coingecko does return a response', function () {
         '14:00' => 3,
     ]));
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+
+    expect(Price::count())->toBe(2); // spans 2 days
 
     expect($cryptoCache->getPrices('USD.day'))->toEqual(collect($expectedCrypto));
     expect($chartsCache->getHistorical('USD', 'day'))->toEqual($expectedPrices);
+});
+
+it('should not have duplicate entries for the current day', function () {
+    Config::set('currencies', [
+        'usd' => [
+            'currency' => 'USD',
+            'locale'   => 'en_US',
+        ],
+    ]);
+
+    Config::set('arkscan.network', 'production');
+
+    $cryptoCache = app(CryptoDataCache::class);
+    $chartsCache = app(PriceChartCache::class);
+    $priceCache  = app(PriceCache::class);
+
+    $cryptoCache->getCache()->flush();
+    $chartsCache->getCache()->flush();
+    $priceCache->getCache()->flush();
+
+    $mockPrices     = [];
+    $expectedCrypto = [];
+    $expectedPrices = [
+        'labels'   => [],
+        'datasets' => [],
+    ];
+    foreach (range(0, 6) as $day) {
+        $time     = Carbon::now()->sub($day, 'days');
+        $dayStart = $time->copy()->setTime(0, 0, 0);
+
+        $mockPrices[] = [
+            Carbon::parse($time)->setTime(0, 0, 0)->valueOf(),
+            $day,
+        ];
+
+        $expectedCrypto[$dayStart->format('Y-m-d')] = (float) $day;
+        $expectedPrices['labels'][]                 = $dayStart->format('d.m');
+        $expectedPrices['datasets'][]               = (float) $day;
+    }
+
+    $mockPrices[] = [
+        $time->valueOf(),
+        7,
+    ];
+
+    $expectedCrypto[$time->format('Y-m-d')] = 7;
+    $expectedPrices['datasets'][6]          = 7;
+
+    Http::fake([
+        'https://api.coingecko.com/api/v3/coins/ark/market_chart*' => Http::response([
+            'prices' => $mockPrices,
+        ], 200),
+    ]);
+
+    $cryptoCache->setPrices('USD.week', collect([1, 2, 3]));
+    $chartsCache->setHistorical('USD', 'week', collect([
+        '12:00' => 1,
+        '13:00' => 2,
+        '14:00' => 3,
+    ]));
+
+    expect(Price::count())->toBe(0);
+
+    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+
+    expect(Price::count())->toBe(7);
+
+    expect($cryptoCache->getPrices('USD.week'))->toEqual(collect($expectedCrypto));
+    expect($chartsCache->getHistorical('USD', 'week'))->toEqual($expectedPrices);
 });
 
 it('should not update prices if cryptocompare returns an empty response', function () {
@@ -216,7 +336,11 @@ it('should not update prices if cryptocompare returns an empty response', functi
         '14:00' => 3,
     ]));
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
+
+    expect(Price::count())->toBe(0);
 
     expect($cryptoCache->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
     expect($chartsCache->getHistorical('USD', 'day'))->toEqual([
@@ -255,7 +379,11 @@ it('should not update prices if cryptocompare throws an exception', function () 
         '14:00' => 3,
     ]));
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
+
+    expect(Price::count())->toBe(0);
 
     expect($cryptoCache->getPrices('USD.day'))->toEqual(collect([1, 2, 3]));
     expect($chartsCache->getHistorical('USD', 'day'))->toEqual([
@@ -335,7 +463,11 @@ it('should update prices if cryptocompare does return a response', function () {
         '14:00' => 3,
     ]));
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
+
+    expect(Price::count())->toBe(2); // spans 2 days
 
     expect($cryptoCache->getPrices('USD.day'))->toEqual(collect($expectedCrypto));
     expect($chartsCache->getHistorical('USD', 'day'))->toEqual($expectedPrices);
@@ -390,7 +522,11 @@ it('should stop updating prices if a response fails', function () {
 
     $this->freezeTime();
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+
+    expect(Price::count())->toBe(2); // spans 2 days
 
     expect($priceCache->getLastUpdated())->toBe([
         'USD' => Carbon::now()->unix(),
@@ -472,7 +608,11 @@ it('should update oldest currencies first', function () {
         '14:00' => 3,
     ]));
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+
+    expect(Price::count())->toBe(2); // spans 2 days
 
     expect($priceCache->getLastUpdated())->toBe([
         'USD' => Carbon::parse('2023-04-05')->unix(),
@@ -554,7 +694,11 @@ it('should not update if updated within 10 minutes', function () {
         '14:00' => 3,
     ]));
 
+    expect(Price::count())->toBe(0);
+
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+
+    expect(Price::count())->toBe(4); // spans 4 days
 
     expect($priceCache->getLastUpdated())->toBe([
         'USD' => Carbon::now()->sub('minutes', 8)->unix(),

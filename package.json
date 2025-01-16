@@ -9,7 +9,6 @@
         "@babel/runtime": "^7.24.4",
         "@popperjs/core": "^2.11.8",
         "@types/node": "^20.12.7",
-        "alpinejs": "^3.13.8",
         "body-scroll-lock": "^4.0.0-beta.0",
         "chart.js": "^3.9.1",
         "chartjs-adapter-date-fns": "^2.0.1",

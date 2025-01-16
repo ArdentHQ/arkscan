@@ -66,7 +66,10 @@
                             @else
                                 download="{{ $filename }}-partial.csv"
                             @endunless
-                            x-on:click="Livewire.emit('toastMessage', ['{{ $partialDownloadToast }}', 'success'])"
+                            x-on:click="Livewire.dispatch('toastMessage', {
+                                message: '{{ $partialDownloadToast }}',
+                                type: 'success',
+                            })"
                         >
                             @lang('general.export.partial.here')
                         </a>

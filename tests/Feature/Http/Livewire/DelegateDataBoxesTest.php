@@ -496,7 +496,7 @@ it('should reload on new block event', function () {
         ->assertDontSeeHtml('<span>50</span>')
         ->assertDontSeeHtml('<span>0</span>')
         ->assertDontSeeHtml('<span>1</span>')
-        ->emit('echo:blocks,NewBlock')
+        ->dispatch('echo:blocks,NewBlock')
         ->assertSeeHtmlInOrder([
             'Forging',
             '<span>50</span>',

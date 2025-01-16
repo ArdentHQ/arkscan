@@ -12,7 +12,7 @@ ADD docker/supervisord.conf /etc/supervisord.conf
 
 RUN adduser -S -h /var/www/arkscan -s /bin/bash -G www-data -u 1000 arkscan arkscan \
     && apk add --no-cache --virtual .build-deps curl gnupg tar autoconf dpkg-dev dpkg file pkgconf re2c pcre-dev \
-    && apk add --no-cache sqlite-dev postgresql-dev libzip-dev libsodium-dev gmp-dev dcron bash sudo libstdc++ nginx redis supervisor make gcc g++ python3  \
+    && apk add --no-cache sqlite-dev postgresql-dev libzip-dev libsodium-dev gmp-dev dcron bash sudo libstdc++ nginx redis supervisor make gcc g++ python3 git \
     && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd \
     && echo 'arkscan ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && docker-php-ext-configure bcmath --enable-bcmath \

@@ -3,8 +3,8 @@
 <div
     x-ref="search"
     x-data="Search.setup({
-        query: @entangle('query'),
-        dropdownOpen: @entangle('query'),
+        query: @entangle('query').live,
+        dropdownOpen: @entangle('query').live,
     })"
     class="w-full"
 >
@@ -15,14 +15,12 @@
         id="search"
         name="search"
         model="query"
-        :class="Arr::toCssClasses([
-            'rounded-md border border-transparent w-[340px] md:w-full md-lg:w-[340px] group transition-default bg-theme-secondary-200 search-dropdown',
+        :class="Arr::toCssClasses(['rounded-md border border-transparent w-[340px] md:w-full md-lg:w-[340px] group transition-default bg-theme-secondary-200 search-dropdown',
             'dark:bg-theme-dark-800 cursor-not-allowed' => $isDisabled,
             'focus-within:bg-white hover:bg-white dark:bg-theme-dark-900 focus-within:border-theme-primary-600 focus-within:dark:border-theme-primary-600 hover:[&:not(:focus-within)]:border-theme-primary-600 hover:[&:not(:focus-within)]:dark:border-theme-dark-700' => ! $isDisabled,
         ])"
         :placeholder="trans('general.navbar.search_placeholder')"
-        :container-class="Arr::toCssClasses([
-            'flex pl-1 border border-transparent dark:border-theme-dark-700',
+        :container-class="Arr::toCssClasses(['flex pl-1 border border-transparent dark:border-theme-dark-700',
             'cursor-not-allowed' => $isDisabled,
             'group-hover:[&:not(:focus-within)]:dark:border-theme-dark-700 focus-within:border-theme-primary-600 focus-within:dark:border-theme-primary-600 hover:[&:not(:focus-within)]:border-theme-primary-600' => ! $isDisabled,
         ])"

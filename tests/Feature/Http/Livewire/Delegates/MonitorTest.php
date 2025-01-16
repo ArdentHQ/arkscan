@@ -176,7 +176,7 @@ it('should set it ready on event', function () {
 
     Livewire::test(Monitor::class)
         ->assertSet('isReady', false)
-        ->emit('monitorIsReady')
+        ->dispatch('monitorIsReady')
         ->assertSet('isReady', true);
 });
 
@@ -458,7 +458,7 @@ it('should reload on new block event', function () {
 
     Livewire::test(Monitor::class)
         ->call('setIsReady')
-        ->emit('echo:blocks,NewBlock')
+        ->dispatch('echo:blocks,NewBlock')
         ->assertSeeInOrder([
             $delegate->username(),
             'Delegate last forged 199 blocks ago (more than a day)',

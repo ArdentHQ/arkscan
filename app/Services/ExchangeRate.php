@@ -8,7 +8,6 @@ use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
@@ -24,7 +23,7 @@ final class ExchangeRate
         $exchangeRate = 0;
         if ($timestamp !== null) {
             $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
-            $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
+            $exchangeRate = Arr::get($prices, Timestamp::fromGenesis($timestamp)->format('Y-m-d'), 0);
         } else {
             $exchangeRate = static::currentRate();
         }
@@ -66,10 +65,5 @@ final class ExchangeRate
     public static function rates(): Collection
     {
         return (new CryptoDataCache())->getPrices(Settings::currency().'.week');
-    }
-
-    private static function timestamp(int $timestamp): Carbon
-    {
-        return Timestamp::fromGenesis($timestamp);
     }
 }

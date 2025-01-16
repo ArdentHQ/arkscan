@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Delegates;
 
 use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Models\ForgingStats;
 use App\ViewModels\ViewModelFactory;
@@ -19,7 +18,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class MissedBlocks extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableSorting;
 
     public const INITIAL_SORT_KEY = 'age';

@@ -109,7 +109,7 @@ it('should update the records fiat tooltip when currency changed', function () {
     Settings::shouldReceive('all')->andReturn($settings);
     Settings::shouldReceive('currency')->andReturn('BTC');
 
-    $component->emit('currencyChanged', 'BTC');
+    $component->dispatch('currencyChanged', 'BTC');
 
     $expectedUsd = NumberFormatter::currency($amount * $usdExchangeRate, 'USD');
     $expectedBtc = NumberFormatter::currency($amount * $btcExchangeRate, 'BTC');
@@ -162,6 +162,6 @@ it('should reload on new block event', function () {
     ]);
 
     $component->assertDontSee($otherBlock->id)
-        ->emit('echo:blocks,NewBlock')
+        ->dispatch('echo:blocks,NewBlock')
         ->assertSee($otherBlock->id);
 });
