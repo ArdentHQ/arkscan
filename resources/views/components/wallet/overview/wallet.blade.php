@@ -16,7 +16,6 @@
     />
 
     <x-wallet.overview.item-entry :title="trans('pages.wallet.balance')">
-       
         <x-slot name="value">
             <span class="sm:hidden" @if($showTooltip) data-tippy-content="{{ $formattedBalanceFull }}" @endif>
                 <x-general.network-currency :value="$rawBalance" :decimals="2" />
