@@ -34,7 +34,6 @@
         <span>
             <x-general.identity
                 :model="$model"
-                :address="$address"
                 :without-truncate="$withoutTruncate"
                 :without-username="$withoutUsername"
                 :validator-name-class="$validatorNameClass"
