@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
+use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
 
 trait HasPayload
@@ -82,6 +83,36 @@ trait HasPayload
             'methodId'  => $methodId,
             'arguments' => $arguments,
         ])->render());
+    }
+
+    public function multiPaymentRecipients(): ?array
+    {
+        if (! $this->isMultiPayment()) {
+            throw new \Exception('This transaction is not a multi-payment.');
+        }
+
+        /**
+         * @var string $payload
+         */
+        $payload = $this->rawPayload();
+
+        $method = (new AbiDecoder(ContractAbiType::MULTIPAYMENT))->decodeFunctionData($payload);
+
+        $recipients = [];
+
+        $addresses = $method['args'][0];
+        $amounts   = $method['args'][1];
+
+        foreach ($addresses as $index => $address) {
+            if (isset($amounts[$index])) {
+                $recipients[] = [
+                    'address' => $address,
+                    'amount'  => $amounts[$index],
+                ];
+            }
+        }
+
+        return $recipients;
     }
 
     private function getMethodData(): ?array

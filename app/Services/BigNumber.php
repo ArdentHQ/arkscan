@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Brick\Math\BigDecimal;
-use Brick\Math\RoundingMode;
 use Stringable;
 
 final class BigNumber implements Stringable
@@ -90,10 +89,5 @@ final class BigNumber implements Stringable
     public function valueOf(): BigDecimal
     {
         return $this->value;
-    }
-
-    public function toHex(): string
-    {
-        return $this->value->toScale(0, RoundingMode::DOWN)->toBigInteger()->toBase(16);
     }
 }

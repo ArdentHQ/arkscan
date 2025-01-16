@@ -18,6 +18,10 @@
             <x-transaction.page.summary :transaction="$transaction" />
 
             <x-transaction.page.status :model="$transaction" />
+            
+            @if ($transaction->isMultiPayment())
+                <x-transaction.page.recipients :model="$transaction" />
+            @endif
         </div>
 
         <div class="mb-8">
