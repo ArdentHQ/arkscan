@@ -275,9 +275,10 @@ return [
             ],
 
             'types-options' => [
-                'transfers' => 'Transfers',
-                'votes'     => 'Votes',
-                'others'    => 'Others',
+                'transfers'     => 'Transfers',
+                'votes'         => 'Votes',
+                'multipayments' => 'Multipayments',
+                'others'        => 'Others',
             ],
 
             'columns-options' => [

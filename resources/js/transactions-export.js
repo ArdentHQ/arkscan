@@ -111,6 +111,7 @@ const TransactionsExport = ({
         types: {
             transfers: false,
             votes: false,
+            multipayments: false,
             others: false,
         },
 
