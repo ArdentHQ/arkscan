@@ -16,7 +16,10 @@
         </x-transaction.page.section-detail.row>
 
         @if (count($methodArguments) > 1)
-            <x-transaction.page.section-detail.row :title="trans('pages.transaction.header.amount')">
+            <x-transaction.page.section-detail.row
+                :title="trans('pages.transaction.header.amount')"
+                :transaction="$transaction"
+            >
                 <x-payload.number :argument="$methodArguments[TokenTransferArgument::AMOUNT]" />
             </x-transaction.page.section-detail.row>
         @endif
