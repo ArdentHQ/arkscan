@@ -5,7 +5,7 @@
 @endphp
 
 <x-general.page-section.container
-    :title="trans('general.confirmations_only')"
+    :title="trans('general.recipients')"
     wrapper-class="flex flex-col flex-1 whitespace-nowrap"
     no-border
 >
