@@ -135,12 +135,6 @@ final class Monitor extends Component
                 ->filter(fn (Slot $validator) => $validator->hasForged())
                 ->last();
 
-            // @codeCoverageIgnoreStart
-            if ($lastSuccessfulForger === null) {
-                return [];
-            }
-            // @codeCoverageIgnoreEnd
-
             /** @var ?Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
                 ->where('generator_address', $lastSuccessfulForger->address())
@@ -149,11 +143,9 @@ final class Monitor extends Component
                 ->first();
         }
 
-        // @codeCoverageIgnoreStart
         if ($lastRoundBlock === null) {
             return [];
         }
-        // @codeCoverageIgnoreEnd
 
         $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
             ->orderBy('height', 'asc')
