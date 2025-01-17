@@ -1,22 +1,31 @@
 @props([
-    'model',
+    'model' => null,
     'withoutTruncate' => false,
     'withoutClipboard' => false,
     'truncateBreakpoint' => 'xl',
     'withoutTransactionCount' => true,
     'validatorNameClass' => null,
+    'address' => null
 ])
 
 @php
+    if ($model === null && $address === null) {
+        throw new Exception('You must provide a model or an address');
+    }
+
     $truncateHiddenBreakpoint = [
         'sm' => 'sm:hidden',
+        'lg' => 'lg:hidden',
         'xl' => 'xl:hidden',
     ][$truncateBreakpoint];
 
     $truncateShowBreakpoint = [
         'sm' => 'hidden sm:inline',
+        'lg' => 'hidden lg:inline',
         'xl' => 'hidden xl:inline',
     ][$truncateBreakpoint];
+
+    $address = $model ? $model->address() : $address;
 @endphp
 
 <div class="flex flex-col">
@@ -24,20 +33,21 @@
         <span>
             <x-general.identity
                 :model="$model"
+                :address="$address"
                 :without-truncate="$withoutTruncate"
                 :validator-name-class="$validatorNameClass"
             >
                 <x-slot name="address">
                     @unless ($withoutTruncate)
                         <span @class($truncateHiddenBreakpoint)>
-                            <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
+                            <x-truncate-middle>{{ $address }}</x-truncate-middle>
                         </span>
                         <span @class($truncateShowBreakpoint)>
-                            {{ $model->address() }}
+                            {{ $address }}
                         </span>
                     @else
                         <span class="inline">
-                            {{ $model->address() }}
+                            {{ $address }}
                         </span>
                     @endif
                 </x-slot>
@@ -46,7 +56,7 @@
 
         @unless ($withoutClipboard)
             <x-clipboard
-                :value="$model->address()"
+                :value="$address"
                 :tooltip="trans('pages.wallet.address_copied')"
                 class="mr-3"
             />

@@ -1,5 +1,6 @@
 @props([
-    'model',
+    'model' => null,
+    'address' => null,
     'prefix'          => false,
     'isListing'       => false,
     'address'         => false,
@@ -13,6 +14,14 @@
     'linkClass'       => null,
     'validatorNameClass' => null,
 ])
+
+@php
+    if ($model === null && $address === null) {
+        throw new Exception('You must provide a model or an address');
+    }
+
+    $address = $model ? $model->address() : $address;
+@endphp
 
 <div @class($containerClass)>
     <div {{ $attributes->class('flex items-center md:flex-row md:justify-start') }}>
@@ -28,7 +37,7 @@
                 <div @class(['font-semibold sm:hidden md:flex', $linkClass])>
             @else
                 <a
-                    href="{{ route('wallet', $model->address()) }}"
+                    href="{{ route('wallet', $address) }}"
                     @class(['font-semibold sm:hidden md:flex link', $linkClass])
                 >
             @endif
@@ -36,10 +45,10 @@
                     {{ $address }}
                 @else
                     @if($withoutTruncate)
-                        {{ $model->address() }}
+                        {{ $address }}
                     @else
                         <x-truncate-middle :length="$truncateLength">
-                            {{ $model->address() }}
+                            {{ $address }}
                         </x-truncate-middle>
                     @endisset
                 @endif
@@ -53,11 +62,11 @@
                 <div @class(['hidden font-semibold sm:flex md:hidden', $linkClass])>
             @else
                 <a
-                    href="{{ route('wallet', $model->address()) }}"
+                    href="{{ route('wallet', $address) }}"
                     @class(['hidden font-semibold sm:flex md:hidden link', $linkClass])
                 >
             @endif
-                {{ $model->address() }}
+                {{ $address }}
             @if ($withoutLink)
                 </div>
             @else

@@ -7,6 +7,7 @@ use App\Models\Block;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
@@ -311,6 +312,44 @@ MethodID: 0x6dd7d8ea');
             ->create());
 
         expect($transaction->formattedPayload())->toBe('MethodID: 0x12341234');
+    });
+
+    it('should get formatted multi payment receipts', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+        ->multiPayment([
+            '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+            '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+            '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
+        ], [
+            BigNumber::new(100000000),
+            BigNumber::new(200000000),
+            BigNumber::new(1234567),
+        ])->create());
+
+        expect($transaction->multiPaymentRecipients())->toEqual([
+            '0' => [
+                'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+                'amount'  => '100000000',
+            ],
+            '1' => [
+                'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+                'amount'  => '200000000',
+            ],
+            '2' => [
+                'address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
+                'amount'  => '1234567',
+            ],
+        ]);
+    });
+
+    it('should fail to get formatted multi payment receipts if not a multi payment', function () {
+        $transaction = new TransactionViewModel(Transaction::factory()
+            ->withPayload('123456')
+            ->create());
+
+        expect(function () use ($transaction) {
+            $transaction->multiPaymentRecipients();
+        })->toThrow(Exception::class);
     });
 });
 
