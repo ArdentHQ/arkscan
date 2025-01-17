@@ -12,14 +12,8 @@ trait CanBeValidatorRegistration
             return null;
         }
 
+        /** @var array $methodData */
         $methodData = $this->getMethodData();
-        // @codeCoverageIgnoreStart
-        // Not covered in tests, since having a null value depends on returning
-        // null on the rawPayload method which I was not able to mock
-        if ($methodData === null) {
-            return null;
-        }
-        // @codeCoverageIgnoreEnd
 
         [2 => $arguments] = $methodData;
 
