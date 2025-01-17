@@ -1,5 +1,5 @@
 <div class="p-6 md:p-[9px] bg-theme-secondary-200 md:rounded-xl dark:bg-theme-dark-950">
-    <h3 class="text-sm dark:text-theme-secondary-200 text-theme-secondary-700 md:px-[15px] mb-[9px] font-semibold">Current Gas Prices</h3>
+    <h3 class="text-sm dark:text-theme-dark-200 text-theme-secondary-700 md:px-[15px] mb-[9px] font-semibold">Current Gas Prices</h3>
     
     <div class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
         <x-stats.fee-card
