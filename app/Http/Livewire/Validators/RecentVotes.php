@@ -8,6 +8,7 @@ use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
+use App\Models\Scopes\SuccessfulStateScope;
 use App\Models\Scopes\UnvoteScope;
 use App\Models\Scopes\VoteScope;
 use App\Models\Transaction;
@@ -106,8 +107,7 @@ final class RecentVotes extends TabbedTableComponent
             $sortDirection = SortDirection::DESC;
         }
 
-        // TODO: fetch only vote transaction types - https://app.clickup.com/t/86dv8nz3e
-        return Transaction::query()
+        return Transaction::withScope(SuccessfulStateScope::class)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['vote'], function ($query) {

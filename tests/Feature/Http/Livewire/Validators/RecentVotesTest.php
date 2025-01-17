@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\SortDirection;
 use App\Http\Livewire\Validators\RecentVotes;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Timestamp;
@@ -29,6 +30,8 @@ it('should render with votes', function () {
         'sender_public_key' => $wallet->public_key,
     ]);
 
+    generateReceipts();
+
     Livewire::test(RecentVotes::class)
         ->assertSee('Showing 0 results')
         ->call('setIsReady')
@@ -50,6 +53,8 @@ it('should not render votes older than 30 days', function () {
         'timestamp'         => Carbon::parse('2020-04-20 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
     ]);
+
+    generateReceipts();
 
     Livewire::test(RecentVotes::class)
         ->assertSee('Showing 0 results')
@@ -119,6 +124,8 @@ it('should filter vote transactions', function () {
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
     ]);
 
+    generateReceipts();
+
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
         ->set('filter', [
@@ -143,6 +150,8 @@ it('should filter unvote transactions', function () {
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
     ]);
+
+    generateReceipts();
 
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
@@ -169,6 +178,16 @@ it('should show correct message when there are no results', function () {
         ->call('setIsReady')
         ->assertSee(trans('tables.recent-votes.no_results.no_results'));
 });
+
+function generateReceipts(): void
+{
+    foreach (Transaction::all() as $transaction) {
+        Receipt::factory()->create([
+            'id' => $transaction->id,
+            'success' => true,
+        ]);
+    }
+}
 
 function generateTransactions(): array
 {
@@ -197,6 +216,8 @@ function generateTransactions(): array
     $unvoteTransaction = Transaction::factory()->unvote()->create([
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2023-09-18 04:41:04')->unix())->unix(),
     ]);
+
+    generateReceipts();
 
     return [
         'validator1'           => $validator1,
@@ -413,4 +434,31 @@ it('should force default sort direction if invalid query string value', function
             $data['unvoteTransaction']->address,
             $data['voteTransaction']->address,
         ]);
+});
+
+it('should not show failed transactions', function () {
+    $validator = Wallet::factory()->activeValidator()->create();
+
+    $failedTransaction = Transaction::factory()->vote($validator->address)->create([
+        'timestamp' => Carbon::now()->subMinute(2)->getTimestampMs(),
+    ]);
+
+    $successfulTransaction = Transaction::factory()->vote($validator->address)->create([
+        'timestamp' => Carbon::now()->subMinute(1)->getTimestampMs(),
+    ]);
+
+    Receipt::factory()->create([
+        'id'      => $failedTransaction->id,
+        'success' => false,
+    ]);
+
+    Receipt::factory()->create([
+        'id'      => $successfulTransaction->id,
+        'success' => true,
+    ]);
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->assertDontSee($failedTransaction->id)
+        ->assertSee($successfulTransaction->id);
 });
