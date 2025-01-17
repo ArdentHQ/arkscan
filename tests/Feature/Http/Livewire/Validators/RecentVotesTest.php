@@ -183,7 +183,7 @@ function generateReceipts(): void
 {
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
-            'id' => $transaction->id,
+            'id'      => $transaction->id,
             'success' => true,
         ]);
     }
