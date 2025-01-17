@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 use Stringable;
 
 final class BigNumber implements Stringable
