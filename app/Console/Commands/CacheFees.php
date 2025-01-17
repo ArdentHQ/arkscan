@@ -6,15 +6,11 @@ namespace App\Console\Commands;
 
 use App\Enums\StatsPeriods;
 use App\Services\Cache\FeeCache;
-use App\Services\Forms;
 use App\Services\Transactions\Aggregates\Fees\HistoricalAggregateFactory;
-use App\Services\Transactions\Aggregates\Fees\LastFeeAggregate;
 use Illuminate\Console\Command;
 
 final class CacheFees extends Command
 {
-    private const LIMIT_COUNT = 20;
-
     /**
      * The name and signature of the console command.
      *
@@ -41,17 +37,6 @@ final class CacheFees extends Command
             StatsPeriods::YEAR,
         ])->each(function ($period) use ($cache): void {
             $cache->setHistorical($period, HistoricalAggregateFactory::make($period)->aggregate());
-        });
-
-        collect(Forms::getTransactionOptions())->except(['all'])->keys()->each(function (string $type) use ($cache): void {
-            $result = (new LastFeeAggregate())
-                ->setLimit(self::LIMIT_COUNT)
-                ->setType($type)
-                ->aggregate();
-
-            $cache->setMinimum($type, $result['minimum']);
-            $cache->setAverage($type, $result['average']);
-            $cache->setMaximum($type, $result['maximum']);
         });
     }
 }
