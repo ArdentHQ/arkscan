@@ -11,8 +11,6 @@ use Illuminate\Console\Command;
 
 final class CacheFees extends Command
 {
-    private const LIMIT_COUNT = 20;
-
     /**
      * The name and signature of the console command.
      *
