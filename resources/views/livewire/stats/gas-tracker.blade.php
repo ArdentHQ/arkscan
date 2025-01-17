@@ -1,5 +1,5 @@
-<div class="p-6 md:p-[9px] bg-theme-secondary-200 md:rounded-xl dark:bg-theme-dark-950">
-    <h3 class="text-sm dark:text-theme-dark-200 text-theme-secondary-700 md:px-[15px] mb-[9px] font-semibold">
+<div class="p-6 md:rounded-xl bg-theme-secondary-200 md:p-[9px] dark:bg-theme-dark-950">
+    <h3 class="text-sm font-semibold text-theme-secondary-700 mb-[9px] md:px-[15px] dark:text-theme-dark-200">
         @lang('pages.statistics.gas-tracker.current_gas_prices')
     </h3>
     

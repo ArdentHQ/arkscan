@@ -7,7 +7,7 @@
 
 @php ($canBeExchanged = Network::canBeExchanged())
 
-<div class="flex flex-col flex-1 py-3 px-4 font-semibold rounded border md:rounded-lg border-white dark:border-theme-dark-900 dark:text-theme-dark-200 bg-white dark:bg-theme-dark-900">
+<div class="flex flex-col flex-1 py-3 px-4 font-semibold bg-white rounded border border-white md:rounded-lg dark:border-theme-dark-900 dark:text-theme-dark-200 dark:bg-theme-dark-900">
     <div class="flex flex-1 justify-between items-center pb-3">
         <div class="flex items-center mb-0 space-x-1.5 text-sm text-theme-secondary-900 dark:text-theme-dark-50">
             <x-ark-icon :name="$icon" />
