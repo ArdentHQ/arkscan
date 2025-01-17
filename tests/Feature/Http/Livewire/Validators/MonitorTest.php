@@ -694,6 +694,43 @@ describe('Monitor', function () {
         5 => [5, '2024-02-01 14:02:00'], // doubles up because we hit the batch of missing validators on the second passthrough
         6 => [6, '2024-02-01 14:02:36'],
     ]);
+
+    it('should skip if no last successful forger', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [$_, $round, $height] = createRealisticRound([
+            array_fill(0, 53, true),
+        ], $this);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollValidators');
+
+        $this->travel(53)->seconds();
+
+        $instance = $component->instance();
+
+        createRoundEntry($round, $height, Wallet::all());
+
+        $validators = getRoundValidators(false, $round);
+
+        [$_, $round, $height] = createPartialRound(
+            $round,
+            $height,
+            53,
+            $this,
+            [$validators->last()['address']],
+            [],
+            true
+        );
+
+        /** @var Slot[] */
+        $overflowValidators = $instance->getOverflowValidatorsProperty();
+
+        expect($overflowValidators)->toHaveCount(0);
+    });
 });
 
 describe('Data Boxes', function () {

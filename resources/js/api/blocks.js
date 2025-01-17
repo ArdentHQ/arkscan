@@ -2,9 +2,9 @@ import axios from "axios";
 import { FailedExportRequest } from "../includes/helpers";
 
 export class BlocksApi {
-    static async request(host, query, publicKey) {
+    static async request(host, query, address) {
         const response = await axios.get(
-            `${host}/delegates/${publicKey}/blocks`,
+            `${host}/delegates/${address}/blocks`,
             {
                 params: query,
             }
@@ -17,7 +17,7 @@ export class BlocksApi {
         {
             host,
             query,
-            publicKey,
+            address,
             limit = 100,
             blocks = [],
             orderBy = "height:desc",
@@ -35,7 +35,7 @@ export class BlocksApi {
                     "height.to": height,
                     transform: false,
                 },
-                publicKey
+                address
             );
 
             if (instance?.hasAborted()) {
@@ -62,14 +62,14 @@ export class BlocksApi {
                 query,
                 limit,
                 blocks,
-                publicKey,
+                address,
                 height,
             },
             instance
         );
     }
 
-    static async fetch({ host, query, publicKey, orderBy }) {
+    static async fetch({ host, query, address, orderBy }) {
         const page = await this.request(
             host,
             {
@@ -77,7 +77,7 @@ export class BlocksApi {
                 orderBy,
                 ...query,
             },
-            publicKey
+            address
         );
 
         return page.data.pop();
