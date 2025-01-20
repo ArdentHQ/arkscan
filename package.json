@@ -36,6 +36,7 @@
         "autoprefixer": "10.4.5"
     },
     "dependencies": {
-        "axios": "^1.6.8"
+        "axios": "^1.6.8",
+        "decimal.js": "^10.4.3"
     }
 }
