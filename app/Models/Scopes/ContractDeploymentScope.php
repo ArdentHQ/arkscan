@@ -13,6 +13,6 @@ final class ContractDeploymentScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->whereRaw('encode(SUBSTRING(data FROM 1 FOR 4), \'hex\') = ?', [ContractMethod::contractDeployment()]);
+        $builder->where('recipient_address', null);
     }
 }
