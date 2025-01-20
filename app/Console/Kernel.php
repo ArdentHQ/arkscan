@@ -7,6 +7,7 @@ namespace App\Console;
 use App\Console\Commands\BuildForgingStats;
 use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheAnnualStatistics;
+use App\Console\Commands\CacheBlocks;
 use App\Console\Commands\CacheContractAddresses;
 use App\Console\Commands\CacheCurrenciesData;
 use App\Console\Commands\CacheFees;
@@ -108,6 +109,10 @@ final class Kernel extends ConsoleKernel
 
         if (config('arkscan.scout.run_jobs', false) === true) {
             $schedule->command(ScoutIndexModels::class)->everyMinute();
+        }
+
+        if (config('broadcasting.default') !== 'reverb') {
+            $schedule->command(CacheBlocks::class)->everyFiveMinutes();
         }
     }
 
