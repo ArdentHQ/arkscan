@@ -175,6 +175,7 @@ jobs:
                   ARKSCAN_DB_PASSWORD: password
 
             - name: Upload view cache
+              if: success() || failure()
               uses: actions/upload-artifact@v4
               with:
                   name: view-cache
