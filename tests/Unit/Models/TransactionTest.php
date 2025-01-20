@@ -32,24 +32,6 @@ it('should belong to a sender', function () {
     expect($this->subject->sender)->toBeInstanceOf(Wallet::class);
 });
 
-it('should belong to a recipient', function () {
-    Wallet::factory()->create(['address' => $this->recipient->address]);
-
-    expect($this->subject->recipient())->toEqual($this->recipient->fresh());
-});
-
-it('should get recipient if vote', function () {
-    $validator = Wallet::factory()->activeValidator()->create();
-
-    $transaction = Transaction::factory()
-        ->vote($validator->address)
-        ->create([
-            'recipient_address' => null,
-        ]);
-
-    expect($transaction->recipient()->address)->toEqual($validator->address);
-});
-
 it('should throw an exception if the transaction has no recipient', function () {
     $transaction = Transaction::factory()
         ->create([

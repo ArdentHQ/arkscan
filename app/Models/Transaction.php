@@ -201,32 +201,6 @@ final class Transaction extends Model
         return $this->hasOne(Receipt::class, 'id', 'id');
     }
 
-    /**
-     * A transaction belongs to a recipient.
-     *
-     * @return Wallet
-     */
-    public function recipient(): Wallet
-    {
-        $recipient = $this->recipient_address;
-        if (! is_null($recipient)) {
-            return Wallet::where('address', $recipient)->firstOrFail();
-        }
-
-        $vote   = null;
-        $method = new TransactionMethod($this);
-        if ($method->isVote()) {
-            $vote = $method->arguments()[VoteArgument::RECIPIENT];
-        }
-
-        // TODO: handle no recipient address - https://app.clickup.com/t/86dvd47da
-        if ($vote === null) {
-            throw new \Exception('Recipient address is not set.');
-        }
-
-        return Wallet::where('address', $vote)->firstOrFail();
-    }
-
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
     {
         $hasAdjustedFilters = in_array(false, $filter, true);
