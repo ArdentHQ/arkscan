@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\VoteArgument;
 use App\Models\Casts\BigInteger;
 use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
@@ -21,7 +20,6 @@ use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
-use App\Services\Transactions\TransactionMethod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
