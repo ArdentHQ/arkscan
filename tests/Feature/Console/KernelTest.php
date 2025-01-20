@@ -6,7 +6,7 @@ use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Config;
 
-const EVERY_MINUTE = '* * * * *';
+const EVERY_MINUTE      = '* * * * *';
 const EVERY_FIVE_MINUTE = '*/5 * * * *';
 
 it('schedules the `scout:index-models` command correctly if enabled', function () {
