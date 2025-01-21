@@ -8,7 +8,6 @@ use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
-use App\Models\Scopes\SuccessfulStateScope;
 use App\Models\Scopes\UnvoteScope;
 use App\Models\Scopes\VoteScope;
 use App\Models\Transaction;
