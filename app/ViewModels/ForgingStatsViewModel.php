@@ -36,7 +36,7 @@ final class ForgingStatsViewModel implements ViewModel
 
     public function username(): ?string
     {
-        return $this->validator()?->usernameBeforeKnown();
+        return $this->validator()?->username();
     }
 
     public function timestamp(): string

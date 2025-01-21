@@ -13,31 +13,11 @@ trait CanBeKnownWallet
 
     public function username(): ?string
     {
+        $knownWallet = $this->findWalletByKnown();
+        if (! is_null($knownWallet)) {
+            return $knownWallet['name'];
+        }
+
         return $this->wallet->username();
-    }
-
-    public function usernameIfNotKnown(): ?string
-    {
-        $knownWallet = $this->findWalletByKnown();
-        if (! is_null($knownWallet)) {
-            return $knownWallet['name'];
-        }
-
-        return $this->username();
-    }
-
-    public function usernameBeforeKnown(): ?string
-    {
-        $username = $this->username();
-        if ($username !== null) {
-            return $username;
-        }
-
-        $knownWallet = $this->findWalletByKnown();
-        if (! is_null($knownWallet)) {
-            return $knownWallet['name'];
-        }
-
-        return null;
     }
 }
