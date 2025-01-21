@@ -471,18 +471,16 @@ return [
         'information-cards'   => [
             'all-time-transactions'   => 'All-Time Transactions',
             'transactions'            => 'Transactions',
-            'current-average-fee'     => 'Current Average Fee (:type)',
-            'min-fee'                 => 'Min Fee',
-            'max-fee'                 => 'Max Fee',
             'all-time-fees-collected' => 'All-Time Fees Collected',
             'fees'                    => 'Fees',
         ],
 
         'gas-tracker' => [
-            'gas_tracker' => 'Gas Tracker',
-            'low'         => 'Low',
-            'high'        => 'High',
-            'average'     => 'Average',
+            'current_gas_prices'    => 'Current Gas Prices',
+            'gas_tracker'           => 'Gas Tracker',
+            'low'                   => 'Low',
+            'high'                  => 'High',
+            'average'               => 'Average',
         ],
 
         'insights' => [

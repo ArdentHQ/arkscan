@@ -20,7 +20,7 @@
                     href="{{ route('wallet', $model->model()) }}"
                     class="link"
                 >
-                    {{ $model->address() }}
+                    <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
                 </a>
             @endif
         </div>
