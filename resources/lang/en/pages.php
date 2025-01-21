@@ -477,10 +477,11 @@ return [
         ],
 
         'gas-tracker' => [
-            'gas_tracker' => 'Gas Tracker',
-            'low'         => 'Low',
-            'high'        => 'High',
-            'average'     => 'Average',
+            'current_gas_prices'    => 'Current Gas Prices',
+            'gas_tracker'           => 'Gas Tracker',
+            'low'                   => 'Low',
+            'high'                  => 'High',
+            'average'               => 'Average',
         ],
 
         'insights' => [
