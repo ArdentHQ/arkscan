@@ -7,7 +7,7 @@
     <div x-show="hasExtension && isSupported">
         <button
             x-show="! isConnected"
-            class="py-1.5 px-4 whitespace-nowrap button-secondary w-full"
+            class="py-1.5 px-4 w-full whitespace-nowrap button-secondary"
             @click="connect"
             :disabled="! hasExtension"
             disabled
