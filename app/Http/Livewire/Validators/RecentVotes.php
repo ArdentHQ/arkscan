@@ -107,7 +107,9 @@ final class RecentVotes extends TabbedTableComponent
             $sortDirection = SortDirection::DESC;
         }
 
-        return Transaction::withScope(SuccessfulStateScope::class)
+        return Transaction::query()
+            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->where('receipts.success', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['vote'], function ($query) {
