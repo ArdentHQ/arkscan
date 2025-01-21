@@ -7,6 +7,7 @@ namespace App\Models\Concerns\Transaction;
 use App\Enums\ContractMethod;
 use App\Enums\SortDirection;
 use App\Facades\Network;
+use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -43,19 +44,20 @@ trait CanBeSorted
 
     public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): Builder
     {
-        return $query->select([
-            'validator_name' => fn ($query) => $query
-                ->selectRaw('wallets.attributes->\'username\'')
-                ->from(function ($query) {
-                    $query
-                        ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null) then substring(asset->\'votes\'->>0, 2) end as unvote')
-                        ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'+\') IS null) then substring(asset->\'votes\'->>0, 2) end as vote')
-                        ->selectRaw('case when (NULLIF(LEFT(asset->\'votes\'->>0, 1), \'-\') IS null and asset->\'votes\'->>1 is not null and NULLIF(LEFT(asset->\'votes\'->>1, 1), \'+\') IS null) then substring(asset->\'votes\'->>1, 2) end as votecombination')
-                        ->whereColumn('transactions.id', 'validator_transaction.id')
-                        ->from('transactions', 'validator_transaction');
-                }, 'validator_vote')
-                ->join('wallets', 'wallets.public_key', '=', DB::raw('coalesce(validator_vote.votecombination, validator_vote.vote, validator_vote.unvote)')),
-        ])
+        return $query
+            ->select([
+                'validator_name' => fn ($query) => $query
+                    ->selectRaw('coalesce((wallets.attributes->\'username\')::text, wallets.address)')
+                    ->from(function ($query) {
+                        $query
+                            ->selectRaw('CONCAT(\'0x\', RIGHT(SUBSTRING(encode(data, \'hex\'), 9), 40)) as vote')
+                            ->where('recipient_address', Network::knownContract('consensus'))
+                            ->whereRaw('SUBSTRING(encode(data, \'hex\'), 1, 8) = ?', [ContractMethod::vote()])
+                            ->whereColumn('transactions.id', 'validator_transaction.id')
+                            ->from('transactions', 'validator_transaction');
+                    }, 'validator_vote')
+                    ->join('wallets', DB::raw('LOWER(wallets.address)'), '=', DB::raw('LOWER(validator_vote.vote)')),
+            ])
         ->selectRaw('transactions.*')
         ->orderBy('validator_name', $sortDirection->value);
     }
