@@ -10,6 +10,8 @@ use Illuminate\Support\Collection;
 
 interface WalletRepository
 {
+    public function allWithUsername(): Builder;
+
     public function allWithValidatorPublicKey(): Builder;
 
     public function allWithVote(): Builder;
@@ -21,6 +23,8 @@ interface WalletRepository
     public function findByPublicKey(string $publicKey): Wallet;
 
     public function findByPublicKeys(array $publicKey): Collection;
+
+    public function findByUsername(string $address, bool $caseSensitive = true): Wallet;
 
     public function findByIdentifier(string $identifier): Wallet;
 }

@@ -6,18 +6,18 @@ namespace App\ViewModels\Concerns\Wallet;
 
 trait CanBeKnownWallet
 {
-    public function isKnownWallet(): bool
+    public function hasUsername(): bool
     {
-        return ! is_null($this->findWalletByKnown());
+        return $this->username() !== null;
     }
 
-    public function walletName(): ?string
+    public function username(): ?string
     {
         $knownWallet = $this->findWalletByKnown();
         if (! is_null($knownWallet)) {
             return $knownWallet['name'];
         }
 
-        return null;
+        return $this->wallet->username();
     }
 }
