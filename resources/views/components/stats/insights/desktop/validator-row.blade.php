@@ -23,7 +23,7 @@
                     @if ($model->hasUsername())
                         {{ $model->username() }}
                     @else
-                        {{ $model->address() }}
+                        <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
                     @endif
                 </a>
             @endif
