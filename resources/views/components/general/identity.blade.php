@@ -20,7 +20,7 @@
         throw new Exception('You must provide a model or an address');
     }
 
-    $address = $model ? $model->address() : $address;    
+    $address = $model ? $model->address() : $address;
 @endphp
 
 <div @class($containerClass)>
