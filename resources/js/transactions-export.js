@@ -43,7 +43,7 @@ const TransactionsExport = ({
 
     const getTransactionAmount = (transaction) => {
         let amount = arktoshiToNumber(transaction.amount);
-        if (transaction.sender === address) {
+        if (transaction.senderAddress === address) {
             return -amount;
         }
 
@@ -54,20 +54,23 @@ const TransactionsExport = ({
         timestamp: (transaction) =>
             dayjs(parseInt(transaction.timestamp)).format("L LTS"),
         recipient: (transaction) => {
-            return transaction.recipient;
+            return transaction.recipientAddress;
+        },
+        sender: (transaction) => {
+            return transaction.senderAddress;
         },
         amount: getTransactionAmount,
         fee: (transaction) => {
-            if (transaction.sender === address) {
-                return -arktoshiToNumber(transaction.fee);
+            if (transaction.senderAddress === address) {
+                return -arktoshiToNumber(transaction.gasPrice);
             }
 
             return 0;
         },
         total: (transaction) => {
             const amount = getTransactionAmount(transaction);
-            if (transaction.sender === address) {
-                return amount - arktoshiToNumber(transaction.fee);
+            if (transaction.senderAddress === address) {
+                return amount - arktoshiToNumber(transaction.gasPrice);
             }
 
             return amount;

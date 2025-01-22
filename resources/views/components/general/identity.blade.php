@@ -65,9 +65,7 @@
                     {{ $model->username() }}
                 </div>
             @else
-                @if ($address)
-                    {{ $address }}
-                @else
+                @if ($slot->isEmpty())
                     @if($withoutTruncate)
                         {{ $address }}
                     @else
@@ -75,6 +73,8 @@
                             {{ $address }}
                         </x-truncate-middle>
                     @endisset
+                @else
+                    {{ $slot }}
                 @endif
             @endif
 
@@ -96,7 +96,11 @@
             @if ($hasUsername && !$withoutUsername)
                 {{ $model->username() }}
             @else
-                {{ $address }}
+                @if ($slot->isEmpty())
+                    {{ $address }}
+                @else
+                    {{ $slot }}
+                @endif
             @endif
 
             @if ($withoutLink)
