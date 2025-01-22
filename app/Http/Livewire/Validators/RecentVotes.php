@@ -106,8 +106,9 @@ final class RecentVotes extends TabbedTableComponent
             $sortDirection = SortDirection::DESC;
         }
 
-        // TODO: fetch only vote transaction types - https://app.clickup.com/t/86dv8nz3e
         return Transaction::query()
+            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->where('receipts.success', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['vote'], function ($query) {
