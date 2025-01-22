@@ -150,8 +150,8 @@ it('should get the validator', function () {
 });
 
 it('should get the validator wallet name', function () {
-    expect($this->subject->walletName())->toBeString();
-    expect($this->subject->walletName())->toBe('Genesis');
+    expect($this->subject->username())->toBeString();
+    expect($this->subject->username())->toBe('Genesis');
 });
 
 it('should fail to get the validator wallet name', function () {
@@ -161,8 +161,8 @@ it('should fail to get the validator wallet name', function () {
         ])->address,
     ]));
 
-    expect($this->subject->walletName())->toBeString();
-    expect($this->subject->walletName())->toBe('Genesis');
+    expect($this->subject->username())->toBeString();
+    expect($this->subject->username())->toBe('Genesis');
 });
 
 it('should get the previous block url', function () {
