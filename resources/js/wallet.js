@@ -137,6 +137,11 @@ const Wallet = (network, xData = {}) => {
                 return null;
             }
 
+            const username = this.votingFor.attributes?.username;
+            if (username) {
+                return username;
+            }
+
             return truncateMiddle(this.votingForAddress);
         },
 

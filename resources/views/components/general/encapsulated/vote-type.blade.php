@@ -5,7 +5,7 @@
 
     <span
         @if ($votedValidator)
-            data-tippy-html-content="{{ trans('general.transaction.vote_validator', ['validator' => $votedValidator->address()]) }}"
+            data-tippy-html-content="{{ trans('general.transaction.vote_validator', ['validator' => $votedValidator->username() ?? $votedValidator->address()]) }}"
         @endif
     >
         {{ $transaction->typeName() }}
