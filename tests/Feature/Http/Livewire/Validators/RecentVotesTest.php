@@ -33,12 +33,12 @@ function generateTransactions(): array
     ]);
 
     $voteTransaction = Transaction::factory()->vote($validator1->address)->create([
-        'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+        'timestamp'      => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
         'sender_address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
     ]);
 
     $unvoteTransaction = Transaction::factory()->unvote()->create([
-        'timestamp' => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
+        'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
         'sender_address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
     ]);
 
@@ -427,7 +427,7 @@ it('should sort name then address in ascending order when missing names', functi
     ]));
 
     $validator2 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
-        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         'attributes' => [
             'username' => null,
         ],
@@ -492,7 +492,7 @@ it('should sort name then address in descending order when missing names', funct
     ]));
 
     $validator2 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
-        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         'attributes' => [
             'username' => null,
         ],

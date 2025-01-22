@@ -7,7 +7,6 @@ namespace App\Models\Concerns\Transaction;
 use App\Enums\ContractMethod;
 use App\Enums\SortDirection;
 use App\Facades\Network;
-use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
