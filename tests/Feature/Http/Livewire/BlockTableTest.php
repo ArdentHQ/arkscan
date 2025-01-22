@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
+use App\Services\Cache\WalletCache;
 use App\Services\NumberFormatter;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
@@ -21,13 +22,17 @@ use Livewire\Livewire;
 it('should list the first page of records', function () {
     $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
 
+    $cache = new WalletCache();
+
     foreach (range(0, 40) as $index) {
         $this->travel(8)->seconds();
 
-        Block::factory()->create([
+        $block = Block::factory()->create([
             'timestamp' => Carbon::now()->timestamp,
             'height'    => $index + 1,
         ]);
+
+        $cache->setWalletNameByAddress($block->generator_address, 'test-username-'.($index + 1));
     }
 
     $component = Livewire::test(BlockTable::class)
@@ -36,6 +41,7 @@ it('should list the first page of records', function () {
     foreach (ViewModelFactory::paginate(Block::withScope(OrderByTimestampScope::class)->paginate())->items() as $block) {
         $component->assertSee($block->id());
         $component->assertSee($block->timestamp());
+        $component->assertSee($block->username());
         $component->assertSee(NumberFormatter::number($block->height()));
         $component->assertSee(NumberFormatter::number($block->transactionCount()));
         $component->assertSeeInOrder([

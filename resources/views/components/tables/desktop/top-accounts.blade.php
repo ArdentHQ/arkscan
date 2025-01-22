@@ -58,7 +58,11 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.address :model="$wallet" />
+                    <x-tables.rows.desktop.encapsulated.address :model="$wallet" without-username />
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell>
+                    <x-tables.rows.desktop.encapsulated.username :model="$wallet" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell
