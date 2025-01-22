@@ -497,6 +497,8 @@ it('should sort name then address in ascending order when missing names', functi
         'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
     ]);
 
+    generateReceipts();
+
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
         ->call('sortBy', 'name')
@@ -561,6 +563,8 @@ it('should sort name then address in descending order when missing names', funct
     $unvoteTransaction2 = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
     ]);
+
+    generateReceipts();
 
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
