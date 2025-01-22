@@ -17,9 +17,13 @@
             href="{{ route('wallet', $votedValidator->address()) }}"
             class="text-sm font-semibold link"
         >
-            <x-truncate-middle>
-                {{ $votedValidator->address() }}
-            </x-truncate-middle>
+            @if ($votedValidator->hasUsername())
+                {{ $votedValidator->username() }}
+            @else
+                <x-truncate-middle>
+                    {{ $votedValidator->address() }}
+                </x-truncate-middle>
+            @endif
         </a>
     @endif
 </x-tables.rows.mobile.encapsulated.cell>
