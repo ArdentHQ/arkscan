@@ -41,9 +41,7 @@
                     @class(['font-semibold sm:hidden md:flex link', $linkClass])
                 >
             @endif
-                @if ($address)
-                    {{ $address }}
-                @else
+                @if ($slot->isEmpty())
                     @if($withoutTruncate)
                         {{ $address }}
                     @else
@@ -51,6 +49,8 @@
                             {{ $address }}
                         </x-truncate-middle>
                     @endisset
+                @else
+                    {{ $slot }}
                 @endif
             @if ($withoutLink)
                 </div>
@@ -66,7 +66,12 @@
                     @class(['hidden font-semibold sm:flex md:hidden link', $linkClass])
                 >
             @endif
-                {{ $address }}
+                @if ($slot->isEmpty())
+                    {{ $address }}
+                @else
+                    {{ $slot }}
+                @endif
+                
             @if ($withoutLink)
                 </div>
             @else
