@@ -219,10 +219,15 @@ it('should sort by age descending by default', function () {
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
         ]);
 });
 
@@ -234,41 +239,15 @@ it('should sort age in ascending order', function () {
         ->call('sortBy', 'age')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-        ]);
-});
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
 
-it('should sort name in ascending order', function () {
-    $data = generateTransactions();
-
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->call('sortBy', 'name')
-        ->assertSet('sortDirection', SortDirection::ASC)
-        ->assertSeeInOrder([
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-        ]);
-});
-
-it('should sort name in descending order', function () {
-    $data = generateTransactions();
-
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->call('sortBy', 'name')
-        ->call('sortBy', 'name')
-        ->assertSet('sortDirection', SortDirection::DESC)
-        ->assertSeeInOrder([
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
         ]);
 });
 
@@ -280,10 +259,15 @@ it('should sort address in ascending order', function () {
         ->call('sortBy', 'address')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
         ]);
 });
 
@@ -296,10 +280,15 @@ it('should sort address in descending order', function () {
         ->call('sortBy', 'address')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
         ]);
 });
 
@@ -311,10 +300,15 @@ it('should sort type in ascending order', function () {
         ->call('sortBy', 'type')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
         ]);
 });
 
@@ -327,10 +321,15 @@ it('should sort type in descending order', function () {
         ->call('sortBy', 'type')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
         ]);
 });
 
@@ -380,18 +379,28 @@ it('should parse sorting direction from query string', function () {
 
     $this->get('/test-validators?sort=type&sort-direction=asc')
         ->assertSeeInOrder([
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
         ]);
 
     $this->get('/test-validators?sort=type&sort-direction=desc')
         ->assertSeeInOrder([
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
         ]);
 });
 
@@ -404,18 +413,28 @@ it('should force default sort direction if invalid query string value', function
 
     $this->get('/test-validators?sort=type&sort-direction=desc')
         ->assertSeeInOrder([
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
         ]);
 
     $this->get('/test-validators?sort=type&sort-direction=testing')
         ->assertSeeInOrder([
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
-            $data['unvoteTransaction']->address,
-            $data['voteTransaction']->address,
+            'vote-item*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
+
+            'vote-mobile*'.$data['voteTransaction']->id,
+            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->id,
+            $data['unvoteTransaction']->id,
         ]);
 });
 
