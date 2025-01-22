@@ -35,21 +35,20 @@
                 :model="$model"
                 :without-truncate="$withoutTruncate"
                 :validator-name-class="$validatorNameClass"
+                :address="$address"
             >
-                <x-slot name="address">
-                    @unless ($withoutTruncate)
-                        <span @class($truncateHiddenBreakpoint)>
-                            <x-truncate-middle>{{ $address }}</x-truncate-middle>
-                        </span>
-                        <span @class($truncateShowBreakpoint)>
-                            {{ $address }}
-                        </span>
-                    @else
-                        <span class="inline">
-                            {{ $address }}
-                        </span>
-                    @endif
-                </x-slot>
+                @unless ($withoutTruncate)
+                    <span @class($truncateHiddenBreakpoint)>
+                        <x-truncate-middle>{{ $address }}</x-truncate-middle>
+                    </span>
+                    <span @class($truncateShowBreakpoint)>
+                        {{ $address }}
+                    </span>
+                @else
+                    <span class="inline">
+                        {{ $address }}
+                    </span>
+                @endif
             </x-general.identity>
         </span>
 
