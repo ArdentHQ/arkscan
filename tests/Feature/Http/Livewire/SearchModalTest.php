@@ -22,6 +22,23 @@ it('should search for a wallet', function () {
         ->assertDontSee($otherWallet->address);
 });
 
+it('should search for a wallet username over a block generator', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'pieface',
+        ],
+    ]);
+    $block = Block::factory()->create([
+        'generator_address' => $wallet->address,
+    ]);
+    Transaction::factory()->create(['block_id' => $block->id]);
+
+    Livewire::test(SearchModal::class)
+        ->dispatch('openSearchModal')
+        ->set('query', $wallet->address)
+        ->assertSee($wallet->address);
+});
+
 it('should search for a transaction', function () {
     Transaction::factory()->create();
     $block = Block::factory()->create();

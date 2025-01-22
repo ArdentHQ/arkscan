@@ -119,6 +119,7 @@ final class RecentVotes extends TabbedTableComponent
             })
             ->when($this->sortKey === 'age', fn ($query) => $query->sortByAge($sortDirection))
             ->when($this->sortKey === 'address', fn ($query) => $query->sortByAddress($sortDirection))
-            ->when($this->sortKey === 'type', fn ($query) => $query->sortByType($sortDirection));
+            ->when($this->sortKey === 'type', fn ($query) => $query->sortByType($sortDirection))
+            ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection));
     }
 }

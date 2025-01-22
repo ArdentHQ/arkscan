@@ -7,6 +7,7 @@
     'suffix'          => false,
     'withoutTruncate' => false,
     'truncateLength'  => null,
+    'withoutUsername' => false,
     'addressVisible'  => false,
     'containerClass'  => null,
     'contentClass'    => null,
@@ -20,7 +21,9 @@
         throw new Exception('You must provide a model or an address');
     }
 
-    $address = $model ? $model->address() : $address;    
+    $address = $model ? $model->address() : $address;
+
+    $hasUsername = $model ? $model->hasUsername() : false;
 @endphp
 
 <div @class($containerClass)>
@@ -41,6 +44,27 @@
                     @class(['font-semibold sm:hidden md:flex link', $linkClass])
                 >
             @endif
+
+            @if ($hasUsername && !$withoutUsername)
+                @if ($prefix)
+                    <div @class([
+                        'validator-name-truncate-prefix',
+                        $validatorNameClass,
+                    ])>
+                @elseif ($isListing)
+                    <div @class([
+                        'validator-name-truncate-listing',
+                        $validatorNameClass,
+                    ])>
+                @else
+                    <div @class([
+                        'validator-name-truncate',
+                        $validatorNameClass,
+                    ])>
+                @endif
+                    {{ $model->username() }}
+                </div>
+            @else
                 @if ($slot->isEmpty())
                     @if($withoutTruncate)
                         {{ $address }}
@@ -52,6 +76,8 @@
                 @else
                     {{ $slot }}
                 @endif
+            @endif
+
             @if ($withoutLink)
                 </div>
             @else
@@ -66,16 +92,27 @@
                     @class(['hidden font-semibold sm:flex md:hidden link', $linkClass])
                 >
             @endif
+
+            @if ($hasUsername && !$withoutUsername)
+                {{ $model->username() }}
+            @else
                 @if ($slot->isEmpty())
                     {{ $address }}
                 @else
                     {{ $slot }}
                 @endif
-                
+            @endif
+
             @if ($withoutLink)
                 </div>
             @else
                 </a>
+            @endif
+
+            @if ($hasUsername && !$withoutUsername && $addressVisible)
+                <span class="ml-1 truncate">
+                    {{ $model->address() }}
+                </span>
             @endif
 
             @if ($suffix)

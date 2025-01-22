@@ -216,7 +216,7 @@ describe('Monitor', function () {
             ->call('setIsReady')
             ->call('pollValidators')
             ->assertSeeInOrder([
-                $validator->walletName(),
+                $validator->username(),
                 'Validator last forged 207 blocks ago (~ 28 min)',
             ]);
     });
@@ -254,7 +254,7 @@ describe('Monitor', function () {
             ->call('setIsReady')
             ->call('pollValidators')
             ->assertSeeInOrder([
-                $validator->walletName(),
+                $validator->username(),
                 'Validator last forged 207 blocks ago (~ 1h 28 min)',
             ]);
     });
@@ -292,7 +292,7 @@ describe('Monitor', function () {
             ->call('setIsReady')
             ->call('pollValidators')
             ->assertSeeInOrder([
-                $validator->walletName(),
+                $validator->username(),
                 'Validator last forged 207 blocks ago (more than a day)',
             ]);
     });
@@ -328,7 +328,7 @@ describe('Monitor', function () {
             ->call('setIsReady')
             ->dispatch('echo:blocks,NewBlock')
             ->assertSeeInOrder([
-                $validator->walletName(),
+                $validator->username(),
                 'Validator last forged 207 blocks ago (more than a day)',
             ]);
     });
