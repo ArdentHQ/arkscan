@@ -17,9 +17,4 @@ trait HasQueries
             $end->getTimestampMs(),
         ]);
     }
-
-    private function getScopeByType(string $type): ?string
-    {
-        return data_get(Transaction::TYPE_SCOPES, $type);
-    }
 }
