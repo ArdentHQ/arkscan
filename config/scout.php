@@ -142,7 +142,7 @@ return [
         // `php artisan scout:sync-index-settings` to apply the changes.
         'index-settings' => [
             Wallet::class => [
-                'searchableAttributes'=> ['address'],
+                'searchableAttributes'=> ['address', 'username'],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
                     'enabled' => false,

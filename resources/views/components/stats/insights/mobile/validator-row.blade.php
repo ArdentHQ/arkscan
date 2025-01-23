@@ -19,7 +19,11 @@
                         href="{{ route('wallet', $model->model()) }}"
                         class="link"
                     >
-                        <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
+                        @if ($model->hasUsername())
+                            {{ $model->username() }}
+                        @else
+                            <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
+                        @endif
                     </a>
                 @endif
             </span>

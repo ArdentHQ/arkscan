@@ -12,7 +12,7 @@
 <x-wallet.overview.item :title="trans('general.overview')">
     <x-wallet.overview.item-entry
         :title="trans('pages.wallet.name')"
-        :value="$wallet->walletName()"
+        :value="$wallet->username()"
     />
 
     <x-wallet.overview.item-entry :title="trans('pages.wallet.balance')">
@@ -37,7 +37,7 @@
     <x-wallet.overview.item-entry :title="trans('pages.wallet.voting_for')">
         <x-slot name="value">
             @if ($wallet->vote())
-                <x-general.identity-iconless :model="$wallet->vote()" />
+                <x-general.identity :model="$wallet->vote()" />
             @endif
         </x-slot>
     </x-wallet.overview.item-entry>
