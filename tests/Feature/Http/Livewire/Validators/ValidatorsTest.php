@@ -830,7 +830,6 @@ it('should handle sorting several pages of validators without cached data', func
     foreach (range(1, 145) as $rank) {
         $wallet          = faker()->wallet;
         $validatorData[] = [
-            'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'attributes'        => [
@@ -895,7 +894,6 @@ it('should handle sorting several pages of validators with cached data', functio
     foreach (range(1, 145) as $rank) {
         $wallet          = faker()->wallet;
         $validatorData[] = [
-            'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'updated_at'        => faker()->numberBetween(1, 1000),
