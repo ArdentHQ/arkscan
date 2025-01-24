@@ -40,7 +40,7 @@ function generateTransactions(): array
     ]);
 
     $validator3 = Wallet::factory()->activeValidator()->create([
-        'address' => '0x2a74550fC2e741118182B7ab020DC0B7Ed01e1db',
+        'address'    => '0x2a74550fC2e741118182B7ab020DC0B7Ed01e1db',
         'attributes' => [
             'username' => 'validator-3',
         ],
