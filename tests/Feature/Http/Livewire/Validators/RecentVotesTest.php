@@ -26,32 +26,42 @@ function generateReceipts(): void
 function generateTransactions(): array
 {
     $validator1 = Wallet::factory()->activeValidator()->create([
+        'address'    => '0x522CbD1C22529a27ba4BFDBf4b6f037F71b2AC77',
         'attributes' => [
             'username' => 'validator-1',
         ],
     ]);
 
     $validator2 = Wallet::factory()->activeValidator()->create([
+        'address'    => '0x09C94A51cb63b4b70A9Dbf190543c371741D13Fd',
         'attributes' => [
             'username' => 'validator-2',
         ],
     ]);
 
     $validator3 = Wallet::factory()->activeValidator()->create([
+        'address' => '0x2a74550fC2e741118182B7ab020DC0B7Ed01e1db',
         'attributes' => [
             'username' => 'validator-3',
         ],
     ]);
 
-    $voteTransaction = Transaction::factory()->vote($validator1->address)->create([
-        'timestamp'      => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
-        'sender_address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
-    ]);
+    $sender1 = Wallet::factory()->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']);
+    $sender2 = Wallet::factory()->create(['address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084']);
 
-    $unvoteTransaction = Transaction::factory()->unvote()->create([
-        'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
-        'sender_address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
-    ]);
+    $voteTransaction = Transaction::factory()
+        ->vote($validator1->address)
+        ->create([
+            'timestamp'      => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+            'sender_address' => $sender1->address,
+        ]);
+
+    $unvoteTransaction = Transaction::factory()
+        ->unvote()
+        ->create([
+            'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
+            'sender_address' => $sender2->address,
+        ]);
 
     generateReceipts();
 
