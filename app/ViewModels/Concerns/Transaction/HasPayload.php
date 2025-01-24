@@ -6,6 +6,7 @@ namespace App\ViewModels\Concerns\Transaction;
 
 use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 
 trait HasPayload
 {
@@ -107,7 +108,7 @@ trait HasPayload
             if (isset($amounts[$index])) {
                 $recipients[] = [
                     'address' => $address,
-                    'amount'  => $amounts[$index],
+                    'amount'  => UnitConverter::formatUnits($amounts[$index], 'ark'),
                 ];
             }
         }
