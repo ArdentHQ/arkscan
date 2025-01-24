@@ -49,7 +49,7 @@ return [
             'currency'            => env('ARKSCAN_NETWORK_CURRENCY', 'DARK'),
             'currencySymbol'      => env('ARKSCAN_NETWORK_CURRENCY_SYMBOL', 'DѦ'),
             'confirmations'       => intval(env('ARKSCAN_NETWORK_CONFIRMATIONS', 51)),
-            'knownWallets'        => env('ARKSCAN_NETWORK_KNOWN_WALLETS', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/devnet/known-wallets-extended.json'),
+            'knownWallets'        => env('ARKSCAN_NETWORK_KNOWN_WALLETS', 'https://raw.githubusercontent.com/ArkEcosystem/common/master/mainsail/devnet/known-wallets-extended.json'),
             'canBeExchanged'      => env('ARKSCAN_NETWORK_CAN_BE_EXCHANGED', false),
             'epoch'               => env('ARKSCAN_NETWORK_EPOCH', '2023-12-21T00:00:00.000Z'),
             'validatorCount'      => intval(env('ARKSCAN_NETWORK_VALIDATOR_COUNT', 53)),
