@@ -145,8 +145,8 @@ jobs:
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
 
-            - name: Clear Compiled Views
-              run: php artisan view:clear
+            - name: Cache Views
+              run: php artisan view:cache
 
             - name: Create second database for explorer
               run: |
