@@ -97,3 +97,12 @@ it('should handle special characters in search query', function () {
         'limit'    => 5,
     ]);
 });
+
+it('should handle a negative limit', function () {
+    $query = BlockSearch::buildSearchQueryForIndex('a b', -5);
+
+    expect($query->toArray())->toMatchArray([
+        'indexUid' => 'blocks',
+        'filter'   => ['id = "a b"'],
+    ]);
+});

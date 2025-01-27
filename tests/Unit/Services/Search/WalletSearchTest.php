@@ -61,3 +61,12 @@ it('should map meilisearch results array', function () {
 
     expect($result->first()->address)->toBe($wallet->address);
 });
+
+it('should handle a negative limit', function () {
+    $query = WalletSearch::buildSearchQueryForIndex('aaaaaabbbbbbbccccccdddddd3', -5);
+
+    expect($query->toArray())->toMatchArray([
+        'indexUid' => 'wallets',
+        'q'        => 'aaaaaabbbbbbbccccccdddddd3',
+    ]);
+});
