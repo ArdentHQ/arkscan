@@ -164,12 +164,9 @@ final class TransactionFactory extends Factory
 
     public function contractDeployment(): Factory
     {
-        $method = ContractMethod::contractDeployment();
-
-        return $this->withPayload($method)
-            ->state(fn () => [
-                'recipient_address' => null,
-            ]);
+        return $this->state(fn () => [
+            'recipient_address' => null,
+        ]);
     }
 
     public function withPayload(string $payload): Factory

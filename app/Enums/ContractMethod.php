@@ -47,9 +47,4 @@ final class ContractMethod
     {
         return Network::contractMethod('username_resignation', 'ebed6dab');
     }
-
-    public static function contractDeployment(): ?string
-    {
-        return Network::contractMethod('contract_deployment', '60806040');
-    }
 }
