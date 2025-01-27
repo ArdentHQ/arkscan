@@ -329,15 +329,15 @@ MethodID: 0x6dd7d8ea');
         expect($transaction->multiPaymentRecipients())->toEqual([
             '0' => [
                 'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
-                'amount'  => '100000000',
+                'amount'  => '1.0E-10',
             ],
             '1' => [
                 'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
-                'amount'  => '200000000',
+                'amount'  => '2.0E-10',
             ],
             '2' => [
                 'address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
-                'amount'  => '1234567',
+                'amount'  => '1.234567E-12',
             ],
         ]);
     });
