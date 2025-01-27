@@ -1,6 +1,7 @@
 @props([
     'model' => null,
     'withoutTruncate' => false,
+    'withoutUsername' => false,
     'withoutClipboard' => false,
     'truncateBreakpoint' => 'xl',
     'withoutTransactionCount' => true,
@@ -34,22 +35,22 @@
             <x-general.identity
                 :model="$model"
                 :without-truncate="$withoutTruncate"
+                :without-username="$withoutUsername"
                 :validator-name-class="$validatorNameClass"
+                :address="$address"
             >
-                <x-slot name="address">
-                    @unless ($withoutTruncate)
-                        <span @class($truncateHiddenBreakpoint)>
-                            <x-truncate-middle>{{ $address }}</x-truncate-middle>
-                        </span>
-                        <span @class($truncateShowBreakpoint)>
-                            {{ $address }}
-                        </span>
-                    @else
-                        <span class="inline">
-                            {{ $address }}
-                        </span>
-                    @endif
-                </x-slot>
+                @unless ($withoutTruncate)
+                    <span @class($truncateHiddenBreakpoint)>
+                        <x-truncate-middle>{{ $address }}</x-truncate-middle>
+                    </span>
+                    <span @class($truncateShowBreakpoint)>
+                        {{ $address }}
+                    </span>
+                @else
+                    <span class="inline">
+                        {{ $address }}
+                    </span>
+                @endif
             </x-general.identity>
         </span>
 

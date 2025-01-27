@@ -63,8 +63,8 @@ it('should get the validator username', function () {
         'address' => $wallet->address,
     ]));
 
-    expect($this->subject->walletName())->toBeString();
-    expect($this->subject->walletName())->toBe('Binance');
+    expect($this->subject->username())->toBeString();
+    expect($this->subject->username())->toBe('Binance');
 });
 
 it('should handle no validator username', function () {
@@ -74,5 +74,5 @@ it('should handle no validator username', function () {
         'address' => $wallet->address,
     ]));
 
-    expect($this->subject->walletName())->toBeNull();
+    expect($this->subject->username())->toBeNull();
 });

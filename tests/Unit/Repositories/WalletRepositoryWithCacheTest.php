@@ -43,3 +43,32 @@ it('should find a wallet by identifier', function () {
 
     expect($this->subject->findByIdentifier($wallet->address))->toBeInstanceOf(Wallet::class);
 });
+
+it('should find a wallet by case sensitive username', function () {
+    Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'JohnDoe',
+        ],
+    ]);
+
+    try {
+        $this->subject->findByUsername('johndoe');
+
+        $this->fail();
+    } catch (Throwable) {
+        //
+    }
+
+    expect($this->subject->findByUsername('JohnDoe'))->toBeInstanceOf(Wallet::class);
+});
+
+it('should find a wallet by case insensitive username', function () {
+    Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'JohnDoe',
+        ],
+    ]);
+
+    expect($this->subject->findByUsername('johndoe', false))->toBeInstanceOf(Wallet::class);
+    expect($this->subject->findByUsername('JohnDoe', false))->toBeInstanceOf(Wallet::class);
+});
