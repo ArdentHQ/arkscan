@@ -40,6 +40,10 @@ final class BlockSearch implements Search
             return null;
         }
 
+        if ($limit < 0) {
+            $limit = null;
+        }
+
         return (new SearchQuery())
             ->setFilter(['id = '.sprintf('"%s"', addslashes($query))])
             ->setIndexUid('blocks')
