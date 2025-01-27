@@ -43,6 +43,13 @@ trait CanBeSorted
 
     public function scopeSortByUsername(mixed $query, SortDirection $sortDirection): Builder
     {
+        $knownWallets = collect(Network::knownWallets())
+            ->pluck('name', 'address');
+
+        if ($knownWallets->isEmpty()) {
+            $knownWallets->put(null, null);
+        }
+
         return $query
             ->select([
                 'validator_name' => fn ($query) => $query
@@ -55,7 +62,12 @@ trait CanBeSorted
                             ->whereColumn('transactions.id', 'validator_transaction.id')
                             ->from('transactions', 'validator_transaction');
                     }, 'validator_vote')
-                    ->join('wallets', DB::raw('LOWER(wallets.address)'), '=', DB::raw('LOWER(validator_vote.vote)')),
+                    ->join('wallets', DB::raw('LOWER(wallets.address)'), '=', DB::raw('LOWER(validator_vote.vote)'))
+                    ->join(DB::raw(sprintf(
+                        '(values %s) as known_wallets (address, name)',
+                        $knownWallets->map(fn ($address, $name) => sprintf('(\'%s\',\'%s\')', $address, $name))
+                            ->join(','),
+                    )), DB::raw('LOWER(known_wallets.address)'), '=', DB::raw('LOWER(CONCAT(\'0x\', RIGHT(SUBSTRING(encode(data, \'hex\'), 9), 40)))'), 'left outer'),
 
                 'transaction_type' => fn ($query) => $query
                     ->selectRaw('coalesce(validator_vote.vote, validator_vote.unvote)')

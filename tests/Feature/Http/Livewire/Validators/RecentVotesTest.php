@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 
+use function Tests\fakeKnownWallets;
+
 function generateReceipts(): void
 {
     foreach (Transaction::all() as $transaction) {
@@ -620,6 +622,183 @@ it('should sort name then address in descending order when missing names', funct
             $voteTransaction->id,
             'Vote',
             $validator1->username(),
+            'vote-mobile*'.$voteTransaction2->id,
+            $voteTransaction2->id,
+            'Vote',
+            $validator2->address(),
+            'vote-mobile*'.$unvoteTransaction->id,
+            'Unvote',
+            'vote-mobile*'.$unvoteTransaction2->id,
+            'Unvote',
+        ]);
+});
+
+it('should sort known name, then name, then address in ascending order when missing names', function () {
+    fakeKnownWallets();
+
+    $validator1 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
+        'attributes' => [
+            'username' => 'validator-name',
+        ],
+    ]));
+
+    $validator2 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
+        'address'    => '0x2a74550fC2e741118182B7ab020DC0B7Ed01e1db',
+        'attributes' => [
+            'username' => null,
+        ],
+    ]));
+
+    $validator3 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'attributes' => [
+            'username' => 'validator-3',
+        ],
+    ]));
+
+    $voteTransaction1 = Transaction::factory()->vote($validator1->address())->create([
+        'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+    ]);
+
+    $unvoteTransaction = Transaction::factory()->unvote()->create([
+        'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+    ]);
+
+    $voteTransaction2 = Transaction::factory()->vote($validator2->address())->create([
+        'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+    ]);
+
+    $unvoteTransaction2 = Transaction::factory()->unvote()->create([
+        'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+    ]);
+
+    $voteTransaction3 = Transaction::factory()->vote($validator3->address())->create([
+        'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
+    ]);
+
+    generateReceipts();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'name')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSeeInOrder([
+            // Desktop
+            'vote-item*'.$voteTransaction2->id,
+            $voteTransaction2->id,
+            'Vote',
+            $validator2->address(),
+            'vote-item*'.$voteTransaction3->id,
+            $voteTransaction3->id,
+            'Vote',
+            $validator3->address(),
+            'vote-item*'.$voteTransaction1->id,
+            $voteTransaction1->id,
+            'Vote',
+            $validator1->username(),
+            'vote-item*'.$unvoteTransaction->id,
+            'Unvote',
+            'vote-item*'.$unvoteTransaction2->id,
+            'Unvote',
+
+            // Mobile
+            'vote-mobile*'.$voteTransaction2->id,
+            $voteTransaction2->id,
+            'Vote',
+            $validator2->address(),
+            'vote-mobile*'.$voteTransaction3->id,
+            $voteTransaction3->id,
+            'Vote',
+            $validator3->address(),
+            'vote-mobile*'.$voteTransaction1->id,
+            $voteTransaction1->id,
+            'Vote',
+            $validator1->username(),
+            'vote-mobile*'.$unvoteTransaction->id,
+            'Unvote',
+            'vote-mobile*'.$unvoteTransaction2->id,
+            'Unvote',
+        ]);
+});
+
+it('should sort known name, then name, then address in descending order when missing names', function () {
+    fakeKnownWallets();
+
+    $validator1 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
+        'attributes' => [
+            'username' => 'validator-name',
+        ],
+    ]));
+
+    $validator2 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
+        'address'    => '0x2a74550fC2e741118182B7ab020DC0B7Ed01e1db',
+        'attributes' => [
+            'username' => null,
+        ],
+    ]));
+
+    $validator3 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'attributes' => [
+            'username' => 'validator-3',
+        ],
+    ]));
+
+    $voteTransaction1 = Transaction::factory()->vote($validator1->address())->create([
+        'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+    ]);
+
+    $unvoteTransaction = Transaction::factory()->unvote()->create([
+        'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+    ]);
+
+    $voteTransaction2 = Transaction::factory()->vote($validator2->address())->create([
+        'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+    ]);
+
+    $unvoteTransaction2 = Transaction::factory()->unvote()->create([
+        'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+    ]);
+
+    $voteTransaction3 = Transaction::factory()->vote($validator3->address())->create([
+        'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
+    ]);
+
+    generateReceipts();
+
+    Livewire::test(RecentVotes::class)
+        ->call('setIsReady')
+        ->call('sortBy', 'name')
+        ->call('sortBy', 'name')
+        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSeeInOrder([
+            // Desktop
+            'vote-item*'.$voteTransaction1->id,
+            $voteTransaction1->id,
+            'Vote',
+            $validator1->username(),
+            'vote-item*'.$voteTransaction3->id,
+            $voteTransaction3->id,
+            'Vote',
+            $validator3->address(),
+            'vote-item*'.$voteTransaction2->id,
+            $voteTransaction2->id,
+            'Vote',
+            $validator2->address(),
+            'vote-item*'.$unvoteTransaction->id,
+            'Unvote',
+            'vote-item*'.$unvoteTransaction2->id,
+            'Unvote',
+
+            // Mobile
+            'vote-mobile*'.$voteTransaction1->id,
+            $voteTransaction1->id,
+            'Vote',
+            $validator1->username(),
+            'vote-mobile*'.$voteTransaction3->id,
+            $voteTransaction3->id,
+            'Vote',
+            $validator3->address(),
             'vote-mobile*'.$voteTransaction2->id,
             $voteTransaction2->id,
             'Vote',
