@@ -145,9 +145,6 @@ jobs:
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
 
-            - name: Cache Views
-              run: php artisan view:cache
-
             - name: Create second database for explorer
               run: |
                   psql -h 127.0.0.1 -U arkscan_test_db -c "CREATE DATABASE arkscan_test_db_explorer;"
