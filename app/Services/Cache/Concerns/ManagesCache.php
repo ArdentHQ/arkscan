@@ -54,6 +54,11 @@ trait ManagesCache
         // @codeCoverageIgnoreEnd
     }
 
+    private function has(string $key): bool
+    {
+        return $this->getCache()->has(md5($key));
+    }
+
     private function blockTimeTTL(): int
     {
         return (int) ceil(Network::blockTime() / 2);

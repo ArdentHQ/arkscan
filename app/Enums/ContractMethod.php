@@ -13,6 +13,11 @@ final class ContractMethod
         return Network::contractMethod('transfer', 'a9059cbb');
     }
 
+    public static function tokenTransfer(): ?string
+    {
+        return Network::contractMethod('token_transfer', '06fdde03');
+    }
+
     public static function multiPayment(): ?string
     {
         return Network::contractMethod('multipayment', '084ce708');
