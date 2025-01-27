@@ -17,7 +17,6 @@ final class WalletFactory extends Factory
         $wallet = $this->faker->wallet;
 
         return [
-            'id'         => $this->faker->uuid,
             'address'    => $wallet['address'],
             'public_key' => $wallet['publicKey'],
             'balance'    => $this->faker->numberBetween(1, 1000) * 1e18,

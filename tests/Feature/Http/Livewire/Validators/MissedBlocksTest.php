@@ -586,7 +586,6 @@ it('should handle sorting several pages without cached data', function ($columnS
         $sortByVotesData[$wallet['address']] = random_int(10, 100);
 
         $validatorData[] = [
-            'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'updated_at'        => faker()->numberBetween(1, 1000),
@@ -677,7 +676,6 @@ it('should handle sorting several pages with cached data', function ($columnSort
         $sortByVotesData[$wallet['address']] = random_int(10, 100);
 
         $validatorData[] = [
-            'id'                => faker()->uuid,
             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
             'nonce'             => faker()->numberBetween(1, 1000),
             'updated_at'        => faker()->numberBetween(1, 1000),
