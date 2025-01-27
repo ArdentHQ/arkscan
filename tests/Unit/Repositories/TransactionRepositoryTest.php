@@ -21,9 +21,9 @@ it('should find all transactions by sender', function () {
 });
 
 it('should find all transactions by recipient', function () {
-    $wallet = Transaction::factory(10)->create()[0]->recipient();
+    $wallet = Transaction::factory(10)->create()[0]->recipient_address;
 
-    expect($this->subject->allByRecipient($wallet->address))->toBeInstanceOf(Collection::class);
+    expect($this->subject->allByRecipient($wallet))->toBeInstanceOf(Collection::class);
 });
 
 it('should find a transaction by id', function () {
