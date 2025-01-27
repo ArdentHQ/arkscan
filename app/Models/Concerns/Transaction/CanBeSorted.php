@@ -19,7 +19,7 @@ trait CanBeSorted
 
     public function scopeSortByAddress(mixed $query, SortDirection $sortDirection): Builder
     {
-        return $query->join('wallets', 'wallets.public_key', '=', 'transactions.sender_public_key')
+        return $query->join('wallets', 'wallets.address', '=', 'transactions.sender_address')
             ->orderBy('wallets.address', $sortDirection->value);
     }
 

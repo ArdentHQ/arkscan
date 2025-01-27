@@ -99,7 +99,7 @@ final class TransactionMethod
 
     public function isContractDeployment(): bool
     {
-        return $this->methodHash === ContractMethod::contractDeployment();
+        return $this->transaction->recipient_address === null;
     }
 
     public function arguments(): array
