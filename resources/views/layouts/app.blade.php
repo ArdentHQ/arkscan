@@ -39,7 +39,7 @@
                 </span>
             </x-ark-footer>
 
-            <livewire:search-modal />
+            {{-- <livewire:search-modal /> --}}
 
             <x-webhooks.currency-update :currency="Settings::currency()" />
 
