@@ -10,11 +10,13 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
+use App\Services\Cache\TokenTransferCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
+use function Tests\faker;
 
 beforeEach(function () {
     $this->block = Block::factory()->create(['height' => 1]);
@@ -492,3 +494,80 @@ it('should determine if is certain transaction type', function (string $type, ar
     ['usernameResignation'],
     ['contractDeployment'],
 ]);
+
+it('should get token name for contract deployment', function () {
+    $cache = new TokenTransferCache();
+
+    $transaction = Transaction::factory()->contractDeployment()->create();
+
+    $contractAddress = faker()->wallet['address'];
+
+    Receipt::factory()->create([
+        'id' => $transaction->id,
+        'deployed_contract_address' => $contractAddress,
+    ]);
+
+    $cache->setTokenName($contractAddress, 'TESTTOKEN');
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->tokenName())->toBe('TESTTOKEN');
+});
+
+it('should get token name for token transfer', function () {
+    $cache = new TokenTransferCache();
+
+    $contractAddress = faker()->wallet['address'];
+
+    $transaction = Transaction::factory()
+        ->tokenTransfer('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B', 100000, $contractAddress)
+        ->create();
+
+    $cache->setTokenName($contractAddress, 'TESTTOKEN');
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->tokenName())->toBe('TESTTOKEN');
+});
+
+it('should return null if no token name', function () {
+    $transaction = Transaction::factory()->contractDeployment()->create();
+
+    Receipt::factory()->create([
+        'id' => $transaction->id,
+        'deployed_contract_address' => faker()->wallet['address'],
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->tokenName())->toBeNull();
+});
+
+it('should return null for token name if not a contract deployment or token transfer', function () {
+    $transaction = Transaction::factory()->transfer()->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->tokenName())->toBeNull();
+});
+
+it('should return null for token name if no receipt', function () {
+    $transaction = Transaction::factory()->contractDeployment()->create();
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->tokenName())->toBeNull();
+});
+
+it('should return null for token name if receipt has no deployment_contract_address', function () {
+    $transaction = Transaction::factory()->contractDeployment()->create();
+
+    Receipt::factory()->create([
+        'id' => $transaction->id,
+        'deployed_contract_address' => null,
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction->fresh());
+
+    expect($viewModel->tokenName())->toBeNull();
+});

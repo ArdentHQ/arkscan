@@ -124,3 +124,27 @@ it('should revert to cache if response is invalid', function () {
 it('should get time to forge', function () {
     expect(MainsailApi::timeToForge())->toEqual(Network::blockTime());
 });
+
+it('should get token name', function () {
+    Http::fake([
+        '*' => Http::response(['result' => '0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000064441524b32300000000000000000000000000000000000000000000000000000']),
+    ]);
+
+    expect(MainsailApi::deployedTokenName('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B'))->toEqual('DARK20');
+});
+
+it('should handle no result for token name', function () {
+    Http::fake([
+        '*' => Http::response(['error' => true]),
+    ]);
+
+    expect(MainsailApi::deployedTokenName('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B'))->toBeNull();
+});
+
+it('should handle http error for token name', function () {
+    Http::fake([
+        '*' => Http::response(fn () => throw new Exception('Failed to connect'), 500),
+    ]);
+
+    expect(MainsailApi::deployedTokenName('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B'))->toBeNull();
+});
