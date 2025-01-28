@@ -53,19 +53,23 @@ final class MainsailApi
 
     public static function deployedTokenName(string $contractAddress): ?string
     {
-        $response = Http::withHeader('Content-Type', 'application/json')
-            ->post('https://dwallets-evm.ihost.org/evm/api', [
-            'jsonrpc' => '2.0',
-            'method'  => 'eth_call',
-            'params'  => [[
-                'from' => '0x12361f0Bd5f95C3Ea8BF34af48F5484b811B5CCe',
-                'to'   => $contractAddress,
-                'data' => EvmFunctions::NAME->value,
-            ], 'latest'],
-            'id' => 1,
-        ]);
+        try {
+            $response = Http::withHeader('Content-Type', 'application/json')
+                ->post('https://dwallets-evm.ihost.org/evm/api', [
+                'jsonrpc' => '2.0',
+                'method'  => 'eth_call',
+                'params'  => [[
+                    'from' => '0x12361f0Bd5f95C3Ea8BF34af48F5484b811B5CCe',
+                    'to'   => $contractAddress,
+                    'data' => EvmFunctions::NAME->value,
+                ], 'latest'],
+                'id' => 1,
+            ])->json();
+        } catch (\Throwable) {
+            return null;
+        }
 
-        $result = Arr::get($response->json(), 'result');
+        $result = Arr::get($response, 'result');
         if ($result === null) {
             return null;
         }
