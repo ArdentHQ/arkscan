@@ -3,6 +3,4 @@
     'suffix',
 ])
 
-{{ ExplorerNumberFormatter::weiToArk((new ArgumentDecoder($argument))->decodeUnsignedInt(), false) }}
-
-{{ $suffix }}
+{{ ExplorerNumberFormatter::weiToArk((new ArgumentDecoder($argument))->decodeUnsignedInt(), false) }} {{ $suffix }}
