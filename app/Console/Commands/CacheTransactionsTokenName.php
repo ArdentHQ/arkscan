@@ -8,6 +8,7 @@ use App\Enums\ContractMethod;
 use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Transaction;
 use App\Services\Cache\TokenTransferCache;
+use App\Services\MainsailApi;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -34,41 +35,15 @@ final class CacheTransactionsTokenName extends Command
 
         $transactions = Transaction::withScope(ContractDeploymentScope::class, ContractMethod::transfer())->get();
 
-        $transactions->each(function (Transaction $transaction) use ($cache) : void {
-            if (! $cache->hasTokenName($transaction->id)) {
-                // @TODO: Call a job to fetch specific token name?
-                // dispatch(function () use ($transaction, $cache) : void {
-                $tokenName = $this->fetchTokenName($transaction);
-
-                dd($tokenName);
-
-                $cache->setTokenName($transaction->id, $tokenName);
-                // });
-
-                $cache->setTokenName($transaction->id, $tokenName);
+        foreach ($transactions as $transaction) {
+            $contractAddress = $transaction->receipt->deployed_contract_address;
+            if ($cache->hasTokenName($contractAddress)) {
+                continue;
             }
-        });
-    }
 
-    private function fetchTokenName(Transaction $transaction): string
-    {
-        $response = Http::withHeader('Content-Type', 'application/json')
-            ->post('https://dwallets-evm.ihost.org/evm/api', [
-            'jsonrpc' => '2.0',
-            'method'  => 'eth_call',
-            'params'  => [[
-                'from' => '0x12361f0Bd5f95C3Ea8BF34af48F5484b811B5CCe',
-                'to'   => $transaction->receipt->deployed_contract_address,
-                'data' => '0x06fdde03',
-            ], 'latest'],
-            'id' => 1,
-        ]);
+            $tokenName = MainsailApi::deployedTokenName($contractAddress);
 
-        $payload = $response->json()['result'];
-        // // $payload = '0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000064441524b32300000000000000000000000000000000000000000000000000000';
-
-        $method = (new AbiDecoder())->decodeFunctionWithAbi('function name() view returns (string)', $payload);
-
-        return $method[0];
+            $cache->setTokenName($contractAddress, $tokenName);
+        }
     }
 }
