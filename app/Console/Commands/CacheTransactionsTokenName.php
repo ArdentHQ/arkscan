@@ -9,9 +9,7 @@ use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Transaction;
 use App\Services\Cache\TokenTransferCache;
 use App\Services\MainsailApi;
-use ArkEcosystem\Crypto\Utils\AbiDecoder;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
 
 final class CacheTransactionsTokenName extends Command
 {
