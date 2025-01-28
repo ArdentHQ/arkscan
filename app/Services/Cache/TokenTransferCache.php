@@ -18,7 +18,7 @@ final class TokenTransferCache implements Contract
         return $this->get('name/'.$transactionId);
     }
 
-    public function setTokenName(string $transactionId, string $tokenName)
+    public function setTokenName(string $transactionId, string $tokenName): void
     {
         $this->put('name/'.$transactionId, $tokenName);
     }

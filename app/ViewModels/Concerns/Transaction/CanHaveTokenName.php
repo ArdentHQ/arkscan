@@ -12,6 +12,9 @@ trait CanHaveTokenName
     {
         $cache      = new TokenTransferCache();
         $contractId = $this->contractId();
+        if ($contractId === null) {
+            return null;
+        }
 
         if (! $cache->hasTokenName($contractId)) {
             return null;
@@ -23,6 +26,10 @@ trait CanHaveTokenName
     public function contractId(): ?string
     {
         if ($this->isContractDeployment()) {
+            if ($this->transaction->receipt === null) {
+                return null;
+            }
+
             return $this->transaction->receipt->deployed_contract_address;
         }
 

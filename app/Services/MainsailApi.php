@@ -70,7 +70,7 @@ final class MainsailApi
             return null;
         }
 
-        $method = (new AbiDecoder())->decodeFunctionWithAbi('function name() view returns (string)', $result);
+        $method = AbiDecoder::decodeFunctionWithAbi('function name() view returns (string)', $result);
 
         return $method[0];
     }
