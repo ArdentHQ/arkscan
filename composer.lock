@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/php-crypto.git",
-                "reference": "b70e6bef704aab9dc233acc3360ae28ebee15626"
+                "reference": "21920dc7d1b0508ae2bcb9f7e675583497a4c31e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/b70e6bef704aab9dc233acc3360ae28ebee15626",
-                "reference": "b70e6bef704aab9dc233acc3360ae28ebee15626",
+                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/21920dc7d1b0508ae2bcb9f7e675583497a4c31e",
+                "reference": "21920dc7d1b0508ae2bcb9f7e675583497a4c31e",
                 "shasum": ""
             },
             "require": {
@@ -114,7 +114,7 @@
                 "issues": "https://github.com/ArkEcosystem/php-crypto/issues",
                 "source": "https://github.com/ArkEcosystem/php-crypto/tree/feat/mainsail"
             },
-            "time": "2025-01-15T15:51:22+00:00"
+            "time": "2025-01-28T17:37:14+00:00"
         },
         {
             "name": "arkecosystem/foundation",
@@ -17165,6 +17165,6 @@
         "php": "^8.3",
         "ext-gmp": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
