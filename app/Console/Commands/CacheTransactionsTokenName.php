@@ -29,10 +29,8 @@ final class CacheTransactionsTokenName extends Command
      */
     protected $description = 'Cache the token name for token transfers.';
 
-    public function handle(): void
+    public function handle(TokenTransferCache $cache): void
     {
-        $cache = new TokenTransferCache();
-
         $transactions = Transaction::withScope(ContractDeploymentScope::class, ContractMethod::transfer())->get();
 
         foreach ($transactions as $transaction) {
