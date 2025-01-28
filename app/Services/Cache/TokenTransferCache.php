@@ -15,17 +15,17 @@ final class TokenTransferCache implements Contract
 
     public function getTokenName(string $transactionId): string
     {
-        return $this->get('tokenName-'.$transactionId);
+        return $this->get('name/'.$transactionId);
     }
 
     public function setTokenName(string $transactionId, string $tokenName)
     {
-        $this->put('tokenName-'.$transactionId, $tokenName);
+        $this->put('name/'.$transactionId, $tokenName);
     }
 
     public function hasTokenName(string $transactionId): bool
     {
-        return $this->has('tokenName-'.$transactionId);
+        return $this->has('name/'.$transactionId);
     }
 
     public function getCache(): TaggedCache
