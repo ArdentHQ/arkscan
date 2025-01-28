@@ -20,7 +20,10 @@
                 :title="trans('pages.transaction.header.amount')"
                 :transaction="$transaction"
             >
-                <x-payload.number :argument="$methodArguments[TokenTransferArgument::AMOUNT]" />
+                <x-payload.amount
+                    :argument="$methodArguments[TokenTransferArgument::AMOUNT]"
+                    :suffix="$transaction->tokenName()"
+                />
             </x-transaction.page.section-detail.row>
         @endif
     </x-general.page-section.container>
