@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Carbon\Carbon;
@@ -51,10 +52,12 @@ it('should handle failed token transfers with missing data', function () {
     $address = Wallet::factory()->create()->address;
     $amount  = (int) (34 * 1e9);
 
-    $transaction = Transaction::factory()->tokenTransfer($address, $amount)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
-    ]);
+    $transaction = Transaction::factory()
+        ->tokenTransfer($address, $amount, Network::knownContract('consensus'))
+        ->create([
+            'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+            'amount'    => 123 * 1e18,
+        ]);
 
     $this
         ->get(route('transaction', $transaction))

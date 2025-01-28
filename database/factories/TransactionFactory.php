@@ -60,16 +60,16 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function tokenTransfer(string $address, int $amount): Factory
+    public function tokenTransfer(string $address, int $amount, string $recipient): Factory
     {
-        $payload  = ContractMethod::transfer();
+        $payload  = ContractMethod::tokenTransfer();
         $payload .= str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT);
         $payload .= str_pad(dechex($amount), 64, '0', STR_PAD_LEFT);
 
         return $this->withPayload($payload)
             ->state(fn () => [
                 // TODO: update recipient - https://app.clickup.com/t/86dvdegme
-                'recipient_address' => Network::knownContract('consensus'),
+                'recipient_address' => $recipient,
             ]);
     }
 

@@ -59,7 +59,7 @@ final class TransactionMethod
 
     public function isTokenTransfer(): bool
     {
-        return $this->methodHash === ContractMethod::transfer();
+        return $this->methodHash === ContractMethod::tokenTransfer();
     }
 
     public function isMultiPayment(): bool
