@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CacheTransactionsTokenName;
 use App\Models\Receipt;
 use App\Models\Transaction;
-use App\Services\Cache\NetworkCache;
 use App\Services\Cache\TokenTransferCache;
 use Illuminate\Support\Facades\Http;
-
 use function Tests\faker;
 
 it('should execute the command', function () {
@@ -22,7 +19,7 @@ it('should execute the command', function () {
     $contractAddress = faker()->wallet['address'];
 
     Receipt::factory()->create([
-        'id' => $transaction->id,
+        'id'                        => $transaction->id,
         'deployed_contract_address' => $contractAddress,
     ]);
 
@@ -41,7 +38,7 @@ it('should not re-cache token name', function () {
     $transaction = Transaction::factory()->contractDeployment()->create();
 
     Receipt::factory()->create([
-        'id' => $transaction->id,
+        'id'                        => $transaction->id,
         'deployed_contract_address' => $contractAddress,
     ]);
 
