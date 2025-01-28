@@ -13,7 +13,7 @@ final class TokenTransferCache implements Contract
 {
     use ManagesCache;
 
-    public function getTokenName(string $transactionId): string
+    public function getTokenName(string $transactionId): ?string
     {
         return $this->get('name/'.$transactionId);
     }
