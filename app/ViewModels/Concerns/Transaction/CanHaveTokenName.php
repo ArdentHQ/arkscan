@@ -10,7 +10,7 @@ trait CanHaveTokenName
 {
     public function tokenName(): ?string
     {
-        $cache = new TokenTransferCache();
+        $cache      = new TokenTransferCache();
         $contractId = $this->contractId();
 
         if (! $cache->hasTokenName($contractId)) {
