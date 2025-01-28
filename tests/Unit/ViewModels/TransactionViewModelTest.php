@@ -503,7 +503,7 @@ it('should get token name for contract deployment', function () {
     $contractAddress = faker()->wallet['address'];
 
     Receipt::factory()->create([
-        'id' => $transaction->id,
+        'id'                        => $transaction->id,
         'deployed_contract_address' => $contractAddress,
     ]);
 
@@ -534,7 +534,7 @@ it('should return null if no token name', function () {
     $transaction = Transaction::factory()->contractDeployment()->create();
 
     Receipt::factory()->create([
-        'id' => $transaction->id,
+        'id'                        => $transaction->id,
         'deployed_contract_address' => faker()->wallet['address'],
     ]);
 
@@ -563,7 +563,7 @@ it('should return null for token name if receipt has no deployment_contract_addr
     $transaction = Transaction::factory()->contractDeployment()->create();
 
     Receipt::factory()->create([
-        'id' => $transaction->id,
+        'id'                        => $transaction->id,
         'deployed_contract_address' => null,
     ]);
 

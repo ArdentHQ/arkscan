@@ -65,7 +65,7 @@ it('should handle transaction without a deployed_contract_address', function () 
     $transaction = Transaction::factory()->contractDeployment()->create();
 
     Receipt::factory()->create([
-        'id' => $transaction->id,
+        'id'                        => $transaction->id,
         'deployed_contract_address' => null,
     ]);
 
@@ -88,7 +88,7 @@ it('should handle no response from api', function () {
     $contractAddress = faker()->wallet['address'];
 
     Receipt::factory()->create([
-        'id' => $transaction->id,
+        'id'                        => $transaction->id,
         'deployed_contract_address' => $contractAddress,
     ]);
 
