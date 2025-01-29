@@ -46,14 +46,9 @@ trait CanBeSorted
         $knownWallets = collect(Network::knownWallets())
             ->pluck('name', 'address');
 
-        if ($knownWallets->isEmpty()) {
-            $knownWallets->put(null, null);
-        }
-
         return $query
             ->select([
                 'validator_name' => fn ($query) => $query
-                    ->selectRaw('coalesce((wallets.attributes->\'username\')::text, wallets.address)')
                     ->from(function ($query) {
                         $query
                             ->selectRaw('CONCAT(\'0x\', RIGHT(SUBSTRING(encode(data, \'hex\'), 9), 40)) as vote')
@@ -63,11 +58,15 @@ trait CanBeSorted
                             ->from('transactions', 'validator_transaction');
                     }, 'validator_vote')
                     ->join('wallets', DB::raw('LOWER(wallets.address)'), '=', DB::raw('LOWER(validator_vote.vote)'))
-                    ->join(DB::raw(sprintf(
-                        '(values %s) as known_wallets (address, name)',
-                        $knownWallets->map(fn ($address, $name) => sprintf('(\'%s\',\'%s\')', $address, $name))
-                            ->join(','),
-                    )), DB::raw('LOWER(known_wallets.address)'), '=', DB::raw('LOWER(CONCAT(\'0x\', RIGHT(SUBSTRING(encode(data, \'hex\'), 9), 40)))'), 'left outer'),
+                    ->when($knownWallets->isEmpty(), fn ($query) => $query
+                        ->selectRaw('coalesce((wallets.attributes->\'username\')::text, wallets.address)'))
+                    ->when($knownWallets->isNotEmpty(), fn ($query) => $query
+                        ->selectRaw('coalesce(known_wallets.name, (wallets.attributes->\'username\')::text, wallets.address)')
+                        ->join(DB::raw(sprintf(
+                            '(values %s) as known_wallets (address, name)',
+                            $knownWallets->map(fn ($address, $name) => sprintf('(\'%s\',\'%s\')', $address, $name))
+                                ->join(','),
+                        )), DB::raw('LOWER(known_wallets.address)'), '=', DB::raw('LOWER(CONCAT(\'0x\', RIGHT(SUBSTRING(encode(data, \'hex\'), 9), 40)))'), 'left outer')),
 
                 'transaction_type' => fn ($query) => $query
                     ->selectRaw('coalesce(validator_vote.vote, validator_vote.unvote)')
