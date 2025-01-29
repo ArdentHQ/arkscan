@@ -39,13 +39,13 @@
                 </span>
             </x-ark-footer>
 
-            <livewire:search-modal />
-
             <x-webhooks.currency-update :currency="Settings::currency()" />
 
             @if (config('arkscan.arkconnect.enabled'))
                 <x-arkconnect.validator-toasts />
             @endif
+
+            <livewire:search-modal />
         </x-slot>
     </x-ark-pages-includes-layout-body>
 </html>
