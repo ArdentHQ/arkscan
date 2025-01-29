@@ -173,10 +173,3 @@ jobs:
                   ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
                   ARKSCAN_DB_USERNAME: arkscan_test_db
                   ARKSCAN_DB_PASSWORD: password
-
-            - name: Upload view cache
-              if: success() || failure()
-              uses: actions/upload-artifact@v4
-              with:
-                  name: view-cache
-                  path: storage/framework/views/
