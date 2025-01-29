@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\CacheKnownWallets;
 use App\Enums\SortDirection;
 use App\Http\Livewire\Validators\RecentVotes;
 use App\Models\Receipt;
@@ -9,6 +10,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
@@ -635,6 +637,8 @@ it('should sort name then address in descending order when missing names', funct
 it('should sort known name, then name, then address in ascending order when missing names', function () {
     fakeKnownWallets();
 
+    Config::set('arkscan.networks.development.knownWallets', 'http://some.url');
+
     $validator1 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'username' => 'validator-name',
@@ -675,6 +679,8 @@ it('should sort known name, then name, then address in ascending order when miss
         'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
     ]);
 
+    (new CacheKnownWallets())->handle();
+
     generateReceipts();
 
     Livewire::test(RecentVotes::class)
@@ -690,7 +696,7 @@ it('should sort known name, then name, then address in ascending order when miss
             'vote-item*'.$voteTransaction3->id,
             $voteTransaction3->id,
             'Vote',
-            $validator3->address(),
+            'ACF Hot Wallet',
             'vote-item*'.$voteTransaction1->id,
             $voteTransaction1->id,
             'Vote',
@@ -708,7 +714,7 @@ it('should sort known name, then name, then address in ascending order when miss
             'vote-mobile*'.$voteTransaction3->id,
             $voteTransaction3->id,
             'Vote',
-            $validator3->address(),
+            'ACF Hot Wallet',
             'vote-mobile*'.$voteTransaction1->id,
             $voteTransaction1->id,
             'Vote',
@@ -722,6 +728,8 @@ it('should sort known name, then name, then address in ascending order when miss
 
 it('should sort known name, then name, then address in descending order when missing names', function () {
     fakeKnownWallets();
+
+    Config::set('arkscan.networks.development.knownWallets', 'http://some.url');
 
     $validator1 = new WalletViewModel(Wallet::factory()->activeValidator()->create([
         'attributes' => [
@@ -763,6 +771,8 @@ it('should sort known name, then name, then address in descending order when mis
         'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
     ]);
 
+    (new CacheKnownWallets())->handle();
+
     generateReceipts();
 
     Livewire::test(RecentVotes::class)
@@ -779,7 +789,7 @@ it('should sort known name, then name, then address in descending order when mis
             'vote-item*'.$voteTransaction3->id,
             $voteTransaction3->id,
             'Vote',
-            $validator3->address(),
+            'ACF Hot Wallet',
             'vote-item*'.$voteTransaction2->id,
             $voteTransaction2->id,
             'Vote',
@@ -797,7 +807,7 @@ it('should sort known name, then name, then address in descending order when mis
             'vote-mobile*'.$voteTransaction3->id,
             $voteTransaction3->id,
             'Vote',
-            $validator3->address(),
+            'ACF Hot Wallet',
             'vote-mobile*'.$voteTransaction2->id,
             $voteTransaction2->id,
             'Vote',
