@@ -6,7 +6,7 @@
 @endphp
 
 <div {{ $attributes->class('px-3 sm:px-6 md:px-10 md:mx-auto md:max-w-7xl group last:mb-8 dark:text-theme-dark-200 mt-2') }}>
-    <div class="flex sm:justify-end space-x-2">
+    <div class="flex space-x-2 sm:justify-end">
         <a
             @if ($nextUrl !== null)
                 href="{{ $nextUrl }}"
@@ -18,7 +18,7 @@
                 'button-generic bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-secondary-800 dark:text-theme-secondary-700 select-none' => $nextUrl === null,
             ])
         >
-            <div class="flex items-center justify-center space-x-2">
+            <div class="flex justify-center items-center space-x-2">
                 <x-ark-icon name="arrows.chevron-left-small" size="w-3 h-3" />
 
                 <div>
@@ -39,7 +39,7 @@
                 'button-generic bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-secondary-800 dark:text-theme-secondary-700 select-none' => $previousUrl === null,
             ])
         >
-            <div class="flex items-center justify-center space-x-2">
+            <div class="flex justify-center items-center space-x-2">
                 <div>
                     <span class="hidden sm:inline">Next Block</span>
                     <span class="inline sm:hidden">Next</span>
