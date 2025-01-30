@@ -1,9 +1,13 @@
-@props(['model'])
+@props([
+    'model',
+    'noBottomPadding' => false,
+])
 
 <x-general.page-section.container
     :title="trans('general.confirmations_only')"
     border-class="border-theme-success-200 dark:border-theme-success-500"
     wrapper-container-class="py-2 mx-2 rounded-lg border sm:mx-0 bg-theme-success-100 dark:bg-theme-success-900"
+    :no-bottom-padding="$noBottomPadding"
 >
     <div class="flex items-center space-x-2 divide-x sm:space-x-3 divide-theme-success-200 dark:divide-theme-success-800">
         <div class="flex items-center space-x-2 text-theme-success-700 dark:text-theme-success-500">
