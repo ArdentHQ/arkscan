@@ -18,16 +18,16 @@ it('should determine the type', function (string $type, string $expected) {
         'Transfer',
     ],
     [
-        'validatorRegistration',
-        'Registration',
-    ],
-    [
         'unvote',
         'Unvote',
     ],
     [
+        'validatorRegistration',
+        'Validator Registration',
+    ],
+    [
         'validatorResignation',
-        'Resignation',
+        'Validator Resignation',
     ],
     [
         'usernameRegistration',
