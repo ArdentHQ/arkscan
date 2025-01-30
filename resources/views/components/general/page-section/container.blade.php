@@ -4,9 +4,13 @@
     'wrapperContainerClass' => null,
     'wrapperClass' => 'flex flex-col flex-1 space-y-3 whitespace-nowrap',
     'borderClass' => 'sm:border-theme-secondary-300 dark:border-theme-dark-700',
+    'noBottomPadding' => false,
 ])
 
-<div {{ $attributes->class('px-3 sm:px-6 md:px-10 md:mx-auto md:max-w-7xl group last:mb-8 dark:text-theme-dark-200') }}>
+<div {{ $attributes->class([
+    'px-3 sm:px-6 md:px-10 md:mx-auto md:max-w-7xl group dark:text-theme-dark-200',
+    'last:mb-8' => ! $noBottomPadding,
+]) }}>
     <div class="flex mt-6 sm:mt-0 sm:space-x-3 group-first:mt-0 group-first:sm:-mt-2">
         <div class="hidden flex-col ml-3 sm:flex w-[1.625rem]">
             <div class="hidden -mt-2 w-full border-l-2 sm:block group-first:sm:block border-theme-secondary-300 h-[9px] dark:border-theme-dark-700"></div>
