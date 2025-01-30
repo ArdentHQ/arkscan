@@ -40,10 +40,6 @@ final class MainsailApi
             ->map(fn ($fee) => UnitConverter::parseUnits($fee, 'gwei'))
             ->toArray();
 
-        // TODO: for QA purposes only - remove when ready - https://app.clickup.com/t/86dv7tt1a
-        $fees['min'] = (string) BigNumber::new($fees['min'])->multipliedBy(0.5)->toNumber();
-        $fees['max'] = (string) BigNumber::new($fees['max'])->multipliedBy(1.5)->toNumber();
-
         $cache->setFees($fees);
 
         return $fees;
