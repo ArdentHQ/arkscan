@@ -27,8 +27,8 @@ it('should cache fees', function () {
     MainsailApi::fees();
 
     expect($cache->getFees())->toEqual([
-        'min' => '2500000000',
-        'max' => '7500000000',
+        'min' => '5000000000',
+        'max' => '5000000000',
         'avg' => '5000000000',
     ]);
 });
@@ -61,16 +61,16 @@ it('should update cache', function () {
     MainsailApi::fees();
 
     expect($cache->getFees())->toEqual([
-        'min' => '2500000000',
-        'max' => '7500000000',
+        'min' => '5000000000',
+        'max' => '5000000000',
         'avg' => '5000000000',
     ]);
 
     MainsailApi::fees();
 
     expect($cache->getFees())->toEqual([
-        'min' => '5000000000',
-        'max' => '15000000000',
+        'min' => '10000000000',
+        'max' => '10000000000',
         'avg' => '10000000000',
     ]);
 });
