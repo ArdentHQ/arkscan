@@ -42,6 +42,8 @@ final class CacheTransactionsTokenName extends Command
                 continue;
             }
 
+            $cache->setIsContract($transaction->receipt->deployed_contract_address, true);
+
             $contractAddress = $transaction->receipt->deployed_contract_address;
             if ($cache->hasTokenName($contractAddress)) {
                 continue;
