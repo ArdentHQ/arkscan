@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\Cache\TokenTransferCache;
+use App\Services\Cache\ContractCache;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function ($type, $args) {
@@ -52,7 +52,7 @@ it('should handle failed token transfers with missing data', function () {
     $address = Wallet::factory()->create()->address;
     $amount  = (int) (34 * 1e9);
 
-    (new TokenTransferCache())->setTokenName('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B', 'DARK20');
+    (new ContractCache())->setTokenName('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B', 'DARK20');
 
     $transaction = Transaction::factory()
         ->tokenTransfer($address, $amount, '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Services\Cache\TokenTransferCache;
+use App\Services\Cache\ContractCache;
 
 trait CanHaveTokenName
 {
     public function tokenName(): ?string
     {
-        $cache      = new TokenTransferCache();
+        $cache      = new ContractCache();
         $contractId = $this->contractId();
         if ($contractId === null) {
             return null;

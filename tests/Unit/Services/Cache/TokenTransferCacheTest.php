@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Services\Cache\TokenTransferCache;
+use App\Services\Cache\ContractCache;
 
-beforeEach(fn () => $this->subject = new TokenTransferCache());
+beforeEach(fn () => $this->subject = new ContractCache());
 
 it('should get and set token name', function () {
     expect($this->subject->getTokenName('address'))->toBeNull();
