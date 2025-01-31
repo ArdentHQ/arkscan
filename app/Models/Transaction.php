@@ -222,27 +222,27 @@ final class Transaction extends Model
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['unvotes'] === true, function ($query) {
+                        $query->when($filter['votes'] === true, function ($query) {
                             $query->withScope(UnvoteScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['validator_registration'] === true, function ($query) {
+                        $query->when($filter['validator'] === true, function ($query) {
                             $query->withScope(ValidatorRegistrationScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['validator_resignation'] === true, function ($query) {
+                        $query->when($filter['validator'] === true, function ($query) {
                             $query->withScope(ValidatorResignationScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['username_registration'] === true, function ($query) {
+                        $query->when($filter['username'] === true, function ($query) {
                             $query->withScope(UsernameRegistrationScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['username_resignation'] === true, function ($query) {
+                        $query->when($filter['username'] === true, function ($query) {
                             $query->withScope(UsernameResignationScope::class);
                         });
                     })

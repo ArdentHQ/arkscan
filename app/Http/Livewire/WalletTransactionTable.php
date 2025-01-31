@@ -28,18 +28,15 @@ final class WalletTransactionTable extends TabbedTableComponent
     public ?string $publicKey = null;
 
     public array $filter = [
-        'outgoing'               => true,
-        'incoming'               => true,
-        'transfers'              => true,
-        'multipayments'          => true,
-        'votes'                  => true,
-        'unvotes'                => true,
-        'validator_registration' => true,
-        'validator_resignation'  => true,
-        'username_registration'  => true,
-        'username_resignation'   => true,
-        'contract_deployment'    => true,
-        'others'                 => true,
+        'outgoing'            => true,
+        'incoming'            => true,
+        'transfers'           => true,
+        'multipayments'       => true,
+        'votes'               => true,
+        'validator'           => true,
+        'username'            => true,
+        'contract_deployment' => true,
+        'others'              => true,
     ];
 
     /** @var mixed */
@@ -52,18 +49,15 @@ final class WalletTransactionTable extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'filter.outgoing'               => ['as' => 'outgoing', 'except' => true],
-            'filter.incoming'               => ['as' => 'incoming', 'except' => true],
-            'filter.transfers'              => ['as' => 'transfers', 'except' => true],
-            'filter.multipayments'          => ['as' => 'multipayments', 'except' => true],
-            'filter.votes'                  => ['as' => 'votes', 'except' => true],
-            'filter.unvotes'                => ['as' => 'unvotes', 'except' => true],
-            'filter.validator_registration' => ['as' => 'validator-registration', 'except' => true],
-            'filter.validator_resignation'  => ['as' => 'validator-resignation', 'except' => true],
-            'filter.username_registration'  => ['as' => 'username-registration', 'except' => true],
-            'filter.username_resignation'   => ['as' => 'username-resignation', 'except' => true],
-            'filter.contract_deployment'    => ['as' => 'contract-deployment', 'except' => true],
-            'filter.others'                 => ['as' => 'others', 'except' => true],
+            'filter.outgoing'            => ['as' => 'outgoing', 'except' => true],
+            'filter.incoming'            => ['as' => 'incoming', 'except' => true],
+            'filter.transfers'           => ['as' => 'transfers', 'except' => true],
+            'filter.multipayments'       => ['as' => 'multipayments', 'except' => true],
+            'filter.votes'               => ['as' => 'votes', 'except' => true],
+            'filter.validator'           => ['as' => 'validator', 'except' => true],
+            'filter.username'            => ['as' => 'username', 'except' => true],
+            'filter.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
+            'filter.others'              => ['as' => 'others', 'except' => true],
         ];
     }
 
@@ -145,23 +139,11 @@ final class WalletTransactionTable extends TabbedTableComponent
             return true;
         }
 
-        if ($this->filter['unvotes'] === true) {
+        if ($this->filter['validator'] === true) {
             return true;
         }
 
-        if ($this->filter['validator_registration'] === true) {
-            return true;
-        }
-
-        if ($this->filter['validator_resignation'] === true) {
-            return true;
-        }
-
-        if ($this->filter['username_registration'] === true) {
-            return true;
-        }
-
-        if ($this->filter['username_resignation'] === true) {
+        if ($this->filter['username'] === true) {
             return true;
         }
 
