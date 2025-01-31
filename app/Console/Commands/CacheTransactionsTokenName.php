@@ -31,7 +31,7 @@ final class CacheTransactionsTokenName extends Command
     public function handle(TokenTransferCache $cache): void
     {
         /** @var Collection<int, Transaction> $transactions */
-        $transactions = Transaction::withScope(ContractDeploymentScope::class, ContractMethod::transfer())->get();
+        $transactions = Transaction::withScope(ContractDeploymentScope::class)->get();
 
         foreach ($transactions as $transaction) {
             if ($transaction->receipt === null) {

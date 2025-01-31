@@ -62,7 +62,7 @@ final class TransactionFactory extends Factory
 
     public function tokenTransfer(string $address, int $amount, string $recipient): Factory
     {
-        $payload  = ContractMethod::tokenTransfer();
+        $payload  = ContractMethod::transfer();
         $payload .= str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT);
         $payload .= str_pad(dechex($amount), 64, '0', STR_PAD_LEFT);
 
