@@ -40,7 +40,7 @@ final class MemoryWallet
             return true;
         }
 
-        return (new ContractCache())->getIsContract($this->address());
+        return (new ContractCache())->getIsContract($this->address()) === true;
     }
 
     public function publicKey(): ?string
