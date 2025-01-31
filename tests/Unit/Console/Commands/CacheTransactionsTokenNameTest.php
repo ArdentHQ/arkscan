@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Console\Commands\CacheTransactionsTokenName;
 use App\Models\Receipt;
 use App\Models\Transaction;
-use App\Services\Cache\TokenTransferCache;
+use App\Services\Cache\ContractCache;
 use Illuminate\Support\Facades\Http;
 use function Tests\faker;
 
@@ -23,7 +23,7 @@ it('should execute the command', function () {
         'deployed_contract_address' => $contractAddress,
     ]);
 
-    $cache = new TokenTransferCache();
+    $cache = new ContractCache();
 
     (new CacheTransactionsTokenName())->handle($cache);
 
@@ -31,7 +31,7 @@ it('should execute the command', function () {
 });
 
 it('should not re-cache token name', function () {
-    $cache = new TokenTransferCache();
+    $cache = new ContractCache();
 
     $contractAddress = faker()->wallet['address'];
 
@@ -54,7 +54,7 @@ it('should handle transaction without a receipt', function () {
 
     $contractAddress = faker()->wallet['address'];
 
-    $cache = new TokenTransferCache();
+    $cache = new ContractCache();
 
     (new CacheTransactionsTokenName())->handle($cache);
 
@@ -71,7 +71,7 @@ it('should handle transaction without a deployed_contract_address', function () 
 
     $contractAddress = faker()->wallet['address'];
 
-    $cache = new TokenTransferCache();
+    $cache = new ContractCache();
 
     (new CacheTransactionsTokenName())->handle($cache);
 
@@ -92,7 +92,7 @@ it('should handle no response from api', function () {
         'deployed_contract_address' => $contractAddress,
     ]);
 
-    $cache = new TokenTransferCache();
+    $cache = new ContractCache();
 
     (new CacheTransactionsTokenName())->handle($cache);
 

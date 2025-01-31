@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 
 use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Transaction;
-use App\Services\Cache\TokenTransferCache;
+use App\Services\Cache\ContractCache;
 use App\Services\MainsailApi;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,7 +27,7 @@ final class CacheTransactionsTokenName extends Command
      */
     protected $description = 'Cache the token name for token transfers.';
 
-    public function handle(TokenTransferCache $cache): void
+    public function handle(ContractCache $cache): void
     {
         /** @var Collection<int, Transaction> $transactions */
         $transactions = Transaction::withScope(ContractDeploymentScope::class)->get();
@@ -40,6 +40,8 @@ final class CacheTransactionsTokenName extends Command
             if ($transaction->receipt->deployed_contract_address === null) {
                 continue;
             }
+
+            $cache->setIsContract($transaction->receipt->deployed_contract_address, true);
 
             $contractAddress = $transaction->receipt->deployed_contract_address;
             if ($cache->hasTokenName($contractAddress)) {

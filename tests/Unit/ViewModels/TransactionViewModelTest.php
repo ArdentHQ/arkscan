@@ -8,9 +8,9 @@ use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
+use App\Services\Cache\ContractCache;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
-use App\Services\Cache\TokenTransferCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
@@ -496,7 +496,7 @@ it('should determine if is certain transaction type', function (string $type, ar
 ]);
 
 it('should get token name for contract deployment', function () {
-    $cache = new TokenTransferCache();
+    $cache = new ContractCache();
 
     $transaction = Transaction::factory()->contractDeployment()->create();
 
@@ -515,7 +515,7 @@ it('should get token name for contract deployment', function () {
 });
 
 it('should get token name for token transfer', function () {
-    $cache = new TokenTransferCache();
+    $cache = new ContractCache();
 
     $contractAddress = faker()->wallet['address'];
 
