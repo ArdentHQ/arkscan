@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTO;
 
 use App\Facades\Network;
+use App\Services\Cache\ContractCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Identity;
 
@@ -35,7 +36,11 @@ final class MemoryWallet
             return true;
         }
 
-        return in_array($this->address(), (new WalletCache())->getContractAddresses(), true);
+        if (in_array($this->address(), (new WalletCache())->getContractAddresses(), true)) {
+            return true;
+        }
+
+        return (new ContractCache())->getIsContract($this->address());
     }
 
     public function publicKey(): ?string

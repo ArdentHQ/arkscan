@@ -28,7 +28,7 @@
     </div>
 
     <div>
-        @if ($model->isTransfer() || $model->isTokenTransfer() || $alwaysShowAddress)
+        @if ($model->isTransfer() || $alwaysShowAddress)
             @php ($transactionWallet = $model->sender())
             @if ($isSent)
                 @php ($transactionWallet = $model->recipient())
