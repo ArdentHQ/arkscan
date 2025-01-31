@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\ContractMethod;
 use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Transaction;
 use App\Services\Cache\TokenTransferCache;
