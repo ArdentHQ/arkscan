@@ -19,7 +19,7 @@
         "doctrine/dbal": "^3.2",
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "^3.9",
-        "laravel/framework": "^11.40",
+        "laravel/framework": "^11.41",
         "laravel/horizon": "^5.30",
         "laravel/reverb": "^1.4",
         "laravel/scout": "^10.12",
