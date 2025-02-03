@@ -6,14 +6,13 @@ use App\Console\Commands\CacheKnownWallets;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
 it('should cache the known wallet name if defined', function () {
-    $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
-
-    Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
+    Config::set('arkscan.networks.development.knownWallets', 'https://knownwallets.com/known-wallets.json');
 
     Http::fake(Http::response([
         [
@@ -31,16 +30,14 @@ it('should cache the known wallet name if defined', function () {
         'attributes->username' => 'regular',
     ]);
 
-    (new CacheKnownWallets())->handle();
+    Artisan::call('explorer:cache-known-wallets');
 
     expect(Cache::tags('wallet')->get(md5("name_by_address/$knownWallet->address")))->toBe('Hot Wallet');
     expect(Cache::tags('wallet')->get(md5("name_by_address/$regularWallet->address")))->toBe('regular');
 });
 
 it('should cache the known wallet name if doesnt have validator name', function () {
-    $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
-
-    Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
+    Config::set('arkscan.networks.development.knownWallets', 'https://knownwallets.com/known-wallets.json');
 
     Http::fake(Http::response([
         [
@@ -55,15 +52,13 @@ it('should cache the known wallet name if doesnt have validator name', function 
         'attributes->username' => null,
     ]);
 
-    (new CacheKnownWallets())->handle();
+    Artisan::call('explorer:cache-known-wallets');
 
     expect(Cache::tags('wallet')->get(md5("name_by_address/$wallet->address")))->toBe('Hot Wallet');
 });
 
 it('should forget wallets with resigned usernames', function () {
-    $knownWalletsUrl = 'https://knownwallets.com/known-wallets.json';
-
-    Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
+    Config::set('arkscan.networks.development.knownWallets', 'https://knownwallets.com/known-wallets.json');
 
     Http::fake(Http::response([
         [],
@@ -78,7 +73,7 @@ it('should forget wallets with resigned usernames', function () {
         ],
     ]);
 
-    (new CacheKnownWallets())->handle();
+    Artisan::call('explorer:cache-known-wallets');
 
     expect($cache->getWalletNameByAddress($wallet->address))->toBe('joeblogs');
 
@@ -88,7 +83,7 @@ it('should forget wallets with resigned usernames', function () {
         ],
     ])->save();
 
-    (new CacheKnownWallets())->handle();
+    Artisan::call('explorer:cache-known-wallets');
 
     expect($cache->getWalletNameByAddress($wallet->address))->toBe('joeblogs');
 
@@ -96,7 +91,28 @@ it('should forget wallets with resigned usernames', function () {
         'sender_address' => $wallet->address,
     ]);
 
-    (new CacheKnownWallets())->handle();
+    Artisan::call('explorer:cache-known-wallets');
 
     expect($cache->getWalletNameByAddress($wallet->address))->toBeNull();
+});
+
+it('should force update of known wallets', function () {
+    Config::set('arkscan.networks.development.knownWallets', 'https://knownwallets.com/known-wallets.json');
+
+    $cache = new WalletCache();
+    $cache->setKnown(fn () => [
+        '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+    ]);
+
+    Http::fake(Http::response([], 200));
+
+    Artisan::call('explorer:cache-known-wallets');
+
+    expect($cache->getKnown())->toBe([
+        '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+    ]);
+
+    Artisan::call('explorer:cache-known-wallets', ['--force' => true]);
+
+    expect($cache->getKnown())->toBe([]);
 });

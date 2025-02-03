@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
@@ -679,7 +680,7 @@ it('should sort known name, then name, then address in ascending order when miss
         'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
     ]);
 
-    (new CacheKnownWallets())->handle();
+    Artisan::call('explorer:cache-known-wallets');
 
     generateReceipts();
 
@@ -771,7 +772,7 @@ it('should sort known name, then name, then address in descending order when mis
         'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
     ]);
 
-    (new CacheKnownWallets())->handle();
+    Artisan::call('explorer:cache-known-wallets');
 
     generateReceipts();
 
