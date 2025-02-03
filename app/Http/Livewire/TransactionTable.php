@@ -25,16 +25,13 @@ final class TransactionTable extends Component
     use HasTablePagination;
 
     public array $filter = [
-        'transfers'              => true,
-        'multipayments'          => true,
-        'votes'                  => true,
-        'unvotes'                => true,
-        'validator_registration' => true,
-        'validator_resignation'  => true,
-        'username_registration'  => true,
-        'username_resignation'   => true,
-        'contract_deployment'    => true,
-        'others'                 => true,
+        'transfers'           => true,
+        'multipayments'       => true,
+        'votes'               => true,
+        'validator'           => true,
+        'username'            => true,
+        'contract_deployment' => true,
+        'others'              => true,
     ];
 
     /** @var mixed */
@@ -46,16 +43,13 @@ final class TransactionTable extends Component
     public function queryString(): array
     {
         return [
-            'transfers'              => ['except' => true],
-            'multipayments'          => ['except' => true],
-            'votes'                  => ['except' => true],
-            'unvotes'                => ['except' => true],
-            'validator_registration' => ['except' => true],
-            'validator_resignation'  => ['except' => true],
-            'username_registration'  => ['except' => true],
-            'username_resignation'   => ['except' => true],
-            'contract_deployment'    => ['except' => true],
-            'others'                 => ['except' => true],
+            'transfers'           => ['except' => true],
+            'multipayments'       => ['except' => true],
+            'votes'               => ['except' => true],
+            'validator'           => ['except' => true],
+            'username'            => ['except' => true],
+            'contract_deployment' => ['except' => true],
+            'others'              => ['except' => true],
         ];
     }
 
@@ -109,23 +103,11 @@ final class TransactionTable extends Component
             return true;
         }
 
-        if ($this->filter['unvotes'] === true) {
+        if ($this->filter['validator'] === true) {
             return true;
         }
 
-        if ($this->filter['validator_registration'] === true) {
-            return true;
-        }
-
-        if ($this->filter['validator_resignation'] === true) {
-            return true;
-        }
-
-        if ($this->filter['username_registration'] === true) {
-            return true;
-        }
-
-        if ($this->filter['username_resignation'] === true) {
+        if ($this->filter['username'] === true) {
             return true;
         }
 

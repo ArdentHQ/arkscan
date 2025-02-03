@@ -26,8 +26,8 @@ it('should execute the command', function () {
     (new CacheGasTrackerData())->handle();
 
     expect($cache->getFees())->toEqual([
-        'min' => '2500000000',
-        'max' => '7500000000',
+        'min' => '5000000000',
+        'max' => '5000000000',
         'avg' => '5000000000',
     ]);
 });

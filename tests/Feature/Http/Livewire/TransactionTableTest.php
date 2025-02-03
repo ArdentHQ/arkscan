@@ -73,45 +73,36 @@ it('should toggle all filters when "select all" is selected', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->assertSet('filter', [
-            'transfers'              => true,
-            'multipayments'          => true,
-            'votes'                  => true,
-            'unvotes'                => true,
-            'validator_registration' => true,
-            'validator_resignation'  => true,
-            'username_registration'  => true,
-            'username_resignation'   => true,
-            'contract_deployment'    => true,
-            'others'                 => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.transfers', true)
         ->assertSet('selectAllFilters', true)
         ->set('selectAllFilters', false)
         ->assertSet('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->set('selectAllFilters', true)
         ->assertSet('filter', [
-            'transfers'              => true,
-            'multipayments'          => true,
-            'votes'                  => true,
-            'unvotes'                => true,
-            'validator_registration' => true,
-            'validator_resignation'  => true,
-            'username_registration'  => true,
-            'username_resignation'   => true,
-            'contract_deployment'    => true,
-            'others'                 => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
         ]);
 });
 
@@ -119,16 +110,13 @@ it('should toggle "select all" when all filters are selected', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->assertSet('filter', [
-            'transfers'              => true,
-            'multipayments'          => true,
-            'votes'                  => true,
-            'unvotes'                => true,
-            'validator_registration' => true,
-            'validator_resignation'  => true,
-            'username_registration'  => true,
-            'username_resignation'   => true,
-            'contract_deployment'    => true,
-            'others'                 => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.transfers', false)
@@ -148,16 +136,13 @@ it('should filter by transfer transactions', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => true,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
+            'transfers'           => true,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertSee($transfer->id)
         ->assertDontSee($vote->id);
@@ -173,16 +158,13 @@ it('should filter by multipayment transactions', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => true,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
+            'transfers'           => false,
+            'multipayments'       => true,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertSee($multipayment->id)
         ->assertDontSee($transfer->id);
@@ -192,32 +174,11 @@ it('should filter by vote transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $wallet = Wallet::factory()->activeValidator()->create();
-    $vote   = Transaction::factory()->vote($wallet->address)->create([
+
+    $vote = Transaction::factory()->vote($wallet->address)->create([
         'sender_public_key' => $wallet->public_key,
     ]);
 
-    Livewire::test(TransactionTable::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => true,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
-        ])
-        ->assertSee($vote->id)
-        ->assertDontSee($transfer->id);
-});
-
-it('should filter by unvote transactions', function () {
-    $transfer = Transaction::factory()->transfer()->create();
-
-    $wallet = Wallet::factory()->activeValidator()->create();
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $wallet->public_key,
     ]);
@@ -225,51 +186,28 @@ it('should filter by unvote transactions', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => true,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => true,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
+        ->assertSee($vote->id)
         ->assertSee($unvote->id)
         ->assertDontSee($transfer->id);
 });
 
-it('should filter by validator registration transactions', function () {
+it('should filter by validator transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
-    $wallet       = Wallet::factory()->activeValidator()->create();
+    $wallet = Wallet::factory()->activeValidator()->create();
+
     $registration = Transaction::factory()->validatorRegistration()->create([
         'sender_public_key' => $wallet->public_key,
     ]);
 
-    Livewire::test(TransactionTable::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => true,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
-        ])
-        ->assertSee($registration->id)
-        ->assertDontSee($transfer->id);
-});
-
-it('should filter by validator resignation transactions', function () {
-    $transfer = Transaction::factory()->transfer()->create();
-
-    $wallet      = Wallet::factory()->activeValidator()->create();
     $resignation = Transaction::factory()->validatorResignation()->create([
         'sender_public_key' => $wallet->public_key,
     ]);
@@ -277,63 +215,38 @@ it('should filter by validator resignation transactions', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => true,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => true,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
+        ->assertSee($registration->id)
         ->assertSee($resignation->id)
         ->assertDontSee($transfer->id);
 });
 
-it('should filter by username registration transactions', function () {
+it('should filter by username transactions', function () {
     $transfer = Transaction::factory()->transfer()->create();
 
     $registration = Transaction::factory()->usernameRegistration()->create();
-
-    Livewire::test(TransactionTable::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => true,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
-        ])
-        ->assertSee($registration->id)
-        ->assertDontSee($transfer->id);
-});
-
-it('should filter by username resignation transactions', function () {
-    $transfer = Transaction::factory()->transfer()->create();
 
     $resignation = Transaction::factory()->usernameResignation()->create();
 
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => true,
-            'contract_deployment'    => false,
-            'others'                 => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => true,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
+        ->assertSee($registration->id)
         ->assertSee($resignation->id)
         ->assertDontSee($transfer->id);
 });
@@ -349,16 +262,13 @@ it('should filter by contract deployment transactions', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => true,
-            'others'                 => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => true,
+            'others'              => false,
         ])
         ->assertSee($contractDeployment->id)
         ->assertDontSee($transfer->id);
@@ -372,16 +282,13 @@ it('should filter by other transactions', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => true,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => true,
         ])
         ->assertSee($other->id)
         ->assertDontSee($transfer->id);
@@ -395,16 +302,13 @@ it('should show no transactions if no type filter', function () {
     Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
@@ -415,27 +319,22 @@ it('should get the filter values via a getter', function () {
     $instance = Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => true,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => true,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => true,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => true,
         ])
         ->instance();
 
     expect($instance->transfers)->toBeFalse();
     expect($instance->multipayments)->toBeFalse();
     expect($instance->votes)->toBeTrue();
-    expect($instance->unvotes)->toBeFalse();
-    expect($instance->validator_registration)->toBeFalse();
-    expect($instance->validator_resignation)->toBeFalse();
-    expect($instance->username_registration)->toBeFalse();
-    expect($instance->username_resignation)->toBeFalse();
+    expect($instance->validator)->toBeFalse();
+    expect($instance->username)->toBeFalse();
+    expect($instance->contract_deployment)->toBeFalse();
     expect($instance->others)->toBeTrue();
 });
 
@@ -443,37 +342,30 @@ it('should set the filter values via a setter', function () {
     $instance = Livewire::test(TransactionTable::class)
         ->call('setIsReady')
         ->set('filter', [
-            'transfers'              => false,
-            'multipayments'          => false,
-            'votes'                  => false,
-            'unvotes'                => false,
-            'validator_registration' => false,
-            'validator_resignation'  => false,
-            'username_registration'  => false,
-            'username_resignation'   => false,
-            'contract_deployment'    => false,
-            'others'                 => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->instance();
 
-    $instance->transfers              = true;
-    $instance->multipayments          = true;
-    $instance->votes                  = true;
-    $instance->unvotes                = true;
-    $instance->validator_registration = true;
-    $instance->validator_resignation  = true;
-    $instance->username_registration  = true;
-    $instance->username_resignation   = true;
-    $instance->others                 = true;
+    $instance->transfers           = true;
+    $instance->multipayments       = true;
+    $instance->votes               = true;
+    $instance->validator           = true;
+    $instance->username            = true;
+    $instance->contract_deployment = true;
+    $instance->others              = true;
 
     expect($instance->transfers)->toBeTrue();
     expect($instance->multipayments)->toBeTrue();
     expect($instance->votes)->toBeTrue();
-    expect($instance->unvotes)->toBeTrue();
-    expect($instance->validator_registration)->toBeTrue();
-    expect($instance->validator_resignation)->toBeTrue();
-    expect($instance->username_registration)->toBeTrue();
-    expect($instance->username_resignation)->toBeTrue();
+    expect($instance->validator)->toBeTrue();
+    expect($instance->username)->toBeTrue();
+    expect($instance->contract_deployment)->toBeTrue();
     expect($instance->others)->toBeTrue();
 });
 

@@ -31,28 +31,13 @@
             />
 
             <x-tables.filters.includes.checkbox
-                name="unvotes"
-                :label="trans('tables.filters.transactions.unvotes')"
+                name="validator"
+                :label="trans('tables.filters.transactions.validator')"
             />
 
             <x-tables.filters.includes.checkbox
-                name="validator_registration"
-                :label="trans('tables.filters.transactions.validator_registration')"
-            />
-
-            <x-tables.filters.includes.checkbox
-                name="validator_resignation"
-                :label="trans('tables.filters.transactions.validator_resignation')"
-            />
-
-            <x-tables.filters.includes.checkbox
-                name="username_registration"
-                :label="trans('tables.filters.transactions.username_registration')"
-            />
-
-            <x-tables.filters.includes.checkbox
-                name="username_resignation"
-                :label="trans('tables.filters.transactions.username_resignation')"
+                name="username"
+                :label="trans('tables.filters.transactions.username')"
             />
 
             <x-tables.filters.includes.checkbox
