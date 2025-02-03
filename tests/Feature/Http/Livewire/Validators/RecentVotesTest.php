@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheKnownWallets;
 use App\Enums\SortDirection;
 use App\Http\Livewire\Validators\RecentVotes;
 use App\Models\Receipt;

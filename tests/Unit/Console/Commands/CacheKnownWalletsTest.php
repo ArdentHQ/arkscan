@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheKnownWallets;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
