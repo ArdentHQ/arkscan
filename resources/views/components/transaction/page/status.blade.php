@@ -11,7 +11,7 @@
 @endphp
 
 <x-general.page-section.container
-    :title="trans('general.confirmations_only')"
+    :title="trans('pages.transaction.status.header')"
     wrapper-class="flex flex-col flex-1 whitespace-nowrap"
     :wrapper-container-class="Arr::toCssClasses(['py-2 mx-2 rounded-lg border sm:mx-0 sm:py-4',
         'bg-theme-success-100 dark:bg-theme-success-900 border-theme-success-200 dark:border-theme-success-500' => ! $hasFailedStatus,
