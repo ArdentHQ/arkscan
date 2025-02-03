@@ -21,7 +21,7 @@ final class CacheKnownWallets extends Command
      *
      * @var string
      */
-    protected $signature = 'explorer:cache-known-wallets';
+    protected $signature = 'explorer:cache-known-wallets {--force}';
 
     /**
      * The console command description.
@@ -34,7 +34,10 @@ final class CacheKnownWallets extends Command
     {
         $cache = app(WalletCache::class);
 
-        $cache->setKnown(fn () => Http::get(Network::knownWalletsUrl())->json());
+        $cache->setKnown(
+            fn () => Http::get(Network::knownWalletsUrl())->json(),
+            $this->option('force'),
+        );
 
         $knownWallets = collect(Network::knownWallets());
 

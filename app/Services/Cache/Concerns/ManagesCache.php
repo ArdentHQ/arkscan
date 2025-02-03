@@ -47,11 +47,7 @@ trait ManagesCache
      */
     private function forget(string $key)
     {
-        // @codeCoverageIgnoreStart
-        // This method is currently not used in the application, keeping it for
-        // completeness and potential future use.
         return $this->getCache()->forget(md5($key));
-        // @codeCoverageIgnoreEnd
     }
 
     private function blockTimeTTL(): int
