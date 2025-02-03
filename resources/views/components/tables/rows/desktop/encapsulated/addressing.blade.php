@@ -28,12 +28,12 @@
     </div>
 
     <div>
-        @if ($model->isTransfer() || $alwaysShowAddress)
-            @php ($transactionWallet = $model->sender())
-            @if ($isSent)
-                @php ($transactionWallet = $model->recipient())
-            @endif
+        @php ($transactionWallet = $model->sender())
+        @if ($isSent)
+            @php ($transactionWallet = $model->recipient())
+        @endif
 
+        @if ($model->isTransfer() || $alwaysShowAddress)
             @unless ($withoutLink)
                 <a
                     class="link"
@@ -60,7 +60,12 @@
             @endunless
         @else
             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                @lang('tables.transactions.contract')
+                <a
+                    class="whitespace-nowrap link"
+                    href="{{ route('wallet', $transactionWallet->address) }}"
+                >
+                    @lang('tables.transactions.contract')
+                </a>
             </span>
         @endif
     </div>
