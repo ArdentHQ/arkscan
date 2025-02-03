@@ -15,7 +15,7 @@ trait HasValidator
 
     public function address(): string
     {
-        return $this->validator()->address() ?? 'Genesis';
+        return $this->validator()->address();
     }
 
     public function hasUsername(): bool
