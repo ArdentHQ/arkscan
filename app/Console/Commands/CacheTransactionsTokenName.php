@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\ContractMethod;
 use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Transaction;
 use App\Services\Cache\ContractCache;
@@ -41,8 +40,6 @@ final class CacheTransactionsTokenName extends Command
             if ($transaction->receipt->deployed_contract_address === null) {
                 continue;
             }
-
-            $cache->setIsContract($transaction->receipt->deployed_contract_address, true);
 
             $contractAddress = $transaction->receipt->deployed_contract_address;
             if ($cache->hasTokenName($contractAddress)) {

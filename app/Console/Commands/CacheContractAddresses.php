@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Receipt;
-use App\Services\Cache\WalletCache;
+use App\Services\Cache\ContractCache;
 use Illuminate\Console\Command;
 
 class CacheContractAddresses extends Command
@@ -31,6 +31,6 @@ class CacheContractAddresses extends Command
             ->pluck('deployed_contract_address')
             ->toArray();
 
-        (new WalletCache())->setContractAddresses($addresses);
+        (new ContractCache())->setContractAddresses($addresses);
     }
 }

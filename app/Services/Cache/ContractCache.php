@@ -28,15 +28,14 @@ final class ContractCache implements Contract
         return $this->has('name/'.$contractAddress);
     }
 
-    public function getIsContract(string $contractAddress): bool
+    public function getContractAddresses(): array
     {
-        // dump($this->get('is_contract/'.$contractAddress), $contractAddress);
-        return $this->get('is_contract/'.$contractAddress) === true;
+        return $this->get('contract_addresses', []);
     }
 
-    public function setIsContract(string $contractAddress, bool $isContract): void
+    public function setContractAddresses(array $addresses): void
     {
-        $this->put('is_contract/'.$contractAddress, $isContract);
+        $this->put('contract_addresses', $addresses);
     }
 
     public function getCache(): TaggedCache
