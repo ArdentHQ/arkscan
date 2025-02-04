@@ -32,7 +32,7 @@ it('should make a view model collection', function ($modelClass, $viewModel) {
     for ($i = 0; $i < 10; $i++) {
         try {
             $models->add($modelClass::factory()->create());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if (str_contains($e->getMessage(), 'duplicate key value violates')) {
                 $i--;
             }
