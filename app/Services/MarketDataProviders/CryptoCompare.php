@@ -7,7 +7,6 @@ namespace App\Services\MarketDataProviders;
 use App\DTO\MarketData;
 use App\Facades\Network;
 use App\Models\Exchange;
-use App\Services\Cache\CryptoDataCache;
 use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;

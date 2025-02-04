@@ -6,7 +6,6 @@ namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
 use App\Services\Cache\Concerns\ManagesCache;
-use Closure;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
