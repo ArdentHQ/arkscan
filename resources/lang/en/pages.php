@@ -133,6 +133,7 @@ return [
         ],
 
         'status' => [
+            'header'         => 'Status',
             'failed_message' => 'Error encountered during contract execution',
         ],
     ],
