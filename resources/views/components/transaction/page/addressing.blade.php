@@ -9,7 +9,7 @@
         :transaction="$transaction"
     >
         <x-transaction.page.section-detail.address
-            :address="$transaction->sender()->address()"
+            :wallet="$transaction->sender()"
             class="inline-block"
         />
     </x-transaction.page.section-detail.row>
@@ -20,7 +20,7 @@
         value-class="min-w-0"
     >
         <x-transaction.page.section-detail.address
-            :address="$transaction->recipient()->address()"
+            :wallet="$transaction->recipient()"
             :is-contract="$transaction->recipient()->isContract()"
             class="inline-block"
         />

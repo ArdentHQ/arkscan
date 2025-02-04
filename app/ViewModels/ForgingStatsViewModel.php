@@ -24,16 +24,6 @@ final class ForgingStatsViewModel implements ViewModel
         return new WalletViewModel($this->forgingStats->validator);
     }
 
-    public function address(): ?string
-    {
-        return $this->validator()?->address();
-    }
-
-    public function hasUsername(): bool
-    {
-        return $this->validator()?->hasUsername() !== null;
-    }
-
     public function username(): ?string
     {
         return $this->validator()?->username();

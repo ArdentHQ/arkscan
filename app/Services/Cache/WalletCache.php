@@ -20,8 +20,12 @@ final class WalletCache implements Contract
         return $this->get('known', []);
     }
 
-    public function setKnown(Closure $callback): array
+    public function setKnown(Closure $callback, bool $force = false): array
     {
+        if ($force) {
+            $this->forget('known');
+        }
+
         return $this->remember('known', now()->addDay(), $callback);
     }
 
