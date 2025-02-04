@@ -17,10 +17,7 @@ return new class() extends Migration {
 
         Schema::table('forging_stats', function (Blueprint $table) {
             $table->dropColumn('public_key');
-            // $table->string('public_key')->nullable()->change();
             $table->string('address');
         });
-
-        // dd('yo');
     }
 };

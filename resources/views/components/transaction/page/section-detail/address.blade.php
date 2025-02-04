@@ -1,7 +1,12 @@
 @props([
-    'address',
+    'wallet' => null,
+    'address' => null,
     'isContract' => false,
 ])
+
+@if ($wallet && ! $address)
+    @php ($address = $wallet->address())
+@endif
 
 <div class="flex justify-end items-center sm:justify-start">
     <a
@@ -9,11 +14,17 @@
         class="min-w-0 link"
     >
         <div class="hidden md:inline">
-            <x-truncate-dynamic>{{ $address }}</x-truncate-dynamic>
+            @if ($wallet && $wallet->hasUsername())
+                {{ $wallet->username() }}
+            @else
+                <x-truncate-dynamic>{{ $address }}</x-truncate-dynamic>
+            @endif
         </div>
 
         <div class="md:hidden">
-            @unless ($isContract)
+            @if ($wallet && $wallet->hasUsername())
+                {{ $wallet->username() }}
+            @elseif (! $isContract)
                 <x-truncate-middle>
                     {{ $address }}
                 </x-truncate-middle>
