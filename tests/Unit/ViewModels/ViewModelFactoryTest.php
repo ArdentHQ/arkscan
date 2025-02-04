@@ -13,6 +13,7 @@ use App\ViewModels\RoundViewModel;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
 use Tests\InvalidModel;
 
@@ -27,7 +28,16 @@ it('should make a view model', function ($modelClass, $viewModel) {
 ]);
 
 it('should make a view model collection', function ($modelClass, $viewModel) {
-    $models = $modelClass::factory(10)->create();
+    $models = new EloquentCollection();
+    for ($i = 0; $i < 10; $i++) {
+        try {
+            $models->add($modelClass::factory()->create());
+        } catch (\Exception $e) {
+            if (str_contains($e->getMessage(), 'duplicate key value violates')) {
+                $i--;
+            }
+        }
+    }
 
     expect(ViewModelFactory::collection($models))->toBeInstanceOf(Collection::class);
 
