@@ -15,24 +15,6 @@ final class CryptoDataCache implements Contract
 {
     use ManagesCache;
 
-    public function setHistorical(string $source, string $target, string $format, Closure $callback): Collection
-    {
-        $data = $callback();
-
-        $this->put(sprintf('historical/%s/%s/%s', $source, $target, $format), $data);
-
-        return $data;
-    }
-
-    public function setHistoricalHourly(string $source, string $target, string $format, int $limit, Closure $callback): Collection
-    {
-        $data = $callback();
-
-        $this->put(sprintf('historical/%s/%s/%s/%s', $source, $target, $format, $limit), $data);
-
-        return $data;
-    }
-
     public function getPrices(string $currency): Collection
     {
         return $this->get(sprintf('prices/%s', $currency), collect([]));

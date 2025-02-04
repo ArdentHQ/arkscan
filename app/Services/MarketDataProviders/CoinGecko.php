@@ -19,81 +19,73 @@ final class CoinGecko extends AbstractMarketDataProvider
 {
     public function historical(string $source, string $target, string $format = 'Y-m-d'): Collection
     {
-        $cache = new CryptoDataCache();
+        $params = [
+            'vs_currency' => Str::lower($target),
+            'days'        => min(365, Network::epoch()->diffInDays() + 1), // +1 to handle edge case where first day is not returned in full depending on time of day
+            'interval'    => 'daily',
+        ];
 
-        return $cache->setHistorical($source, $target, $format, function () use ($source, $target, $format, $cache): Collection {
-            $params = [
-                'vs_currency' => Str::lower($target),
-                'days'        => min(365, Network::epoch()->diffInDays() + 1), // +1 to handle edge case where first day is not returned in full depending on time of day
-                'interval'    => 'daily',
-            ];
+        $data = null;
 
-            $data = null;
+        try {
+            $data = Http::get(
+                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                $params
+            )->json();
+        } catch (\Throwable) {
+            //
+        }
 
-            try {
-                $data = Http::get(
-                    'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
-                    $params
-                )->json();
-            } catch (\Throwable) {
-                //
-            }
+        if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
+            /** @var Collection<int, mixed> */
+            return collect([]);
+        }
 
-            if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
-                /** @var Collection<int, mixed> */
-                return collect([]);
-            }
+        // Store value in cache for others to use (statistics)
+        (new CryptoDataCache())->setHistoricalFullResponse($source, $target, $data);
 
-            // Store value in cache for others to use (statistics)
-            $cache->setHistoricalFullResponse($source, $target, $data);
+        /** @var array<int, array<int, string>> */
+        $prices = $data['prices'];
 
-            /** @var array<int, array<int, string>> */
-            $prices = $data['prices'];
-
-            return collect($prices)
-                ->mapWithKeys(fn ($item) => [Carbon::createFromTimestampMs($item[0])->format($format) => $item[1]]);
-        });
+        return collect($prices)
+            ->mapWithKeys(fn ($item) => [Carbon::createFromTimestampMs($item[0])->format($format) => $item[1]]);
     }
 
     public function historicalHourly(string $source, string $target, int $limit = 23, string $format = 'Y-m-d H:i:s'): Collection
     {
-        $cache = new CryptoDataCache();
+        $params = [
+            'vs_currency' => Str::lower($target),
+            'days'        => strval(ceil($limit / 24)),
+        ];
 
-        return $cache->setHistoricalHourly($source, $target, $format, $limit, function () use ($source, $target, $format, $limit, $cache): Collection {
-            $params = [
-                'vs_currency' => Str::lower($target),
-                'days'        => strval(ceil($limit / 24)),
-            ];
+        $data = null;
 
-            $data = null;
+        try {
+            $data = Http::get(
+                'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
+                $params
+            )->json();
+        } catch (\Throwable) {
+            //
+        }
 
-            try {
-                $data = Http::get(
-                    'https://api.coingecko.com/api/v3/coins/'.Str::lower($source).'/market_chart',
-                    $params
-                )->json();
-            } catch (\Throwable) {
-                //
-            }
+        if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
+            /** @var Collection<int, mixed> */
+            return collect([]);
+        }
 
-            if ($this->isEmptyResponse($data) || $this->isThrottledResponse($data)) {
-                /** @var Collection<int, mixed> */
-                return collect([]);
-            }
+        // Store value in cache for others to use (statistics)
+        (new CryptoDataCache())->setHistoricalHourlyFullResponse($source, $target, $data);
 
-            // Store value in cache for others to use (statistics)
-            $cache->setHistoricalHourlyFullResponse($source, $target, $data);
-
-            /** @var array<string, array<string, string>> $data */
-            return collect($data['prices'])
-                ->groupBy(fn ($item) => Carbon::createFromTimestampMsUTC($item[0])->format('Y-m-d H:00:00'))
-                ->mapWithKeys(fn ($items, $day) => [
-                    /* @phpstan-ignore-next-line */
-                    Carbon::createFromFormat('Y-m-d H:i:s', $day)->format($format) => collect($items)->average(fn ($item) => $item[1]),
-                ])
-                // Take the last $limit items (since the API returns a whole days and the limit is per hour)
-                ->splice(-$limit - 1);
-        });
+        /** @var array<string, array<string, string>> $data */
+        return collect($data['prices'])
+            ->groupBy(fn ($item) => Carbon::createFromTimestampMsUTC($item[0])->format('Y-m-d H:00:00'))
+            ->mapWithKeys(fn ($items, $day) => [
+                /* @phpstan-ignore-next-line */
+                Carbon::createFromFormat('Y-m-d H:i:s', $day)->format($format) => collect($items)->average(fn ($item) => $item[1]),
+            ])
+            // Take the last $limit items (since the API returns a whole days and the limit is per hour)
+            ->splice(-$limit - 1);
     }
 
     public function priceAndPriceChange(string $baseCurrency, Collection $targetCurrencies): Collection
