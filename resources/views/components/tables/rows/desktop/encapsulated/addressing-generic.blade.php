@@ -36,7 +36,7 @@
 
         <x-dynamic-tooltip tooltip="{{$model->isTransfer() && $recipientHasUsername ? $recipient->username() : null}}">
             <div class="min-w-0 truncate">
-                @if ($model->isTransfer() || $model->isTokenTransfer())
+                @if ($model->isTransfer())
                     <a
                         class="whitespace-nowrap link"
                         href="{{ route('wallet', $recipient->address()) }}"

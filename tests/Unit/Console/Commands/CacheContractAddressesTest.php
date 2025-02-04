@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 use App\Console\Commands\CacheContractAddresses;
 use App\Models\Receipt;
-use App\Services\Cache\WalletCache;
+use App\Services\Cache\ContractCache;
 
 it('should execute the command', function () {
     (new CacheContractAddresses())->handle();
 
-    $cache = new WalletCache();
+    $cache = new ContractCache();
 
     expect($cache->getContractAddresses())->toEqual([]);
 });
 
 it('should cache contract addresses', function () {
-    $cache = new WalletCache();
+    $cache = new ContractCache();
 
     expect($cache->getContractAddresses())->toEqual([]);
 

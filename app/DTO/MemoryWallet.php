@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTO;
 
 use App\Facades\Network;
+use App\Services\Cache\ContractCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Identity;
 
@@ -24,7 +25,7 @@ final class MemoryWallet
         return new static(Identity::address($publicKey), $publicKey);
     }
 
-    public function address(): ?string
+    public function address(): string
     {
         return $this->address;
     }
@@ -35,7 +36,7 @@ final class MemoryWallet
             return true;
         }
 
-        return in_array($this->address(), (new WalletCache())->getContractAddresses(), true);
+        return in_array($this->address(), (new ContractCache())->getContractAddresses(), true);
     }
 
     public function publicKey(): ?string

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\DTO\MemoryWallet;
 use App\Facades\Network;
 use App\Models\Wallet;
+use App\Services\Cache\ContractCache;
 use App\Services\Cache\WalletCache;
 
 it('should make an instance from a address', function () {
@@ -48,4 +49,12 @@ it('should check if address is not a known contract', function () {
     $wallet = MemoryWallet::fromAddress('0x6E4C6817a95263B758bbC52e87Ce8e759eD0B084');
 
     expect($wallet->isContract())->toBeFalse();
+});
+
+it('should check if address is a deployed contract', function () {
+    (new ContractCache())->setContractAddresses(['0x6E4C6817a95263B758bbC52e87Ce8e759eD0B084']);
+
+    $wallet = MemoryWallet::fromAddress('0x6E4C6817a95263B758bbC52e87Ce8e759eD0B084');
+
+    expect($wallet->isContract())->toBeTrue();
 });
