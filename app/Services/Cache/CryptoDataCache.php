@@ -6,7 +6,6 @@ namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
 use App\Services\Cache\Concerns\ManagesCache;
-use Closure;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -14,24 +13,6 @@ use Illuminate\Support\Facades\Cache;
 final class CryptoDataCache implements Contract
 {
     use ManagesCache;
-
-    public function setHistorical(string $source, string $target, string $format, Closure $callback): Collection
-    {
-        $data = $callback();
-
-        $this->put(sprintf('historical/%s/%s/%s', $source, $target, $format), $data);
-
-        return $data;
-    }
-
-    public function setHistoricalHourly(string $source, string $target, string $format, int $limit, Closure $callback): Collection
-    {
-        $data = $callback();
-
-        $this->put(sprintf('historical/%s/%s/%s/%s', $source, $target, $format, $limit), $data);
-
-        return $data;
-    }
 
     public function getPrices(string $currency): Collection
     {
@@ -43,11 +24,6 @@ final class CryptoDataCache implements Contract
         $this->put(sprintf('prices/%s', $currency), $prices);
 
         return $prices;
-    }
-
-    public function getCache(): TaggedCache
-    {
-        return Cache::tags('crypto_compare');
     }
 
     // Add caches for volume in all currencies
@@ -85,5 +61,10 @@ final class CryptoDataCache implements Contract
     public function getHistoricalHourlyFullResponse(string $source, string $target): array
     {
         return $this->get(sprintf('historical_full/hourly/%s/%s', $source, $target), []);
+    }
+
+    public function getCache(): TaggedCache
+    {
+        return Cache::tags('crypto_data');
     }
 }
