@@ -27,11 +27,6 @@ final class CryptoDataCache implements Contract
         return $prices;
     }
 
-    public function getCache(): TaggedCache
-    {
-        return Cache::tags('crypto_compare');
-    }
-
     // Add caches for volume in all currencies
     public function getVolume(string $currency): ?string
     {
@@ -67,5 +62,10 @@ final class CryptoDataCache implements Contract
     public function getHistoricalHourlyFullResponse(string $source, string $target): array
     {
         return $this->get(sprintf('historical_full/hourly/%s/%s', $source, $target), []);
+    }
+
+    public function getCache(): TaggedCache
+    {
+        return Cache::tags('crypto_data');
     }
 }
