@@ -16,8 +16,10 @@ use App\Repositories\TransactionRepository;
 use App\Repositories\TransactionRepositoryWithCache;
 use App\Repositories\WalletRepository;
 use App\Repositories\WalletRepositoryWithCache;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\ServiceProvider;
 use LogicException;
 
@@ -47,6 +49,17 @@ final class EloquentServiceProvider extends ServiceProvider
             $scope->apply($query, $query->getModel());
 
             return $query;
+        });
+
+        QueryBuilder::macro('joinSubLateral', function ($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false) {
+            /** @var QueryBuilder $this */
+            [$query, $bindings] = $this->createSub($query);
+
+            $expression = 'LATERAL ('.$query.') as '.$this->grammar->wrapTable($as);
+
+            $this->addBinding($bindings, 'join');
+
+            return $this->join(new Expression($expression), $first, $operator, $second, $type, $where);
         });
     }
 
