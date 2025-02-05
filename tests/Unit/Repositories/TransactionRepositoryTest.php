@@ -6,7 +6,6 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Repositories\TransactionRepository;
 use App\Services\BigNumber;
-use Illuminate\Support\Collection;
 
 beforeEach(fn () => $this->subject = new TransactionRepository());
 
@@ -34,7 +33,7 @@ describe('allByWallet', function () {
     });
 
     it('should find a multipayment transaction', function () {
-        $wallet = Wallet::factory()->create();
+        $wallet      = Wallet::factory()->create();
         $otherWallet = Wallet::factory()->create();
 
         $transaction = Transaction::factory()
@@ -52,7 +51,7 @@ describe('allByWallet', function () {
     });
 
     it('should find a multipayment transaction with multiple recipients', function () {
-        $wallet = Wallet::factory()->create();
+        $wallet      = Wallet::factory()->create();
         $otherWallet = Wallet::factory()->create();
 
         $transaction = Transaction::factory()
