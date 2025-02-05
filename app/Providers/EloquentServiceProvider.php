@@ -53,7 +53,12 @@ final class EloquentServiceProvider extends ServiceProvider
 
         QueryBuilder::macro('joinSubLateral', function ($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false) {
             /** @var QueryBuilder $this */
-            [$query, $bindings] = $this->createSub($query);
+
+            /** @var array $subQuery */
+            $subQuery = $this->createSub($query);
+
+            $query    = $subQuery[0];
+            $bindings = $subQuery[1];
 
             $expression = 'LATERAL ('.$query.') as '.$this->grammar->wrapTable($as);
 
