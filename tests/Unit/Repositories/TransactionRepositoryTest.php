@@ -3,31 +3,121 @@
 declare(strict_types=1);
 
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Repositories\TransactionRepository;
+use App\Services\BigNumber;
 use Illuminate\Support\Collection;
 
 beforeEach(fn () => $this->subject = new TransactionRepository());
 
-it('should find all transactions by wallet', function () {
-    $wallet = Transaction::factory(10)->create()[0]->sender;
+describe('allByWallet', function () {
+    it('should find all transactions', function () {
+        $transaction = Transaction::factory()->create();
 
-    expect($this->subject->allByWallet($wallet->address, $wallet->public_key))->toBeInstanceOf(Collection::class);
+        $result = $this->subject->allByWallet($transaction->sender->address, $transaction->sender->public_key);
+
+        expect($result->count())->toBe(1);
+        expect($result->first()->id)->toBe($transaction->id);
+    });
+
+    it('should find all vote transactions', function () {
+        $wallet = Wallet::factory()->create();
+
+        $transaction = Transaction::factory()
+            ->vote($wallet->address)
+            ->create();
+
+        $result = $this->subject->allByWallet($wallet->address, $wallet->public_key);
+
+        expect($result->count())->toBe(1);
+        expect($result->first()->id)->toBe($transaction->id);
+    });
+
+    it('should find a multipayment transaction', function () {
+        $wallet = Wallet::factory()->create();
+        $otherWallet = Wallet::factory()->create();
+
+        $transaction = Transaction::factory()
+            ->multiPayment([$wallet->address], [BigNumber::new(1)])
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->create();
+
+        $result = $this->subject->allByWallet($wallet->address, $wallet->public_key);
+
+        expect($result->count())->toBe(1);
+        expect($result->first()->id)->toBe($transaction->id);
+    });
+
+    it('should find a multipayment transaction with multiple recipients', function () {
+        $wallet = Wallet::factory()->create();
+        $otherWallet = Wallet::factory()->create();
+
+        $transaction = Transaction::factory()
+            ->multiPayment([
+                $wallet->address,
+                $otherWallet->address,
+            ], [
+                BigNumber::new(1),
+                BigNumber::new(1),
+            ])
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->create();
+
+        $result = $this->subject->allByWallet($otherWallet->address, $otherWallet->public_key);
+
+        expect($result->count())->toBe(1);
+        expect($result->first()->id)->toBe($transaction->id);
+    });
 });
 
-it('should find all transactions by sender', function () {
-    $wallet = Transaction::factory(10)->create()[0]->sender;
+describe('allBySender', function () {
+    it('should find all transactions', function () {
+        $transaction = Transaction::factory()->create();
 
-    expect($this->subject->allBySender($wallet->public_key))->toBeInstanceOf(Collection::class);
+        $result = $this->subject->allBySender($transaction->sender->public_key);
+
+        expect($result->count())->toBe(1);
+        expect($result->first()->id)->toBe($transaction->id);
+    });
 });
 
-it('should find all transactions by recipient', function () {
-    $wallet = Transaction::factory(10)->create()[0]->recipient_address;
+describe('allByRecipient', function () {
+    it('should find all transactions', function () {
+        $transaction = Transaction::factory()->create();
 
-    expect($this->subject->allByRecipient($wallet))->toBeInstanceOf(Collection::class);
+        $result = $this->subject->allByRecipient($transaction->recipient_address);
+
+        expect($result->count())->toBe(1);
+        expect($result->first()->id)->toBe($transaction->id);
+    });
+
+    it('should find all vote transactions', function () {
+        $wallet = Wallet::factory()->create();
+
+        $transaction = Transaction::factory()
+            ->vote($wallet->address)
+            ->create();
+
+        $result = $this->subject->allByRecipient($wallet->address);
+
+        expect($result->count())->toBe(1);
+        expect($result->first()->id)->toBe($transaction->id);
+    });
 });
 
-it('should find a transaction by id', function () {
-    $transactionId = Transaction::factory()->create()->id;
+describe('findById', function () {
+    it('should find a transaction', function () {
+        $transactionId = Transaction::factory()->create()->id;
 
-    expect($this->subject->findById($transactionId))->toBeInstanceOf(Transaction::class);
+        $result = $this->subject->findById($transactionId);
+
+        expect($result->count())->toBe(1);
+        expect($result->first()->id)->toBe($transactionId);
+    });
 });
