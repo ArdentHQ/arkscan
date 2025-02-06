@@ -11,11 +11,16 @@
 
             <x-block.page.summary :block="$block" />
 
-            <x-general.page-section.confirmations :model="$block" />
+            <x-general.page-section.confirmations
+                :model="$block"
+                no-bottom-padding
+            />
 
             @if ($block->transactionCount() > 0)
                 <x-block.page.transaction-list :block="$block" />
             @endif
         </div>
+
+        <x-block.page.detail-pagination :block="$block" />
     @endsection
 @endcomponent
