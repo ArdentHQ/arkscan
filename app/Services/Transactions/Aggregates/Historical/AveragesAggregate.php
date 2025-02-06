@@ -16,6 +16,7 @@ final class AveragesAggregate
 {
     public function aggregate(): array
     {
+        /** @var object{count: int, fee: int, amount: BigNumber} */
         $data = Transaction::select([
                 DB::raw('COUNT(*) as count'),
                 DB::raw('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fee'),

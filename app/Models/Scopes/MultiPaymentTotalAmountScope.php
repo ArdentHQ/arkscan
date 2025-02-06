@@ -15,6 +15,8 @@ final class MultiPaymentTotalAmountScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
+        // Ignore next line as the `joinSubLateral` works as intended since it is a macro method.
+        // @phpstan-ignore-next-line
         $builder->joinSubLateral(function ($query) {
             $query->select('recipient_amount', 'is_multipayment')
                 ->from(function ($query) {
