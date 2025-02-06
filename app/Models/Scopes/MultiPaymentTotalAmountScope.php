@@ -26,7 +26,6 @@ final class MultiPaymentTotalAmountScope implements Scope
                 ->joinSubLateral(function ($query) {
                     $query->selectRaw('SUM(CASE WHEN is_multipayment THEN (\'0x\' || encode(substring(transactions.data, 69 + ((tx_count + 1) * 32) + (n * 32), 32), \'hex\'))::float::numeric ELSE 0 END) as recipient_amount')
                         ->from(DB::raw('generate_series(1, CASE WHEN is_multipayment THEN CAST(encode(SUBSTRING(transactions.data, 69 + ((tx_count + 1) * 32), 32), \'hex\') AS int) ELSE 0 END) n'));
-
                 }, 'recipient_amounts_nested', 'is_multipayment', '=', DB::raw('true'), 'left outer');
         }, 'recipient_amounts', 'is_multipayment', '=', DB::raw('true'), 'left outer');
     }
