@@ -5,7 +5,9 @@ declare(strict_types=1);
 use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Http\Livewire\Validators\Validators;
+use App\Models\Block;
 use App\Models\ForgingStats;
+use App\Models\Round;
 use App\Models\State;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -19,6 +21,10 @@ use Livewire\Livewire;
 use function Tests\faker;
 
 beforeEach(function () {
+    Block::truncate();
+    Wallet::truncate();
+    Round::truncate();
+
     State::factory()->create();
 });
 
