@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\TransactionRepository as Contract;
+use App\Models\Scopes\HasMultiPaymentRecipientScope;
+use App\Models\Scopes\IsVoteForAddressScope;
 use App\Models\Transaction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -16,9 +18,8 @@ final class TransactionRepository implements Contract
         return Transaction::query()
             ->where(fn ($query): Builder => $query->where('sender_public_key', $publicKey))
             ->orWhere(fn ($query): Builder => $query->where('recipient_address', $address))
-            ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $address]]))
-            ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->votes', [$address]))
-            ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->unvotes', [$address]))
+            ->orWhere(fn ($query): Builder => $query->withScope(IsVoteForAddressScope::class, $address))
+            ->orWhere(fn ($query): Builder => $query->withScope(HasMultiPaymentRecipientScope::class, $address))
             ->get();
     }
 
@@ -30,10 +31,9 @@ final class TransactionRepository implements Contract
     public function allByRecipient(string $address): Collection
     {
         return Transaction::query()
-            ->orWhere(fn ($query): Builder => $query->where('recipient_address', $address))
-            ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $address]]))
-            ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->votes', [$address]))
-            ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->unvotes', [$address]))
+            ->where(fn ($query): Builder => $query->where('recipient_address', $address))
+            ->orWhere(fn ($query): Builder => $query->withScope(IsVoteForAddressScope::class, $address))
+            ->orWhere(fn ($query): Builder => $query->withScope(HasMultiPaymentRecipientScope::class, $address))
             ->get();
     }
 
