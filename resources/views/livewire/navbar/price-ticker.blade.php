@@ -1,11 +1,6 @@
 @php ($isDisabled = app()->isDownForMaintenance() || ! Network::canBeExchanged() || config('arkscan.network') !== 'production' || ! $isAvailable)
 
 <div
-    {{--
-        @TODO: use events and websockets to handle when price ticker (and all other areas) are updated instead of polling
-
-        https://app.clickup.com/t/86dqjdxjm
-    --}}
     @if (! $isDisabled && config('broadcasting.default') !== 'reverb')
         wire:poll.visible.30s
     @endif
