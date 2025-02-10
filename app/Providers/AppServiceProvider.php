@@ -117,7 +117,6 @@ final class AppServiceProvider extends ServiceProvider
                 ['route' => 'statistics',       'label' => trans('menus.statistics')],
             ]],
             ['label' => trans('menus.resources'), 'children' => [
-                // TODO: enable when the monitor is fixed
                 ['route' => 'validator-monitor', 'label' => trans('menus.validator_monitor')],
                 ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
             ]],
