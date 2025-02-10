@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Cache\TokenTransferCache;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function ($type, $args) {
@@ -51,10 +52,14 @@ it('should handle failed token transfers with missing data', function () {
     $address = Wallet::factory()->create()->address;
     $amount  = (int) (34 * 1e9);
 
-    $transaction = Transaction::factory()->tokenTransfer($address, $amount)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
-    ]);
+    (new TokenTransferCache())->setTokenName('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B', 'DARK20');
+
+    $transaction = Transaction::factory()
+        ->tokenTransfer($address, $amount, '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->create([
+            'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+            'amount'    => 123 * 1e18,
+        ]);
 
     $this
         ->get(route('transaction', $transaction))
@@ -62,6 +67,6 @@ it('should handle failed token transfers with missing data', function () {
         ->assertSeeInOrder([
             trans('pages.transaction.tokens_transferred'),
             $address,
-            '34 DARK',
+            '34 DARK20',
         ]);
 });
