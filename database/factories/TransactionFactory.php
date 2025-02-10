@@ -94,6 +94,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($payload)
             ->state(fn () => [
+                'amount'            => 0,
                 'recipient_address' => Network::knownContract('multipayment'),
             ]);
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions\Aggregates\Historical;
 
+use App\Models\Scopes\MultiPaymentTotalAmountScope;
+use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\Timestamp;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
@@ -14,20 +16,19 @@ final class AveragesAggregate
 {
     public function aggregate(): array
     {
-        $data = (array) DB::connection('explorer')
-            ->query()
-            ->select([
+        /** @var object{count: int, fee: int, amount: BigNumber} */
+        $data = Transaction::select([
                 DB::raw('COUNT(*) as count'),
-                DB::raw('SUM(amount) as amount'),
                 DB::raw('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fee'),
+                DB::raw('SUM(amount) + COALESCE(SUM(recipient_amount), 0) as amount'),
             ])
-            ->from('transactions')
             ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->withScope(MultiPaymentTotalAmountScope::class)
             ->first();
 
         $daysSinceEpoch = Timestamp::daysSinceEpoch();
 
-        if ($data['count'] === 0) {
+        if ($data->count === 0) {
             return [
                 'count'  => 0,
                 'amount' => 0,
@@ -36,10 +37,10 @@ final class AveragesAggregate
         }
 
         return [
-            'count'  => (int) round($data['count'] / $daysSinceEpoch),
-            'amount' => (int) round(($data['amount'] / config('currencies.notation.crypto', 1e18)) / $daysSinceEpoch),
+            'count'  => (int) round($data->count / $daysSinceEpoch),
+            'amount' => (int) round(($data->amount->toFloat()) / $daysSinceEpoch),
             'fee'    => UnitConverter::formatUnits(
-                (string) BigNumber::new($data['fee'])->valueOf()->dividedBy($daysSinceEpoch, null, RoundingMode::DOWN),
+                (string) BigNumber::new($data->fee)->valueOf()->dividedBy($daysSinceEpoch, null, RoundingMode::DOWN),
                 'gwei'
             ),
         ];
