@@ -47,7 +47,7 @@
 
             <x-compatible-wallets.learn-more
                 background-color="bg-[#F5FAFF]/30 dark:bg-[#505D6A]/30 dim:bg-[#476DB0]/30 backdrop-blur"
-                class="border border-theme-primary-300 dark:border-theme-dark-500"
+                border-class="border border-theme-primary-300 dark:border-theme-dark-500"
                 padding="p-6 sm:p-3 lg:px-6 md-lg:mt-5"
                 title-color="text-theme-primary-900 dark:text-theme-dark-50"
                 subtitle-color="text-theme-secondary-800 dark:text-theme-dark-200 text-xs"

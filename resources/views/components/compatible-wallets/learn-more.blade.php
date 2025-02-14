@@ -1,4 +1,5 @@
 @props([
+    'borderClass' => '',
     'backgroundColor' => 'bg-theme-primary-50 dark:bg-theme-dark-blue-900 dim:bg-theme-dim-blue-950',
     'padding' => 'p-6 sm:p-3 mt-6 lg:px-6',
     'titleColor' => 'text-theme-secondary-900 dark:text-white',
@@ -8,6 +9,7 @@
 ])
 
 <x-general.learn-more
+    :border-class="$borderClass"
     icon="app-wallets.arkvault"
     :title="trans('brands.arkvault')"
     :subtitle="trans('pages.compatible-wallets.arkvault.subtitle')"
@@ -17,7 +19,6 @@
     :subtitle-color="$subtitleColor"
     :icon-size="$iconSize"
     :arrows-class="Arr::toCssClasses(['md-lg:bg-none md-lg:dark:bg-none',
-
         'arkvault-arrows' => ! $home,
         'arkvault-arrows-home' => $home,
     ])"
