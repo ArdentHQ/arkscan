@@ -11,6 +11,7 @@
     'iconColor' => 'dark:text-white text-theme-navy-600',
     'buttonColor' => 'dark:!bg-theme-dark-blue-500 dark:hover:!bg-theme-dark-blue-600 dim:!bg-theme-dark-blue-600 dim:hover:!bg-theme-dark-blue-700',
     'arrowsClass' => null,
+    'borderClass' => null,
     'mobileTall' => false,
     'url' => trans('urls.arkvault'),
 ])
@@ -19,6 +20,7 @@
     'flex flex-col justify-between rounded-xl sm:flex-row',
     $padding,
     $backgroundColor,
+    $borderClass
 ]) }}>
     <div @class([
         'flex flex-1 items-center bg-no-repeat bg-right mx-auto sm:ml-0 sm:mr-2',
