@@ -48,7 +48,7 @@ it('should cache data', function (): void {
     ]);
 
     Transaction::factory(4)
-        ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e9)])
+        ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e18)])
         ->create([
             'amount'    => 0,
             'gas_price' => 11,
@@ -71,8 +71,7 @@ it('should cache data', function (): void {
     expect(Transaction::count())->toBe(10);
 
     $transactionCount = (int) round(10 / 2);
-    // TODO: include multipayment (4 * 3000) - https://app.clickup.com/t/86dvdvux1
-    $totalAmount      = (int) round(((3 * 2000) + 9000) / 2);
+    $totalAmount      = (int) round(((3 * 2000) + 9000 + (4 * 3000)) / 2);
     $totalFees        = round((9 * 2) + (10 * 3) + (11 * 4) + 10) / 2;
 
     Artisan::call('explorer:cache-transactions');

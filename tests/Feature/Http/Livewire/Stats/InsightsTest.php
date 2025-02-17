@@ -129,9 +129,8 @@ it('should render transaction daily average', function (): void {
     ]);
 
     Transaction::factory(4)
-        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1000 * 1e18)])
         ->create([
-            'amount'    => 3000 * 1e18,
             'gas_price' => 11 * 1e18,
         ]);
 
@@ -145,7 +144,7 @@ it('should render transaction daily average', function (): void {
     expect(Transaction::count())->toBe(9);
 
     $transactionCount = (int) round(9 / 2);
-    $totalAmount      = (int) round(((3000 * 4) + (3 * 2000)) / 2);
+    $totalAmount      = (int) round(((1000 * 4) + (3 * 2000)) / 2);
     $totalFees        = (int) round(((9 * 2) + (10 * 3) + (11 * 4)) / 2);
 
     Artisan::call('explorer:cache-transactions');
@@ -166,6 +165,8 @@ it('should render transaction daily average', function (): void {
             trans('pages.statistics.insights.transactions.header.unvote'),
             trans('pages.statistics.insights.transactions.header.validator_registration'),
             trans('pages.statistics.insights.transactions.header.validator_resignation'),
+            trans('pages.statistics.insights.transactions.header.username_registration'),
+            trans('pages.statistics.insights.transactions.header.username_resignation'),
             trans('pages.statistics.insights.transactions.header.transactions'),
             $transactionCount,
             trans('pages.statistics.insights.transactions.header.transaction_volume'),
@@ -276,10 +277,10 @@ it('should render validator statistics', function (): void {
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
-            // trans('pages.statistics.insights.validators.header.most_unique_voters'),
-            // $walletMostUnique->address,
-            // trans('pages.statistics.insights.validators.header.least_unique_voters'),
-            // $walletLeastUnique->address,
+            trans('pages.statistics.insights.validators.header.most_unique_voters'),
+            $walletMostUnique->address,
+            trans('pages.statistics.insights.validators.header.least_unique_voters'),
+            $walletLeastUnique->address,
             trans('pages.statistics.insights.validators.header.oldest_active_validator'),
             $walletOldestActive->address,
             trans('pages.statistics.insights.validators.header.newest_active_validator'),
