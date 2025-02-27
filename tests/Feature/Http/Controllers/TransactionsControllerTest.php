@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\NumberFormatter;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
+use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {
@@ -72,18 +73,25 @@ it('should get the transaction stats for the last 24 hours', function () {
         ]);
 });
 
-it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee) {
+it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee, $expectedFormattedFee) {
     $this->travelTo('2021-04-14 16:02:04');
 
     $gasUsed = 21000;
 
-    Transaction::factory()->withReceipt(gasUsed: $gasUsed)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => BigNumber::new($amount * 1e18),
-        'gas_price' => $fee,
-    ]);
+    Transaction::factory()
+        ->withReceipt(gasUsed: $gasUsed)
+        ->create([
+            'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+            'amount'    => BigNumber::new($amount * 1e18),
+            'gas_price' => $fee,
+        ]);
 
-    $fee = BigNumber::new(UnitConverter::parseUnits($fee * $gasUsed, 'gwei'))->toFloat();
+    $formattedFee = UnitConverter::parseUnits($fee * $gasUsed, 'gwei');
+
+    expect($formattedFee)->toEqual(BigDecimal::of($expectedFormattedFee));
+    expect((string) $formattedFee)->toEqual($expectedFormattedFee);
+
+    $fee = BigNumber::new($formattedFee)->toFloat();
 
     $this
         ->get(route('transactions'))
@@ -115,13 +123,13 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 })->with([
-    8 => [8, 919123.48392049, 0.99184739],
-    7 => [7, 919123.4839204, 0.9918473],
-    6 => [6, 919123.483929, 0.991839],
-    5 => [5, 919123.48392, 0.99739],
-    4 => [4, 919123.4839, 0.9918],
-    3 => [3, 919123.489, 0.479],
-    2 => [2, 919123.48, 0.99],
+    8 => [8, 919123.48392049, 0.99184739, '20828795190000'],
+    7 => [7, 919123.4839204, 0.9918473, '20828793300000'],
+    6 => [6, 919123.483929, 0.991839, '20828619000000'],
+    5 => [5, 919123.48392, 0.99739, '20945190000000'],
+    4 => [4, 919123.4839, 0.9918, '20827800000000'],
+    3 => [3, 919123.489, 0.479, '10059000000000'],
+    2 => [2, 919123.48, 0.99, '20790000000000'],
 ]);
 
 it('should cache the transaction stats for 5 minutes', function () {
