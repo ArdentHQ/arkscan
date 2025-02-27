@@ -34,7 +34,7 @@ it('should get fees', function () {
             ]);
         });
 
-    $formattedVolume = UnitConverter::parseUnits((string) $volume, 'wei');
+    $formattedVolume    = UnitConverter::parseUnits((string) $volume, 'wei');
     $formattedTotalFees = UnitConverter::parseUnits((string) $totalFees, 'gwei');
 
     expect($formattedVolume)->toEqual(BigDecimal::of('700000000000000000000'));
