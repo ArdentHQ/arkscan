@@ -12,9 +12,9 @@ it('should cache fees', function () {
         '*' => Http::response([
             'data' => [
                 'evmCall' => [
-                    'min' => '5',
-                    'max' => '5',
-                    'avg' => '5',
+                    'min' => '5000000000',
+                    'max' => '5000000000',
+                    'avg' => '5000000000',
                 ],
             ],
         ]),
@@ -38,18 +38,18 @@ it('should update cache', function () {
         ->push([
             'data' => [
                 'evmCall' => [
-                    'min' => '5',
-                    'max' => '5',
-                    'avg' => '5',
+                    'min' => '5000000000',
+                    'max' => '5000000000',
+                    'avg' => '5000000000',
                 ],
             ],
         ])
         ->push([
             'data' => [
                 'evmCall' => [
-                    'min' => '10',
-                    'max' => '10',
-                    'avg' => '10',
+                    'min' => '10000000000',
+                    'max' => '10000000000',
+                    'avg' => '10000000000',
                 ],
             ],
         ]);

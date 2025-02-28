@@ -355,7 +355,7 @@ MethodID: 0x6dd7d8ea');
 
 it('should calculate fee with receipt', function () {
     $transaction = Transaction::factory()->create([
-        'gas_price' => 54,
+        'gas_price' => 54 * 1e9,
     ]);
 
     Receipt::factory()->create([
@@ -370,7 +370,7 @@ it('should calculate fee with receipt', function () {
 
 it('should return gas price if no receipt', function () {
     $transaction = Transaction::factory()->create([
-        'gas_price' => 54,
+        'gas_price' => 54 * 1e9,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());

@@ -111,7 +111,7 @@ final class TransactionViewModel implements ViewModel
 
     public function fee(): float
     {
-        return UnitConverter::formatUnits((string) $this->transaction->fee(), 'gwei');
+        return UnitConverter::formatUnits((string) $this->transaction->fee(), 'ark');
     }
 
     public function feeFiat(bool $showSmallAmounts = false): string

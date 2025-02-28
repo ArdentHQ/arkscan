@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Services\BigNumber;
 use App\Services\Cache\MainsailCache;
 use App\Services\GasTracker;
 
@@ -12,7 +13,7 @@ it('should get fee', function ($method, $expected) {
         'max' => '3500000000',
     ]);
 
-    expect((new GasTracker())->{$method}())->toBe($expected);
+    expect((new GasTracker())->{$method}())->toEqual(BigNumber::new($expected));
 })->with([
     'low' => ['low', 1.5],
     'avg' => ['average', 2.5],

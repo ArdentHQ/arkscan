@@ -14,19 +14,7 @@ final class CustomNetwork extends AbstractNetwork
      * @see Network::$base58PrefixMap
      */
     protected $base58PrefixMap = [
-        self::BASE58_ADDRESS_P2PKH => '17',
-        self::BASE58_ADDRESS_P2SH  => '00',
-        self::BASE58_WIF           => 'aa',
-    ];
-
-    /**
-     * {@inheritdoc}
-     *
-     * @see Network::$bip32PrefixMap
-     */
-    protected $bip32PrefixMap = [
-        self::BIP32_PREFIX_XPUB => '46090600',
-        self::BIP32_PREFIX_XPRV => '46089520',
+        self::BASE58_WIF => 'ba', // 186
     ];
 
     private string $epoch;
@@ -40,11 +28,13 @@ final class CustomNetwork extends AbstractNetwork
     }
 
     /**
-     * {@inheritdoc}
+     * Get the chain identifier.
+     *
+     * @return int
      */
-    public function pubKeyHash(): int
+    public function chainId(): int
     {
-        return intval($this->base58PrefixMap[self::BASE58_ADDRESS_P2PKH]);
+        return 10000;
     }
 
     /**

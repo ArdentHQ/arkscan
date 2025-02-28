@@ -11,7 +11,7 @@
             </div>
 
             <span>
-                {{ ExplorerNumberFormatter::networkCurrency($fee['amount'], 2) }} @lang('general.gwei')
+                {{ ExplorerNumberFormatter::networkCurrency($fee['amount']->toFloat(), 2) }} @lang('general.gwei')
             </span>
         </div>
     @endforeach

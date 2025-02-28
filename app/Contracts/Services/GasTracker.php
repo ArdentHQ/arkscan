@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Contracts\Services;
 
+use App\Services\BigNumber;
+
 interface GasTracker
 {
-    public function low(): float;
+    public function low(): BigNumber;
 
-    public function average(): float;
+    public function average(): BigNumber;
 
-    public function high(): float;
+    public function high(): BigNumber;
 }
