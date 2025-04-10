@@ -126,7 +126,11 @@
                                     <span>{{ ExchangeRate::convert($fee['amount']) }}</span>
                                     <span>{{ Settings::currency() }}</span>
                                 @else
-                                    <span>{{ $fee['amount'] }}</span>
+                                    <span>{{ ExplorerNumberFormatter::currencyWithDecimals(
+                                        value: $fee['amount']->__toString(),
+                                        currency: Settings::currency(),
+                                        decimals: 2,
+                                    ) }}</span>
                                     <span>@lang('general.gwei')</span>
                                 @endif
                             </x-slot>
