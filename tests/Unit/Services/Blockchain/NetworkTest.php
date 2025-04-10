@@ -5,8 +5,8 @@ declare(strict_types=1);
 use App\Models\State;
 use App\Services\BigNumber;
 use App\Services\Blockchain\Network;
-use ArkEcosystem\Crypto\Networks\Devnet;
 use ArkEcosystem\Crypto\Networks\Mainnet;
+use ArkEcosystem\Crypto\Networks\Testnet;
 use BitWasp\Bitcoin\Network\Network as Bitwasp;
 use Carbon\Carbon;
 use function Tests\fakeKnownWallets;
@@ -68,7 +68,7 @@ it('should have all required properties', function (array $config) {
         'currencySymbol'      => 'DѦ',
         'confirmations'       => 51,
         'canBeExchanged'      => false,
-        'epoch'               => Devnet::new()->epoch(),
+        'epoch'               => Testnet::new()->epoch(),
         'validatorCount'      => 51,
         'blockTime'           => 8,
         'blockReward'         => 2,

@@ -11,9 +11,9 @@ it('should execute the command', function () {
         '*' => Http::response([
             'data' => [
                 'evmCall' => [
-                    'min' => '5',
-                    'max' => '5',
-                    'avg' => '5',
+                    'min' => '5000000000',
+                    'max' => '5000000000',
+                    'avg' => '5000000000',
                 ],
             ],
         ]),

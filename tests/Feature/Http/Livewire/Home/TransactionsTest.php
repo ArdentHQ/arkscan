@@ -12,7 +12,7 @@ use Livewire\Livewire;
 it('should list the first page of transactions', function () {
     $transactions = Transaction::factory(30)->transfer()->create([
         'amount'    => 143.2232 * 1e18,
-        'gas_price' => 0.128373,
+        'gas_price' => 0.128373 * 1e9,
     ]);
 
     foreach ($transactions as $transaction) {

@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Facades\Network;
 use App\Services\Cache\MainsailCache;
-use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
@@ -37,7 +36,6 @@ final class MainsailApi
         }
 
         $fees = (new Collection(Arr::get($data, 'data.evmCall', [])))
-            ->map(fn ($fee) => UnitConverter::parseUnits($fee, 'gwei'))
             ->toArray();
 
         $cache->setFees($fees);
