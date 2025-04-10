@@ -46,9 +46,9 @@ final class Validators extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'active'   => ['except' => true],
-            'standby'  => ['except' => true],
-            'resigned' => ['except' => true],
+            'filter.active'   => ['as' => 'active', 'except' => true],
+            'filter.standby'  => ['as' => 'standby', 'except' => true],
+            'filter.resigned' => ['as' => 'resigned', 'except' => true],
         ];
     }
 
