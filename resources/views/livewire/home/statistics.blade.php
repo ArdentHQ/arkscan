@@ -129,7 +129,7 @@
                                     <span>{{ ExplorerNumberFormatter::currencyWithDecimals(
                                         value: $fee['amount']->__toString(),
                                         currency: Settings::currency(),
-                                        decimals: 2,
+                                        decimals: 0,
                                     ) }}</span>
                                     <span>@lang('general.gwei')</span>
                                 @endif
