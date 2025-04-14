@@ -161,11 +161,9 @@ final class TransactionViewModel implements ViewModel
                     return $recipient['amount'];
                 }
             }
-        } else {
-            $amount = $this->transaction->amount;
         }
 
-        return UnitConverter::formatUnits((string) $amount, 'ark');
+        return UnitConverter::formatUnits((string) $this->transaction->amount, 'ark');
     }
 
     public function amountWithFee(): float
