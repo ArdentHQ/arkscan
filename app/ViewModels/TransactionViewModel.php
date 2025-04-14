@@ -158,7 +158,8 @@ final class TransactionViewModel implements ViewModel
 
             foreach ($recipients as $recipient) {
                 if ($recipient['address'] === $walletAddress) {
-                    return $recipient['amount'];
+                    $amount = $recipient['amount'];
+                    break;
                 }
             }
         } else {
