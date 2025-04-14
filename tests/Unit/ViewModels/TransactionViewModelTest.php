@@ -492,3 +492,18 @@ it('should determine if is certain transaction type', function (string $type, ar
     ['usernameResignation'],
     ['contractDeployment'],
 ]);
+
+it('should get the correct amount for a given wallet address in multi payment', function () {
+    $walletAddress1 = '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A';
+    $walletAddress2 = '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B';
+
+    $transaction = Transaction::factory()->multiPayment(
+        [$walletAddress1, $walletAddress2],
+        [BigNumber::new(1e18), BigNumber::new(2e18)]
+    )->create();
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amount($walletAddress1))->toEqual(1.0);
+    expect($viewModel->amount($walletAddress2))->toEqual(2.0);
+});
