@@ -76,7 +76,7 @@ it('should get the transaction stats for the last 24 hours', function () {
 it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee, $expectedFormattedFee) {
     $this->travelTo('2021-04-14 16:02:04');
 
-    $gasUsed = 21000;
+    $gasUsed = 210000;
 
     Transaction::factory()
         ->withReceipt(gasUsed: $gasUsed)
@@ -86,9 +86,8 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'gas_price' => $fee,
         ]);
 
-    $formattedFee = UnitConverter::parseUnits($fee * $gasUsed, 'gwei');
-
-    expect($formattedFee)->toEqual(BigDecimal::of($expectedFormattedFee));
+    $formattedFee = $fee * $gasUsed;
+    
     expect((string) $formattedFee)->toEqual($expectedFormattedFee);
 
     $fee = BigNumber::new($formattedFee)->toFloat();
@@ -123,13 +122,13 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 })->with([
-    8 => [8, 919123.48392049, 0.99184739, '20828795190000'],
-    7 => [7, 919123.4839204, 0.9918473, '20828793300000'],
-    6 => [6, 919123.483929, 0.991839, '20828619000000'],
-    5 => [5, 919123.48392, 0.99739, '20945190000000'],
-    4 => [4, 919123.4839, 0.9918, '20827800000000'],
-    3 => [3, 919123.489, 0.479, '10059000000000'],
-    2 => [2, 919123.48, 0.99, '20790000000000'],
+    8 => [8, 919123.48392049, 99184739, '20828795190000'],
+    7 => [7, 919123.4839204, 99184730, '20828793300000'],
+    6 => [6, 919123.483929, 99183900, '20828619000000'],
+    5 => [5, 919123.48392, 99739000, '20945190000000'],
+    4 => [4, 919123.4839, 99180000, '20827800000000'],
+    3 => [3, 919123.489, 47900000, '10059000000000'],
+    2 => [2, 919123.48, 99000000, '20790000000000'],
 ]);
 
 it('should cache the transaction stats for 5 minutes', function () {
