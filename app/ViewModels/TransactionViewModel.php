@@ -176,7 +176,6 @@ final class TransactionViewModel implements ViewModel
     public function amountReceived(?string $walletAddress = null): float
     {
         return $this->amount($walletAddress);
-        
     }
 
     // @codeCoverageIgnoreStart
