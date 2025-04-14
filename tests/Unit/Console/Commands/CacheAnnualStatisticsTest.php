@@ -41,7 +41,7 @@ it('should cache annual data for current year', function () {
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 5,
     ]);
 
@@ -142,7 +142,7 @@ it('should cache annual data for all time', function () {
         'year'         => 2017,
         'transactions' => 6,
         'volume'       => '60.0000000000000000',
-        'fees'         => '0.0000126',
+        'fees'         => '0.0000000000000126',
         'blocks'       => 6,
     ]);
 
@@ -150,7 +150,7 @@ it('should cache annual data for all time', function () {
         'year'         => $currentYear,
         'transactions' => 6,
         'volume'       => '61.0000000000000000',
-        'fees'         => '0.0000126',
+        'fees'         => '0.0000000000000126',
         'blocks'       => 5,
     ]);
 
@@ -208,7 +208,7 @@ it('should not dispatch event if nothing changes', function () {
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 5,
     ]);
 
@@ -247,7 +247,7 @@ it('should dispatch event for all data when the transaction count changes', func
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 5,
     ]);
 
@@ -272,7 +272,7 @@ it('should dispatch event for all data when the transaction count changes', func
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 5,
     ]);
 
@@ -280,7 +280,7 @@ it('should dispatch event for all data when the transaction count changes', func
         'year'         => 2020,
         'transactions' => 1,
         'volume'       => '10.0000000000000000',
-        'fees'         => '0.0000021',
+        'fees'         => '0.0000000000000021',
         'blocks'       => 5,
     ]);
 
@@ -300,7 +300,7 @@ it('should dispatch event for specific year when the transaction count changes',
         year: 2023,
         transactions: 3,
         volume: '50.0000000000000000',
-        fees: '0.0000105',
+        fees: '0.0000000000000105',
         blocks: 3,
     );
 
@@ -309,7 +309,7 @@ it('should dispatch event for specific year when the transaction count changes',
         year: $currentYear,
         transactions: 5,
         volume: '50.0000000000000000',
-        fees: '0.0000105',
+        fees: '0.0000000000000105',
         blocks: 5,
     );
 
@@ -372,7 +372,7 @@ it('should dispatch event for all data when the block count changes', function (
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 5,
     ]);
 
@@ -380,7 +380,7 @@ it('should dispatch event for all data when the block count changes', function (
         'year'         => 2023,
         'transactions' => 2,
         'volume'       => '20.0000000000000000',
-        'fees'         => '0.0000042',
+        'fees'         => '0.0000000000000042',
         'blocks'       => 1,
     ]);
 
@@ -398,7 +398,7 @@ it('should dispatch event for all data when the block count changes', function (
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 5,
     ]);
 
@@ -406,7 +406,7 @@ it('should dispatch event for all data when the block count changes', function (
         'year'         => 2023,
         'transactions' => 2,
         'volume'       => '20.0000000000000000',
-        'fees'         => '0.0000042',
+        'fees'         => '0.0000000000000042',
         'blocks'       => 2,
     ]);
 
@@ -439,7 +439,7 @@ it('should dispatch event for current year when the transaction count changes', 
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 5,
     ]);
 
@@ -464,7 +464,7 @@ it('should dispatch event for current year when the transaction count changes', 
         'year'         => $currentYear,
         'transactions' => 6,
         'volume'       => '60.0000000000000000',
-        'fees'         => '0.0000126',
+        'fees'         => '0.0000000000000126',
         'blocks'       => 5,
     ]);
 
@@ -497,7 +497,7 @@ it('should dispatch event for current year when the block count changes', functi
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 5,
     ]);
 
@@ -517,7 +517,7 @@ it('should dispatch event for current year when the block count changes', functi
         'year'         => $currentYear,
         'transactions' => 5,
         'volume'       => '50.0000000000000000',
-        'fees'         => '0.0000105',
+        'fees'         => '0.0000000000000105',
         'blocks'       => 6,
     ]);
 
@@ -549,7 +549,7 @@ it('should get all annual data if not already set', function () {
         'year'         => 2017,
         'transactions' => 6,
         'volume'       => '60.0000000000000000',
-        'fees'         => '0.0000126',
+        'fees'         => '0.0000000000000126',
         'blocks'       => 6,
     ]);
 });
