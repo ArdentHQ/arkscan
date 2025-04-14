@@ -38,8 +38,8 @@ final class StatisticsCache implements Contract
             return [
                 'transaction_count' => $data['transaction_count'],
                 'volume'            => $data['volume'] ?? 0,
-                'total_fees'        => UnitConverter::parseUnits($data['total_fees'] ?? 0, 'gwei'),
-                'average_fee'       => UnitConverter::parseUnits($data['average_fee'] ?? 0, 'gwei'),
+                'total_fees'        => $data['total_fees'] ?? 0,
+                'average_fee'       => $data['average_fee'] ?? 0,
             ];
         });
     }
