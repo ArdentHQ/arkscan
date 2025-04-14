@@ -5,8 +5,6 @@ declare(strict_types=1);
 use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\NumberFormatter;
-use ArkEcosystem\Crypto\Utils\UnitConverter;
-use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {
@@ -87,7 +85,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
         ]);
 
     $formattedFee = $fee * $gasUsed;
-    
+
     expect((string) $formattedFee)->toEqual($expectedFormattedFee);
 
     $fee = BigNumber::new($formattedFee)->toFloat();
