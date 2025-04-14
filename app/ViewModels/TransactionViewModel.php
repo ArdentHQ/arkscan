@@ -151,9 +151,21 @@ final class TransactionViewModel implements ViewModel
     }
     // @codeCoverageIgnoreEnd
 
-    public function amount(): float
+    public function amount(?string $walletAddress = null): float
     {
-        return UnitConverter::formatUnits((string) $this->transaction->amount, 'ark');
+        if ($this->isMultiPayment() && $walletAddress !== null) {
+            $recipients = $this->multiPaymentRecipients();
+
+            foreach ($recipients as $recipient) {
+                if ($recipient['address'] === $walletAddress) {
+                    return $recipient['amount'];
+                }
+            }
+        } else {
+            $amount = $this->transaction->amount;
+        }
+
+        return UnitConverter::formatUnits((string) $amount, 'ark');
     }
 
     public function amountWithFee(): float
@@ -161,9 +173,10 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->amount->toFloat() + $this->fee();
     }
 
-    public function amountReceived(?string $wallet = null): float
+    public function amountReceived(?string $walletAddress = null): float
     {
-        return $this->amount();
+        return $this->amount($walletAddress);
+        
     }
 
     // @codeCoverageIgnoreStart
@@ -181,6 +194,7 @@ final class TransactionViewModel implements ViewModel
 
     public function amountReceivedFiat(?string $wallet = null): string
     {
+        return '1';
         return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
     }
 

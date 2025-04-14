@@ -74,6 +74,7 @@
             @if ($transaction)
                 <x-transaction.amount
                     :transaction="$transaction"
+                    :address="$wallet?->address()"
                     hide-tooltip
                 />
             @else
