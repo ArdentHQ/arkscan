@@ -21,13 +21,13 @@ it('should get the transaction stats for the last 24 hours', function () {
     Transaction::factory(148)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e18,
-        'gas_price' => 5,
+        'gas_price' => 5000000000,
     ]);
 
     Transaction::factory(12)->withReceipt()->create([
         'timestamp'  => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
         'amount'     => 123 * 1e18,
-        'gas_price'  => 5,
+        'gas_price'  => 5000000000,
     ]);
 
     $this
@@ -137,7 +137,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     Transaction::factory(146)->withReceipt()->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'          => 123 * 1e18,
-        'gas_price'       => 5,
+        'gas_price'       => 5000000000,
     ]);
 
     $volume = (123 * 146);
@@ -155,7 +155,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     Transaction::factory(12)->withReceipt()->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
         'amount'          => 123 * 1e18,
-        'gas_price'       => 5,
+        'gas_price'       => 5000000000,
     ]);
 
     $this
