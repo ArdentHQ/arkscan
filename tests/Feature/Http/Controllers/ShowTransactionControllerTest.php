@@ -53,7 +53,7 @@ it('should handle failed token transfers with missing data', function () {
 
     $transaction = Transaction::factory()->tokenTransfer($address, $amount)->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e18,
+        'value'    => 123 * 1e18,
     ]);
 
     $this

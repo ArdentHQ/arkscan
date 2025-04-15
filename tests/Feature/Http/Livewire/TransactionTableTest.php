@@ -18,7 +18,7 @@ use function Tests\faker;
 
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create([
-        'amount' => 481 * 1e18,
+        'value' => 481 * 1e18,
     ]);
 
     $component = Livewire::test(TransactionTable::class)
@@ -46,7 +46,7 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::parse('2020-10-19 05:54:16')->getTimestampMs(),
-        'amount'    => 499 * 1e18,
+        'value'    => 499 * 1e18,
     ]);
 
     $component = Livewire::test(TransactionTable::class)
@@ -374,7 +374,7 @@ it('should reload on new transaction event', function () {
         ->call('setIsReady');
 
     Transaction::factory(5)->transfer()->create([
-        'amount' => 481 * 1e18,
+        'value' => 481 * 1e18,
     ]);
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {

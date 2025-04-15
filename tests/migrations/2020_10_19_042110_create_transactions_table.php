@@ -20,7 +20,7 @@ final class CreateTransactionsTable extends Migration
             $table->string('sender_public_key');
             $table->string('from');
             $table->string('to')->nullable();
-            $table->addColumn('numeric', 'amount');
+            $table->addColumn('numeric', 'value');
             $table->addColumn('numeric', 'gas_price');
             $table->binary('data')->nullable();
             $table->jsonb('asset')->nullable();

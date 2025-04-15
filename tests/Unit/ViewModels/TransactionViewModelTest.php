@@ -27,7 +27,7 @@ beforeEach(function () {
         'block_hash'               => $this->block->hash,
         'block_number'           => 1,
         'gas_price'              => 1,
-        'amount'                 => 2 * 1e18,
+        'value'                 => 2 * 1e18,
         'sender_public_key'      => $this->sender->public_key,
         'to'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));

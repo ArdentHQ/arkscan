@@ -125,7 +125,7 @@ it('should trigger event if largest block by amount changes', function () {
         'transactions_count' => 1,
     ]);
     Transaction::factory()->create([
-        'amount'   => 10000 * 1e8,
+        'value'   => 10000 * 1e8,
         'block_hash' => $updatedLargestByAmount->hash,
     ]);
 

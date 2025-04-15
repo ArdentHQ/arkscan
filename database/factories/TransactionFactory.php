@@ -34,7 +34,7 @@ final class TransactionFactory extends Factory
             'to' => fn () => $wallet->address,
             'timestamp'         => 1603083256000,
             'gas_price'         => $this->faker->numberBetween(1, 100),
-            'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
+            'value'            => $this->faker->numberBetween(1, 100) * 1e18,
             'nonce'             => 1,
             'data'              => function () {
                 // In-memory stream
@@ -94,7 +94,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($payload)
             ->state(fn () => [
-                'amount'            => 0,
+                'value'            => 0,
                 'to' => Network::knownContract('multipayment'),
             ]);
     }

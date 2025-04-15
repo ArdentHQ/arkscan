@@ -15,7 +15,7 @@ beforeEach(function () {
     $this->recipient = Wallet::factory()->create();
     $this->subject   = Transaction::factory()->create([
         'gas_price'         => 1,
-        'amount'            => 2 * 1e18,
+        'value'            => 2 * 1e18,
         'to' => $this->recipient,
     ]);
 });

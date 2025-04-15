@@ -29,7 +29,7 @@ use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
- * @property BigNumber $amount
+ * @property BigNumber $value
  * @property BigNumber $gas_limit
  * @property BigNumber $gas_price
  * @property int $timestamp
@@ -95,7 +95,7 @@ final class Transaction extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'amount'       => BigInteger::class,
+        'value'       => BigInteger::class,
         'gas_price'    => BigInteger::class,
         'gas_limit'    => BigInteger::class,
         'timestamp'    => UnixSeconds::class,
@@ -125,9 +125,9 @@ final class Transaction extends Model
             // Used to get the sender wallets
             'sender_public_key' => $this->sender_public_key,
 
-            // To get the amount for single payments
+            // To get the value for single payments
             // Using `__toString` since are instances of `BigNumber`
-            'amount' => $this->amount->__toString(),
+            'value' => $this->value->__toString(),
             'fee'    => $this->gas_price->__toString(),
             // used to build the payments and sortable
             'timestamp' => $this->timestamp,
@@ -146,7 +146,7 @@ final class Transaction extends Model
                 'id',
                 'sender_public_key',
                 'to',
-                'amount',
+                'value',
                 'gas_price',
                 'timestamp',
             ])
