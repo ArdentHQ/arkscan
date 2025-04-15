@@ -27,7 +27,7 @@ final class CacheValidatorResignationIds extends Command
     public function handle(): void
     {
         Transaction::query()
-            ->select('sender_public_key', 'id')
+            ->select('sender_public_key', 'hash')
             // TODO: re-add validator resignation scope - https://app.clickup.com/t/86duufu8e
             ->cursor()
             ->each(function ($transaction) {

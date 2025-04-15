@@ -6,7 +6,7 @@
             href="{{ route('block', $model->lastBlock()['hash']) }}"
             class="link"
         >
-            <x-number>{{ $model->lastBlock()['height'] }}</x-number>
+            <x-number>{{ $model->lastBlock()['number'] }}</x-number>
         </a>
     @else
         <span class="text-theme-secondary-500 dark:text-theme-dark-500">

@@ -116,7 +116,7 @@ final class CacheAnnualStatistics extends Command
                 DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fees')),
             ])
             ->from('transactions')
-            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->where('timestamp', '>=', $startOfYear)
             ->first();
 

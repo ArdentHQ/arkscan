@@ -154,7 +154,7 @@ it('should render transaction daily average', function (): void {
             ->mapWithKeys(fn ($type) => [$type => $transactionCache->getHistoricalByType($type)])
             ->toArray(),
         TransactionAveragesStatistics::make($transactionCache->getHistoricalAverages()),
-        TransactionRecordsStatistics::make(Transaction::find($transactionCache->getLargestIdByAmount())),
+        TransactionRecordsStatistics::make(Transaction::where('hash', $transactionCache->getLargestIdByAmount())->first()),
     );
 
     $component = Livewire::test(Insights::class)
