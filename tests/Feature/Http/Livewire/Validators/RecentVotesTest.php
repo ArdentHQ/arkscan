@@ -21,7 +21,7 @@ function generateReceipts(): void
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
             'transaction_hash'      => $transaction->hash,
-            'success'               => true,
+            'status'               => true,
         ]);
     }
 }
@@ -485,12 +485,12 @@ it('should not show failed transactions', function () {
 
     Receipt::factory()->create([
         'transaction_hash'      => $failedTransaction->hash,
-        'success'               => false,
+        'status'               => false,
     ]);
 
     Receipt::factory()->create([
         'transaction_hash'      => $successfulTransaction->hash,
-        'success'               => true,
+        'status'               => true,
     ]);
 
     Livewire::test(RecentVotes::class)
