@@ -13,15 +13,15 @@ it('should find a block by its id', function () {
     expect($this->subject->findByHash($block->hash))->toBeInstanceOf(Block::class);
 });
 
-it('should find a block by its height', function () {
+it('should find a block by its number', function () {
     $block = Block::factory()->create();
 
-    expect($this->subject->findByHeight($block->height->toNumber()))->toBeInstanceOf(Block::class);
+    expect($this->subject->findByHeight($block->number->toNumber()))->toBeInstanceOf(Block::class);
 });
 
-it('should find a block by its id or height', function () {
+it('should find a block by its id or number', function () {
     $block = Block::factory()->create();
 
     expect($this->subject->findByIdentifier($block->hash))->toBeInstanceOf(Block::class);
-    expect($this->subject->findByIdentifier($block->height->toNumber()))->toBeInstanceOf(Block::class);
+    expect($this->subject->findByIdentifier($block->number->toNumber()))->toBeInstanceOf(Block::class);
 });
