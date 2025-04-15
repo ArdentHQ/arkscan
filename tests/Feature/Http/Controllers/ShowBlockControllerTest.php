@@ -11,6 +11,6 @@ it('should render the page without any errors', function () {
     fakeCryptoCompare();
 
     $this
-        ->get(route('block', Block::factory()->create()))
+        ->get(route('block', Block::factory()->create()->hash))
         ->assertOk();
 });
