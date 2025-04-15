@@ -13,7 +13,7 @@ beforeEach(fn () => $this->subject = new BlockRepositoryWithCache(new BlockRepos
 it('should find a block by its id', function () {
     $block = Block::factory()->create();
 
-    expect($this->subject->findById($block->id))->toBeInstanceOf(Block::class);
+    expect($this->subject->findByHash($block->hash))->toBeInstanceOf(Block::class);
 });
 
 it('should find a block by its height', function () {
@@ -25,6 +25,6 @@ it('should find a block by its height', function () {
 it('should find a block by its id or height', function () {
     $block = Block::factory()->create();
 
-    expect($this->subject->findByIdentifier($block->id))->toBeInstanceOf(Block::class);
+    expect($this->subject->findByIdentifier($block->hash))->toBeInstanceOf(Block::class);
     expect($this->subject->findByIdentifier($block->height->toNumber()))->toBeInstanceOf(Block::class);
 });

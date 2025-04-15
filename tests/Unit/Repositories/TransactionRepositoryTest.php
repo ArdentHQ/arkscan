@@ -110,11 +110,11 @@ describe('allByRecipient', function () {
     });
 });
 
-describe('findById', function () {
+describe('findByHash', function () {
     it('should find a transaction', function () {
         $transactionHash = Transaction::factory()->create()->hash;
 
-        $result = $this->subject->findById($transactionHash);
+        $result = $this->subject->findByHash($transactionHash);
 
         expect($result->count())->toBe(1);
         expect($result->first()->hash)->toBe($transactionHash);

@@ -37,8 +37,8 @@ final class TransactionRepository implements Contract
             ->get();
     }
 
-    public function findById(string $id): Transaction
+    public function findByHash(string $hash): Transaction
     {
-        return Transaction::findOrFail($id);
+        return Transaction::where('hash', $hash)->firstOrFail();
     }
 }

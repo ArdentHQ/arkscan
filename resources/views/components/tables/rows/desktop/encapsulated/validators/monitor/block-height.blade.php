@@ -3,7 +3,7 @@
 <div class="text-sm font-semibold leading-4.25">
     @if ($model->hasForged())
         <a
-            href="{{ route('block', $model->lastBlock()['id']) }}"
+            href="{{ route('block', $model->lastBlock()['hash']) }}"
             class="link"
         >
             <x-number>{{ $model->lastBlock()['height'] }}</x-number>

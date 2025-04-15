@@ -31,7 +31,7 @@ final class BlockTransactionsTable extends Component
 
     public function getBlock(): Block
     {
-        return Block::findOrFail($this->blockHash);
+        return Block::where('hash', $this->blockHash)->firstOrFail();
     }
 
     public function render(): View

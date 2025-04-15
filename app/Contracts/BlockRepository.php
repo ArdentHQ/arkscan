@@ -9,9 +9,9 @@ use App\Models\Block;
 interface BlockRepository
 {
     /**
-     * @param int|string $id
+     * @param int|string $hash
      */
-    public function findById($id): Block;
+    public function findByHash($hash): Block;
 
     /**
      * @param int|string $height
