@@ -31,7 +31,7 @@ final class StatisticsCache implements Contract
                 ->selectRaw('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as total_fees')
                 ->selectRaw('AVG(gas_price * COALESCE(receipts.gas_used, 0)) as average_fee')
                 ->from('transactions')
-                ->join('receipts', 'transactions.id', '=', 'receipts.id')
+                ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
                 ->where('timestamp', '>', $timestamp)
                 ->first();
 

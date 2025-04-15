@@ -107,7 +107,7 @@ final class RecentVotes extends TabbedTableComponent
         }
 
         return Transaction::query()
-            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->where('receipts.success', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {

@@ -22,7 +22,7 @@ final class AveragesAggregate
                 DB::raw('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fee'),
                 DB::raw('SUM(value) + COALESCE(SUM(recipient_amount), 0) as amount'),
             ])
-            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->withScope(MultiPaymentTotalAmountScope::class)
             ->first();
 

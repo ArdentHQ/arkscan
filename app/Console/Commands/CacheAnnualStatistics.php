@@ -56,7 +56,7 @@ final class CacheAnnualStatistics extends Command
             ->query()
             ->select([
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
-                DB::raw('COUNT(DISTINCT(transactions.id)) AS transactions'),
+                DB::raw('COUNT(DISTINCT(transactions.hash)) AS transactions'),
                 // @TODO: The value is not reliable for multy-payment transactions
                 // We need to look into an alternative way to calculate the value
                 // @see https://app.clickup.com/t/86dvf5xcm
@@ -64,7 +64,7 @@ final class CacheAnnualStatistics extends Command
                 DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) AS fees')),
             ])
             ->from('transactions')
-            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->groupBy('year')
             ->orderBy('year')
             ->get();
@@ -116,7 +116,7 @@ final class CacheAnnualStatistics extends Command
                 DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fees')),
             ])
             ->from('transactions')
-            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction')
             ->where('timestamp', '>=', $startOfYear)
             ->first();
 

@@ -33,7 +33,7 @@ trait CanBeSorted
                         ->selectRaw('case when (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) then 1 end as unvote', [ContractMethod::unvote()])
                         ->selectRaw('case when (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) then 0 end as vote', [ContractMethod::vote()])
                         ->where('to', Network::knownContract('consensus'))
-                        ->whereColumn('transactions.id', 'validator_transaction.id')
+                        ->whereColumn('transactions.hash', 'validator_transaction.hash')
                         ->from('transactions', 'validator_transaction');
                 }, 'validator_vote'),
         ])
@@ -54,7 +54,7 @@ trait CanBeSorted
                             ->selectRaw('CONCAT(\'0x\', RIGHT(SUBSTRING(encode(data, \'hex\'), 9), 40)) as vote')
                             ->where('to', Network::knownContract('consensus'))
                             ->whereRaw('SUBSTRING(encode(data, \'hex\'), 1, 8) = ?', [ContractMethod::vote()])
-                            ->whereColumn('transactions.id', 'validator_transaction.id')
+                            ->whereColumn('transactions.hash', 'validator_transaction.hash')
                             ->from('transactions', 'validator_transaction');
                     }, 'validator_vote')
                     ->join('wallets', DB::raw('LOWER(wallets.address)'), '=', DB::raw('LOWER(validator_vote.vote)'))
@@ -75,7 +75,7 @@ trait CanBeSorted
                             ->selectRaw('case when (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) then 1 end as unvote', [ContractMethod::unvote()])
                             ->selectRaw('case when (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) then 0 end as vote', [ContractMethod::vote()])
                             ->where('to', Network::knownContract('consensus'))
-                            ->whereColumn('transactions.id', 'validator_transaction.id')
+                            ->whereColumn('transactions.hash', 'validator_transaction.hash')
                             ->from('transactions', 'validator_transaction');
                     }, 'validator_vote'),
             ])

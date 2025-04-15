@@ -97,7 +97,7 @@ final class CacheAddressStatistics extends Command
         $mostTransactions = (array) DB::connection('explorer')
             ->query()
             ->select([
-                DB::raw('count(transactions.id) as tx_count'),
+                DB::raw('count(transactions.hash) as tx_count'),
                 DB::raw('wallets.address'),
             ])
             ->from('transactions')
