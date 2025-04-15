@@ -73,13 +73,13 @@ function createBlock(int $height, string $address, mixed $context = null)
 
     $block = Block::factory()->create([
         'timestamp'              => Timestamp::now()->getTimestampMs(),
-        'parent_hash'         => $height - 1,
+        'parent_hash'            => $height - 1,
         'number'                 => $height,
-        'transactions_count' => 0,
-        'amount'           => 0,
-        'fee'              => 0,
+        'transactions_count'     => 0,
+        'amount'                 => 0,
+        'fee'                    => 0,
         'reward'                 => 2 * 1e18,
-        'proposer'      => $address,
+        'proposer'               => $address,
     ]);
 
     return $block;

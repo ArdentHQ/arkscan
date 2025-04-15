@@ -16,10 +16,10 @@ beforeEach(function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = Block::factory()->create([
-        'parent_hash' => $previousBlock->hash,
+        'parent_hash'    => $previousBlock->hash,
         'number'         => 10000,
-        'amount'   => 50 * 1e18,
-        'fee'      => 48 * 1e18,
+        'amount'         => 50 * 1e18,
+        'fee'            => 48 * 1e18,
         'reward'         => 2 * 1e18,
     ]);
 });

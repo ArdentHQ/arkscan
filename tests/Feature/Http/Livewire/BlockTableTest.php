@@ -80,14 +80,14 @@ it('should update the records fiat tooltip when currency changed', function () {
         ->transfer()
         ->create([
             'block_hash'  => $block->hash,
-            'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+            'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
         ])
         ->concat(
             Transaction::factory(10)
                 ->vote($wallet->address)
                 ->create([
                     'block_hash'  => $block->hash,
-                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                    'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         )
         ->concat(
@@ -95,7 +95,7 @@ it('should update the records fiat tooltip when currency changed', function () {
                 ->multiPayment([$wallet->address], [BigNumber::new(1e18)])
                 ->create([
                     'block_hash'  => $block->hash,
-                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                    'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         );
 
@@ -134,7 +134,7 @@ it('should handle a lot of blocks', function () {
         $this->travel(8)->seconds();
 
         Block::factory()->create([
-            'proposer' => $wallet->address,
+            'proposer'          => $wallet->address,
             'timestamp'         => Carbon::now()->timestamp,
             'number'            => $index,
         ]);

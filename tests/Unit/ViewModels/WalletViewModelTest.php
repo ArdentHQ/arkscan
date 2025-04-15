@@ -36,10 +36,10 @@ beforeEach(function () {
     $this->subject = new WalletViewModel($this->wallet);
 
     Block::factory()->create([
-        'amount'         => 10 * 1e18,
-        'fee'            => 8 * 1e18,
+        'amount'               => 10 * 1e18,
+        'fee'                  => 8 * 1e18,
         'reward'               => 2 * 1e18,
-        'proposer'    => $this->wallet->address,
+        'proposer'             => $this->wallet->address,
     ]);
 });
 
@@ -790,7 +790,7 @@ it('should return count for blocks since last forged', function () {
     ]));
 
     $block = Block::factory()->create([
-        'proposer'    => $wallet->address(),
+        'proposer'             => $wallet->address(),
         'number'               => 10,
     ]);
 
@@ -834,7 +834,7 @@ it('should return count for time since last forged', function () {
 
     $block = Block::factory()->create([
         'timestamp'            => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'proposer'    => $wallet->address(),
+        'proposer'             => $wallet->address(),
         'number'               => 10,
     ]);
 

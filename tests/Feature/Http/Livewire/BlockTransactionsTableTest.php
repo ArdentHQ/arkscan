@@ -32,15 +32,15 @@ it('should load the next batch of transactions', function () {
     ]);
     $thirdPageTransactions = Transaction::factory(4)->transfer()->create([
         'block_hash'  => $block->hash,
-        'timestamp' => Timestamp::now()->sub(2, 'days')->timestamp,
+        'timestamp'   => Timestamp::now()->sub(2, 'days')->timestamp,
     ]);
     $secondPageTransactions = Transaction::factory(25)->transfer()->create([
         'block_hash'  => $block->hash,
-        'timestamp' => Timestamp::now()->sub(1, 'day')->timestamp,
+        'timestamp'   => Timestamp::now()->sub(1, 'day')->timestamp,
     ]);
     $visibleTransactions = Transaction::factory(25)->transfer()->create([
         'block_hash'  => $block->hash,
-        'timestamp' => Timestamp::now()->timestamp,
+        'timestamp'   => Timestamp::now()->timestamp,
     ]);
 
     $component = Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
@@ -80,11 +80,11 @@ it('should not go past the last page', function () {
     ]);
     Transaction::factory(2)->transfer()->create([
         'block_hash'  => $block->hash,
-        'timestamp' => Timestamp::now()->sub(1, 'day')->timestamp,
+        'timestamp'   => Timestamp::now()->sub(1, 'day')->timestamp,
     ]);
     Transaction::factory(25)->transfer()->create([
         'block_hash'  => $block->hash,
-        'timestamp' => Timestamp::now()->timestamp,
+        'timestamp'   => Timestamp::now()->timestamp,
     ]);
 
     Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])

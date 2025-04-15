@@ -70,9 +70,9 @@ trait ValidatorData
 
                 (new WalletCache())->setLastBlock($address, [
                     'hash'                   => $block->hash,
-                    'number'               => $block->number->toNumber(),
-                    'timestamp'            => $block->timestamp,
-                    'proposer'    => $block->proposer,
+                    'number'                 => $block->number->toNumber(),
+                    'timestamp'              => $block->timestamp,
+                    'proposer'               => $block->proposer,
                 ]);
             }
 

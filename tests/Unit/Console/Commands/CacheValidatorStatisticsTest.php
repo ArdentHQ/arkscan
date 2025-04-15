@@ -39,12 +39,12 @@ it('should cache validator statistics', function () {
 
     Transaction::factory()->validatorRegistration()->create([
         'timestamp'      => Carbon::now()->addSecond(1)->getTimestampMs(),
-        'from' => $oldestActive->address,
+        'from'           => $oldestActive->address,
     ]);
 
     Transaction::factory()->validatorRegistration()->create([
         'timestamp'         => Carbon::now()->addSecond(100)->getTimestampMs(),
-        'from'    => $newestActive->address,
+        'from'              => $newestActive->address,
     ]);
 
     Block::factory()->count(10)->create([

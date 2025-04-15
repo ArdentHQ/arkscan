@@ -25,7 +25,7 @@ final class BlockTransactionsTable extends Component
 
     public function mount(BlockViewModel $block): void
     {
-        $this->totalCount = $block->transactionCount();
+        $this->totalCount   = $block->transactionCount();
         $this->blockHash    = $block->hash();
     }
 

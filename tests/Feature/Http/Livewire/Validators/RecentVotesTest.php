@@ -21,7 +21,7 @@ function generateReceipts(): void
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
             'transaction_hash'      => $transaction->hash,
-            'success' => true,
+            'success'               => true,
         ]);
     }
 }
@@ -56,14 +56,14 @@ function generateTransactions(): array
         ->vote($validator1->address)
         ->create([
             'timestamp'      => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
-            'from' => $sender1->address,
+            'from'           => $sender1->address,
         ]);
 
     $unvoteTransaction = Transaction::factory()
         ->unvote()
         ->create([
             'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
-            'from' => $sender2->address,
+            'from'           => $sender2->address,
         ]);
 
     generateReceipts();
@@ -485,12 +485,12 @@ it('should not show failed transactions', function () {
 
     Receipt::factory()->create([
         'transaction_hash'      => $failedTransaction->hash,
-        'success' => false,
+        'success'               => false,
     ]);
 
     Receipt::factory()->create([
         'transaction_hash'      => $successfulTransaction->hash,
-        'success' => true,
+        'success'               => true,
     ]);
 
     Livewire::test(RecentVotes::class)

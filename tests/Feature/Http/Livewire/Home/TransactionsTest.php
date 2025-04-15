@@ -18,7 +18,7 @@ it('should list the first page of transactions', function () {
     foreach ($transactions as $transaction) {
         Receipt::factory()->create([
             'transaction_hash'       => $transaction->hash,
-            'gas_used' => 1e9,
+            'gas_used'               => 1e9,
         ]);
     }
 

@@ -27,7 +27,7 @@ it('should render the component', function () {
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
             'transaction_hash'       => $transaction->hash,
-            'gas_used' => 1e9,
+            'gas_used'               => 1e9,
         ]);
     }
 
@@ -53,7 +53,7 @@ it('should filter by year', function () {
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
             'transaction_hash'       => $transaction->hash,
-            'gas_used' => 1e9,
+            'gas_used'               => 1e9,
         ]);
     }
 
@@ -79,7 +79,7 @@ it('should throw an exception if using a wrong cache', function () {
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
             'transaction_hash'       => $transaction->hash,
-            'gas_used' => 1e18,
+            'gas_used'               => 1e18,
         ]);
     }
 

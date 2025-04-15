@@ -106,7 +106,7 @@ it('should list all transactions for cold wallet', function () {
 it('should show transfer without amount sent to self', function () {
     $sent = Transaction::factory()->transfer()->create([
         'sender_public_key'      => $this->subject->public_key,
-        'to'      => $this->subject->address,
+        'to'                     => $this->subject->address,
     ])->fresh();
 
     $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -247,7 +247,7 @@ it('should filter by incoming transactions', function () {
 it('should filter by incoming and outgoing transactions', function () {
     $sent = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
-        'to' => $this->subject->address,
+        'to'                => $this->subject->address,
     ]);
 
     $received = Transaction::factory()->transfer()->create([
@@ -470,7 +470,7 @@ it('should filter by other transactions to consensus address', function () {
 
     $other = Transaction::factory()->withPayload('12345678')->create([
         'sender_public_key' => $this->subject->public_key,
-        'to' => Network::knownContract('consensus'),
+        'to'                => Network::knownContract('consensus'),
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -497,7 +497,7 @@ it('should filter by other transactions to non-consensus address', function () {
 
     $other = Transaction::factory()->withPayload('12345678')->create([
         'sender_public_key' => $this->subject->public_key,
-        'to' => 'not consensus address',
+        'to'                => 'not consensus address',
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -524,7 +524,7 @@ it('should not filter transfers to consensus as "other"', function () {
 
     $other = Transaction::factory()->create([
         'sender_public_key' => $this->subject->public_key,
-        'to' => Network::knownContract('consensus'),
+        'to'                => Network::knownContract('consensus'),
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])

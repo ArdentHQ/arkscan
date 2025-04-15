@@ -41,7 +41,7 @@ it('should get the slot data for the current round', function () {
 
     Block::factory()->create([
         'number'               => 5944905,
-        'proposer'    => $wallet['address'],
+        'proposer'             => $wallet['address'],
     ]);
 
     $validators = $this->subject->validators();

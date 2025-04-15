@@ -27,7 +27,7 @@ it('should cache annual data for current year', function () {
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -85,7 +85,7 @@ it('should cache annual data for all time', function () {
         ->withReceipt()
         ->create([
             'timestamp' => $initialDate->getTimestampMs(),
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -116,7 +116,7 @@ it('should cache annual data for all time', function () {
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -127,7 +127,7 @@ it('should cache annual data for all time', function () {
         )
         ->withReceipt()
         ->create([
-            'value'    => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
+            'value'     => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
             'timestamp' => $timestamp,
             'gas_price' => 0.1,
         ]);
@@ -194,7 +194,7 @@ it('should not dispatch event if nothing changes', function () {
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -233,7 +233,7 @@ it('should dispatch event for all data when the transaction count changes', func
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -261,9 +261,9 @@ it('should dispatch event for all data when the transaction count changes', func
         ->withReceipt()
         ->create([
             'block_hash'  => Block::first()->hash,
-            'timestamp' => Carbon::parse('2020-03-03 01:01:01')->getTimestampMs(),
-            'value'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'timestamp'   => Carbon::parse('2020-03-03 01:01:01')->getTimestampMs(),
+            'value'       => 10 * 1e18,
+            'gas_price'   => 0.1,
         ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');
@@ -319,7 +319,7 @@ it('should dispatch event for specific year when the transaction count changes',
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -347,9 +347,9 @@ it('should dispatch event for all data when the block count changes', function (
     Transaction::factory(5)
         ->withReceipt()
         ->create([
-            'timestamp' => $timestamp,
-            'value'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'timestamp'   => $timestamp,
+            'value'       => 10 * 1e18,
+            'gas_price'   => 0.1,
             'block_hash'  => $blocks->first()->hash,
         ]);
 
@@ -360,9 +360,9 @@ it('should dispatch event for all data when the block count changes', function (
     Transaction::factory(2)
         ->withReceipt()
         ->create([
-            'timestamp' => Carbon::parse('2023-03-03 00:00:00')->getTimestampMs(),
-            'value'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'timestamp'   => Carbon::parse('2023-03-03 00:00:00')->getTimestampMs(),
+            'value'       => 10 * 1e18,
+            'gas_price'   => 0.1,
             'block_hash'  => $block->hash,
         ]);
 
@@ -425,7 +425,7 @@ it('should dispatch event for current year when the transaction count changes', 
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -451,9 +451,9 @@ it('should dispatch event for current year when the transaction count changes', 
         ->withReceipt()
         ->create([
             'block_hash'  => Block::first()->hash,
-            'timestamp' => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
-            'value'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'timestamp'   => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
+            'value'       => 10 * 1e18,
+            'gas_price'   => 0.1,
         ]);
 
     $cache->setAnnualData(2017, 0, '0', '0', 0);
@@ -483,7 +483,7 @@ it('should dispatch event for current year when the block count changes', functi
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 
@@ -535,7 +535,7 @@ it('should get all annual data if not already set', function () {
         ->withReceipt()
         ->create([
             'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
-            'value'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 0.1,
         ]);
 

@@ -20,13 +20,13 @@ it('should get the transaction stats for the last 24 hours', function () {
 
     Transaction::factory(148)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'value'    => 123 * 1e18,
+        'value'     => 123 * 1e18,
         'gas_price' => 5,
     ]);
 
     Transaction::factory(12)->withReceipt()->create([
         'timestamp'  => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
-        'value'     => 123 * 1e18,
+        'value'      => 123 * 1e18,
         'gas_price'  => 5,
     ]);
 
@@ -82,7 +82,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
         ->withReceipt(gasUsed: $gasUsed)
         ->create([
             'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-            'value'    => BigNumber::new($amount * 1e18),
+            'value'     => BigNumber::new($amount * 1e18),
             'gas_price' => $fee,
         ]);
 
@@ -137,7 +137,7 @@ it('should cache the transaction stats for 5 minutes', function () {
 
     Transaction::factory(146)->withReceipt()->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'value'          => 123 * 1e18,
+        'value'           => 123 * 1e18,
         'gas_price'       => 5,
     ]);
 
@@ -155,7 +155,7 @@ it('should cache the transaction stats for 5 minutes', function () {
 
     Transaction::factory(12)->withReceipt()->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
-        'value'          => 123 * 1e18,
+        'value'           => 123 * 1e18,
         'gas_price'       => 5,
     ]);
 

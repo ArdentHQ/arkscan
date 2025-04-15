@@ -21,7 +21,7 @@ it('should refresh the latest wallet - A > B', function () {
 
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletA->public_key,
-        'to' => $walletA->address,
+        'to'                => $walletA->address,
         'timestamp'         => 0,
     ]);
 
@@ -36,7 +36,7 @@ it('should refresh the latest wallet - A > B', function () {
 
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletA->public_key,
-        'to' => $walletB->address,
+        'to'                => $walletB->address,
         'timestamp'         => $genesisTimestamp,
     ]);
 
@@ -68,7 +68,7 @@ it('should refresh the latest wallet - A > B > C', function () {
 
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletA->public_key,
-        'to' => $walletA->address,
+        'to'                => $walletA->address,
         'timestamp'         => 0,
     ]);
 
@@ -83,7 +83,7 @@ it('should refresh the latest wallet - A > B > C', function () {
 
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletA->public_key,
-        'to' => $walletB->address,
+        'to'                => $walletB->address,
         'timestamp'         => $genesisTimestamp,
     ]);
 
@@ -105,7 +105,7 @@ it('should refresh the latest wallet - A > B > C', function () {
 
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletB->public_key,
-        'to' => $walletC->address,
+        'to'                => $walletC->address,
         'timestamp'         => $newestTimestamp,
     ]);
 
@@ -138,7 +138,7 @@ it('should refresh the latest wallet - A > B > existing C', function () {
     // Wallet A Transaction
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletA->public_key,
-        'to' => $walletA->address,
+        'to'                => $walletA->address,
         'timestamp'         => 0,
     ]);
 
@@ -155,7 +155,7 @@ it('should refresh the latest wallet - A > B > existing C', function () {
 
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletC->public_key,
-        'to' => $walletC->address,
+        'to'                => $walletC->address,
         'timestamp'         => $existingTimestamp,
     ]);
 
@@ -167,7 +167,7 @@ it('should refresh the latest wallet - A > B > existing C', function () {
 
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletA->public_key,
-        'to' => $walletB->address,
+        'to'                => $walletB->address,
         'timestamp'         => $genesisTimestamp,
     ]);
 
@@ -191,7 +191,7 @@ it('should refresh the latest wallet - A > B > existing C', function () {
 
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $walletB->public_key,
-        'to' => $walletC->address,
+        'to'                => $walletC->address,
         'timestamp'         => $newestTimestamp,
     ]);
 

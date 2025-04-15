@@ -19,7 +19,7 @@ it('should get fees', function () {
     Transaction::factory($transactionCount)
         ->create([
             'timestamp' => Carbon::now()->subHours(1)->getTimestampMs(),
-            'value'    => '100000000000000000000',
+            'value'     => '100000000000000000000',
         ])
         ->each(function ($transaction, $index) use (&$volume, &$totalFees) {
             $transaction->gas_price = BigNumber::new($index + 1);
@@ -30,7 +30,7 @@ it('should get fees', function () {
 
             Receipt::factory()->create([
                 'transaction_hash' => $transaction->hash,
-                'gas_used' => 21000,
+                'gas_used'         => 21000,
             ]);
         });
 

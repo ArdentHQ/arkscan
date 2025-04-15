@@ -17,13 +17,13 @@ final class ReceiptFactory extends Factory
     {
         return [
             'transaction_hash'                        => $this->faker->transactionHash,
-            'status'                   => $this->faker->boolean,
-            'block_number'              => $this->faker->numberBetween(1, 10000),
-            'gas_used'                  => $this->faker->numberBetween(1, 100),
-            'gas_refunded'              => $this->faker->numberBetween(1, 100),
-            'contract_address' => fn () => Wallet::factory()->create()->address,
-            'logs'                      => [],
-            'output'                    => null,
+            'status'                                  => $this->faker->boolean,
+            'block_number'                            => $this->faker->numberBetween(1, 10000),
+            'gas_used'                                => $this->faker->numberBetween(1, 100),
+            'gas_refunded'                            => $this->faker->numberBetween(1, 100),
+            'contract_address'                        => fn () => Wallet::factory()->create()->address,
+            'logs'                                    => [],
+            'output'                                  => null,
         ];
     }
 

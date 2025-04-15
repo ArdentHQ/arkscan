@@ -26,18 +26,18 @@ final class TransactionFactory extends Factory
         $wallet = Wallet::factory()->create();
 
         return [
-            'id'                => $this->faker->transactionId,
+            'id'                  => $this->faker->transactionId,
             'block_hash'          => fn () => Block::factory()->create()->hash,
-            'block_number'      => $this->faker->numberBetween(1, 10000),
-            'sender_public_key' => fn () => $wallet->public_key,
-            'from'    => fn () => $wallet->address,
-            'to' => fn () => $wallet->address,
-            'timestamp'         => 1603083256000,
-            'gas_price'         => $this->faker->numberBetween(1, 100),
-            'gas' => 0,
-            'value'            => $this->faker->numberBetween(1, 100) * 1e18,
-            'nonce'             => 1,
-            'data'              => function () {
+            'block_number'        => $this->faker->numberBetween(1, 10000),
+            'sender_public_key'   => fn () => $wallet->public_key,
+            'from'                => fn () => $wallet->address,
+            'to'                  => fn () => $wallet->address,
+            'timestamp'           => 1603083256000,
+            'gas_price'           => $this->faker->numberBetween(1, 100),
+            'gas'                 => 0,
+            'value'               => $this->faker->numberBetween(1, 100) * 1e18,
+            'nonce'               => 1,
+            'data'                => function () {
                 // In-memory stream
                 $stream = fopen('php://temp', 'r+');
                 fwrite($stream, '');
@@ -96,7 +96,7 @@ final class TransactionFactory extends Factory
         return $this->withPayload($payload)
             ->state(fn () => [
                 'value'            => 0,
-                'to' => Network::knownContract('multipayment'),
+                'to'               => Network::knownContract('multipayment'),
             ]);
     }
 

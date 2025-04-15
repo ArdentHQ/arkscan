@@ -15,8 +15,8 @@ beforeEach(function () {
     $this->recipient = Wallet::factory()->create();
     $this->subject   = Transaction::factory()->create([
         'gas_price'         => 1,
-        'value'            => 2 * 1e18,
-        'to' => $this->recipient,
+        'value'             => 2 * 1e18,
+        'to'                => $this->recipient,
     ]);
 });
 
@@ -88,7 +88,7 @@ it('should calculate fee with receipt', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'gas_used' => 21000,
+        'gas_used'         => 21000,
     ]);
 
     expect($transaction->fresh()->fee()->toNumber())->toBe(1134000);

@@ -37,14 +37,14 @@ describe('Monitor', function () {
             $block = Block::factory()->create([
                 'number'            => 5944900,
                 'timestamp'         => 113620904,
-                'proposer' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
 
             // Start height for round 112168
             Block::factory()->create([
                 'number'            => 5944904,
                 'timestamp'         => 113620904,
-                'proposer' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
 
             (new WalletCache())->setValidator($wallet->address, $wallet);
@@ -117,7 +117,7 @@ describe('Monitor', function () {
             for ($i = 0; $i < 3; $i++) {
                 Block::factory()->create([
                     'number'            => $i,
-                    'proposer' => $wallet->address,
+                    'proposer'          => $wallet->address,
                 ]);
             }
 
@@ -757,7 +757,7 @@ describe('Data Boxes', function () {
             $block = Block::factory()->create([
                 'number'            => 5944900,
                 'timestamp'         => $timestamp,
-                'proposer' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
 
             // Start height for round 112168
@@ -765,7 +765,7 @@ describe('Data Boxes', function () {
                 Block::factory()->create([
                     'number'            => 5944904,
                     'timestamp'         => $timestamp,
-                    'proposer' => $wallet->address,
+                    'proposer'          => $wallet->address,
                 ]);
             }
 
@@ -926,13 +926,13 @@ describe('Data Boxes', function () {
             Block::factory()->create([
                 'number'            => 5944900,
                 'timestamp'         => 113620904,
-                'proposer' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
 
             Block::factory()->create([
                 'number'            => 5944904,
                 'timestamp'         => 113620904,
-                'proposer' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
         });
 

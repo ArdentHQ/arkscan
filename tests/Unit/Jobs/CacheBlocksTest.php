@@ -89,20 +89,20 @@ it('should trigger event if largest block by amount changes', function () {
     $cache = new BlockCache();
 
     $largestByAmount = Block::factory()->create([
-        'amount'           => 1000 * 1e8,
-        'fee'              => 1 * 1e8,
+        'amount'             => 1000 * 1e8,
+        'fee'                => 1 * 1e8,
         'transactions_count' => 1,
     ]);
 
     $largestByFees = Block::factory()->create([
-        'amount'           => 100 * 1e8,
-        'fee'              => 100 * 1e8,
+        'amount'             => 100 * 1e8,
+        'fee'                => 100 * 1e8,
         'transactions_count' => 1,
     ]);
 
     $largestByTransactions = Block::factory()->create([
-        'amount'           => 1 * 1e8,
-        'fee'              => 1 * 1e8,
+        'amount'             => 1 * 1e8,
+        'fee'                => 1 * 1e8,
         'transactions_count' => 3,
     ]);
 
@@ -121,11 +121,11 @@ it('should trigger event if largest block by amount changes', function () {
     Event::assertDispatchedTimes(TransactionDetails::class, 0);
 
     $updatedLargestByAmount = Block::factory()->create([
-        'fee'              => 1 * 1e8,
+        'fee'                => 1 * 1e8,
         'transactions_count' => 1,
     ]);
     Transaction::factory()->create([
-        'value'   => 10000 * 1e8,
+        'value'      => 10000 * 1e8,
         'block_hash' => $updatedLargestByAmount->hash,
     ]);
 
@@ -142,20 +142,20 @@ it('should trigger event if largest block by fee changes', function () {
     $cache = new BlockCache();
 
     $largestByAmount = Block::factory()->create([
-        'amount'           => 1000 * 1e8,
-        'fee'              => 1 * 1e8,
+        'amount'             => 1000 * 1e8,
+        'fee'                => 1 * 1e8,
         'transactions_count' => 1,
     ]);
 
     $largestByFees = Block::factory()->create([
-        'amount'           => 100 * 1e8,
-        'fee'              => 100 * 1e8,
+        'amount'             => 100 * 1e8,
+        'fee'                => 100 * 1e8,
         'transactions_count' => 1,
     ]);
 
     $largestByTransactions = Block::factory()->create([
-        'amount'           => 1 * 1e8,
-        'fee'              => 1 * 1e8,
+        'amount'             => 1 * 1e8,
+        'fee'                => 1 * 1e8,
         'transactions_count' => 3,
     ]);
 
@@ -175,8 +175,8 @@ it('should trigger event if largest block by fee changes', function () {
 
     $updatedLargestByFees = Block::factory()->create([
         // same amount, but higher fee
-        'amount'           => 1 * 1e8,
-        'fee'              => 1000 * 1e8,
+        'amount'             => 1 * 1e8,
+        'fee'                => 1000 * 1e8,
         'transactions_count' => 1,
     ]);
 
@@ -193,20 +193,20 @@ it('should trigger event if largest block by transaction count changes', functio
     $cache = new BlockCache();
 
     $largestByAmount = Block::factory()->create([
-        'amount'           => 1000 * 1e8,
-        'fee'              => 1 * 1e8,
+        'amount'             => 1000 * 1e8,
+        'fee'                => 1 * 1e8,
         'transactions_count' => 1,
     ]);
 
     $largestByFees = Block::factory()->create([
-        'amount'           => 100 * 1e8,
-        'fee'              => 100 * 1e8,
+        'amount'             => 100 * 1e8,
+        'fee'                => 100 * 1e8,
         'transactions_count' => 1,
     ]);
 
     $largestByTransactions = Block::factory()->create([
-        'amount'           => 1 * 1e8,
-        'fee'              => 1 * 1e8,
+        'amount'             => 1 * 1e8,
+        'fee'                => 1 * 1e8,
         'transactions_count' => 3,
     ]);
 
@@ -226,8 +226,8 @@ it('should trigger event if largest block by transaction count changes', functio
 
     $updatedLargestByTransactions = Block::factory()->create([
         // same amount, but more transactions
-        'amount'           => 1 * 1e8,
-        'fee'              => 1 * 1e8,
+        'amount'             => 1 * 1e8,
+        'fee'                => 1 * 1e8,
         'transactions_count' => 5,
     ]);
 

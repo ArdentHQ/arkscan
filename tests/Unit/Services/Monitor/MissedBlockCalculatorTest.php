@@ -147,7 +147,7 @@ it('should calculate the missed blocks', function () {
         if (! in_array($address, $validatorsWhoMissed, true)) {
             // Start height for round 7103 is 376407
             Block::factory()->create([
-                'proposer'    => $address,
+                'proposer'             => $address,
                 'number'               => 376407 + $heightIterator,
                 'timestamp'            => Carbon::now()->getTimestampMs(),
             ]);

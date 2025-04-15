@@ -19,10 +19,10 @@ beforeEach(function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = new BlockViewModel(Block::factory()->create([
-        'parent_hash' => $previousBlock->id,
+        'parent_hash'    => $previousBlock->id,
         'number'         => 10000,
-        'amount'   => 50 * 1e18,
-        'fee'      => 48 * 1e18,
+        'amount'         => 50 * 1e18,
+        'fee'            => 48 * 1e18,
         'reward'         => 2 * 1e18,
     ]));
 });
@@ -89,20 +89,20 @@ it('should get the amount as fiat', function () {
         ->transfer()
         ->create([
             'block_hash'  => $this->subject->hash(),
-            'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+            'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
         ])->concat(
             Transaction::factory(10)
                 ->vote($wallet->address)
                 ->create([
                     'block_hash'  => $this->subject->hash(),
-                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                    'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         )->concat(
             Transaction::factory(10)
                 ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e9)])
                 ->create([
                     'block_hash'  => $this->subject->hash(),
-                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                    'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         );
 
@@ -169,7 +169,7 @@ it('should get the previous block url', function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $subject = new BlockViewModel(Block::factory()->create([
-        'parent_hash' => $previousBlock->id,
+        'parent_hash'    => $previousBlock->id,
         'number'         => 2,
     ]));
 
@@ -178,7 +178,7 @@ it('should get the previous block url', function () {
 
 it('should fail to get the previous block url', function () {
     $subject = new BlockViewModel(Block::factory()->create([
-        'parent_hash' => null,
+        'parent_hash'    => null,
         'number'         => 1,
     ]));
 
@@ -189,7 +189,7 @@ it('should get the next block url', function () {
     $previousBlock = Block::factory()->create(['number' => 2]);
 
     $subject = new BlockViewModel(Block::factory()->create([
-        'parent_hash' => $previousBlock->id,
+        'parent_hash'    => $previousBlock->id,
         'number'         => 1,
     ]));
 
@@ -200,7 +200,7 @@ it('should fail to get the next block url', function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $subject = new BlockViewModel(Block::factory()->create([
-        'parent_hash' => $previousBlock->id,
+        'parent_hash'    => $previousBlock->id,
         'number'         => 2,
     ]));
 

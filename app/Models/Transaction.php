@@ -95,12 +95,12 @@ final class Transaction extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'value'       => BigInteger::class,
-        'gas_price'    => BigInteger::class,
-        'gas_limit'    => BigInteger::class,
-        'timestamp'    => UnixSeconds::class,
+        'value'                 => BigInteger::class,
+        'gas_price'             => BigInteger::class,
+        'gas_limit'             => BigInteger::class,
+        'timestamp'             => UnixSeconds::class,
         'transaction_index'     => 'int',
-        'block_number' => 'int',
+        'block_number'          => 'int',
     ];
 
     protected $with = [
@@ -127,7 +127,7 @@ final class Transaction extends Model
 
             // To get the value for single payments
             // Using `__toString` since are instances of `BigNumber`
-            'value' => $this->value->__toString(),
+            'value'  => $this->value->__toString(),
             'fee'    => $this->gas_price->__toString(),
             // used to build the payments and sortable
             'timestamp' => $this->timestamp,

@@ -64,12 +64,12 @@ final class Block extends Model
      */
     protected $casts = [
         'number'                 => BigInteger::class,
-        'transactions_count' => 'int',
+        'transactions_count'     => 'int',
         'reward'                 => BigInteger::class,
         'timestamp'              => UnixSeconds::class,
-        'amount'           => BigInteger::class,
-        'fee'              => BigInteger::class,
-        'gas_used'         => 'int',
+        'amount'                 => BigInteger::class,
+        'fee'                    => BigInteger::class,
+        'gas_used'               => 'int',
     ];
 
     /**

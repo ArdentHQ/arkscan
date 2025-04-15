@@ -37,7 +37,7 @@ final class State extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'supply'    => BigInteger::class,
+        'supply'          => BigInteger::class,
         'block_number'    => BigInteger::class,
     ];
 

@@ -46,7 +46,7 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::parse('2020-10-19 05:54:16')->getTimestampMs(),
-        'value'    => 499 * 1e18,
+        'value'     => 499 * 1e18,
     ]);
 
     $component = Livewire::test(TransactionTable::class)

@@ -43,7 +43,7 @@ it('should get the slot data for the current round using cache', function () {
 
     Block::factory()->create([
         'number'               => 5944853,
-        'proposer'    => $wallet['address'],
+        'proposer'             => $wallet['address'],
     ]);
 
     $validators = $this->subject->validators();

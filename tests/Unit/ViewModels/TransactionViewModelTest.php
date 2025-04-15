@@ -25,11 +25,11 @@ beforeEach(function () {
     $this->sender  = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'block_hash'               => $this->block->hash,
-        'block_number'           => 1,
-        'gas_price'              => 1,
-        'value'                 => 2 * 1e18,
-        'sender_public_key'      => $this->sender->public_key,
-        'to'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'block_number'             => 1,
+        'gas_price'                => 1,
+        'value'                    => 2 * 1e18,
+        'sender_public_key'        => $this->sender->public_key,
+        'to'                       => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
 });
 
@@ -52,7 +52,7 @@ it('should determine if transfer transaction is sent to self', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'to' => $this->sender->address,
+            'to'                => $this->sender->address,
         ]));
 
     expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
@@ -360,7 +360,7 @@ it('should calculate fee with receipt', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'gas_used' => 21000,
+        'gas_used'         => 21000,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -383,7 +383,7 @@ it('should should determine if transaction failed', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'success' => false,
+        'success'          => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -404,7 +404,7 @@ it('should should determine transaction has not failed', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'success' => true,
+        'success'          => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -417,7 +417,7 @@ it('should get the gas used', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'gas_used' => 8,
+        'gas_used'         => 8,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());

@@ -38,13 +38,13 @@ it('should render with a height, volume, supply and market cap', function () {
 
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
-        'value'    => 18204 * 1e18,
+        'value'     => 18204 * 1e18,
         'gas_price' => 0.99,
     ]);
 
     Receipt::factory()->create([
         'transaction_hash'       => $transaction->hash,
-        'gas_used' => 1e9,
+        'gas_used'               => 1e9,
     ]);
 
     $transaction->sender->balance           = 0;
@@ -77,13 +77,13 @@ it('should render with a height, volume, supply and market cap for BTC', functio
 
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
-        'value'    => 18204 * 1e18,
+        'value'     => 18204 * 1e18,
         'gas_price' => 0.99,
     ]);
 
     Receipt::factory()->create([
         'transaction_hash'       => $transaction->hash,
-        'gas_used' => 1e9,
+        'gas_used'               => 1e9,
     ]);
 
     $transaction->sender->balance           = 0;

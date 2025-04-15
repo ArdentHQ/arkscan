@@ -45,21 +45,21 @@ it('should render transaction details', function (): void {
     $largest = Transaction::factory()
         ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
         ->create([
-            'value'    => 9999 * 1e18,
+            'value'     => 9999 * 1e18,
             'gas_price' => 11 * 1e18,
         ]);
 
     Transaction::factory(17)
         ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
         ->create([
-            'value'    => 2 * 1e18,
+            'value'     => 2 * 1e18,
             'gas_price' => 11 * 1e18,
         ]);
 
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
             'transaction_hash'       => $transaction->hash,
-            'gas_used' => 1e9,
+            'gas_used'               => 1e9,
         ]);
     }
 
@@ -119,12 +119,12 @@ it('should render transaction daily average', function (): void {
     $transactionCache = new TransactionCache();
 
     Transaction::factory(2)->validatorRegistration()->create([
-        'value'    => 0,
+        'value'     => 0,
         'gas_price' => 9 * 1e18,
     ]);
 
     Transaction::factory(3)->transfer()->create([
-        'value'    => 2000 * 1e18,
+        'value'     => 2000 * 1e18,
         'gas_price' => 10 * 1e18,
     ]);
 
@@ -137,7 +137,7 @@ it('should render transaction daily average', function (): void {
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
             'transaction_hash'       => $transaction->hash,
-            'gas_used' => 1e9,
+            'gas_used'               => 1e9,
         ]);
     }
 
