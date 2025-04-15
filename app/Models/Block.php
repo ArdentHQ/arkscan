@@ -25,7 +25,7 @@ use Laravel\Scout\Searchable;
  * @property int $timestamp
  * @property BigNumber $total_amount
  * @property BigNumber $total_fee
- * @property int $total_gas_used
+ * @property int $gas_used
  * @property string $generator_address
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
@@ -69,7 +69,7 @@ final class Block extends Model
         'timestamp'              => UnixSeconds::class,
         'total_amount'           => BigInteger::class,
         'total_fee'              => BigInteger::class,
-        'total_gas_used'         => 'int',
+        'gas_used'         => 'int',
     ];
 
     /**

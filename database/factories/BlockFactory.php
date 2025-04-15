@@ -24,7 +24,7 @@ final class BlockFactory extends Factory
             'transactions_count'    => $this->faker->numberBetween(1, 100),
             'total_amount'           => $this->faker->numberBetween(1, 100) * 1e18,
             'total_fee'              => $this->faker->numberBetween(1, 100) * 1e18,
-            'total_gas_used'         => $this->faker->numberBetween(1, 100),
+            'gas_used'         => $this->faker->numberBetween(1, 100),
             'reward'                 => $this->faker->numberBetween(1, 100) * 1e18,
             'payload_length'         => $this->faker->numberBetween(1, 100),
             'payload_hash'           => $this->faker->payloadHash,
