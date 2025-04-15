@@ -193,7 +193,7 @@ it('should search only wallets when searching for an address', function () {
         ->assertDontSee($otherWallet->address);
 });
 
-it('should search only transactions and blocks when searching for id', function () {
+it('should search only transactions and blocks when searching for hash', function () {
     // Default value, overriden in phpunit.xml for the tests
     Config::set('scout.driver', 'meilisearch');
 
@@ -206,7 +206,7 @@ it('should search only transactions and blocks when searching for id', function 
     $transaction = Transaction::factory()
         ->transfer()
         ->create([
-            'id' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
+            'hash' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
         ]);
 
     $this->mock(MeilisearchEngine::class)

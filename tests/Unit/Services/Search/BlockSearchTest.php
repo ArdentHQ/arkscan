@@ -6,25 +6,25 @@ use App\Models\Block;
 use App\Services\Search\BlockSearch;
 use Illuminate\Support\Collection;
 
-it('should search for a block by id', function (?string $modifier) {
+it('should search for a block by hash', function (?string $modifier) {
     $block = Block::factory(10)->create()[0];
 
-    $result = (new BlockSearch())->search($modifier ? $modifier($block->id) : $block->id, 5);
+    $result = (new BlockSearch())->search($modifier ? $modifier($block->hash) : $block->hash, 5);
 
     expect($result)->toHaveCount(1);
 })->with([null, 'strtolower', 'strtoupper']);
 
 it('should query blocks by id', function () {
     Block::factory()->create([
-        'id' => 'aaaaaabbbbbbbccccccdddddd',
+        'hash' => 'aaaaaabbbbbbbccccccdddddd',
     ]);
 
     Block::factory()->create([
-        'id' => 'bbbbbbbddddd',
+        'hash' => 'bbbbbbbddddd',
     ]);
 
     Block::factory()->create([
-        'id' => 'ccccccdddddd',
+        'hash' => 'ccccccdddddd',
     ]);
 
     expect((new BlockSearch())->search('aaaaaa', 5))->toHaveCount(1);
@@ -36,15 +36,15 @@ it('should query blocks by id', function () {
 
 it('limit the results', function () {
     Block::factory()->create([
-        'id' => 'aaaaaabbbbbbbccccccdddddd',
+        'hash' => 'aaaaaabbbbbbbccccccdddddd',
     ]);
 
     Block::factory()->create([
-        'id' => 'aaaaaabbbbbbbccccccdddddd2',
+        'hash' => 'aaaaaabbbbbbbccccccdddddd2',
     ]);
 
     Block::factory()->create([
-        'id' => 'aaaaaabbbbbbbccccccdddddd3',
+        'hash' => 'aaaaaabbbbbbbccccccdddddd3',
     ]);
 
     expect((new BlockSearch())->search('aaaaaa', 2))->toHaveCount(2);
@@ -73,7 +73,7 @@ it('should produce the right meilisearch query when possibly transaction id', fu
 
     expect($query->toArray())->toMatchArray([
         'indexUid' => 'blocks',
-        'filter'   => ['id = "13114381566690093367"'],
+        'filter'   => ['hash = "13114381566690093367"'],
         'limit'    => 5,
     ]);
 });
@@ -83,7 +83,7 @@ it('should handle spaces in search query', function () {
 
     expect($query->toArray())->toMatchArray([
         'indexUid' => 'blocks',
-        'filter'   => ['id = "a b"'],
+        'filter'   => ['hash = "a b"'],
         'limit'    => 5,
     ]);
 });
@@ -93,7 +93,7 @@ it('should handle special characters in search query', function () {
 
     expect($query->toArray())->toMatchArray([
         'indexUid' => 'blocks',
-        'filter'   => ['id = "a b \\\\ ( \""'],
+        'filter'   => ['hash = "a b \\\\ ( \""'],
         'limit'    => 5,
     ]);
 });
