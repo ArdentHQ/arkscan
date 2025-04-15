@@ -160,6 +160,6 @@ final class Block extends Model
      */
     public function previous(): HasOne
     {
-        return $this->hasOne(self::class, 'id', 'parent_hash');
+        return $this->hasOne(self::class, 'hash', 'parent_hash');
     }
 }

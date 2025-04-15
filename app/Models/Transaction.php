@@ -142,7 +142,7 @@ final class Transaction extends Model
 
         return $self->newQuery()
             ->select([
-                'id',
+                'hash',
                 'sender_public_key',
                 'to',
                 'value',
