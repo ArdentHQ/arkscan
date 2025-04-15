@@ -118,7 +118,7 @@ final class Monitor extends Component
 
         /** @var Block $lastBlock */
         $lastBlock = Block::query()
-            ->orderBy('height', 'desc')
+            ->orderBy('number', 'desc')
             ->first();
 
         $heightRange = MonitorService::heightRangeByRound(Rounds::current());
@@ -126,8 +126,8 @@ final class Monitor extends Component
         /** @var ?Block $lastRoundBlock */
         $lastRoundBlock = Block::query()
             ->where('generator_address', $lastSlot->address())
-            ->where('height', '>=', $heightRange[0])
-            ->orderBy('height', 'desc')
+            ->where('number', '>=', $heightRange[0])
+            ->orderBy('number', 'desc')
             ->first();
 
         if ($lastRoundBlock === null) {
@@ -138,8 +138,8 @@ final class Monitor extends Component
             /** @var ?Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
                 ->where('generator_address', $lastSuccessfulForger->address())
-                ->where('height', '>=', $heightRange[0])
-                ->orderBy('height', 'desc')
+                ->where('number', '>=', $heightRange[0])
+                ->orderBy('number', 'desc')
                 ->first();
         }
 
@@ -147,8 +147,8 @@ final class Monitor extends Component
             return [];
         }
 
-        $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
-            ->orderBy('height', 'asc')
+        $overflowBlocks = Block::where('number', '>', $lastRoundBlock->number)
+            ->orderBy('number', 'asc')
             ->get();
 
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {

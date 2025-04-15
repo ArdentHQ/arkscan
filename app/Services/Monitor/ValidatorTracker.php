@@ -20,7 +20,7 @@ final class ValidatorTracker
     {
         // Arrange Block
         $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
-        $height    = $lastBlock->height->toNumber();
+        $height    = $lastBlock->number->toNumber();
 
         // Act
         $forgingInfo = ForgingInfoCalculator::calculate($startHeight, $height);
@@ -90,8 +90,8 @@ final class ValidatorTracker
         $roundValidators = DB::connection('explorer')
             ->table('blocks')
             ->select('generator_address')
-            ->where('height', '>=', $roundHeight)
-            ->orderBy('height', 'asc')
+            ->where('number', '>=', $roundHeight)
+            ->orderBy('number', 'asc')
             ->get();
 
         if ($roundValidators->isEmpty()) {

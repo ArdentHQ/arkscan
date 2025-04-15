@@ -18,12 +18,12 @@ it('should make an instance that has all properties', function (string $status) 
 
     $lastBlockHeight = 7521;
 
-    Block::factory()->create(['height' => $lastBlockHeight]);
+    Block::factory()->create(['number' => $lastBlockHeight]);
     Round::factory()->create([
         'round_height' => 7520,
     ]);
 
-    $roundBlockCount = Block::whereBetween('height', [1, 5])
+    $roundBlockCount = Block::whereBetween('number', [1, 5])
         ->get()
         ->groupBy('generator_address')
         ->map(function ($blocks) {
@@ -69,7 +69,7 @@ it('should make an instance that has all properties', function (string $status) 
 it('should not be marked as missing if it never had a block', function () {
     $wallet = Wallet::factory()->create();
 
-    $roundBlockCount = Block::whereBetween('height', [1, 5])
+    $roundBlockCount = Block::whereBetween('number', [1, 5])
         ->get()
         ->groupBy('generator_address')
         ->map(function ($blocks) {
@@ -99,7 +99,7 @@ it('should not be marked as missing if it never had a block', function () {
 it('should show the correct missed blocks amount when spanning multiple rounds', function () {
     $wallet = Wallet::factory()->create();
 
-    $roundBlockCount = Block::whereBetween('height', [1, 5])
+    $roundBlockCount = Block::whereBetween('number', [1, 5])
         ->get()
         ->groupBy('generator_address')
         ->map(function ($blocks) {

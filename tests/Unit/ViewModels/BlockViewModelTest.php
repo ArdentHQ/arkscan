@@ -16,11 +16,11 @@ use Carbon\Carbon;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
-    $previousBlock = Block::factory()->create(['height' => 1]);
+    $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = new BlockViewModel(Block::factory()->create([
         'previous_block' => $previousBlock->id,
-        'height'         => 10000,
+        'number'         => 10000,
         'total_amount'   => 50 * 1e18,
         'total_fee'      => 48 * 1e18,
         'reward'         => 2 * 1e18,
@@ -166,11 +166,11 @@ it('should fail to get the validator wallet name', function () {
 });
 
 it('should get the previous block url', function () {
-    $previousBlock = Block::factory()->create(['height' => 1]);
+    $previousBlock = Block::factory()->create(['number' => 1]);
 
     $subject = new BlockViewModel(Block::factory()->create([
         'previous_block' => $previousBlock->id,
-        'height'         => 2,
+        'number'         => 2,
     ]));
 
     expect($subject->previousBlockUrl())->toBeString();
@@ -179,29 +179,29 @@ it('should get the previous block url', function () {
 it('should fail to get the previous block url', function () {
     $subject = new BlockViewModel(Block::factory()->create([
         'previous_block' => null,
-        'height'         => 1,
+        'number'         => 1,
     ]));
 
     expect($subject->previousBlockUrl())->toBeNull();
 });
 
 it('should get the next block url', function () {
-    $previousBlock = Block::factory()->create(['height' => 2]);
+    $previousBlock = Block::factory()->create(['number' => 2]);
 
     $subject = new BlockViewModel(Block::factory()->create([
         'previous_block' => $previousBlock->id,
-        'height'         => 1,
+        'number'         => 1,
     ]));
 
     expect($subject->nextBlockUrl())->toBeString();
 });
 
 it('should fail to get the next block url', function () {
-    $previousBlock = Block::factory()->create(['height' => 1]);
+    $previousBlock = Block::factory()->create(['number' => 1]);
 
     $subject = new BlockViewModel(Block::factory()->create([
         'previous_block' => $previousBlock->id,
-        'height'         => 2,
+        'number'         => 2,
     ]));
 
     expect($subject->nextBlockUrl())->toBeNull();

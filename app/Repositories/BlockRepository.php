@@ -16,14 +16,14 @@ final class BlockRepository implements Contract
 
     public function findByHeight($height): Block
     {
-        return Block::where('height', $height)->firstOrFail();
+        return Block::where('number', $height)->firstOrFail();
     }
 
     public function findByIdentifier($identifier): Block
     {
         return Block::query()
             ->where('id', $identifier)
-            ->orWhere('height', (int) $identifier)
+            ->orWhere('number', (int) $identifier)
             ->firstOrFail();
     }
 }

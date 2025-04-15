@@ -38,7 +38,7 @@ use Laravel\Scout\Searchable;
  * @property string|null $recipient_address
  * @property string $sender_address
  * @property string $sender_public_key
- * @property int $block_height
+ * @property int $block_number
  * @property resource|null $data
  * @property int $nonce
  * @property Wallet $sender
@@ -99,7 +99,7 @@ final class Transaction extends Model
         'gas_limit'    => BigInteger::class,
         'timestamp'    => UnixSeconds::class,
         'sequence'     => 'int',
-        'block_height' => 'int',
+        'block_number' => 'int',
     ];
 
     protected $with = [

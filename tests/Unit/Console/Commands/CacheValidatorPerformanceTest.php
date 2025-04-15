@@ -25,7 +25,7 @@ it('should cache the past performance for an address', function () {
 
         Block::factory()->create([
             'generator_address'    => $address,
-            'height'               => $round * Network::validatorCount(),
+            'number'               => $round * Network::validatorCount(),
         ]);
     }
 

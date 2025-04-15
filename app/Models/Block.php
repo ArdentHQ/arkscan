@@ -19,7 +19,7 @@ use Laravel\Scout\Searchable;
 
 /**
  * @property string $id
- * @property BigNumber $height
+ * @property BigNumber $number
  * @property int $number_of_transactions
  * @property BigNumber $reward
  * @property int $timestamp
@@ -63,7 +63,7 @@ final class Block extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'height'                 => BigInteger::class,
+        'number'                 => BigInteger::class,
         'number_of_transactions' => 'int',
         'reward'                 => BigInteger::class,
         'timestamp'              => UnixSeconds::class,

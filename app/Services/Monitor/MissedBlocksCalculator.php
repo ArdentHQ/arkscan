@@ -31,9 +31,9 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
         $roundValidators  = $round->validators;
         $activeValidators = count($roundValidators);
 
-        $producedBlocks = Block::select(['generator_address', 'height', 'timestamp'])
-            ->whereBetween('height', [$round->round_height, $round->round_height + $activeValidators - 1])
-            ->orderBy('height', 'asc')
+        $producedBlocks = Block::select(['generator_address', 'number', 'timestamp'])
+            ->whereBetween('number', [$round->round_height, $round->round_height + $activeValidators - 1])
+            ->orderBy('number', 'asc')
             ->get();
 
         // Good Scenario (no missed block):

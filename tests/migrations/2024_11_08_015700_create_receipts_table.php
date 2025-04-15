@@ -13,7 +13,7 @@ final class CreateReceiptsTable extends Migration
         Schema::create('receipts', function (Blueprint $table) {
             $table->string('id');
             $table->boolean('success');
-            $table->unsignedBigInteger('block_height');
+            $table->unsignedBigInteger('block_number');
             $table->addColumn('numeric', 'gas_used');
             $table->addColumn('numeric', 'gas_refunded');
             $table->string('deployed_contract_address')->nullable();

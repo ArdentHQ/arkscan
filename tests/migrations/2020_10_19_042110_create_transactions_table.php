@@ -13,7 +13,7 @@ final class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->string('id');
             $table->string('block_id');
-            $table->string('block_height');
+            $table->string('block_number');
             $table->integer('sequence');
             $table->string('sender_public_key');
             $table->string('sender_address');

@@ -71,7 +71,7 @@ it('should cache unique addresses', function () {
     ]);
     $transactionTimestamp = Carbon::parse('2024-03-03 13:24:44')->getTimestampMs();
     $transaction          = Transaction::factory()->create([
-        'block_height'      => 1,
+        'block_number'      => 1,
         'timestamp'         => $transactionTimestamp,
         'sender_public_key' => $newestWallet1->public_key,
         'recipient_address' => $newestWallet1->address,
@@ -89,13 +89,13 @@ it('should cache unique addresses', function () {
 
     $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
     Transaction::factory()->transfer()->create([
-        'block_height'      => 143,
+        'block_number'      => 143,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp,
     ]);
     Transaction::factory()->transfer()->create([
-        'block_height'      => 144,
+        'block_number'      => 144,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,
@@ -179,7 +179,7 @@ it('should dispatch event if most transactions has changed', function () {
     ]);
 
     Transaction::factory()->transfer()->create([
-        'block_height'      => 1,
+        'block_number'      => 1,
         'sender_public_key' => $genesisWallet->public_key,
         'recipient_address' => $genesisWallet->address,
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
@@ -200,13 +200,13 @@ it('should dispatch event if most transactions has changed', function () {
     $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
 
     Transaction::factory()->transfer()->create([
-        'block_height'      => 143,
+        'block_number'      => 143,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp,
     ]);
     Transaction::factory()->transfer()->create([
-        'block_height'      => 144,
+        'block_number'      => 144,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,
@@ -220,7 +220,7 @@ it('should dispatch event if most transactions has changed', function () {
     Event::fake();
 
     Transaction::factory()->transfer()->create([
-        'block_height'      => 145,
+        'block_number'      => 145,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 2,
@@ -241,7 +241,7 @@ it('should dispatch event if most transactions has changed', function () {
     ]);
 
     Transaction::factory(5)->transfer()->create([
-        'block_height'      => 146,
+        'block_number'      => 146,
         'sender_public_key' => $mostTransactionsWallet->public_key,
         'recipient_address' => $mostTransactionsWallet->address,
         'timestamp'         => $newestTimestamp,
@@ -261,7 +261,7 @@ it('should should dispatch event if largest has changed', function () {
         'public_key' => 'genesis-public_key',
     ]);
     Transaction::factory()->transfer()->create([
-        'block_height'      => 1,
+        'block_number'      => 1,
         'sender_public_key' => $genesisWallet->public_key,
         'recipient_address' => $genesisWallet->address,
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
@@ -279,13 +279,13 @@ it('should should dispatch event if largest has changed', function () {
 
     $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
     Transaction::factory()->transfer()->create([
-        'block_height'      => 143,
+        'block_number'      => 143,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp,
     ]);
     Transaction::factory()->transfer()->create([
-        'block_height'      => 144,
+        'block_number'      => 144,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,
@@ -326,7 +326,7 @@ it('should not dispatch events if nothing changed', function () {
         'public_key' => 'genesis-public_key',
     ]);
     Transaction::factory()->transfer()->create([
-        'block_height'      => 1,
+        'block_number'      => 1,
         'sender_public_key' => $genesisWallet->public_key,
         'recipient_address' => $genesisWallet->address,
         'timestamp'         => Timestamp::fromUnix(Carbon::parse('2023-04-01 15:04:13')->unix())->unix(),
@@ -344,13 +344,13 @@ it('should not dispatch events if nothing changed', function () {
 
     $newestTimestamp = Timestamp::fromUnix(Carbon::parse('2024-04-01 15:04:13')->unix())->unix();
     Transaction::factory()->transfer()->create([
-        'block_height'      => 143,
+        'block_number'      => 143,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp,
     ]);
     Transaction::factory()->transfer()->create([
-        'block_height'      => 144,
+        'block_number'      => 144,
         'sender_public_key' => $newest->public_key,
         'recipient_address' => $newest->address,
         'timestamp'         => $newestTimestamp + 1,

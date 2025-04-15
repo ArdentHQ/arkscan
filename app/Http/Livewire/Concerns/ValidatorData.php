@@ -31,7 +31,7 @@ trait ValidatorData
     {
         Cache::remember('monitor:last-blocks', $this->cacheTtl(), function () use ($validators): bool {
             $blocks = Block::query()
-                ->orderBy('height', 'desc')
+                ->orderBy('number', 'desc')
                 ->limit(Network::validatorCount() * 2)
                 ->get();
 
@@ -44,7 +44,7 @@ trait ValidatorData
                         $query->select('id')
                             ->from('blocks')
                             ->whereColumn('generator_address', 'address')
-                            ->orderBy('height', 'desc')
+                            ->orderBy('number', 'desc')
                             ->limit(1);
                     },
                 ]);
@@ -70,7 +70,7 @@ trait ValidatorData
 
                 (new WalletCache())->setLastBlock($address, [
                     'id'                   => $block->id,
-                    'height'               => $block->height->toNumber(),
+                    'number'               => $block->number->toNumber(),
                     'timestamp'            => $block->timestamp,
                     'generator_address'    => $block->generator_address,
                 ]);
@@ -85,8 +85,8 @@ trait ValidatorData
         return RequestScopedCache::remember('monitor:blocks-by-range', function () use ($addresses, $heightRange): Collection {
             return Block::query()
                 ->whereIn('generator_address', $addresses)
-                ->whereBetween('height', $heightRange)
-                ->orderBy('height', 'asc')
+                ->whereBetween('number', $heightRange)
+                ->orderBy('number', 'asc')
                 ->get();
         });
     }
@@ -96,7 +96,7 @@ trait ValidatorData
         return Cache::remember(
             'validator:round:'.$height,
             $this->cacheTtl(),
-            fn () => Block::where('height', $height)->exists()
+            fn () => Block::where('number', $height)->exists()
         );
     }
 

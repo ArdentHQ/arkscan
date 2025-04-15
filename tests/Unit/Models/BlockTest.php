@@ -13,11 +13,11 @@ use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
-    $previousBlock = Block::factory()->create(['height' => 1]);
+    $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = Block::factory()->create([
         'previous_block' => $previousBlock->id,
-        'height'         => 10000,
+        'number'         => 10000,
         'total_amount'   => 50 * 1e18,
         'total_fee'      => 48 * 1e18,
         'reward'         => 2 * 1e18,

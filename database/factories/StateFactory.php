@@ -15,7 +15,7 @@ final class StateFactory extends Factory
     {
         return [
             'id'     => 1,
-            'height' => $this->faker->numberBetween(1, 10000),
+            'block_number' => $this->faker->numberBetween(1, 10000),
             'supply' => $this->faker->numberBetween(1, 1000000) * 1e18,
         ];
     }

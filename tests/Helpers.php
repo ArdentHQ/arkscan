@@ -74,7 +74,7 @@ function createBlock(int $height, string $address, mixed $context = null)
     $block = Block::factory()->create([
         'timestamp'              => Timestamp::now()->getTimestampMs(),
         'previous_block'         => $height - 1,
-        'height'                 => $height,
+        'number'                 => $height,
         'number_of_transactions' => 0,
         'total_amount'           => 0,
         'total_fee'              => 0,
@@ -328,7 +328,7 @@ function getRoundValidators(bool $withBlock = true, int $roundNumber = null): Su
     }
 
     if ($withBlock) {
-        $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_address');
+        $blocks = Block::whereBetween('number', $heightRange)->get()->keyBy('generator_address');
 
         $validators = $validators->map(fn ($validator) => [
             ...$validator,

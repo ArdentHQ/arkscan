@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * @property string $id
  * @property bool $success
- * @property BigNumber $block_height
+ * @property BigNumber $block_number
  * @property BigNumber $gas_used
  * @property BigNumber $gas_refunded
  * @property string|null $deployed_contract_address
@@ -67,7 +67,7 @@ final class Receipt extends Model
     protected $casts = [
         'id'           => 'string',
         'success'      => 'bool',
-        'block_height' => BigInteger::class,
+        'block_number' => BigInteger::class,
         'gas_used'     => BigInteger::class,
         'gas_refunded' => BigInteger::class,
         'logs'         => 'array',

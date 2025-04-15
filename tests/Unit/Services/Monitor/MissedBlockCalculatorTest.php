@@ -148,7 +148,7 @@ it('should calculate the missed blocks', function () {
             // Start height for round 7103 is 376407
             Block::factory()->create([
                 'generator_address'    => $address,
-                'height'               => 376407 + $heightIterator,
+                'number'               => 376407 + $heightIterator,
                 'timestamp'            => Carbon::now()->getTimestampMs(),
             ]);
 
@@ -177,7 +177,7 @@ it('should calculate the missed blocks', function () {
     }
 
     Block::factory()->create([
-        'height'    => 376406,
+        'number'    => 376406,
         'timestamp' => Carbon::now()->getTimestampMs(),
     ]);
 

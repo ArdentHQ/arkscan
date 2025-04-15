@@ -29,7 +29,7 @@ it('should list the first page of records', function () {
 
         $block = Block::factory()->create([
             'timestamp' => Carbon::now()->timestamp,
-            'height'    => $index + 1,
+            'number'    => $index + 1,
         ]);
 
         $cache->setWalletNameByAddress($block->generator_address, 'test-username-'.($index + 1));
@@ -136,7 +136,7 @@ it('should handle a lot of blocks', function () {
         Block::factory()->create([
             'generator_address' => $wallet->address,
             'timestamp'         => Carbon::now()->timestamp,
-            'height'            => $index,
+            'number'            => $index,
         ]);
     }
 
@@ -157,7 +157,7 @@ it('should reload on new block event', function () {
 
         Block::factory()->create([
             'timestamp' => Carbon::parse('2023-07-12 00:00:00')->timestamp,
-            'height'    => $index,
+            'number'    => $index,
         ]);
     }
 
@@ -168,7 +168,7 @@ it('should reload on new block event', function () {
 
     $otherBlock = Block::factory()->create([
         'timestamp' => Carbon::parse('2023-07-13 00:00:00')->timestamp,
-        'height'    => 401,
+        'number'    => 401,
     ]);
 
     $component->assertDontSee($otherBlock->id)

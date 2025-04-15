@@ -70,7 +70,7 @@ final class TransactionViewModel implements ViewModel
 
     public function blockHeight(): int
     {
-        return $this->transaction->block_height;
+        return $this->transaction->block_number;
     }
 
     public function timestamp(): string
@@ -191,6 +191,6 @@ final class TransactionViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        return abs(CacheNetworkHeight::execute() - $this->transaction->block_height);
+        return abs(CacheNetworkHeight::execute() - $this->transaction->block_number);
     }
 }

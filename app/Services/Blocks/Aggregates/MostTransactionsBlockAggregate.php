@@ -11,7 +11,7 @@ final class MostTransactionsBlockAggregate
     public function aggregate(): ?Block
     {
         return Block::orderBy('number_of_transactions', 'desc')
-            ->whereNot('height', 0)
+            ->whereNot('number', 0)
             ->limit(1)
             ->first();
     }

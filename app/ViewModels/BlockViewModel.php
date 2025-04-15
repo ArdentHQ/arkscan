@@ -51,7 +51,7 @@ final class BlockViewModel implements ViewModel
 
     public function height(): int
     {
-        return $this->block->height->toNumber();
+        return $this->block->number->toNumber();
     }
 
     public function reward(): float
@@ -66,6 +66,6 @@ final class BlockViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        return abs(CacheNetworkHeight::execute() - $this->block->height->toNumber());
+        return abs(CacheNetworkHeight::execute() - $this->block->number->toNumber());
     }
 }

@@ -791,12 +791,12 @@ it('should return count for blocks since last forged', function () {
 
     $block = Block::factory()->create([
         'generator_address'    => $wallet->address(),
-        'height'               => 10,
+        'number'               => 10,
     ]);
 
     (new WalletCache())->setLastBlock($wallet->address(), [
         'id'     => $block->id,
-        'height' => $block->height->toNumber(),
+        'height' => $block->number->toNumber(),
     ]);
 
     (new NetworkCache())->setHeight(fn (): int => 100);
@@ -835,12 +835,12 @@ it('should return count for time since last forged', function () {
     $block = Block::factory()->create([
         'timestamp'            => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'generator_address'    => $wallet->address(),
-        'height'               => 10,
+        'number'               => 10,
     ]);
 
     (new WalletCache())->setLastBlock($wallet->address(), [
         'id'        => $block->id,
-        'height'    => $block->height->toNumber(),
+        'height'    => $block->number->toNumber(),
         'timestamp' => $block->timestamp,
     ]);
 

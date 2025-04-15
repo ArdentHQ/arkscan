@@ -71,7 +71,7 @@ final class CacheAddressStatistics extends Command
 
     private function cacheGenesis(StatisticsCache $cache): void
     {
-        $genesis = Transaction::orderBy('block_height', 'asc')->limit(1)->first();
+        $genesis = Transaction::orderBy('block_number', 'asc')->limit(1)->first();
 
         if ($genesis !== null) {
             $cache->setGenesisAddress([

@@ -17,15 +17,15 @@ use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
-    $this->block = Block::factory()->create(['height' => 1]);
-    Block::factory()->create(['height' => 5000000]);
+    $this->block = Block::factory()->create(['number' => 1]);
+    Block::factory()->create(['number' => 5000000]);
 
     (new NetworkCache())->setHeight(fn () => 5000000);
 
     $this->sender  = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'block_id'               => $this->block->id,
-        'block_height'           => 1,
+        'block_number'           => 1,
         'gas_price'              => 1,
         'amount'                 => 2 * 1e18,
         'sender_public_key'      => $this->sender->public_key,
@@ -76,7 +76,7 @@ it('should get the block ID', function () {
 
 it('should get the block height', function () {
     expect($this->subject->blockHeight())->toBeInt();
-    expect($this->subject->blockHeight())->toBe($this->block->height->toNumber());
+    expect($this->subject->blockHeight())->toBe($this->block->number->toNumber());
 });
 
 it('should get the fee', function () {

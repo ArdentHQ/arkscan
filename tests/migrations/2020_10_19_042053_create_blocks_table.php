@@ -21,7 +21,7 @@ final class CreateBlocksTable extends Migration
             $table->unsignedBigInteger('version');
             $table->unsignedBigInteger('timestamp');
             $table->string('previous_block')->nullable();
-            $table->unsignedBigInteger('height');
+            $table->unsignedBigInteger('number');
             $table->unsignedBigInteger('number_of_transactions');
             $table->addColumn('numeric', 'total_amount');
             $table->addColumn('numeric', 'total_fee');
