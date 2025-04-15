@@ -21,7 +21,7 @@ beforeEach(function () {
     $this->subject = new BlockViewModel(Block::factory()->create([
         'parent_hash' => $previousBlock->id,
         'number'         => 10000,
-        'total_amount'   => 50 * 1e18,
+        'amount'   => 50 * 1e18,
         'total_fee'      => 48 * 1e18,
         'reward'         => 2 * 1e18,
     ]));

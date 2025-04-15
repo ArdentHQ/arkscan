@@ -12,7 +12,7 @@ final class LargestBlockAggregate
     {
         return Block::query()
             ->where('number', '>', 0)
-            ->orderBy('total_amount', 'desc')
+            ->orderBy('amount', 'desc')
             ->first();
     }
 }

@@ -137,7 +137,7 @@ describe('block', function () {
         });
 
         $block = Block::factory()->create([
-            'total_amount' => 123 * 1e8,
+            'amount' => 123 * 1e8,
         ]);
 
         Transaction::factory()->create([

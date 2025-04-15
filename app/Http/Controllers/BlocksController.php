@@ -37,7 +37,7 @@ final class BlocksController
                 ->table('blocks')
                 ->selectRaw('COUNT(*) as block_count')
                 ->selectRaw('SUM(reward) as total_rewards')
-                ->selectRaw('MAX(total_amount) as largest_amount')
+                ->selectRaw('MAX(amount) as largest_amount')
                 ->where('timestamp', '>', $timestamp * 1000)
                 ->first();
 

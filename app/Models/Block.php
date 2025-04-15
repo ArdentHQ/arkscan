@@ -23,7 +23,7 @@ use Laravel\Scout\Searchable;
  * @property int $transactions_count
  * @property BigNumber $reward
  * @property int $timestamp
- * @property BigNumber $total_amount
+ * @property BigNumber $amount
  * @property BigNumber $total_fee
  * @property int $gas_used
  * @property string $generator_address
@@ -67,7 +67,7 @@ final class Block extends Model
         'transactions_count' => 'int',
         'reward'                 => BigInteger::class,
         'timestamp'              => UnixSeconds::class,
-        'total_amount'           => BigInteger::class,
+        'amount'           => BigInteger::class,
         'total_fee'              => BigInteger::class,
         'gas_used'         => 'int',
     ];
