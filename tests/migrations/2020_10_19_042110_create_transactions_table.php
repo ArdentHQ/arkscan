@@ -15,13 +15,13 @@ final class CreateTransactionsTable extends Migration
             $table->string('block_hash');
             $table->string('block_number');
             $table->integer('transaction_index');
-            $table->string('sender_public_key');
-            $table->string('sender_address');
-            $table->string('recipient_address')->nullable();
             $table->unsignedBigInteger('timestamp');
+            $table->unsignedBigInteger('nonce');
+            $table->string('sender_public_key');
+            $table->string('from');
+            $table->string('to')->nullable();
             $table->addColumn('numeric', 'amount');
             $table->addColumn('numeric', 'gas_price');
-            $table->unsignedBigInteger('nonce');
             $table->binary('data')->nullable();
             $table->jsonb('asset')->nullable();
             $table->timestamps();

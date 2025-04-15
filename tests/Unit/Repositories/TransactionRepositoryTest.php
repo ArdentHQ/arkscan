@@ -90,7 +90,7 @@ describe('allByRecipient', function () {
     it('should find all transactions', function () {
         $transaction = Transaction::factory()->create();
 
-        $result = $this->subject->allByRecipient($transaction->recipient_address);
+        $result = $this->subject->allByRecipient($transaction->to);
 
         expect($result->count())->toBe(1);
         expect($result->first()->hash)->toBe($transaction->hash);

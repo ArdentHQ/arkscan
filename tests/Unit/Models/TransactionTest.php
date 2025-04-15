@@ -16,7 +16,7 @@ beforeEach(function () {
     $this->subject   = Transaction::factory()->create([
         'gas_price'         => 1,
         'amount'            => 2 * 1e18,
-        'recipient_address' => $this->recipient,
+        'to' => $this->recipient,
     ]);
 });
 
@@ -35,7 +35,7 @@ it('should belong to a sender', function () {
 it('should throw an exception if the transaction has no recipient', function () {
     $transaction = Transaction::factory()
         ->create([
-            'recipient_address' => null,
+            'to' => null,
         ]);
 
     $this->expectException(Exception::class);
@@ -47,7 +47,7 @@ it('should throw an exception if a vote has no recipient', function () {
     $transaction = Transaction::factory()
         ->vote('') // Invalid address
         ->create([
-            'recipient_address' => null,
+            'to' => null,
         ]);
 
     $this->expectException(Exception::class);

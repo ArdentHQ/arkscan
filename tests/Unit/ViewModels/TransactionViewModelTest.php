@@ -29,7 +29,7 @@ beforeEach(function () {
         'gas_price'              => 1,
         'amount'                 => 2 * 1e18,
         'sender_public_key'      => $this->sender->public_key,
-        'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'to'      => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
 });
 
@@ -52,7 +52,7 @@ it('should determine if transfer transaction is sent to self', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'recipient_address' => $this->sender->address,
+            'to' => $this->sender->address,
         ]));
 
     expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
@@ -193,7 +193,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
 it('should fallback to the sender if no recipient address exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'recipient_address' => null,
+        'to' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
@@ -206,7 +206,7 @@ it('should fallback to receipt deployed contract address if set', function () {
         ->state(['deployed_contract_address' => $wallet->address]);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->has($receipt)->create([
-        'recipient_address' => null,
+        'to' => null,
     ]));
 
     expect($this->subject->recipient()->address())->toBe('deployedContractAddress');

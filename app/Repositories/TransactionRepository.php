@@ -17,7 +17,7 @@ final class TransactionRepository implements Contract
     {
         return Transaction::query()
             ->where(fn ($query): Builder => $query->where('sender_public_key', $publicKey))
-            ->orWhere(fn ($query): Builder => $query->where('recipient_address', $address))
+            ->orWhere(fn ($query): Builder => $query->where('to', $address))
             ->orWhere(fn ($query): Builder => $query->withScope(IsVoteForAddressScope::class, $address))
             ->orWhere(fn ($query): Builder => $query->withScope(HasMultiPaymentRecipientScope::class, $address))
             ->get();
@@ -31,7 +31,7 @@ final class TransactionRepository implements Contract
     public function allByRecipient(string $address): Collection
     {
         return Transaction::query()
-            ->where(fn ($query): Builder => $query->where('recipient_address', $address))
+            ->where(fn ($query): Builder => $query->where('to', $address))
             ->orWhere(fn ($query): Builder => $query->withScope(IsVoteForAddressScope::class, $address))
             ->orWhere(fn ($query): Builder => $query->withScope(HasMultiPaymentRecipientScope::class, $address))
             ->get();

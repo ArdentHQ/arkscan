@@ -36,7 +36,7 @@ use Laravel\Scout\Searchable;
  * @property int $transaction_index
 
 // block has hash, block hash in in the table * @property string $block_hash
- * @property string|null $recipient_address
+ * @property string|null $to
  * @property string $from
  * @property string $sender_public_key
  * @property int $block_number
@@ -120,7 +120,7 @@ final class Transaction extends Model
             // Searchable id and used to link the transaction
             'hash' => $this->hash,
             // Used to get the recipient wallet
-            'recipient_address' => $this->recipient_address,
+            'to' => $this->to,
 
             // Used to get the sender wallets
             'sender_public_key' => $this->sender_public_key,
@@ -145,7 +145,7 @@ final class Transaction extends Model
             ->select([
                 'id',
                 'sender_public_key',
-                'recipient_address',
+                'to',
                 'amount',
                 'gas_price',
                 'timestamp',

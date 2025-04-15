@@ -12,6 +12,6 @@ final class ContractDeploymentScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('recipient_address', null);
+        $builder->where('to', null);
     }
 }

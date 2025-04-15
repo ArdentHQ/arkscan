@@ -99,7 +99,7 @@ final class TransactionMethod
 
     public function isContractDeployment(): bool
     {
-        return $this->transaction->recipient_address === null;
+        return $this->transaction->to === null;
     }
 
     public function arguments(): array
