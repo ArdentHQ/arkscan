@@ -66,12 +66,12 @@ final class Receipt extends Model
      */
     protected $casts = [
         'transaction_hash'           => 'string',
-        'status'      => 'bool',
-        'block_number' => BigInteger::class,
-        'gas_used'     => BigInteger::class,
-        'gas_refunded' => BigInteger::class,
-        'logs'         => 'array',
-        'output'       => 'string',
+        'status'                     => 'bool',
+        'block_number'               => BigInteger::class,
+        'gas_used'                   => BigInteger::class,
+        'gas_refunded'               => BigInteger::class,
+        'logs'                       => 'array',
+        'output'                     => 'string',
     ];
 
     /**
