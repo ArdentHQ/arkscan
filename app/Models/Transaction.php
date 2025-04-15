@@ -75,6 +75,13 @@ final class Transaction extends Model
     public $keyType = 'string';
 
     /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'hash';
+
+    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
