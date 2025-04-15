@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
 /**
- * @property string $id
+ * @property string $hash
  * @property BigNumber $number
  * @property int $transactions_count
  * @property BigNumber $reward
@@ -101,7 +101,7 @@ final class Block extends Model
 
         return $self->newQuery()
             ->select([
-                'id',
+                'hash',
                 'proposer',
                 'transactions_count',
                 'timestamp',

@@ -88,7 +88,7 @@ final class BuildForgingStats implements ShouldQueue
         }
 
         return $startBlock
-            ->height
+            ->number
             ->toNumber();
     }
 

@@ -20,7 +20,7 @@ final class TransactionSearch implements Search
      */
     public function search(string $query, int $limit): EloquentCollection
     {
-        if ($this->couldBeTransactionID($query)) {
+        if ($this->couldBeTransactionHash($query)) {
             $builder = Transaction::where('id', strtolower($query))->take(1);
         } else {
             $builder = Transaction::where('id', 'ilike', sprintf('%%%s%%', $query))->limit($limit);

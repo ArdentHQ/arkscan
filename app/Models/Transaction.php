@@ -28,14 +28,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
 /**
- * @property string $id
+ * @property string $hash
+ * @property string $block_hash
  * @property BigNumber $value
  * @property BigNumber $gas_limit
  * @property BigNumber $gas_price
  * @property int $timestamp
  * @property int $transaction_index
-
-// block has hash, block hash in in the table * @property string $block_hash
  * @property string|null $to
  * @property string $from
  * @property string $sender_public_key
