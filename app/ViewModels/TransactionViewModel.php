@@ -50,7 +50,7 @@ final class TransactionViewModel implements ViewModel
 
     public function url(): string
     {
-        return route('transaction', $this->transaction);
+        return route('transaction', $this->transaction->hash);
     }
 
     public function model(): Transaction

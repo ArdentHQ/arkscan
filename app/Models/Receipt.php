@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property string $id
- * @property bool $success
+ * @property string $transaction_hash
+ * @property bool $status
  * @property BigNumber $block_number
  * @property BigNumber $gas_used
  * @property BigNumber $gas_refunded
@@ -65,8 +65,8 @@ final class Receipt extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'id'           => 'string',
-        'success'      => 'bool',
+        'transaction_hash'           => 'string',
+        'status'      => 'bool',
         'block_number' => BigInteger::class,
         'gas_used'     => BigInteger::class,
         'gas_refunded' => BigInteger::class,
@@ -81,6 +81,6 @@ final class Receipt extends Model
      */
     public function transaction(): HasOne
     {
-        return $this->hasOne(Transaction::class, 'id', 'id');
+        return $this->hasOne(Transaction::class, 'hash', 'transaction_hash');
     }
 }

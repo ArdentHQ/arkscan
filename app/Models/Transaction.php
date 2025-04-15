@@ -197,7 +197,7 @@ final class Transaction extends Model
      */
     public function receipt(): HasOne
     {
-        return $this->hasOne(Receipt::class, 'id', 'id');
+        return $this->hasOne(Receipt::class, 'transaction_hash', 'hash');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder

@@ -12,7 +12,7 @@ it('should render the page without any errors', function ($type, $args) {
     $transaction = Transaction::factory()->{$type}(...$args)->create();
 
     $this
-        ->get(route('transaction', $transaction))
+        ->get(route('transaction', $transaction->hash))
         ->assertOk()
         ->assertSee($transaction->hash);
 })->with([
@@ -29,7 +29,7 @@ it('should render the page for a vote transaction without any errors', function 
     $transaction  = Transaction::factory()->vote($validator->address)->create();
 
     $this
-        ->get(route('transaction', $transaction))
+        ->get(route('transaction', $transaction->hash))
         ->assertOk()
         ->assertSee($transaction->hash);
 });
@@ -40,7 +40,7 @@ it('should render the page for a unvote transaction without any errors', functio
     $transaction  = Transaction::factory()->unvote()->create();
 
     $this
-        ->get(route('transaction', $transaction))
+        ->get(route('transaction', $transaction->hash))
         ->assertOk()
         ->assertSee($transaction->hash);
 });
@@ -57,7 +57,7 @@ it('should handle failed token transfers with missing data', function () {
     ]);
 
     $this
-        ->get(route('transaction', $transaction))
+        ->get(route('transaction', $transaction->hash))
         ->assertOk()
         ->assertSeeInOrder([
             trans('pages.transaction.tokens_transferred'),
