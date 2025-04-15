@@ -203,7 +203,7 @@ it('should fallback to receipt deployed contract address if set', function () {
     $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
 
     $receipt = Receipt::factory()
-        ->state(['deployed_contract_address' => $wallet->address]);
+        ->state(['contract_address' => $wallet->address]);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->has($receipt)->create([
         'to' => null,

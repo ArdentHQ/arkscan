@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property BigNumber $block_number
  * @property BigNumber $gas_used
  * @property BigNumber $gas_refunded
- * @property string|null $deployed_contract_address
+ * @property string|null $contract_address
  * @property array $logs
  * @property string $output
  */
