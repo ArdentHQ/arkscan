@@ -13,7 +13,7 @@
             </x-home.stat>
 
             <x-home.stat :title="trans('pages.home.statistics.current_supply')" class="pt-3">
-                <x-currency :currency="Network::currency()">{{ $supply }}</x-currency>
+                <x-currency :currency="Network::currency()">{{ round($supply) }}</x-currency>
             </x-home.stat>
         </div>
 
