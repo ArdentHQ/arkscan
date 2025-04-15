@@ -15,7 +15,7 @@ final class ValidatorTotalAggregates
             ->join('blocks', 'blocks.generator_address', '=', 'wallets.address')
             ->selectRaw('
                 SUM(blocks.amount) as amount,
-                SUM(blocks.total_fee) as total_fee,
+                SUM(blocks.fee) as fee,
                 SUM(blocks.reward) as reward,
                 COUNT(blocks.generator_address) as count,
                 blocks.generator_address

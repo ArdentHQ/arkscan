@@ -10,7 +10,7 @@ final class HighestBlockFeeAggregate
 {
     public function aggregate(): ?Block
     {
-        return Block::orderBy('total_fee', 'desc')
+        return Block::orderBy('fee', 'desc')
             ->limit(1)
             ->first();
     }

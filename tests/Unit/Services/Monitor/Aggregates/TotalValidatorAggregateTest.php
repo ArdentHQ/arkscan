@@ -35,7 +35,7 @@ it('should aggregate the total amount forged', function () {
 it('should aggregate the total fee forged', function () {
     Block::factory(10)->create([
         'generator_address'    => 'generator',
-        'total_fee'            => 1 * 1e18,
+        'fee'            => 1 * 1e18,
     ])->pluck('generator_address')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
@@ -43,7 +43,7 @@ it('should aggregate the total fee forged', function () {
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
     expect($result->toArray()[0]['generator_address'])->toBe('generator');
-    expect($result->toArray()[0]['total_fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
 });
 
 it('should aggregate the total count forged', function () {
@@ -76,7 +76,7 @@ it('should aggregate the total rewards forged', function () {
 it('should aggregate all the forged data', function () {
     Block::factory(10)->create([
         'generator_address'    => 'generator',
-        'total_fee'            => 1 * 1e18,
+        'fee'            => 1 * 1e18,
         'amount'         => 2 * 1e18,
         'reward'               => 3 * 1e18,
     ])->pluck('generator_address')->toArray();
@@ -87,7 +87,7 @@ it('should aggregate all the forged data', function () {
     expect($result)->toHaveCount(1);
     expect($result->toArray()[0]['generator_address'])->toBe('generator');
     expect($result->toArray()[0]['count'])->toBe(10);
-    expect($result->toArray()[0]['total_fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
     expect($result->toArray()[0]['amount'])->toBe(BigNumber::new(20)->valueOf()->multipliedBy(1e18)->__toString());
     expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(30)->valueOf()->multipliedBy(1e18)->__toString());
 });

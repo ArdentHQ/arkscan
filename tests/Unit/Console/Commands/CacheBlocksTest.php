@@ -32,11 +32,11 @@ it('should run job', function () {
 it('should cache largest block by fee', function () {
     $cache = new BlockCache();
 
-    Block::factory()->create(['total_fee' => 0]);
+    Block::factory()->create(['fee' => 0]);
 
-    $largestBlock = Block::factory()->create(['total_fee' => 100 * 1e18]);
+    $largestBlock = Block::factory()->create(['fee' => 100 * 1e18]);
 
-    Block::factory()->create(['total_fee' => 0]);
+    Block::factory()->create(['fee' => 0]);
 
     $this->artisan('explorer:cache-blocks');
 

@@ -77,7 +77,7 @@ function createBlock(int $height, string $address, mixed $context = null)
         'number'                 => $height,
         'transactions_count' => 0,
         'amount'           => 0,
-        'total_fee'              => 0,
+        'fee'              => 0,
         'reward'                 => 2 * 1e18,
         'generator_address'      => $address,
     ]);

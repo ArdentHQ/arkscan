@@ -30,7 +30,7 @@ final class CacheValidatorAggregates extends Command
 
         $cache->setTotalAmounts($aggregate->pluck('amount', 'generator_address')->toArray());
 
-        $cache->setTotalFees($aggregate->pluck('total_fee', 'generator_address')->toArray());
+        $cache->setTotalFees($aggregate->pluck('fee', 'generator_address')->toArray());
 
         $cache->setTotalRewards($aggregate->pluck('reward', 'generator_address')->toArray());
 

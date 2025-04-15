@@ -19,7 +19,7 @@ beforeEach(function () {
         'parent_hash' => $previousBlock->id,
         'number'         => 10000,
         'amount'   => 50 * 1e18,
-        'total_fee'      => 48 * 1e18,
+        'fee'      => 48 * 1e18,
         'reward'         => 2 * 1e18,
     ]);
 });

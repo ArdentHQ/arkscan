@@ -37,7 +37,7 @@ beforeEach(function () {
 
     Block::factory()->create([
         'amount'         => 10 * 1e18,
-        'total_fee'            => 8 * 1e18,
+        'fee'            => 8 * 1e18,
         'reward'               => 2 * 1e18,
         'generator_address'    => $this->wallet->address,
     ]);
