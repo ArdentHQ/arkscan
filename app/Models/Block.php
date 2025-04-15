@@ -44,13 +44,6 @@ final class Block extends Model
     public $keyType = 'string';
 
     /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'hash';
-
-    /**
      * Indicates if the IDs are auto-incrementing.
      *
      * @var bool
@@ -63,6 +56,13 @@ final class Block extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'hash';
 
     /**
      * The connection name for the model.
