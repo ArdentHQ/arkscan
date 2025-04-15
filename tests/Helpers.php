@@ -95,7 +95,6 @@ function createRoundEntry(int $round, int $height, SupportCollection $wallets)
         'round'        => $round,
         'round_height' => $height,
         'validators'   => $wallets->pluck('address'),
-        'votes'        => $wallets->pluck('address'),
     ]);
 }
 
