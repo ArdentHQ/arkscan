@@ -43,13 +43,13 @@ final class TransactionTable extends Component
     public function queryString(): array
     {
         return [
-            'transfers'           => ['except' => true],
-            'multipayments'       => ['except' => true],
-            'votes'               => ['except' => true],
-            'validator'           => ['except' => true],
-            'username'            => ['except' => true],
-            'contract_deployment' => ['except' => true],
-            'others'              => ['except' => true],
+            'filter.transfers'           => ['as' => 'transfers', 'except' => true],
+            'filter.multipayments'       => ['as' => 'multipayments', 'except' => true],
+            'filter.votes'               => ['as' => 'votes', 'except' => true],
+            'filter.validator'           => ['as' => 'validator', 'except' => true],
+            'filter.username'            => ['as' => 'username', 'except' => true],
+            'filter.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
+            'filter.others'              => ['as' => 'others', 'except' => true],
         ];
     }
 
