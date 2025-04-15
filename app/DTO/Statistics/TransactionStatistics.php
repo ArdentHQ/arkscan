@@ -62,10 +62,10 @@ final class TransactionStatistics implements Wireable
                 'fee'    => $value['averages']['transaction_fees'],
             ]),
             TransactionRecordsStatistics::make(
-                $value['records']['largest_transaction'] !== null ? Transaction::firstWhere('id', $value['records']['largest_transaction']) : null,
-                $value['records']['largest_block'] !== null ? Block::firstWhere('id', $value['records']['largest_block']) : null,
-                $value['records']['highest_fee'] !== null ? Block::firstWhere('id', $value['records']['highest_fee']) : null,
-                $value['records']['most_transactions_in_block'] !== null ? Block::firstWhere('id', $value['records']['most_transactions_in_block']) : null,
+                $value['records']['largest_transaction'] !== null ? Transaction::firstWhere('hash', $value['records']['largest_transaction']) : null,
+                $value['records']['largest_block'] !== null ? Block::firstWhere('hash', $value['records']['largest_block']) : null,
+                $value['records']['highest_fee'] !== null ? Block::firstWhere('hash', $value['records']['highest_fee']) : null,
+                $value['records']['most_transactions_in_block'] !== null ? Block::firstWhere('hash', $value['records']['most_transactions_in_block']) : null,
             ),
         );
     }
