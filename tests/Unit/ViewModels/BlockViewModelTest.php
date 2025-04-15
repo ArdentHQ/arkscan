@@ -29,7 +29,7 @@ beforeEach(function () {
 
 it('should get the url', function () {
     expect($this->subject->url())->toBeString();
-    expect($this->subject->url())->toBe(route('block', $this->subject->id()));
+    expect($this->subject->url())->toBe(route('block', $this->subject->hash()));
 });
 
 it('should get the timestamp', function () {
@@ -53,18 +53,18 @@ it('should get the amount for different transaction types', function () {
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
-            'block_id' => $this->subject->id(),
+            'block_hash' => $this->subject->hash(),
         ])->concat(
             Transaction::factory(10)
                 ->vote($wallet->address)
                 ->create([
-                    'block_id' => $this->subject->id(),
+                    'block_hash' => $this->subject->hash(),
                 ])
         )->concat(
             Transaction::factory(10)
                 ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e9)])
                 ->create([
-                    'block_id' => $this->subject->id(),
+                    'block_hash' => $this->subject->hash(),
                 ])
         );
 
@@ -88,20 +88,20 @@ it('should get the amount as fiat', function () {
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
-            'block_id'  => $this->subject->id(),
+            'block_hash'  => $this->subject->hash(),
             'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
         ])->concat(
             Transaction::factory(10)
                 ->vote($wallet->address)
                 ->create([
-                    'block_id'  => $this->subject->id(),
+                    'block_hash'  => $this->subject->hash(),
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         )->concat(
             Transaction::factory(10)
                 ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e9)])
                 ->create([
-                    'block_id'  => $this->subject->id(),
+                    'block_hash'  => $this->subject->hash(),
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         );

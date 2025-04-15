@@ -32,7 +32,7 @@ final class CacheValidatorResignationIds extends Command
             ->cursor()
             ->each(function ($transaction) {
                 // @phpstan-ignore-next-line
-                CacheResignationId::dispatch($transaction->sender_public_key, (string) $transaction->id)->onQueue('resignations');
+                CacheResignationId::dispatch($transaction->sender_public_key, (string) $transaction->hash)->onQueue('resignations');
             });
     }
 }

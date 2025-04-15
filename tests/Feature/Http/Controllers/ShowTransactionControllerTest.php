@@ -14,7 +14,7 @@ it('should render the page without any errors', function ($type, $args) {
     $this
         ->get(route('transaction', $transaction))
         ->assertOk()
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 })->with([
     'transfer'              => ['transfer', []],
     'validatorRegistration' => ['validatorRegistration', ['30492624ED2db94EEfCD8E91d7218488658e972d']],
@@ -31,7 +31,7 @@ it('should render the page for a vote transaction without any errors', function 
     $this
         ->get(route('transaction', $transaction))
         ->assertOk()
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 });
 
 it('should render the page for a unvote transaction without any errors', function () {
@@ -42,7 +42,7 @@ it('should render the page for a unvote transaction without any errors', functio
     $this
         ->get(route('transaction', $transaction))
         ->assertOk()
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 });
 
 it('should handle failed token transfers with missing data', function () {

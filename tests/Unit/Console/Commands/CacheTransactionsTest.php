@@ -63,7 +63,7 @@ it('should cache data', function (): void {
 
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
-            'id'       => $transaction->id,
+            'transaction_hash' => $transaction->hash,
             'gas_used' => 1e9,
         ]);
     }
@@ -143,7 +143,7 @@ it('should cache data', function (): void {
         'amount' => $totalAmount,
         'fee'    => $totalFees,
     ]);
-    expect($cache->getLargestIdByAmount())->toBe($largestTransaction->id);
+    expect($cache->getLargestIdByAmount())->toBe($largestTransaction->hash);
 
     Event::assertDispatchedTimes(TransactionDetails::class, 1);
 });

@@ -58,14 +58,14 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction;
     }
 
-    public function id(): string
+    public function hash(): string
     {
-        return $this->transaction->id;
+        return $this->transaction->hash;
     }
 
-    public function blockId(): string
+    public function blockHash(): string
     {
-        return $this->transaction->block_id;
+        return $this->transaction->block_hash;
     }
 
     public function blockHeight(): int

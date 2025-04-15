@@ -26,7 +26,7 @@ it('should run job', function () {
 
     $this->artisan('explorer:cache-blocks');
 
-    expect($cache->getLargestIdByAmount())->toBe($largestBlock->id);
+    expect($cache->getLargestIdByAmount())->toBe($largestBlock->hash);
 });
 
 it('should cache largest block by fee', function () {
@@ -40,7 +40,7 @@ it('should cache largest block by fee', function () {
 
     $this->artisan('explorer:cache-blocks');
 
-    expect($cache->getLargestIdByFees())->toBe($largestBlock->id);
+    expect($cache->getLargestIdByFees())->toBe($largestBlock->hash);
 });
 
 it('should cache largest block by transaction count', function () {
@@ -54,5 +54,5 @@ it('should cache largest block by transaction count', function () {
 
     $this->artisan('explorer:cache-blocks');
 
-    expect($cache->getLargestIdByTransactionCount())->toBe($largestBlock->id);
+    expect($cache->getLargestIdByTransactionCount())->toBe($largestBlock->hash);
 });

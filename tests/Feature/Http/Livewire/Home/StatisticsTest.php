@@ -43,7 +43,7 @@ it('should render with a height, volume, supply and market cap', function () {
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
+        'transaction_hash'       => $transaction->hash,
         'gas_used' => 1e9,
     ]);
 
@@ -82,7 +82,7 @@ it('should render with a height, volume, supply and market cap for BTC', functio
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
+        'transaction_hash'       => $transaction->hash,
         'gas_used' => 1e9,
     ]);
 

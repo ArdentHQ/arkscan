@@ -28,7 +28,7 @@ it('should list the first page of blocks', function () {
         ->call('setIsReady');
 
     foreach (ViewModelFactory::collection(Block::withScope(OrderByHeightScope::class)->take(15)->get()) as $block) {
-        $component->assertSee($block->id());
+        $component->assertSee($block->hash());
         $component->assertSee($block->timestamp());
         $component->assertSee($block->username());
         $component->assertSee(NumberFormatter::number($block->height()));

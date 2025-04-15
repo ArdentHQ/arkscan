@@ -25,7 +25,7 @@ it('should list the first page of records', function () {
         ->call('setIsReady');
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
-        $component->assertSee($transaction->id());
+        $component->assertSee($transaction->hash());
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
@@ -378,7 +378,7 @@ it('should reload on new transaction event', function () {
     ]);
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
-        $component->assertDontSee($transaction->id());
+        $component->assertDontSee($transaction->hash());
         $component->assertDontSee($transaction->timestamp());
         $component->assertDontSee($transaction->sender()->address());
         $component->assertDontSee('481.00');
@@ -387,7 +387,7 @@ it('should reload on new transaction event', function () {
     $component->dispatch('echo:transactions,NewTransaction');
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
-        $component->assertSee($transaction->id());
+        $component->assertSee($transaction->hash());
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->recipient()->address());
         $component->assertSee('481.00');

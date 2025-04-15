@@ -16,7 +16,7 @@ beforeEach(function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = Block::factory()->create([
-        'parent_hash' => $previousBlock->id,
+        'parent_hash' => $previousBlock->hash,
         'number'         => 10000,
         'amount'   => 50 * 1e18,
         'fee'      => 48 * 1e18,
@@ -53,7 +53,7 @@ it('makes block searchable', function () {
 
     $indexes->shouldReceive('addDocuments')
         ->withArgs(function ($documents) use ($block) {
-            $document = collect($documents)->first(fn ($document) => $document['id'] === $block->id);
+            $document = collect($documents)->first(fn ($document) => $document['id'] === $block->hash);
 
             return json_encode($document) === json_encode($block->toSearchableArray());
         });

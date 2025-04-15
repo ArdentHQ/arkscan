@@ -18,7 +18,7 @@ final class BlockTransactionsTable extends Component
 {
     use HasLazyLoadingPagination;
 
-    public string $blockId;
+    public string $blockHash;
 
     /** @var mixed */
     protected $listeners = ['currencyChanged' => '$refresh'];
@@ -26,12 +26,12 @@ final class BlockTransactionsTable extends Component
     public function mount(BlockViewModel $block): void
     {
         $this->totalCount = $block->transactionCount();
-        $this->blockId    = $block->id();
+        $this->blockHash    = $block->hash();
     }
 
     public function getBlock(): Block
     {
-        return Block::findOrFail($this->blockId);
+        return Block::findOrFail($this->blockHash);
     }
 
     public function render(): View

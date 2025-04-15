@@ -34,9 +34,9 @@ final class BlockViewModel implements ViewModel
         return $this->block;
     }
 
-    public function id(): string
+    public function hash(): string
     {
-        return $this->block->id;
+        return $this->block->hash;
     }
 
     public function timestamp(): string

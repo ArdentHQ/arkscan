@@ -27,7 +27,7 @@ final class TransactionFactory extends Factory
 
         return [
             'id'                => $this->faker->transactionId,
-            'block_id'          => fn () => Block::factory(),
+            'block_hash'          => fn () => Block::factory()->create()->hash,
             'block_number'      => $this->faker->numberBetween(1, 10000),
             'sender_public_key' => fn () => $wallet->public_key,
             'sender_address'    => fn () => $wallet->address,

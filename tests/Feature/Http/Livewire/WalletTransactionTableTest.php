@@ -35,7 +35,7 @@ it('should list all transactions', function () {
 
     $sentTransaction = new TransactionViewModel($sent);
 
-    $component->assertSee($sentTransaction->id());
+    $component->assertSee($sentTransaction->hash());
     $component->assertSee($sentTransaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -55,7 +55,7 @@ it('should list all transactions', function () {
 
     $receivedTransaction = new TransactionViewModel($received);
 
-    $component->assertSee($receivedTransaction->id());
+    $component->assertSee($receivedTransaction->hash());
     $component->assertSee($receivedTransaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -84,7 +84,7 @@ it('should list all transactions for cold wallet', function () {
 
     $transaction = new TransactionViewModel($received);
 
-    $component->assertSee($transaction->id());
+    $component->assertSee($transaction->hash());
     $component->assertSee($transaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -114,7 +114,7 @@ it('should show transfer without amount sent to self', function () {
 
     $transaction = new TransactionViewModel($sent);
 
-    $component->assertSee($transaction->id());
+    $component->assertSee($transaction->hash());
     $component->assertSee($transaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -673,7 +673,7 @@ it('should show no data if not ready', function () {
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
-        ->assertDontSee($transaction->id)
+        ->assertDontSee($transaction->hash)
         ->call('setIsReady')
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 });

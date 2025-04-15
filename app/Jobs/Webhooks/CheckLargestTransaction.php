@@ -26,11 +26,11 @@ final class CheckLargestTransaction implements ShouldQueue
             return;
         }
 
-        if ($cache->getLargestIdByAmount() === $largestTransaction->id) {
+        if ($cache->getLargestIdByAmount() === $largestTransaction->hash) {
             return;
         }
 
-        $cache->setLargestIdByAmount($largestTransaction->id);
+        $cache->setLargestIdByAmount($largestTransaction->hash);
 
         TransactionDetails::dispatch();
     }

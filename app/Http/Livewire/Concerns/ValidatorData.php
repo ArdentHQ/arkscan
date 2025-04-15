@@ -35,13 +35,13 @@ trait ValidatorData
                 ->limit(Network::validatorCount() * 2)
                 ->get();
 
-            $lastBlockIds = DB::connection('explorer')
+            $lastBlockHashes = DB::connection('explorer')
                 ->table('wallets')
                 ->whereIn('address', $validators)
                 ->select([
                     'address',
-                    'last_block_id' => function ($query) {
-                        $query->select('id')
+                    'last_block_hash' => function ($query) {
+                        $query->select('hash')
                             ->from('blocks')
                             ->whereColumn('proposer', 'address')
                             ->orderBy('number', 'desc')
@@ -50,7 +50,7 @@ trait ValidatorData
                 ]);
 
             /** @var Collection $lastBlocks */
-            $lastBlocks = Block::whereIn('id', $lastBlockIds->pluck('last_block_id'))
+            $lastBlocks = Block::whereIn('hash', $lastBlockHashes->pluck('last_block_hash'))
                 ->get()
                 ->groupBy('proposer');
 
@@ -69,7 +69,7 @@ trait ValidatorData
                 }
 
                 (new WalletCache())->setLastBlock($address, [
-                    'id'                   => $block->id,
+                    'hash'                   => $block->hash,
                     'number'               => $block->number->toNumber(),
                     'timestamp'            => $block->timestamp,
                     'proposer'    => $block->proposer,

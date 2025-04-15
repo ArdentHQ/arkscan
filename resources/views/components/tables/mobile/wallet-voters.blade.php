@@ -8,7 +8,7 @@
     :no-results-message="$noResultsMessage"
 >
     @foreach ($wallets as $wallet)
-        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('voters-mobile-row', $wallet->id()) }}">
+        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('voters-mobile-row', $wallet->hash()) }}">
             <x-slot name="header">
                 <x-tables.headers.mobile.encapsulated.address
                     :model="$wallet"

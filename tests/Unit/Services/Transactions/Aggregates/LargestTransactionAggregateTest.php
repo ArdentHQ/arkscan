@@ -19,7 +19,7 @@ it('should get largest transaction', function () {
         'gas_price' => 10 * 1e18,
     ]);
 
-    expect((new LargestTransactionAggregate())->aggregate()->id)->toBe($transaction->id);
+    expect((new LargestTransactionAggregate())->aggregate()->hash)->toBe($transaction->hash);
 });
 
 it('should return null if no records', function () {

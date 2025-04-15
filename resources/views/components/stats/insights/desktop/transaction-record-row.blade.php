@@ -35,7 +35,7 @@
                             href="{{ route('transaction', $model->model()) }}"
                             class="link"
                         >
-                            <x-truncate-middle>{{ $model->id() }}</x-truncate-middle>
+                            <x-truncate-middle>{{ $model->hash() }}</x-truncate-middle>
                         </a>
                     @elseif ($isBlock)
                         <a

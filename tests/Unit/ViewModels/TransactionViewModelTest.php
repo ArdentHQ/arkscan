@@ -24,7 +24,7 @@ beforeEach(function () {
 
     $this->sender  = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'block_id'               => $this->block->id,
+        'block_hash'               => $this->block->hash,
         'block_number'           => 1,
         'gas_price'              => 1,
         'amount'                 => 2 * 1e18,
@@ -35,7 +35,7 @@ beforeEach(function () {
 
 it('should get the url', function () {
     expect($this->subject->url())->toBeString();
-    expect($this->subject->url())->toBe(route('transaction', $this->subject->id()));
+    expect($this->subject->url())->toBe(route('transaction', $this->subject->hash()));
 });
 
 it('should determine if the transaction is incoming', function () {
@@ -70,8 +70,8 @@ it('should get the dateTime', function () {
 });
 
 it('should get the block ID', function () {
-    expect($this->subject->blockId())->toBeString();
-    expect($this->subject->blockId())->toBe($this->block->id);
+    expect($this->subject->blockHash())->toBeString();
+    expect($this->subject->blockHash())->toBe($this->block->hash);
 });
 
 it('should get the block height', function () {
@@ -359,7 +359,7 @@ it('should calculate fee with receipt', function () {
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
+        'transaction_hash' => $transaction->hash,
         'gas_used' => 21000,
     ]);
 
@@ -382,7 +382,7 @@ it('should should determine if transaction failed', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'      => $transaction->id,
+        'transaction_hash' => $transaction->hash,
         'success' => false,
     ]);
 
@@ -403,7 +403,7 @@ it('should should determine transaction has not failed', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'      => $transaction->id,
+        'transaction_hash' => $transaction->hash,
         'success' => true,
     ]);
 
@@ -416,7 +416,7 @@ it('should get the gas used', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
+        'transaction_hash' => $transaction->hash,
         'gas_used' => 8,
     ]);
 

@@ -39,7 +39,7 @@ it('should list the first page of records', function () {
         ->call('setIsReady');
 
     foreach (ViewModelFactory::paginate(Block::withScope(OrderByTimestampScope::class)->paginate())->items() as $block) {
-        $component->assertSee($block->id());
+        $component->assertSee($block->hash());
         $component->assertSee($block->timestamp());
         $component->assertSee($block->username());
         $component->assertSee(NumberFormatter::number($block->height()));
@@ -79,14 +79,14 @@ it('should update the records fiat tooltip when currency changed', function () {
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
-            'block_id'  => $block->id,
+            'block_hash'  => $block->hash,
             'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
         ])
         ->concat(
             Transaction::factory(10)
                 ->vote($wallet->address)
                 ->create([
-                    'block_id'  => $block->id,
+                    'block_hash'  => $block->hash,
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         )
@@ -94,7 +94,7 @@ it('should update the records fiat tooltip when currency changed', function () {
             Transaction::factory(10)
                 ->multiPayment([$wallet->address], [BigNumber::new(1e18)])
                 ->create([
-                    'block_id'  => $block->id,
+                    'block_hash'  => $block->hash,
                     'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         );
@@ -171,7 +171,7 @@ it('should reload on new block event', function () {
         'number'    => 401,
     ]);
 
-    $component->assertDontSee($otherBlock->id)
+    $component->assertDontSee($otherBlock->hash)
         ->dispatch('echo:blocks,NewBlock')
-        ->assertSee($otherBlock->id);
+        ->assertSee($otherBlock->hash);
 });

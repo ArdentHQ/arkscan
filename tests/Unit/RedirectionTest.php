@@ -7,10 +7,10 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 
 it('redirects to the correct route for transactions', function (): void {
-    $transactionId = Transaction::factory()->create()->id;
+    $transactionHash = Transaction::factory()->create()->hash;
 
-    $this->get(sprintf('transaction/%s', $transactionId))
-        ->assertRedirect(sprintf('transactions/%s', $transactionId));
+    $this->get(sprintf('transaction/%s', $transactionHash))
+        ->assertRedirect(sprintf('transactions/%s', $transactionHash));
 });
 
 it('redirects to the correct route for wallets', function (): void {
@@ -21,8 +21,8 @@ it('redirects to the correct route for wallets', function (): void {
 });
 
 it('redirects to the correct route for blocks', function (): void {
-    $blockId = Block::factory()->create()->id;
+    $blockHash = Block::factory()->create()->hash;
 
-    $this->get(sprintf('block/%s', $blockId))
-        ->assertRedirect(sprintf('blocks/%s', $blockId));
+    $this->get(sprintf('block/%s', $blockHash))
+        ->assertRedirect(sprintf('blocks/%s', $blockHash));
 });

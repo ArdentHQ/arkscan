@@ -141,7 +141,7 @@ describe('block', function () {
         ]);
 
         Transaction::factory()->create([
-            'block_id'       => $block->id,
+            'block_hash'       => $block->hash,
             'amount'         => 123 * 1e8,
             'gas_price'      => 5,
         ]);
@@ -301,11 +301,11 @@ describe('transaction', function () {
             'timestamp'       => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
 
-        $cache->setLargestIdByAmount($transaction->id);
+        $cache->setLargestIdByAmount($transaction->hash);
 
         $secureUrl = URL::signedRoute('webhooks');
 
-        expect($cache->getLargestIdByAmount())->toEqual($transaction->id);
+        expect($cache->getLargestIdByAmount())->toEqual($transaction->hash);
 
         $this
             ->post($secureUrl, $this->transaction)

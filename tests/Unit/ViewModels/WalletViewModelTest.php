@@ -53,7 +53,7 @@ it('should get the address', function () {
 });
 
 it('should get an id from the address', function () {
-    expect($this->subject->id())->toBe($this->wallet->address);
+    expect($this->subject->hash())->toBe($this->wallet->address);
 });
 
 it('should get the balance', function () {
@@ -386,7 +386,7 @@ it('should get the resignation id', function () {
         'sender_public_key' => $this->subject->publicKey(),
     ]);
 
-    (new WalletCache())->setResignationId($this->subject->address(), $transaction->id);
+    (new WalletCache())->setResignationId($this->subject->address(), $transaction->hash);
 
     expect($this->subject->resignationId())->toBeString();
 });
@@ -795,7 +795,7 @@ it('should return count for blocks since last forged', function () {
     ]);
 
     (new WalletCache())->setLastBlock($wallet->address(), [
-        'id'     => $block->id,
+        'id'     => $block->hash,
         'height' => $block->number->toNumber(),
     ]);
 
@@ -839,7 +839,7 @@ it('should return count for time since last forged', function () {
     ]);
 
     (new WalletCache())->setLastBlock($wallet->address(), [
-        'id'        => $block->id,
+        'id'        => $block->hash,
         'height'    => $block->number->toNumber(),
         'timestamp' => $block->timestamp,
     ]);

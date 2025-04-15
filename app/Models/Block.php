@@ -82,7 +82,7 @@ final class Block extends Model
         // Notice that we only need to index the data used on to hydrate the model
         // for the search results.
         return [
-            'id'     => $this->id,
+            'hash'     => $this->hash,
             // used to get the validator
             'proposer' => $this->proposer,
             // shown on the results
@@ -133,7 +133,7 @@ final class Block extends Model
      */
     public function transactions(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'block_id', 'id');
+        return $this->hasMany(Transaction::class, 'block_hash', 'hash');
     }
 
     /**

@@ -15,7 +15,7 @@ final class BlockFactory extends Factory
     public function definition()
     {
         return [
-            'id'                     => $this->faker->blockId,
+            'hash'                     => $this->faker->blockHash,
             'version'                => 2,
             'timestamp'              => 1603083256000,
             'parent_hash'           => 1,

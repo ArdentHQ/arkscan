@@ -39,10 +39,10 @@ final class TransactionStatistics implements Wireable
             'averages' => $this->averages->toArray(),
 
             'records'  => [
-                'largest_transaction'        => $this->records->largestTransaction?->id(),
-                'largest_block'              => $this->records->largestBlock?->id(),
-                'highest_fee'                => $this->records->blockWithHighestFees?->id(),
-                'most_transactions_in_block' => $this->records->blockWithMostTransactions?->id(),
+                'largest_transaction'        => $this->records->largestTransaction?->hash(),
+                'largest_block'              => $this->records->largestBlock?->hash(),
+                'highest_fee'                => $this->records->blockWithHighestFees?->hash(),
+                'most_transactions_in_block' => $this->records->blockWithMostTransactions?->hash(),
             ],
         ];
     }

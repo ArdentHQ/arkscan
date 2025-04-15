@@ -50,7 +50,7 @@ describe('Monitor', function () {
             (new WalletCache())->setValidator($wallet->address, $wallet);
 
             (new WalletCache())->setLastBlock($wallet->address, [
-                'id'     => $block->id,
+                'id'     => $block->hash,
                 'height' => $block->number->toNumber(),
             ]);
         });
@@ -61,7 +61,7 @@ describe('Monitor', function () {
         $block = createBlock($height, $address);
 
         (new WalletCache())->setLastBlock($address, [
-            'id'     => $block->id,
+            'id'     => $block->hash,
             'height' => $block->number->toNumber(),
         ]);
     }
@@ -780,7 +780,7 @@ describe('Data Boxes', function () {
             (new WalletCache())->setPerformance($wallet->address, $performances);
 
             (new WalletCache())->setLastBlock($wallet->address, [
-                'id'     => $block->id,
+                'id'     => $block->hash,
                 'height' => $block->number->toNumber(),
             ]);
         });

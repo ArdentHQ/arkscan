@@ -16,7 +16,7 @@ describe('allByWallet', function () {
         $result = $this->subject->allByWallet($transaction->sender->address, $transaction->sender->public_key);
 
         expect($result->count())->toBe(1);
-        expect($result->first()->id)->toBe($transaction->id);
+        expect($result->first()->hash)->toBe($transaction->hash);
     });
 
     it('should find all vote transactions', function () {
@@ -29,7 +29,7 @@ describe('allByWallet', function () {
         $result = $this->subject->allByWallet($wallet->address, $wallet->public_key);
 
         expect($result->count())->toBe(1);
-        expect($result->first()->id)->toBe($transaction->id);
+        expect($result->first()->hash)->toBe($transaction->hash);
     });
 
     it('should find a multipayment transaction', function () {
@@ -47,7 +47,7 @@ describe('allByWallet', function () {
         $result = $this->subject->allByWallet($wallet->address, $wallet->public_key);
 
         expect($result->count())->toBe(1);
-        expect($result->first()->id)->toBe($transaction->id);
+        expect($result->first()->hash)->toBe($transaction->hash);
     });
 
     it('should find a multipayment transaction with multiple recipients', function () {
@@ -71,7 +71,7 @@ describe('allByWallet', function () {
         $result = $this->subject->allByWallet($otherWallet->address, $otherWallet->public_key);
 
         expect($result->count())->toBe(1);
-        expect($result->first()->id)->toBe($transaction->id);
+        expect($result->first()->hash)->toBe($transaction->hash);
     });
 });
 
@@ -82,7 +82,7 @@ describe('allBySender', function () {
         $result = $this->subject->allBySender($transaction->sender->public_key);
 
         expect($result->count())->toBe(1);
-        expect($result->first()->id)->toBe($transaction->id);
+        expect($result->first()->hash)->toBe($transaction->hash);
     });
 });
 
@@ -93,7 +93,7 @@ describe('allByRecipient', function () {
         $result = $this->subject->allByRecipient($transaction->recipient_address);
 
         expect($result->count())->toBe(1);
-        expect($result->first()->id)->toBe($transaction->id);
+        expect($result->first()->hash)->toBe($transaction->hash);
     });
 
     it('should find all vote transactions', function () {
@@ -106,17 +106,17 @@ describe('allByRecipient', function () {
         $result = $this->subject->allByRecipient($wallet->address);
 
         expect($result->count())->toBe(1);
-        expect($result->first()->id)->toBe($transaction->id);
+        expect($result->first()->hash)->toBe($transaction->hash);
     });
 });
 
 describe('findById', function () {
     it('should find a transaction', function () {
-        $transactionId = Transaction::factory()->create()->id;
+        $transactionHash = Transaction::factory()->create()->hash;
 
-        $result = $this->subject->findById($transactionId);
+        $result = $this->subject->findById($transactionHash);
 
         expect($result->count())->toBe(1);
-        expect($result->first()->id)->toBe($transactionId);
+        expect($result->first()->hash)->toBe($transactionHash);
     });
 });

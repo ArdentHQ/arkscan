@@ -17,7 +17,7 @@ it('should list the first page of transactions', function () {
 
     foreach ($transactions as $transaction) {
         Receipt::factory()->create([
-            'id'       => $transaction->id,
+            'transaction_hash'       => $transaction->hash,
             'gas_used' => 1e9,
         ]);
     }
@@ -26,7 +26,7 @@ it('should list the first page of transactions', function () {
         ->call('setIsReady');
 
     foreach (ViewModelFactory::collection(Transaction::withScope(OrderByTimestampScope::class)->take(15)->get()) as $transaction) {
-        $component->assertSee($transaction->id());
+        $component->assertSee($transaction->hash());
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());

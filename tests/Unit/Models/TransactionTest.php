@@ -67,7 +67,7 @@ it('makes transactions searchable', function () {
 
     $indexes->shouldReceive('addDocuments')
         ->withArgs(function ($documents) use ($transaction) {
-            $document = collect($documents)->first(fn ($document) => $document['id'] === $transaction->id);
+            $document = collect($documents)->first(fn ($document) => $document['hash'] === $transaction->hash);
 
             return json_encode($document) === json_encode($transaction->toSearchableArray());
         });
@@ -87,7 +87,7 @@ it('should calculate fee with receipt', function () {
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
+        'transaction_hash' => $transaction->hash,
         'gas_used' => 21000,
     ]);
 

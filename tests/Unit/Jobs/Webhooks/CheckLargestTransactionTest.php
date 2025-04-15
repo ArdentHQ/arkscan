@@ -23,9 +23,9 @@ it('should not dispatch transaction details event if no change', function () {
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
     ]);
 
-    $cache->setLargestIdByAmount($transaction->id);
+    $cache->setLargestIdByAmount($transaction->hash);
 
-    expect($cache->getLargestIdByAmount())->toEqual($transaction->id);
+    expect($cache->getLargestIdByAmount())->toEqual($transaction->hash);
 
     (new CheckLargestTransaction())->handle();
 
@@ -49,9 +49,9 @@ it('should dispatch transaction details event', function () {
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
     ]);
 
-    $cache->setLargestIdByAmount($transaction->id);
+    $cache->setLargestIdByAmount($transaction->hash);
 
-    expect($cache->getLargestIdByAmount())->toEqual($transaction->id);
+    expect($cache->getLargestIdByAmount())->toEqual($transaction->hash);
 
     (new CheckLargestTransaction())->handle();
 

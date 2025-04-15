@@ -34,7 +34,8 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $gas_price
  * @property int $timestamp
  * @property int $sequence
- * @property string $block_id
+
+// block has hash, block hash in in the table * @property string $block_hash
  * @property string|null $recipient_address
  * @property string $sender_address
  * @property string $sender_public_key
@@ -117,7 +118,7 @@ final class Transaction extends Model
         // for the search results.
         return [
             // Searchable id and used to link the transaction
-            'id' => $this->id,
+            'hash' => $this->hash,
             // Used to get the recipient wallet
             'recipient_address' => $this->recipient_address,
 
@@ -176,7 +177,7 @@ final class Transaction extends Model
      */
     public function block(): BelongsTo
     {
-        return $this->belongsTo(Block::class, 'block_id');
+        return $this->belongsTo(Block::class, 'block_hash', 'hash');
     }
 
     /**

@@ -16,7 +16,7 @@ final class ReceiptFactory extends Factory
     public function definition()
     {
         return [
-            'id'                        => $this->faker->transactionId,
+            'transaction_hash'                        => $this->faker->transactionHash,
             'success'                   => $this->faker->boolean,
             'block_number'              => $this->faker->numberBetween(1, 10000),
             'gas_used'                  => $this->faker->numberBetween(1, 100),
@@ -32,7 +32,7 @@ final class ReceiptFactory extends Factory
         $transaction = Transaction::factory()->create();
 
         return $this->state(fn (array $attributes) => [
-            'id' => $transaction->id,
+            'hash' => $transaction->hash,
         ]);
     }
 }
