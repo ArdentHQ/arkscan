@@ -56,14 +56,14 @@ function generateTransactions(): array
         ->vote($validator1->address)
         ->create([
             'timestamp'      => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
-            'sender_address' => $sender1->address,
+            'from' => $sender1->address,
         ]);
 
     $unvoteTransaction = Transaction::factory()
         ->unvote()
         ->create([
             'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
-            'sender_address' => $sender2->address,
+            'from' => $sender2->address,
         ]);
 
     generateReceipts();

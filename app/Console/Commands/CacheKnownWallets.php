@@ -43,10 +43,10 @@ final class CacheKnownWallets extends Command
 
         /** @var string[] $resignedAddresses */
         $resignedAddresses = Transaction::withScope(UsernameResignationScope::class)
-            ->select('sender_address')
-            ->groupBy('sender_address')
+            ->select('from')
+            ->groupBy('from')
             ->get()
-            ->pluck('sender_address');
+            ->pluck('from');
 
         $resignedWallets = Wallet::whereIn('address', $resignedAddresses)
             ->where('attributes->username', null)

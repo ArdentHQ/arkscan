@@ -50,28 +50,28 @@ final class CacheValidatorStatistics extends Command
 
         /** @var Transaction|null $newestActiveValidatorTx */
         $newestActiveValidatorTx = Transaction::withScope(ValidatorRegistrationScope::class)
-            ->whereIn('sender_address', $activeValidators)
+            ->whereIn('from', $activeValidators)
             ->orderBy('timestamp', 'desc')
             ->limit(1)
             ->first();
 
         if ($newestActiveValidatorTx !== null) {
             $cache->setNewestActiveValidator(
-                $newestActiveValidatorTx->sender_address,
+                $newestActiveValidatorTx->from,
                 $newestActiveValidatorTx->timestamp
             );
         }
 
         /** @var Transaction|null $oldestActiveValidatorTx */
         $oldestActiveValidatorTx = Transaction::withScope(ValidatorRegistrationScope::class)
-            ->whereIn('sender_address', $activeValidators)
+            ->whereIn('from', $activeValidators)
             ->orderBy('timestamp', 'asc')
             ->limit(1)
             ->first();
 
         if ($oldestActiveValidatorTx !== null) {
             $cache->setOldestActiveValidator(
-                $oldestActiveValidatorTx->sender_address,
+                $oldestActiveValidatorTx->from,
                 $oldestActiveValidatorTx->timestamp
             );
         }

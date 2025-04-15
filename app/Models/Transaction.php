@@ -37,7 +37,7 @@ use Laravel\Scout\Searchable;
 
 // block has hash, block hash in in the table * @property string $block_hash
  * @property string|null $recipient_address
- * @property string $sender_address
+ * @property string $from
  * @property string $sender_public_key
  * @property int $block_number
  * @property resource|null $data
