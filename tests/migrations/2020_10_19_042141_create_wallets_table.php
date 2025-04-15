@@ -16,7 +16,7 @@ final class CreateWalletsTable extends Migration
             $table->addColumn('numeric', 'balance');
             $table->unsignedBigInteger('nonce');
             $table->json('attributes')->nullable();
-            $table->timestamp('updated_at');
+            $table->unsignedBigInteger('updated_at');
         });
     }
 }
