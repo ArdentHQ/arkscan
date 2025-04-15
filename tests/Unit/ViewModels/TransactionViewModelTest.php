@@ -381,7 +381,7 @@ it('should should determine if transaction failed', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'status'          => false,
+        'status'           => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -402,7 +402,7 @@ it('should should determine transaction has not failed', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'status'          => true,
+        'status'           => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
