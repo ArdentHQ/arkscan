@@ -19,7 +19,7 @@ beforeEach(function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = new BlockViewModel(Block::factory()->create([
-        'previous_block' => $previousBlock->id,
+        'parent_hash' => $previousBlock->id,
         'number'         => 10000,
         'total_amount'   => 50 * 1e18,
         'total_fee'      => 48 * 1e18,
@@ -169,7 +169,7 @@ it('should get the previous block url', function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $subject = new BlockViewModel(Block::factory()->create([
-        'previous_block' => $previousBlock->id,
+        'parent_hash' => $previousBlock->id,
         'number'         => 2,
     ]));
 
@@ -178,7 +178,7 @@ it('should get the previous block url', function () {
 
 it('should fail to get the previous block url', function () {
     $subject = new BlockViewModel(Block::factory()->create([
-        'previous_block' => null,
+        'parent_hash' => null,
         'number'         => 1,
     ]));
 
@@ -189,7 +189,7 @@ it('should get the next block url', function () {
     $previousBlock = Block::factory()->create(['number' => 2]);
 
     $subject = new BlockViewModel(Block::factory()->create([
-        'previous_block' => $previousBlock->id,
+        'parent_hash' => $previousBlock->id,
         'number'         => 1,
     ]));
 
@@ -200,7 +200,7 @@ it('should fail to get the next block url', function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $subject = new BlockViewModel(Block::factory()->create([
-        'previous_block' => $previousBlock->id,
+        'parent_hash' => $previousBlock->id,
         'number'         => 2,
     ]));
 

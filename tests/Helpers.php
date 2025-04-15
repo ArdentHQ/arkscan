@@ -73,7 +73,7 @@ function createBlock(int $height, string $address, mixed $context = null)
 
     $block = Block::factory()->create([
         'timestamp'              => Timestamp::now()->getTimestampMs(),
-        'previous_block'         => $height - 1,
+        'parent_hash'         => $height - 1,
         'number'                 => $height,
         'number_of_transactions' => 0,
         'total_amount'           => 0,

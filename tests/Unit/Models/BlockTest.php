@@ -16,7 +16,7 @@ beforeEach(function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = Block::factory()->create([
-        'previous_block' => $previousBlock->id,
+        'parent_hash' => $previousBlock->id,
         'number'         => 10000,
         'total_amount'   => 50 * 1e18,
         'total_fee'      => 48 * 1e18,
