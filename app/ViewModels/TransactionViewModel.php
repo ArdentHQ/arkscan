@@ -104,9 +104,9 @@ final class TransactionViewModel implements ViewModel
         return UnitConverter::formatUnits((string) $receipt->gas_used, 'wei');
     }
 
-    public function sequence(): int
+    public function transactionIndex(): int
     {
-        return $this->transaction->sequence;
+        return $this->transaction->transaction_index;
     }
 
     public function fee(): float

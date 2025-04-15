@@ -44,7 +44,7 @@ final class TransactionFactory extends Factory
 
                 return $stream;
             },
-            'sequence'          => 1,
+            'transaction_index'          => 1,
         ];
     }
 

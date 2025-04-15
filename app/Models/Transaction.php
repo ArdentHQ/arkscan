@@ -33,7 +33,7 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $gas_limit
  * @property BigNumber $gas_price
  * @property int $timestamp
- * @property int $sequence
+ * @property int $transaction_index
 
 // block has hash, block hash in in the table * @property string $block_hash
  * @property string|null $recipient_address
@@ -99,7 +99,7 @@ final class Transaction extends Model
         'gas_price'    => BigInteger::class,
         'gas_limit'    => BigInteger::class,
         'timestamp'    => UnixSeconds::class,
-        'sequence'     => 'int',
+        'transaction_index'     => 'int',
         'block_number' => 'int',
     ];
 

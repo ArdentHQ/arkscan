@@ -14,7 +14,7 @@ final class CreateTransactionsTable extends Migration
             $table->string('hash');
             $table->string('block_hash');
             $table->string('block_number');
-            $table->integer('sequence');
+            $table->integer('transaction_index');
             $table->string('sender_public_key');
             $table->string('sender_address');
             $table->string('recipient_address')->nullable();
