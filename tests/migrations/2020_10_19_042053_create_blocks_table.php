@@ -19,7 +19,7 @@ final class CreateBlocksTable extends Migration
         Schema::create('blocks', function (Blueprint $table) {
             $table->string('hash');
             $table->integer('version');
-            $table->integer('timestamp');
+            $table->unsignedBigInteger('timestamp');
             $table->string('parent_hash')->nullable();
             $table->string('state_root')->nullable();
             $table->unsignedBigInteger('number');

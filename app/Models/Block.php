@@ -58,6 +58,13 @@ final class Block extends Model
     protected $connection = 'explorer';
 
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>

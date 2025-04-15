@@ -30,6 +30,10 @@ final class BlockFactory extends Factory
             'transactions_root'           => $this->faker->payloadHash,
             'proposer'                    => fn () => Wallet::factory()->create()->address,
             'signature'                   => $this->faker->blockSignature,
+            'round'                       => 1,
+            'commit_round'                => 1,
+            'validator_round'             => 1,
+            'validator_set'               => 1,
         ];
     }
 }
