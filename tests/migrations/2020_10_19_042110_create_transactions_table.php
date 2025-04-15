@@ -22,8 +22,10 @@ final class CreateTransactionsTable extends Migration
             $table->string('to')->nullable();
             $table->addColumn('numeric', 'value');
             $table->addColumn('numeric', 'gas_price');
+            $table->integer('gas');
             $table->binary('data')->nullable();
-            $table->jsonb('asset')->nullable();
+            $table->string('signature')->nullable();
+            $table->string('legacy_second_signature')->nullable();
             $table->timestamps();
         });
     }
