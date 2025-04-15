@@ -12,7 +12,7 @@ it('should run job', function () {
 
     $cache = new BlockCache();
 
-    Transaction::factory()->create(['amount' => 0]);
+    Transaction::factory()->create(['value' => 0]);
 
     $largestBlock = Block::factory()->create([
         'amount' => 1000 * 1e18,

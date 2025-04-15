@@ -179,9 +179,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
     $subject = new TransactionViewModel(Transaction::factory()
 
-    ->create([
-        'asset'      => $transaction->asset,
-    ]));
+    ->create());
 
     expect($subject->isSelfReceiving())->toBeFalse();
 })->with([
@@ -383,7 +381,7 @@ it('should should determine if transaction failed', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'success'          => false,
+        'status'          => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -404,7 +402,7 @@ it('should should determine transaction has not failed', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
-        'success'          => true,
+        'status'          => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());

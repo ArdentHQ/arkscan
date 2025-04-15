@@ -9,7 +9,7 @@ use App\Services\Cache\NetworkCache;
 beforeEach(function () {
     State::create([
         'id'     => 1,
-        'height' => 1000,
+        'block_number' => 1000,
         'supply' => 120.0,
     ]);
 });

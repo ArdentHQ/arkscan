@@ -53,7 +53,7 @@ it('should get the address', function () {
 });
 
 it('should get an id from the address', function () {
-    expect($this->subject->hash())->toBe($this->wallet->address);
+    expect($this->subject->id())->toBe($this->wallet->address);
 });
 
 it('should get the balance', function () {
@@ -796,7 +796,7 @@ it('should return count for blocks since last forged', function () {
 
     (new WalletCache())->setLastBlock($wallet->address(), [
         'id'     => $block->hash,
-        'height' => $block->number->toNumber(),
+        'number' => $block->number->toNumber(),
     ]);
 
     (new NetworkCache())->setHeight(fn (): int => 100);
@@ -840,7 +840,7 @@ it('should return count for time since last forged', function () {
 
     (new WalletCache())->setLastBlock($wallet->address(), [
         'id'        => $block->hash,
-        'height'    => $block->number->toNumber(),
+        'number'    => $block->number->toNumber(),
         'timestamp' => $block->timestamp,
     ]);
 

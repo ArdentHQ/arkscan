@@ -53,7 +53,7 @@ it('makes block searchable', function () {
 
     $indexes->shouldReceive('addDocuments')
         ->withArgs(function ($documents) use ($block) {
-            $document = collect($documents)->first(fn ($document) => $document['id'] === $block->hash);
+            $document = collect($documents)->first(fn ($document) => $document['hash'] === $block->hash);
 
             return json_encode($document) === json_encode($block->toSearchableArray());
         });

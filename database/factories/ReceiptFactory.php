@@ -32,7 +32,7 @@ final class ReceiptFactory extends Factory
         $transaction = Transaction::factory()->create();
 
         return $this->state(fn (array $attributes) => [
-            'hash' => $transaction->hash,
+            'transaction_hash' => $transaction->hash,
         ]);
     }
 }
