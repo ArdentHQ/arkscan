@@ -225,7 +225,7 @@ it('should trigger event if largest transaction has changed', function (): void 
 
     Artisan::call('explorer:cache-transactions');
 
-    expect($cache->getLargestIdByAmount())->toBe($largest->id);
+    expect($cache->getLargestIdByAmount())->toBe($largest->hash);
 
     Event::assertDispatchedTimes(TransactionDetails::class, 1);
 
