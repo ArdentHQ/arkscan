@@ -12,7 +12,7 @@ final class CreateReceiptsTable extends Migration
     {
         Schema::create('receipts', function (Blueprint $table) {
             $table->string('transaction_hash');
-            $table->boolean('success');
+            $table->boolean('status');
             $table->unsignedBigInteger('block_number');
             $table->addColumn('numeric', 'gas_used');
             $table->addColumn('numeric', 'gas_refunded');
