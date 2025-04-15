@@ -76,14 +76,14 @@ final class CacheValidatorStatistics extends Command
             );
         }
 
-        $mostBlocksForged = Block::select(DB::raw('COUNT(*), generator_address'))
-            ->groupBy('generator_address')
+        $mostBlocksForged = Block::select(DB::raw('COUNT(*), proposer'))
+            ->groupBy('proposer')
             ->orderBy('count', 'desc')
             ->limit(1)
             ->first();
 
         if ($mostBlocksForged !== null) {
-            $cache->setMostBlocksForged($mostBlocksForged->generator_address);
+            $cache->setMostBlocksForged($mostBlocksForged->proposer);
         }
     }
 }

@@ -32,7 +32,7 @@ it('should list the first page of records', function () {
             'number'    => $index + 1,
         ]);
 
-        $cache->setWalletNameByAddress($block->generator_address, 'test-username-'.($index + 1));
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
     }
 
     $component = Livewire::test(BlockTable::class)
@@ -134,7 +134,7 @@ it('should handle a lot of blocks', function () {
         $this->travel(8)->seconds();
 
         Block::factory()->create([
-            'generator_address' => $wallet->address,
+            'proposer' => $wallet->address,
             'timestamp'         => Carbon::now()->timestamp,
             'number'            => $index,
         ]);

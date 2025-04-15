@@ -28,9 +28,9 @@ final class CreateBlocksTable extends Migration
             $table->addColumn('numeric', 'amount');
             $table->addColumn('numeric', 'fee');
             $table->addColumn('numeric', 'reward');
-            $table->unsignedBigInteger('payload_length');
-            $table->string('payload_hash');
-            $table->string('generator_address');
+            $table->unsignedBigInteger('payload_size');
+            $table->string('transactions_root');
+            $table->string('proposer');
             $table->string('block_signature');
             $table->timestamps();
         });

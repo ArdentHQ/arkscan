@@ -43,7 +43,7 @@ trait ValidatorData
                     'last_block_id' => function ($query) {
                         $query->select('id')
                             ->from('blocks')
-                            ->whereColumn('generator_address', 'address')
+                            ->whereColumn('proposer', 'address')
                             ->orderBy('number', 'desc')
                             ->limit(1);
                     },
@@ -52,10 +52,10 @@ trait ValidatorData
             /** @var Collection $lastBlocks */
             $lastBlocks = Block::whereIn('id', $lastBlockIds->pluck('last_block_id'))
                 ->get()
-                ->groupBy('generator_address');
+                ->groupBy('proposer');
 
             foreach ($validators as $address) {
-                $block = $blocks->firstWhere('generator_address', $address);
+                $block = $blocks->firstWhere('proposer', $address);
 
                 // The validator hasn't forged in some rounds.
                 if (is_null($block) && $lastBlocks->has($address)) {
@@ -72,7 +72,7 @@ trait ValidatorData
                     'id'                   => $block->id,
                     'number'               => $block->number->toNumber(),
                     'timestamp'            => $block->timestamp,
-                    'generator_address'    => $block->generator_address,
+                    'proposer'    => $block->proposer,
                 ]);
             }
 
@@ -84,7 +84,7 @@ trait ValidatorData
     {
         return RequestScopedCache::remember('monitor:blocks-by-range', function () use ($addresses, $heightRange): Collection {
             return Block::query()
-                ->whereIn('generator_address', $addresses)
+                ->whereIn('proposer', $addresses)
                 ->whereBetween('number', $heightRange)
                 ->orderBy('number', 'asc')
                 ->get();
@@ -117,7 +117,7 @@ trait ValidatorData
         $blockTimestamp  = $roundBlocks->last()->timestamp;
         $validators      = [];
 
-        $roundBlockCount = $roundBlocks->groupBy('generator_address')
+        $roundBlockCount = $roundBlocks->groupBy('proposer')
             ->map(function ($blocks) {
                 return count($blocks);
             });

@@ -125,7 +125,7 @@ final class Monitor extends Component
 
         /** @var ?Block $lastRoundBlock */
         $lastRoundBlock = Block::query()
-            ->where('generator_address', $lastSlot->address())
+            ->where('proposer', $lastSlot->address())
             ->where('number', '>=', $heightRange[0])
             ->orderBy('number', 'desc')
             ->first();
@@ -137,7 +137,7 @@ final class Monitor extends Component
 
             /** @var ?Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
-                ->where('generator_address', $lastSuccessfulForger->address())
+                ->where('proposer', $lastSuccessfulForger->address())
                 ->where('number', '>=', $heightRange[0])
                 ->orderBy('number', 'desc')
                 ->first();
@@ -166,7 +166,7 @@ final class Monitor extends Component
             $lastTimestamp = $overflowBlocks->last()['timestamp'];
         }
 
-        $overflowBlockCount = $overflowBlocks->groupBy('generator_address')
+        $overflowBlockCount = $overflowBlocks->groupBy('proposer')
             ->map(function ($blocks) {
                 return count($blocks);
             });
@@ -260,7 +260,7 @@ final class Monitor extends Component
                 $missedSeconds   = 0;
             }
 
-            if ($validator->address() === $lastBlock->generator_address) {
+            if ($validator->address() === $lastBlock->proposer) {
                 $hasReachedFinalSlot = true;
             }
 

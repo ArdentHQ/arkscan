@@ -57,7 +57,7 @@ it('should not be enabled if not ready', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Block::factory()->create([
-        'generator_address' => $wallet->address(),
+        'proposer' => $wallet->address(),
     ]);
 
     Livewire::test(ExportBlocks::class, [$wallet])

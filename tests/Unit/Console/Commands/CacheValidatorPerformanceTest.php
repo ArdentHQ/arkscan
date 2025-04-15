@@ -24,7 +24,7 @@ it('should cache the past performance for an address', function () {
         createRoundEntry($round, $round * Network::validatorCount(), $wallets);
 
         Block::factory()->create([
-            'generator_address'    => $address,
+            'proposer'    => $address,
             'number'               => $round * Network::validatorCount(),
         ]);
     }

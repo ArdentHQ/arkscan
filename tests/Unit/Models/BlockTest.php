@@ -30,7 +30,7 @@ it('should have transactions', function () {
 });
 
 it('should have a validator that forged the block', function () {
-    Wallet::factory()->create(['address' => $this->subject->generator_address]);
+    Wallet::factory()->create(['address' => $this->subject->proposer]);
 
     expect($this->subject->validator())->toBeInstanceOf(BelongsTo::class);
     expect($this->subject->validator)->toBeInstanceOf(Wallet::class);

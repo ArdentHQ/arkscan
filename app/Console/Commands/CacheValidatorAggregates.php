@@ -28,12 +28,12 @@ final class CacheValidatorAggregates extends Command
     {
         $aggregate = (new ValidatorTotalAggregates())->aggregate();
 
-        $cache->setTotalAmounts($aggregate->pluck('amount', 'generator_address')->toArray());
+        $cache->setTotalAmounts($aggregate->pluck('amount', 'proposer')->toArray());
 
-        $cache->setTotalFees($aggregate->pluck('fee', 'generator_address')->toArray());
+        $cache->setTotalFees($aggregate->pluck('fee', 'proposer')->toArray());
 
-        $cache->setTotalRewards($aggregate->pluck('reward', 'generator_address')->toArray());
+        $cache->setTotalRewards($aggregate->pluck('reward', 'proposer')->toArray());
 
-        $cache->setTotalBlocks($aggregate->pluck('count', 'generator_address')->toArray());
+        $cache->setTotalBlocks($aggregate->pluck('count', 'proposer')->toArray());
     }
 }

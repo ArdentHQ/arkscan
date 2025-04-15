@@ -39,7 +39,7 @@ beforeEach(function () {
         'amount'         => 10 * 1e18,
         'fee'            => 8 * 1e18,
         'reward'               => 2 * 1e18,
-        'generator_address'    => $this->wallet->address,
+        'proposer'    => $this->wallet->address,
     ]);
 });
 
@@ -303,7 +303,7 @@ it('should fail to get the performance if the wallet is not a validator', functi
 
 it('should determine if a new validator has forged', function () {
     $block = Block::factory()->create([
-        'generator_address' => $this->wallet->address,
+        'proposer' => $this->wallet->address,
     ]);
 
     Rounds::swap(new RoundsMock());
@@ -331,7 +331,7 @@ it('should determine if a new validator has forged', function () {
 
 it('should determine if the validator just missed a block', function () {
     $block = Block::factory()->create([
-        'generator_address' => $this->wallet->address,
+        'proposer' => $this->wallet->address,
     ]);
 
     Rounds::swap(new RoundsMock($block));
@@ -790,7 +790,7 @@ it('should return count for blocks since last forged', function () {
     ]));
 
     $block = Block::factory()->create([
-        'generator_address'    => $wallet->address(),
+        'proposer'    => $wallet->address(),
         'number'               => 10,
     ]);
 
@@ -834,7 +834,7 @@ it('should return count for time since last forged', function () {
 
     $block = Block::factory()->create([
         'timestamp'            => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'generator_address'    => $wallet->address(),
+        'proposer'    => $wallet->address(),
         'number'               => 10,
     ]);
 

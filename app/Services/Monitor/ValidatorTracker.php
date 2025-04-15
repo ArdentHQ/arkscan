@@ -89,7 +89,7 @@ final class ValidatorTracker
     {
         $roundValidators = DB::connection('explorer')
             ->table('blocks')
-            ->select('generator_address')
+            ->select('proposer')
             ->where('number', '>=', $roundHeight)
             ->orderBy('number', 'asc')
             ->get();
@@ -98,15 +98,15 @@ final class ValidatorTracker
             return 0;
         }
 
-        $lastForgerAddress = $roundValidators->last()->generator_address;
+        $lastForgerAddress = $roundValidators->last()->proposer;
 
         $roundBlockCount = $roundValidators->reduce(function ($carry, $item) {
             $count = 1;
-            if ($carry->has($item->generator_address)) {
-                $count = $carry[$item->generator_address] + 1;
+            if ($carry->has($item->proposer)) {
+                $count = $carry[$item->proposer] + 1;
             }
 
-            $carry->put($item->generator_address, $count);
+            $carry->put($item->proposer, $count);
 
             return $carry;
         }, collect());

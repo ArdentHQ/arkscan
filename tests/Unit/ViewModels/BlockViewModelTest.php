@@ -156,7 +156,7 @@ it('should get the validator wallet name', function () {
 
 it('should fail to get the validator wallet name', function () {
     $this->subject = new BlockViewModel(Block::factory()->create([
-        'generator_address' => Wallet::factory()->create([
+        'proposer' => Wallet::factory()->create([
             'attributes' => [],
         ])->address,
     ]));

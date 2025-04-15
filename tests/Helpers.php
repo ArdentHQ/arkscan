@@ -79,7 +79,7 @@ function createBlock(int $height, string $address, mixed $context = null)
         'amount'           => 0,
         'fee'              => 0,
         'reward'                 => 2 * 1e18,
-        'generator_address'      => $address,
+        'proposer'      => $address,
     ]);
 
     return $block;
@@ -328,7 +328,7 @@ function getRoundValidators(bool $withBlock = true, int $roundNumber = null): Su
     }
 
     if ($withBlock) {
-        $blocks = Block::whereBetween('number', $heightRange)->get()->keyBy('generator_address');
+        $blocks = Block::whereBetween('number', $heightRange)->get()->keyBy('proposer');
 
         $validators = $validators->map(fn ($validator) => [
             ...$validator,

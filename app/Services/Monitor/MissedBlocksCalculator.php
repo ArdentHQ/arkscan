@@ -31,7 +31,7 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
         $roundValidators  = $round->validators;
         $activeValidators = count($roundValidators);
 
-        $producedBlocks = Block::select(['generator_address', 'number', 'timestamp'])
+        $producedBlocks = Block::select(['proposer', 'number', 'timestamp'])
             ->whereBetween('number', [$round->round_height, $round->round_height + $activeValidators - 1])
             ->orderBy('number', 'asc')
             ->get();
@@ -54,7 +54,7 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
 
         $producedBlocks->each(function ($block, $index) use (&$forgeInfoByTimestamp, &$misses, $validatorCount, $roundValidators) {
             $expectedValidator = $roundValidators[($index + $misses) % $validatorCount];
-            $actualValidator   = $block['generator_address'];
+            $actualValidator   = $block['proposer'];
 
             $isForger = $actualValidator === $expectedValidator;
             if (! $isForger) {

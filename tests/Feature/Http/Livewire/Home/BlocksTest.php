@@ -21,7 +21,7 @@ it('should list the first page of blocks', function () {
 
         $block = Block::factory()->create();
 
-        $cache->setWalletNameByAddress($block->generator_address, 'test-username-'.($index + 1));
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
     }
 
     $component = Livewire::test(Blocks::class)

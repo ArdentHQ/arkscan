@@ -29,7 +29,7 @@ it('should search for a wallet username over a block generator', function () {
         ],
     ]);
     $block = Block::factory()->create([
-        'generator_address' => $wallet->address,
+        'proposer' => $wallet->address,
     ]);
     Transaction::factory()->create(['block_id' => $block->id]);
 

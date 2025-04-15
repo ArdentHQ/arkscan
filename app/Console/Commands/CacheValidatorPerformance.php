@@ -48,7 +48,7 @@ final class CacheValidatorPerformance extends Command
                 DB::raw('MAX(wallets.balance) as balance'),
             ])
             ->whereIn('wallets.address', $mostRecentRound->validators)
-            ->join('blocks', 'blocks.generator_address', '=', 'wallets.address');
+            ->join('blocks', 'blocks.proposer', '=', 'wallets.address');
 
         $actualNumberOfRounds = min($maxRounds, $mostRecentRounds->count());
 

@@ -26,9 +26,9 @@ final class BlockFactory extends Factory
             'fee'              => $this->faker->numberBetween(1, 100) * 1e18,
             'gas_used'         => $this->faker->numberBetween(1, 100),
             'reward'                 => $this->faker->numberBetween(1, 100) * 1e18,
-            'payload_length'         => $this->faker->numberBetween(1, 100),
-            'payload_hash'           => $this->faker->payloadHash,
-            'generator_address'      => fn () => Wallet::factory()->create()->address,
+            'payload_size'         => $this->faker->numberBetween(1, 100),
+            'transactions_root'           => $this->faker->payloadHash,
+            'proposer'      => fn () => Wallet::factory()->create()->address,
             'block_signature'        => $this->faker->blockSignature,
         ];
     }

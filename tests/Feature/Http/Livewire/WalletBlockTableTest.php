@@ -19,7 +19,7 @@ beforeEach(function () {
 
 it('should list all blocks for the given address', function () {
     $blocks = Block::factory(10)->create([
-        'generator_address' => $this->subject->address,
+        'proposer' => $this->subject->address,
     ]);
 
     $component = Livewire::test(WalletBlockTable::class, [ViewModelFactory::make($this->subject)])
@@ -47,7 +47,7 @@ it('should list all blocks for the given address', function () {
 
 it('should show no data if not ready', function () {
     $block = Block::factory()->create([
-        'generator_address' => $this->subject->address,
+        'proposer' => $this->subject->address,
     ]);
 
     Livewire::test(WalletBlockTable::class, [ViewModelFactory::make($this->subject)])
