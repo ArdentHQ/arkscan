@@ -29,7 +29,7 @@ final class BlockFactory extends Factory
             'payload_size'         => $this->faker->numberBetween(1, 100),
             'transactions_root'           => $this->faker->payloadHash,
             'proposer'      => fn () => Wallet::factory()->create()->address,
-            'block_signature'        => $this->faker->blockSignature,
+            'signature'        => $this->faker->blockSignature,
         ];
     }
 }
