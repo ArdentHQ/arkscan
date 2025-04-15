@@ -17,12 +17,13 @@ final class CreateBlocksTable extends Migration
         });
 
         Schema::create('blocks', function (Blueprint $table) {
-            $table->string('id');
-            $table->unsignedBigInteger('version');
-            $table->unsignedBigInteger('timestamp');
+            $table->string('hash');
+            $table->integer('version');
+            $table->integer('timestamp');
             $table->string('parent_hash')->nullable();
+            $table->string('state_root')->nullable();
             $table->unsignedBigInteger('number');
-            $table->unsignedBigInteger('number_of_transactions');
+            $table->unsignedBigInteger('transactions_count');
             $table->addColumn('numeric', 'total_amount');
             $table->addColumn('numeric', 'total_fee');
             $table->integer('total_gas_used');

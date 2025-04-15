@@ -11,7 +11,7 @@ trait HasTransactions
 {
     public function transactionCount(): int
     {
-        return $this->block->number_of_transactions;
+        return $this->block->transactions_count;
     }
 
     public function amount(): float

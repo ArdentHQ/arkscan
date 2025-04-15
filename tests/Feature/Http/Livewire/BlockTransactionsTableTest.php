@@ -28,7 +28,7 @@ it('should list the first transactions for the giving block id', function () {
 
 it('should load the next batch of transactions', function () {
     $block = Block::factory()->create([
-        'number_of_transactions' => 54,
+        'transactions_count' => 54,
     ]);
     $thirdPageTransactions = Transaction::factory(4)->transfer()->create([
         'block_id'  => $block->id,
@@ -76,7 +76,7 @@ it('should load the next batch of transactions', function () {
 
 it('should not go past the last page', function () {
     $block = Block::factory()->create([
-        'number_of_transactions' => 27,
+        'transactions_count' => 27,
     ]);
     Transaction::factory(2)->transfer()->create([
         'block_id'  => $block->id,

@@ -46,11 +46,11 @@ it('should cache largest block by fee', function () {
 it('should cache largest block by transaction count', function () {
     $cache = new BlockCache();
 
-    Block::factory()->create(['number_of_transactions' => 1]);
+    Block::factory()->create(['transactions_count' => 1]);
 
-    $largestBlock = Block::factory()->create(['number_of_transactions' => 50]);
+    $largestBlock = Block::factory()->create(['transactions_count' => 50]);
 
-    Block::factory()->create(['number_of_transactions' => 3]);
+    Block::factory()->create(['transactions_count' => 3]);
 
     $this->artisan('explorer:cache-blocks');
 

@@ -20,7 +20,7 @@ use Laravel\Scout\Searchable;
 /**
  * @property string $id
  * @property BigNumber $number
- * @property int $number_of_transactions
+ * @property int $transactions_count
  * @property BigNumber $reward
  * @property int $timestamp
  * @property BigNumber $total_amount
@@ -64,7 +64,7 @@ final class Block extends Model
      */
     protected $casts = [
         'number'                 => BigInteger::class,
-        'number_of_transactions' => 'int',
+        'transactions_count' => 'int',
         'reward'                 => BigInteger::class,
         'timestamp'              => UnixSeconds::class,
         'total_amount'           => BigInteger::class,
@@ -86,7 +86,7 @@ final class Block extends Model
             // used to get the validator
             'generator_address' => $this->generator_address,
             // shown on the results
-            'number_of_transactions' => $this->number_of_transactions,
+            'transactions_count' => $this->transactions_count,
             // sortable attribute
             'timestamp' => $this->timestamp,
         ];
@@ -103,7 +103,7 @@ final class Block extends Model
             ->select([
                 'id',
                 'generator_address',
-                'number_of_transactions',
+                'transactions_count',
                 'timestamp',
             ])
             ->when(true, function ($query) use ($self) {
