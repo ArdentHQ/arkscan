@@ -31,8 +31,11 @@ final class CreateBlocksTable extends Migration
             $table->unsignedBigInteger('payload_size');
             $table->string('transactions_root');
             $table->string('proposer');
+            $table->integer('round');
+            $table->integer('commit_round');
+            $table->integer('validator_round');
+            $table->integer('validator_set');
             $table->string('signature');
-            $table->timestamps();
         });
     }
 }
