@@ -126,7 +126,7 @@
                                     <span>{{ ExchangeRate::convert($fee['amount']) }}</span>
                                     <span>{{ Settings::currency() }}</span>
                                 @else
-                                    <span>{{ $fee['amount'] }}</span>
+                                    <span>{{ round($fee['amount']->__toString()) }}</span>
                                     <span>@lang('general.gwei')</span>
                                 @endif
                             </x-slot>
