@@ -74,7 +74,7 @@ it('should get the transaction stats for the last 24 hours', function () {
 it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee, $expectedFormattedFee) {
     $this->travelTo('2021-04-14 16:02:04');
 
-    $gasUsed = 210000;
+    $gasUsed = 21000;
 
     Transaction::factory()
         ->withReceipt(gasUsed: $gasUsed)
@@ -120,13 +120,13 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 })->with([
-    8 => [8, 919123.48392049, 99184739, '20828795190000'],
-    7 => [7, 919123.4839204, 99184730, '20828793300000'],
-    6 => [6, 919123.483929, 99183900, '20828619000000'],
-    5 => [5, 919123.48392, 99739000, '20945190000000'],
-    4 => [4, 919123.4839, 99180000, '20827800000000'],
-    3 => [3, 919123.489, 47900000, '10059000000000'],
-    2 => [2, 919123.48, 99000000, '20790000000000'],
+    8 => [8, 919123.48392049, 99184739, '2082879519000'],
+    7 => [7, 919123.4839204, 99184730, '2082879330000'],
+    6 => [6, 919123.483929, 99183900, '2082861900000'],
+    5 => [5, 919123.48392, 99739000, '2094519000000'],
+    4 => [4, 919123.4839, 99180000, '2082780000000'],
+    3 => [3, 919123.489, 47900000, '1005900000000'],
+    2 => [2, 919123.48, 99000000, '2079000000000'],
 ]);
 
 it('should cache the transaction stats for 5 minutes', function () {
