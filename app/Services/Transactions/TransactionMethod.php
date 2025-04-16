@@ -48,7 +48,7 @@ final class TransactionMethod
                 return $methodName;
             }
         }
-
+        
         return '0x'.$this->methodHash;
     }
 
