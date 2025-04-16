@@ -677,3 +677,29 @@ it('should show no data if not ready', function () {
         ->call('setIsReady')
         ->assertSee($transaction->hash);
 });
+
+
+it('should determine if has transaction type filters', function (string $filter) {
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'            => false,
+            'incoming'            => false,
+            'transfers'           => $filter === 'transfers',
+            'multipayments'       => $filter === 'multipayments',
+            'votes'               => $filter === 'votes',
+            'validator'           => $filter === 'validator',
+            'username'            => $filter === 'username',
+            'contract_deployment' => $filter === 'contract_deployment',
+            'others'              => $filter === 'others',
+        ])
+        ->assertDontSee(trans('tables.transactions.no_results.no_filters'));
+})->with([
+    'transfers',
+    'multipayments',
+    'votes',
+    'validator',
+    'username',
+    'contract_deployment',
+    'others',
+]);
