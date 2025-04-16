@@ -60,17 +60,16 @@ it('should determine the name from the contracts if unhandled type', function ()
     expect($transactionMethod->name())->toBe('getRounds');
 });
 
-
 it('should return raw methodHash if no type matches and translation is missing', function () {
     $unknownMethodHash = 'deadbeef';
 
     $transaction = Transaction::factory()
-        ->withPayload($unknownMethodHash . str_repeat('0', 64)) 
+        ->withPayload($unknownMethodHash.str_repeat('0', 64))
         ->create();
 
     $this->mock(Translator::class)->shouldReceive('has')->andReturn(false);
-    
+
     $transactionMethod = new TransactionMethod($transaction);
 
-    expect($transactionMethod->name())->toBe('0x' . $unknownMethodHash);
+    expect($transactionMethod->name())->toBe('0x'.$unknownMethodHash);
 });
