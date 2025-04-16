@@ -678,7 +678,6 @@ it('should show no data if not ready', function () {
         ->assertSee($transaction->hash);
 });
 
-
 it('should determine if has transaction type filters', function (string $filter) {
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
