@@ -315,6 +315,29 @@ it('should show no transactions if no type filter', function () {
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });
 
+it('should determine if has transaction type filters', function (string $filter) {
+    Livewire::test(TransactionTable::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'transfers'           => $filter === 'transfers',
+            'multipayments'       => $filter === 'multipayments',
+            'votes'               => $filter === 'votes',
+            'validator'           => $filter === 'validator',
+            'username'            => $filter === 'username',
+            'contract_deployment' => $filter === 'contract_deployment',
+            'others'              => $filter === 'others',
+        ])
+        ->assertDontSee(trans('tables.transactions.no_results.no_filters'));
+})->with([
+    'transfers',
+    'multipayments',
+    'votes',
+    'validator',
+    'username',
+    'contract_deployment',
+    'others',
+]);
+
 it('should get the filter values via a getter', function () {
     $instance = Livewire::test(TransactionTable::class)
         ->call('setIsReady')
