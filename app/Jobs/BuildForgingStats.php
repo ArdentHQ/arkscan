@@ -137,6 +137,6 @@ final class BuildForgingStats implements ShouldQueue
 
     private function getTimestampForHeight(int $height): int
     {
-        return Block::where('height', $height)->firstOrFail()->timestamp;
+        return (int) (Block::where('height', $height)->firstOrFail()->timestamp / 1000);
     }
 }
