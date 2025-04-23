@@ -156,7 +156,7 @@ return [
                 ],
             ],
             Transaction::class => [
-                'filterableAttributes'=> ['id'],
+                'filterableAttributes'=> ['hash'],
                 'searchableAttributes'=> [],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
@@ -171,7 +171,7 @@ return [
                 ],
             ],
             Block::class => [
-                'filterableAttributes'=> ['id'],
+                'filterableAttributes'=> ['hash'],
                 'searchableAttributes'=> [],
                 'sortableAttributes'  => ['timestamp'],
                 'typoTolerance'       => [
