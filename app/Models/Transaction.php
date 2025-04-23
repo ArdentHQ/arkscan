@@ -101,12 +101,12 @@ final class Transaction extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'value'                 => BigInteger::class,
-        'gas_price'             => BigInteger::class,
-        'gas_limit'             => BigInteger::class,
-        'timestamp'             => UnixSeconds::class,
-        'transaction_index'     => 'int',
-        'block_number'          => 'int',
+        'value'             => BigInteger::class,
+        'gas_price'         => BigInteger::class,
+        'gas_limit'         => BigInteger::class,
+        'timestamp'         => UnixSeconds::class,
+        'transaction_index' => 'int',
+        'block_number'      => 'int',
     ];
 
     protected $with = [
