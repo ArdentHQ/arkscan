@@ -7,7 +7,6 @@ use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
-use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 
 it('should get fees', function () {
@@ -35,15 +34,11 @@ it('should get fees', function () {
         });
 
     $formattedVolume    = UnitConverter::parseUnits((string) $volume, 'wei');
-    $formattedTotalFees = UnitConverter::parseUnits((string) $totalFees, 'gwei');
-
-    expect($formattedVolume)->toEqual(BigDecimal::of('700000000000000000000'));
-    expect($formattedTotalFees)->toEqual(BigDecimal::of('588000000000000'));
 
     expect((new StatisticsCache())->getTransactionData())->toEqual([
         'transaction_count' => $transactionCount,
         'volume'            => (string) $formattedVolume,
-        'total_fees'        => $formattedTotalFees,
-        'average_fee'       => $formattedTotalFees->dividedBy($transactionCount),
+        'total_fees'        => '588000',
+        'average_fee'       => 588000 / $transactionCount,
     ]);
 });

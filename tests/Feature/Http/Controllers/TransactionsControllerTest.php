@@ -5,8 +5,6 @@ declare(strict_types=1);
 use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\NumberFormatter;
-use ArkEcosystem\Crypto\Utils\UnitConverter;
-use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {
@@ -21,13 +19,13 @@ it('should get the transaction stats for the last 24 hours', function () {
     Transaction::factory(148)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'    => 123 * 1e18,
-        'gas_price' => 5,
+        'gas_price' => 5000000000,
     ]);
 
     Transaction::factory(12)->withReceipt()->create([
         'timestamp'  => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
         'amount'     => 123 * 1e18,
-        'gas_price'  => 5,
+        'gas_price'  => 5000000000,
     ]);
 
     $this
@@ -86,9 +84,8 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'gas_price' => $fee,
         ]);
 
-    $formattedFee = UnitConverter::parseUnits($fee * $gasUsed, 'gwei');
+    $formattedFee = $fee * $gasUsed;
 
-    expect($formattedFee)->toEqual(BigDecimal::of($expectedFormattedFee));
     expect((string) $formattedFee)->toEqual($expectedFormattedFee);
 
     $fee = BigNumber::new($formattedFee)->toFloat();
@@ -123,13 +120,13 @@ it('should show the correct decimal places for the stats', function ($decimalPla
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 })->with([
-    8 => [8, 919123.48392049, 0.99184739, '20828795190000'],
-    7 => [7, 919123.4839204, 0.9918473, '20828793300000'],
-    6 => [6, 919123.483929, 0.991839, '20828619000000'],
-    5 => [5, 919123.48392, 0.99739, '20945190000000'],
-    4 => [4, 919123.4839, 0.9918, '20827800000000'],
-    3 => [3, 919123.489, 0.479, '10059000000000'],
-    2 => [2, 919123.48, 0.99, '20790000000000'],
+    8 => [8, 919123.48392049, 99184739, '2082879519000'],
+    7 => [7, 919123.4839204, 99184730, '2082879330000'],
+    6 => [6, 919123.483929, 99183900, '2082861900000'],
+    5 => [5, 919123.48392, 99739000, '2094519000000'],
+    4 => [4, 919123.4839, 99180000, '2082780000000'],
+    3 => [3, 919123.489, 47900000, '1005900000000'],
+    2 => [2, 919123.48, 99000000, '2079000000000'],
 ]);
 
 it('should cache the transaction stats for 5 minutes', function () {
@@ -138,7 +135,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     Transaction::factory(146)->withReceipt()->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'amount'          => 123 * 1e18,
-        'gas_price'       => 5,
+        'gas_price'       => 5000000000,
     ]);
 
     $volume = (123 * 146);
@@ -156,7 +153,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     Transaction::factory(12)->withReceipt()->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
         'amount'          => 123 * 1e18,
-        'gas_price'       => 5,
+        'gas_price'       => 5000000000,
     ]);
 
     $this

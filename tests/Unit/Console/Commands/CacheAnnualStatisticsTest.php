@@ -28,7 +28,7 @@ it('should cache annual data for current year', function () {
         ->create([
             'timestamp' => $timestamp,
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory()->count(5)->create([
@@ -86,7 +86,7 @@ it('should cache annual data for all time', function () {
         ->create([
             'timestamp' => $initialDate->getTimestampMs(),
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory()->count(6)->create([
@@ -117,7 +117,7 @@ it('should cache annual data for all time', function () {
         ->create([
             'timestamp' => $timestamp,
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Transaction::factory()
@@ -129,7 +129,7 @@ it('should cache annual data for all time', function () {
         ->create([
             'amount'    => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
             'timestamp' => $timestamp,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory()->count(5)->create([
@@ -195,7 +195,7 @@ it('should not dispatch event if nothing changes', function () {
         ->create([
             'timestamp' => $timestamp,
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory()->count(5)->create([
@@ -234,7 +234,7 @@ it('should dispatch event for all data when the transaction count changes', func
         ->create([
             'timestamp' => $timestamp,
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory(5)->create([
@@ -263,7 +263,7 @@ it('should dispatch event for all data when the transaction count changes', func
             'block_id'  => Block::first()->id,
             'timestamp' => Carbon::parse('2020-03-03 01:01:01')->getTimestampMs(),
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');
@@ -320,7 +320,7 @@ it('should dispatch event for specific year when the transaction count changes',
         ->create([
             'timestamp' => $timestamp,
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory(5)->create([
@@ -349,7 +349,7 @@ it('should dispatch event for all data when the block count changes', function (
         ->create([
             'timestamp' => $timestamp,
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
             'block_id'  => $blocks->first()->id,
         ]);
 
@@ -362,7 +362,7 @@ it('should dispatch event for all data when the block count changes', function (
         ->create([
             'timestamp' => Carbon::parse('2023-03-03 00:00:00')->getTimestampMs(),
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
             'block_id'  => $block->id,
         ]);
 
@@ -426,7 +426,7 @@ it('should dispatch event for current year when the transaction count changes', 
         ->create([
             'timestamp' => $timestamp,
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory(5)->create([
@@ -453,7 +453,7 @@ it('should dispatch event for current year when the transaction count changes', 
             'block_id'  => Block::first()->id,
             'timestamp' => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     $cache->setAnnualData(2017, 0, '0', '0', 0);
@@ -484,7 +484,7 @@ it('should dispatch event for current year when the block count changes', functi
         ->create([
             'timestamp' => $timestamp,
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory(5)->create([
@@ -536,7 +536,7 @@ it('should get all annual data if not already set', function () {
         ->create([
             'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
             'amount'    => 10 * 1e18,
-            'gas_price' => 0.1,
+            'gas_price' => 100000000,
         ]);
 
     Block::factory()->count(6)->create([
