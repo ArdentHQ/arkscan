@@ -7,6 +7,7 @@ namespace App\Http\Livewire;
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
+use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
@@ -160,7 +161,12 @@ final class WalletTransactionTable extends TabbedTableComponent
             ->withTypeFilter($this->filter)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_address', $this->address)));
+                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_address', $this->address)))
+                    ->orWhere(function ($query) {
+                        $query->withScope(MultiPaymentScope::class)
+                            // data for multipayment contains the address
+                            ->whereRaw("encode(data, 'hex') LIKE ?", '%'.strtolower(str_pad(ltrim($this->address, '0x'), 64, '0', STR_PAD_LEFT)).'%');
+                    });
             });
     }
 }

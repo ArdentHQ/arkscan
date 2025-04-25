@@ -10,8 +10,8 @@
     $isReceived = $wallet && ! $model->isSent($wallet->address());
     $isSent = $wallet && $model->isSent($wallet->address());
 
-    $amount = $model->amount();
-    $amountFiat = $model->amountFiat(true);
+    $amount = $model->amount($wallet?->address());
+    $amountFiat = $model->amountFiat(showSmallAmounts: true, walletAddress: $wallet?->address());
     $amountForItself = null;
 
     if ($wallet && ($isReceived || $model->isSentToSelf($wallet->address()))) {
