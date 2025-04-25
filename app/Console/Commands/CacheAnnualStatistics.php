@@ -96,7 +96,7 @@ final class CacheAnnualStatistics extends Command
                 (int) $item->year,
                 (int) $item->transactions,
                 (string) BigNumber::new($item->value),
-                (string) BigNumber::new(UnitConverter::formatUnits($item->fees, 'gwei')),
+                (string) BigNumber::new(UnitConverter::formatUnits($item->fees, 'ark')),
                 $blocksData->get($key)?->blocks, // We assume to have the same value of entries for blocks and transactions (years)
             );
         });
@@ -145,7 +145,7 @@ final class CacheAnnualStatistics extends Command
             $year,
             $transactionCount,
             $volume,
-            (string) BigNumber::new(UnitConverter::formatUnits($fees, 'gwei')),
+            (string) BigNumber::new(UnitConverter::formatUnits($fees, 'ark')),
             $blocksData,
         );
     }

@@ -93,7 +93,7 @@ it('should execute the command - with parameters', function () {
         '--height' => 7243669, '--days' => 0.01,
     ]);
 
-    expect(ForgingStats::all()->count())->toBe(159);
+    expect(ForgingStats::all()->count())->toBe(212);
 });
 
 it('should execute the command - without parameter', function () {
@@ -113,7 +113,7 @@ it('should not add multiple records to database', function () {
     Artisan::call('explorer:forging-stats:build', $args);
     Artisan::call('explorer:forging-stats:build', $args);
 
-    expect(ForgingStats::all()->count())->toBe(159);
+    expect(ForgingStats::all()->count())->toBe(212);
 });
 
 it('should store the height for missed blocks', function () {

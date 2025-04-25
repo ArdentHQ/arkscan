@@ -86,7 +86,10 @@ trait HasPayload
         ])->render());
     }
 
-    public function multiPaymentRecipients(): ?array
+    /**
+     * @return array<int, array{address: string, amount: float}>
+     */
+    public function multiPaymentRecipients(): array
     {
         if (! $this->isMultiPayment()) {
             throw new \Exception('This transaction is not a multi-payment.');

@@ -151,8 +151,18 @@ final class TransactionViewModel implements ViewModel
     }
     // @codeCoverageIgnoreEnd
 
-    public function amount(): float
+    public function amount(?string $walletAddress = null): float
     {
+        if ($this->isMultiPayment() && $walletAddress !== null) {
+            $recipients = $this->multiPaymentRecipients();
+
+            foreach ($recipients as $recipient) {
+                if ($recipient['address'] === $walletAddress) {
+                    return $recipient['amount'];
+                }
+            }
+        }
+
         return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
     }
 
@@ -161,9 +171,9 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->value->toFloat() + $this->fee();
     }
 
-    public function amountReceived(?string $wallet = null): float
+    public function amountReceived(?string $walletAddress = null): float
     {
-        return $this->amount();
+        return $this->amount($walletAddress);
     }
 
     // @codeCoverageIgnoreStart
@@ -174,14 +184,14 @@ final class TransactionViewModel implements ViewModel
     }
     // @codeCoverageIgnoreEnd
 
-    public function amountFiat(bool $showSmallAmounts = false): string
+    public function amountFiat(bool $showSmallAmounts = false, ?string $walletAddress = null): string
     {
-        return ExchangeRate::convert($this->amount(), $this->transaction->timestamp, $showSmallAmounts);
+        return ExchangeRate::convert($this->amount($walletAddress), $this->transaction->timestamp, $showSmallAmounts);
     }
 
-    public function amountReceivedFiat(?string $wallet = null): string
+    public function amountReceivedFiat(?string $walletAddress = null): string
     {
-        return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
+        return ExchangeRate::convert($this->amountReceived($walletAddress), $this->transaction->timestamp);
     }
 
     public function totalFiat(bool $withSmallAmounts = false): string
