@@ -27,7 +27,7 @@ it('should return count for non-multipayment', function () {
     Transaction::factory(6)
         ->withReceipt()
         ->create([
-            'amount'    => 20 * 1e18,
+            'value'     => 20 * 1e18,
             'gas_price' => 25,
         ]);
 
@@ -35,7 +35,7 @@ it('should return count for non-multipayment', function () {
         ->withReceipt()
         ->unvote()
         ->create([
-            'amount'    => 0 * 1e18,
+            'value'     => 0 * 1e18,
             'gas_price' => 25,
         ]);
 
@@ -65,7 +65,7 @@ it('should return count for multipayment', function () {
     Transaction::factory(2)
         ->withReceipt()
         ->create([
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 25,
         ]);
 
@@ -75,7 +75,7 @@ it('should return count for multipayment', function () {
         ->withReceipt()
         ->multiPayment([$recipient->address], [BigNumber::new(14 * 1e18)])
         ->create([
-            'amount'    => 0,
+            'value'     => 0,
             'gas_price' => 25,
         ]);
 
@@ -83,7 +83,7 @@ it('should return count for multipayment', function () {
         ->withReceipt()
         ->multiPayment([$recipient->address, $recipient->address], [BigNumber::new(14 * 1e18), BigNumber::new(14 * 1e18)])
         ->create([
-            'amount'    => 0,
+            'value'     => 0,
             'gas_price' => 25,
         ]);
 

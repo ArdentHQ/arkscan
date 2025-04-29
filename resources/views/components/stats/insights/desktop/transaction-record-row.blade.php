@@ -32,14 +32,14 @@
                     </span>
                     @if ($isTransaction)
                         <a
-                            href="{{ route('transaction', $model->model()) }}"
+                            href="{{ $model->url() }}"
                             class="link"
                         >
-                            <x-truncate-middle>{{ $model->id() }}</x-truncate-middle>
+                            <x-truncate-middle>{{ $model->hash() }}</x-truncate-middle>
                         </a>
                     @elseif ($isBlock)
                         <a
-                            href="{{ route('block', $model->model()) }}"
+                            href="{{ $model->url() }}"
                             class="link"
                         >
                             <x-number>{{ $model->height() }}</x-number>

@@ -28,17 +28,17 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
 /**
- * @property string $id
- * @property BigNumber $amount
+ * @property string $hash
+ * @property string $block_hash
+ * @property BigNumber $value
  * @property BigNumber $gas_limit
  * @property BigNumber $gas_price
  * @property int $timestamp
- * @property int $sequence
- * @property string $block_id
- * @property string|null $recipient_address
- * @property string $sender_address
+ * @property int $transaction_index
+ * @property string|null $to
+ * @property string $from
  * @property string $sender_public_key
- * @property int $block_height
+ * @property int $block_number
  * @property resource|null $data
  * @property int $nonce
  * @property Wallet $sender
@@ -82,6 +82,13 @@ final class Transaction extends Model
     public $incrementing = false;
 
     /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'hash';
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -94,12 +101,12 @@ final class Transaction extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'amount'       => BigInteger::class,
-        'gas_price'    => BigInteger::class,
-        'gas_limit'    => BigInteger::class,
-        'timestamp'    => UnixSeconds::class,
-        'sequence'     => 'int',
-        'block_height' => 'int',
+        'value'             => BigInteger::class,
+        'gas_price'         => BigInteger::class,
+        'gas_limit'         => BigInteger::class,
+        'timestamp'         => UnixSeconds::class,
+        'transaction_index' => 'int',
+        'block_number'      => 'int',
     ];
 
     protected $with = [
@@ -117,16 +124,16 @@ final class Transaction extends Model
         // for the search results.
         return [
             // Searchable id and used to link the transaction
-            'id' => $this->id,
+            'hash' => $this->hash,
             // Used to get the recipient wallet
-            'recipient_address' => $this->recipient_address,
+            'to' => $this->to,
 
             // Used to get the sender wallets
             'sender_public_key' => $this->sender_public_key,
 
-            // To get the amount for single payments
+            // To get the value for single payments
             // Using `__toString` since are instances of `BigNumber`
-            'amount' => $this->amount->__toString(),
+            'value'  => $this->value->__toString(),
             'fee'    => $this->gas_price->__toString(),
             // used to build the payments and sortable
             'timestamp' => $this->timestamp,
@@ -142,10 +149,10 @@ final class Transaction extends Model
 
         return $self->newQuery()
             ->select([
-                'id',
+                'hash',
                 'sender_public_key',
-                'recipient_address',
-                'amount',
+                'to',
+                'value',
                 'gas_price',
                 'timestamp',
             ])
@@ -176,7 +183,7 @@ final class Transaction extends Model
      */
     public function block(): BelongsTo
     {
-        return $this->belongsTo(Block::class, 'block_id');
+        return $this->belongsTo(Block::class, 'block_hash', 'hash');
     }
 
     /**
@@ -196,7 +203,7 @@ final class Transaction extends Model
      */
     public function receipt(): HasOne
     {
-        return $this->hasOne(Receipt::class, 'id', 'id');
+        return $this->hasOne(Receipt::class, 'transaction_hash', 'hash');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder

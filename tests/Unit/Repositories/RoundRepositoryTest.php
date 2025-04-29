@@ -28,7 +28,7 @@ it('should get the current round', function () {
 });
 
 it('should get the slot data for the current round', function () {
-    Block::factory()->create(['height' => 5944904]);
+    Block::factory()->create(['number' => 5944904]);
 
     $validators = $this->subject->validators();
 
@@ -40,8 +40,8 @@ it('should get the slot data for the current round', function () {
     expect($validators->firstWhere(fn ($validator) => $validator['address'] === $wallet['address'])['block'])->toBeNull();
 
     Block::factory()->create([
-        'height'               => 5944905,
-        'generator_address'    => $wallet['address'],
+        'number'               => 5944905,
+        'proposer'             => $wallet['address'],
     ]);
 
     $validators = $this->subject->validators();

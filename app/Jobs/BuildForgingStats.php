@@ -42,14 +42,14 @@ final class BuildForgingStats implements ShouldQueue
             $missedHeight = null;
             if ($statsForTimestamp['forged'] === false) {
                 /** @var array $missedBlock */
-                $missedBlock = Block::select('height')
-                    ->withCasts(['height' => 'int'])
+                $missedBlock = Block::select('number')
+                    ->withCasts(['number' => 'int'])
                     ->withScope(OrderByTimestampScope::class)
                     ->where('timestamp', '<=', $timestamp * 1000)
                     ->limit(1)
                     ->first();
 
-                $missedHeight = $missedBlock['height'] + 1;
+                $missedHeight = $missedBlock['number'] + 1;
             }
 
             $data[] = [
@@ -79,10 +79,10 @@ final class BuildForgingStats implements ShouldQueue
         $heightTimestamp = $this->getTimestampForHeight($height);
 
         return Block::where('timestamp', '<=', ($heightTimestamp - $timeRangeInSeconds) * 1000)
-            ->orderBy('height', 'desc')
+            ->orderBy('number', 'desc')
             ->limit(1)
             ->first()
-            ?->height
+            ?->number
             ->toNumber() ?? 1;
     }
 
@@ -91,8 +91,8 @@ final class BuildForgingStats implements ShouldQueue
         $height = $this->height;
 
         if ($height === 0) {
-            $lastBlock = Block::orderBy('height', 'DESC')->limit(1)->firstOrFail();
-            $height    = $lastBlock->height->toNumber();
+            $lastBlock = Block::orderBy('number', 'DESC')->limit(1)->firstOrFail();
+            $height    = $lastBlock->number->toNumber();
         }
 
         return $height;
@@ -131,6 +131,6 @@ final class BuildForgingStats implements ShouldQueue
 
     private function getTimestampForHeight(int $height): int
     {
-        return (int) (Block::where('height', $height)->firstOrFail()->timestamp / 1000);
+        return (int) (Block::where('number', $height)->firstOrFail()->timestamp / 1000);
     }
 }

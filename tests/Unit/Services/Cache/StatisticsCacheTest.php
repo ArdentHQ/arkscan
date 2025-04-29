@@ -18,18 +18,18 @@ it('should get fees', function () {
     Transaction::factory($transactionCount)
         ->create([
             'timestamp' => Carbon::now()->subHours(1)->getTimestampMs(),
-            'amount'    => '100000000000000000000',
+            'value'     => '100000000000000000000',
         ])
         ->each(function ($transaction, $index) use (&$volume, &$totalFees) {
             $transaction->gas_price = BigNumber::new($index + 1);
             $transaction->save();
 
-            $volume->plus($transaction->amount->valueOf());
+            $volume->plus($transaction->value->valueOf());
             $totalFees->plus(BigNumber::new($transaction->gas_price->valueOf())->multipliedBy(21000)->valueOf());
 
             Receipt::factory()->create([
-                'id'       => $transaction->id,
-                'gas_used' => 21000,
+                'transaction_hash' => $transaction->hash,
+                'gas_used'         => 21000,
             ]);
         });
 

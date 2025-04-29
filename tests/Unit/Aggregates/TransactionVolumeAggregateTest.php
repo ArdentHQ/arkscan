@@ -7,7 +7,7 @@ use App\Models\Transaction;
 
 beforeEach(function () {
     Transaction::factory(10)->create([
-        'amount' => 5 * 1e18,
+        'value' => 5 * 1e18,
     ]);
 
     $this->subject = new TransactionVolumeAggregate();

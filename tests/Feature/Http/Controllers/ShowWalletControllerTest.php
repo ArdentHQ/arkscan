@@ -123,19 +123,19 @@ it('should filter transactions in url', function () {
 
     $this
         ->get('/test-transactions/'.$wallet->address)
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=false')
-        ->assertDontSee($transaction->id);
+        ->assertDontSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=0')
-        ->assertDontSee($transaction->id);
+        ->assertDontSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=1')
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 });
 
 it('should get query data from referer', function () {

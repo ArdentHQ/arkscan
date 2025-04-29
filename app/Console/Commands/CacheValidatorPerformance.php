@@ -48,7 +48,7 @@ final class CacheValidatorPerformance extends Command
                 DB::raw('MAX(wallets.balance) as balance'),
             ])
             ->whereIn('wallets.address', $mostRecentRound->validators)
-            ->join('blocks', 'blocks.generator_address', '=', 'wallets.address');
+            ->join('blocks', 'blocks.proposer', '=', 'wallets.address');
 
         $actualNumberOfRounds = min($maxRounds, $mostRecentRounds->count());
 
@@ -60,7 +60,7 @@ final class CacheValidatorPerformance extends Command
 
                 // `bool_or` is equivalent to `some` in PGSQL and is used here to
                 // check if there is at least one block on the range.
-                $query->addSelect(DB::raw(sprintf('bool_or(blocks.height BETWEEN %s AND %s) round_%s', $start, $end, ($actualNumberOfRounds - $index - 1))));
+                $query->addSelect(DB::raw(sprintf('bool_or(blocks.number BETWEEN %s AND %s) round_%s', $start, $end, ($actualNumberOfRounds - $index - 1))));
             });
 
         /**

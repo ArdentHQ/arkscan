@@ -76,7 +76,7 @@ trait HandlesMonitorDataBoxes
     {
         return (new MonitorCache())->setBlockCount(function (): string {
             return trans('pages.validators.statistics.blocks_generated', [
-                'forged' => Network::validatorCount() - (Monitor::heightRangeByRound(Rounds::current())[1] - Block::max('height')),
+                'forged' => Network::validatorCount() - (Monitor::heightRangeByRound(Rounds::current())[1] - Block::max('number')),
                 'total'  => Network::validatorCount(),
             ]);
         });

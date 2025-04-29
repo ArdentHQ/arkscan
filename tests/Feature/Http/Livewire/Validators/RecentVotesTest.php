@@ -20,8 +20,8 @@ function generateReceipts(): void
 {
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
-            'id'      => $transaction->id,
-            'success' => true,
+            'transaction_hash'      => $transaction->hash,
+            'status'                => true,
         ]);
     }
 }
@@ -56,14 +56,14 @@ function generateTransactions(): array
         ->vote($validator1->address)
         ->create([
             'timestamp'      => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
-            'sender_address' => $sender1->address,
+            'from'           => $sender1->address,
         ]);
 
     $unvoteTransaction = Transaction::factory()
         ->unvote()
         ->create([
             'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
-            'sender_address' => $sender2->address,
+            'from'           => $sender2->address,
         ]);
 
     generateReceipts();
@@ -253,15 +253,15 @@ it('should sort by age descending by default', function () {
         ->assertSet('sortKey', 'age')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
 
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
         ]);
 });
 
@@ -273,15 +273,15 @@ it('should sort age in ascending order', function () {
         ->call('sortBy', 'age')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
 
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
         ]);
 });
 
@@ -293,15 +293,15 @@ it('should sort address in ascending order', function () {
         ->call('sortBy', 'address')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
 
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
         ]);
 });
 
@@ -314,15 +314,15 @@ it('should sort address in descending order', function () {
         ->call('sortBy', 'address')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
 
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
         ]);
 });
 
@@ -334,15 +334,15 @@ it('should sort type in ascending order', function () {
         ->call('sortBy', 'type')
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
 
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
         ]);
 });
 
@@ -355,15 +355,15 @@ it('should sort type in descending order', function () {
         ->call('sortBy', 'type')
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
 
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
         ]);
 });
 
@@ -413,28 +413,28 @@ it('should parse sorting direction from query string', function () {
 
     $this->get('/test-validators?sort=type&sort-direction=asc')
         ->assertSeeInOrder([
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
 
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
         ]);
 
     $this->get('/test-validators?sort=type&sort-direction=desc')
         ->assertSeeInOrder([
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
 
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
         ]);
 });
 
@@ -447,28 +447,28 @@ it('should force default sort direction if invalid query string value', function
 
     $this->get('/test-validators?sort=type&sort-direction=desc')
         ->assertSeeInOrder([
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
 
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
         ]);
 
     $this->get('/test-validators?sort=type&sort-direction=testing')
         ->assertSeeInOrder([
-            'vote-item*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-item*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
 
-            'vote-mobile*'.$data['voteTransaction']->id,
-            $data['voteTransaction']->id,
-            'vote-mobile*'.$data['unvoteTransaction']->id,
-            $data['unvoteTransaction']->id,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
         ]);
 });
 
@@ -484,19 +484,19 @@ it('should not show failed transactions', function () {
     ]);
 
     Receipt::factory()->create([
-        'id'      => $failedTransaction->id,
-        'success' => false,
+        'transaction_hash'      => $failedTransaction->hash,
+        'status'                => false,
     ]);
 
     Receipt::factory()->create([
-        'id'      => $successfulTransaction->id,
-        'success' => true,
+        'transaction_hash'      => $successfulTransaction->hash,
+        'status'                => true,
     ]);
 
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
-        ->assertDontSee($failedTransaction->id)
-        ->assertSee($successfulTransaction->id);
+        ->assertDontSee($failedTransaction->hash)
+        ->assertSee($successfulTransaction->hash);
 });
 
 it('should sort name then address in ascending order when missing names', function () {
@@ -537,31 +537,31 @@ it('should sort name then address in ascending order when missing names', functi
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
             // Desktop
-            'vote-item*'.$voteTransaction2->id,
-            $voteTransaction2->id,
+            'vote-item*'.$voteTransaction2->hash,
+            $voteTransaction2->hash,
             'Vote',
             $validator2->address(),
-            'vote-item*'.$voteTransaction->id,
-            $voteTransaction->id,
+            'vote-item*'.$voteTransaction->hash,
+            $voteTransaction->hash,
             'Vote',
             $validator1->username(),
-            'vote-item*'.$unvoteTransaction->id,
+            'vote-item*'.$unvoteTransaction->hash,
             'Unvote',
-            'vote-item*'.$unvoteTransaction2->id,
+            'vote-item*'.$unvoteTransaction2->hash,
             'Unvote',
 
             // // Mobile
-            'vote-mobile*'.$voteTransaction2->id,
-            $voteTransaction2->id,
+            'vote-mobile*'.$voteTransaction2->hash,
+            $voteTransaction2->hash,
             'Vote',
             $validator2->address(),
-            'vote-mobile*'.$voteTransaction->id,
-            $voteTransaction->id,
+            'vote-mobile*'.$voteTransaction->hash,
+            $voteTransaction->hash,
             'Vote',
             $validator1->username(),
-            'vote-mobile*'.$unvoteTransaction->id,
+            'vote-mobile*'.$unvoteTransaction->hash,
             'Unvote',
-            'vote-mobile*'.$unvoteTransaction2->id,
+            'vote-mobile*'.$unvoteTransaction2->hash,
             'Unvote',
         ]);
 });
@@ -605,31 +605,31 @@ it('should sort name then address in descending order when missing names', funct
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
             // Desktop
-            'vote-item*'.$voteTransaction->id,
-            $voteTransaction->id,
+            'vote-item*'.$voteTransaction->hash,
+            $voteTransaction->hash,
             'Vote',
             $validator1->username(),
-            'vote-item*'.$voteTransaction2->id,
-            $voteTransaction2->id,
+            'vote-item*'.$voteTransaction2->hash,
+            $voteTransaction2->hash,
             'Vote',
             $validator2->address(),
-            'vote-item*'.$unvoteTransaction->id,
+            'vote-item*'.$unvoteTransaction->hash,
             'Unvote',
-            'vote-item*'.$unvoteTransaction2->id,
+            'vote-item*'.$unvoteTransaction2->hash,
             'Unvote',
 
             // Mobile
-            'vote-mobile*'.$voteTransaction->id,
-            $voteTransaction->id,
+            'vote-mobile*'.$voteTransaction->hash,
+            $voteTransaction->hash,
             'Vote',
             $validator1->username(),
-            'vote-mobile*'.$voteTransaction2->id,
-            $voteTransaction2->id,
+            'vote-mobile*'.$voteTransaction2->hash,
+            $voteTransaction2->hash,
             'Vote',
             $validator2->address(),
-            'vote-mobile*'.$unvoteTransaction->id,
+            'vote-mobile*'.$unvoteTransaction->hash,
             'Unvote',
-            'vote-mobile*'.$unvoteTransaction2->id,
+            'vote-mobile*'.$unvoteTransaction2->hash,
             'Unvote',
         ]);
 });
@@ -689,39 +689,39 @@ it('should sort known name, then name, then address in ascending order when miss
         ->assertSet('sortDirection', SortDirection::ASC)
         ->assertSeeInOrder([
             // Desktop
-            'vote-item*'.$voteTransaction2->id,
-            $voteTransaction2->id,
+            'vote-item*'.$voteTransaction2->hash,
+            $voteTransaction2->hash,
             'Vote',
             $validator2->address(),
-            'vote-item*'.$voteTransaction3->id,
-            $voteTransaction3->id,
+            'vote-item*'.$voteTransaction3->hash,
+            $voteTransaction3->hash,
             'Vote',
             'ACF Hot Wallet',
-            'vote-item*'.$voteTransaction1->id,
-            $voteTransaction1->id,
+            'vote-item*'.$voteTransaction1->hash,
+            $voteTransaction1->hash,
             'Vote',
             $validator1->username(),
-            'vote-item*'.$unvoteTransaction->id,
+            'vote-item*'.$unvoteTransaction->hash,
             'Unvote',
-            'vote-item*'.$unvoteTransaction2->id,
+            'vote-item*'.$unvoteTransaction2->hash,
             'Unvote',
 
             // Mobile
-            'vote-mobile*'.$voteTransaction2->id,
-            $voteTransaction2->id,
+            'vote-mobile*'.$voteTransaction2->hash,
+            $voteTransaction2->hash,
             'Vote',
             $validator2->address(),
-            'vote-mobile*'.$voteTransaction3->id,
-            $voteTransaction3->id,
+            'vote-mobile*'.$voteTransaction3->hash,
+            $voteTransaction3->hash,
             'Vote',
             'ACF Hot Wallet',
-            'vote-mobile*'.$voteTransaction1->id,
-            $voteTransaction1->id,
+            'vote-mobile*'.$voteTransaction1->hash,
+            $voteTransaction1->hash,
             'Vote',
             $validator1->username(),
-            'vote-mobile*'.$unvoteTransaction->id,
+            'vote-mobile*'.$unvoteTransaction->hash,
             'Unvote',
-            'vote-mobile*'.$unvoteTransaction2->id,
+            'vote-mobile*'.$unvoteTransaction2->hash,
             'Unvote',
         ]);
 });
@@ -782,39 +782,39 @@ it('should sort known name, then name, then address in descending order when mis
         ->assertSet('sortDirection', SortDirection::DESC)
         ->assertSeeInOrder([
             // Desktop
-            'vote-item*'.$voteTransaction1->id,
-            $voteTransaction1->id,
+            'vote-item*'.$voteTransaction1->hash,
+            $voteTransaction1->hash,
             'Vote',
             $validator1->username(),
-            'vote-item*'.$voteTransaction3->id,
-            $voteTransaction3->id,
+            'vote-item*'.$voteTransaction3->hash,
+            $voteTransaction3->hash,
             'Vote',
             'ACF Hot Wallet',
-            'vote-item*'.$voteTransaction2->id,
-            $voteTransaction2->id,
+            'vote-item*'.$voteTransaction2->hash,
+            $voteTransaction2->hash,
             'Vote',
             $validator2->address(),
-            'vote-item*'.$unvoteTransaction->id,
+            'vote-item*'.$unvoteTransaction->hash,
             'Unvote',
-            'vote-item*'.$unvoteTransaction2->id,
+            'vote-item*'.$unvoteTransaction2->hash,
             'Unvote',
 
             // Mobile
-            'vote-mobile*'.$voteTransaction1->id,
-            $voteTransaction1->id,
+            'vote-mobile*'.$voteTransaction1->hash,
+            $voteTransaction1->hash,
             'Vote',
             $validator1->username(),
-            'vote-mobile*'.$voteTransaction3->id,
-            $voteTransaction3->id,
+            'vote-mobile*'.$voteTransaction3->hash,
+            $voteTransaction3->hash,
             'Vote',
             'ACF Hot Wallet',
-            'vote-mobile*'.$voteTransaction2->id,
-            $voteTransaction2->id,
+            'vote-mobile*'.$voteTransaction2->hash,
+            $voteTransaction2->hash,
             'Vote',
             $validator2->address(),
-            'vote-mobile*'.$unvoteTransaction->id,
+            'vote-mobile*'.$unvoteTransaction->hash,
             'Unvote',
-            'vote-mobile*'.$unvoteTransaction2->id,
+            'vote-mobile*'.$unvoteTransaction2->hash,
             'Unvote',
         ]);
 });

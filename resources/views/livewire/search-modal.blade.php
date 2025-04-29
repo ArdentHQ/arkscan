@@ -36,7 +36,7 @@
                 <div x-ref="searchResults" class="flex flex-col space-y-1 text-sm font-semibold whitespace-nowrap divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
                     @if ($hasResults && $results !== null)
                         @foreach ($results as $result)
-                            <div wire:key="{{ $result->id() }}" class="pt-1">
+                            <div wire:key="{{ is_a($result->model(), \App\Models\Wallet::class) ? $result->id() : $result->hash() }}" class="pt-1">
                                 @if (is_a($result->model(), \App\Models\Wallet::class))
                                     <x-search.results.wallet :wallet="$result" truncate :truncate-length="14" />
                                 @elseif (is_a($result->model(), \App\Models\Block::class))

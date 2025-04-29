@@ -161,7 +161,7 @@ final class WalletTransactionTable extends TabbedTableComponent
             ->withTypeFilter($this->filter)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_address', $this->address)))
+                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('to', $this->address)))
                     ->orWhere(function ($query) {
                         $query->withScope(MultiPaymentScope::class)
                             // data for multipayment contains the address

@@ -52,13 +52,13 @@ final class BlockTable extends Component
         /** @var Block $lastBlock */
         $lastBlock = Block::withScope(OrderByTimestampScope::class)->first();
 
-        $lastBlockHeight = $lastBlock->height->toNumber();
+        $lastBlockHeight = $lastBlock->number->toNumber();
         $heightTo        = $lastBlockHeight - ($this->perPage * ($this->getPage() - 1));
         $heightFrom      = $heightTo - $this->perPage;
 
         $blocks = Block::withScope(OrderByTimestampScope::class)
-            ->where('height', '<=', $heightTo)
-            ->where('height', '>', $heightFrom)
+            ->where('number', '<=', $heightTo)
+            ->where('number', '>', $heightFrom)
             ->get();
 
         return new LengthAwarePaginator($blocks, $lastBlockHeight, $this->perPage, $this->getPage(), [

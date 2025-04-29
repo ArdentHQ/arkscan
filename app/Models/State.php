@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property BigNumber $height
+ * @property BigNumber $block_number
  * @property BigNumber $supply
  */
 final class State extends Model
@@ -37,8 +37,8 @@ final class State extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'supply'    => BigInteger::class,
-        'height'    => BigInteger::class,
+        'supply'          => BigInteger::class,
+        'block_number'    => BigInteger::class,
     ];
 
     /**

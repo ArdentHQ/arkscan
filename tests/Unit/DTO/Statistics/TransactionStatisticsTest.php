@@ -50,10 +50,10 @@ it('should convert to and from wireable array', function () {
         ],
 
         'records' => [
-            'largest_transaction'        => $transaction->id,
-            'largest_block'              => $largestBlock->id,
-            'highest_fee'                => $highestFeeBlock->id,
-            'most_transactions_in_block' => $mostTransactionsBlock->id,
+            'largest_transaction'        => $transaction->hash,
+            'largest_block'              => $largestBlock->hash,
+            'highest_fee'                => $highestFeeBlock->hash,
+            'most_transactions_in_block' => $mostTransactionsBlock->hash,
         ],
     ]);
 
@@ -63,8 +63,8 @@ it('should convert to and from wireable array', function () {
     expect($subject->averages->count)->toEqual(1);
     expect($subject->averages->volume)->toEqual('100.42134589 DARK');
     expect($subject->averages->fees)->toEqual('1.42134589 DARK');
-    expect($subject->records->largestTransaction->id())->toEqual($transaction->id);
-    expect($subject->records->largestBlock->id())->toEqual($largestBlock->id);
-    expect($subject->records->blockWithHighestFees->id())->toEqual($highestFeeBlock->id);
-    expect($subject->records->blockWithMostTransactions->id())->toEqual($mostTransactionsBlock->id);
+    expect($subject->records->largestTransaction->hash())->toEqual($transaction->hash);
+    expect($subject->records->largestBlock->hash())->toEqual($largestBlock->hash);
+    expect($subject->records->blockWithHighestFees->hash())->toEqual($highestFeeBlock->hash);
+    expect($subject->records->blockWithMostTransactions->hash())->toEqual($mostTransactionsBlock->hash);
 });

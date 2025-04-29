@@ -1,5 +1,5 @@
 @component('layouts.app')
-    <x-metadata page="transaction" :detail="['txid' => $transaction->id()]" />
+    <x-metadata page="transaction" :detail="['txid' => $transaction->hash()]" />
 
     @section('content')
         <x-page-headers.transaction :transaction="$transaction" />

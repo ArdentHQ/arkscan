@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 final class Block extends Base
 {
-    public function blockId(): string
+    public function blockHash(): string
     {
         return hash('sha256', Str::random(8));
     }

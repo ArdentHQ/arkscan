@@ -18,9 +18,9 @@ final class BlockRepositoryWithCache implements BlockRepository
     {
     }
 
-    public function findById($id): Block
+    public function findByHash($hash): Block
     {
-        return $this->remember(fn () => $this->blocks->findById($id));
+        return $this->remember(fn () => $this->blocks->findByHash($hash));
     }
 
     public function findByHeight($height): Block

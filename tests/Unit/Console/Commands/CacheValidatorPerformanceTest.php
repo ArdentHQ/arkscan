@@ -24,12 +24,12 @@ it('should cache the past performance for an address', function () {
         createRoundEntry($round, $round * Network::validatorCount(), $wallets);
 
         Block::factory()->create([
-            'generator_address'    => $address,
-            'height'               => $round * Network::validatorCount(),
+            'proposer'             => $address,
+            'number'               => $round * Network::validatorCount(),
         ]);
     }
 
-    expect(Block::whereGeneratorAddress($address)->count())->toBe(5);
+    expect(Block::where('proposer', $address)->count())->toBe(5);
     expect($cache->getCache()->has(md5('performance/'.$address)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();
@@ -62,7 +62,7 @@ it('should cache end of a round missed blocks for an address', function () {
 
     $cache = new WalletCache();
 
-    expect(Block::whereGeneratorAddress($address)->count())->toBe(2);
+    expect(Block::where('proposer', $address)->count())->toBe(2);
     expect($cache->getCache()->has(md5('performance/'.$address)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();
@@ -96,7 +96,7 @@ it('should cache concurrent failures', function () {
 
     $cache = new WalletCache();
 
-    expect(Block::whereGeneratorAddress($address)->count())->toBe(1);
+    expect(Block::where('proposer', $address)->count())->toBe(1);
     expect($cache->getCache()->has(md5('performance/'.$address)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();

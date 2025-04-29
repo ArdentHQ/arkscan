@@ -19,7 +19,7 @@ trait CanBeSorted
 
     public function scopeSortByAddress(mixed $query, SortDirection $sortDirection): Builder
     {
-        return $query->join('wallets', 'wallets.address', '=', 'transactions.sender_address')
+        return $query->join('wallets', 'wallets.address', '=', 'transactions.from')
             ->orderBy('wallets.address', $sortDirection->value);
     }
 
@@ -32,8 +32,8 @@ trait CanBeSorted
                     $query
                         ->selectRaw('case when (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) then 1 end as unvote', [ContractMethod::unvote()])
                         ->selectRaw('case when (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) then 0 end as vote', [ContractMethod::vote()])
-                        ->where('recipient_address', Network::knownContract('consensus'))
-                        ->whereColumn('transactions.id', 'validator_transaction.id')
+                        ->where('to', Network::knownContract('consensus'))
+                        ->whereColumn('transactions.hash', 'validator_transaction.hash')
                         ->from('transactions', 'validator_transaction');
                 }, 'validator_vote'),
         ])
@@ -51,36 +51,52 @@ trait CanBeSorted
                 'validator_name' => fn ($query) => $query
                     ->from(function ($query) {
                         $query
-                            ->selectRaw('CONCAT(\'0x\', RIGHT(SUBSTRING(encode(data, \'hex\'), 9), 40)) as vote')
-                            ->where('recipient_address', Network::knownContract('consensus'))
-                            ->whereRaw('SUBSTRING(encode(data, \'hex\'), 1, 8) = ?', [ContractMethod::vote()])
-                            ->whereColumn('transactions.id', 'validator_transaction.id')
+                            ->selectRaw("CONCAT('0x', RIGHT(SUBSTRING(encode(data, 'hex'), 9), 40)) as vote")
+                            ->where('to', Network::knownContract('consensus'))
+                            ->whereRaw("SUBSTRING(encode(data, 'hex'), 1, 8) = ?", [ContractMethod::vote()])
+                            ->whereColumn('transactions.hash', 'validator_transaction.hash')
                             ->from('transactions', 'validator_transaction');
                     }, 'validator_vote')
                     ->join('wallets', DB::raw('LOWER(wallets.address)'), '=', DB::raw('LOWER(validator_vote.vote)'))
-                    ->when($knownWallets->isEmpty(), fn ($query) => $query
-                        ->selectRaw('coalesce((wallets.attributes->\'username\')::text, wallets.address)'))
-                    ->when($knownWallets->isNotEmpty(), fn ($query) => $query
-                        ->selectRaw('coalesce(known_wallets.name, (wallets.attributes->\'username\')::text, wallets.address)')
+                    ->when(
+                        $knownWallets->isEmpty(),
+                        fn ($query) => $query
+                        ->selectRaw("
+                            COALESCE(
+                                NULLIF(TRIM(BOTH '\"' FROM wallets.attributes->>'username'), ''),
+                                wallets.address
+                            )
+                        ")
+                    )
+                    ->when(
+                        $knownWallets->isNotEmpty(),
+                        fn ($query) => $query
+                        ->selectRaw("
+                            COALESCE(
+                                known_wallets.name,
+                                NULLIF(TRIM(BOTH '\"' FROM wallets.attributes->>'username'), ''),
+                                wallets.address
+                            )
+                        ")
                         ->join(DB::raw(sprintf(
-                            '(values %s) as known_wallets (address, name)',
-                            $knownWallets->map(fn ($address, $name) => sprintf('(\'%s\',\'%s\')', $address, $name))
-                                ->join(','),
-                        )), DB::raw('LOWER(known_wallets.address)'), '=', DB::raw('LOWER(CONCAT(\'0x\', RIGHT(SUBSTRING(encode(data, \'hex\'), 9), 40)))'), 'left outer')),
+                            '(VALUES %s) as known_wallets (address, name)',
+                            $knownWallets->map(fn ($address, $name) => sprintf("('%s','%s')", $address, $name))->join(',')
+                        )), DB::raw('LOWER(known_wallets.address)'), '=', DB::raw("LOWER(CONCAT('0x', RIGHT(SUBSTRING(encode(data, 'hex'), 9), 40)))"), 'left outer')
+                    ),
 
                 'transaction_type' => fn ($query) => $query
-                    ->selectRaw('coalesce(validator_vote.vote, validator_vote.unvote)')
+                    ->selectRaw('COALESCE(validator_vote.vote, validator_vote.unvote)')
                     ->from(function ($query) {
                         $query
-                            ->selectRaw('case when (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) then 1 end as unvote', [ContractMethod::unvote()])
-                            ->selectRaw('case when (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) then 0 end as vote', [ContractMethod::vote()])
-                            ->where('recipient_address', Network::knownContract('consensus'))
-                            ->whereColumn('transactions.id', 'validator_transaction.id')
+                            ->selectRaw('CASE WHEN (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) THEN 1 END as unvote', [ContractMethod::unvote()])
+                            ->selectRaw('CASE WHEN (SUBSTRING(encode(data, \'hex\'), 1, 8) = ?) THEN 0 END as vote', [ContractMethod::vote()])
+                            ->where('to', Network::knownContract('consensus'))
+                            ->whereColumn('transactions.hash', 'validator_transaction.hash')
                             ->from('transactions', 'validator_transaction');
                     }, 'validator_vote'),
             ])
-        ->selectRaw('transactions.*')
-        ->orderBy('transaction_type', 'asc')
-        ->orderBy('validator_name', $sortDirection->value);
+            ->selectRaw('transactions.*')
+            ->orderBy('transaction_type', 'asc')
+            ->orderBy('validator_name', $sortDirection->value);
     }
 }

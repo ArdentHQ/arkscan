@@ -9,7 +9,7 @@
 >
     @foreach ($votes as $vote)
         <x-tables.rows.mobile
-            wire:key="{{ Helpers::generateId('vote-mobile', $vote->id()) }}"
+            wire:key="{{ Helpers::generateId('vote-mobile', $vote->hash()) }}"
             expandable
         >
             <x-slot name="header">

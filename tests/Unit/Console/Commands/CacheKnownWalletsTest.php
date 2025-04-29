@@ -87,7 +87,7 @@ it('should forget wallets with resigned usernames', function () {
     expect($cache->getWalletNameByAddress($wallet->address))->toBe('joeblogs');
 
     Transaction::factory()->usernameResignation()->create([
-        'sender_address' => $wallet->address,
+        'from' => $wallet->address,
     ]);
 
     Artisan::call('explorer:cache-known-wallets');

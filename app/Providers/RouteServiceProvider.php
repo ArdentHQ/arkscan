@@ -62,21 +62,21 @@ final class RouteServiceProvider extends ServiceProvider
             }
         });
 
-        Route::bind('transaction', function (string $transactionID): Transaction {
-            $transaction = Transaction::find($transactionID);
+        Route::bind('transaction', function (string $transactionHash): Transaction {
+            $transaction = Transaction::where('hash', $transactionHash)->first();
 
             if ($transaction === null) {
-                throw (new TransactionNotFoundException())->setModel(Transaction::class, [$transactionID]);
+                throw (new TransactionNotFoundException())->setModel(Transaction::class, [$transactionHash]);
             }
 
             return $transaction;
         });
 
-        Route::bind('block', function (string $blockID): Block {
-            $block = Block::find($blockID);
+        Route::bind('block', function (string $hash): Block {
+            $block = Block::where('hash', $hash)->first();
 
             if ($block === null) {
-                throw (new BlockNotFoundException())->setModel(Block::class, [$blockID]);
+                throw (new BlockNotFoundException())->setModel(Block::class, [$hash]);
             }
 
             return $block;

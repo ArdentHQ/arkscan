@@ -20,74 +20,74 @@ beforeEach(function () {
 
 it('should aggregate the total amount forged', function () {
     Block::factory(10)->create([
-        'generator_address'    => 'generator',
-        'total_amount'         => 1 * 1e18,
-    ])->pluck('generator_address')->toArray();
+        'proposer'       => 'generator',
+        'amount'         => 1 * 1e18,
+    ])->pluck('proposer')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_address'])->toBe('generator');
-    expect($result->toArray()[0]['total_amount'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['proposer'])->toBe('generator');
+    expect($result->toArray()[0]['amount'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
 });
 
 it('should aggregate the total fee forged', function () {
     Block::factory(10)->create([
-        'generator_address'    => 'generator',
-        'total_fee'            => 1 * 1e18,
-    ])->pluck('generator_address')->toArray();
+        'proposer'       => 'generator',
+        'fee'            => 1 * 1e18,
+    ])->pluck('proposer')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_address'])->toBe('generator');
-    expect($result->toArray()[0]['total_fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['proposer'])->toBe('generator');
+    expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
 });
 
 it('should aggregate the total count forged', function () {
     Block::factory(10)->create([
-        'generator_address' => 'generator',
-    ])->pluck('generator_address')->toArray();
+        'proposer' => 'generator',
+    ])->pluck('proposer')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_address'])->toBe('generator');
+    expect($result->toArray()[0]['proposer'])->toBe('generator');
     expect($result->toArray()[0]['count'])->toBe(10);
 });
 
 it('should aggregate the total rewards forged', function () {
     Block::factory(10)->create([
-        'generator_address'    => 'generator',
+        'proposer'             => 'generator',
         'reward'               => 1 * 1e18,
-    ])->pluck('generator_address')->toArray();
+    ])->pluck('proposer')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_address'])->toBe('generator');
+    expect($result->toArray()[0]['proposer'])->toBe('generator');
     expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
 });
 
 it('should aggregate all the forged data', function () {
     Block::factory(10)->create([
-        'generator_address'    => 'generator',
-        'total_fee'            => 1 * 1e18,
-        'total_amount'         => 2 * 1e18,
+        'proposer'             => 'generator',
+        'fee'                  => 1 * 1e18,
+        'amount'               => 2 * 1e18,
         'reward'               => 3 * 1e18,
-    ])->pluck('generator_address')->toArray();
+    ])->pluck('proposer')->toArray();
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['generator_address'])->toBe('generator');
+    expect($result->toArray()[0]['proposer'])->toBe('generator');
     expect($result->toArray()[0]['count'])->toBe(10);
-    expect($result->toArray()[0]['total_fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
-    expect($result->toArray()[0]['total_amount'])->toBe(BigNumber::new(20)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['amount'])->toBe(BigNumber::new(20)->valueOf()->multipliedBy(1e18)->__toString());
     expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(30)->valueOf()->multipliedBy(1e18)->__toString());
 });

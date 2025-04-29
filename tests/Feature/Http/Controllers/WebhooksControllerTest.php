@@ -137,13 +137,13 @@ describe('block', function () {
         });
 
         $block = Block::factory()->create([
-            'total_amount' => 123 * 1e8,
+            'amount' => 123 * 1e8,
         ]);
 
         Transaction::factory()->create([
-            'block_id'       => $block->id,
-            'amount'         => 123 * 1e8,
-            'gas_price'      => 5,
+            'block_hash'       => $block->hash,
+            'value'            => 123 * 1e8,
+            'gas_price'        => 5,
         ]);
 
         $secureUrl = URL::signedRoute('webhooks');
@@ -296,16 +296,16 @@ describe('transaction', function () {
         $this->travelTo('2024-04-19 00:15:44');
 
         $transaction = Transaction::factory()->transfer()->create([
-            'amount'          => 1 * 1e8,
+            'value'           => 1 * 1e8,
             'gas_price'       => 5,
             'timestamp'       => Carbon::parse('2024-04-19 00:15:44')->getTimestampMs(),
         ]);
 
-        $cache->setLargestIdByAmount($transaction->id);
+        $cache->setLargestIdByAmount($transaction->hash);
 
         $secureUrl = URL::signedRoute('webhooks');
 
-        expect($cache->getLargestIdByAmount())->toEqual($transaction->id);
+        expect($cache->getLargestIdByAmount())->toEqual($transaction->hash);
 
         $this
             ->post($secureUrl, $this->transaction)
@@ -327,7 +327,7 @@ describe('transaction', function () {
         });
 
         $transaction = Transaction::factory()->transfer()->create([
-            'amount'    => 20 * 1e8,
+            'value'     => 20 * 1e8,
             'gas_price' => 6,
             'timestamp' => Carbon::parse('2024-04-20 00:15:44')->getTimestampMs(),
         ]);

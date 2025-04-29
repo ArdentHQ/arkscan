@@ -48,9 +48,9 @@ it('should update cache on each run', function () {
         ]);
 
     Block::factory()->create([
-        'generator_address' => $wallet->address,
-        'total_amount'      => 123 * 1e18,
-        'total_fee'         => 3 * 1e18,
+        'proposer'          => $wallet->address,
+        'amount'            => 123 * 1e18,
+        'fee'               => 3 * 1e18,
         'reward'            => 8 * 1e18,
     ]);
 

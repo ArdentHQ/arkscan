@@ -27,7 +27,7 @@ it('should list all transactions', function () {
     ])->fresh();
 
     $received = Transaction::factory()->transfer()->create([
-        'recipient_address' => $this->subject->address,
+        'to' => $this->subject->address,
     ])->fresh();
 
     $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -35,7 +35,7 @@ it('should list all transactions', function () {
 
     $sentTransaction = new TransactionViewModel($sent);
 
-    $component->assertSee($sentTransaction->id());
+    $component->assertSee($sentTransaction->hash());
     $component->assertSee($sentTransaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -55,7 +55,7 @@ it('should list all transactions', function () {
 
     $receivedTransaction = new TransactionViewModel($received);
 
-    $component->assertSee($receivedTransaction->id());
+    $component->assertSee($receivedTransaction->hash());
     $component->assertSee($receivedTransaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -76,7 +76,7 @@ it('should list all transactions', function () {
 
 it('should list all transactions for cold wallet', function () {
     $received = Transaction::factory()->transfer()->create([
-        'recipient_address' => $this->subject->address,
+        'to' => $this->subject->address,
     ])->fresh();
 
     $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -84,7 +84,7 @@ it('should list all transactions for cold wallet', function () {
 
     $transaction = new TransactionViewModel($received);
 
-    $component->assertSee($transaction->id());
+    $component->assertSee($transaction->hash());
     $component->assertSee($transaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -106,7 +106,7 @@ it('should list all transactions for cold wallet', function () {
 it('should show transfer without amount sent to self', function () {
     $sent = Transaction::factory()->transfer()->create([
         'sender_public_key'      => $this->subject->public_key,
-        'recipient_address'      => $this->subject->address,
+        'to'                     => $this->subject->address,
     ])->fresh();
 
     $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -114,7 +114,7 @@ it('should show transfer without amount sent to self', function () {
 
     $transaction = new TransactionViewModel($sent);
 
-    $component->assertSee($transaction->id());
+    $component->assertSee($transaction->hash());
     $component->assertSee($transaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -198,7 +198,7 @@ it('should filter by outgoing transactions', function () {
     ]);
 
     $received = Transaction::factory()->transfer()->create([
-        'recipient_address' => $this->subject->address,
+        'to' => $this->subject->address,
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -224,7 +224,7 @@ it('should filter by incoming transactions', function () {
     ]);
 
     $received = Transaction::factory()->transfer()->create([
-        'recipient_address' => $this->subject->address,
+        'to' => $this->subject->address,
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -247,11 +247,11 @@ it('should filter by incoming transactions', function () {
 it('should filter by incoming and outgoing transactions', function () {
     $sent = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
-        'recipient_address' => $this->subject->address,
+        'to'                => $this->subject->address,
     ]);
 
     $received = Transaction::factory()->transfer()->create([
-        'recipient_address' => $this->subject->address,
+        'to' => $this->subject->address,
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -470,7 +470,7 @@ it('should filter by other transactions to consensus address', function () {
 
     $other = Transaction::factory()->withPayload('12345678')->create([
         'sender_public_key' => $this->subject->public_key,
-        'recipient_address' => Network::knownContract('consensus'),
+        'to'                => Network::knownContract('consensus'),
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -497,7 +497,7 @@ it('should filter by other transactions to non-consensus address', function () {
 
     $other = Transaction::factory()->withPayload('12345678')->create([
         'sender_public_key' => $this->subject->public_key,
-        'recipient_address' => 'not consensus address',
+        'to'                => 'not consensus address',
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -524,7 +524,7 @@ it('should not filter transfers to consensus as "other"', function () {
 
     $other = Transaction::factory()->create([
         'sender_public_key' => $this->subject->public_key,
-        'recipient_address' => Network::knownContract('consensus'),
+        'to'                => Network::knownContract('consensus'),
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -673,7 +673,32 @@ it('should show no data if not ready', function () {
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
-        ->assertDontSee($transaction->id)
+        ->assertDontSee($transaction->hash)
         ->call('setIsReady')
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 });
+
+it('should determine if has transaction type filters', function (string $filter) {
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'            => false,
+            'incoming'            => false,
+            'transfers'           => $filter === 'transfers',
+            'multipayments'       => $filter === 'multipayments',
+            'votes'               => $filter === 'votes',
+            'validator'           => $filter === 'validator',
+            'username'            => $filter === 'username',
+            'contract_deployment' => $filter === 'contract_deployment',
+            'others'              => $filter === 'others',
+        ])
+        ->assertDontSee(trans('tables.transactions.no_results.no_filters'));
+})->with([
+    'transfers',
+    'multipayments',
+    'votes',
+    'validator',
+    'username',
+    'contract_deployment',
+    'others',
+]);

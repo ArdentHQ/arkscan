@@ -59,7 +59,7 @@ final class CacheTransactions extends Command
 
         $largestTransaction = (new LargestTransactionAggregate())->aggregate();
         if ($largestTransaction !== null) {
-            $cache->setLargestIdByAmount($largestTransaction->id);
+            $cache->setLargestIdByAmount($largestTransaction->hash);
         }
 
         $averagesValue = HistoricalAggregateFactory::averages()->aggregate();

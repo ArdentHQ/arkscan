@@ -36,10 +36,10 @@ beforeEach(function () {
     $this->subject = new WalletViewModel($this->wallet);
 
     Block::factory()->create([
-        'total_amount'         => 10 * 1e18,
-        'total_fee'            => 8 * 1e18,
+        'amount'               => 10 * 1e18,
+        'fee'                  => 8 * 1e18,
         'reward'               => 2 * 1e18,
-        'generator_address'    => $this->wallet->address,
+        'proposer'             => $this->wallet->address,
     ]);
 });
 
@@ -303,7 +303,7 @@ it('should fail to get the performance if the wallet is not a validator', functi
 
 it('should determine if a new validator has forged', function () {
     $block = Block::factory()->create([
-        'generator_address' => $this->wallet->address,
+        'proposer' => $this->wallet->address,
     ]);
 
     Rounds::swap(new RoundsMock());
@@ -331,7 +331,7 @@ it('should determine if a new validator has forged', function () {
 
 it('should determine if the validator just missed a block', function () {
     $block = Block::factory()->create([
-        'generator_address' => $this->wallet->address,
+        'proposer' => $this->wallet->address,
     ]);
 
     Rounds::swap(new RoundsMock($block));
@@ -386,7 +386,7 @@ it('should get the resignation id', function () {
         'sender_public_key' => $this->subject->publicKey(),
     ]);
 
-    (new WalletCache())->setResignationId($this->subject->address(), $transaction->id);
+    (new WalletCache())->setResignationId($this->subject->address(), $transaction->hash);
 
     expect($this->subject->resignationId())->toBeString();
 });
@@ -790,13 +790,13 @@ it('should return count for blocks since last forged', function () {
     ]));
 
     $block = Block::factory()->create([
-        'generator_address'    => $wallet->address(),
-        'height'               => 10,
+        'proposer'             => $wallet->address(),
+        'number'               => 10,
     ]);
 
     (new WalletCache())->setLastBlock($wallet->address(), [
-        'id'     => $block->id,
-        'height' => $block->height->toNumber(),
+        'id'     => $block->hash,
+        'number' => $block->number->toNumber(),
     ]);
 
     (new NetworkCache())->setHeight(fn (): int => 100);
@@ -834,13 +834,13 @@ it('should return count for time since last forged', function () {
 
     $block = Block::factory()->create([
         'timestamp'            => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'generator_address'    => $wallet->address(),
-        'height'               => 10,
+        'proposer'             => $wallet->address(),
+        'number'               => 10,
     ]);
 
     (new WalletCache())->setLastBlock($wallet->address(), [
-        'id'        => $block->id,
-        'height'    => $block->height->toNumber(),
+        'id'        => $block->hash,
+        'number'    => $block->number->toNumber(),
         'timestamp' => $block->timestamp,
     ]);
 

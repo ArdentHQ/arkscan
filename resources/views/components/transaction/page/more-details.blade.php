@@ -30,7 +30,7 @@
             </x-slot>
 
             <x-tables.rows.mobile.encapsulated.cell :label="trans('pages.transaction.header.position_in_block')">
-                {{ $transaction->sequence() }}
+                {{ $transaction->transactionIndex() }}
             </x-tables.rows.mobile.encapsulated.cell>
         </x-tables.rows.mobile>
 
@@ -115,7 +115,7 @@
 
                 <x-transaction.page.section-detail.row
                     :title="trans('pages.transaction.header.position_in_block')"
-                    :value="$transaction->sequence()"
+                    :value="$transaction->transactionIndex()"
                     :transaction="$transaction"
                     allow-empty
                 />

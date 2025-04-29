@@ -18,7 +18,7 @@ it('should render with a height, volume, supply and not available market cap', f
     Config::set('arkscan.network', 'development');
     Config::set('arkscan.networks.development.canBeExchanged', false);
 
-    Block::factory()->create(['height' => 5651290]);
+    Block::factory()->create(['number' => 5651290]);
     State::factory()->create(['supply' => 136280982 * 1e18]);
 
     Livewire::test(Statistics::class)
@@ -33,18 +33,18 @@ it('should render with a height, volume, supply and not available market cap', f
 it('should render with a height, volume, supply and market cap', function () {
     Config::set('arkscan.network', 'production');
 
-    Block::factory()->create(['height' => 5651290]);
+    Block::factory()->create(['number' => 5651290]);
     State::factory()->create(['supply' => 136280982 * 1e18]);
 
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
-        'amount'    => 18204 * 1e18,
+        'value'     => 18204 * 1e18,
         'gas_price' => 0.99,
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
-        'gas_used' => 1e9,
+        'transaction_hash'       => $transaction->hash,
+        'gas_used'               => 1e9,
     ]);
 
     $transaction->sender->balance           = 0;
@@ -72,18 +72,18 @@ it('should render with a height, volume, supply and market cap for BTC', functio
     Settings::shouldReceive('currency')->andReturn('BTC');
     Settings::shouldReceive('usesDarkTheme')->andReturn(false);
 
-    Block::factory()->create(['height' => 5651290]);
+    Block::factory()->create(['number' => 5651290]);
     State::factory()->create(['supply' => 136280982 * 1e18]);
 
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
-        'amount'    => 18204 * 1e18,
+        'value'     => 18204 * 1e18,
         'gas_price' => 0.99,
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
-        'gas_used' => 1e9,
+        'transaction_hash'       => $transaction->hash,
+        'gas_used'               => 1e9,
     ]);
 
     $transaction->sender->balance           = 0;

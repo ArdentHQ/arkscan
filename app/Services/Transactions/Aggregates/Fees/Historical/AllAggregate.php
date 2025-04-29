@@ -26,7 +26,7 @@ final class AllAggregate
 
         return Transaction::query()
             ->select(DB::raw(implode(', ', $select)))
-            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->orderBy('formatted_date')
             ->groupBy('formatted_date')
             ->pluck('fee', 'formatted_date')

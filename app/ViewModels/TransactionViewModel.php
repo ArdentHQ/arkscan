@@ -50,7 +50,7 @@ final class TransactionViewModel implements ViewModel
 
     public function url(): string
     {
-        return route('transaction', $this->transaction);
+        return route('transaction', $this->transaction->hash);
     }
 
     public function model(): Transaction
@@ -58,19 +58,19 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction;
     }
 
-    public function id(): string
+    public function hash(): string
     {
-        return $this->transaction->id;
+        return $this->transaction->hash;
     }
 
-    public function blockId(): string
+    public function blockHash(): string
     {
-        return $this->transaction->block_id;
+        return $this->transaction->block_hash;
     }
 
     public function blockHeight(): int
     {
-        return $this->transaction->block_height;
+        return $this->transaction->block_number;
     }
 
     public function timestamp(): string
@@ -104,9 +104,9 @@ final class TransactionViewModel implements ViewModel
         return UnitConverter::formatUnits((string) $receipt->gas_used, 'wei');
     }
 
-    public function sequence(): int
+    public function transactionIndex(): int
     {
-        return $this->transaction->sequence;
+        return $this->transaction->transaction_index;
     }
 
     public function fee(): float
@@ -163,12 +163,12 @@ final class TransactionViewModel implements ViewModel
             }
         }
 
-        return UnitConverter::formatUnits((string) $this->transaction->amount, 'ark');
+        return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
     }
 
     public function amountWithFee(): float
     {
-        return $this->transaction->amount->toFloat() + $this->fee();
+        return $this->transaction->value->toFloat() + $this->fee();
     }
 
     public function amountReceived(?string $walletAddress = null): float
@@ -201,6 +201,6 @@ final class TransactionViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        return abs(CacheNetworkHeight::execute() - $this->transaction->block_height);
+        return abs(CacheNetworkHeight::execute() - $this->transaction->block_number);
     }
 }

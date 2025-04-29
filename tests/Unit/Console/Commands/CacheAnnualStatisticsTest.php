@@ -27,7 +27,7 @@ it('should cache annual data for current year', function () {
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -85,7 +85,7 @@ it('should cache annual data for all time', function () {
         ->withReceipt()
         ->create([
             'timestamp' => $initialDate->getTimestampMs(),
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -107,7 +107,7 @@ it('should cache annual data for all time', function () {
             // @TODO: Amount is the sum of all the individual payments but may not
             // represent a real world scenario and should not be considered accurate
             // @see https://app.clickup.com/t/86dvf5xcm
-            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
+            'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     // Current year
@@ -116,7 +116,7 @@ it('should cache annual data for all time', function () {
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -127,7 +127,7 @@ it('should cache annual data for all time', function () {
         )
         ->withReceipt()
         ->create([
-            'amount'    => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
+            'value'     => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
             'timestamp' => $timestamp,
             'gas_price' => 100000000,
         ]);
@@ -194,7 +194,7 @@ it('should not dispatch event if nothing changes', function () {
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -233,7 +233,7 @@ it('should dispatch event for all data when the transaction count changes', func
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -260,10 +260,10 @@ it('should dispatch event for all data when the transaction count changes', func
     Transaction::factory()
         ->withReceipt()
         ->create([
-            'block_id'  => Block::first()->id,
-            'timestamp' => Carbon::parse('2020-03-03 01:01:01')->getTimestampMs(),
-            'amount'    => 10 * 1e18,
-            'gas_price' => 100000000,
+            'block_hash'  => Block::first()->hash,
+            'timestamp'   => Carbon::parse('2020-03-03 01:01:01')->getTimestampMs(),
+            'value'       => 10 * 1e18,
+            'gas_price'   => 100000000,
         ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');
@@ -319,7 +319,7 @@ it('should dispatch event for specific year when the transaction count changes',
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -347,10 +347,10 @@ it('should dispatch event for all data when the block count changes', function (
     Transaction::factory(5)
         ->withReceipt()
         ->create([
-            'timestamp' => $timestamp,
-            'amount'    => 10 * 1e18,
-            'gas_price' => 100000000,
-            'block_id'  => $blocks->first()->id,
+            'timestamp'   => $timestamp,
+            'value'       => 10 * 1e18,
+            'gas_price'   => 100000000,
+            'block_hash'  => $blocks->first()->hash,
         ]);
 
     $block = Block::factory()->create([
@@ -360,10 +360,10 @@ it('should dispatch event for all data when the block count changes', function (
     Transaction::factory(2)
         ->withReceipt()
         ->create([
-            'timestamp' => Carbon::parse('2023-03-03 00:00:00')->getTimestampMs(),
-            'amount'    => 10 * 1e18,
-            'gas_price' => 100000000,
-            'block_id'  => $block->id,
+            'timestamp'   => Carbon::parse('2023-03-03 00:00:00')->getTimestampMs(),
+            'value'       => 10 * 1e18,
+            'gas_price'   => 100000000,
+            'block_hash'  => $block->hash,
         ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');
@@ -425,7 +425,7 @@ it('should dispatch event for current year when the transaction count changes', 
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -450,10 +450,10 @@ it('should dispatch event for current year when the transaction count changes', 
     Transaction::factory()
         ->withReceipt()
         ->create([
-            'block_id'  => Block::first()->id,
-            'timestamp' => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
-            'amount'    => 10 * 1e18,
-            'gas_price' => 100000000,
+            'block_hash'  => Block::first()->hash,
+            'timestamp'   => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
+            'value'       => 10 * 1e18,
+            'gas_price'   => 100000000,
         ]);
 
     $cache->setAnnualData(2017, 0, '0', '0', 0);
@@ -483,7 +483,7 @@ it('should dispatch event for current year when the block count changes', functi
         ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -535,7 +535,7 @@ it('should get all annual data if not already set', function () {
         ->withReceipt()
         ->create([
             'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
-            'amount'    => 10 * 1e18,
+            'value'     => 10 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -596,7 +596,7 @@ it('should not cache all annual data if already set', function () {
             // @TODO: Amount is the sum of all the individual payments but may not
             // represent a real world scenario and should not be considered accurate
             //  @see https://app.clickup.com/t/86dvf5xcm
-            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
+            'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     $this->artisan('explorer:cache-annual-statistics');
@@ -659,7 +659,7 @@ it('should cache all annual data with flag even if not already set', function ()
             // @TODO: Amount is the sum of all the individual payments but may not
             // represent a real world scenario and should not be considered accurate
             // @see https://app.clickup.com/t/86dvf5xcm
-            'amount' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
+            'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
     $this->artisan('explorer:cache-annual-statistics --all');

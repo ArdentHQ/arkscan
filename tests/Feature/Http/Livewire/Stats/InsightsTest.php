@@ -36,7 +36,7 @@ it('should render transaction details', function (): void {
 
     Transaction::factory(12)->validatorRegistration()->create();
     Transaction::factory(13)->validatorResignation()->create();
-    Transaction::factory(14)->transfer()->create(['amount' => 1 * 1e18]);
+    Transaction::factory(14)->transfer()->create(['value' => 1 * 1e18]);
     Transaction::factory(15)->vote($wallet['address'])->create();
     Transaction::factory(16)->unvote()->create();
     Transaction::factory(19)->usernameRegistration('test')->create();
@@ -45,21 +45,21 @@ it('should render transaction details', function (): void {
     $largest = Transaction::factory()
         ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
         ->create([
-            'amount'    => 9999 * 1e18,
+            'value'     => 9999 * 1e18,
             'gas_price' => 11 * 1e18,
         ]);
 
     Transaction::factory(17)
         ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
         ->create([
-            'amount'    => 2 * 1e18,
+            'value'     => 2 * 1e18,
             'gas_price' => 11 * 1e18,
         ]);
 
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
-            'id'       => $transaction->id,
-            'gas_used' => 1e9,
+            'transaction_hash'       => $transaction->hash,
+            'gas_used'               => 1e9,
         ]);
     }
 
@@ -109,7 +109,7 @@ it('should render transaction details', function (): void {
 
     expect($actualTransactionDetails->details)->toEqual($transactionDetails->details);
     expect($actualTransactionDetails->averages)->toEqual($transactionDetails->averages);
-    expect($actualTransactionDetails->records->largestTransaction->id())->toEqual($transactionDetails->records->largestTransaction->id());
+    expect($actualTransactionDetails->records->largestTransaction->hash())->toEqual($transactionDetails->records->largestTransaction->hash());
 });
 
 it('should render transaction daily average', function (): void {
@@ -119,12 +119,12 @@ it('should render transaction daily average', function (): void {
     $transactionCache = new TransactionCache();
 
     Transaction::factory(2)->validatorRegistration()->create([
-        'amount'    => 0,
+        'value'     => 0,
         'gas_price' => 9 * 1e18,
     ]);
 
     Transaction::factory(3)->transfer()->create([
-        'amount'    => 2000 * 1e18,
+        'value'     => 2000 * 1e18,
         'gas_price' => 10 * 1e18,
     ]);
 
@@ -136,8 +136,8 @@ it('should render transaction daily average', function (): void {
 
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
-            'id'       => $transaction->id,
-            'gas_used' => 1e9,
+            'transaction_hash'       => $transaction->hash,
+            'gas_used'               => 1e9,
         ]);
     }
 
@@ -154,7 +154,7 @@ it('should render transaction daily average', function (): void {
             ->mapWithKeys(fn ($type) => [$type => $transactionCache->getHistoricalByType($type)])
             ->toArray(),
         TransactionAveragesStatistics::make($transactionCache->getHistoricalAverages()),
-        TransactionRecordsStatistics::make(Transaction::find($transactionCache->getLargestIdByAmount())),
+        TransactionRecordsStatistics::make(Transaction::where('hash', $transactionCache->getLargestIdByAmount())->first()),
     );
 
     $component = Livewire::test(Insights::class)
@@ -179,7 +179,7 @@ it('should render transaction daily average', function (): void {
 
     expect($actualTransactionDetails->details)->toEqual($transactionDetails->details);
     expect($actualTransactionDetails->averages)->toEqual($transactionDetails->averages);
-    expect($actualTransactionDetails->records->largestTransaction->id())->toEqual($transactionDetails->records->largestTransaction->id());
+    expect($actualTransactionDetails->records->largestTransaction->hash())->toEqual($transactionDetails->records->largestTransaction->hash());
 });
 
 it('should render transaction records', function (): void {
@@ -190,24 +190,24 @@ it('should render transaction records', function (): void {
     $blockWithMostTransactions = Block::factory()->create();
     $otherBlock                = Block::factory()->create();
 
-    (new TransactionCache())->setLargestIdByAmount($largestTransaction->id);
-    (new BlockCache())->setLargestIdByAmount($largestBlock->id);
-    (new BlockCache())->setLargestIdByFees($largestBlockFee->id);
-    (new BlockCache())->setLargestIdByTransactionCount($blockWithMostTransactions->id);
+    (new TransactionCache())->setLargestIdByAmount($largestTransaction->hash);
+    (new BlockCache())->setLargestIdByAmount($largestBlock->hash);
+    (new BlockCache())->setLargestIdByFees($largestBlockFee->hash);
+    (new BlockCache())->setLargestIdByTransactionCount($blockWithMostTransactions->hash);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.largest_transaction'),
-            $largestTransaction->id,
+            $largestTransaction->hash,
             trans('pages.statistics.insights.transactions.header.largest_block'),
-            $largestBlock->id,
+            $largestBlock->hash,
             trans('pages.statistics.insights.transactions.header.highest_fee'),
-            $largestBlockFee->id,
+            $largestBlockFee->hash,
             trans('pages.statistics.insights.transactions.header.most_transactions_in_block'),
-            $blockWithMostTransactions->id,
+            $blockWithMostTransactions->hash,
         ])
-        ->assertDontSee($otherTransaction->id)
-        ->assertDontSee($otherBlock->id);
+        ->assertDontSee($otherTransaction->hash)
+        ->assertDontSee($otherBlock->hash);
 });
 
 it('should render address holdings', function (): void {

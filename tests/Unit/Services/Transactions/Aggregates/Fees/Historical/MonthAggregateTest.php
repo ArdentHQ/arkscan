@@ -24,8 +24,8 @@ it('should aggregate the fees for 30 days', function () {
 
     foreach (Transaction::all() as $transaction) {
         Receipt::factory()->create([
-            'id'       => $transaction->id,
-            'gas_used' => 1e9,
+            'transaction_hash' => $transaction->hash,
+            'gas_used'         => 1e9,
         ]);
     }
 

@@ -17,25 +17,25 @@ use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
-    $this->block = Block::factory()->create(['height' => 1]);
-    Block::factory()->create(['height' => 5000000]);
+    $this->block = Block::factory()->create(['number' => 1]);
+    Block::factory()->create(['number' => 5000000]);
 
     (new NetworkCache())->setHeight(fn () => 5000000);
 
     $this->sender  = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'block_id'               => $this->block->id,
-        'block_height'           => 1,
-        'gas_price'              => 1,
-        'amount'                 => 2 * 1e18,
-        'sender_public_key'      => $this->sender->public_key,
-        'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
+        'block_hash'               => $this->block->hash,
+        'block_number'             => 1,
+        'gas_price'                => 1,
+        'value'                    => 2 * 1e18,
+        'sender_public_key'        => $this->sender->public_key,
+        'to'                       => Wallet::factory()->create(['address' => 'recipient'])->address,
     ]));
 });
 
 it('should get the url', function () {
     expect($this->subject->url())->toBeString();
-    expect($this->subject->url())->toBe(route('transaction', $this->subject->id()));
+    expect($this->subject->url())->toBe(route('transaction', $this->subject->hash()));
 });
 
 it('should determine if the transaction is incoming', function () {
@@ -52,7 +52,7 @@ it('should determine if transfer transaction is sent to self', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'recipient_address' => $this->sender->address,
+            'to'                => $this->sender->address,
         ]));
 
     expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
@@ -70,13 +70,13 @@ it('should get the dateTime', function () {
 });
 
 it('should get the block ID', function () {
-    expect($this->subject->blockId())->toBeString();
-    expect($this->subject->blockId())->toBe($this->block->id);
+    expect($this->subject->blockHash())->toBeString();
+    expect($this->subject->blockHash())->toBe($this->block->hash);
 });
 
 it('should get the block height', function () {
     expect($this->subject->blockHeight())->toBeInt();
-    expect($this->subject->blockHeight())->toBe($this->block->height->toNumber());
+    expect($this->subject->blockHeight())->toBe($this->block->number->toNumber());
 });
 
 it('should get the fee', function () {
@@ -179,9 +179,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
     $subject = new TransactionViewModel(Transaction::factory()
 
-    ->create([
-        'asset'      => $transaction->asset,
-    ]));
+    ->create());
 
     expect($subject->isSelfReceiving())->toBeFalse();
 })->with([
@@ -193,7 +191,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
 it('should fallback to the sender if no recipient address exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'recipient_address' => null,
+        'to' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
@@ -203,10 +201,10 @@ it('should fallback to receipt deployed contract address if set', function () {
     $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
 
     $receipt = Receipt::factory()
-        ->state(['deployed_contract_address' => $wallet->address]);
+        ->state(['contract_address' => $wallet->address]);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->has($receipt)->create([
-        'recipient_address' => null,
+        'to' => null,
     ]));
 
     expect($this->subject->recipient()->address())->toBe('deployedContractAddress');
@@ -359,8 +357,8 @@ it('should calculate fee with receipt', function () {
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
-        'gas_used' => 21000,
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => 21000,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -382,8 +380,8 @@ it('should should determine if transaction failed', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'      => $transaction->id,
-        'success' => false,
+        'transaction_hash' => $transaction->hash,
+        'status'           => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -403,8 +401,8 @@ it('should should determine transaction has not failed', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'      => $transaction->id,
-        'success' => true,
+        'transaction_hash' => $transaction->hash,
+        'status'           => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -416,8 +414,8 @@ it('should get the gas used', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
-        'gas_used' => 8,
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => 8,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());

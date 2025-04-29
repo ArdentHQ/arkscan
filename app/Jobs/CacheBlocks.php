@@ -30,27 +30,27 @@ final class CacheBlocks implements ShouldQueue
 
         $hasChanges = false;
         if ($largestBlockByAmount !== null) {
-            if ($cache->getLargestIdByAmount() !== $largestBlockByAmount->id) {
+            if ($cache->getLargestIdByAmount() !== $largestBlockByAmount->hash) {
                 $hasChanges = true;
             }
 
-            $cache->setLargestIdByAmount($largestBlockByAmount->id);
+            $cache->setLargestIdByAmount($largestBlockByAmount->hash);
         }
 
         if ($largestBlockByFees !== null) {
-            if (! $hasChanges && $cache->getLargestIdByFees() !== $largestBlockByFees->id) {
+            if (! $hasChanges && $cache->getLargestIdByFees() !== $largestBlockByFees->hash) {
                 $hasChanges = true;
             }
 
-            $cache->setLargestIdByFees($largestBlockByFees->id);
+            $cache->setLargestIdByFees($largestBlockByFees->hash);
         }
 
         if ($largestBlockByTransactionCount !== null) {
-            if (! $hasChanges && $cache->getLargestIdByTransactionCount() !== $largestBlockByTransactionCount->id) {
+            if (! $hasChanges && $cache->getLargestIdByTransactionCount() !== $largestBlockByTransactionCount->hash) {
                 $hasChanges = true;
             }
 
-            $cache->setLargestIdByTransactionCount($largestBlockByTransactionCount->id);
+            $cache->setLargestIdByTransactionCount($largestBlockByTransactionCount->hash);
         }
 
         if ($hasChanges) {

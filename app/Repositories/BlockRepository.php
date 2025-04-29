@@ -9,21 +9,21 @@ use App\Models\Block;
 
 final class BlockRepository implements Contract
 {
-    public function findById($id): Block
+    public function findByHash($hash): Block
     {
-        return Block::findOrFail($id);
+        return Block::where('hash', $hash)->firstOrFail();
     }
 
     public function findByHeight($height): Block
     {
-        return Block::where('height', $height)->firstOrFail();
+        return Block::where('number', $height)->firstOrFail();
     }
 
     public function findByIdentifier($identifier): Block
     {
         return Block::query()
-            ->where('id', $identifier)
-            ->orWhere('height', (int) $identifier)
+            ->where('hash', $identifier)
+            ->orWhere('number', (int) $identifier)
             ->firstOrFail();
     }
 }

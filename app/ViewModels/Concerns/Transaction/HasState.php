@@ -17,6 +17,6 @@ trait HasState
             return true;
         }
 
-        return $this->transaction->receipt->success === false;
+        return $this->transaction->receipt->status === false;
     }
 }

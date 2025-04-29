@@ -17,6 +17,7 @@ final class RoundFactory extends Factory
             'validators'   => $this->faker->validators,
             'round'        => $this->faker->numberBetween(1, 10000),
             'round_height' => $this->faker->numberBetween(1, 10000),
+            'votes'        => collect(),
         ];
     }
 }

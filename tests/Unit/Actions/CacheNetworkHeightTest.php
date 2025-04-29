@@ -7,7 +7,7 @@ use App\Models\Block;
 use App\Services\Cache\NetworkCache;
 
 it('should execute the command', function () {
-    Block::factory()->create(['height' => 1000]);
+    Block::factory()->create(['number' => 1000]);
 
     CacheNetworkHeight::execute();
 

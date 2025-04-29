@@ -15,5 +15,5 @@ interface TransactionRepository
 
     public function allByRecipient(string $address): Collection;
 
-    public function findById(string $id): Transaction;
+    public function findByHash(string $hash): Transaction;
 }

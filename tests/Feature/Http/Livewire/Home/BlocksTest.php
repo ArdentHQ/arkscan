@@ -21,14 +21,14 @@ it('should list the first page of blocks', function () {
 
         $block = Block::factory()->create();
 
-        $cache->setWalletNameByAddress($block->generator_address, 'test-username-'.($index + 1));
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
     }
 
     $component = Livewire::test(Blocks::class)
         ->call('setIsReady');
 
     foreach (ViewModelFactory::collection(Block::withScope(OrderByHeightScope::class)->take(15)->get()) as $block) {
-        $component->assertSee($block->id());
+        $component->assertSee($block->hash());
         $component->assertSee($block->timestamp());
         $component->assertSee($block->username());
         $component->assertSee(NumberFormatter::number($block->height()));

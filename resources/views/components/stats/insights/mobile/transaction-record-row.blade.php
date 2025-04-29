@@ -24,14 +24,14 @@
                 </span>
                 @if ($isTransaction)
                     <a
-                        href="{{ route('transaction', $model->model()) }}"
+                        href="{{ $model->url() }}"
                         class="link"
                     >
                         {{ ExplorerNumberFormatter::currencyWithDecimals($model->amount(), Network::currency(), 0) }}
                     </a>
                 @elseif ($isBlock)
                     <a
-                        href="{{ route('block', $model->model()) }}"
+                        href="{{ $model->url() }}"
                         class="link"
                     >
                         @if ($key === 'most_transactions_in_block')

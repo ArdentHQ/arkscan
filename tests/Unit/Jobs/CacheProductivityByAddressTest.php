@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Cache;
 it('should cache the productivity for the public key', function () {
     $block = Block::factory()->create();
 
-    expect(Cache::tags('wallet')->has(md5("productivity/$block->generator_address")))->toBeFalse();
+    expect(Cache::tags('wallet')->has(md5("productivity/$block->proposer")))->toBeFalse();
 
-    (new CacheProductivityByAddress($block->generator_address))->handle();
+    (new CacheProductivityByAddress($block->proposer))->handle();
 
-    expect(Cache::tags('wallet')->has(md5("productivity/$block->generator_address")))->toBeTrue();
-    expect(Cache::tags('wallet')->get(md5("productivity/$block->generator_address")))->toBeFloat();
+    expect(Cache::tags('wallet')->has(md5("productivity/$block->proposer")))->toBeTrue();
+    expect(Cache::tags('wallet')->get(md5("productivity/$block->proposer")))->toBeFloat();
 });

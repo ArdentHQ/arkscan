@@ -18,14 +18,14 @@ use function Tests\faker;
 
 it('should list the first page of records', function () {
     Transaction::factory(30)->transfer()->create([
-        'amount' => 481 * 1e18,
+        'value' => 481 * 1e18,
     ]);
 
     $component = Livewire::test(TransactionTable::class)
         ->call('setIsReady');
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
-        $component->assertSee($transaction->id());
+        $component->assertSee($transaction->hash());
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
@@ -46,7 +46,7 @@ it('should update the records fiat tooltip when currency changed', function () {
 
     Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::parse('2020-10-19 05:54:16')->getTimestampMs(),
-        'amount'    => 499 * 1e18,
+        'value'     => 499 * 1e18,
     ]);
 
     $component = Livewire::test(TransactionTable::class)
@@ -315,6 +315,29 @@ it('should show no transactions if no type filter', function () {
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });
 
+it('should determine if has transaction type filters', function (string $filter) {
+    Livewire::test(TransactionTable::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'transfers'           => $filter === 'transfers',
+            'multipayments'       => $filter === 'multipayments',
+            'votes'               => $filter === 'votes',
+            'validator'           => $filter === 'validator',
+            'username'            => $filter === 'username',
+            'contract_deployment' => $filter === 'contract_deployment',
+            'others'              => $filter === 'others',
+        ])
+        ->assertDontSee(trans('tables.transactions.no_results.no_filters'));
+})->with([
+    'transfers',
+    'multipayments',
+    'votes',
+    'validator',
+    'username',
+    'contract_deployment',
+    'others',
+]);
+
 it('should get the filter values via a getter', function () {
     $instance = Livewire::test(TransactionTable::class)
         ->call('setIsReady')
@@ -374,11 +397,11 @@ it('should reload on new transaction event', function () {
         ->call('setIsReady');
 
     Transaction::factory(5)->transfer()->create([
-        'amount' => 481 * 1e18,
+        'value' => 481 * 1e18,
     ]);
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
-        $component->assertDontSee($transaction->id());
+        $component->assertDontSee($transaction->hash());
         $component->assertDontSee($transaction->timestamp());
         $component->assertDontSee($transaction->sender()->address());
         $component->assertDontSee('481.00');
@@ -387,7 +410,7 @@ it('should reload on new transaction event', function () {
     $component->dispatch('echo:transactions,NewTransaction');
 
     foreach (ViewModelFactory::paginate(Transaction::withScope(OrderByTimestampScope::class)->paginate())->items() as $transaction) {
-        $component->assertSee($transaction->id());
+        $component->assertSee($transaction->hash());
         $component->assertSee($transaction->timestamp());
         $component->assertSee($transaction->recipient()->address());
         $component->assertSee('481.00');

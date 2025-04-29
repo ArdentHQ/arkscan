@@ -26,17 +26,18 @@ final class TransactionFactory extends Factory
         $wallet = Wallet::factory()->create();
 
         return [
-            'id'                => $this->faker->transactionId,
-            'block_id'          => fn () => Block::factory(),
-            'block_height'      => $this->faker->numberBetween(1, 10000),
-            'sender_public_key' => fn () => $wallet->public_key,
-            'sender_address'    => fn () => $wallet->address,
-            'recipient_address' => fn () => $wallet->address,
-            'timestamp'         => 1603083256000,
-            'gas_price'         => $this->faker->numberBetween(1, 100),
-            'amount'            => $this->faker->numberBetween(1, 100) * 1e18,
-            'nonce'             => 1,
-            'data'              => function () {
+            'hash'                  => $this->faker->transactionHash,
+            'block_hash'            => fn () => Block::factory()->create()->hash,
+            'block_number'          => $this->faker->numberBetween(1, 10000),
+            'sender_public_key'     => fn () => $wallet->public_key,
+            'from'                  => fn () => $wallet->address,
+            'to'                    => fn () => $wallet->address,
+            'timestamp'             => 1603083256000,
+            'gas_price'             => $this->faker->numberBetween(1, 100),
+            'gas'                   => 0,
+            'value'                 => $this->faker->numberBetween(1, 100) * 1e18,
+            'nonce'                 => 1,
+            'data'                  => function () {
                 // In-memory stream
                 $stream = fopen('php://temp', 'r+');
                 fwrite($stream, '');
@@ -44,7 +45,7 @@ final class TransactionFactory extends Factory
 
                 return $stream;
             },
-            'sequence'          => 1,
+            'transaction_index'          => 1,
         ];
     }
 
@@ -56,7 +57,7 @@ final class TransactionFactory extends Factory
     public function transfer(): Factory
     {
         return $this->state(fn () => [
-            'recipient_address' => Network::knownContract('consensus'),
+            'to' => Network::knownContract('consensus'),
         ]);
     }
 
@@ -69,7 +70,7 @@ final class TransactionFactory extends Factory
         return $this->withPayload($payload)
             ->state(fn () => [
                 // TODO: update recipient - https://app.clickup.com/t/86dvdegme
-                'recipient_address' => Network::knownContract('consensus'),
+                'to' => Network::knownContract('consensus'),
             ]);
     }
 
@@ -94,8 +95,8 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($payload)
             ->state(fn () => [
-                'amount'            => 0,
-                'recipient_address' => Network::knownContract('multipayment'),
+                'value'            => 0,
+                'to'               => Network::knownContract('multipayment'),
             ]);
     }
 
@@ -105,7 +106,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('consensus'),
+                'to' => Network::knownContract('consensus'),
             ]);
     }
 
@@ -115,7 +116,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method)
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('consensus'),
+                'to' => Network::knownContract('consensus'),
             ]);
     }
 
@@ -129,7 +130,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('consensus'),
+                'to' => Network::knownContract('consensus'),
             ]);
     }
 
@@ -139,7 +140,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method)
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('consensus'),
+                'to' => Network::knownContract('consensus'),
             ]);
     }
 
@@ -149,7 +150,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method)
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('username'),
+                'to' => Network::knownContract('username'),
             ]);
     }
 
@@ -159,14 +160,14 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method)
             ->state(fn () => [
-                'recipient_address' => Network::knownContract('username'),
+                'to' => Network::knownContract('username'),
             ]);
     }
 
     public function contractDeployment(): Factory
     {
         return $this->state(fn () => [
-            'recipient_address' => null,
+            'to' => null,
         ]);
     }
 

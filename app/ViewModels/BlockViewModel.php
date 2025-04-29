@@ -26,7 +26,7 @@ final class BlockViewModel implements ViewModel
 
     public function url(): string
     {
-        return route('block', $this->block);
+        return route('block', $this->hash());
     }
 
     public function model(): Block
@@ -34,9 +34,9 @@ final class BlockViewModel implements ViewModel
         return $this->block;
     }
 
-    public function id(): string
+    public function hash(): string
     {
-        return $this->block->id;
+        return $this->block->hash;
     }
 
     public function timestamp(): string
@@ -51,7 +51,7 @@ final class BlockViewModel implements ViewModel
 
     public function height(): int
     {
-        return $this->block->height->toNumber();
+        return $this->block->number->toNumber();
     }
 
     public function reward(): float
@@ -66,6 +66,6 @@ final class BlockViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        return abs(CacheNetworkHeight::execute() - $this->block->height->toNumber());
+        return abs(CacheNetworkHeight::execute() - $this->block->number->toNumber());
     }
 }

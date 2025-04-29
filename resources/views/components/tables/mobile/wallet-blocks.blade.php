@@ -8,7 +8,7 @@
     :no-results-message="$noResultsMessage"
 >
     @foreach ($blocks as $block)
-        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('blocks-mobile-row', $block->id()) }}">
+        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('blocks-mobile-row', $block->hash()) }}">
             <x-slot name="header">
                 <x-tables.headers.mobile.encapsulated.block-height
                     :model="$block"

@@ -71,7 +71,7 @@ final class CacheAddressStatistics extends Command
 
     private function cacheGenesis(StatisticsCache $cache): void
     {
-        $genesis = Transaction::orderBy('block_height', 'asc')->limit(1)->first();
+        $genesis = Transaction::orderBy('block_number', 'asc')->limit(1)->first();
 
         if ($genesis !== null) {
             $cache->setGenesisAddress([
@@ -97,7 +97,7 @@ final class CacheAddressStatistics extends Command
         $mostTransactions = (array) DB::connection('explorer')
             ->query()
             ->select([
-                DB::raw('count(transactions.id) as tx_count'),
+                DB::raw('count(transactions.hash) as tx_count'),
                 DB::raw('wallets.address'),
             ])
             ->from('transactions')

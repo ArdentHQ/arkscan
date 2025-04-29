@@ -16,13 +16,13 @@ final class AveragesAggregate
 {
     public function aggregate(): array
     {
-        /** @var object{count: int, fee: int, amount: BigNumber} */
+        /** @var object{count: int, fee: string, value: BigNumber} */
         $data = Transaction::select([
                 DB::raw('COUNT(*) as count'),
-                DB::raw('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fee'),
-                DB::raw('SUM(amount) + COALESCE(SUM(recipient_amount), 0) as amount'),
+                DB::raw('SUM(transactions.gas_price * COALESCE(receipts.gas_used, 0)) as fee'),
+                DB::raw('SUM(transactions.value) + COALESCE(SUM(recipient_amount), 0) as value'),
             ])
-            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->withScope(MultiPaymentTotalAmountScope::class)
             ->first();
 
@@ -38,7 +38,7 @@ final class AveragesAggregate
 
         return [
             'count'  => (int) round($data->count / $daysSinceEpoch),
-            'amount' => (int) round(($data->amount->toFloat()) / $daysSinceEpoch),
+            'amount' => (int) round(($data->value->toFloat()) / $daysSinceEpoch),
             'fee'    => UnitConverter::formatUnits(
                 (string) BigNumber::new($data->fee)->valueOf()->dividedBy($daysSinceEpoch, null, RoundingMode::DOWN),
                 'gwei'
