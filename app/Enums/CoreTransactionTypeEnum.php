@@ -27,4 +27,6 @@ final class CoreTransactionTypeEnum
     public const TIMELOCK_CLAIM = 9;
 
     public const TIMELOCK_REFUND = 10;
+
+    public const BLS_REGISTRATION = 11;
 }

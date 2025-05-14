@@ -9,7 +9,13 @@
 
 @php
     $headerWidth = 'w-[87px]';
-    if ($transaction->isVoteCombination()) {
+    if ($transaction->isBlsRegistration()) {
+        if ($transaction->oldBlsPublicKey()) {
+            $headerWidth = 'w-[155px]';
+        } else {
+            $headerWidth = 'w-[116px]';
+        }
+    } elseif ($transaction->isVoteCombination()) {
         $headerWidth = 'w-[109px]';
     } elseif ($transaction->isLegacy()) {
         $headerWidth = 'w-[110px]';

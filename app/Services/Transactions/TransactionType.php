@@ -29,6 +29,7 @@ final class TransactionType
         'isIpfs'                          => 'ipfs',
         'isDelegateResignation'           => 'delegate-resignation',
         'isMultiPayment'                  => 'multi-payment',
+        'isBlsRegistration'               => 'bls-registration',
         'isTimelock'                      => 'timelock',
         'isTimelockClaim'                 => 'timelock-claim',
         'isTimelockRefund'                => 'timelock-refund',
@@ -120,6 +121,11 @@ final class TransactionType
     public function isMultiPayment(): bool
     {
         return $this->isCoreType(CoreTransactionTypeEnum::MULTI_PAYMENT);
+    }
+
+    public function isBlsRegistration(): bool
+    {
+        return $this->isCoreType(CoreTransactionTypeEnum::BLS_REGISTRATION);
     }
 
     public function isTimelock(): bool
