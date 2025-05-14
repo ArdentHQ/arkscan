@@ -54,6 +54,9 @@ jobs:
               with:
                   version: 10
 
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
+
             - name: Format
               run: pnpm rustywind --write resources/views
 
