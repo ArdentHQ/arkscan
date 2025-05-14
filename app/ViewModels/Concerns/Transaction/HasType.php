@@ -279,6 +279,10 @@ trait HasType
             return true;
         }
 
+        if ($this->isBlsRegistration()) {
+            return true;
+        }
+
         if ($this->isSecondSignature()) {
             return true;
         }

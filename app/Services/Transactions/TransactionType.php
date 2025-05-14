@@ -305,6 +305,10 @@ final class TransactionType
             return false;
         }
 
+        if ($this->isBlsRegistration()) {
+            return false;
+        }
+
         if ($this->isTimelock()) {
             return false;
         }
