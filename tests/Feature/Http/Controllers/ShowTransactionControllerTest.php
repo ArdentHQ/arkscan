@@ -21,6 +21,7 @@ it('should render the page without any errors', function ($type) {
     'multiSignature',
     'ipfs',
     'delegateResignation',
+    'blsRegistration',
     'timelock',
     'timelockClaim',
     'timelockRefund',

@@ -139,6 +139,33 @@ final class TransactionFactory extends Factory
         ]);
     }
 
+    public function blsRegistration(): Factory
+    {
+        return $this->state(fn () => [
+            'type'       => CoreTransactionTypeEnum::BLS_REGISTRATION,
+            'type_group' => TransactionTypeGroupEnum::CORE,
+            'asset'      => [
+                'blsPublicKey' => [
+                    'newBlsPublicKey' => $this->faker->blsPublicKey(),
+                ],
+            ],
+        ]);
+    }
+
+    public function blsRegistrationUpdate(): Factory
+    {
+        return $this->state(fn () => [
+            'type'       => CoreTransactionTypeEnum::BLS_REGISTRATION,
+            'type_group' => TransactionTypeGroupEnum::CORE,
+            'asset'      => [
+                'blsPublicKey' => [
+                    'oldBlsPublicKey' => $this->faker->blsPublicKey(),
+                    'newBlsPublicKey' => $this->faker->blsPublicKey(),
+                ],
+            ],
+        ]);
+    }
+
     public function timelock(): Factory
     {
         return $this->state(fn () => [

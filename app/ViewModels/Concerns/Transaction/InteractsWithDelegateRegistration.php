@@ -16,4 +16,22 @@ trait InteractsWithDelegateRegistration
 
         return Arr::get($this->transaction, 'asset.delegate.username');
     }
+
+    public function blsPublicKey(): ?string
+    {
+        if (! $this->isBlsRegistration()) {
+            return null;
+        }
+
+        return Arr::get($this->transaction, 'asset.blsPublicKey.newBlsPublicKey');
+    }
+
+    public function oldBlsPublicKey(): ?string
+    {
+        if (! $this->isBlsRegistration()) {
+            return null;
+        }
+
+        return Arr::get($this->transaction, 'asset.blsPublicKey.oldBlsPublicKey');
+    }
 }

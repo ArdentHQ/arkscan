@@ -62,6 +62,32 @@
             :value="$transaction->sender()->username()"
             :transaction="$transaction"
         />
+    @elseif ($transaction->isBlsRegistration())
+        @php ($oldBlsPublicKey = $transaction->oldBlsPublicKey())
+        @php ($newBlsPublicKey = $transaction->blsPublicKey())
+
+        @if ($oldBlsPublicKey)
+            <x-transaction.page.section-detail.row
+                :title="trans('pages.transaction.header.old-bls-public-key')"
+                :transaction="$transaction"
+            >
+                <x-transaction.page.section-detail.bls-public-key :public-key="$oldBlsPublicKey" />
+            </x-transaction.page.section-detail.row>
+
+            <x-transaction.page.section-detail.row
+                :title="trans('pages.transaction.header.new-bls-public-key')"
+                :transaction="$transaction"
+            >
+                <x-transaction.page.section-detail.bls-public-key :public-key="$newBlsPublicKey" />
+            </x-transaction.page.section-detail.row>
+        @else
+            <x-transaction.page.section-detail.row
+                :title="trans('pages.transaction.header.bls-public-key')"
+                :transaction="$transaction"
+            >
+                <x-transaction.page.section-detail.bls-public-key :public-key="$newBlsPublicKey" />
+            </x-transaction.page.section-detail.row>
+        @endif
     @elseif ($transaction->isLegacy())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.sub_category')"
