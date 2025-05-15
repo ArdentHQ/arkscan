@@ -63,6 +63,11 @@ trait HasType
         return $this->type->isMultiPayment();
     }
 
+    public function isBlsRegistration(): bool
+    {
+        return $this->type->isBlsRegistration();
+    }
+
     public function isTimelock(): bool
     {
         return $this->type->isTimelock();
@@ -240,6 +245,10 @@ trait HasType
             return false;
         }
 
+        if ($this->isBlsRegistration()) {
+            return false;
+        }
+
         return true;
     }
 
@@ -267,6 +276,10 @@ trait HasType
         }
 
         if ($this->isUnvote()) {
+            return true;
+        }
+
+        if ($this->isBlsRegistration()) {
             return true;
         }
 

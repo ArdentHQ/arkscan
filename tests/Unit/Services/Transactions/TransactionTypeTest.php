@@ -41,6 +41,10 @@ it('should determine the type', function (string $type, string $expected) {
         'multi-signature',
     ],
     [
+        'blsRegistration',
+        'bls-registration',
+    ],
+    [
         'ipfs',
         'ipfs',
     ],
@@ -174,6 +178,7 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['unvote'],
     ['voteCombination'],
     ['multiSignature'],
+    ['blsRegistration'],
     ['ipfs'],
     ['delegateResignation'],
     ['multiPayment'],
