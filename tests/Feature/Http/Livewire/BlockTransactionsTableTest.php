@@ -108,14 +108,14 @@ it('should also sort transactions by index in block', function () {
     $transaction1 = Transaction::factory()
         ->transfer()
         ->create([
-            'block_hash'  => $block->hash,
+            'block_hash'        => $block->hash,
             'transaction_index' => 0,
         ]);
 
     $transaction2 = Transaction::factory()
         ->transfer()
         ->create([
-            'block_hash'  => $block->hash,
+            'block_hash'        => $block->hash,
             'transaction_index' => 1,
         ]);
 
