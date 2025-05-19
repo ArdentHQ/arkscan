@@ -37,15 +37,6 @@ trait HasType
         return optional($this->findWalletByKnown())['type'] === 'exchange';
     }
 
-    public function hasSpecialType(): bool
-    {
-        if ($this->isKnown()) {
-            return true;
-        }
-
-        return $this->isOwnedByExchange();
-    }
-
     private function findWalletByKnown(): ?array
     {
         return collect(Network::knownWallets())->firstWhere('address', $this->wallet->address);
