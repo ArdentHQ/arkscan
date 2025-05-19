@@ -12,6 +12,7 @@ final class OrderByTimestampScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->orderBy('timestamp', 'desc');
+        $builder->orderBy('timestamp', 'desc')
+            ->orderBy('transaction_index', 'desc');
     }
 }
