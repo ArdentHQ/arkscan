@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Wallet;
 
 use App\Facades\Network;
+use Illuminate\Support\Arr;
 
 trait HasType
 {
+    public function hasSecondSignature(): bool
+    {
+        return Arr::has($this->wallet->attributes, 'secondPublicKey');
+    }
+
     public function isKnown(): bool
     {
         return ! is_null($this->findWalletByKnown());
