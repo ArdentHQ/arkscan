@@ -7,6 +7,7 @@ namespace App\Http\Livewire;
 use App\Http\Livewire\Concerns\HasLazyLoadingPagination;
 use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
+use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
@@ -46,6 +47,7 @@ final class BlockTransactionsTable extends Component
         return $this->getBlock()
             ->transactions()
             ->withScope(OrderByTimestampScope::class)
+            ->withScope(OrderByTransactionIndexScope::class)
             ->limit($this->perPage * $this->getPage())
             ->get();
     }

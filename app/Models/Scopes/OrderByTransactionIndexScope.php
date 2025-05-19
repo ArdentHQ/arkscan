@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-final class OrderByTimestampScope implements Scope
+final class OrderByTransactionIndexScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->orderBy('timestamp', 'desc');
+        $builder->orderBy('transaction_index', 'desc');
     }
 }
