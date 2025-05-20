@@ -44,7 +44,7 @@ final class Tabs extends Component
             $perPage = Validators::defaultPerPage();
         }
 
-        // TODO: Handle filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
+        // TODO: Handle filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
 
         return [
             'view'    => ['except' => 'validators'],
@@ -61,7 +61,7 @@ final class Tabs extends Component
                     'page'    => 1,
                     'perPage' => Validators::defaultPerPage(),
 
-                    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
+                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
 
                 'missed-blocks' => [
@@ -73,7 +73,7 @@ final class Tabs extends Component
                     'page'    => 1,
                     'perPage' => RecentVotes::defaultPerPage(),
 
-                    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
+                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
             ];
         }
