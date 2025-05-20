@@ -100,3 +100,28 @@ it('should not go past the last page', function () {
         ->assertSet('paginators.page', 2)
         ->assertCount('lazyLoadedData', 27);
 });
+
+it('should also sort transactions by index in block', function () {
+    $block = Block::factory()->create([
+        'transactions_count' => 2,
+    ]);
+    $transaction1 = Transaction::factory()
+        ->transfer()
+        ->create([
+            'block_hash'        => $block->hash,
+            'transaction_index' => 0,
+        ]);
+
+    $transaction2 = Transaction::factory()
+        ->transfer()
+        ->create([
+            'block_hash'        => $block->hash,
+            'transaction_index' => 1,
+        ]);
+
+    Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)])
+        ->assertSeeInOrder([
+            $transaction2->hash,
+            $transaction1->hash,
+        ]);
+});

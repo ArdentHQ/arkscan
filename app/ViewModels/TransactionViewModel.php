@@ -88,9 +88,9 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->nonce;
     }
 
-    public function gasLimit(): float
+    public function gas(): float
     {
-        return UnitConverter::formatUnits((string) $this->transaction->gas_limit, 'wei');
+        return UnitConverter::formatUnits((string) $this->transaction->gas, 'wei');
     }
 
     public function gasUsed(): float

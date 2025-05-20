@@ -13,7 +13,7 @@
             </x-slot>
 
             <x-tables.rows.mobile.encapsulated.cell :label="trans('pages.transaction.header.gas_limit')">
-                {{ ExplorerNumberFormatter::number($transaction->gasLimit()) }}
+                {{ ExplorerNumberFormatter::number($transaction->gas()) }}
             </x-tables.rows.mobile.encapsulated.cell>
 
             <x-tables.rows.mobile.encapsulated.cell
@@ -90,7 +90,7 @@
 
                 <x-transaction.page.section-detail.row
                     :title="trans('pages.transaction.header.gas_limit')"
-                    :value="ExplorerNumberFormatter::number($transaction->gasLimit())"
+                    :value="ExplorerNumberFormatter::number($transaction->gas())"
                     :transaction="$transaction"
                     allow-empty
                 />

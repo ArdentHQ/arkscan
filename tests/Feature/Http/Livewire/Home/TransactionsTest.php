@@ -34,3 +34,24 @@ it('should list the first page of transactions', function () {
         $component->assertSee('0.128373');
     }
 });
+
+it('should also sort transactions by index in block', function () {
+    $transaction1 = Transaction::factory()
+        ->transfer()
+        ->create([
+            'transaction_index' => 0,
+        ]);
+
+    $transaction2 = Transaction::factory()
+        ->transfer()
+        ->create([
+            'transaction_index' => 1,
+        ]);
+
+    Livewire::test(Transactions::class)
+        ->call('setIsReady')
+        ->assertSeeInOrder([
+            $transaction2->hash,
+            $transaction1->hash,
+        ]);
+});

@@ -31,4 +31,5 @@ return [
     'votes'                   => 'Votes',
     'wallet_type'             => 'Info',
     'percentage'              => 'Percentage',
+    'second_signature'        => 'Second Signature',
 ];
