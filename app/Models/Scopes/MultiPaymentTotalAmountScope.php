@@ -20,7 +20,6 @@ final class MultiPaymentTotalAmountScope implements Scope
         $builder->joinSubLateral(function ($query) {
             $query->select('recipient_amount', 'is_multipayment')
                 ->from(function ($query) {
-
                     $query->selectRaw('(\'0x\' || encode(substring(transactions.data, 69, 32), \'hex\'))::numeric::int as tx_count')
                         ->selectRaw(
                             'CASE WHEN transactions.to = ? AND encode(SUBSTRING(data FROM 1 FOR 4), \'hex\') = ? THEN
@@ -32,9 +31,7 @@ final class MultiPaymentTotalAmountScope implements Scope
                         )
                         ->from('receipts')
                         ->where('receipts.transaction_hash', '=', DB::raw('transactions.hash'))
-                        ->where('receipts.status', 1)
-                        ;
-
+                        ->where('receipts.status', 1);
                 }, 'd')
                 ->joinSubLateral(function ($query) {
                     $query->selectRaw(
@@ -56,7 +53,6 @@ final class MultiPaymentTotalAmountScope implements Scope
                             END
                         ) n'
                     ));
-
                 }, 'recipient_amounts_nested', 'is_multipayment', '=', DB::raw('true'), 'left outer');
         }, 'recipient_amounts', 'is_multipayment', '=', DB::raw('true'), 'left outer');
     }
