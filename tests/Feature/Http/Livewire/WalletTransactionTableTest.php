@@ -702,3 +702,26 @@ it('should determine if has transaction type filters', function (string $filter)
     'contract_deployment',
     'others',
 ]);
+
+it('should also sort transactions by index in block', function () {
+    $transaction1 = Transaction::factory()
+        ->transfer()
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'transaction_index' => 0,
+        ]);
+
+    $transaction2 = Transaction::factory()
+        ->transfer()
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'transaction_index' => 1,
+        ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->assertSeeInOrder([
+            $transaction2->hash,
+            $transaction1->hash,
+        ]);
+});

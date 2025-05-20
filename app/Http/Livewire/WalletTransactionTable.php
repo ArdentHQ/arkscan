@@ -9,6 +9,7 @@ use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OrderByTimestampScope;
+use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
@@ -114,6 +115,7 @@ final class WalletTransactionTable extends TabbedTableComponent
 
         return $this->getTransactionsQuery()
             ->withScope(OrderByTimestampScope::class)
+            ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage);
     }
 
