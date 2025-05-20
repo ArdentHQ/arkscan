@@ -127,6 +127,22 @@ it('should sum up the rewards forged', function () {
     assertMatchesSnapshot($this->subject->rewardsForged()->valueOf()->__toString());
 });
 
+it('should determine if the wallet has a second signature', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [
+            'secondPublicKey' => 'secondPublicKey',
+        ],
+    ]));
+
+    expect($subject->hasSecondSignature())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['attributes' => []]));
+
+    expect($subject->hasSecondSignature())->toBeFalse();
+});
+
 it('should determine if the wallet is known', function () {
     fakeKnownWallets();
 
@@ -161,40 +177,6 @@ it('should determine if the wallet is owned by an exchange', function () {
     $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'unknown']));
 
     expect($subject->isOwnedByExchange())->toBeFalse();
-});
-
-it('should determine if the wallet has a special type when known', function () {
-    fakeKnownWallets();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
-
-    expect($subject->isKnown())->toBeTrue();
-    expect($subject->isOwnedByExchange())->toBeFalse();
-    expect($subject->hasSpecialType())->toBeTrue();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => 'unknown']));
-
-    expect($subject->hasSpecialType())->toBeFalse();
-});
-
-it('should determine if the wallet has a special type if exchange', function () {
-    fakeKnownWallets();
-
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF']));
-
-    expect($subject->isKnown())->toBeTrue();
-    expect($subject->isOwnedByExchange())->toBeTrue();
-    expect($subject->hasSpecialType())->toBeTrue();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => 'unknown']));
-
-    expect($subject->hasSpecialType())->toBeFalse();
 });
 
 it('should determine if the wallet is a validator', function () {
