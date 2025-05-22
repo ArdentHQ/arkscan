@@ -23,6 +23,7 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
 use App\Services\MarketDataProviders\CoinGecko;
+use App\Services\Transactions\Aggregates\Historical\AveragesAggregate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
@@ -113,39 +114,46 @@ it('should render transaction details', function (): void {
 });
 
 it('should render transaction daily average', function (): void {
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
+    $daysSinceEpoch = 2;
+    $networkStub = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
     $transactionCache = new TransactionCache();
 
-    Transaction::factory(2)->validatorRegistration()->create([
-        'value'     => 0,
-        'gas_price' => 9 * 1e18,
-    ]);
+    Transaction::factory(2)
+        ->withReceipt(data: ['status' => true])
+        ->validatorRegistration()
+        ->create([
+            'value'     => 0,
+            'gas_price' => 9,
+        ]);
 
-    Transaction::factory(3)->transfer()->create([
-        'value'     => 2000 * 1e18,
-        'gas_price' => 10 * 1e18,
-    ]);
+    Transaction::factory(3)
+        ->withReceipt(data: ['status' => true])
+        ->transfer()
+        ->create([
+            'value'     => 2000 * 1e18,
+            'gas_price' => 10,
+        ]);
 
     Transaction::factory(4)
+        ->withReceipt(data: ['status' => true])
         ->multiPayment([faker()->wallet['address']], [BigNumber::new(1000 * 1e18)])
         ->create([
-            'gas_price' => 11 * 1e18,
+            'gas_price' => 11,
         ]);
-
-    foreach (Transaction::all() as $transaction) {
-        Receipt::factory()->create([
-            'transaction_hash'       => $transaction->hash,
-            'gas_used'               => 1e9,
-        ]);
-    }
 
     expect(Transaction::count())->toBe(9);
 
-    $transactionCount = (int) round(9 / 2);
-    $totalAmount      = (int) round(((1000 * 4) + (3 * 2000)) / 2);
-    $totalFees        = (int) round(((9 * 2) + (10 * 3) + (11 * 4)) / 2);
+    $transactionCount = (int) round(9 / $daysSinceEpoch);
+    $totalAmount      = (int) round(((1000 * 4) + (3 * 2000)) / $daysSinceEpoch);
+    $totalFees        = (float) round((((9 * 2) + (10 * 3) + (11 * 4)) * 21000) / $daysSinceEpoch);
+
+    expect((new AveragesAggregate())->aggregate())->toBe([
+        'count'  => $transactionCount,
+        'amount' => $totalAmount,
+        'fee'    => $totalFees,
+    ]);
 
     Artisan::call('explorer:cache-transactions');
 
