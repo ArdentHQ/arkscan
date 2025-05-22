@@ -28,7 +28,7 @@ final class CacheValidatorResignationIds extends Command
     {
         Transaction::query()
             ->select('sender_public_key', 'hash')
-            // TODO: re-add validator resignation scope - https://app.clickup.com/t/86duufu8e
+            // TODO: re-add validator resignation scope - https://app.clickup.com/t/86dvxzgbh
             ->cursor()
             ->each(function ($transaction) {
                 // @phpstan-ignore-next-line

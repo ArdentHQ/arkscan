@@ -27,10 +27,11 @@ beforeEach(function () {
         'block_hash'               => $this->block->hash,
         'block_number'             => 1,
         'gas_price'                => 1,
+        'gas'                      => 21000,
         'value'                    => 2 * 1e18,
         'sender_public_key'        => $this->sender->public_key,
         'to'                       => Wallet::factory()->create(['address' => 'recipient'])->address,
-    ]));
+    ])->fresh());
 });
 
 it('should get the url', function () {
@@ -240,6 +241,10 @@ it('should fail to get the voted validator if the transaction is not an unvote',
 
 it('should get the nonce', function () {
     expect($this->subject->nonce())->toBeInt();
+});
+
+it('should get the gas', function () {
+    expect($this->subject->gas())->toBeFloat();
 });
 
 describe('HasPayload trait', function () {
