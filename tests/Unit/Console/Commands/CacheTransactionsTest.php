@@ -7,7 +7,6 @@ use App\Enums\StatsPeriods;
 use App\Enums\StatsTransactionType;
 use App\Events\Statistics\TransactionDetails;
 use App\Facades\Network;
-use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\Cache\TransactionCache;

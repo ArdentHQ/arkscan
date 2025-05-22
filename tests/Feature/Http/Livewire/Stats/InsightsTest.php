@@ -115,7 +115,7 @@ it('should render transaction details', function (): void {
 
 it('should render transaction daily average', function (): void {
     $daysSinceEpoch = 2;
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
+    $networkStub    = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
     $transactionCache = new TransactionCache();
