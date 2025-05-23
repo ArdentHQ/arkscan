@@ -49,9 +49,9 @@ final class TransactionFactory extends Factory
         ];
     }
 
-    public function withReceipt(int $gasUsed = 21000): Factory
+    public function withReceipt(int $gasUsed = 21000, array $data = []): Factory
     {
-        return $this->has(Receipt::factory()->state(fn () => ['gas_used' => $gasUsed]));
+        return $this->has(Receipt::factory()->state(fn () => ['gas_used' => $gasUsed, ...$data]));
     }
 
     public function transfer(): Factory

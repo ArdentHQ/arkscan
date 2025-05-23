@@ -25,14 +25,15 @@ it('should return count for non-multipayment', function () {
     $transactionCount = 12;
 
     Transaction::factory(6)
-        ->withReceipt()
+        ->transfer()
+        ->withReceipt(data: ['status' => true])
         ->create([
             'value'     => 20 * 1e18,
             'gas_price' => 25,
         ]);
 
     Transaction::factory(6)
-        ->withReceipt()
+        ->withReceipt(data: ['status' => true])
         ->unvote()
         ->create([
             'value'     => 0 * 1e18,
@@ -44,7 +45,7 @@ it('should return count for non-multipayment', function () {
     expect((new AveragesAggregate())->aggregate())->toBe([
         'count'  => $transactionCount / $daysSinceEpoch,
         'amount' => 120 / $daysSinceEpoch,
-        'fee'    => (((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e9,
+        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch),
     ]);
 });
 
@@ -63,7 +64,7 @@ it('should return count for multipayment', function () {
     $transactionCount = 4;
 
     Transaction::factory(2)
-        ->withReceipt()
+        ->withReceipt(data: ['status' => true])
         ->create([
             'value'     => 10 * 1e18,
             'gas_price' => 25,
@@ -72,7 +73,7 @@ it('should return count for multipayment', function () {
     $recipient = Wallet::factory()->create();
 
     Transaction::factory()
-        ->withReceipt()
+        ->withReceipt(data: ['status' => true])
         ->multiPayment([$recipient->address], [BigNumber::new(14 * 1e18)])
         ->create([
             'value'     => 0,
@@ -80,7 +81,7 @@ it('should return count for multipayment', function () {
         ]);
 
     Transaction::factory()
-        ->withReceipt()
+        ->withReceipt(data: ['status' => true])
         ->multiPayment([$recipient->address, $recipient->address], [BigNumber::new(14 * 1e18), BigNumber::new(14 * 1e18)])
         ->create([
             'value'     => 0,
@@ -92,6 +93,6 @@ it('should return count for multipayment', function () {
     expect((new AveragesAggregate())->aggregate())->toBe([
         'count'  => (int) round($transactionCount / $daysSinceEpoch),
         'amount' => 62 / $daysSinceEpoch,
-        'fee'    => (((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e9,
+        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch),
     ]);
 });

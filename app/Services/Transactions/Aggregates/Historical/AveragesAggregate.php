@@ -41,7 +41,7 @@ final class AveragesAggregate
             'amount' => (int) round(($data->value->toFloat()) / $daysSinceEpoch),
             'fee'    => UnitConverter::formatUnits(
                 (string) BigNumber::new($data->fee)->valueOf()->dividedBy($daysSinceEpoch, null, RoundingMode::DOWN),
-                'gwei'
+                'wei'
             ),
         ];
     }
