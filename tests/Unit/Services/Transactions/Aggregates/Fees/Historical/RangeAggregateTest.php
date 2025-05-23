@@ -14,22 +14,21 @@ it('should aggregate the fees for the given range', function () {
     $startTime = Carbon::now();
     $endTime   = Carbon::now()->addDays(200);
 
-    $start = Transaction::factory(10)->create([
-        'gas_price' => 1,
-        'timestamp' => $startTime->getTimestampMs(),
-    ])->sortByDesc('timestamp');
+    $start = Transaction::factory(10)
+        ->withReceipt(10000)
+        ->create([
+            'gas_price' => 1,
+            'timestamp' => $startTime->getTimestampMs(),
+        ])
+        ->sortByDesc('timestamp');
 
-    $end = Transaction::factory(10)->create([
-        'gas_price' => 1,
-        'timestamp' => $endTime->getTimestampMs(),
-    ])->sortByDesc('timestamp');
-
-    foreach (Transaction::all() as $transaction) {
-        Receipt::factory()->create([
-            'transaction_hash' => $transaction->hash,
-            'gas_used'         => 1 * 1e9,
-        ]);
-    }
+    $end = Transaction::factory(10)
+        ->withReceipt(10000)
+        ->create([
+            'gas_price' => 1,
+            'timestamp' => $endTime->getTimestampMs(),
+        ])
+        ->sortByDesc('timestamp');
 
     $result = (new RangeAggregate())->aggregate(
         Carbon::createFromTimestamp($start->last()->timestamp)->startOfDay(),
@@ -39,7 +38,7 @@ it('should aggregate the fees for the given range', function () {
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result->toArray())->toEqual([
-        $startTime->format('Y-m-d') => 10,
-        $endTime->format('Y-m-d')   => 10,
+        $startTime->format('Y-m-d') => 100000,
+        $endTime->format('Y-m-d')   => 100000,
     ]);
 });
