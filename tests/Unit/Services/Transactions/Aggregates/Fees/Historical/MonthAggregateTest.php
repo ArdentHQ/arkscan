@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Services\Transactions\Aggregates\Fees\Historical\MonthAggregate;
 use Carbon\Carbon;
