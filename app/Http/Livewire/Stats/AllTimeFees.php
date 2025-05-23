@@ -16,6 +16,10 @@ use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
+/**
+ * @property int|float $periodTotal
+ * @property bool $isAboveThreshold
+ */
 final class AllTimeFees extends Component
 {
     use AvailablePeriods;
@@ -51,6 +55,18 @@ final class AllTimeFees extends Component
         ]);
     }
 
+    #[Computed()]
+    protected function periodTotal(): int | float
+    {
+        return $this->totalTransactionsPerPeriod($this->cache, $this->period);
+    }
+
+    #[Computed()]
+    protected function isAboveThreshold(): bool
+    {
+        return $this->periodTotal > 10000 * 1e18;
+    }
+
     private function tooltip(): ?string
     {
         return $this->isAboveThreshold ? $this->asMoney($this->periodTotal) : null;
@@ -70,18 +86,6 @@ final class AllTimeFees extends Component
     private function allTimeValue(): string
     {
         return $this->asMoney($this->totalTransactionsPerPeriod($this->cache, StatsPeriods::ALL));
-    }
-
-    #[Computed()]
-    private function periodTotal(): int | float
-    {
-        return $this->totalTransactionsPerPeriod($this->cache, $this->period);
-    }
-
-    #[Computed()]
-    private function isAboveThreshold(): bool
-    {
-        return $this->periodTotal > 10000 * 1e18;
     }
 
     private function asMoney(string | int | float $value): string
