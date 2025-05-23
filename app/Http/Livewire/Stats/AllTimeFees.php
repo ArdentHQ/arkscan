@@ -95,5 +95,4 @@ final class AllTimeFees extends Component
             Network::currency(),
         );
     }
-
 }
