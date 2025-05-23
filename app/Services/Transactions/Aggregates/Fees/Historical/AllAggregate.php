@@ -30,6 +30,6 @@ final class AllAggregate
             ->orderBy('formatted_date')
             ->groupBy('formatted_date')
             ->pluck('fee', 'formatted_date')
-            ->mapWithKeys(fn ($fee, $month) => [$month => UnitConverter::formatUnits($fee, 'gwei')]);
+            ->mapWithKeys(fn ($fee, $month) => [$month => UnitConverter::formatUnits($fee, 'wei')]);
     }
 }
