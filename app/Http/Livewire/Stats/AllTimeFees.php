@@ -12,6 +12,7 @@ use App\Http\Livewire\Concerns\ChartNumberFormatters;
 use App\Http\Livewire\Concerns\StatisticsChart;
 use App\Services\NumberFormatter;
 use Brick\Math\BigDecimal;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -44,11 +45,11 @@ final class AllTimeFees extends Component
     {
         return view('livewire.stats.all-time-fees', [
             'allTimeFeesCollectedTitle' => trans('pages.statistics.information-cards.all-time-fees-collected'),
-            'allTimeFeesCollectedValue' => $this->allTimeValue(),
+            'allTimeFeesCollectedValue' => $this->allTimeFees(),
             'feesTitle'                 => trans('pages.statistics.information-cards.fees'),
             'feesValue'                 => $this->truncate(),
             'feesTooltip'               => $this->tooltip(),
-            'chartValues'               => $this->chartTotalTransactionsPerPeriod($this->cache, $this->period),
+            'chartValues'               => $this->chartValues(),
             'chartTheme'                => $this->chartTheme('yellow'),
             'options'                   => $this->availablePeriods(),
             'refreshInterval'           => $this->refreshInterval,
@@ -83,9 +84,23 @@ final class AllTimeFees extends Component
         return $this->asMoney($this->periodTotal);
     }
 
-    private function allTimeValue(): string
+    private function allTimeFees(): string
     {
         return $this->asMoney($this->totalTransactionsPerPeriod($this->cache, StatsPeriods::ALL));
+    }
+
+    private function chartValues(): Collection
+    {
+        $values = $this->chartTotalTransactionsPerPeriod($this->cache, $this->period);
+
+        $datasets = (new Collection($values->get('datasets')))
+            ->map(function ($value) {
+                return BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of($value), false))->toFloat();
+            });
+
+        $values->put('datasets', $datasets);
+
+        return $values;
     }
 
     private function asMoney(string | int | float $value): string
