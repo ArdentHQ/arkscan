@@ -60,33 +60,6 @@ it('should determine if transfer transaction is sent to self', function () {
     expect($transaction->isSentToSelf('recipient'))->toBeFalse();
 });
 
-it('should determine if multipayment transaction is sent to self', function () {
-    $transaction = Transaction::factory()
-        ->multiPayment([$this->sender->address, Wallet::factory()->create()->address], [BigNumber::new(1e18), BigNumber::new(1e18)])
-        ->create([
-            'sender_public_key' => $this->sender->public_key,
-        ]);
-
-    $viewModel = new TransactionViewModel($transaction);
-
-    expect($viewModel->isSentToSelf($this->sender->address))->toBeTrue();
-    expect($viewModel->isSentToSelf('recipient'))->toBeFalse();
-});
-
-it('should determine if multipayment transaction is not sent to self', function () {
-    $address = Wallet::factory()->create()->address;
-    $transaction = Transaction::factory()
-        ->multiPayment([$address, $address], [BigNumber::new(1e18), BigNumber::new(1e18)])
-        ->create([
-            'sender_public_key' => $this->sender->public_key,
-        ]);
-
-    $viewModel = new TransactionViewModel($transaction);
-
-    expect($viewModel->isSentToSelf($this->sender->address))->toBeFalse();
-    expect($viewModel->isSentToSelf('recipient'))->toBeFalse();
-});
-
 it('should get the timestamp', function () {
     expect($this->subject->timestamp())->toBeString();
     expect($this->subject->timestamp())->toBe('19 Oct 2020 04:54:16');
