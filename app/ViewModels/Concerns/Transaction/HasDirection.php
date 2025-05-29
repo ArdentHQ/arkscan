@@ -21,7 +21,7 @@ trait HasDirection
             return false;
         }
 
-        if ($this->recipient() === null || $address !== $this->recipient()->address) {
+        if (! $this->isMultiPayment() && $address !== $this->recipient()?->address) {
             return false;
         }
 
@@ -32,6 +32,8 @@ trait HasDirection
                     return true;
                 }
             }
+
+            return false;
         }
 
         return true;
