@@ -119,48 +119,59 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->fee(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
-    // @codeCoverageIgnoreStart
-    // @TODO: adjust for evm https://app.clickup.com/t/86dvfymkn
     public function amountForItself(): float
     {
-        /** @var array<int, array<string, mixed>> */
-        $payments = Arr::get($this->transaction, 'asset.payments', []);
+        if (! $this->isMultiPayment()) {
+            return 0;
+        }
 
-        return collect($payments)
-            ->filter(function ($payment): bool {
+        $recipients = $this->multiPaymentRecipients();
+
+        $amount = collect($recipients)
+            ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender !== null && $sender->address === $payment['recipientId'];
+                return $sender !== null && $sender->address === $recipient['address'];
             })
-            ->sum('amount') / config('currencies.notation.crypto', 1e18);
+            ->sum('amount');
+
+        return $amount;
     }
 
-    // @TODO: adjust for evm https://app.clickup.com/t/86dvfymkn
     public function amountExcludingItself(): float
     {
-        /** @var array<int, array<string, mixed>> */
-        $payments = Arr::get($this->transaction, 'asset.payments', []);
+        if (! $this->isMultiPayment()) {
+            return 0;
+        }
 
-        return collect($payments)
-            ->filter(function ($payment): bool {
+        $recipients = $this->multiPaymentRecipients();
+
+        $amount = collect($recipients)
+            ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender === null || $sender->address !== $payment['recipientId'];
+                return $sender === null || $sender->address !== $recipient['address'];
             })
-            ->sum('amount') / config('currencies.notation.crypto', 1e18);
-    }
-    // @codeCoverageIgnoreEnd
+            ->sum('amount');
 
-    public function amount(?string $walletAddress = null): float
+        return $amount;
+    }
+
+    public function amount(?string $excludingWalletAddress = null): float
     {
-        if ($this->isMultiPayment() && $walletAddress !== null) {
+        if ($this->isMultiPayment() && $excludingWalletAddress !== null) {
             $recipients = $this->multiPaymentRecipients();
 
+            $amount = 0;
             foreach ($recipients as $recipient) {
-                if ($recipient['address'] === $walletAddress) {
-                    return $recipient['amount'];
+                if ($recipient['address'] === $excludingWalletAddress) {
+                    continue;
                 }
+
+                $amount += $recipient['amount'];
             }
+
+            return $amount;
         }
 
         return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
@@ -176,13 +187,10 @@ final class TransactionViewModel implements ViewModel
         return $this->amount($walletAddress);
     }
 
-    // @codeCoverageIgnoreStart
-    // @TODO: depends on https://app.clickup.com/t/86dvfymkn
     public function amountFiatExcludingItself(): string
     {
         return ExchangeRate::convert($this->amountExcludingItself(), $this->transaction->timestamp);
     }
-    // @codeCoverageIgnoreEnd
 
     public function amountFiat(bool $showSmallAmounts = false, ?string $walletAddress = null): string
     {
