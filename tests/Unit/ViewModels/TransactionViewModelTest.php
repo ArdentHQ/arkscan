@@ -104,6 +104,10 @@ it('should get the amount for itself', function () {
     expect($viewModel->amountForItself())->toBe(30.0);
 });
 
+it('should return zero for the amount for itself when not multipayment', function () {
+    expect($this->subject->amountForItself())->toBe(0.0);
+});
+
 it('should get the amount excluding itself', function () {
     $transaction = Transaction::factory()
         ->multiPayment([
@@ -125,6 +129,10 @@ it('should get the amount excluding itself', function () {
     expect($viewModel->amountExcludingItself())->toBe(30.0);
 });
 
+it('should return zero for the amount excluding itself when not multipayment', function () {
+    expect($this->subject->amountExcludingItself())->toBe(0.0);
+});
+
 it('should get the amount received for transfer transactions', function () {
     expect($this->subject->amountReceived('recipient'))->toBeFloat();
 
@@ -135,6 +143,37 @@ it('should get the amount including fee', function () {
     expect($this->subject->amountWithFee())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amountWithFee());
+});
+
+it('should get the amount as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->amountFiat())->toBe('$0.58');
+});
+
+it('should get the amount excluding self as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    $transaction = Transaction::factory()
+        ->multiPayment([
+            $this->sender->address,
+            Wallet::factory()->create()->address,
+        ], [
+            BigNumber::new(30 * 1e18),
+            BigNumber::new(30 * 1e18),
+        ])
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+            'value' => BigNumber::new(60 * 1e18),
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amountFiatExcludingItself())->toBe('$'.number_format(30 * 0.2907, 2));
 });
 
 it('should get the total as fiat', function () {
