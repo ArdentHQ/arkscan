@@ -22,7 +22,6 @@ use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 
 final class TransactionViewModel implements ViewModel
 {

@@ -119,7 +119,7 @@ it('should get the amount excluding itself', function () {
         ])
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'value' => BigNumber::new(60 * 1e18),
+            'value'             => BigNumber::new(60 * 1e18),
         ]);
 
     $viewModel = new TransactionViewModel($transaction);
@@ -168,7 +168,7 @@ it('should get the amount excluding self as fiat', function () {
         ])
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'value' => BigNumber::new(60 * 1e18),
+            'value'             => BigNumber::new(60 * 1e18),
         ]);
 
     $viewModel = new TransactionViewModel($transaction);
