@@ -8,6 +8,20 @@
         >
             <x-transaction.amount :transaction="$transaction" />
         </x-transaction.page.section-detail.row>
+    @elseif ($transaction->isValidatorRegistration() && $transaction->amount() > 0)
+        <x-transaction.page.section-detail.row
+            :title="trans('pages.transaction.header.locked_amount')"
+            :transaction="$transaction"
+        >
+            <div class="flex items-center space-x-2 justify-end sm:justify-start">
+                <x-transaction.amount :transaction="$transaction" />
+
+                <x-tables.headers.desktop.includes.tooltip
+                    :text="trans('pages.transaction.locked_amount_tooltip')"
+                    type="question"
+                />
+            </div>
+        </x-transaction.page.section-detail.row>
     @endif
 
     <x-transaction.page.section-detail.row
