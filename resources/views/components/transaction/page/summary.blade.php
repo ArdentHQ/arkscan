@@ -13,7 +13,7 @@
             :title="trans('pages.transaction.header.locked_amount')"
             :transaction="$transaction"
         >
-            <div class="flex items-center space-x-2 justify-end sm:justify-start">
+            <div class="flex justify-end items-center space-x-2 sm:justify-start">
                 <x-transaction.amount :transaction="$transaction" />
 
                 <x-tables.headers.desktop.includes.tooltip
