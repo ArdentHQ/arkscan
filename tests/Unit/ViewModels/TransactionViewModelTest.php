@@ -92,6 +92,47 @@ it('should get the amount', function () {
     assertMatchesSnapshot($this->subject->amount());
 });
 
+it('should get the amount for itself', function () {
+    $transaction = Transaction::factory()
+        ->multiPayment([$this->sender->address], [BigNumber::new(30 * 1e18)])
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amountForItself())->toBe(30.0);
+});
+
+it('should return zero for the amount for itself when not multipayment', function () {
+    expect($this->subject->amountForItself())->toBe(0.0);
+});
+
+it('should get the amount excluding itself', function () {
+    $transaction = Transaction::factory()
+        ->multiPayment([
+            $this->sender->address,
+            Wallet::factory()->create()->address,
+        ], [
+            BigNumber::new(30 * 1e18),
+            BigNumber::new(30 * 1e18),
+        ])
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+            'value'             => BigNumber::new(60 * 1e18),
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amount())->toBe(60.0);
+    expect($viewModel->amount($this->sender->address))->toBe(30.0);
+    expect($viewModel->amountExcludingItself())->toBe(30.0);
+});
+
+it('should return zero for the amount excluding itself when not multipayment', function () {
+    expect($this->subject->amountExcludingItself())->toBe(0.0);
+});
+
 it('should get the amount received for transfer transactions', function () {
     expect($this->subject->amountReceived('recipient'))->toBeFloat();
 
@@ -102,6 +143,37 @@ it('should get the amount including fee', function () {
     expect($this->subject->amountWithFee())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amountWithFee());
+});
+
+it('should get the amount as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->amountFiat())->toBe('$0.58');
+});
+
+it('should get the amount excluding self as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    $transaction = Transaction::factory()
+        ->multiPayment([
+            $this->sender->address,
+            Wallet::factory()->create()->address,
+        ], [
+            BigNumber::new(30 * 1e18),
+            BigNumber::new(30 * 1e18),
+        ])
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+            'value'             => BigNumber::new(60 * 1e18),
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amountFiatExcludingItself())->toBe('$'.number_format(30 * 0.2907, 2));
 });
 
 it('should get the total as fiat', function () {
@@ -214,7 +286,7 @@ it('should fallback to receipt deployed contract address if set', function () {
 it('should get the voted validator', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
 
-    $validator    = Wallet::factory()->activeValidator()->create();
+    $validator = Wallet::factory()->activeValidator()->create();
 
     $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());
 
@@ -496,7 +568,7 @@ it('should determine if is certain transaction type', function (string $type, ar
     ['contractDeployment'],
 ]);
 
-it('should get the correct amount for a given wallet address in multi payment', function () {
+it('should get the correct amount for a given wallet address in multipayment', function () {
     $walletAddress1 = '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A';
     $walletAddress2 = '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B';
 
@@ -507,6 +579,6 @@ it('should get the correct amount for a given wallet address in multi payment', 
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->amount($walletAddress1))->toEqual(1.0);
-    expect($viewModel->amount($walletAddress2))->toEqual(2.0);
+    expect($viewModel->amount($walletAddress1))->toEqual(2.0);
+    expect($viewModel->amount($walletAddress2))->toEqual(1.0);
 });
