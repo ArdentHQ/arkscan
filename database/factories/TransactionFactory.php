@@ -130,7 +130,8 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
             ->state(fn () => [
-                'to' => Network::knownContract('consensus'),
+                'to'    => Network::knownContract('consensus'),
+                'value' => 250 * 1e18,
             ]);
     }
 
@@ -140,7 +141,8 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($method)
             ->state(fn () => [
-                'to' => Network::knownContract('consensus'),
+                'to'    => Network::knownContract('consensus'),
+                'value' => 0,
             ]);
     }
 
