@@ -21,11 +21,11 @@ trait HasDirection
             return false;
         }
 
-        if ($this->recipient() !== null && $address === $this->recipient()->address) {
-            return true;
+        if (! $this->isMultiPayment() && $address !== $this->recipient()?->address) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public function isReceived(string $address): bool
