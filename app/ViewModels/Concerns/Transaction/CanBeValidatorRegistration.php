@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Transaction;
 
 use App\Models\Scopes\ValidatorRegistrationScope;
-use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Transaction;
 use App\ViewModels\TransactionViewModel;
 
