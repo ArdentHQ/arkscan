@@ -31,11 +31,12 @@ trait CanBeValidatorRegistration
             return null;
         }
 
+        /** @var ?Transaction $transaction */
         $transaction = Transaction::where('sender_public_key', $this->transaction->sender_public_key)
             ->withScope(ValidatorRegistrationScope::class)
             ->first();
 
-        if (! $transaction) {
+        if ($transaction === null) {
             return null;
         }
 
