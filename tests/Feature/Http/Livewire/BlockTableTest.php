@@ -59,6 +59,50 @@ it('should list the first page of records', function () {
     }
 });
 
+it('should list the last page of records', function () {
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    $cache = new WalletCache();
+
+    foreach (range(0, 40) as $index) {
+        $this->travel(8)->seconds();
+
+        $block = Block::factory()->create([
+            'timestamp' => Carbon::now()->timestamp,
+            'number'    => $index + 1,
+        ]);
+
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
+    }
+
+    $component = Livewire::test(BlockTable::class)
+        ->call('setIsReady')
+        ->call('setPage', 2);
+
+    $blocks = Block::withScope(OrderByTimestampScope::class)
+        ->paginate(25, ['*'], 'page', 2, Block::count());
+
+    foreach (ViewModelFactory::paginate($blocks)->items() as $block) {
+        $component->assertSee($block->hash());
+        $component->assertSee($block->timestamp());
+        $component->assertSee($block->username());
+        $component->assertSee(NumberFormatter::number($block->height()));
+        $component->assertSee(NumberFormatter::number($block->transactionCount()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->amount()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->totalReward()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->totalRewardFiat(),
+        ]);
+    }
+});
+
 it('should update the records fiat tooltip when currency changed', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 
@@ -174,4 +218,78 @@ it('should reload on new block event', function () {
     $component->assertDontSee($otherBlock->hash)
         ->dispatch('echo:blocks,NewBlock')
         ->assertSee($otherBlock->hash);
+});
+
+it('should handle snapshot of blocks', function () {
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    $cache = new WalletCache();
+
+    foreach (range(1001, 1511) as $index) {
+        $this->travel(8)->seconds();
+
+        $block = Block::factory()->create([
+            'timestamp' => Carbon::now()->timestamp,
+            'number'    => $index + 1,
+        ]);
+
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
+    }
+
+    $blockCount = Block::count();
+    $pageCount = ceil($blockCount / 25);
+
+    Livewire::test(BlockTable::class)
+        ->call('setIsReady')
+        ->set('perPage', 25)
+        ->assertSee('Page 1 of '.$pageCount);
+});
+
+it('should list the last page of a snapshot', function () {
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    $cache = new WalletCache();
+
+    foreach (range(1001, 1511) as $index) {
+        $this->travel(8)->seconds();
+
+        $block = Block::factory()->create([
+            'timestamp' => Carbon::now()->timestamp,
+            'number'    => $index + 1,
+        ]);
+
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
+    }
+
+    $blockCount = Block::count();
+    $pageCount = ceil($blockCount / 25);
+
+    $component = Livewire::test(BlockTable::class)
+        ->call('setIsReady')
+        ->call('setPage', $pageCount);
+
+    $blocks = Block::withScope(OrderByTimestampScope::class)
+        ->paginate(25, ['*'], 'page', $pageCount, $blockCount);
+
+    expect($blocks->items())->toHaveCount(11);
+
+    foreach (ViewModelFactory::paginate($blocks)->items() as $block) {
+        $component->assertSee($block->hash());
+        $component->assertSee($block->timestamp());
+        $component->assertSee($block->username());
+        $component->assertSee(NumberFormatter::number($block->height()));
+        $component->assertSee(NumberFormatter::number($block->transactionCount()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->amount()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->totalReward()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->totalRewardFiat(),
+        ]);
+    }
 });
