@@ -125,7 +125,7 @@ it('should get the amount excluding itself', function () {
     $viewModel = new TransactionViewModel($transaction);
 
     expect($viewModel->amount())->toBe(60.0);
-    expect($viewModel->amount($this->sender->address))->toBe(30.0);
+    expect($viewModel->amountReceived($this->sender->address))->toBe(30.0);
     expect($viewModel->amountExcludingItself())->toBe(30.0);
 });
 
@@ -574,11 +574,37 @@ it('should get the correct amount for a given wallet address in multipayment', f
 
     $transaction = Transaction::factory()->multiPayment(
         [$walletAddress1, $walletAddress2],
-        [BigNumber::new(1e18), BigNumber::new(2e18)]
+        [BigNumber::new(1 * 1e18), BigNumber::new(2 * 1e18)]
     )->create();
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->amount($walletAddress1))->toEqual(2.0);
-    expect($viewModel->amount($walletAddress2))->toEqual(1.0);
+    expect($viewModel->amount())->toEqual(3.0);
+    expect($viewModel->amountReceived($walletAddress1))->toEqual(1.0);
+    expect($viewModel->amountReceived($walletAddress2))->toEqual(2.0);
+});
+
+it('should get the correct amount for many wallet addresses in multipayment', function () {
+    $wallets = [
+        '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A' => BigNumber::new(10000 * 1e18),
+        '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B' => BigNumber::new(10000 * 1e18),
+        '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF' => BigNumber::new(10000 * 1e18),
+        '0x1234567890abcdef1234567890abcdef12345678' => BigNumber::new(10000 * 1e18),
+        '0xabcdef1234567890abcdef1234567890abcdef12' => BigNumber::new(10000 * 1e18),
+        '0x7890abcdef1234567890abcdef1234567890abcd' => BigNumber::new(10000 * 1e18),
+    ];
+
+    $transaction = Transaction::factory()->multiPayment(
+        array_keys($wallets),
+        array_values($wallets),
+    )->create([
+        'value' => BigNumber::new(60000 * 1e18),
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    foreach ($wallets as $walletAddress => $amount) {
+        expect($viewModel->amount())->toEqual(60000);
+        expect($viewModel->amountReceived($walletAddress))->toEqual($amount->toFloat());
+    }
 });
