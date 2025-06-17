@@ -582,3 +582,45 @@ it('should get the correct amount for a given wallet address in multipayment', f
     expect($viewModel->amount($walletAddress1))->toEqual(2.0);
     expect($viewModel->amount($walletAddress2))->toEqual(1.0);
 });
+
+it('should get a corresponding validator registration', function () {
+    $validatorRegistration = Transaction::factory()
+        ->validatorRegistration('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->create();
+
+    $validatorResignationViewModel = new TransactionViewModel(
+        Transaction::factory()
+            ->validatorResignation()
+            ->create([
+                'sender_public_key' => $validatorRegistration->sender_public_key,
+            ])
+    );
+
+    expect($validatorResignationViewModel->validatorRegistration()->hash())->toEqual($validatorRegistration->hash);
+});
+
+it('should return null if no corresponding validator registration', function () {
+    $validatorResignationViewModel = new TransactionViewModel(
+        Transaction::factory()
+            ->validatorResignation()
+            ->create()
+    );
+
+    expect($validatorResignationViewModel->validatorRegistration())->toBeNull();
+});
+
+it('should return null corresponding validator registration if not resignation', function () {
+    $validatorRegistration = Transaction::factory()
+        ->validatorRegistration('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->create();
+
+    $validatorResignationViewModel = new TransactionViewModel(
+        Transaction::factory()
+            ->transfer()
+            ->create([
+                'sender_public_key' => $validatorRegistration->sender_public_key,
+            ])
+    );
+
+    expect($validatorResignationViewModel->validatorRegistration())->toBeNull();
+});

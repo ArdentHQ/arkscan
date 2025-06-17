@@ -22,6 +22,22 @@
                 />
             </div>
         </x-transaction.page.section-detail.row>
+    @elseif ($transaction->isValidatorResignation())
+        <x-transaction.page.section-detail.row
+            :title="trans('pages.transaction.header.unlocked_amount')"
+            :transaction="$transaction"
+        >
+            <div class="flex justify-end items-center space-x-2 sm:justify-start">
+                @php ($registration = $transaction->validatorRegistration())
+
+                <x-transaction.amount :transaction="$registration ?? $transaction" />
+
+                <x-tables.headers.desktop.includes.tooltip
+                    :text="$registration && $registration->amount() > 0 ? trans('pages.transaction.unlocked_amount_tooltip') : trans('pages.transaction.legacy_registration_tooltip')"
+                    type="question"
+                />
+            </div>
+        </x-transaction.page.section-detail.row>
     @endif
 
     <x-transaction.page.section-detail.row
