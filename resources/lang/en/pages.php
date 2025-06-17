@@ -98,6 +98,7 @@ return [
         'other_attributes'      => 'Other Attributes',
         'input_data'            => 'Input Data',
         'tokens_transferred'    => 'Tokens Transferred',
+        'locked_amount_tooltip' => 'Locked amount while the validator remains registered.',
 
         'header' => [
             'timestamp'            => 'Timestamp',
@@ -115,6 +116,7 @@ return [
             'to'                   => 'To',
             'interacted_with'      => 'Interacted With',
             'amount'               => 'Amount',
+            'locked_amount'        => 'Locked Amount',
             'fee'                  => 'Fee',
             'value'                => 'Value',
             'gas_limit'            => 'Gas Limit',
