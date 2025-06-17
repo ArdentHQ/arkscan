@@ -193,9 +193,9 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->amountExcludingItself(), $this->transaction->timestamp);
     }
 
-    public function amountFiat(bool $showSmallAmounts = false, ?string $walletAddress = null): string
+    public function amountFiat(bool $showSmallAmounts = false): string
     {
-        return ExchangeRate::convert($this->amount($walletAddress), $this->transaction->timestamp, $showSmallAmounts);
+        return ExchangeRate::convert($this->amount(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
     public function amountReceivedFiat(?string $walletAddress = null): string
