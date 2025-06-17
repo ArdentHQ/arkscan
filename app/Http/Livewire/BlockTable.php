@@ -56,7 +56,7 @@ final class BlockTable extends Component
         $firstBlock = Block::withScope(OrderByTimestampScope::class, 'asc')->first();
 
         $lastBlockHeight = $lastBlock->number->toNumber();
-        $blockCount = $lastBlockHeight;
+        $blockCount      = $lastBlockHeight;
 
         $firstBlockHeight = $firstBlock->number->toNumber();
         if ($firstBlockHeight > 1) {

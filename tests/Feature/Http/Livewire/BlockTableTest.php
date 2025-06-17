@@ -237,7 +237,7 @@ it('should handle snapshot of blocks', function () {
     }
 
     $blockCount = Block::count();
-    $pageCount = ceil($blockCount / 25);
+    $pageCount  = ceil($blockCount / 25);
 
     Livewire::test(BlockTable::class)
         ->call('setIsReady')
@@ -262,7 +262,7 @@ it('should list the last page of a snapshot', function () {
     }
 
     $blockCount = Block::count();
-    $pageCount = ceil($blockCount / 25);
+    $pageCount  = ceil($blockCount / 25);
 
     $component = Livewire::test(BlockTable::class)
         ->call('setIsReady')
