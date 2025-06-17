@@ -73,7 +73,7 @@
         @if (is_numeric($amount))
             @if ($transaction)
                 <x-transaction.amount
-                    :transaction="$transaction"
+                    :amount="$amount"
                     :address="$wallet?->address()"
                     hide-tooltip
                 />
