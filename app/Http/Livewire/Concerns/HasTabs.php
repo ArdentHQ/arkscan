@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Concerns;
 
 use App\Livewire\SupportQueryString;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 trait HasTabs
@@ -19,6 +20,12 @@ trait HasTabs
 
     public function __get(mixed $property): mixed
     {
+        // dump($property);
+
+        Log::debug('__get', [
+            'property' => $property,
+        ]);
+
         $value = Arr::get($this->tabQueryData[$this->view], $property);
         if ($value !== null) {
             return $value;
@@ -34,6 +41,10 @@ trait HasTabs
 
     public function __set(string $property, mixed $value): void
     {
+        Log::debug('__set', [
+            'property' => $property,
+            'value'    => $value,
+        ]);
         if (Arr::has($this->tabQueryData[$this->view], $property)) {
             $this->tabQueryData[$this->view][$property] = $value;
         }
@@ -41,6 +52,11 @@ trait HasTabs
 
     public function triggerViewIsReady(?string $view = null): void
     {
+        Log::debug('triggerViewIsReady', [
+            'view' => $view,
+            'curView' => $this->view,
+        ]);
+        // dump('asd');
         if (! array_key_exists($this->view, $this->savedQueryData)) {
             $this->saveViewData();
         }
@@ -64,6 +80,10 @@ trait HasTabs
             if (! in_array($perPage, $component::perPageOptions(), true)) {
                 $this->tabQueryData[$this->view]['perPage'] = $component::defaultPerPage();
             }
+
+            Log::debug('triggerViewIsReady validate perPage', [
+                'value'    => $this->tabQueryData[$this->view]['perPage'],
+            ]);
         }
 
         $this->dispatch('set'.Str::studly($view).'Ready');
@@ -73,6 +93,11 @@ trait HasTabs
 
     public function updatingView(string $newView): void
     {
+        Log::debug('updatingView', [
+            'newView' => $newView,
+            'previousView' => $this->previousView,
+        ]);
+        // dump('addsd');
         if ($newView === $this->view) {
             return;
         }
@@ -89,6 +114,10 @@ trait HasTabs
      */
     public function updatedView(): void
     {
+        Log::debug('updatedView', [
+            'view' => $this->view,
+        ]);
+        // dump('ss');
         if (array_key_exists($this->view, $this->savedQueryData)) {
             /** @var string $key */
             foreach ($this->savedQueryData[$this->view] as $key => $value) {
@@ -105,15 +134,20 @@ trait HasTabs
 
     private function saveViewData(?string $newView = null): void
     {
+        Log::debug('saveViewData', [
+            'view' => $this->view,
+            'newView' => $newView,
+        ]);
+        // dump('xx');
         $queryStringSupport = new SupportQueryString();
         $queryStringSupport->setComponent($this);
         $queryStringSupport->mergeQueryStringWithRequest();
 
         $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
 
-        if ($newView === null) {
-            return;
-        }
+        // if ($newView === null) {
+        //     return;
+        // }
 
         // Reset the querystring data on view change to clear the URL
         $queryStringData = $queryStringSupport->getQueryString();
@@ -122,6 +156,10 @@ trait HasTabs
 
         /** @var string $key */
         foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
+            Log::debug('saveViewData loop', [
+                'key' => $key,
+            ]);
+
             $except = null;
 
             if ($key === 'paginators') {
@@ -136,6 +174,10 @@ trait HasTabs
             }
 
             if ($key === 'paginators.page') {
+                Log::debug('saveViewData setPage', [
+                    'except' => $except,
+                ]);
+
                 $this->setPage($except);
 
                 continue;
@@ -149,16 +191,28 @@ trait HasTabs
 
     private function resolveView(): string
     {
+        Log::debug('resolveView', [
+            'view' => $this->view,
+        ]);
+        // dump('yy');
         return request()->get('view', $this->view);
     }
 
     private function resolvePage(): int
     {
+        Log::debug('resolvePage', [
+            'page' => $this->getPage(),
+        ]);
+        // dump('zz');
         return (int) request()->get('page', $this->getPage());
     }
 
     private function resolvePerPage(): ?int
     {
+        Log::debug('resolvePerPage', [
+            'perPage' => $this->perPage,
+        ]);
+        // dump('asdsdsdsd');
         $value = request()->get('perPage', $this->perPage);
 
         return $value === null ? null : (int) $value;

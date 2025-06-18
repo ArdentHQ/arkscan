@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Validators;
 
 use App\Http\Livewire\Concerns\HasTabs;
-use App\Http\Livewire\Concerns\SyncsInput;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 /**
@@ -16,7 +16,8 @@ use Livewire\Component;
 final class Tabs extends Component
 {
     use HasTabs;
-    use SyncsInput;
+
+    // public int $page = 1;
 
     public string $view = 'validators';
 
@@ -28,8 +29,8 @@ final class Tabs extends Component
 
     public array $alreadyLoadedViews = [
         'validators'     => false,
-        'missed-blocks'  => false,
-        'recent-votes'   => false,
+        // 'missed-blocks'  => false,
+        // 'recent-votes'   => false,
     ];
 
     /** @var mixed */
@@ -39,48 +40,63 @@ final class Tabs extends Component
 
     public function queryString(): array
     {
+        // dump('qqq');
         $perPage = intval(config('arkscan.pagination.per_page'));
         if ($this->view === 'validators') {
             $perPage = Validators::defaultPerPage();
         }
 
+        Log::debug('Validators Tabs Query String', [
+            'view'    => $this->view,
+            'perPage' => $perPage,
+        ]);
+
         // TODO: Handle filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
 
         return [
-            'view'    => ['except' => 'validators'],
-            'page'    => ['except' => 1],
-            'perPage' => ['except' => $perPage],
+            'view'    => ['except' => 'validators', 'history' => true],
+            'paginators.page'    => ['except' => 1, 'history' => true],
+            'perPage' => ['except' => $perPage, 'history' => true],
         ];
+    }
+
+    public function boot(): void
+    {
+        // dump('bro');
     }
 
     public function mount(): void
     {
+        // dump('www');
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'validators' => [
-                    'page'    => 1,
+                    'paginators.page'    => 1,
                     'perPage' => Validators::defaultPerPage(),
 
                     // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
 
-                'missed-blocks' => [
-                    'page'    => 1,
-                    'perPage' => MissedBlocks::defaultPerPage(),
-                ],
+                // 'missed-blocks' => [
+                //     'paginators.page'    => 1,
+                //     'perPage' => MissedBlocks::defaultPerPage(),
+                // ],
 
-                'recent-votes' => [
-                    'page'    => 1,
-                    'perPage' => RecentVotes::defaultPerPage(),
+                // 'recent-votes' => [
+                //     'paginators.page'    => 1,
+                //     'perPage' => RecentVotes::defaultPerPage(),
 
-                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
-                ],
+                //     // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
+                // ],
             ];
         }
     }
 
     public function render(): View
     {
+        Log::debug('render', [
+            'perPage' => $this->perPage,
+        ]);
         return view('livewire.validators.tabs');
     }
 
@@ -91,10 +107,11 @@ final class Tabs extends Component
 
     private function tabbedComponent(): string
     {
+        // dump('ttt');
         return [
             'validators'    => Validators::class,
-            'missed-blocks' => MissedBlocks::class,
-            'recent-votes'  => RecentVotes::class,
+            // 'missed-blocks' => MissedBlocks::class,
+            // 'recent-votes'  => RecentVotes::class,
         ][$this->view];
     }
 }

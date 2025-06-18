@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Block;
@@ -16,11 +17,8 @@ use Livewire\Component;
 /**
  * @property LengthAwarePaginator $blocks
  * */
-final class BlockTable extends Component
+final class BlockTable extends TabbedTableComponent
 {
-    use DeferLoading;
-    use HasTablePagination;
-
     /** @var mixed */
     protected $listeners = [
         'currencyChanged'      => '$refresh',
