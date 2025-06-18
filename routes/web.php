@@ -3,13 +3,18 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BlocksController;
+use App\Http\Controllers\CompatibleWalletsController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\TopAccountsController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\ValidatorMonitorController;
+use App\Http\Controllers\ValidatorsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -30,8 +35,8 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/validators', 'app.validators')->name('validators');
-Route::view('/validator-monitor', 'app.validator-monitor')->name('validator-monitor');
+Route::get('/validators', ValidatorsController::class)->name('validators');
+Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
@@ -39,7 +44,7 @@ Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 Route::get('/transactions', TransactionsController::class)->name('transactions');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
-Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
+Route::get('/top-accounts', TopAccountsController::class)->name('top-accounts');
 Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
 Route::get('/addresses/{wallet}?view=voters', ShowWalletController::class)->name('wallet.voters');
 Route::get('/addresses/{wallet}?view=blocks', ShowWalletController::class)->name('wallet.blocks');
@@ -54,7 +59,7 @@ Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
     return redirect()->route('wallet.blocks', $wallet);
 });
 
-Route::view('/statistics', 'app.statistics')->name('statistics');
+Route::get('/statistics', StatisticsController::class)->name('statistics');
 
 // Keep the route name as contact for use with the foundation component
 Route::get('/support', [SupportController::class, 'index'])->name('contact');
@@ -71,7 +76,7 @@ Route::get('/block/{block}', fn (Block $block) => redirect()->route('block', ['b
 Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redirect()->route('transaction', ['transaction' => $transaction->hash]));
 Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
 
-Route::view('/compatible-wallets', 'app.compatible-wallets')->name('compatible-wallets');
+Route::get('/compatible-wallets', CompatibleWalletsController::class)->name('compatible-wallets');
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 
 Route::post('/webhooks', WebhooksController::class)
