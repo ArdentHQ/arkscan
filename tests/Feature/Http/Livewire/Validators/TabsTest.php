@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Facades\Network;
 use App\Http\Livewire\Validators\Tabs;
+use App\Livewire\SupportQueryString;
 use Livewire\Livewire;
 
 it('should render', function () {
@@ -61,4 +62,17 @@ it('should change view with event', function () {
         ->assertSet('view', 'missed-blocks')
         ->dispatch('showValidatorsView', 'validators')
         ->assertSet('view', 'validators');
+});
+
+it('should apply url values to component', function () {
+    $instance = Livewire::withUrlParams(['page' => 3])
+        ->test(Tabs::class)
+        ->instance();
+
+    // $support = new SupportQueryString();
+    // $support->setComponent($instance);
+    // $support->mergeQueryStringWithRequest();
+
+    expect($instance->getPage())->toBe(3);
+    // expect($instance->paginators['page'])->toBe(3);
 });
