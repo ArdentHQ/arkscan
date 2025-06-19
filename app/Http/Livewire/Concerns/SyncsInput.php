@@ -19,7 +19,7 @@ trait SyncsInput
 
         Log::debug('syncInput', [
             'property' => $property,
-            'value' => $value,
+            'value'    => $value,
         ]);
 
         $hook->setComponent($this);
@@ -40,7 +40,7 @@ trait SyncsInput
     {
         Log::debug('getAttribute', [
             'property' => $property,
-            'value' => $this->getAttributesByName()
+            'value'    => $this->getAttributesByName()
                 ->get($property),
         ]);
 

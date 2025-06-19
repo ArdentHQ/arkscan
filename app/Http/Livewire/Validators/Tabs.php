@@ -51,11 +51,11 @@ final class Tabs extends Component
         // TODO: Handle filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
 
         return [
-            'view'    => ['except' => 'validators'],
+            'view'               => ['except' => 'validators'],
             'paginators.page'    => ['except' => 1, 'history' => true],
-            'perPage' => ['except' => $perPage],
-            'sortKey' => ['except' => Validators::defaultSortKey()],
-            'sortDirection' => ['except' => Validators::defaultSortDirection()],
+            'perPage'            => ['except' => $perPage],
+            'sortKey'            => ['except' => Validators::defaultSortKey()],
+            'sortDirection'      => ['except' => Validators::defaultSortDirection()],
         ];
     }
 
@@ -69,9 +69,9 @@ final class Tabs extends Component
             $this->tabQueryData = [
                 'validators' => [
                     'paginators.page'    => 1,
-                    'perPage' => Validators::defaultPerPage(),
-                    'sortKey' => Validators::defaultSortKey(),
-                    'sortDirection' => Validators::defaultSortDirection(),
+                    'perPage'            => Validators::defaultPerPage(),
+                    'sortKey'            => Validators::defaultSortKey(),
+                    'sortDirection'      => Validators::defaultSortDirection(),
 
                     // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
@@ -100,6 +100,7 @@ final class Tabs extends Component
         Log::debug('render', [
             'perPage' => $this->perPage,
         ]);
+
         return view('livewire.validators.tabs');
     }
 

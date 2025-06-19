@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Http\Livewire\Concerns\HasTabs;
-use App\Http\Livewire\Concerns\IsTabbed;
 use Illuminate\Support\Facades\Log;
 use Livewire\Drawer\Utils;
 use Livewire\Exceptions\PublicPropertyNotFoundException;
 use Livewire\Mechanisms\HandleComponents\HandleComponents as Base;
-
 use function Livewire\trigger;
 
 class HandleComponents extends Base
@@ -22,19 +22,19 @@ class HandleComponents extends Base
         $finish = trigger('update', $component, $path, $value);
 
         Log::debug('HandleComponents::updateProperty', [
-            '$property' => $property,
+            '$property'  => $property,
             '$component' => $component,
             // 'path'      => $path,
             'value'     => $value,
             'context'   => $context,
         ]);
 
-        if (in_array(HasTabs::class, class_uses_recursive($component::class))) {
+        if (in_array(HasTabs::class, class_uses_recursive($component::class), true)) {
             if ($property === 'paginators') {
                 Log::debug('HandleComponents::updateProperty page', [
                     'paginators' => $component->paginators,
-                    'page' => $component->getPage(),
-                    'value' => $value,
+                    'page'       => $component->getPage(),
+                    'value'      => $value,
                 ]);
 
                 $value = $component->getPage();
@@ -43,7 +43,7 @@ class HandleComponents extends Base
             $component->syncInput($property, $value);
         } else {
             // Ensure that it's a public property, not on the base class first...
-            if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)))) {
+            if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)), true)) {
                 throw new PublicPropertyNotFoundException($property, $component->getName());
             }
 
@@ -54,7 +54,9 @@ class HandleComponents extends Base
             } else {
                 $propertyValue = $component->$property;
 
-                $this->setComponentPropertyAwareOfTypes($component, $property,
+                $this->setComponentPropertyAwareOfTypes(
+                    $component,
+                    $property,
                     $this->recursivelySetValue($property, $propertyValue, $value, $segments, 0, $context)
                 );
             }

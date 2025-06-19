@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Validators;
 use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Http\Livewire\Concerns\IsTabbed;
@@ -57,51 +56,47 @@ final class Validators extends TabbedTableComponent
     public function updating($key, $value): void
     {
         Log::debug('Validators.class updating', [
-            'page'    => $this->getPage(),
-            '$key' => $key,
-            '$value' => $value,
-            'perPage' => $this->perPage,
+            'page'       => $this->getPage(),
+            '$key'       => $key,
+            '$value'     => $value,
+            'perPage'    => $this->perPage,
             'paginators' => $this->paginators,
         ]);
-
     }
 
     public function updated(): void
     {
         Log::debug('Validators.class updated', [
-            'page'    => $this->getPage(),
-            'perPage' => $this->perPage,
+            'page'       => $this->getPage(),
+            'perPage'    => $this->perPage,
             'paginators' => $this->paginators,
         ]);
-
     }
 
     public function hydrate(): void
     {
         Log::debug('Validators.class hydrate', [
-            'page'    => $this->getPage(),
-            'perPage' => $this->perPage,
+            'page'       => $this->getPage(),
+            'perPage'    => $this->perPage,
             'paginators' => $this->paginators,
         ]);
-
     }
 
     public function boot(): void
     {
         Log::debug('Validators.class boot', [
-            'page'    => $this->getPage(),
-            'perPage' => $this->perPage,
+            'page'       => $this->getPage(),
+            'perPage'    => $this->perPage,
             'paginators' => $this->paginators,
         ]);
-
     }
 
     public function mount(bool $deferLoading = true): void
     {
         Log::debug('Validators.class mount', [
             'deferLoading'    => $deferLoading,
-            'page'    => $this->getPage(),
-            'perPage' => $this->perPage,
+            'page'            => $this->getPage(),
+            'perPage'         => $this->perPage,
         ]);
 
         if (! $deferLoading) {
@@ -112,7 +107,7 @@ final class Validators extends TabbedTableComponent
     public function render(): View
     {
         Log::debug('Validators.class render', [
-            'page'    => $this->getPage(),
+            'page'       => $this->getPage(),
             'perPage'    => $this->perPage,
             'sortKey'    => $this->sortKey,
         ]);

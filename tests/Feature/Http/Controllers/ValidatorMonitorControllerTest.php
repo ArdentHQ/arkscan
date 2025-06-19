@@ -6,7 +6,6 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-
 use function Tests\createRoundEntry;
 
 it('should render the page without any errors', function () {

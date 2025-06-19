@@ -22,7 +22,7 @@ trait HasTablePagination
             $this->perPage = $this->resolvePerPage();
         }
         Log::debug('mountHasTablePagination - '.get_class($this), [
-            'perPage' => $this->perPage,
+            'perPage'    => $this->perPage,
             'paginators' => $this->paginators,
         ]);
     }

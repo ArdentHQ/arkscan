@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
-use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
-use Livewire\Component;
 
 /**
  * @property LengthAwarePaginator $blocks

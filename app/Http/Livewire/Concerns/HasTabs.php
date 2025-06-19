@@ -20,7 +20,6 @@ trait HasTabs
 
     public function __get(mixed $property): mixed
     {
-
         Log::debug('__get', [
             'property' => $property,
         ]);
@@ -53,7 +52,7 @@ trait HasTabs
     public function triggerViewIsReady(?string $view = null): void
     {
         Log::debug('triggerViewIsReady', [
-            'view' => $view,
+            'view'    => $view,
             'curView' => $this->view,
         ]);
         if (! array_key_exists($this->view, $this->savedQueryData)) {
@@ -93,7 +92,7 @@ trait HasTabs
     public function updatingView(string $newView): void
     {
         Log::debug('updatingView', [
-            'newView' => $newView,
+            'newView'      => $newView,
             'previousView' => $this->previousView,
         ]);
         if ($newView === $this->view) {
@@ -133,7 +132,7 @@ trait HasTabs
     private function saveViewData(?string $newView = null): void
     {
         Log::debug('saveViewData', [
-            'view' => $this->view,
+            'view'    => $this->view,
             'newView' => $newView,
         ]);
         $queryStringSupport = new SupportQueryString();
@@ -146,7 +145,7 @@ trait HasTabs
     private function loadViewData(?string $newView = null): void
     {
         Log::debug('loadViewData', [
-            'view' => $this->view,
+            'view'    => $this->view,
             'newView' => $newView,
         ]);
 
@@ -174,7 +173,7 @@ trait HasTabs
             $property = $properties->get($key);
             if ($property !== null) {
                 $except = $property->except;
-            } else if (Arr::get($queryStringData, $key.'.except') !== null) {
+            } elseif (Arr::get($queryStringData, $key.'.except') !== null) {
                 $except = $queryStringData[$key]['except'];
             } else {
                 continue;
@@ -201,6 +200,7 @@ trait HasTabs
         Log::debug('resolveView', [
             'view' => $this->view,
         ]);
+
         return request()->get('view', $this->view);
     }
 
@@ -209,6 +209,7 @@ trait HasTabs
         Log::debug('resolvePage', [
             'page' => $this->getPage(),
         ]);
+
         return (int) request()->get('page', $this->getPage());
     }
 
