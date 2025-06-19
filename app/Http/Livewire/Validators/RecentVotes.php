@@ -26,7 +26,7 @@ final class RecentVotes extends TabbedTableComponent
     use HasTableFilter;
     use HasTableSorting;
 
-    public const INITIAL_SORT_KEY = 'age';
+    public const INITIAL_SORT_KEY = 'address';
 
     public const INITIAL_SORT_DIRECTION = SortDirection::DESC;
 

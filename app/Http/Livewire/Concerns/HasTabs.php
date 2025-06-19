@@ -20,7 +20,6 @@ trait HasTabs
 
     public function __get(mixed $property): mixed
     {
-        // dump($property);
 
         Log::debug('__get', [
             'property' => $property,
@@ -45,6 +44,7 @@ trait HasTabs
             'property' => $property,
             'value'    => $value,
         ]);
+
         if (Arr::has($this->tabQueryData[$this->view], $property)) {
             $this->tabQueryData[$this->view][$property] = $value;
         }
@@ -56,7 +56,6 @@ trait HasTabs
             'view' => $view,
             'curView' => $this->view,
         ]);
-        // dump('asd');
         if (! array_key_exists($this->view, $this->savedQueryData)) {
             $this->saveViewData();
         }
@@ -97,14 +96,14 @@ trait HasTabs
             'newView' => $newView,
             'previousView' => $this->previousView,
         ]);
-        // dump('addsd');
         if ($newView === $this->view) {
             return;
         }
 
         $this->previousView = $this->view;
 
-        $this->saveViewData($newView);
+        $this->saveViewData();
+        $this->loadViewData($newView);
     }
 
     /**
@@ -117,7 +116,6 @@ trait HasTabs
         Log::debug('updatedView', [
             'view' => $this->view,
         ]);
-        // dump('ss');
         if (array_key_exists($this->view, $this->savedQueryData)) {
             /** @var string $key */
             foreach ($this->savedQueryData[$this->view] as $key => $value) {
@@ -138,16 +136,23 @@ trait HasTabs
             'view' => $this->view,
             'newView' => $newView,
         ]);
-        // dump('xx');
         $queryStringSupport = new SupportQueryString();
         $queryStringSupport->setComponent($this);
         $queryStringSupport->mergeQueryStringWithRequest();
 
         $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
+    }
 
-        // if ($newView === null) {
-        //     return;
-        // }
+    private function loadViewData(?string $newView = null): void
+    {
+        Log::debug('loadViewData', [
+            'view' => $this->view,
+            'newView' => $newView,
+        ]);
+
+        $queryStringSupport = new SupportQueryString();
+        $queryStringSupport->setComponent($this);
+        $queryStringSupport->mergeQueryStringWithRequest();
 
         // Reset the querystring data on view change to clear the URL
         $queryStringData = $queryStringSupport->getQueryString();
@@ -156,7 +161,7 @@ trait HasTabs
 
         /** @var string $key */
         foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
-            Log::debug('saveViewData loop', [
+            Log::debug('loadViewData loop', [
                 'key' => $key,
             ]);
 
@@ -169,12 +174,14 @@ trait HasTabs
             $property = $properties->get($key);
             if ($property !== null) {
                 $except = $property->except;
-            } else {
+            } else if (Arr::get($queryStringData, $key.'.except') !== null) {
                 $except = $queryStringData[$key]['except'];
+            } else {
+                continue;
             }
 
             if ($key === 'paginators.page') {
-                Log::debug('saveViewData setPage', [
+                Log::debug('loadViewData setPage', [
                     'except' => $except,
                 ]);
 
@@ -194,7 +201,6 @@ trait HasTabs
         Log::debug('resolveView', [
             'view' => $this->view,
         ]);
-        // dump('yy');
         return request()->get('view', $this->view);
     }
 
@@ -203,7 +209,6 @@ trait HasTabs
         Log::debug('resolvePage', [
             'page' => $this->getPage(),
         ]);
-        // dump('zz');
         return (int) request()->get('page', $this->getPage());
     }
 
@@ -212,7 +217,6 @@ trait HasTabs
         Log::debug('resolvePerPage', [
             'perPage' => $this->perPage,
         ]);
-        // dump('asdsdsdsd');
         $value = request()->get('perPage', $this->perPage);
 
         return $value === null ? null : (int) $value;
