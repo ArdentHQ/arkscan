@@ -130,7 +130,7 @@ final class TransactionViewModel implements ViewModel
             ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender !== null && $sender->address === $recipient['address'];
+                return $sender !== null && strtolower($sender->address) === strtolower($recipient['address']);
             })
             ->sum('amount');
 
@@ -149,31 +149,21 @@ final class TransactionViewModel implements ViewModel
             ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender === null || $sender->address !== $recipient['address'];
+                return $sender === null || strtolower($sender->address) !== strtolower($recipient['address']);
             })
             ->sum('amount');
 
         return $amount;
     }
 
-    public function amount(?string $excludingWalletAddress = null): float
+    public function amount(): float
     {
-        if ($this->isMultiPayment() && $excludingWalletAddress !== null) {
-            $recipients = $this->multiPaymentRecipients();
-
-            $amount = 0;
-            foreach ($recipients as $recipient) {
-                if ($recipient['address'] === $excludingWalletAddress) {
-                    continue;
-                }
-
-                $amount += $recipient['amount'];
-            }
-
-            return $amount;
+        if (! $this->isMultiPayment()) {
+            return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
         }
 
-        return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
+        return collect($this->multiPaymentRecipients())
+            ->sum('amount');
     }
 
     public function amountWithFee(): float
@@ -183,7 +173,19 @@ final class TransactionViewModel implements ViewModel
 
     public function amountReceived(?string $walletAddress = null): float
     {
-        return $this->amount($walletAddress);
+        if ($this->isMultiPayment() && $walletAddress !== null) {
+            return collect($this->multiPaymentRecipients())
+                ->filter(function ($recipient) use ($walletAddress) {
+                    if (strtolower($recipient['address']) === strtolower($walletAddress)) {
+                        return true;
+                    }
+
+                    return false;
+                })
+                ->sum('amount');
+        }
+
+        return $this->amount();
     }
 
     public function amountFiatExcludingItself(): string
@@ -191,9 +193,9 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->amountExcludingItself(), $this->transaction->timestamp);
     }
 
-    public function amountFiat(bool $showSmallAmounts = false, ?string $walletAddress = null): string
+    public function amountFiat(bool $showSmallAmounts = false): string
     {
-        return ExchangeRate::convert($this->amount($walletAddress), $this->transaction->timestamp, $showSmallAmounts);
+        return ExchangeRate::convert($this->amount(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
     public function amountReceivedFiat(?string $walletAddress = null): string
