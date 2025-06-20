@@ -8,6 +8,8 @@ trait HasTableFilter
 {
     public bool $selectAllFilters = true;
 
+    private bool $previousSelectAllFilters = true;
+
     public function __get(mixed $property): mixed
     {
         if (array_key_exists($property, $this->filter)) {
@@ -51,10 +53,17 @@ trait HasTableFilter
         }
     }
 
+    public function updatingFilter(): void
+    {
+        $this->previousSelectAllFilters = $this->selectAllFilters;
+    }
+
     public function updatedFilter(): void
     {
         $this->selectAllFilters = $this->isAllSelected;
 
-        $this->setPage(1);
+        if ($this->selectAllFilters !== $this->previousSelectAllFilters) {
+            $this->setPage(1);
+        }
     }
 }
