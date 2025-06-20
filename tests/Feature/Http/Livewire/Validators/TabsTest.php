@@ -11,49 +11,6 @@ it('should render', function () {
         ->assertSee('Validators');
 });
 
-it('should set initial data', function () {
-    Livewire::test(Tabs::class)
-        ->assertSet('tabQueryData', [
-            'validators' => [
-                'page'    => 1,
-                'perPage' => Network::validatorCount(),
-            ],
-
-            'missed-blocks' => [
-                'page'    => 1,
-                'perPage' => 25,
-            ],
-
-            'recent-votes' => [
-                'page'    => 1,
-                'perPage' => 25,
-            ],
-        ]);
-});
-
-it('should get querystring data', function () {
-    $instance = Livewire::test(Tabs::class)
-        ->instance();
-
-    expect($instance->queryString())->toBe([
-        'view'    => ['except' => 'validators'],
-        'page'    => ['except' => 1],
-        'perPage' => ['except' => Network::validatorCount()],
-    ]);
-});
-
-it('should change querystring if different view', function () {
-    $instance = Livewire::test(Tabs::class)
-        ->set('view', 'testing')
-        ->instance();
-
-    expect($instance->queryString())->toBe([
-        'view'    => ['except' => 'validators'],
-        'page'    => ['except' => 1],
-        'perPage' => ['except' => 25],
-    ]);
-});
-
 it('should change view with event', function () {
     Livewire::test(Tabs::class)
         ->assertSet('view', 'validators')
@@ -61,4 +18,11 @@ it('should change view with event', function () {
         ->assertSet('view', 'missed-blocks')
         ->dispatch('showValidatorsView', 'validators')
         ->assertSet('view', 'validators');
+});
+
+it('should sync input for non-existent property value', function () {
+    Livewire::test(Tabs::class)
+        ->set('view', 'validators')
+        ->call('syncInput', 'testProperty', true)
+        ->assertSet('testProperty', true);
 });

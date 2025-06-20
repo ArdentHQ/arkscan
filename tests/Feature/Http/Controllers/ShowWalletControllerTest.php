@@ -126,15 +126,15 @@ it('should filter transactions in url', function () {
         ->assertSee($transaction->hash);
 
     $this
-        ->get('/test-transactions/'.$wallet->address.'?outgoing=false')
+        ->get('/test-transactions/'.$wallet->address.'?transactions-filter-outgoing=false')
         ->assertDontSee($transaction->hash);
 
     $this
-        ->get('/test-transactions/'.$wallet->address.'?outgoing=0')
+        ->get('/test-transactions/'.$wallet->address.'?transactions-filter-outgoing=0')
         ->assertDontSee($transaction->hash);
 
     $this
-        ->get('/test-transactions/'.$wallet->address.'?outgoing=1')
+        ->get('/test-transactions/'.$wallet->address.'?transactions-filter-outgoing=1')
         ->assertSee($transaction->hash);
 });
 
@@ -147,7 +147,7 @@ it('should get query data from referer', function () {
     ]);
 
     $this
-        ->withHeaders(['Referer' => 'https://explorer.url?page=5&perPage=10'])
+        ->withHeaders(['Referer' => 'https://explorer.url?transactions-page=5&transactions-per-page=10'])
         ->get(route('wallet', $wallet))
         ->assertSee($wallet->address);
 });
