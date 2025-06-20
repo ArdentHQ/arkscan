@@ -20,14 +20,23 @@ trait HasTableSorting
 
     public function queryStringHasTableSorting(): array
     {
+        return $this->getQueryStringValues();
+    }
+
+    private function getQueryStringValues(?string $prefix = null): array
+    {
+        if ($prefix !== null) {
+            $prefix = $prefix.'-';
+        }
+
         $queryString = [
-            'sortKey' => ['as' => 'sort', 'except' => static::defaultSortKey()],
+            'sortKey' => ['as' => $prefix.'sort', 'except' => static::defaultSortKey(), 'history' => true],
         ];
 
         if (request()->has('sort-direction')) {
             $sortDirection = request()->get('sort-direction');
             if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value], true)) {
-                $queryString['sortDirection'] = ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value];
+                $queryString['sortDirection'] = ['as' => $prefix.'sort-direction', 'except' => static::defaultSortDirection()->value, 'history' => true];
             }
         }
 

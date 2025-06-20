@@ -29,8 +29,23 @@ final class MissedBlocks extends TabbedTableComponent
         'setMissedBlocksReady' => 'setIsReady',
     ];
 
+    public function queryString(): array
+    {
+        return [
+            'paginators.page' => ['as' => 'missed-blocks-page', 'except' => 1, 'history' => true, 'keep' => false],
+            'perPage'         => ['as' => 'missed-blocks-per-page', 'except' => static::defaultPerPage(), 'history' => true],
+        ];
+    }
+
+    public function queryStringHasTableSorting(): array
+    {
+        return $this->getQueryStringValues('missed-blocks');
+    }
+
     public function mount(bool $deferLoading = true): void
     {
+        $this->setPage(request()->query('missed-blocks-page', '1'));
+
         if (! $deferLoading) {
             $this->setIsReady();
         }

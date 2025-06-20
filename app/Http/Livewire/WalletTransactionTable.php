@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\Enums\SortDirection;
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
@@ -51,15 +52,16 @@ final class WalletTransactionTable extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'filter.outgoing'            => ['as' => 'outgoing', 'except' => true],
-            'filter.incoming'            => ['as' => 'incoming', 'except' => true],
-            'filter.transfers'           => ['as' => 'transfers', 'except' => true],
-            'filter.multipayments'       => ['as' => 'multipayments', 'except' => true],
-            'filter.votes'               => ['as' => 'votes', 'except' => true],
-            'filter.validator'           => ['as' => 'validator', 'except' => true],
-            'filter.username'            => ['as' => 'username', 'except' => true],
-            'filter.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
-            'filter.others'              => ['as' => 'others', 'except' => true],
+            'perPage'                    => ['as' => 'per-page', 'except' => static::defaultPerPage(), 'history' => true],
+            'filter.outgoing'            => ['as' => 'filter-outgoing', 'except' => true],
+            'filter.incoming'            => ['as' => 'filter-incoming', 'except' => true],
+            'filter.transfers'           => ['as' => 'filter-transfers', 'except' => true],
+            'filter.multipayments'       => ['as' => 'filter-multipayments', 'except' => true],
+            'filter.votes'               => ['as' => 'filter-votes', 'except' => true],
+            'filter.validator'           => ['as' => 'filter-validator', 'except' => true],
+            'filter.username'            => ['as' => 'filter-username', 'except' => true],
+            'filter.contract_deployment' => ['as' => 'filter-contract-deployment', 'except' => true],
+            'filter.others'              => ['as' => 'filter-others', 'except' => true],
         ];
     }
 

@@ -23,7 +23,7 @@ trait HasTablePagination
     final public function queryStringHasTablePagination(): array
     {
         return [
-            'perPage' => ['except' => static::defaultPerPage()],
+            'perPage' => ['except' => static::defaultPerPage(), 'history' => true],
         ];
     }
 

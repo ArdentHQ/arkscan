@@ -25,8 +25,18 @@ final class WalletBlockTable extends TabbedTableComponent
         'reloadBlocks'    => '$refresh',
     ];
 
+    public function queryString(): array
+    {
+        return [
+            'paginators.page' => ['as' => 'blocks-page', 'except' => 1, 'history' => true, 'keep' => false],
+            'perPage'         => ['as' => 'blocks-per-page', 'except' => static::defaultPerPage(), 'history' => true],
+        ];
+    }
+
     public function mount(WalletViewModel $wallet): void
     {
+        $this->setPage(request()->query('blocks-page', '1'));
+
         $this->address = $wallet->address();
     }
 

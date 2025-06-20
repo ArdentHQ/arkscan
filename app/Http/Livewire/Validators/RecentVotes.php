@@ -43,13 +43,22 @@ final class RecentVotes extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'filter.vote'   => ['as' => 'vote', 'except' => true],
-            'filter.unvote' => ['as' => 'unvote', 'except' => true],
+            'paginators.page' => ['as' => 'recent-votes-page', 'except' => 1, 'history' => true, 'keep' => false],
+            'perPage'         => ['as' => 'recent-votes-per-page', 'except' => static::defaultPerPage(), 'history' => true],
+            'filter.vote'     => ['as' => 'recent-votes-filter-vote', 'except' => true, 'history' => true],
+            'filter.unvote'   => ['as' => 'recent-votes-filter-unvote', 'except' => true, 'history' => true],
         ];
+    }
+
+    public function queryStringHasTableSorting(): array
+    {
+        return $this->getQueryStringValues('recent-votes');
     }
 
     public function mount(bool $deferLoading = true): void
     {
+        $this->setPage(request()->query('recent-votes-page', '1'));
+
         if (! $deferLoading) {
             $this->setIsReady();
         }

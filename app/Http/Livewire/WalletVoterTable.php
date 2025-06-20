@@ -24,8 +24,18 @@ final class WalletVoterTable extends TabbedTableComponent
         'reloadVoters'    => '$refresh',
     ];
 
+    public function queryString(): array
+    {
+        return [
+            'paginators.page' => ['as' => 'voters-page', 'except' => 1, 'history' => true, 'keep' => false],
+            'perPage'         => ['as' => 'voters-per-page', 'except' => static::defaultPerPage(), 'history' => true],
+        ];
+    }
+
     public function mount(WalletViewModel $wallet): void
     {
+        $this->setPage(request()->query('voters-page', '1'));
+
         $this->address = $wallet->address();
     }
 

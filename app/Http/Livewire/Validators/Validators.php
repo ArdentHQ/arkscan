@@ -7,7 +7,6 @@ namespace App\Http\Livewire\Validators;
 use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Models\Wallet;
@@ -22,7 +21,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class Validators extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableFilter;
     use HasTableSorting;
 
@@ -46,9 +44,10 @@ final class Validators extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'filter.active'   => ['as' => 'active', 'except' => true],
-            'filter.standby'  => ['as' => 'standby', 'except' => true],
-            'filter.resigned' => ['as' => 'resigned', 'except' => true],
+            'perPage'         => ['as' => 'per-page', 'except' => static::defaultPerPage(), 'history' => true],
+            'filter.active'   => ['as' => 'filter-active', 'except' => true, 'history' => true],
+            'filter.standby'  => ['as' => 'filter-standby', 'except' => true, 'history' => true],
+            'filter.resigned' => ['as' => 'filter-resigned', 'except' => true, 'history' => true],
         ];
     }
 
