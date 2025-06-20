@@ -17,8 +17,6 @@ trait HasTablePagination
     {
         if ($this->perPage === null) {
             $this->perPage = static::defaultPerPage();
-        } else {
-            $this->perPage = $this->resolvePerPage();
         }
     }
 
@@ -57,10 +55,5 @@ trait HasTablePagination
         }
 
         return intval(config('arkscan.pagination.per_page'));
-    }
-
-    private function resolvePerPage(): int
-    {
-        return $this->perPage;
     }
 }
