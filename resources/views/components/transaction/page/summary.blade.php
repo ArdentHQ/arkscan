@@ -30,7 +30,7 @@
             <div class="flex justify-end items-center space-x-2 sm:justify-start">
                 @php ($registration = $transaction->validatorRegistration())
 
-                <x-transaction.amount :transaction="$registration ?? $transaction" />
+                <x-transaction.amount :amount="$registration->amount() ?? $transaction->amount()" />
 
                 <x-tables.headers.desktop.includes.tooltip
                     :text="$registration && $registration->amount() > 0 ? trans('pages.transaction.unlocked_amount_tooltip') : trans('pages.transaction.legacy_registration_tooltip')"
