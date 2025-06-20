@@ -23,26 +23,6 @@ trait HasTableSorting
         return $this->getQueryStringValues();
     }
 
-    private function getQueryStringValues(?string $prefix = null): array
-    {
-        if ($prefix !== null) {
-            $prefix = $prefix.'-';
-        }
-
-        $queryString = [
-            'sortKey' => ['as' => $prefix.'sort', 'except' => static::defaultSortKey(), 'history' => true],
-        ];
-
-        if (request()->has('sort-direction')) {
-            $sortDirection = request()->get('sort-direction');
-            if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value], true)) {
-                $queryString['sortDirection'] = ['as' => $prefix.'sort-direction', 'except' => static::defaultSortDirection()->value, 'history' => true];
-            }
-        }
-
-        return $queryString;
-    }
-
     public function sortBy(string $key): void
     {
         if ($this->sortKey === $key) {
@@ -67,6 +47,26 @@ trait HasTableSorting
     public static function defaultSortDirection(): SortDirection
     {
         return constant(static::class.'::INITIAL_SORT_DIRECTION');
+    }
+
+    private function getQueryStringValues(?string $prefix = null): array
+    {
+        if ($prefix !== null) {
+            $prefix = $prefix.'-';
+        }
+
+        $queryString = [
+            'sortKey' => ['as' => $prefix.'sort', 'except' => static::defaultSortKey(), 'history' => true],
+        ];
+
+        if (request()->has('sort-direction')) {
+            $sortDirection = request()->get('sort-direction');
+            if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value], true)) {
+                $queryString['sortDirection'] = ['as' => $prefix.'sort-direction', 'except' => static::defaultSortDirection()->value, 'history' => true];
+            }
+        }
+
+        return $queryString;
     }
 
     private function resolveSortDirection(): SortDirection

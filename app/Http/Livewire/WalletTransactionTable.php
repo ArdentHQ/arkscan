@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
-use App\Enums\SortDirection;
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
