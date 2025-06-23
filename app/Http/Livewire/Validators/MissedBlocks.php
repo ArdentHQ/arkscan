@@ -29,7 +29,7 @@ final class MissedBlocks extends TabbedTableComponent
 
     /** @var mixed */
     protected $listeners = [
-        'setMissedBlocksReady' => 'setIsReady',
+        'setMissedBlocksReady'     => 'setIsReady',
         'changedTabToMissedBlocks' => 'populateQueryStrings',
         'leavingTabMissedBlocks'   => 'hideQueryStrings',
     ];
