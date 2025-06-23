@@ -17,7 +17,6 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Attributes\On;
 
 /**
  * @property bool $isAllSelected
@@ -40,7 +39,7 @@ final class RecentVotes extends TabbedTableComponent
 
     /** @var mixed */
     protected $listeners = [
-        'setRecentVotesReady' => 'setIsReady',
+        'setRecentVotesReady'     => 'setIsReady',
         'changedTabToRecentVotes' => 'populateQueryStrings',
         'leavingTabRecentVotes'   => 'hideQueryStrings',
     ];
