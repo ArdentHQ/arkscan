@@ -16,6 +16,7 @@ use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 
 /**
  * @property bool $isAllSelected
@@ -51,6 +52,7 @@ final class WalletTransactionTable extends TabbedTableComponent
     public function queryString(): array
     {
         return [
+            'paginators.page'            => ['as' => 'page', 'except' => 1, 'history' => true, 'keep' => false],
             'perPage'                    => ['as' => 'per-page', 'except' => static::defaultPerPage(), 'history' => true],
             'filter.outgoing'            => ['as' => 'filter-outgoing', 'except' => true],
             'filter.incoming'            => ['as' => 'filter-incoming', 'except' => true],
@@ -118,6 +120,12 @@ final class WalletTransactionTable extends TabbedTableComponent
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage);
+    }
+
+    #[On('changedTabToTransactions')]
+    public function onTabOpened(): void
+    {
+        $this->setPage(1);
     }
 
     private function hasAddressingFilters(): bool

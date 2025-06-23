@@ -12,6 +12,8 @@ trait HasTabs
 
     public function triggerViewIsReady(?string $view = null): void
     {
+        $this->dispatch('changedTabTo'.Str::studly($view));
+
         if ($view === null) {
             $view = $this->view;
         }

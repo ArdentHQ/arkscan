@@ -11,6 +11,7 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 
 /** @property LengthAwarePaginator $wallets */
 final class WalletVoterTable extends TabbedTableComponent
@@ -64,5 +65,11 @@ final class WalletVoterTable extends TabbedTableComponent
         return Wallet::where('attributes->vote', $this->address)
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
+    }
+
+    #[On('changedTabToVoters')]
+    public function onTabOpened(): void
+    {
+        $this->setPage(1);
     }
 }

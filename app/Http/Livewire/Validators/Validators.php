@@ -14,6 +14,7 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 
 /**
  * @property bool $isAllSelected
@@ -44,6 +45,7 @@ final class Validators extends TabbedTableComponent
     public function queryString(): array
     {
         return [
+            'paginators.page' => ['as' => 'page', 'except' => 1, 'history' => true, 'keep' => false],
             'perPage'         => ['as' => 'per-page', 'except' => static::defaultPerPage(), 'history' => true],
             'filter.active'   => ['as' => 'filter-active', 'except' => true, 'history' => true],
             'filter.standby'  => ['as' => 'filter-standby', 'except' => true, 'history' => true],
@@ -96,6 +98,12 @@ final class Validators extends TabbedTableComponent
     public static function perPageOptions(): array
     {
         return trans('tables.validators.validator_per_page_options');
+    }
+
+    #[On('changedTabToValidators')]
+    public function onTabOpened(): void
+    {
+        $this->setPage(1);
     }
 
     private function hasFilters(): bool

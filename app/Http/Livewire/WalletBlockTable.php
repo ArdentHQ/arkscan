@@ -12,6 +12,7 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
+use Livewire\Attributes\On;
 
 /** @property LengthAwarePaginator $blocks */
 final class WalletBlockTable extends TabbedTableComponent
@@ -66,5 +67,11 @@ final class WalletBlockTable extends TabbedTableComponent
         return Block::where('proposer', $this->address)
             ->withScope(OrderByHeightScope::class)
             ->paginate($this->perPage);
+    }
+
+    #[On('changedTabToBlocks')]
+    public function onTabOpened(): void
+    {
+        $this->setPage(1);
     }
 }

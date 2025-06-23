@@ -16,6 +16,7 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 
 /**
  * @property bool $isAllSelected
@@ -97,6 +98,12 @@ final class RecentVotes extends TabbedTableComponent
 
         return $this->getRecentVotesQuery()
             ->paginate($this->perPage);
+    }
+
+    #[On('changedTabToRecentVotes')]
+    public function onTabOpened(): void
+    {
+        $this->setPage(1);
     }
 
     private function hasFilters(): bool

@@ -12,6 +12,7 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 
 /**
  * @property LengthAwarePaginator $missedBlocks
@@ -75,6 +76,12 @@ final class MissedBlocks extends TabbedTableComponent
 
         return $this->getMissedBlocksQuery()
             ->paginate($this->perPage);
+    }
+
+    #[On('changedTabToMissedBlocks')]
+    public function onTabOpened(): void
+    {
+        $this->setPage(1);
     }
 
     private function getMissedBlocksQuery(): Builder
