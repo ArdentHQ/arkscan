@@ -14,10 +14,10 @@ trait HasTabs
     {
         if ($view !== null) {
             $this->dispatch('changedTabTo'.Str::studly($view));
-        }
 
-        if ($view !== $this->view) {
-            $this->dispatch('leavingTab'.Str::studly($this->view));
+            if ($view !== $this->view) {
+                $this->dispatch('leavingTab'.Str::studly($this->view));
+            }
         }
 
         if ($view === null) {
