@@ -54,15 +54,6 @@ final class WalletTransactionTable extends TabbedTableComponent
         return [
             'paginators.page'            => ['as' => 'page', 'except' => 1, 'history' => true, 'keep' => false],
             'perPage'                    => ['as' => 'per-page', 'except' => static::defaultPerPage(), 'history' => true],
-            'filter.outgoing'            => ['as' => 'filter-outgoing', 'except' => true],
-            'filter.incoming'            => ['as' => 'filter-incoming', 'except' => true],
-            'filter.transfers'           => ['as' => 'filter-transfers', 'except' => true],
-            'filter.multipayments'       => ['as' => 'filter-multipayments', 'except' => true],
-            'filter.votes'               => ['as' => 'filter-votes', 'except' => true],
-            'filter.validator'           => ['as' => 'filter-validator', 'except' => true],
-            'filter.username'            => ['as' => 'filter-username', 'except' => true],
-            'filter.contract_deployment' => ['as' => 'filter-contract-deployment', 'except' => true],
-            'filter.others'              => ['as' => 'filter-others', 'except' => true],
         ];
     }
 

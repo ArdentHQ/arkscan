@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Home;
 
+use App\Http\Livewire\Concerns\HasTabs;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 final class Tables extends Component
 {
-    public string $view = 'transactions';
+    use HasTabs;
 
-    public ?string $previousView = 'transactions';
+    #[Url(history: true, except: 'validators')]
+    public string $view = 'transactions';
 
     public array $alreadyLoadedViews = [
         'transactions' => false,
@@ -28,35 +31,5 @@ final class Tables extends Component
     public function render(): View
     {
         return view('livewire.home.tables');
-    }
-
-    public function triggerViewIsReady(?string $view = null): void
-    {
-        if ($view === null) {
-            $view = $this->view;
-        }
-
-        if (! array_key_exists($view, $this->alreadyLoadedViews)) {
-            return;
-        }
-
-        if ($this->alreadyLoadedViews[$view] === true) {
-            return;
-        }
-
-        $this->dispatch('set'.ucfirst($view).'Ready');
-
-        $this->alreadyLoadedViews[$view] = true;
-    }
-
-    public function updatingView(string $newView): void
-    {
-        if ($newView === $this->view) {
-            return;
-        }
-
-        $this->previousView = $this->view;
-
-        $this->triggerViewIsReady($newView);
     }
 }

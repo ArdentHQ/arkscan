@@ -41,19 +41,6 @@ final class TransactionTable extends Component
         'echo:transactions,NewTransaction' => '$refresh',
     ];
 
-    public function queryString(): array
-    {
-        return [
-            'filter.transfers'           => ['as' => 'transfers', 'except' => true],
-            'filter.multipayments'       => ['as' => 'multipayments', 'except' => true],
-            'filter.votes'               => ['as' => 'votes', 'except' => true],
-            'filter.validator'           => ['as' => 'validator', 'except' => true],
-            'filter.username'            => ['as' => 'username', 'except' => true],
-            'filter.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
-            'filter.others'              => ['as' => 'others', 'except' => true],
-        ];
-    }
-
     public function render(): View
     {
         return view('livewire.transaction-table', [

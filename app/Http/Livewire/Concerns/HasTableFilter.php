@@ -28,6 +28,16 @@ trait HasTableFilter
 
     abstract public function getNoResultsMessageProperty(): null|string;
 
+    public function queryStringHasTableFilter(): array
+    {
+        $queryString = [];
+        foreach ($this->filter as $key => $value) {
+            $queryString['filter.'.$key] = ['as' => 'filter-'.$key, 'except' => $value, 'history' => true];
+        }
+
+        return $queryString;
+    }
+
     public function mountHasTableFilter(): void
     {
         foreach ($this->filter as $key => $filter) {

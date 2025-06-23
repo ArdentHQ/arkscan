@@ -9,12 +9,12 @@ use App\Facades\Network;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
+use App\Http\Livewire\Concerns\IsTabbed;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Attributes\On;
 
 /**
  * @property bool $isAllSelected
@@ -24,6 +24,7 @@ final class Validators extends TabbedTableComponent
 {
     use HasTableFilter;
     use HasTableSorting;
+    use IsTabbed;
 
     public const PER_PAGE = 53;
 
@@ -39,7 +40,9 @@ final class Validators extends TabbedTableComponent
 
     /** @var mixed */
     protected $listeners = [
-        'setValidatorsReady' => 'setIsReady',
+        'setValidatorsReady'     => 'setIsReady',
+        'changedTabToValidators' => 'populateQueryStrings',
+        'leavingTabValidators'   => 'hideQueryStrings',
     ];
 
     public function queryString(): array
@@ -47,9 +50,6 @@ final class Validators extends TabbedTableComponent
         return [
             'paginators.page' => ['as' => 'page', 'except' => 1, 'history' => true, 'keep' => false],
             'perPage'         => ['as' => 'per-page', 'except' => static::defaultPerPage(), 'history' => true],
-            'filter.active'   => ['as' => 'filter-active', 'except' => true, 'history' => true],
-            'filter.standby'  => ['as' => 'filter-standby', 'except' => true, 'history' => true],
-            'filter.resigned' => ['as' => 'filter-resigned', 'except' => true, 'history' => true],
         ];
     }
 
@@ -98,12 +98,6 @@ final class Validators extends TabbedTableComponent
     public static function perPageOptions(): array
     {
         return trans('tables.validators.validator_per_page_options');
-    }
-
-    #[On('changedTabToValidators')]
-    public function onTabOpened(): void
-    {
-        $this->setPage(1);
     }
 
     private function hasFilters(): bool

@@ -8,6 +8,7 @@ use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
+use App\Http\Livewire\Concerns\IsTabbed;
 use App\Models\Scopes\UnvoteScope;
 use App\Models\Scopes\VoteScope;
 use App\Models\Transaction;
@@ -26,6 +27,7 @@ final class RecentVotes extends TabbedTableComponent
 {
     use HasTableFilter;
     use HasTableSorting;
+    use IsTabbed;
 
     public const INITIAL_SORT_KEY = 'age';
 
@@ -39,6 +41,8 @@ final class RecentVotes extends TabbedTableComponent
     /** @var mixed */
     protected $listeners = [
         'setRecentVotesReady' => 'setIsReady',
+        'changedTabToRecentVotes' => 'populateQueryStrings',
+        'leavingTabRecentVotes'   => 'hideQueryStrings',
     ];
 
     public function queryString(): array
@@ -46,8 +50,6 @@ final class RecentVotes extends TabbedTableComponent
         return [
             'paginators.page' => ['as' => 'recent-votes-page', 'except' => 1, 'history' => true, 'keep' => false],
             'perPage'         => ['as' => 'recent-votes-per-page', 'except' => static::defaultPerPage(), 'history' => true],
-            'filter.vote'     => ['as' => 'recent-votes-filter-vote', 'except' => true, 'history' => true],
-            'filter.unvote'   => ['as' => 'recent-votes-filter-unvote', 'except' => true, 'history' => true],
         ];
     }
 
@@ -98,12 +100,6 @@ final class RecentVotes extends TabbedTableComponent
 
         return $this->getRecentVotesQuery()
             ->paginate($this->perPage);
-    }
-
-    #[On('changedTabToRecentVotes')]
-    public function onTabOpened(): void
-    {
-        $this->setPage(1);
     }
 
     private function hasFilters(): bool

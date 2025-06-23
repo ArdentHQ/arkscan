@@ -7,6 +7,7 @@ namespace App\Http\Livewire\Validators;
 use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableSorting;
+use App\Http\Livewire\Concerns\IsTabbed;
 use App\Models\ForgingStats;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
@@ -20,6 +21,7 @@ use Livewire\Attributes\On;
 final class MissedBlocks extends TabbedTableComponent
 {
     use HasTableSorting;
+    use IsTabbed;
 
     public const INITIAL_SORT_KEY = 'age';
 
@@ -28,6 +30,8 @@ final class MissedBlocks extends TabbedTableComponent
     /** @var mixed */
     protected $listeners = [
         'setMissedBlocksReady' => 'setIsReady',
+        'changedTabToMissedBlocks' => 'populateQueryStrings',
+        'leavingTabMissedBlocks'   => 'hideQueryStrings',
     ];
 
     public function queryString(): array
