@@ -17,14 +17,14 @@ it('should run job', function () {
     $largestBlock = Block::factory()->create();
 
     Transaction::factory()->create([
-        'value' => 1000 * 1e18,
+        'value'      => 1000 * 1e18,
         'block_hash' => $largestBlock->hash,
     ]);
 
     $block = Block::factory()->create();
 
     Transaction::factory()->create([
-        'value' => 0,
+        'value'      => 0,
         'block_hash' => $block->hash,
     ]);
 

@@ -24,7 +24,7 @@ beforeEach(function () {
     ]);
 
     Transaction::factory()->create([
-        'value' => 50 * 1e18,
+        'value'      => 50 * 1e18,
         'block_hash' => $this->subject->hash,
     ]);
 });

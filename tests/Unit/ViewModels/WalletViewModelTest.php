@@ -42,7 +42,7 @@ beforeEach(function () {
     ]);
 
     Transaction::factory()->create([
-        'value' => 10 * 1e18,
+        'value'      => 10 * 1e18,
         'block_hash' => $block->hash,
     ]);
 });

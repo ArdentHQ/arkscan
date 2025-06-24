@@ -26,7 +26,7 @@ it('should aggregate the total amount forged', function () {
 
     foreach ($blocks as $block) {
         Transaction::factory()->create([
-            'value' => 1 * 1e18,
+            'value'      => 1 * 1e18,
             'block_hash' => $block->hash,
         ]);
     }
@@ -47,7 +47,7 @@ it('should aggregate the total fee forged', function () {
 
     foreach ($blocks as $block) {
         Transaction::factory()->create([
-            'value' => 1 * 1e18,
+            'value'      => 1 * 1e18,
             'block_hash' => $block->hash,
         ]);
     }
@@ -67,7 +67,7 @@ it('should aggregate the total count forged', function () {
 
     foreach ($blocks as $block) {
         Transaction::factory()->create([
-            'value' => 1 * 1e18,
+            'value'      => 1 * 1e18,
             'block_hash' => $block->hash,
         ]);
     }
@@ -88,7 +88,7 @@ it('should aggregate the total rewards forged', function () {
 
     foreach ($blocks as $block) {
         Transaction::factory()->create([
-            'value' => 1 * 1e18,
+            'value'      => 1 * 1e18,
             'block_hash' => $block->hash,
         ]);
     }
@@ -110,7 +110,7 @@ it('should aggregate all the forged data', function () {
 
     foreach ($blocks as $block) {
         Transaction::factory()->create([
-            'value' => 2 * 1e18,
+            'value'      => 2 * 1e18,
             'block_hash' => $block->hash,
         ]);
     }

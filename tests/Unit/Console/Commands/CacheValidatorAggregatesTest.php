@@ -55,7 +55,7 @@ it('should update cache on each run', function () {
     ]);
 
     Transaction::factory()->create([
-        'value' => 123 * 1e18,
+        'value'      => 123 * 1e18,
         'block_hash' => $block->hash,
     ]);
 

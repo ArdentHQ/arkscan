@@ -6,7 +6,6 @@ use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Transaction;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
 
 it('should render the page without any errors', function () {
     $block = Block::factory()->create([
@@ -15,7 +14,7 @@ it('should render the page without any errors', function () {
     ]);
 
     Transaction::factory()->create([
-        'value' => 904 * 1e18,
+        'value'      => 904 * 1e18,
         'block_hash' => $block->hash,
     ]);
 

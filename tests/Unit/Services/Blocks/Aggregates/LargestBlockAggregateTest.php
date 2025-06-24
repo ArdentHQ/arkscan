@@ -10,14 +10,14 @@ it('should get largest block', function () {
     $block = Block::factory()->create();
 
     Transaction::factory()->create([
-        'value' => 20000 * 1e18,
+        'value'      => 20000 * 1e18,
         'block_hash' => $block->hash,
     ]);
 
     $largestBlock = Block::factory()->create();
 
     Transaction::factory()->create([
-        'value' => 200000 * 1e18,
+        'value'      => 200000 * 1e18,
         'block_hash' => $largestBlock->hash,
     ]);
 
