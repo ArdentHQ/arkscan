@@ -18,13 +18,14 @@ use function Spatie\Snapshots\assertMatchesSnapshot;
 beforeEach(function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
-    $this->subject = new BlockViewModel(Block::factory()->create([
-        'parent_hash'    => $previousBlock->id,
-        'number'         => 10000,
-        'amount'         => 50 * 1e18,
-        'fee'            => 48 * 1e18,
-        'reward'         => 2 * 1e18,
-    ]));
+    $block = Block::factory()->create([
+        'parent_hash' => $previousBlock->id,
+        'number'      => 10000,
+        'fee'         => 48 * 1e18,
+        'reward'      => 2 * 1e18,
+    ]);
+
+    $this->subject = new BlockViewModel($block);
 });
 
 it('should get the url', function () {

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Block;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,11 +17,15 @@ beforeEach(function () {
     $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = Block::factory()->create([
-        'parent_hash'    => $previousBlock->hash,
-        'number'         => 10000,
-        'amount'         => 50 * 1e18,
-        'fee'            => 48 * 1e18,
-        'reward'         => 2 * 1e18,
+        'parent_hash' => $previousBlock->hash,
+        'number'      => 10000,
+        'fee'         => 48 * 1e18,
+        'reward'      => 2 * 1e18,
+    ]);
+
+    Transaction::factory()->create([
+        'value' => 50 * 1e18,
+        'block_hash' => $this->subject->hash,
     ]);
 });
 

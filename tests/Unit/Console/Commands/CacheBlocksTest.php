@@ -14,12 +14,18 @@ it('should run job', function () {
 
     Transaction::factory()->create(['value' => 0]);
 
-    $largestBlock = Block::factory()->create([
-        'amount' => 1000 * 1e18,
+    $largestBlock = Block::factory()->create();
+
+    Transaction::factory()->create([
+        'value' => 1000 * 1e18,
+        'block_hash' => $largestBlock->hash,
     ]);
 
-    Block::factory()->create([
-        'amount' => 0,
+    $block = Block::factory()->create();
+
+    Transaction::factory()->create([
+        'value' => 0,
+        'block_hash' => $block->hash,
     ]);
 
     expect($cache->getLargestIdByAmount())->toBeNull();

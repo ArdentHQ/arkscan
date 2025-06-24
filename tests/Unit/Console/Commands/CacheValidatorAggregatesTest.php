@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Console\Commands\CacheValidatorAggregates;
 use App\Models\Block;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\ValidatorCache;
@@ -47,11 +48,15 @@ it('should update cache on each run', function () {
             ],
         ]);
 
-    Block::factory()->create([
-        'proposer'          => $wallet->address,
-        'amount'            => 123 * 1e18,
-        'fee'               => 3 * 1e18,
-        'reward'            => 8 * 1e18,
+    $block = Block::factory()->create([
+        'proposer' => $wallet->address,
+        'fee'      => 3 * 1e18,
+        'reward'   => 8 * 1e18,
+    ]);
+
+    Transaction::factory()->create([
+        'value' => 123 * 1e18,
+        'block_hash' => $block->hash,
     ]);
 
     expect($cache->getCache()->has(md5('total_amounts')))->toBeTrue();

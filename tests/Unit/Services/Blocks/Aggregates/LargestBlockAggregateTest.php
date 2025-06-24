@@ -3,11 +3,23 @@
 declare(strict_types=1);
 
 use App\Models\Block;
+use App\Models\Transaction;
 use App\Services\Blocks\Aggregates\LargestBlockAggregate;
 
 it('should get largest block', function () {
-    Block::factory()->create(['amount' => 20000 * 1e18]);
-    $largestBlock = Block::factory()->create(['amount' => 200000 * 1e18]);
+    $block = Block::factory()->create();
+
+    Transaction::factory()->create([
+        'value' => 20000 * 1e18,
+        'block_hash' => $block->hash,
+    ]);
+
+    $largestBlock = Block::factory()->create();
+
+    Transaction::factory()->create([
+        'value' => 200000 * 1e18,
+        'block_hash' => $largestBlock->hash,
+    ]);
 
     expect((new LargestBlockAggregate())->aggregate()->id)->toBe($largestBlock->id);
 });

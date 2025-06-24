@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Block;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Monitor\Aggregates\ValidatorTotalAggregates;
@@ -19,10 +20,16 @@ beforeEach(function () {
 });
 
 it('should aggregate the total amount forged', function () {
-    Block::factory(10)->create([
-        'proposer'       => 'generator',
-        'amount'         => 1 * 1e18,
-    ])->pluck('proposer')->toArray();
+    $blocks = Block::factory(10)->create([
+        'proposer' => 'generator',
+    ]);
+
+    foreach ($blocks as $block) {
+        Transaction::factory()->create([
+            'value' => 1 * 1e18,
+            'block_hash' => $block->hash,
+        ]);
+    }
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
@@ -33,10 +40,17 @@ it('should aggregate the total amount forged', function () {
 });
 
 it('should aggregate the total fee forged', function () {
-    Block::factory(10)->create([
-        'proposer'       => 'generator',
-        'fee'            => 1 * 1e18,
-    ])->pluck('proposer')->toArray();
+    $blocks = Block::factory(10)->create([
+        'proposer' => 'generator',
+        'fee'      => 1 * 1e18,
+    ]);
+
+    foreach ($blocks as $block) {
+        Transaction::factory()->create([
+            'value' => 1 * 1e18,
+            'block_hash' => $block->hash,
+        ]);
+    }
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
@@ -47,9 +61,16 @@ it('should aggregate the total fee forged', function () {
 });
 
 it('should aggregate the total count forged', function () {
-    Block::factory(10)->create([
+    $blocks = Block::factory(10)->create([
         'proposer' => 'generator',
-    ])->pluck('proposer')->toArray();
+    ]);
+
+    foreach ($blocks as $block) {
+        Transaction::factory()->create([
+            'value' => 1 * 1e18,
+            'block_hash' => $block->hash,
+        ]);
+    }
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
@@ -60,10 +81,17 @@ it('should aggregate the total count forged', function () {
 });
 
 it('should aggregate the total rewards forged', function () {
-    Block::factory(10)->create([
-        'proposer'             => 'generator',
-        'reward'               => 1 * 1e18,
-    ])->pluck('proposer')->toArray();
+    $blocks = Block::factory(10)->create([
+        'proposer' => 'generator',
+        'reward'   => 1 * 1e18,
+    ]);
+
+    foreach ($blocks as $block) {
+        Transaction::factory()->create([
+            'value' => 1 * 1e18,
+            'block_hash' => $block->hash,
+        ]);
+    }
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
@@ -74,12 +102,18 @@ it('should aggregate the total rewards forged', function () {
 });
 
 it('should aggregate all the forged data', function () {
-    Block::factory(10)->create([
-        'proposer'             => 'generator',
-        'fee'                  => 1 * 1e18,
-        'amount'               => 2 * 1e18,
-        'reward'               => 3 * 1e18,
-    ])->pluck('proposer')->toArray();
+    $blocks = Block::factory(10)->create([
+        'proposer' => 'generator',
+        'fee'      => 1 * 1e18,
+        'reward'   => 3 * 1e18,
+    ]);
+
+    foreach ($blocks as $block) {
+        Transaction::factory()->create([
+            'value' => 2 * 1e18,
+            'block_hash' => $block->hash,
+        ]);
+    }
 
     $result = (new ValidatorTotalAggregates())->aggregate();
 
