@@ -14,12 +14,13 @@ final class ValidatorTotalAggregates
         return Wallets::allWithValidatorPublicKey()
             ->join('blocks', 'blocks.proposer', '=', 'wallets.address')
             ->selectRaw('
-                SUM(blocks.amount) as amount,
+                SUM(transactions.value) as amount,
                 SUM(blocks.fee) as fee,
                 SUM(blocks.reward) as reward,
                 COUNT(blocks.proposer) as count,
                 blocks.proposer
             ')
+            ->join('transactions', 'transactions.block_hash', '=', 'blocks.hash')
             ->groupBy('blocks.proposer')
             ->get();
     }

@@ -35,10 +35,11 @@ final class BlocksController
 
             $data      = (array) DB::connection('explorer')
                 ->table('blocks')
-                ->selectRaw('COUNT(*) as block_count')
+                ->selectRaw('COUNT(blocks.*) as block_count')
                 ->selectRaw('SUM(reward) as total_rewards')
-                ->selectRaw('MAX(amount) as largest_amount')
-                ->where('timestamp', '>', $timestamp * 1000)
+                ->selectRaw('MAX(transactions.value) as largest_amount')
+                ->join('transactions', 'transactions.block_hash', '=', 'blocks.hash')
+                ->where('blocks.timestamp', '>', $timestamp * 1000)
                 ->first();
 
             return [
