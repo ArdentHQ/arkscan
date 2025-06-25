@@ -52,15 +52,73 @@ it('should get the address', function () {
     expect($this->subject->address())->toBe($this->wallet->address);
 });
 
+it('should determine if wallet has a legacy address', function () {
+    $wallet = Wallet::factory()->create([
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'public_key' => '03a4d147a417376742f9ab78c7c3891574d19376aa62e7bbddceaf12e096e79fe0',
+        'attributes' => [
+            'isLegacy' => true,
+        ],
+    ]);
+
+    $viewModel = new WalletViewModel($wallet);
+
+    expect($viewModel->isLegacy())->toBeTrue();
+    expect($viewModel->legacyAddress())->toBe('AdLb2r8XEmhNqW3CXyNGEEVZxXAfvTqPWR');
+});
+
+it('should determine if wallet does not have a legacy address', function () {
+    $wallet = Wallet::factory()->create([
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'public_key' => '03a4d147a417376742f9ab78c7c3891574d19376aa62e7bbddceaf12e096e79fe0',
+        'attributes' => [
+            'isLegacy' => false,
+        ],
+    ]);
+
+    $viewModel = new WalletViewModel($wallet);
+
+    expect($viewModel->isLegacy())->toBeFalse();
+    expect($viewModel->legacyAddress())->toBe(null);
+
+    $wallet = Wallet::factory()->create([
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'public_key' => '03a4d147a417376742f9ab78c7c3891574d19376aa62e7bbddceaf12e096e79fe0',
+        'attributes' => [],
+    ]);
+
+    $viewModel = new WalletViewModel($wallet);
+
+    expect($viewModel->isLegacy())->toBeFalse();
+    expect($viewModel->legacyAddress())->toBe(null);
+});
+
 it('should get the legacy address', function () {
     $wallet = Wallet::factory()->create([
         'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         'public_key' => '03a4d147a417376742f9ab78c7c3891574d19376aa62e7bbddceaf12e096e79fe0',
+        'attributes' => [
+            'isLegacy' => true,
+        ],
     ]);
 
     $viewModel = new WalletViewModel($wallet);
 
     expect($viewModel->legacyAddress())->toBe('AdLb2r8XEmhNqW3CXyNGEEVZxXAfvTqPWR');
+});
+
+it('should return null for legacy address if no public key', function () {
+    $wallet = Wallet::factory()->create([
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'public_key' => null,
+        'attributes' => [
+            'isLegacy' => true,
+        ],
+    ]);
+
+    $viewModel = new WalletViewModel($wallet);
+
+    expect($viewModel->legacyAddress())->toBe(null);
 });
 
 it('should get an id from the address', function () {
