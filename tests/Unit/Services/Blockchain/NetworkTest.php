@@ -29,6 +29,7 @@ it('should have all required properties', function (array $config) {
     expect($subject->explorerTitle())->toBe(config('app.name'));
     expect($subject->mainnetExplorerUrl())->toBe($config['mainnetExplorerUrl']);
     expect($subject->testnetExplorerUrl())->toBe($config['testnetExplorerUrl']);
+    expect($subject->legacyExplorerUrl())->toBe($config['legacyExplorerUrl']);
     expect($subject->currency())->toBe($config['currency']);
     expect($subject->currencySymbol())->toBe($config['currencySymbol']);
     expect($subject->confirmations())->toBe($config['confirmations']);
@@ -58,6 +59,7 @@ it('should have all required properties', function (array $config) {
         'base58Prefix'        => 23,
         'mainnetExplorerUrl'  => 'https://mainnet.ark.io/',
         'testnetExplorerUrl'  => 'https://testnet.ark.io/',
+        'legacyExplorerUrl'   => 'https://legacy.ark.io/',
         'contract_addresses'  => [],
     ]],
     [[
@@ -75,6 +77,7 @@ it('should have all required properties', function (array $config) {
         'base58Prefix'        => 30,
         'mainnetExplorerUrl'  => 'https://mainnet.dark.io/',
         'testnetExplorerUrl'  => 'https://testnet.dark.io/',
+        'legacyExplorerUrl'   => 'https://legacy.dark.io/',
         'contract_addresses'  => [],
     ]],
 ]);
