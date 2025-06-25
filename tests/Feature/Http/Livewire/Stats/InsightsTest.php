@@ -199,7 +199,6 @@ it('should render transaction records', function (): void {
     $otherBlock                = Block::factory()->create();
 
     (new TransactionCache())->setLargestIdByAmount($largestTransaction->hash);
-    (new BlockCache())->setLargestIdByAmount($largestBlock->hash);
     (new BlockCache())->setLargestIdByFees($largestBlockFee->hash);
     (new BlockCache())->setLargestIdByTransactionCount($blockWithMostTransactions->hash);
 
@@ -207,8 +206,6 @@ it('should render transaction records', function (): void {
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.largest_transaction'),
             $largestTransaction->hash,
-            trans('pages.statistics.insights.transactions.header.largest_block'),
-            $largestBlock->hash,
             trans('pages.statistics.insights.transactions.header.highest_fee'),
             $largestBlockFee->hash,
             trans('pages.statistics.insights.transactions.header.most_transactions_in_block'),

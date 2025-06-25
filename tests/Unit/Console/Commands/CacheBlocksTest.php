@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Events\Statistics\TransactionDetails;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\BlockCache;
@@ -12,27 +13,17 @@ it('should run job', function () {
 
     $cache = new BlockCache();
 
-    Transaction::factory()->create(['value' => 0]);
+    $largestBlock = Block::factory()->create(['fee' => 100 * 1e18]);
 
-    $largestBlock = Block::factory()->create();
+    Block::factory()->create(['fee' => 10 * 1e18]);
 
-    Transaction::factory()->create([
-        'value'      => 1000 * 1e18,
-        'block_hash' => $largestBlock->hash,
-    ]);
-
-    $block = Block::factory()->create();
-
-    Transaction::factory()->create([
-        'value'      => 0,
-        'block_hash' => $block->hash,
-    ]);
-
-    expect($cache->getLargestIdByAmount())->toBeNull();
+    expect($cache->getLargestIdByFees())->toBeNull();
 
     $this->artisan('explorer:cache-blocks');
 
-    expect($cache->getLargestIdByAmount())->toBe($largestBlock->hash);
+    expect($cache->getLargestIdByFees())->toBe($largestBlock->hash);
+
+    Event::assertDispatched(TransactionDetails::class);
 });
 
 it('should cache largest block by fee', function () {

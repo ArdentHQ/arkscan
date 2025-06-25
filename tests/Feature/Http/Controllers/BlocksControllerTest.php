@@ -26,6 +26,12 @@ it('should render the page without any errors', function () {
 it('should get the block stats for the last 24 hours', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
+    Block::factory()->create([
+        'timestamp'          => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+        'reward'             => 2 * 1e18,
+        'transactions_count' => 904,
+    ]);
+
     foreach (range(1, 19) as $seconds) {
         ForgingStats::factory()->create([
             'timestamp'     => Carbon::parse('2021-04-14 13:02:04')->subSecond($seconds)->getTimestampMs(),
@@ -67,18 +73,20 @@ it('should get the block stats for the last 24 hours', function () {
         ]);
     }
 
+    $blockCount = Block::where('timestamp', '>', Carbon::parse('2021-04-13 16:02:04')->getTimestampMs())->count();
+
     $this
         ->get(route('blocks'))
         ->assertOk()
         ->assertViewHas([
-            'forgedCount'   => 148,
-            'missedCount'   => 19,
-            'totalRewards'  => 2 * 148,
-            'largestAmount' => 904,
+            'forgedCount'     => $blockCount,
+            'missedCount'     => 19,
+            'totalRewards'    => 2 * $blockCount,
+            'maxTransactions' => 904,
         ])
         ->assertSeeInOrder([
             'Blocks Produced (24h)',
-            '148',
+            $blockCount,
             'Missed Blocks (24h)',
         ])
         ->assertSeeInOrder([
@@ -88,14 +96,13 @@ it('should get the block stats for the last 24 hours', function () {
         ])
         ->assertSeeInOrder([
             'Block Rewards (24h)',
-            '296 DARK',
-            'Largest Block (24h)',
+            (2 * $blockCount).' DARK',
+            'Max Transactions (24h)',
         ])
         ->assertSeeInOrder([
-            'Largest Block (24h)',
-            '904 DARK',
-            // TODO: uncomment when table is ready
-            // 'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
+            'Max Transactions (24h)',
+            '904',
+            'Showing 0 results',
         ]);
 
     $this->travelTo('2021-04-15 16:02:04');
@@ -111,27 +118,25 @@ it('should get the block stats for the last 24 hours', function () {
         ]);
 });
 
-it('should show the correct decimal places for the stats', function ($decimalPlaces, $totalRewards, $largestAmount) {
+it('should show the correct decimal places for the stats', function ($decimalPlaces, $totalRewards) {
     $this->travelTo('2021-04-14 16:02:04');
 
-    $block = Block::factory()->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'reward'    => $totalRewards * 1e18,
-    ]);
+    $transactionsCount = 24;
 
-    Transaction::factory()->create([
-        'block_hash' => $block->hash,
-        'value'      => $largestAmount * 1e18,
+    Block::factory()->create([
+        'timestamp'          => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+        'reward'             => $totalRewards * 1e18,
+        'transactions_count' => $transactionsCount,
     ]);
 
     $this
         ->get(route('blocks'))
         ->assertOk()
         ->assertViewHas([
-            'forgedCount'   => 1,
-            'missedCount'   => 0,
-            'totalRewards'  => $totalRewards,
-            'largestAmount' => $largestAmount,
+            'forgedCount'     => 1,
+            'missedCount'     => 0,
+            'totalRewards'    => $totalRewards,
+            'maxTransactions' => $transactionsCount,
         ])
         ->assertSeeInOrder([
             'Blocks Produced (24h)',
@@ -146,30 +151,30 @@ it('should show the correct decimal places for the stats', function ($decimalPla
         ->assertSeeInOrder([
             'Block Rewards (24h)',
             number_format($totalRewards, $decimalPlaces).' DARK',
-            'Largest Block (24h)',
+            'Max Transactions (24h)',
         ])
         ->assertSeeInOrder([
-            'Largest Block (24h)',
-            number_format($largestAmount, $decimalPlaces).' DARK',
-            // TODO: uncomment when table is ready
-            // 'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
+            'Max Transactions (24h)',
+            $transactionsCount,
+            'Showing 0 results',
         ]);
 })->with([
-    8 => [8, 919123.48392049, 0.99184739],
-    7 => [7, 919123.4839204, 0.9918473],
-    6 => [6, 919123.483929, 0.991839],
-    5 => [5, 919123.48392, 0.99739],
-    4 => [4, 919123.4839, 0.9918],
-    3 => [3, 919123.489, 0.479],
-    2 => [2, 919123.48, 0.99],
+    8 => [8, 919123.48392049],
+    7 => [7, 919123.4839204],
+    6 => [6, 919123.483929],
+    5 => [5, 919123.48392],
+    4 => [4, 919123.4839],
+    3 => [3, 919123.489],
+    2 => [2, 919123.48],
 ]);
 
 it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
     $blocks = Block::factory(148)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'reward'    => 2 * 1e18,
+        'timestamp'          => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+        'reward'             => 2 * 1e18,
+        'transactions_count' => 13,
     ]);
 
     foreach ($blocks as $block) {
@@ -192,15 +197,16 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('blocks'))
         ->assertOk()
         ->assertViewHas([
-            'forgedCount'   => 148,
-            'missedCount'   => 19,
-            'totalRewards'  => 2 * 148,
-            'largestAmount' => 13,
+            'forgedCount'     => 148,
+            'missedCount'     => 19,
+            'totalRewards'    => 2 * 148,
+            'maxTransactions' => 13,
         ]);
 
     $blocks = Block::factory(12)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
-        'reward'    => 2 * 1e18,
+        'timestamp'          => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
+        'reward'             => 2 * 1e18,
+        'transactions_count' => 24,
     ]);
 
     foreach ($blocks as $block) {
@@ -223,10 +229,10 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('blocks'))
         ->assertOk()
         ->assertViewHas([
-            'forgedCount'   => 148,
-            'missedCount'   => 19,
-            'totalRewards'  => 2 * 148,
-            'largestAmount' => 13,
+            'forgedCount'     => 148,
+            'missedCount'     => 19,
+            'totalRewards'    => 2 * 148,
+            'maxTransactions' => 13,
         ]);
 
     $this->travelTo('2021-04-14 16:09:04');
@@ -235,9 +241,9 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('blocks'))
         ->assertOk()
         ->assertViewHas([
-            'forgedCount'   => 160,
-            'missedCount'   => 21,
-            'totalRewards'  => 2 * 160,
-            'largestAmount' => 14,
+            'forgedCount'     => 160,
+            'missedCount'     => 21,
+            'totalRewards'    => 2 * 160,
+            'maxTransactions' => 24,
         ]);
 });
