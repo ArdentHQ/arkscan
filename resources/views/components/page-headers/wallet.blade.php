@@ -16,7 +16,7 @@
         @unless($wallet->isCold())
             <x-page-headers.wallet.actions.public-key :public-key="$wallet->publicKey()" />
 
-            @if ($wallet->isLegacy())
+            @if ($wallet->isLegacy() && $wallet->legacyAddress() !== null)
                 <x-page-headers.wallet.actions.legacy-address :address="$wallet->legacyAddress()" />
             @endif
         @endunless
