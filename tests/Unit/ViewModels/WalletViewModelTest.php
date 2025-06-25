@@ -52,6 +52,17 @@ it('should get the address', function () {
     expect($this->subject->address())->toBe($this->wallet->address);
 });
 
+it('should get the legacy address', function () {
+    $wallet = Wallet::factory()->create([
+        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'public_key' => '03a4d147a417376742f9ab78c7c3891574d19376aa62e7bbddceaf12e096e79fe0',
+    ]);
+
+    $viewModel = new WalletViewModel($wallet);
+
+    expect($viewModel->legacyAddress())->toBe('AdLb2r8XEmhNqW3CXyNGEEVZxXAfvTqPWR');
+});
+
 it('should get an id from the address', function () {
     expect($this->subject->id())->toBe($this->wallet->address);
 });
