@@ -7,11 +7,11 @@ namespace App\ViewModels;
 use App\Actions\CacheNetworkSupply;
 use App\Contracts\ViewModel;
 use App\Models\Wallet;
-use App\Services\Addresses\Legacy;
 use App\Services\ArkVaultUrlBuilder;
 use App\Services\ExchangeRate;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
 use App\ViewModels\Concerns\Wallet\CanBeKnownWallet;
+use App\ViewModels\Concerns\Wallet\CanBeLegacy;
 use App\ViewModels\Concerns\Wallet\CanBeValidator;
 use App\ViewModels\Concerns\Wallet\CanForge;
 use App\ViewModels\Concerns\Wallet\CanVote;
@@ -23,6 +23,7 @@ final class WalletViewModel implements ViewModel
 {
     use CanBeCold;
     use CanBeKnownWallet;
+    use CanBeLegacy;
     use CanBeValidator;
     use CanForge;
     use CanVote;
@@ -51,11 +52,6 @@ final class WalletViewModel implements ViewModel
     public function address(): string
     {
         return $this->wallet->address;
-    }
-
-    public function legacyAddress(): string
-    {
-        return Legacy::generateAddressFromPublicKey($this->wallet->public_key);
     }
 
     public function publicKey(): ?string

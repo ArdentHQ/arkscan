@@ -15,9 +15,11 @@
 
         @unless($wallet->isCold())
             <x-page-headers.wallet.actions.public-key :public-key="$wallet->publicKey()" />
-        @endunless
 
-        <x-page-headers.wallet.actions.legacy-address :address="$wallet->legacyAddress()" />
+            @if ($wallet->isLegacy())
+                <x-page-headers.wallet.actions.legacy-address :address="$wallet->legacyAddress()" />
+            @endif
+        @endunless
 
         <livewire:wallet-qr-code
             :address="$wallet->address()"
