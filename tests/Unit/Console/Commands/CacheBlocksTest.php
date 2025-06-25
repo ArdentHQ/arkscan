@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Events\Statistics\TransactionDetails;
 use App\Models\Block;
-use App\Models\Transaction;
 use App\Services\Cache\BlockCache;
 use Illuminate\Support\Facades\Event;
 
