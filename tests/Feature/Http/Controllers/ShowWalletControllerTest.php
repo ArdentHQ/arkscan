@@ -19,7 +19,6 @@ it('should render the page without any errors', function () {
 
     (new NetworkCache())->setSupply(fn () => 100 * 1e18);
 
-    ((new ValidatorCache())->setTotalAmounts([$wallet->address => 10 * 1e18]));
     ((new ValidatorCache())->setTotalFees([$wallet->address => 10 * 1e18]));
     ((new ValidatorCache())->setTotalRewards([$wallet->address => 10 * 1e18]));
     ((new ValidatorCache())->setTotalBlocks([$wallet->address => 10 * 1e18]));
@@ -37,7 +36,6 @@ it('can lookup wallets by the username', function () {
 
     (new NetworkCache())->setSupply(fn () => 100 * 1e18);
 
-    ((new ValidatorCache())->setTotalAmounts([$wallet->address => 10 * 1e18]));
     ((new ValidatorCache())->setTotalFees([$wallet->address => 10 * 1e18]));
     ((new ValidatorCache())->setTotalRewards([$wallet->address => 10 * 1e18]));
     ((new ValidatorCache())->setTotalBlocks([$wallet->address => 10 * 1e18]));

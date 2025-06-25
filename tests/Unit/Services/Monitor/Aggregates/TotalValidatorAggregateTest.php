@@ -19,26 +19,6 @@ beforeEach(function () {
     ]);
 });
 
-it('should aggregate the total amount forged', function () {
-    $blocks = Block::factory(10)->create([
-        'proposer' => 'generator',
-    ]);
-
-    foreach ($blocks as $block) {
-        Transaction::factory()->create([
-            'value'      => 1 * 1e18,
-            'block_hash' => $block->hash,
-        ]);
-    }
-
-    $result = (new ValidatorTotalAggregates())->aggregate();
-
-    expect($result)->toBeInstanceOf(Collection::class);
-    expect($result)->toHaveCount(1);
-    expect($result->toArray()[0]['proposer'])->toBe('generator');
-    expect($result->toArray()[0]['amount'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
-});
-
 it('should aggregate the total fee forged', function () {
     $blocks = Block::factory(10)->create([
         'proposer' => 'generator',
@@ -122,6 +102,5 @@ it('should aggregate all the forged data', function () {
     expect($result->toArray()[0]['proposer'])->toBe('generator');
     expect($result->toArray()[0]['count'])->toBe(10);
     expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
-    expect($result->toArray()[0]['amount'])->toBe(BigNumber::new(20)->valueOf()->multipliedBy(1e18)->__toString());
     expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(30)->valueOf()->multipliedBy(1e18)->__toString());
 });

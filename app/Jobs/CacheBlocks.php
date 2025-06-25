@@ -28,7 +28,7 @@ final class CacheBlocks implements ShouldQueue
 
         $hasChanges = false;
         if ($largestBlockByFees !== null) {
-            if (! $hasChanges && $cache->getLargestIdByFees() !== $largestBlockByFees->hash) {
+            if ($cache->getLargestIdByFees() !== $largestBlockByFees->hash) {
                 $hasChanges = true;
             }
 

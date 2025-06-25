@@ -107,14 +107,6 @@ it('should sum up the total forged', function () {
     assertMatchesSnapshot($this->subject->totalForged());
 });
 
-it('should sum up the amount forged', function () {
-    (new ValidatorCache())->setTotalAmounts([$this->subject->address() => 10 * 1e18]);
-
-    expect($this->subject->amountForged())->toBeInstanceOf(BigNumber::class);
-
-    assertMatchesSnapshot($this->subject->amountForged()->valueOf()->__toString());
-});
-
 it('should sum up the fees forged', function () {
     (new ValidatorCache())->setTotalFees([$this->subject->address() => 8 * 1e18]);
 
