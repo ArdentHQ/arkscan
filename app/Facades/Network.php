@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string alias()
  * @method static string api()
  * @method static string explorerTitle()
+ * @method static string legacyExplorerUrl()
  * @method static string currency()
  * @method static string currencySymbol()
  * @method static string nethash()

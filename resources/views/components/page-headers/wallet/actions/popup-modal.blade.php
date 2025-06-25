@@ -2,6 +2,7 @@
     'value',
     'button',
     'title',
+    'additionalButtons' => null,
 ])
 
 <div
@@ -44,6 +45,8 @@
                 with-checkmarks
                 checkmarks-class="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
             />
+
+            {{ $additionalButtons }}
 
             <button
                 type="button"
