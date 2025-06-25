@@ -54,7 +54,7 @@ it('should get the address', function () {
 
 it('should get the legacy address', function () {
     $wallet = Wallet::factory()->create([
-        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+        'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         'public_key' => '03a4d147a417376742f9ab78c7c3891574d19376aa62e7bbddceaf12e096e79fe0',
     ]);
 
