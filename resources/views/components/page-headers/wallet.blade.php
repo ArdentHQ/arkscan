@@ -6,7 +6,7 @@
     <x-slot name="extra">
         <x-ark-clipboard
             :value="$wallet->address()"
-            class="flex items-center p-2 w-full h-auto focus-visible:ring-inset group"
+            class="flex items-center p-2 w-full h-auto focus-visible:ring-inset group button-secondary"
             wrapper-class="flex-1"
             :tooltip-content="trans('pages.wallet.address_copied')"
             with-checkmarks
