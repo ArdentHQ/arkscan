@@ -132,6 +132,11 @@ final class Network implements Contract
         return $this->config['blockReward'];
     }
 
+    public function base58Prefix(): int
+    {
+        return $this->config['base58Prefix'];
+    }
+
     public function supply(): BigNumber
     {
         $latestState = State::first();

@@ -203,7 +203,11 @@ return [
         ],
 
         'public_key'            => [
-            'title'       => 'Public Key',
+            'title' => 'Public Key',
+        ],
+
+        'legacy-address' => [
+            'title' => 'Legacy Address',
         ],
 
         'validator'              => [

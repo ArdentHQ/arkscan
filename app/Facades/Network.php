@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static int validatorCount()
  * @method static int blockTime()
  * @method static int blockReward()
+ * @method static int base58Prefix()
  * @method static BigNumber supply()
  * @method static \ArkEcosystem\Crypto\Networks\AbstractNetwork config()
  * @method static array toArray()
