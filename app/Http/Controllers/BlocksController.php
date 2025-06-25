@@ -21,10 +21,10 @@ final class BlocksController
         $data = $this->blockData();
 
         return view('app.blocks', [
-            'forgedCount'   => $data['block_count'],
-            'missedCount'   => $data['missed_count'],
-            'totalRewards'  => BigNumber::new($data['total_rewards'])->toFloat(),
-            'largestAmount' => BigNumber::new($data['largest_amount'])->toFloat(),
+            'forgedCount'     => $data['block_count'],
+            'missedCount'     => $data['missed_count'],
+            'totalRewards'    => BigNumber::new($data['total_rewards'])->toFloat(),
+            'maxTransactions' => $data['max_transactions'],
         ]);
     }
 
@@ -37,16 +37,15 @@ final class BlocksController
                 ->table('blocks')
                 ->selectRaw('COUNT(blocks.*) as block_count')
                 ->selectRaw('SUM(reward) as total_rewards')
-                ->selectRaw('MAX(transactions.value) as largest_amount')
-                ->join('transactions', 'transactions.block_hash', '=', 'blocks.hash')
+                ->selectRaw('MAX(transactions_count) as max_transactions')
                 ->where('blocks.timestamp', '>', $timestamp * 1000)
                 ->first();
 
             return [
-                'block_count'    => $data['block_count'],
-                'missed_count'   => ForgingStats::missed()->where('timestamp', '>', $timestamp)->count(),
-                'total_rewards'  => $data['total_rewards'] ?? 0,
-                'largest_amount' => $data['largest_amount'] ?? 0,
+                'block_count'      => $data['block_count'],
+                'missed_count'     => ForgingStats::missed()->where('timestamp', '>', $timestamp)->count(),
+                'total_rewards'    => $data['total_rewards'] ?? 0,
+                'max_transactions' => $data['max_transactions'] ?? 0,
             ];
         });
     }

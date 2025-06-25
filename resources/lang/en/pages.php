@@ -456,12 +456,12 @@ return [
     ],
 
     'blocks'           => [
-        'title'               => 'Blocks',
-        'subtitle'            => 'List of blocks on the :network',
-        'blocks_produced_24h' => 'Blocks Produced (24h)',
-        'missed_blocks_24h'   => 'Missed Blocks (24h)',
-        'block_rewards_24h'   => 'Block Rewards (24h)',
-        'largest_block_24h'   => 'Largest Block (24h)',
+        'title'                => 'Blocks',
+        'subtitle'             => 'List of blocks on the :network',
+        'blocks_produced_24h'  => 'Blocks Produced (24h)',
+        'missed_blocks_24h'    => 'Missed Blocks (24h)',
+        'block_rewards_24h'    => 'Block Rewards (24h)',
+        'max_transactions_24h' => 'Max Transactions (24h)',
     ],
 
     'statistics'       => [
