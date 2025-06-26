@@ -2,7 +2,7 @@
     'forgedCount',
     'missedCount',
     'totalRewards',
-    'largestAmount',
+    'maxTransactions',
 ])
 
 <x-page-headers.generic
@@ -14,6 +14,6 @@
         <x-page-headers.blocks.blocks-produced :count="$forgedCount" />
         <x-page-headers.blocks.missed-blocks :count="$missedCount" />
         <x-page-headers.blocks.block-rewards :rewards="$totalRewards" />
-        <x-page-headers.blocks.largest-block :amount="$largestAmount" />
+        <x-page-headers.blocks.max-transactions :count="$maxTransactions" />
     </div>
 </x-page-headers.generic>

@@ -14,8 +14,6 @@
         <livewire:stats.highlights />
 
         <div>
-            
-
             <div class="py-6 px-6 space-y-6 border-t-4 md:px-10 md:mx-auto md:max-w-7xl md:border-0 border-theme-secondary-200 dark:border-theme-dark-950">
                 <x-stats.information-cards />
             </div>
