@@ -417,7 +417,7 @@ MethodID: 0x6dd7d8ea');
         ]);
     });
 
-    it('should fail to get formatted multi payment receipts if invalid a multi payment', function () {
+    it('should fail to get formatted multi payment recipients if invalid a multi payment', function () {
         $transaction = new TransactionViewModel(Transaction::factory()
             ->withPayload('123456')
             ->create());
