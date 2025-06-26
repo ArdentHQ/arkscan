@@ -15,7 +15,6 @@ use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class CacheAnnualStatistics extends Command
@@ -99,7 +98,7 @@ final class CacheAnnualStatistics extends Command
                 (string) BigNumber::new(UnitConverter::formatUnits($itemData['fees'], 'ark')),
                 $blocksData->get($key)?->blocks, // We assume to have the same value of entries for blocks and transactions (years)
             );
-        };
+        }
     }
 
     private function cacheCurrentYear(StatisticsCache $cache): void
