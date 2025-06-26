@@ -104,9 +104,6 @@ it('should cache annual data for all time', function () {
         ->count(3)
         ->withReceipt()
         ->create([
-            // @TODO: Amount is the sum of all the individual payments but may not
-            // represent a real world scenario and should not be considered accurate
-            // @see https://app.clickup.com/t/86dvf5xcm
             'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
@@ -530,12 +527,23 @@ it('should get all annual data if not already set', function () {
     expect($cache->getAnnualData(2017))->toBeNull();
 
     // 2017
-    Transaction::factory()
-        ->count(6)
+    Transaction::factory(6)
         ->withReceipt()
         ->create([
             'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
             'value'     => 10 * 1e18,
+            'gas_price' => 100000000,
+        ]);
+
+    Transaction::factory(3)
+        ->multiPayment([
+            Wallet::factory()->create()->address,
+            Wallet::factory()->create()->address,
+        ], [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)])
+        ->withReceipt()
+        ->create([
+            'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
+            'value'     => 11 * 1e18,
             'gas_price' => 100000000,
         ]);
 
@@ -547,9 +555,9 @@ it('should get all annual data if not already set', function () {
 
     expect($cache->getAnnualData(2017))->toBe([
         'year'         => 2017,
-        'transactions' => 6,
-        'volume'       => '60.0000000000000000',
-        'fees'         => '0.0000126',
+        'transactions' => 9,
+        'volume'       => '93.0000000000000000',
+        'fees'         => '0.0000189',
         'blocks'       => 6,
     ]);
 });
@@ -593,9 +601,6 @@ it('should not cache all annual data if already set', function () {
         ->count(3)
         ->withReceipt()
         ->create([
-            // @TODO: Amount is the sum of all the individual payments but may not
-            // represent a real world scenario and should not be considered accurate
-            //  @see https://app.clickup.com/t/86dvf5xcm
             'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 
@@ -656,9 +661,6 @@ it('should cache all annual data with flag even if not already set', function ()
         ->count(3)
         ->withReceipt()
         ->create([
-            // @TODO: Amount is the sum of all the individual payments but may not
-            // represent a real world scenario and should not be considered accurate
-            // @see https://app.clickup.com/t/86dvf5xcm
             'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
 

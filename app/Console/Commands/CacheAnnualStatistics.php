@@ -7,6 +7,8 @@ namespace App\Console\Commands;
 use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
 use App\Events\Statistics\AnnualData;
 use App\Facades\Network;
+use App\Models\Scopes\MultiPaymentTotalAmountScope;
+use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
@@ -52,19 +54,15 @@ final class CacheAnnualStatistics extends Command
             return;
         }
 
-        $transactionData = DB::connection('explorer')
-            ->query()
-            ->select([
+        $transactionData = Transaction::select([
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
                 DB::raw('COUNT(DISTINCT(transactions.hash)) AS transactions'),
-                // @TODO: The value is not reliable for multy-payment transactions
-                // We need to look into an alternative way to calculate the value
-                // @see https://app.clickup.com/t/86dvf5xcm
-                DB::raw(sprintf('SUM(value) / 1e%d AS value', config('currencies.decimals.crypto', 18))),
+                DB::raw(sprintf('(SUM(value) FILTER (WHERE COALESCE(is_multipayment, FALSE) != TRUE)) / 1e%d AS value', config('currencies.decimals.crypto', 18))),
                 DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) AS fees')),
+                DB::raw('COALESCE(SUM(recipient_amount), 0) as recipient_value'),
             ])
-            ->from('transactions')
             ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
+            ->withScope(MultiPaymentTotalAmountScope::class)
             ->groupBy('year')
             ->orderBy('year')
             ->get();
@@ -80,10 +78,11 @@ final class CacheAnnualStatistics extends Command
             ->orderBy('year')
             ->get();
 
-        $transactionData->each(function ($item, $key) use ($blocksData, $cache) {
+        foreach ($transactionData as $key => $item) {
+            $itemData = $item->toArray();
             if (! $this->hasChanges) {
-                $existingData = $cache->getAnnualData((int) $item->year) ?? [];
-                if (Arr::get($existingData, 'transactions') !== $item->transactions) {
+                $existingData = $cache->getAnnualData((int) $itemData['year']) ?? [];
+                if (Arr::get($existingData, 'transactions') !== $itemData['transactions']) {
                     $this->hasChanges = true;
                 }
 
@@ -93,13 +92,13 @@ final class CacheAnnualStatistics extends Command
             }
 
             $cache->setAnnualData(
-                (int) $item->year,
-                (int) $item->transactions,
-                (string) BigNumber::new($item->value),
-                (string) BigNumber::new(UnitConverter::formatUnits($item->fees, 'ark')),
+                (int) $itemData['year'],
+                (int) $itemData['transactions'],
+                (string) $itemData['value']->plus(UnitConverter::formatUnits($itemData['recipient_value'], 'ark')),
+                (string) BigNumber::new(UnitConverter::formatUnits($itemData['fees'], 'ark')),
                 $blocksData->get($key)?->blocks, // We assume to have the same value of entries for blocks and transactions (years)
             );
-        });
+        }
     }
 
     private function cacheCurrentYear(StatisticsCache $cache): void

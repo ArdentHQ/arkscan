@@ -85,7 +85,12 @@ final class TransactionFactory extends Factory
 
         foreach ($recipients as $index => $recipient) {
             $pay[0][] = $recipient;
-            $pay[1][] = $amounts[$index]->__toString();
+            $pay[1][] = (string) $amounts[$index];
+        }
+
+        $totalAmount = BigNumber::zero();
+        foreach ($amounts as $amount) {
+            $totalAmount = $totalAmount->plus((string) $amount);
         }
 
         $payload = (new AbiEncoder(ContractAbiType::MULTIPAYMENT))
@@ -95,7 +100,7 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($payload)
             ->state(fn () => [
-                'value'            => 0,
+                'value'            => (string) $totalAmount,
                 'to'               => Network::knownContract('multipayment'),
             ]);
     }
