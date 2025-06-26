@@ -17,7 +17,7 @@ trait CanBeValidatorRegistration
         }
 
         /** @var array $methodData */
-        $methodData = $this->getMethodData();
+        $methodData = $this->transaction->getMethodData();
 
         [2 => $arguments] = $methodData;
 

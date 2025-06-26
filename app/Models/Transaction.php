@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\ContractMethod;
+use App\Facades\Network;
 use App\Models\Casts\BigInteger;
 use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
+use App\Models\Concerns\Transaction\HasPayload;
 use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
@@ -20,11 +23,14 @@ use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use App\ViewModels\TransactionViewModel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
 /**
@@ -48,6 +54,7 @@ final class Transaction extends Model
 {
     use CanBeSorted;
     use HasFactory;
+    use HasPayload;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
     use Searchable;
@@ -204,6 +211,26 @@ final class Transaction extends Model
     public function receipt(): HasOne
     {
         return $this->hasOne(Receipt::class, 'transaction_hash', 'hash');
+    }
+
+    public function getVotedForAddressAttribute(): ?string
+    {
+        $methodData = $this->getMethodData();
+        if ($methodData !== null) {
+            return $methodData[2][0] ?? null;
+        }
+
+        return null;
+    }
+
+    /**
+     * A receipt belongs to a transaction.
+     *
+     * @return HasOne
+     */
+    public function votedFor(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'address', 'votedForAddress');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
