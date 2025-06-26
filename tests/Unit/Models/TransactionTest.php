@@ -15,8 +15,8 @@ beforeEach(function () {
     $this->recipient = Wallet::factory()->create();
     $this->subject   = Transaction::factory()->create([
         'gas_price'         => 1,
-        'amount'            => 2 * 1e18,
-        'recipient_address' => $this->recipient,
+        'value'             => 2 * 1e18,
+        'to'                => $this->recipient,
     ]);
 });
 
@@ -35,7 +35,7 @@ it('should belong to a sender', function () {
 it('should throw an exception if the transaction has no recipient', function () {
     $transaction = Transaction::factory()
         ->create([
-            'recipient_address' => null,
+            'to' => null,
         ]);
 
     $this->expectException(Exception::class);
@@ -47,7 +47,7 @@ it('should throw an exception if a vote has no recipient', function () {
     $transaction = Transaction::factory()
         ->vote('') // Invalid address
         ->create([
-            'recipient_address' => null,
+            'to' => null,
         ]);
 
     $this->expectException(Exception::class);
@@ -67,7 +67,7 @@ it('makes transactions searchable', function () {
 
     $indexes->shouldReceive('addDocuments')
         ->withArgs(function ($documents) use ($transaction) {
-            $document = collect($documents)->first(fn ($document) => $document['id'] === $transaction->id);
+            $document = collect($documents)->first(fn ($document) => $document['hash'] === $transaction->hash);
 
             return json_encode($document) === json_encode($transaction->toSearchableArray());
         });
@@ -87,8 +87,8 @@ it('should calculate fee with receipt', function () {
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
-        'gas_used' => 21000,
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => 21000,
     ]);
 
     expect($transaction->fresh()->fee()->toNumber())->toBe(1134000);

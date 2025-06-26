@@ -26,10 +26,10 @@ final class AllAggregate
 
         return Transaction::query()
             ->select(DB::raw(implode(', ', $select)))
-            ->join('receipts', 'transactions.id', '=', 'receipts.id')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->orderBy('formatted_date')
             ->groupBy('formatted_date')
             ->pluck('fee', 'formatted_date')
-            ->mapWithKeys(fn ($fee, $month) => [$month => UnitConverter::formatUnits($fee, 'gwei')]);
+            ->mapWithKeys(fn ($fee, $month) => [$month => UnitConverter::formatUnits($fee, 'wei')]);
     }
 }

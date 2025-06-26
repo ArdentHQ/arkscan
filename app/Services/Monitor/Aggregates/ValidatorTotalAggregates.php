@@ -12,15 +12,15 @@ final class ValidatorTotalAggregates
     public function aggregate(): Collection
     {
         return Wallets::allWithValidatorPublicKey()
-            ->join('blocks', 'blocks.generator_address', '=', 'wallets.address')
+            ->join('blocks', 'blocks.proposer', '=', 'wallets.address')
             ->selectRaw('
-                SUM(blocks.total_amount) as total_amount,
-                SUM(blocks.total_fee) as total_fee,
+                SUM(blocks.amount) as amount,
+                SUM(blocks.fee) as fee,
                 SUM(blocks.reward) as reward,
-                COUNT(blocks.generator_address) as count,
-                blocks.generator_address
+                COUNT(blocks.proposer) as count,
+                blocks.proposer
             ')
-            ->groupBy('blocks.generator_address')
+            ->groupBy('blocks.proposer')
             ->get();
     }
 }

@@ -8,7 +8,6 @@ use App\Contracts\Cache as Contract;
 use App\Services\BigNumber;
 use App\Services\Cache\Concerns\ManagesCache;
 use App\Services\Timestamp;
-use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
@@ -27,19 +26,19 @@ final class StatisticsCache implements Contract
             $data      = (array) DB::connection('explorer')
                 ->table('transactions')
                 ->selectRaw('COUNT(*) as transaction_count')
-                ->selectRaw('SUM(amount) as volume')
-                ->selectRaw('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as total_fees')
-                ->selectRaw('AVG(gas_price * COALESCE(receipts.gas_used, 0)) as average_fee')
+                ->selectRaw('SUM(transactions.value) as volume')
+                ->selectRaw('SUM(transactions.gas_price * COALESCE(receipts.gas_used, 0)) as total_fees')
+                ->selectRaw('AVG(transactions.gas_price * COALESCE(receipts.gas_used, 0)) as average_fee')
                 ->from('transactions')
-                ->join('receipts', 'transactions.id', '=', 'receipts.id')
+                ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
                 ->where('timestamp', '>', $timestamp)
                 ->first();
 
             return [
                 'transaction_count' => $data['transaction_count'],
                 'volume'            => $data['volume'] ?? 0,
-                'total_fees'        => UnitConverter::parseUnits($data['total_fees'] ?? 0, 'gwei'),
-                'average_fee'       => UnitConverter::parseUnits($data['average_fee'] ?? 0, 'gwei'),
+                'total_fees'        => $data['total_fees'] ?? 0,
+                'average_fee'       => $data['average_fee'] ?? 0,
             ];
         });
     }

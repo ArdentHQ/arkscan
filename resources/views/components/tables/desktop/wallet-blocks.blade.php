@@ -58,7 +58,7 @@
     </thead>
     <tbody>
         @foreach($blocks as $block)
-            <x-ark-tables.row wire:key="{{ Helpers::generateId('block-item', $block->id()) }}">
+            <x-ark-tables.row wire:key="{{ Helpers::generateId('block-item', $block->hash()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.block-height :model="$block" />
                 </x-ark-tables.cell>

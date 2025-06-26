@@ -6,7 +6,41 @@
             :title="trans('pages.transaction.header.amount')"
             :transaction="$transaction"
         >
-            <x-transaction.amount :transaction="$transaction" />
+            <x-transaction.amount :amount="$transaction->amount()" />
+        </x-transaction.page.section-detail.row>
+    @elseif ($transaction->isValidatorRegistration() && $transaction->amount() > 0)
+        <x-transaction.page.section-detail.row
+            :title="trans('pages.transaction.header.locked_amount')"
+            :transaction="$transaction"
+        >
+            <div class="flex justify-end items-center space-x-2 sm:justify-start">
+                <x-transaction.amount :amount="$transaction->amount()" />
+
+                <x-tables.headers.desktop.includes.tooltip
+                    :text="trans('pages.transaction.locked_amount_tooltip')"
+                    type="question"
+                />
+            </div>
+        </x-transaction.page.section-detail.row>
+    @elseif ($transaction->isValidatorResignation())
+        <x-transaction.page.section-detail.row
+            :title="trans('pages.transaction.header.unlocked_amount')"
+            :transaction="$transaction"
+        >
+            <div class="flex justify-end items-center space-x-2 sm:justify-start">
+                @php ($registration = $transaction->validatorRegistration())
+
+                @if ($registration && $registration->amount() > 0)
+                    <x-transaction.amount :amount="$registration->amount()" />
+                @else
+                    <x-transaction.amount :amount="$transaction->amount()" />
+                @endif
+
+                <x-tables.headers.desktop.includes.tooltip
+                    :text="$registration && $registration->amount() > 0 ? trans('pages.transaction.unlocked_amount_tooltip') : trans('pages.transaction.legacy_registration_tooltip')"
+                    type="question"
+                />
+            </div>
         </x-transaction.page.section-detail.row>
     @endif
 

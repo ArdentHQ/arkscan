@@ -116,7 +116,7 @@ trait CanForge
 
         $height = CacheNetworkHeight::execute();
 
-        return $height - $lastBlock['height'];
+        return $height - $lastBlock['number'];
     }
 
     public function durationSinceLastForged(): ?string

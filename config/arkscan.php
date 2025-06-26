@@ -59,7 +59,7 @@ return [
 
             'contract_addresses' => [
                 'consensus'    => env('ARKSCAN_CONTRACT_CONSENSUS_ADDRESS', '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1'),
-                'multipayment' => env('ARKSCAN_CONTRACT_MULTIPAYMENT_ADDRESS', '0x83769BeEB7e5405ef0B7dc3C66C43E3a51A6d27f'),
+                'multipayment' => env('ARKSCAN_CONTRACT_MULTIPAYMENT_ADDRESS', '0x00EFd0D4639191C49908A7BddbB9A11A994A8527'),
                 'username'     => env('ARKSCAN_CONTRACT_USERNAME_ADDRESS', '0x2c1DE3b4Dbb4aDebEbB5dcECAe825bE2a9fc6eb6'),
             ],
 

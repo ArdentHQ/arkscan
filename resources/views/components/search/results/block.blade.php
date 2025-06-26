@@ -5,7 +5,7 @@
         <x-slot name="header">
             <div class="min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
                 <x-truncate-middle>
-                    {{ $block->id() }}
+                    {{ $block->hash() }}
                 </x-truncate-middle>
             </div>
         </x-slot>
@@ -34,7 +34,7 @@
 
             <div class="min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
                 <x-truncate-middle :length="20">
-                    {{ $block->id() }}
+                    {{ $block->hash() }}
                 </x-truncate-middle>
             </div>
         </div>

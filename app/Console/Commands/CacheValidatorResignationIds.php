@@ -27,12 +27,12 @@ final class CacheValidatorResignationIds extends Command
     public function handle(): void
     {
         Transaction::query()
-            ->select('sender_public_key', 'id')
-            // TODO: re-add validator resignation scope - https://app.clickup.com/t/86duufu8e
+            ->select('sender_public_key', 'hash')
+            // TODO: re-add validator resignation scope - https://app.clickup.com/t/86dvxzgbh
             ->cursor()
             ->each(function ($transaction) {
                 // @phpstan-ignore-next-line
-                CacheResignationId::dispatch($transaction->sender_public_key, (string) $transaction->id)->onQueue('resignations');
+                CacheResignationId::dispatch($transaction->sender_public_key, (string) $transaction->hash)->onQueue('resignations');
             });
     }
 }

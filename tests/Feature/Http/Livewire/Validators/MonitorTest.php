@@ -35,23 +35,23 @@ describe('Monitor', function () {
 
         $wallets->each(function ($wallet) {
             $block = Block::factory()->create([
-                'height'            => 5944900,
+                'number'            => 5944900,
                 'timestamp'         => 113620904,
-                'generator_address' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
 
             // Start height for round 112168
             Block::factory()->create([
-                'height'            => 5944904,
+                'number'            => 5944904,
                 'timestamp'         => 113620904,
-                'generator_address' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
 
             (new WalletCache())->setValidator($wallet->address, $wallet);
 
             (new WalletCache())->setLastBlock($wallet->address, [
-                'id'     => $block->id,
-                'height' => $block->height->toNumber(),
+                'id'     => $block->hash,
+                'number' => $block->number->toNumber(),
             ]);
         });
     }
@@ -61,8 +61,8 @@ describe('Monitor', function () {
         $block = createBlock($height, $address);
 
         (new WalletCache())->setLastBlock($address, [
-            'id'     => $block->id,
-            'height' => $block->height->toNumber(),
+            'id'     => $block->hash,
+            'number' => $block->number->toNumber(),
         ]);
     }
 
@@ -116,8 +116,8 @@ describe('Monitor', function () {
         $wallets->each(function ($wallet) {
             for ($i = 0; $i < 3; $i++) {
                 Block::factory()->create([
-                    'height'            => $i,
-                    'generator_address' => $wallet->address,
+                    'number'            => $i,
+                    'proposer'          => $wallet->address,
                 ]);
             }
 
@@ -755,17 +755,17 @@ describe('Data Boxes', function () {
             $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
 
             $block = Block::factory()->create([
-                'height'            => 5944900,
+                'number'            => 5944900,
                 'timestamp'         => $timestamp,
-                'generator_address' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
 
             // Start height for round 112168
             if ($addBlockForNextRound) {
                 Block::factory()->create([
-                    'height'            => 5944904,
+                    'number'            => 5944904,
                     'timestamp'         => $timestamp,
-                    'generator_address' => $wallet->address,
+                    'proposer'          => $wallet->address,
                 ]);
             }
 
@@ -780,8 +780,8 @@ describe('Data Boxes', function () {
             (new WalletCache())->setPerformance($wallet->address, $performances);
 
             (new WalletCache())->setLastBlock($wallet->address, [
-                'id'     => $block->id,
-                'height' => $block->height->toNumber(),
+                'id'     => $block->hash,
+                'number' => $block->number->toNumber(),
             ]);
         });
     }
@@ -924,15 +924,15 @@ describe('Data Boxes', function () {
 
         $wallets->each(function ($wallet) {
             Block::factory()->create([
-                'height'            => 5944900,
+                'number'            => 5944900,
                 'timestamp'         => 113620904,
-                'generator_address' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
 
             Block::factory()->create([
-                'height'            => 5944904,
+                'number'            => 5944904,
                 'timestamp'         => 113620904,
-                'generator_address' => $wallet->address,
+                'proposer'          => $wallet->address,
             ]);
         });
 

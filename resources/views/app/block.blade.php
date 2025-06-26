@@ -1,5 +1,5 @@
 @component('layouts.app')
-    <x-metadata page="block" :detail="['blockid' => $block->id()]" />
+    <x-metadata page="block" :detail="['blockid' => $block->hash()]" />
 
     @section('content')
         <x-page-headers.block :block="$block" />

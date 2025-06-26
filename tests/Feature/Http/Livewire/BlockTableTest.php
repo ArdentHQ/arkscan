@@ -29,17 +29,61 @@ it('should list the first page of records', function () {
 
         $block = Block::factory()->create([
             'timestamp' => Carbon::now()->timestamp,
-            'height'    => $index + 1,
+            'number'    => $index + 1,
         ]);
 
-        $cache->setWalletNameByAddress($block->generator_address, 'test-username-'.($index + 1));
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
     }
 
     $component = Livewire::test(BlockTable::class)
         ->call('setIsReady');
 
     foreach (ViewModelFactory::paginate(Block::withScope(OrderByTimestampScope::class)->paginate())->items() as $block) {
-        $component->assertSee($block->id());
+        $component->assertSee($block->hash());
+        $component->assertSee($block->timestamp());
+        $component->assertSee($block->username());
+        $component->assertSee(NumberFormatter::number($block->height()));
+        $component->assertSee(NumberFormatter::number($block->transactionCount()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->amount()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->totalReward()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->totalRewardFiat(),
+        ]);
+    }
+});
+
+it('should list the last page of records', function () {
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    $cache = new WalletCache();
+
+    foreach (range(0, 40) as $index) {
+        $this->travel(8)->seconds();
+
+        $block = Block::factory()->create([
+            'timestamp' => Carbon::now()->timestamp,
+            'number'    => $index + 1,
+        ]);
+
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
+    }
+
+    $component = Livewire::test(BlockTable::class)
+        ->call('setIsReady')
+        ->call('setPage', 2);
+
+    $blocks = Block::withScope(OrderByTimestampScope::class)
+        ->paginate(25, ['*'], 'page', 2, Block::count());
+
+    foreach (ViewModelFactory::paginate($blocks)->items() as $block) {
+        $component->assertSee($block->hash());
         $component->assertSee($block->timestamp());
         $component->assertSee($block->username());
         $component->assertSee(NumberFormatter::number($block->height()));
@@ -79,23 +123,23 @@ it('should update the records fiat tooltip when currency changed', function () {
     $transactions = Transaction::factory(10)
         ->transfer()
         ->create([
-            'block_id'  => $block->id,
-            'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+            'block_hash'  => $block->hash,
+            'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
         ])
         ->concat(
             Transaction::factory(10)
                 ->vote($wallet->address)
                 ->create([
-                    'block_id'  => $block->id,
-                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                    'block_hash'  => $block->hash,
+                    'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         )
         ->concat(
             Transaction::factory(10)
                 ->multiPayment([$wallet->address], [BigNumber::new(1e18)])
                 ->create([
-                    'block_id'  => $block->id,
-                    'timestamp' => Carbon::parse('2020-10-19 00:00:00')->timestamp,
+                    'block_hash'  => $block->hash,
+                    'timestamp'   => Carbon::parse('2020-10-19 00:00:00')->timestamp,
                 ])
         );
 
@@ -134,9 +178,9 @@ it('should handle a lot of blocks', function () {
         $this->travel(8)->seconds();
 
         Block::factory()->create([
-            'generator_address' => $wallet->address,
+            'proposer'          => $wallet->address,
             'timestamp'         => Carbon::now()->timestamp,
-            'height'            => $index,
+            'number'            => $index,
         ]);
     }
 
@@ -157,7 +201,7 @@ it('should reload on new block event', function () {
 
         Block::factory()->create([
             'timestamp' => Carbon::parse('2023-07-12 00:00:00')->timestamp,
-            'height'    => $index,
+            'number'    => $index,
         ]);
     }
 
@@ -168,10 +212,84 @@ it('should reload on new block event', function () {
 
     $otherBlock = Block::factory()->create([
         'timestamp' => Carbon::parse('2023-07-13 00:00:00')->timestamp,
-        'height'    => 401,
+        'number'    => 401,
     ]);
 
-    $component->assertDontSee($otherBlock->id)
+    $component->assertDontSee($otherBlock->hash)
         ->dispatch('echo:blocks,NewBlock')
-        ->assertSee($otherBlock->id);
+        ->assertSee($otherBlock->hash);
+});
+
+it('should handle snapshot of blocks', function () {
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    $cache = new WalletCache();
+
+    foreach (range(1001, 1511) as $index) {
+        $this->travel(8)->seconds();
+
+        $block = Block::factory()->create([
+            'timestamp' => Carbon::now()->timestamp,
+            'number'    => $index + 1,
+        ]);
+
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
+    }
+
+    $blockCount = Block::count();
+    $pageCount  = ceil($blockCount / 25);
+
+    Livewire::test(BlockTable::class)
+        ->call('setIsReady')
+        ->set('perPage', 25)
+        ->assertSee('Page 1 of '.$pageCount);
+});
+
+it('should list the last page of a snapshot', function () {
+    $this->travelTo(Carbon::parse('2023-07-12 00:00:00'));
+
+    $cache = new WalletCache();
+
+    foreach (range(1001, 1511) as $index) {
+        $this->travel(8)->seconds();
+
+        $block = Block::factory()->create([
+            'timestamp' => Carbon::now()->timestamp,
+            'number'    => $index + 1,
+        ]);
+
+        $cache->setWalletNameByAddress($block->proposer, 'test-username-'.($index + 1));
+    }
+
+    $blockCount = Block::count();
+    $pageCount  = ceil($blockCount / 25);
+
+    $component = Livewire::test(BlockTable::class)
+        ->call('setIsReady')
+        ->call('setPage', $pageCount);
+
+    $blocks = Block::withScope(OrderByTimestampScope::class)
+        ->paginate(25, ['*'], 'page', $pageCount, $blockCount);
+
+    expect($blocks->items())->toHaveCount(11);
+
+    foreach (ViewModelFactory::paginate($blocks)->items() as $block) {
+        $component->assertSee($block->hash());
+        $component->assertSee($block->timestamp());
+        $component->assertSee($block->username());
+        $component->assertSee(NumberFormatter::number($block->height()));
+        $component->assertSee(NumberFormatter::number($block->transactionCount()));
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->amount()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            number_format($block->totalReward()),
+        ]);
+        $component->assertSeeInOrder([
+            Network::currency(),
+            $block->totalRewardFiat(),
+        ]);
+    }
 });

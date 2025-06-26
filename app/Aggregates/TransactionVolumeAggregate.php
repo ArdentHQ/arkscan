@@ -12,6 +12,6 @@ final class TransactionVolumeAggregate implements Aggregate
 {
     public function aggregate(): string
     {
-        return (string) BigNumber::new(Transaction::sum('amount'))->toInt();
+        return (string) BigNumber::new(Transaction::sum('value'))->toInt();
     }
 }

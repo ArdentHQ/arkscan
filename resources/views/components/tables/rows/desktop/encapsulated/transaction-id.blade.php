@@ -17,7 +17,7 @@
                 '!text-theme-danger-700 dark:!text-theme-failed-state-text' => $hasFailedStatus,
             ])
         >
-            <x-truncate-middle>{{ $model->id() }}</x-truncate-middle>
+            <x-truncate-middle>{{ $model->hash() }}</x-truncate-middle>
         </a>
 
         @if ($hasFailedStatus)

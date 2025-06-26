@@ -31,9 +31,9 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
         $roundValidators  = $round->validators;
         $activeValidators = count($roundValidators);
 
-        $producedBlocks = Block::select(['generator_address', 'height', 'timestamp'])
-            ->whereBetween('height', [$round->round_height, $round->round_height + $activeValidators - 1])
-            ->orderBy('height', 'asc')
+        $producedBlocks = Block::select(['proposer', 'number', 'timestamp'])
+            ->whereBetween('number', [$round->round_height, $round->round_height + $activeValidators - 1])
+            ->orderBy('number', 'asc')
             ->get();
 
         // Good Scenario (no missed block):
@@ -54,13 +54,14 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
 
         $producedBlocks->each(function ($block, $index) use (&$forgeInfoByTimestamp, &$misses, $validatorCount, $roundValidators) {
             $expectedValidator = $roundValidators[($index + $misses) % $validatorCount];
-            $actualValidator   = $block['generator_address'];
+            $actualValidator   = $block['proposer'];
 
             $isForger = $actualValidator === $expectedValidator;
             if (! $isForger) {
                 $misses += 1;
 
-                // TODO: update stats for actual forger, however this currently gets overridden below since it shares the same timestamp.
+                // TODO: update stats for actual forger, however this currently gets overridden below since it shares the same timestamp
+                // https://app.clickup.com/t/86dvxzh3y
                 $forgeInfoByTimestamp[strval($block->timestamp)] = [
                     'address' => $actualValidator,
                     'forged'  => true,

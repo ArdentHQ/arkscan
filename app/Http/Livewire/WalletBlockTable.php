@@ -53,7 +53,7 @@ final class WalletBlockTable extends TabbedTableComponent
             return new LengthAwarePaginator([], 0, $this->perPage);
         }
 
-        return Block::where('generator_address', $this->address)
+        return Block::where('proposer', $this->address)
             ->withScope(OrderByHeightScope::class)
             ->paginate($this->perPage);
     }

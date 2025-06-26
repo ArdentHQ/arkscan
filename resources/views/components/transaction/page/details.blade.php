@@ -12,7 +12,7 @@
         :transaction="$transaction"
     >
         <x-transaction.page.section-detail.block-height-link
-            :id="$transaction->blockId()"
+            :id="$transaction->blockHash()"
             :height="$transaction->blockHeight()"
         />
     </x-transaction.page.section-detail.row>

@@ -143,10 +143,10 @@ final class Insights extends Component
         $blockCache = new BlockCache();
 
         return TransactionRecordsStatistics::make(
-            Transaction::find($transactionCache->getLargestIdByAmount()),
-            Block::find($blockCache->getLargestIdByAmount()),
-            Block::find($blockCache->getLargestIdByFees()),
-            Block::find($blockCache->getLargestIdByTransactionCount()),
+            Transaction::where('hash', $transactionCache->getLargestIdByAmount())->first(),
+            Block::where('hash', $blockCache->getLargestIdByAmount())->first(),
+            Block::where('hash', $blockCache->getLargestIdByFees())->first(),
+            Block::where('hash', $blockCache->getLargestIdByTransactionCount())->first(),
         );
     }
 

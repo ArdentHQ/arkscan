@@ -11,12 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * @property string $id
- * @property bool $success
- * @property BigNumber $block_height
+ * @property string $transaction_hash
+ * @property bool $status
+ * @property BigNumber $block_number
  * @property BigNumber $gas_used
  * @property BigNumber $gas_refunded
- * @property string|null $deployed_contract_address
+ * @property string|null $contract_address
  * @property array $logs
  * @property string $output
  */
@@ -65,13 +65,13 @@ final class Receipt extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'id'           => 'string',
-        'success'      => 'bool',
-        'block_height' => BigInteger::class,
-        'gas_used'     => BigInteger::class,
-        'gas_refunded' => BigInteger::class,
-        'logs'         => 'array',
-        'output'       => 'string',
+        'transaction_hash'           => 'string',
+        'status'                     => 'bool',
+        'block_number'               => BigInteger::class,
+        'gas_used'                   => BigInteger::class,
+        'gas_refunded'               => BigInteger::class,
+        'logs'                       => 'array',
+        'output'                     => 'string',
     ];
 
     /**
@@ -81,6 +81,6 @@ final class Receipt extends Model
      */
     public function transaction(): HasOne
     {
-        return $this->hasOne(Transaction::class, 'id', 'id');
+        return $this->hasOne(Transaction::class, 'hash', 'transaction_hash');
     }
 }

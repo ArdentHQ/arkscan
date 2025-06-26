@@ -26,9 +26,9 @@ class CacheContractAddresses extends Command
 
     public function handle(): void
     {
-        $addresses = Receipt::where('deployed_contract_address', '!=', null)
+        $addresses = Receipt::where('contract_address', '!=', null)
             ->distinct()
-            ->pluck('deployed_contract_address')
+            ->pluck('contract_address')
             ->toArray();
 
         (new WalletCache())->setContractAddresses($addresses);

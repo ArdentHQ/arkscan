@@ -39,20 +39,20 @@ it('should cache validator statistics', function () {
 
     Transaction::factory()->validatorRegistration()->create([
         'timestamp'      => Carbon::now()->addSecond(1)->getTimestampMs(),
-        'sender_address' => $oldestActive->address,
+        'from'           => $oldestActive->address,
     ]);
 
     Transaction::factory()->validatorRegistration()->create([
         'timestamp'         => Carbon::now()->addSecond(100)->getTimestampMs(),
-        'sender_address'    => $newestActive->address,
+        'from'              => $newestActive->address,
     ]);
 
     Block::factory()->count(10)->create([
-        'generator_address' => $mostBlocks->address,
+        'proposer' => $mostBlocks->address,
     ]);
 
     Block::factory()->count(6)->create([
-        'generator_address' => $newestActive->address,
+        'proposer' => $newestActive->address,
     ]);
 
     $this->artisan('explorer:cache-validator-statistics');

@@ -7,14 +7,14 @@ use App\Models\Transaction;
 
 it('should link to a transaction', function () {
     $transaction = Transaction::factory()->create();
-    $receipt     = Receipt::factory()->create(['id' => $transaction->id]);
+    $receipt     = Receipt::factory()->create(['transaction_hash' => $transaction->hash]);
 
-    expect($receipt->transaction->id)->toBe($transaction->id);
+    expect($receipt->transaction->hash)->toBe($transaction->hash);
 });
 
 it('should link to a transaction through factory', function () {
     $receipt     = Receipt::factory()->withTransaction()->create();
     $transaction = Transaction::first();
 
-    expect($receipt->transaction->id)->toBe($transaction->id);
+    expect($receipt->transaction->hash)->toBe($transaction->hash);
 });

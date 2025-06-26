@@ -14,6 +14,7 @@ final class CreateValidatorRoundsTable extends Migration
             $table->unsignedBigInteger('round')->primary();
             $table->unsignedBigInteger('round_height')->unique();
             $table->jsonb('validators');
+            $table->jsonb('votes');
         });
     }
 }

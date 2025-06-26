@@ -18,14 +18,14 @@ it('should not dispatch transaction details event if no change', function () {
     $this->travelTo('2024-04-19 00:15:44');
 
     $transaction = Transaction::factory()->transfer()->create([
-        'amount'    => 1 * 1e8,
+        'value'     => 1 * 1e8,
         'gas_price' => 0.1,
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
     ]);
 
-    $cache->setLargestIdByAmount($transaction->id);
+    $cache->setLargestIdByAmount($transaction->hash);
 
-    expect($cache->getLargestIdByAmount())->toEqual($transaction->id);
+    expect($cache->getLargestIdByAmount())->toEqual($transaction->hash);
 
     (new CheckLargestTransaction())->handle();
 
@@ -44,21 +44,21 @@ it('should dispatch transaction details event', function () {
     $this->travelTo('2024-04-19 00:15:44');
 
     $transaction = Transaction::factory()->transfer()->create([
-        'amount'    => 1 * 1e8,
+        'value'     => 1 * 1e8,
         'gas_price' => 0.1,
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-19 00:15:44')->unix())->unix(),
     ]);
 
-    $cache->setLargestIdByAmount($transaction->id);
+    $cache->setLargestIdByAmount($transaction->hash);
 
-    expect($cache->getLargestIdByAmount())->toEqual($transaction->id);
+    expect($cache->getLargestIdByAmount())->toEqual($transaction->hash);
 
     (new CheckLargestTransaction())->handle();
 
     Event::assertDispatchedTimes(TransactionDetails::class, 0);
 
     $transaction = Transaction::factory()->transfer()->create([
-        'amount'    => 20 * 1e8,
+        'value'     => 20 * 1e8,
         'gas_price' => 0.2,
         'timestamp' => Timestamp::fromUnix(Carbon::parse('2024-04-20 00:15:44')->unix())->unix(),
     ]);

@@ -46,7 +46,7 @@
     </thead>
     <tbody>
         @foreach($votes as $vote)
-            <x-ark-tables.row wire:key="{{ Helpers::generateId('vote-item', $vote->id()) }}">
+            <x-ark-tables.row wire:key="{{ Helpers::generateId('vote-item', $vote->hash()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.transaction-id :model="$vote" />
                 </x-ark-tables.cell>

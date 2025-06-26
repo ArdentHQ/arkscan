@@ -39,7 +39,7 @@
     </thead>
     <tbody>
         @foreach($transactions as $transaction)
-            <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-item', $transaction->id()) }}">
+            <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-item', $transaction->hash()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.transaction-id :model="$transaction" />
                 </x-ark-tables.cell>

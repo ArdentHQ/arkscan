@@ -13,13 +13,13 @@ use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
 
 beforeEach(function () {
-    $previousBlock = Block::factory()->create(['height' => 1]);
+    $previousBlock = Block::factory()->create(['number' => 1]);
 
     $this->subject = Block::factory()->create([
-        'previous_block' => $previousBlock->id,
-        'height'         => 10000,
-        'total_amount'   => 50 * 1e18,
-        'total_fee'      => 48 * 1e18,
+        'parent_hash'    => $previousBlock->hash,
+        'number'         => 10000,
+        'amount'         => 50 * 1e18,
+        'fee'            => 48 * 1e18,
         'reward'         => 2 * 1e18,
     ]);
 });
@@ -30,7 +30,7 @@ it('should have transactions', function () {
 });
 
 it('should have a validator that forged the block', function () {
-    Wallet::factory()->create(['address' => $this->subject->generator_address]);
+    Wallet::factory()->create(['address' => $this->subject->proposer]);
 
     expect($this->subject->validator())->toBeInstanceOf(BelongsTo::class);
     expect($this->subject->validator)->toBeInstanceOf(Wallet::class);
@@ -53,7 +53,7 @@ it('makes block searchable', function () {
 
     $indexes->shouldReceive('addDocuments')
         ->withArgs(function ($documents) use ($block) {
-            $document = collect($documents)->first(fn ($document) => $document['id'] === $block->id);
+            $document = collect($documents)->first(fn ($document) => $document['hash'] === $block->hash);
 
             return json_encode($document) === json_encode($block->toSearchableArray());
         });

@@ -55,7 +55,7 @@ it('should not be enabled if not ready', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Transaction::factory()->create([
-        'recipient_address' => $wallet->address(),
+        'to' => $wallet->address(),
     ]);
 
     Livewire::test(ExportTransactions::class, [$wallet])

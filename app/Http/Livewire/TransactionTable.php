@@ -8,6 +8,7 @@ use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
+use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
@@ -43,13 +44,13 @@ final class TransactionTable extends Component
     public function queryString(): array
     {
         return [
-            'transfers'           => ['except' => true],
-            'multipayments'       => ['except' => true],
-            'votes'               => ['except' => true],
-            'validator'           => ['except' => true],
-            'username'            => ['except' => true],
-            'contract_deployment' => ['except' => true],
-            'others'              => ['except' => true],
+            'filter.transfers'           => ['as' => 'transfers', 'except' => true],
+            'filter.multipayments'       => ['as' => 'multipayments', 'except' => true],
+            'filter.votes'               => ['as' => 'votes', 'except' => true],
+            'filter.validator'           => ['as' => 'validator', 'except' => true],
+            'filter.username'            => ['as' => 'username', 'except' => true],
+            'filter.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
+            'filter.others'              => ['as' => 'others', 'except' => true],
         ];
     }
 
@@ -86,6 +87,7 @@ final class TransactionTable extends Component
 
         return Transaction::withTypeFilter($this->filter)
             ->withScope(OrderByTimestampScope::class)
+            ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage);
     }
 

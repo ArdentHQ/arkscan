@@ -118,16 +118,16 @@ final class Monitor extends Component
 
         /** @var Block $lastBlock */
         $lastBlock = Block::query()
-            ->orderBy('height', 'desc')
+            ->orderBy('number', 'desc')
             ->first();
 
         $heightRange = MonitorService::heightRangeByRound(Rounds::current());
 
         /** @var ?Block $lastRoundBlock */
         $lastRoundBlock = Block::query()
-            ->where('generator_address', $lastSlot->address())
-            ->where('height', '>=', $heightRange[0])
-            ->orderBy('height', 'desc')
+            ->where('proposer', $lastSlot->address())
+            ->where('number', '>=', $heightRange[0])
+            ->orderBy('number', 'desc')
             ->first();
 
         if ($lastRoundBlock === null) {
@@ -137,9 +137,9 @@ final class Monitor extends Component
 
             /** @var ?Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
-                ->where('generator_address', $lastSuccessfulForger->address())
-                ->where('height', '>=', $heightRange[0])
-                ->orderBy('height', 'desc')
+                ->where('proposer', $lastSuccessfulForger->address())
+                ->where('number', '>=', $heightRange[0])
+                ->orderBy('number', 'desc')
                 ->first();
         }
 
@@ -147,8 +147,8 @@ final class Monitor extends Component
             return [];
         }
 
-        $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
-            ->orderBy('height', 'asc')
+        $overflowBlocks = Block::where('number', '>', $lastRoundBlock->number)
+            ->orderBy('number', 'asc')
             ->get();
 
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
@@ -166,7 +166,7 @@ final class Monitor extends Component
             $lastTimestamp = $overflowBlocks->last()['timestamp'];
         }
 
-        $overflowBlockCount = $overflowBlocks->groupBy('generator_address')
+        $overflowBlockCount = $overflowBlocks->groupBy('proposer')
             ->map(function ($blocks) {
                 return count($blocks);
             });
@@ -260,7 +260,7 @@ final class Monitor extends Component
                 $missedSeconds   = 0;
             }
 
-            if ($validator->address() === $lastBlock->generator_address) {
+            if ($validator->address() === $lastBlock->proposer) {
                 $hasReachedFinalSlot = true;
             }
 

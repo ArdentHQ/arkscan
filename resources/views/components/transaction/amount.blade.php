@@ -1,11 +1,11 @@
 @props([
-    'transaction',
+    'amount',
     'smallAmount' => 0.0001,
     'hideTooltip' => false,
 ])
 
 <x-general.amount-small
-    :amount="$transaction->amount()"
+    :amount="$amount"
     :small-amount="$smallAmount"
     :hide-tooltip="$hideTooltip"
 />

@@ -84,7 +84,7 @@
                 @if ($hasResults)
                     @foreach ($results as $result)
                         <div
-                            wire:key="{{ $result->id() }}"
+                            wire:key="{{ is_a($result->model(), \App\Models\Wallet::class) ? $result->id() : $result->hash() }}"
                             @class([
                                 'select-none',
                                 'pt-1' => $loop->index > 0,

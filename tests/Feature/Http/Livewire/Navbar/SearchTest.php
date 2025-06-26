@@ -26,7 +26,7 @@ it('should search for a wallet', function () {
 
     Transaction::factory()
         ->transfer()
-        ->create(['block_id' => $block->id]);
+        ->create(['block_hash' => $block->hash]);
 
     Livewire::test(Search::class)
         ->set('query', $wallet->address)
@@ -41,12 +41,12 @@ it('should search for a wallet username over a block generator', function () {
         ],
     ]);
     $block = Block::factory()->create([
-        'generator_address' => $wallet->address,
+        'proposer' => $wallet->address,
     ]);
 
     Transaction::factory()
         ->transfer()
-        ->create(['block_id' => $block->id]);
+        ->create(['block_hash' => $block->hash]);
 
     Livewire::test(Search::class)
         ->set('query', $wallet->address)
@@ -62,33 +62,33 @@ it('should search for a transaction', function () {
 
     Transaction::factory()
         ->transfer()
-        ->create(['block_id' => $block->id]);
+        ->create(['block_hash' => $block->hash]);
 
     $transaction = Transaction::factory()
         ->transfer()
         ->create();
 
     Livewire::test(Search::class)
-        ->set('query', $transaction->id)
-        ->assertSee($transaction->id);
+        ->set('query', $transaction->hash)
+        ->assertSee($transaction->hash);
 });
 
 it('should search for a block', function () {
     $block = Block::factory()->create();
 
     Livewire::test(Search::class)
-        ->set('query', $block->id)
-        ->assertSee($block->id);
+        ->set('query', $block->hash)
+        ->assertSee($block->hash);
 });
 
 it('should clear search query', function () {
     $block = Block::factory()->create();
 
     Livewire::test(Search::class)
-        ->set('query', $block->id)
-        ->assertSee($block->id)
+        ->set('query', $block->hash)
+        ->assertSee($block->hash)
         ->call('clear')
-        ->assertDontSee($block->id)
+        ->assertDontSee($block->hash)
         ->assertOk();
 });
 
@@ -96,8 +96,8 @@ it('should redirect on submit', function () {
     $block = Block::factory()->create();
 
     Livewire::test(Search::class)
-        ->set('query', $block->id)
-        ->assertSee($block->id)
+        ->set('query', $block->hash)
+        ->assertSee($block->hash)
         ->call('goToFirstResult')
         ->assertRedirect(route('block', $block));
 });
@@ -107,7 +107,7 @@ it('should do nothing if no results on submit', function () {
 
     Livewire::test(Search::class)
         ->set('query', 'non-existant block id')
-        ->assertDontSee($block->id)
+        ->assertDontSee($block->hash)
         ->call('goToFirstResult')
         ->assertOk();
 });
@@ -193,7 +193,7 @@ it('should search only wallets when searching for an address', function () {
         ->assertDontSee($otherWallet->address);
 });
 
-it('should search only transactions and blocks when searching for id', function () {
+it('should search only transactions and blocks when searching for hash', function () {
     // Default value, overriden in phpunit.xml for the tests
     Config::set('scout.driver', 'meilisearch');
 
@@ -206,7 +206,7 @@ it('should search only transactions and blocks when searching for id', function 
     $transaction = Transaction::factory()
         ->transfer()
         ->create([
-            'id' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
+            'hash' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
         ]);
 
     $this->mock(MeilisearchEngine::class)
@@ -232,8 +232,8 @@ it('should search only transactions and blocks when searching for id', function 
         ]);
 
     Livewire::test(Search::class)
-        ->set('query', $transaction->id)
-        ->assertSee($transaction->id);
+        ->set('query', $transaction->hash)
+        ->assertSee($transaction->hash);
 });
 
 it('should search for known wallets addresses with meilisearch', function () {

@@ -4,7 +4,7 @@ import { FailedExportRequest } from "../includes/helpers";
 export class BlocksApi {
     static async request(host, query, address) {
         const response = await axios.get(
-            `${host}/delegates/${address}/blocks`,
+            `${host}/validators/${address}/blocks`,
             {
                 params: query,
             }
@@ -20,7 +20,7 @@ export class BlocksApi {
             address,
             limit = 100,
             blocks = [],
-            orderBy = "height:desc",
+            orderBy = "number:desc",
             height,
         },
         instance
@@ -32,8 +32,7 @@ export class BlocksApi {
                     limit,
                     orderBy,
                     ...query,
-                    "height.to": height,
-                    transform: false,
+                    "number.to": height,
                 },
                 address
             );

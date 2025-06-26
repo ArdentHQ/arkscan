@@ -22,7 +22,6 @@ use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 
 final class TransactionViewModel implements ViewModel
 {
@@ -50,7 +49,7 @@ final class TransactionViewModel implements ViewModel
 
     public function url(): string
     {
-        return route('transaction', $this->transaction);
+        return route('transaction', $this->transaction->hash);
     }
 
     public function model(): Transaction
@@ -58,19 +57,19 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction;
     }
 
-    public function id(): string
+    public function hash(): string
     {
-        return $this->transaction->id;
+        return $this->transaction->hash;
     }
 
-    public function blockId(): string
+    public function blockHash(): string
     {
-        return $this->transaction->block_id;
+        return $this->transaction->block_hash;
     }
 
     public function blockHeight(): int
     {
-        return $this->transaction->block_height;
+        return $this->transaction->block_number;
     }
 
     public function timestamp(): string
@@ -88,9 +87,9 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->nonce;
     }
 
-    public function gasLimit(): float
+    public function gas(): float
     {
-        return UnitConverter::formatUnits((string) $this->transaction->gas_limit, 'wei');
+        return UnitConverter::formatUnits((string) $this->transaction->gas, 'wei');
     }
 
     public function gasUsed(): float
@@ -104,9 +103,9 @@ final class TransactionViewModel implements ViewModel
         return UnitConverter::formatUnits((string) $receipt->gas_used, 'wei');
     }
 
-    public function sequence(): int
+    public function transactionIndex(): int
     {
-        return $this->transaction->sequence;
+        return $this->transaction->transaction_index;
     }
 
     public function fee(): float
@@ -119,69 +118,89 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->fee(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
-    // @codeCoverageIgnoreStart
-    // @TODO: adjust for evm https://app.clickup.com/t/86dvfymkn
     public function amountForItself(): float
     {
-        /** @var array<int, array<string, mixed>> */
-        $payments = Arr::get($this->transaction, 'asset.payments', []);
+        if (! $this->isMultiPayment()) {
+            return 0;
+        }
 
-        return collect($payments)
-            ->filter(function ($payment): bool {
+        $recipients = $this->multiPaymentRecipients();
+
+        $amount = collect($recipients)
+            ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender !== null && $sender->address === $payment['recipientId'];
+                return $sender !== null && strtolower($sender->address) === strtolower($recipient['address']);
             })
-            ->sum('amount') / config('currencies.notation.crypto', 1e18);
+            ->sum('amount');
+
+        return $amount;
     }
 
-    // @TODO: adjust for evm https://app.clickup.com/t/86dvfymkn
     public function amountExcludingItself(): float
     {
-        /** @var array<int, array<string, mixed>> */
-        $payments = Arr::get($this->transaction, 'asset.payments', []);
+        if (! $this->isMultiPayment()) {
+            return 0;
+        }
 
-        return collect($payments)
-            ->filter(function ($payment): bool {
+        $recipients = $this->multiPaymentRecipients();
+
+        $amount = collect($recipients)
+            ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender === null || $sender->address !== $payment['recipientId'];
+                return $sender === null || strtolower($sender->address) !== strtolower($recipient['address']);
             })
-            ->sum('amount') / config('currencies.notation.crypto', 1e18);
+            ->sum('amount');
+
+        return $amount;
     }
-    // @codeCoverageIgnoreEnd
 
     public function amount(): float
     {
-        return UnitConverter::formatUnits((string) $this->transaction->amount, 'ark');
+        if (! $this->isMultiPayment()) {
+            return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
+        }
+
+        return collect($this->multiPaymentRecipients())
+            ->sum('amount');
     }
 
     public function amountWithFee(): float
     {
-        return $this->transaction->amount->toFloat() + $this->fee();
+        return $this->transaction->value->toFloat() + $this->fee();
     }
 
-    public function amountReceived(?string $wallet = null): float
+    public function amountReceived(?string $walletAddress = null): float
     {
+        if ($this->isMultiPayment() && $walletAddress !== null) {
+            return collect($this->multiPaymentRecipients())
+                ->filter(function ($recipient) use ($walletAddress) {
+                    if (strtolower($recipient['address']) === strtolower($walletAddress)) {
+                        return true;
+                    }
+
+                    return false;
+                })
+                ->sum('amount');
+        }
+
         return $this->amount();
     }
 
-    // @codeCoverageIgnoreStart
-    // @TODO: depends on https://app.clickup.com/t/86dvfymkn
     public function amountFiatExcludingItself(): string
     {
         return ExchangeRate::convert($this->amountExcludingItself(), $this->transaction->timestamp);
     }
-    // @codeCoverageIgnoreEnd
 
     public function amountFiat(bool $showSmallAmounts = false): string
     {
         return ExchangeRate::convert($this->amount(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
-    public function amountReceivedFiat(?string $wallet = null): string
+    public function amountReceivedFiat(?string $walletAddress = null): string
     {
-        return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
+        return ExchangeRate::convert($this->amountReceived($walletAddress), $this->transaction->timestamp);
     }
 
     public function totalFiat(bool $withSmallAmounts = false): string
@@ -191,6 +210,6 @@ final class TransactionViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        return abs(CacheNetworkHeight::execute() - $this->transaction->block_height);
+        return abs(CacheNetworkHeight::execute() - $this->transaction->block_number);
     }
 }

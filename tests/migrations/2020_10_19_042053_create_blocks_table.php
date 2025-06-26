@@ -17,21 +17,25 @@ final class CreateBlocksTable extends Migration
         });
 
         Schema::create('blocks', function (Blueprint $table) {
-            $table->string('id');
-            $table->unsignedBigInteger('version');
+            $table->string('hash');
+            $table->integer('version');
             $table->unsignedBigInteger('timestamp');
-            $table->string('previous_block')->nullable();
-            $table->unsignedBigInteger('height');
-            $table->unsignedBigInteger('number_of_transactions');
-            $table->addColumn('numeric', 'total_amount');
-            $table->addColumn('numeric', 'total_fee');
-            $table->integer('total_gas_used');
+            $table->string('parent_hash')->nullable();
+            $table->string('state_root')->nullable();
+            $table->unsignedBigInteger('number');
+            $table->unsignedBigInteger('transactions_count');
+            $table->integer('gas_used');
+            $table->addColumn('numeric', 'amount');
+            $table->addColumn('numeric', 'fee');
             $table->addColumn('numeric', 'reward');
-            $table->unsignedBigInteger('payload_length');
-            $table->string('payload_hash');
-            $table->string('generator_address');
-            $table->string('block_signature');
-            $table->timestamps();
+            $table->unsignedBigInteger('payload_size');
+            $table->string('transactions_root');
+            $table->string('proposer');
+            $table->integer('round');
+            $table->integer('commit_round');
+            $table->integer('validator_round');
+            $table->integer('validator_set');
+            $table->string('signature');
         });
     }
 }

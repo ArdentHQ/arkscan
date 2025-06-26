@@ -34,9 +34,9 @@ final class TransactionRepositoryWithCache implements TransactionRepository
         return $this->remember(fn () => $this->transactions->allByRecipient($address));
     }
 
-    public function findById(string $id): Transaction
+    public function findByHash(string $hash): Transaction
     {
-        return $this->remember(fn () => $this->transactions->findById($id));
+        return $this->remember(fn () => $this->transactions->findByHash($hash));
     }
 
     private function getCache(): TaggedCache

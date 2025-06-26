@@ -10,9 +10,17 @@ use App\Facades\Network;
 use App\Http\Livewire\Concerns\AvailablePeriods;
 use App\Http\Livewire\Concerns\ChartNumberFormatters;
 use App\Http\Livewire\Concerns\StatisticsChart;
+use App\Services\NumberFormatter;
+use Brick\Math\BigDecimal;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
+/**
+ * @property int|float $periodTotal
+ * @property bool $isAboveThreshold
+ */
 final class AllTimeFees extends Component
 {
     use AvailablePeriods;
@@ -37,30 +45,69 @@ final class AllTimeFees extends Component
     {
         return view('livewire.stats.all-time-fees', [
             'allTimeFeesCollectedTitle' => trans('pages.statistics.information-cards.all-time-fees-collected'),
-            'allTimeFeesCollectedValue' => $this->asMoney($this->totalTransactionsPerPeriod($this->cache, StatsPeriods::ALL)),
+            'allTimeFeesCollectedValue' => $this->allTimeFees(),
             'feesTitle'                 => trans('pages.statistics.information-cards.fees'),
             'feesValue'                 => $this->truncate(),
             'feesTooltip'               => $this->tooltip(),
-            'chartValues'               => $this->chartTotalTransactionsPerPeriod($this->cache, $this->period),
+            'chartValues'               => $this->chartValues(),
             'chartTheme'                => $this->chartTheme('yellow'),
             'options'                   => $this->availablePeriods(),
             'refreshInterval'           => $this->refreshInterval,
         ]);
     }
 
+    #[Computed()]
+    protected function periodTotal(): int | float
+    {
+        return $this->totalTransactionsPerPeriod($this->cache, $this->period);
+    }
+
+    #[Computed()]
+    protected function isAboveThreshold(): bool
+    {
+        return $this->periodTotal > 10000 * 1e18;
+    }
+
     private function tooltip(): ?string
     {
-        $number = $this->totalTransactionsPerPeriod($this->cache, $this->period);
-
-        return $number < 10000 ? null : $this->asMoney($number);
+        return $this->isAboveThreshold ? $this->asMoney($this->periodTotal) : null;
     }
 
     private function truncate(): string
     {
-        $number = $this->totalTransactionsPerPeriod($this->cache, $this->period);
+        if ($this->isAboveThreshold) {
+            $convertedAmount = NumberFormatter::weiToArk((string) BigDecimal::of($this->periodTotal), false);
 
-        return $number > 10000
-            ? sprintf('%s %s', $this->asNumber($number), Network::currency())
-            : $this->asMoney($number, false);
+            return sprintf('%s %s', $this->asNumber($convertedAmount), Network::currency());
+        }
+
+        return $this->asMoney($this->periodTotal);
+    }
+
+    private function allTimeFees(): string
+    {
+        return $this->asMoney($this->totalTransactionsPerPeriod($this->cache, StatsPeriods::ALL));
+    }
+
+    private function chartValues(): Collection
+    {
+        $values = $this->chartTotalTransactionsPerPeriod($this->cache, $this->period);
+
+        $datasets = (new Collection($values->get('datasets')))
+            ->map(function ($value) {
+                return BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of($value), false))->toFloat();
+            });
+
+        $values->put('datasets', $datasets);
+
+        return $values;
+    }
+
+    private function asMoney(string | int | float $value): string
+    {
+        return NumberFormatter::currency(
+            NumberFormatter::weiToArk((string) BigDecimal::of($value)),
+            Network::currency(),
+        );
     }
 }

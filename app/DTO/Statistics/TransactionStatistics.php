@@ -39,10 +39,10 @@ final class TransactionStatistics implements Wireable
             'averages' => $this->averages->toArray(),
 
             'records'  => [
-                'largest_transaction'        => $this->records->largestTransaction?->id(),
-                'largest_block'              => $this->records->largestBlock?->id(),
-                'highest_fee'                => $this->records->blockWithHighestFees?->id(),
-                'most_transactions_in_block' => $this->records->blockWithMostTransactions?->id(),
+                'largest_transaction'        => $this->records->largestTransaction?->hash(),
+                'largest_block'              => $this->records->largestBlock?->hash(),
+                'highest_fee'                => $this->records->blockWithHighestFees?->hash(),
+                'most_transactions_in_block' => $this->records->blockWithMostTransactions?->hash(),
             ],
         ];
     }
@@ -62,10 +62,10 @@ final class TransactionStatistics implements Wireable
                 'fee'    => $value['averages']['transaction_fees'],
             ]),
             TransactionRecordsStatistics::make(
-                $value['records']['largest_transaction'] !== null ? Transaction::firstWhere('id', $value['records']['largest_transaction']) : null,
-                $value['records']['largest_block'] !== null ? Block::firstWhere('id', $value['records']['largest_block']) : null,
-                $value['records']['highest_fee'] !== null ? Block::firstWhere('id', $value['records']['highest_fee']) : null,
-                $value['records']['most_transactions_in_block'] !== null ? Block::firstWhere('id', $value['records']['most_transactions_in_block']) : null,
+                $value['records']['largest_transaction'] !== null ? Transaction::firstWhere('hash', $value['records']['largest_transaction']) : null,
+                $value['records']['largest_block'] !== null ? Block::firstWhere('hash', $value['records']['largest_block']) : null,
+                $value['records']['highest_fee'] !== null ? Block::firstWhere('hash', $value['records']['highest_fee']) : null,
+                $value['records']['most_transactions_in_block'] !== null ? Block::firstWhere('hash', $value['records']['most_transactions_in_block']) : null,
             ),
         );
     }

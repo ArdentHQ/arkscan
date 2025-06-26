@@ -36,10 +36,10 @@ beforeEach(function () {
     $this->subject = new WalletViewModel($this->wallet);
 
     Block::factory()->create([
-        'total_amount'         => 10 * 1e18,
-        'total_fee'            => 8 * 1e18,
+        'amount'               => 10 * 1e18,
+        'fee'                  => 8 * 1e18,
         'reward'               => 2 * 1e18,
-        'generator_address'    => $this->wallet->address,
+        'proposer'             => $this->wallet->address,
     ]);
 });
 
@@ -127,6 +127,22 @@ it('should sum up the rewards forged', function () {
     assertMatchesSnapshot($this->subject->rewardsForged()->valueOf()->__toString());
 });
 
+it('should determine if the wallet has a second signature', function () {
+    fakeKnownWallets();
+
+    $subject = new WalletViewModel(Wallet::factory()->create([
+        'attributes' => [
+            'secondPublicKey' => 'secondPublicKey',
+        ],
+    ]));
+
+    expect($subject->hasSecondSignature())->toBeTrue();
+
+    $subject = new WalletViewModel(Wallet::factory()->create(['attributes' => []]));
+
+    expect($subject->hasSecondSignature())->toBeFalse();
+});
+
 it('should determine if the wallet is known', function () {
     fakeKnownWallets();
 
@@ -161,40 +177,6 @@ it('should determine if the wallet is owned by an exchange', function () {
     $subject = new WalletViewModel(Wallet::factory()->create(['address' => 'unknown']));
 
     expect($subject->isOwnedByExchange())->toBeFalse();
-});
-
-it('should determine if the wallet has a special type when known', function () {
-    fakeKnownWallets();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']));
-
-    expect($subject->isKnown())->toBeTrue();
-    expect($subject->isOwnedByExchange())->toBeFalse();
-    expect($subject->hasSpecialType())->toBeTrue();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => 'unknown']));
-
-    expect($subject->hasSpecialType())->toBeFalse();
-});
-
-it('should determine if the wallet has a special type if exchange', function () {
-    fakeKnownWallets();
-
-    $subject = new WalletViewModel(Wallet::factory()->create(['address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF']));
-
-    expect($subject->isKnown())->toBeTrue();
-    expect($subject->isOwnedByExchange())->toBeTrue();
-    expect($subject->hasSpecialType())->toBeTrue();
-
-    $subject = new WalletViewModel(Wallet::factory()
-        ->activeValidator()
-        ->create(['address' => 'unknown']));
-
-    expect($subject->hasSpecialType())->toBeFalse();
 });
 
 it('should determine if the wallet is a validator', function () {
@@ -303,7 +285,7 @@ it('should fail to get the performance if the wallet is not a validator', functi
 
 it('should determine if a new validator has forged', function () {
     $block = Block::factory()->create([
-        'generator_address' => $this->wallet->address,
+        'proposer' => $this->wallet->address,
     ]);
 
     Rounds::swap(new RoundsMock());
@@ -331,7 +313,7 @@ it('should determine if a new validator has forged', function () {
 
 it('should determine if the validator just missed a block', function () {
     $block = Block::factory()->create([
-        'generator_address' => $this->wallet->address,
+        'proposer' => $this->wallet->address,
     ]);
 
     Rounds::swap(new RoundsMock($block));
@@ -386,7 +368,7 @@ it('should get the resignation id', function () {
         'sender_public_key' => $this->subject->publicKey(),
     ]);
 
-    (new WalletCache())->setResignationId($this->subject->address(), $transaction->id);
+    (new WalletCache())->setResignationId($this->subject->address(), $transaction->hash);
 
     expect($this->subject->resignationId())->toBeString();
 });
@@ -790,13 +772,13 @@ it('should return count for blocks since last forged', function () {
     ]));
 
     $block = Block::factory()->create([
-        'generator_address'    => $wallet->address(),
-        'height'               => 10,
+        'proposer'             => $wallet->address(),
+        'number'               => 10,
     ]);
 
     (new WalletCache())->setLastBlock($wallet->address(), [
-        'id'     => $block->id,
-        'height' => $block->height->toNumber(),
+        'id'     => $block->hash,
+        'number' => $block->number->toNumber(),
     ]);
 
     (new NetworkCache())->setHeight(fn (): int => 100);
@@ -834,13 +816,13 @@ it('should return count for time since last forged', function () {
 
     $block = Block::factory()->create([
         'timestamp'            => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'generator_address'    => $wallet->address(),
-        'height'               => 10,
+        'proposer'             => $wallet->address(),
+        'number'               => 10,
     ]);
 
     (new WalletCache())->setLastBlock($wallet->address(), [
-        'id'        => $block->id,
-        'height'    => $block->height->toNumber(),
+        'id'        => $block->hash,
+        'number'    => $block->number->toNumber(),
         'timestamp' => $block->timestamp,
     ]);
 

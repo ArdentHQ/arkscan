@@ -159,6 +159,8 @@ trait HasTabs
 
     private function resolvePerPage(): ?int
     {
-        return request()->get('perPage', $this->perPage);
+        $value = request()->get('perPage', $this->perPage);
+
+        return $value === null ? null : (int) $value;
     }
 }

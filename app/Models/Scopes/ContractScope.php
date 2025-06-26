@@ -24,7 +24,7 @@ final class ContractScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('recipient_address', $this->recipient)
+        $builder->where('to', $this->recipient)
             ->whereRaw('encode(SUBSTRING(data FROM 1 FOR 4), \'hex\') = ?', [$this->contract]);
     }
 }

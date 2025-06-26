@@ -11,8 +11,8 @@ final class LargestBlockAggregate
     public function aggregate(): ?Block
     {
         return Block::query()
-            ->where('height', '>', 0)
-            ->orderBy('total_amount', 'desc')
+            ->where('number', '>', 0)
+            ->orderBy('amount', 'desc')
             ->first();
     }
 }

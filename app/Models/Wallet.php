@@ -173,7 +173,7 @@ final class Wallet extends Model
      */
     public function receivedTransactions(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'recipient_address', 'address');
+        return $this->hasMany(Transaction::class, 'to', 'address');
     }
 
     /**
@@ -183,7 +183,7 @@ final class Wallet extends Model
      */
     public function blocks(): HasMany
     {
-        return $this->hasMany(Block::class, 'generator_address', 'address');
+        return $this->hasMany(Block::class, 'proposer', 'address');
     }
 
     /**

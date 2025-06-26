@@ -17,25 +17,26 @@ use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
-    $this->block = Block::factory()->create(['height' => 1]);
-    Block::factory()->create(['height' => 5000000]);
+    $this->block = Block::factory()->create(['number' => 1]);
+    Block::factory()->create(['number' => 5000000]);
 
     (new NetworkCache())->setHeight(fn () => 5000000);
 
     $this->sender  = Wallet::factory()->create();
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'block_id'               => $this->block->id,
-        'block_height'           => 1,
-        'gas_price'              => 1,
-        'amount'                 => 2 * 1e18,
-        'sender_public_key'      => $this->sender->public_key,
-        'recipient_address'      => Wallet::factory()->create(['address' => 'recipient'])->address,
-    ]));
+        'block_hash'               => $this->block->hash,
+        'block_number'             => 1,
+        'gas_price'                => 1,
+        'gas'                      => 21000,
+        'value'                    => 2 * 1e18,
+        'sender_public_key'        => $this->sender->public_key,
+        'to'                       => Wallet::factory()->create(['address' => 'recipient'])->address,
+    ])->fresh());
 });
 
 it('should get the url', function () {
     expect($this->subject->url())->toBeString();
-    expect($this->subject->url())->toBe(route('transaction', $this->subject->id()));
+    expect($this->subject->url())->toBe(route('transaction', $this->subject->hash()));
 });
 
 it('should determine if the transaction is incoming', function () {
@@ -52,7 +53,7 @@ it('should determine if transfer transaction is sent to self', function () {
     $transaction = new TransactionViewModel(Transaction::factory()
         ->create([
             'sender_public_key' => $this->sender->public_key,
-            'recipient_address' => $this->sender->address,
+            'to'                => $this->sender->address,
         ]));
 
     expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
@@ -70,13 +71,13 @@ it('should get the dateTime', function () {
 });
 
 it('should get the block ID', function () {
-    expect($this->subject->blockId())->toBeString();
-    expect($this->subject->blockId())->toBe($this->block->id);
+    expect($this->subject->blockHash())->toBeString();
+    expect($this->subject->blockHash())->toBe($this->block->hash);
 });
 
 it('should get the block height', function () {
     expect($this->subject->blockHeight())->toBeInt();
-    expect($this->subject->blockHeight())->toBe($this->block->height->toNumber());
+    expect($this->subject->blockHeight())->toBe($this->block->number->toNumber());
 });
 
 it('should get the fee', function () {
@@ -91,6 +92,47 @@ it('should get the amount', function () {
     assertMatchesSnapshot($this->subject->amount());
 });
 
+it('should get the amount for itself', function () {
+    $transaction = Transaction::factory()
+        ->multiPayment([$this->sender->address], [BigNumber::new(30 * 1e18)])
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amountForItself())->toBe(30.0);
+});
+
+it('should return zero for the amount for itself when not multipayment', function () {
+    expect($this->subject->amountForItself())->toBe(0.0);
+});
+
+it('should get the amount excluding itself', function () {
+    $transaction = Transaction::factory()
+        ->multiPayment([
+            $this->sender->address,
+            Wallet::factory()->create()->address,
+        ], [
+            BigNumber::new(30 * 1e18),
+            BigNumber::new(30 * 1e18),
+        ])
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+            'value'             => BigNumber::new(60 * 1e18),
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amount())->toBe(60.0);
+    expect($viewModel->amountReceived($this->sender->address))->toBe(30.0);
+    expect($viewModel->amountExcludingItself())->toBe(30.0);
+});
+
+it('should return zero for the amount excluding itself when not multipayment', function () {
+    expect($this->subject->amountExcludingItself())->toBe(0.0);
+});
+
 it('should get the amount received for transfer transactions', function () {
     expect($this->subject->amountReceived('recipient'))->toBeFloat();
 
@@ -101,6 +143,37 @@ it('should get the amount including fee', function () {
     expect($this->subject->amountWithFee())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amountWithFee());
+});
+
+it('should get the amount as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->amountFiat())->toBe('$0.58');
+});
+
+it('should get the amount excluding self as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+    ]));
+
+    $transaction = Transaction::factory()
+        ->multiPayment([
+            $this->sender->address,
+            Wallet::factory()->create()->address,
+        ], [
+            BigNumber::new(30 * 1e18),
+            BigNumber::new(30 * 1e18),
+        ])
+        ->create([
+            'sender_public_key' => $this->sender->public_key,
+            'value'             => BigNumber::new(60 * 1e18),
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amountFiatExcludingItself())->toBe('$'.number_format(30 * 0.2907, 2));
 });
 
 it('should get the total as fiat', function () {
@@ -179,9 +252,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
     $subject = new TransactionViewModel(Transaction::factory()
 
-    ->create([
-        'asset'      => $transaction->asset,
-    ]));
+    ->create());
 
     expect($subject->isSelfReceiving())->toBeFalse();
 })->with([
@@ -193,7 +264,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
 it('should fallback to the sender if no recipient address exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'recipient_address' => null,
+        'to' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
@@ -203,10 +274,10 @@ it('should fallback to receipt deployed contract address if set', function () {
     $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
 
     $receipt = Receipt::factory()
-        ->state(['deployed_contract_address' => $wallet->address]);
+        ->state(['contract_address' => $wallet->address]);
 
     $this->subject = new TransactionViewModel(Transaction::factory()->has($receipt)->create([
-        'recipient_address' => null,
+        'to' => null,
     ]));
 
     expect($this->subject->recipient()->address())->toBe('deployedContractAddress');
@@ -215,7 +286,7 @@ it('should fallback to receipt deployed contract address if set', function () {
 it('should get the voted validator', function () {
     Wallet::factory()->create(['public_key' => 'publicKey']);
 
-    $validator    = Wallet::factory()->activeValidator()->create();
+    $validator = Wallet::factory()->activeValidator()->create();
 
     $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());
 
@@ -242,6 +313,10 @@ it('should fail to get the voted validator if the transaction is not an unvote',
 
 it('should get the nonce', function () {
     expect($this->subject->nonce())->toBeInt();
+});
+
+it('should get the gas', function () {
+    expect($this->subject->gas())->toBeFloat();
 });
 
 describe('HasPayload trait', function () {
@@ -359,8 +434,8 @@ it('should calculate fee with receipt', function () {
     ]);
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
-        'gas_used' => 21000,
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => 21000,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -382,8 +457,8 @@ it('should should determine if transaction failed', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'      => $transaction->id,
-        'success' => false,
+        'transaction_hash' => $transaction->hash,
+        'status'           => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -403,8 +478,8 @@ it('should should determine transaction has not failed', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'      => $transaction->id,
-        'success' => true,
+        'transaction_hash' => $transaction->hash,
+        'status'           => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -416,8 +491,8 @@ it('should get the gas used', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()->create([
-        'id'       => $transaction->id,
-        'gas_used' => 8,
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => 8,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -492,3 +567,86 @@ it('should determine if is certain transaction type', function (string $type, ar
     ['usernameResignation'],
     ['contractDeployment'],
 ]);
+
+it('should get the correct amount for a given wallet address in multipayment', function () {
+    $walletAddress1 = '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A';
+    $walletAddress2 = '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B';
+
+    $transaction = Transaction::factory()->multiPayment(
+        [$walletAddress1, $walletAddress2],
+        [BigNumber::new(1 * 1e18), BigNumber::new(2 * 1e18)]
+    )->create();
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->amount())->toEqual(3.0);
+    expect($viewModel->amountReceived($walletAddress1))->toEqual(1.0);
+    expect($viewModel->amountReceived($walletAddress2))->toEqual(2.0);
+});
+
+it('should get the correct amount for many wallet addresses in multipayment', function () {
+    $wallets = [
+        '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A' => BigNumber::new(10000 * 1e18),
+        '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B' => BigNumber::new(10000 * 1e18),
+        '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF' => BigNumber::new(10000 * 1e18),
+        '0x1234567890abcdef1234567890abcdef12345678' => BigNumber::new(10000 * 1e18),
+        '0xabcdef1234567890abcdef1234567890abcdef12' => BigNumber::new(10000 * 1e18),
+        '0x7890abcdef1234567890abcdef1234567890abcd' => BigNumber::new(10000 * 1e18),
+    ];
+
+    $transaction = Transaction::factory()->multiPayment(
+        array_keys($wallets),
+        array_values($wallets),
+    )->create([
+        'value' => BigNumber::new(60000 * 1e18),
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    foreach ($wallets as $walletAddress => $amount) {
+        expect($viewModel->amount())->toEqual(60000);
+        expect($viewModel->amountReceived($walletAddress))->toEqual($amount->toFloat());
+    }
+});
+
+it('should get a corresponding validator registration', function () {
+    $validatorRegistration = Transaction::factory()
+        ->validatorRegistration('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->create();
+
+    $validatorResignationViewModel = new TransactionViewModel(
+        Transaction::factory()
+            ->validatorResignation()
+            ->create([
+                'sender_public_key' => $validatorRegistration->sender_public_key,
+            ])
+    );
+
+    expect($validatorResignationViewModel->validatorRegistration()->hash())->toEqual($validatorRegistration->hash);
+});
+
+it('should return null if no corresponding validator registration', function () {
+    $validatorResignationViewModel = new TransactionViewModel(
+        Transaction::factory()
+            ->validatorResignation()
+            ->create()
+    );
+
+    expect($validatorResignationViewModel->validatorRegistration())->toBeNull();
+});
+
+it('should return null corresponding validator registration if not resignation', function () {
+    $validatorRegistration = Transaction::factory()
+        ->validatorRegistration('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->create();
+
+    $validatorResignationViewModel = new TransactionViewModel(
+        Transaction::factory()
+            ->transfer()
+            ->create([
+                'sender_public_key' => $validatorRegistration->sender_public_key,
+            ])
+    );
+
+    expect($validatorResignationViewModel->validatorRegistration())->toBeNull();
+});

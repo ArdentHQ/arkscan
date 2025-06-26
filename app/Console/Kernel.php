@@ -82,7 +82,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheContractAddresses::class)->everyMinute();
 
-        // TODO: enable when the monitor is fixed
+        // TODO: enable when the monitor is fixed - https://app.clickup.com/t/86dvxzg15
         // $schedule->command(CacheValidatorPerformance::class)->everyMinute();
 
         $schedule->command(CacheValidatorProductivity::class)->everyMinute();

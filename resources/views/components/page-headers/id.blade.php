@@ -9,12 +9,12 @@
     breakpoint="sm"
 >
     <div class="min-w-0">
-        <x-truncate-dynamic>{{ $model->id() }}</x-truncate-dynamic>
+        <x-truncate-dynamic>{{ $model->hash() }}</x-truncate-dynamic>
     </div>
 
     <x-slot name="extra">
         <x-ark-clipboard
-            :value="$model->id()"
+            :value="$model->hash()"
             class="flex items-center p-2 w-full h-8 focus-visible:ring-inset group dim:bg-theme-dark-700 dim:shadow-none"
             wrapper-class="flex-1"
             :tooltip-content="$copyTooltip"
