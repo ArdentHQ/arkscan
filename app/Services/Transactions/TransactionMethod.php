@@ -6,7 +6,6 @@ namespace App\Services\Transactions;
 
 use App\Enums\ContractMethod;
 use App\Models\Transaction;
-use App\ViewModels\Concerns\Transaction\HasPayload;
 
 final class TransactionMethod
 {
