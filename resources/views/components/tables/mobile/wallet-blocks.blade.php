@@ -33,11 +33,6 @@
                 class="sm:hidden"
             />
 
-            <x-tables.rows.mobile.encapsulated.volume
-                :model="$block"
-                class="sm:flex-1"
-            />
-
             <x-tables.rows.mobile.encapsulated.reward
                 :model="$block"
                 class="sm:w-[142px]"
