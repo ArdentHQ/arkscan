@@ -37,7 +37,7 @@ final class AveragesAggregate
             ];
         }
 
-        $totalAmount = $data->value->plus($data->recipient_value)->toFloat();
+        $totalAmount = $data->value->plus((string) $data->recipient_value)->toFloat();
 
         return [
             'count'  => (int) round($data->count / $daysSinceEpoch),

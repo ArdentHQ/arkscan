@@ -15,6 +15,7 @@ use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class CacheAnnualStatistics extends Command
@@ -78,10 +79,11 @@ final class CacheAnnualStatistics extends Command
             ->orderBy('year')
             ->get();
 
-        $transactionData->each(function ($item, $key) use ($blocksData, $cache) {
+        foreach ($transactionData as $key => $item) {
+            $itemData = $item->toArray();
             if (! $this->hasChanges) {
-                $existingData = $cache->getAnnualData((int) $item->year) ?? [];
-                if (Arr::get($existingData, 'transactions') !== $item->transactions) {
+                $existingData = $cache->getAnnualData((int) $itemData['year']) ?? [];
+                if (Arr::get($existingData, 'transactions') !== $itemData['transactions']) {
                     $this->hasChanges = true;
                 }
 
@@ -91,13 +93,13 @@ final class CacheAnnualStatistics extends Command
             }
 
             $cache->setAnnualData(
-                (int) $item->year,
-                (int) $item->transactions,
-                (string) $item->value->plus(UnitConverter::formatUnits($item->recipient_value, 'ark')),
-                (string) BigNumber::new(UnitConverter::formatUnits($item->fees, 'ark')),
+                (int) $itemData['year'],
+                (int) $itemData['transactions'],
+                (string) $itemData['value']->plus(UnitConverter::formatUnits($itemData['recipient_value'], 'ark')),
+                (string) BigNumber::new(UnitConverter::formatUnits($itemData['fees'], 'ark')),
                 $blocksData->get($key)?->blocks, // We assume to have the same value of entries for blocks and transactions (years)
             );
-        });
+        };
     }
 
     private function cacheCurrentYear(StatisticsCache $cache): void
