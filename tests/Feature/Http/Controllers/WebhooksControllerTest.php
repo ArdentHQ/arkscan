@@ -136,9 +136,7 @@ describe('block', function () {
             return $event->broadcastOn()->name === 'blocks.public-key';
         });
 
-        $block = Block::factory()->create([
-            'amount' => 123 * 1e8,
-        ]);
+        $block = Block::factory()->create();
 
         Transaction::factory()->create([
             'block_hash'       => $block->hash,

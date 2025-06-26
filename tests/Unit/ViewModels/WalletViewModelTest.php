@@ -35,11 +35,15 @@ beforeEach(function () {
 
     $this->subject = new WalletViewModel($this->wallet);
 
-    Block::factory()->create([
-        'amount'               => 10 * 1e18,
-        'fee'                  => 8 * 1e18,
-        'reward'               => 2 * 1e18,
-        'proposer'             => $this->wallet->address,
+    $block = Block::factory()->create([
+        'fee'      => 8 * 1e18,
+        'reward'   => 2 * 1e18,
+        'proposer' => $this->wallet->address,
+    ]);
+
+    Transaction::factory()->create([
+        'value'      => 10 * 1e18,
+        'block_hash' => $block->hash,
     ]);
 });
 
@@ -170,14 +174,6 @@ it('should sum up the total forged', function () {
     expect($this->subject->totalForged())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->totalForged());
-});
-
-it('should sum up the amount forged', function () {
-    (new ValidatorCache())->setTotalAmounts([$this->subject->address() => 10 * 1e18]);
-
-    expect($this->subject->amountForged())->toBeInstanceOf(BigNumber::class);
-
-    assertMatchesSnapshot($this->subject->amountForged()->valueOf()->__toString());
 });
 
 it('should sum up the fees forged', function () {

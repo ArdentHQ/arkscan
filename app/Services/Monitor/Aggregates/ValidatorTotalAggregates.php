@@ -13,13 +13,10 @@ final class ValidatorTotalAggregates
     {
         return Wallets::allWithValidatorPublicKey()
             ->join('blocks', 'blocks.proposer', '=', 'wallets.address')
-            ->selectRaw('
-                SUM(blocks.amount) as amount,
-                SUM(blocks.fee) as fee,
-                SUM(blocks.reward) as reward,
-                COUNT(blocks.proposer) as count,
-                blocks.proposer
-            ')
+            ->selectRaw('SUM(blocks.fee) as fee')
+            ->selectRaw('SUM(blocks.reward) as reward')
+            ->selectRaw('COUNT(blocks.proposer) as count')
+            ->selectRaw('blocks.proposer')
             ->groupBy('blocks.proposer')
             ->get();
     }

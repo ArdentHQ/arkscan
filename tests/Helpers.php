@@ -76,7 +76,6 @@ function createBlock(int $height, string $address, mixed $context = null)
         'parent_hash'            => $height - 1,
         'number'                 => $height,
         'transactions_count'     => 0,
-        'amount'                 => 0,
         'fee'                    => 0,
         'reward'                 => 2 * 1e18,
         'proposer'               => $address,
@@ -291,7 +290,7 @@ function getValidatorForgingPosition(int $round, string $address)
         ->search(fn ($validator) => $validator['address'] === $address);
 }
 
-function getRoundValidators(bool $withBlock = true, int $roundNumber = null): SupportCollection
+function getRoundValidators(bool $withBlock = true, ?int $roundNumber = null): SupportCollection
 {
     $round      = null;
     $validators = null;

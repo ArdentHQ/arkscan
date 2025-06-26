@@ -144,7 +144,6 @@ final class Insights extends Component
 
         return TransactionRecordsStatistics::make(
             Transaction::where('hash', $transactionCache->getLargestIdByAmount())->first(),
-            Block::where('hash', $blockCache->getLargestIdByAmount())->first(),
             Block::where('hash', $blockCache->getLargestIdByFees())->first(),
             Block::where('hash', $blockCache->getLargestIdByTransactionCount())->first(),
         );

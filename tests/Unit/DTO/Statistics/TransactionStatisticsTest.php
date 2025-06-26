@@ -17,7 +17,6 @@ it('should convert to and from wireable array', function () {
         ->toArray();
 
     $transaction           = Transaction::factory()->create();
-    $largestBlock          = Block::factory()->create();
     $highestFeeBlock       = Block::factory()->create();
     $mostTransactionsBlock = Block::factory()->create();
 
@@ -29,7 +28,6 @@ it('should convert to and from wireable array', function () {
 
     $records = TransactionRecordsStatistics::make(
         $transaction,
-        $largestBlock,
         $highestFeeBlock,
         $mostTransactionsBlock,
     );
@@ -51,7 +49,6 @@ it('should convert to and from wireable array', function () {
 
         'records' => [
             'largest_transaction'        => $transaction->hash,
-            'largest_block'              => $largestBlock->hash,
             'highest_fee'                => $highestFeeBlock->hash,
             'most_transactions_in_block' => $mostTransactionsBlock->hash,
         ],
@@ -64,7 +61,6 @@ it('should convert to and from wireable array', function () {
     expect($subject->averages->volume)->toEqual('100.42134589 DARK');
     expect($subject->averages->fees)->toEqual('1.42134589 DARK');
     expect($subject->records->largestTransaction->hash())->toEqual($transaction->hash);
-    expect($subject->records->largestBlock->hash())->toEqual($largestBlock->hash);
     expect($subject->records->blockWithHighestFees->hash())->toEqual($highestFeeBlock->hash);
     expect($subject->records->blockWithMostTransactions->hash())->toEqual($mostTransactionsBlock->hash);
 });

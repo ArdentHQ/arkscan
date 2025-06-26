@@ -32,10 +32,6 @@ it('should list all blocks for the given address', function () {
         $component->assertSee(NumberFormatter::number($block->transactionCount()));
         $component->assertSeeInOrder([
             Network::currency(),
-            number_format($block->amount()),
-        ]);
-        $component->assertSeeInOrder([
-            Network::currency(),
             number_format($block->totalReward()),
         ]);
         $component->assertSeeInOrder([

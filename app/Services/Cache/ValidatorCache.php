@@ -13,16 +13,6 @@ final class ValidatorCache implements Contract
 {
     use ManagesCache;
 
-    public function getTotalAmounts(): array
-    {
-        return $this->get('total_amounts', []);
-    }
-
-    public function setTotalAmounts(array $data): void
-    {
-        $this->put('total_amounts', $data);
-    }
-
     public function getTotalBlocks(): array
     {
         return $this->get('total_blocks', []);
