@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 use App\DTO\MemoryWallet;
 use App\Models\Block;
-use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\BigNumber;
-use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
-use App\Services\NumberFormatter;
 use App\ViewModels\BlockViewModel;
-use App\ViewModels\TransactionViewModel;
 use Carbon\Carbon;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 

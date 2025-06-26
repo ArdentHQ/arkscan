@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Block;
 
 use App\Services\ExchangeRate;
-use App\ViewModels\TransactionViewModel;
 
 trait HasTransactions
 {

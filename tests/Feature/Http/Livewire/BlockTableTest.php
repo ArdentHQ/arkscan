@@ -3,20 +3,14 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
-use App\Facades\Settings;
 use App\Http\Livewire\BlockTable;
 use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
-use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\BigNumber;
-use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\WalletCache;
 use App\Services\NumberFormatter;
-use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should list the first page of records', function () {
