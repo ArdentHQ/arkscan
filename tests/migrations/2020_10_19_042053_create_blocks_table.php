@@ -8,8 +8,7 @@ use Illuminate\Database\Schema\Grammars\PostgresGrammar;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Fluent;
 
-return new class() extends Migration
-{
+return new class() extends Migration {
     public function up()
     {
         PostgresGrammar::macro('typeNumeric', function (Fluent $column) {
