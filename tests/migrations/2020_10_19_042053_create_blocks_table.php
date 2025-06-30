@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Grammars\PostgresGrammar;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Fluent;
 
-final class CreateBlocksTable extends Migration
+return new class() extends Migration
 {
     public function up()
     {
@@ -37,4 +37,4 @@ final class CreateBlocksTable extends Migration
             $table->string('signature');
         });
     }
-}
+};

@@ -6,7 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-final class CreateWalletsTable extends Migration
+return new class() extends Migration
 {
     public function up()
     {
@@ -19,4 +19,4 @@ final class CreateWalletsTable extends Migration
             $table->unsignedBigInteger('updated_at');
         });
     }
-}
+};
