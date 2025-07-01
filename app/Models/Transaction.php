@@ -9,6 +9,7 @@ use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
+use App\Models\Concerns\Transaction\HasPayload;
 use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
@@ -48,6 +49,7 @@ final class Transaction extends Model
 {
     use CanBeSorted;
     use HasFactory;
+    use HasPayload;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
     use Searchable;
@@ -204,6 +206,26 @@ final class Transaction extends Model
     public function receipt(): HasOne
     {
         return $this->hasOne(Receipt::class, 'transaction_hash', 'hash');
+    }
+
+    public function getVotedForAddressAttribute(): ?string
+    {
+        $methodData = $this->getMethodData();
+        if ($methodData !== null) {
+            return $methodData[2][0] ?? null;
+        }
+
+        return null;
+    }
+
+    /**
+     * A receipt belongs to a transaction.
+     *
+     * @return HasOne
+     */
+    public function votedFor(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'address', 'votedForAddress');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder

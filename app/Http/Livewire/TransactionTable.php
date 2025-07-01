@@ -88,6 +88,7 @@ final class TransactionTable extends Component
         return Transaction::withTypeFilter($this->filter)
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
+            ->with('votedFor')
             ->paginate($this->perPage);
     }
 

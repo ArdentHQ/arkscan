@@ -6,12 +6,9 @@ namespace App\Services\Transactions;
 
 use App\Enums\ContractMethod;
 use App\Models\Transaction;
-use App\ViewModels\Concerns\Transaction\HasPayload;
 
 final class TransactionMethod
 {
-    use HasPayload;
-
     private ?string $methodHash;
 
     private array $types = [
@@ -29,7 +26,7 @@ final class TransactionMethod
 
     public function __construct(private Transaction $transaction)
     {
-        $this->methodHash = $this->methodHash();
+        $this->methodHash = $transaction->methodHash();
     }
 
     public function name(): string
@@ -104,7 +101,7 @@ final class TransactionMethod
 
     public function arguments(): array
     {
-        $methodData = $this->getMethodData();
+        $methodData = $this->transaction->getMethodData();
         if ($methodData === null) {
             return [];
         }
