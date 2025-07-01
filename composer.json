@@ -12,7 +12,7 @@
         "ext-gmp": "*",
         "ardenthq/arkvault-url": "dev-feat/mainsail",
         "arkecosystem/crypto": "dev-feat/mainsail",
-        "arkecosystem/foundation": "^19.0",
+        "arkecosystem/foundation": "^19.7",
         "blade-ui-kit/blade-icons": "^1.7",
         "brick/math": "^0.12",
         "danharrin/livewire-rate-limiting": "^1.3",
