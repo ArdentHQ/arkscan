@@ -49,6 +49,13 @@ final class Wallet extends Model
      */
     public $keyType = 'string';
 
+    /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
     protected $primaryKey = 'address';
 
     /**
