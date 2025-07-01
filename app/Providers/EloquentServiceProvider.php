@@ -55,6 +55,7 @@ final class EloquentServiceProvider extends ServiceProvider
             /** @var QueryBuilder $this */
 
             /** @var array $subQuery */
+            // @phpstan-ignore-next-line
             $subQuery = $this->createSub($query);
 
             $query    = $subQuery[0];
