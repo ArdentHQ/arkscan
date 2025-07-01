@@ -55,6 +55,8 @@ final class EloquentServiceProvider extends ServiceProvider
             /** @var QueryBuilder $this */
 
             /** @var array $subQuery */
+            // Ignoring the next line as the createSub method is protected and PHPStan isn't recognizing it.
+            // @phpstan-ignore-next-line
             $subQuery = $this->createSub($query);
 
             $query    = $subQuery[0];

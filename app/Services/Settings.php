@@ -21,7 +21,7 @@ class Settings
         ];
 
         $settings = Cookie::get('settings');
-        if (Cookie::has('settings') && ! is_array($settings)) {
+        if (is_string($settings)) {
             $sessionSettings = json_decode(strval($settings), true);
 
             return $sessionSettings + $defaultSettings;

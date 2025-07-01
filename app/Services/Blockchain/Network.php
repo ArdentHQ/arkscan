@@ -53,6 +53,11 @@ final class Network implements Contract
         return $this->config['testnetExplorerUrl'];
     }
 
+    public function legacyExplorerUrl(): string
+    {
+        return $this->config['legacyExplorerUrl'];
+    }
+
     public function currency(): string
     {
         return $this->config['currency'];
@@ -130,6 +135,11 @@ final class Network implements Contract
     public function blockReward(): int
     {
         return $this->config['blockReward'];
+    }
+
+    public function base58Prefix(): int
+    {
+        return $this->config['base58Prefix'];
     }
 
     public function supply(): BigNumber

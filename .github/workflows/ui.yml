@@ -52,7 +52,7 @@ jobs:
 
             - uses: pnpm/action-setup@v4
               with:
-                  version: 9
+                  version: 9 # Using pnpm 9 as v10 seems to break rustywind
 
             - name: Format
               run: |
