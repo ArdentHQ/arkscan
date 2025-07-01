@@ -46,14 +46,4 @@ final class Round extends Model
     {
         return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
     }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
-    }
 }

@@ -16,10 +16,6 @@ use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use function Tests\faker;
 
-beforeEach(function () {
-    ForgingStats::truncate();
-});
-
 it('should render', function () {
     Livewire::test(MissedBlocks::class)
         ->assertSet('isReady', false)

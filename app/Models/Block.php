@@ -145,14 +145,4 @@ final class Block extends Model
     {
         return $this->hasOne(self::class, 'id', 'previous_block');
     }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
-    }
 }
