@@ -29,9 +29,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Laravel\Scout\Searchable;
 
 /**
@@ -219,42 +216,6 @@ final class Transaction extends Model
     public function recipient(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'recipient_id', 'address');
-    }
-
-    public function getVotedForPublicKeyAttribute(): ?string
-    {
-        return (new Collection(Arr::get($this, 'asset.votes', [])))
-            ->filter(fn ($vote) => str_starts_with($vote, '+'))
-            ->map(fn ($vote) => substr($vote, 1))
-            ->first();
-    }
-
-    public function getUnvotedForPublicKeyAttribute(): ?string
-    {
-        return (new Collection(Arr::get($this, 'asset.votes', [])))
-            ->filter(fn ($vote) => str_starts_with($vote, '-'))
-            ->map(fn ($vote) => substr($vote, 1))
-            ->first();
-    }
-
-    /**
-     * A receipt belongs to a transaction.
-     *
-     * @return HasOne
-     */
-    public function votedFor(): HasOne
-    {
-        return $this->hasOne(Wallet::class, 'public_key', 'votedForPublicKey');
-    }
-
-    /**
-     * A receipt belongs to a transaction.
-     *
-     * @return HasOne
-     */
-    public function unvotedFor(): HasOne
-    {
-        return $this->hasOne(Wallet::class, 'public_key', 'unvotedForPublicKey');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
