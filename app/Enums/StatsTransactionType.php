@@ -20,6 +20,8 @@ enum StatsTransactionType
 
     public const VALIDATOR_RESIGNATION = 'validator_resignation';
 
+    public const VALIDATOR_UPDATE = 'validator_update';
+
     public const USERNAME_REGISTRATION = 'username_registration';
 
     public const USERNAME_RESIGNATION = 'username_resignation';
@@ -33,6 +35,7 @@ enum StatsTransactionType
             self::UNVOTE,
             self::VALIDATOR_REGISTRATION,
             self::VALIDATOR_RESIGNATION,
+            self::VALIDATOR_UPDATE,
             self::USERNAME_REGISTRATION,
             self::USERNAME_RESIGNATION,
         ]);

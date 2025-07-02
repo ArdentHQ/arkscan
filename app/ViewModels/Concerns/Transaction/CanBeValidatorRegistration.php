@@ -12,7 +12,7 @@ trait CanBeValidatorRegistration
 {
     public function validatorPublicKey(): ?string
     {
-        if (! $this->isValidatorRegistration()) {
+        if (! $this->isValidatorRegistration() && ! $this->isValidatorUpdate()) {
             return null;
         }
 

@@ -18,11 +18,6 @@ final class ContractMethod
         return Network::contractMethod('multipayment', '084ce708');
     }
 
-    public static function validatorRegistration(): string
-    {
-        return Network::contractMethod('validator_registration', '602a9eee');
-    }
-
     public static function vote(): string
     {
         return Network::contractMethod('vote', '6dd7d8ea');
@@ -33,9 +28,19 @@ final class ContractMethod
         return Network::contractMethod('unvote', '3174b689');
     }
 
+    public static function validatorRegistration(): string
+    {
+        return Network::contractMethod('validator_registration', '602a9eee');
+    }
+
     public static function validatorResignation(): string
     {
         return Network::contractMethod('validator_resignation', 'b85f5da2');
+    }
+
+    public static function validatorUpdate(): string
+    {
+        return Network::contractMethod('validator_update', '5a8eed73');
     }
 
     public static function usernameRegistration(): string

@@ -15,10 +15,11 @@ final class TransactionMethod
         'isTransfer'              => 'transfer',
         'isTokenTransfer'         => 'transfer',
         'isMultiPayment'          => 'multipayment',
-        'isValidatorRegistration' => 'validator-registration',
         'isUnvote'                => 'unvote',
         'isVote'                  => 'vote',
+        'isValidatorRegistration' => 'validator-registration',
         'isValidatorResignation'  => 'validator-resignation',
+        'isValidatorUpdate'       => 'validator-update',
         'isUsernameRegistration'  => 'username-registration',
         'isUsernameResignation'   => 'username-resignation',
         'isContractDeployment'    => 'contract-deployment',
@@ -64,11 +65,6 @@ final class TransactionMethod
         return $this->methodHash === ContractMethod::multiPayment();
     }
 
-    public function isValidatorRegistration(): bool
-    {
-        return $this->methodHash === ContractMethod::validatorRegistration();
-    }
-
     public function isVote(): bool
     {
         return $this->methodHash === ContractMethod::vote();
@@ -79,9 +75,19 @@ final class TransactionMethod
         return $this->methodHash === ContractMethod::unvote();
     }
 
+    public function isValidatorRegistration(): bool
+    {
+        return $this->methodHash === ContractMethod::validatorRegistration();
+    }
+
     public function isValidatorResignation(): bool
     {
         return $this->methodHash === ContractMethod::validatorResignation();
+    }
+
+    public function isValidatorUpdate(): bool
+    {
+        return $this->methodHash === ContractMethod::validatorUpdate();
     }
 
     public function isUsernameRegistration(): bool

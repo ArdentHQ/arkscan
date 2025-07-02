@@ -19,6 +19,7 @@ use App\Services\Transactions\Aggregates\Type\UsernameRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\UsernameResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
+use App\Services\Transactions\Aggregates\Type\ValidatorUpdateAggregate;
 use App\Services\Transactions\Aggregates\Type\VoteAggregate;
 use InvalidArgumentException;
 
@@ -53,7 +54,7 @@ final class HistoricalAggregateFactory
         throw new InvalidArgumentException('Invalid aggregate period.');
     }
 
-    public static function type(string $type): TransferAggregate | MultiPaymentAggregate | VoteAggregate | UnvoteAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate | UsernameRegistrationAggregate | UsernameResignationAggregate
+    public static function type(string $type): TransferAggregate | MultiPaymentAggregate | VoteAggregate | UnvoteAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate | ValidatorUpdateAggregate | UsernameRegistrationAggregate | UsernameResignationAggregate
     {
         if ($type === StatsTransactionType::TRANSFER) {
             return new TransferAggregate();
@@ -77,6 +78,10 @@ final class HistoricalAggregateFactory
 
         if ($type === StatsTransactionType::VALIDATOR_RESIGNATION) {
             return new ValidatorResignationAggregate();
+        }
+
+        if ($type === StatsTransactionType::VALIDATOR_UPDATE) {
+            return new ValidatorUpdateAggregate();
         }
 
         if ($type === StatsTransactionType::USERNAME_REGISTRATION) {
