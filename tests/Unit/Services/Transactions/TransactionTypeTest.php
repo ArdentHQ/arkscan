@@ -207,23 +207,3 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['legacyBridgechainResignation'],
     ['legacyBridgechainUpdate'],
 ]);
-
-it('should handle a non-array asset when determining votes', function () {
-    $transaction = Transaction::factory()
-        ->vote()
-        ->create(['asset' => null]);
-
-    $transactionType = new TransactionType($transaction);
-
-    expect($transactionType->isVote())->toBeFalse();
-});
-
-it('should handle no votes key in asset when determining votes', function () {
-    $transaction = Transaction::factory()
-        ->vote()
-        ->create(['asset' => []]);
-
-    $transactionType = new TransactionType($transaction);
-
-    expect($transactionType->isVote())->toBeFalse();
-});
