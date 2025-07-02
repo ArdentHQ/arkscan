@@ -8,14 +8,16 @@ use App\Contracts\MarketDataProvider;
 use App\Services\MarketDataProviders\CryptoCompare;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
 abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
+
+    protected $connectionsToTransact = ['pgsql', 'explorer'];
 
     /**
      * Setup the test environment.
@@ -29,25 +31,11 @@ abstract class TestCase extends BaseTestCase
         Http::preventStrayRequests();
 
         Config::set('arkscan.networks.development.knownWallets', null);
-    }
 
-    /**
-     * Creates the application.
-     *
-     * @return \Illuminate\Foundation\Application
-     */
-    public function createApplication()
-    {
-        $app = require __DIR__.'/../bootstrap/app.php';
-
-        $app->make(Kernel::class)->bootstrap();
-
-        $app->singleton(
+        $this->app->singleton(
             MarketDataProvider::class,
             fn () => new CryptoCompare()
         );
-
-        return $app;
     }
 
     /**
@@ -57,11 +45,24 @@ abstract class TestCase extends BaseTestCase
      */
     protected function refreshTestDatabase()
     {
-        Artisan::call('migrate:fresh', [
-            '--database' => 'explorer',
-            '--path'     => 'tests/migrations',
-        ]);
+        if (! RefreshDatabaseState::$migrated) {
+            $this->artisan('migrate:fresh', [
+                ...$this->migrateFreshUsing(),
+                '--database' => 'pgsql',
+                '--path'     => 'database/migrations',
+            ]);
 
-        Artisan::call('migrate', ['--path' => 'database/migrations']);
+            $this->artisan('migrate:fresh', [
+                ...$this->migrateFreshUsing(),
+                '--database' => 'explorer',
+                '--path'     => 'tests/migrations',
+            ]);
+
+            $this->app[Kernel::class]->setArtisan(null);
+
+            RefreshDatabaseState::$migrated = true;
+        }
+
+        $this->beginDatabaseTransaction();
     }
 }
