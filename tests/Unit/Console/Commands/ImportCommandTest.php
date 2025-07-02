@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Artisan;
-
 use function Tests\mockTaggedCache;
 
 it('should call the command and pause/resume indexing', function () {

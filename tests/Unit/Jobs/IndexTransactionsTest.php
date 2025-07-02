@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Http;
 use Laravel\Scout\Events\ModelsImported;
 use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
-
 use function Tests\mockTaggedCache;
 
 beforeEach(function () {
