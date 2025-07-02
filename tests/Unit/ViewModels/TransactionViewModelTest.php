@@ -213,7 +213,7 @@ it('should determine if the transaction is confirmed', function () {
 });
 
 it('should determine the transaction type', function (string $type, ?string $walletArgument = null) {
-    $wallet = Wallet::factory()->activeValidator()->create();
+    $wallet    = Wallet::factory()->activeValidator()->create();
     $arguments = [];
     if ($walletArgument) {
         $arguments = [$wallet->{$walletArgument}];
@@ -228,12 +228,12 @@ it('should determine the transaction type', function (string $type, ?string $wal
 
     expect($subject->{'is'.ucfirst($type)}())->toBeFalse();
 })->with([
-    'transfer' => ['transfer', null],
+    'transfer'              => ['transfer', null],
     'validatorRegistration' => ['validatorRegistration', 'public_key'],
-    'validatorResignation' => ['validatorResignation', null],
-    'validatorUpdate' => ['validatorUpdate', 'public_key'],
-    'vote' => ['vote', 'address'],
-    'unvote' => ['unvote', null],
+    'validatorResignation'  => ['validatorResignation', null],
+    'validatorUpdate'       => ['validatorUpdate', 'public_key'],
+    'vote'                  => ['vote', 'address'],
+    'unvote'                => ['unvote', null],
 ]);
 
 it('should determine if the transaction is self-receiving', function (string $type) {
@@ -242,7 +242,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
     $arguments = [];
     if ($type === 'vote') {
         $arguments = [$wallet->address];
-    } elseif (in_array($type, ['validatorRegistration', 'validatorUpdate'])) {
+    } elseif (in_array($type, ['validatorRegistration', 'validatorUpdate'], true)) {
         $arguments = [$wallet->public_key];
     }
 
