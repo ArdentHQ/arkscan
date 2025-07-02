@@ -12,6 +12,8 @@ use Laravel\Scout\Events\ModelsImported;
 use Meilisearch\Client as MeilisearchClient;
 use Meilisearch\Endpoints\Indexes;
 
+use function Tests\mockTaggedCache;
+
 beforeEach(function () {
     // Default value, overriden in phpunit.xml for the tests
     Config::set('scout.driver', 'meilisearch');
@@ -26,7 +28,7 @@ beforeEach(function () {
 it('should index new blocks', function () {
     Event::fake();
 
-    Cache::shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(null)
         ->shouldReceive('put')
@@ -70,7 +72,7 @@ it('should index new blocks', function () {
 it('should index new blocks using the timestamp from cache', function () {
     Event::fake();
 
-    Cache::shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(2) // so new ones are the one with timestamp 5 and 10
         ->shouldReceive('put')
@@ -100,7 +102,7 @@ it('should index new blocks using the timestamp from cache', function () {
 it('should not store any value on cache if no new transactions', function () {
     Event::fake();
 
-    Cache::shouldReceive('get')
+    mockTaggedCache()->shouldReceive('get')
         ->with('latest-indexed-timestamp:blocks')
         ->andReturn(6);
 
