@@ -125,15 +125,30 @@ final class TransactionFactory extends Factory
             ]);
     }
 
-    public function validatorRegistration(?string $address = null): Factory
+    public function validatorRegistration(?string $blsPublicKey = null): Factory
     {
         $method = ContractMethod::validatorRegistration();
 
-        if ($address === null) {
-            $address = faker()->wallet['address'];
+        if ($blsPublicKey === null) {
+            $blsPublicKey = faker()->blsPublicKey();
         }
 
-        return $this->withPayload($method.str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT))
+        return $this->withPayload($method.str_pad($blsPublicKey, 64, '0', STR_PAD_LEFT))
+            ->state(fn () => [
+                'to'    => Network::knownContract('consensus'),
+                'value' => 250 * 1e18,
+            ]);
+    }
+
+    public function validatorUpdate(?string $blsPublicKey = null): Factory
+    {
+        $method = ContractMethod::validatorUpdate();
+
+        if ($blsPublicKey === null) {
+            $blsPublicKey = faker()->blsPublicKey();
+        }
+
+        return $this->withPayload($method.str_pad($blsPublicKey, 64, '0', STR_PAD_LEFT))
             ->state(fn () => [
                 'to'    => Network::knownContract('consensus'),
                 'value' => 250 * 1e18,

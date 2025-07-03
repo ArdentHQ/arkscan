@@ -249,6 +249,7 @@ const TransactionsExport = ({
                 requestData.data.push(
                     network.contract_methods.validator_registration,
                     network.contract_methods.validator_resignation,
+                    network.contract_methods.validator_update,
                     network.contract_methods.username_registration,
                     network.contract_methods.username_resignation
                 );

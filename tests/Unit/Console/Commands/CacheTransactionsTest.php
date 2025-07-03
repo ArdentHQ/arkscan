@@ -38,7 +38,7 @@ it('should cache data', function (): void {
 
     Transaction::factory(2)
         ->withReceipt(data: ['status' => true])
-        ->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')
+        ->validatorRegistration('5c038505a35f9D20435EDafa79A4F8Bbc643BB86')
         ->create([
             'value'     => 0,
             'gas_price' => 9,
@@ -76,10 +76,11 @@ it('should cache data', function (): void {
 
     Artisan::call('explorer:cache-transactions');
 
-    expect($cache->getHistoricalByType(StatsTransactionType::VALIDATOR_REGISTRATION))->toBe(2);
     expect($cache->getHistoricalByType(StatsTransactionType::TRANSFER))->toBe(4);
     expect($cache->getHistoricalByType(StatsTransactionType::MULTIPAYMENT))->toBe(4);
+    expect($cache->getHistoricalByType(StatsTransactionType::VALIDATOR_REGISTRATION))->toBe(2);
     expect($cache->getHistoricalByType(StatsTransactionType::VALIDATOR_RESIGNATION))->toBe(0);
+    expect($cache->getHistoricalByType(StatsTransactionType::VALIDATOR_UPDATE))->toBe(0);
     expect($cache->getHistoricalByType(StatsTransactionType::UNVOTE))->toBe(0);
     expect($cache->getHistoricalByType(StatsTransactionType::VOTE))->toBe(0);
 
@@ -155,7 +156,7 @@ it('should not trigger event if nothing changed', function (): void {
 
     stubNetwork();
 
-    Transaction::factory(2)->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
+    Transaction::factory(2)->validatorRegistration('5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
         'value'     => 0,
         'gas_price' => 9 * 1e8,
     ]);
@@ -199,7 +200,7 @@ it('should trigger event if largest transaction has changed', function (): void 
 
     $cache = new TransactionCache();
 
-    Transaction::factory(2)->validatorRegistration('0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
+    Transaction::factory(2)->validatorRegistration('5c038505a35f9D20435EDafa79A4F8Bbc643BB86')->create([
         'value'     => 0,
         'gas_price' => 9 * 1e8,
     ]);

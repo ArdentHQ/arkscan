@@ -68,10 +68,11 @@ return [
             'contract_methods' => [
                 'transfer'               => env('ARKSCAN_CONTRACT_TRANSFER_METHOD', 'a9059cbb'),
                 'multipayment'           => env('ARKSCAN_CONTRACT_MULTIPAYMENT_METHOD', '084ce708'),
-                'validator_registration' => env('ARKSCAN_CONTRACT_VALIDATOR_REGISTRATION_METHOD', '602a9eee'),
                 'vote'                   => env('ARKSCAN_CONTRACT_VOTE_METHOD', '6dd7d8ea'),
                 'unvote'                 => env('ARKSCAN_CONTRACT_UNVOTE_METHOD', '3174b689'),
+                'validator_registration' => env('ARKSCAN_CONTRACT_VALIDATOR_REGISTRATION_METHOD', '602a9eee'),
                 'validator_resignation'  => env('ARKSCAN_CONTRACT_VALIDATOR_RESIGNATION_METHOD', 'b85f5da2'),
+                'validator_update'       => env('ARKSCAN_CONTRACT_VALIDATOR_UPDATE_METHOD', '5a8eed73'),
                 'username_registration'  => env('ARKSCAN_CONTRACT_USERNAME_REGISTRATION_METHOD', '36a94134'),
                 'username_resignation'   => env('ARKSCAN_CONTRACT_USERNAME_RESIGNATION_METHOD', 'ebed6dab'),
                 'contract_deployment'    => env('ARKSCAN_CONTRACT_DEPLOYMENT_METHOD', '60806040'),

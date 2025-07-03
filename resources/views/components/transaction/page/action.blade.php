@@ -26,7 +26,7 @@
                 <x-general.page-section.data.validator :validator="$votedValidator" />
             @endif
         </x-transaction.page.section-detail.row>
-    @elseif ($transaction->isValidatorRegistration())
+    @elseif ($transaction->isValidatorRegistration() || $transaction->isValidatorUpdate())
         <x-transaction.page.section-detail.row
             :title="trans('pages.transaction.header.validator')"
             :transaction="$transaction"

@@ -130,6 +130,7 @@ return [
             'unknown'                => 'Unknown',
             'validator-registration' => 'Validator Registration',
             'validator-resignation'  => 'Validator Resignation',
+            'validator-update'       => 'Validator Update',
             'username-registration'  => 'Username Registration',
             'username-resignation'   => 'Username Resignation',
             'contract-deployment'    => 'Contract Deployment',
