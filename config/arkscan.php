@@ -83,7 +83,7 @@ return [
     ],
 
     'pagination' => [
-        'per_page' => env('ARKSCAN_PAGINATION_PER_PAGE', 6),
+        'per_page' => env('ARKSCAN_PAGINATION_PER_PAGE', 25),
     ],
 
     'statistics'                        => [
