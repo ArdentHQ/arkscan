@@ -9,7 +9,6 @@ use App\Facades\Network;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
-use App\Http\Livewire\Concerns\IsTabbed;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
@@ -24,7 +23,6 @@ final class Validators extends TabbedTableComponent
 {
     use HasTableFilter;
     use HasTableSorting;
-    use IsTabbed;
 
     public const PER_PAGE = 53;
 
