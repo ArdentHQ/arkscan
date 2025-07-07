@@ -20,7 +20,7 @@ final class MissedBlocks extends TabbedTableComponent
 {
     use HasTableSorting;
 
-    public const INITIAL_SORT_KEY = 'height';
+    public const INITIAL_SORT_KEY = 'age';
 
     public const INITIAL_SORT_DIRECTION = SortDirection::DESC;
 
