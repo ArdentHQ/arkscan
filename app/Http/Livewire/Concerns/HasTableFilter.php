@@ -59,16 +59,11 @@ trait HasTableFilter
             return;
         }
 
-        // dump('updatingFilter', $this->filter, func_get_args());
-        // $this->selectAllFilters = $this->isAllSelected;
-
         $this->setPage(1);
     }
 
     public function updatedFilter(): void
     {
         $this->selectAllFilters = $this->isAllSelected;
-
-        // $this->setPage(1);
     }
 }

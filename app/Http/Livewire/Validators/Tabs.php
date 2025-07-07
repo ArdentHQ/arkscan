@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Validators;
 
 use App\Http\Livewire\Concerns\HasTabs;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 /**
@@ -42,11 +41,6 @@ final class Tabs extends Component
         if ($this->view === 'validators') {
             $perPage = Validators::defaultPerPage();
         }
-
-        Log::debug('Validators Tabs Query String', [
-            'view'    => $this->view,
-            'perPage' => $perPage,
-        ]);
 
         // TODO: Handle filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
 
@@ -97,10 +91,6 @@ final class Tabs extends Component
 
     public function render(): View
     {
-        Log::debug('render', [
-            'perPage' => $this->perPage,
-        ]);
-
         return view('livewire.validators.tabs');
     }
 

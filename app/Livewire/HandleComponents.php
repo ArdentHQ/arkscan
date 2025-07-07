@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Http\Livewire\Concerns\HasTabs;
-use Illuminate\Support\Facades\Log;
 use Livewire\Drawer\Utils;
 use Livewire\Exceptions\PublicPropertyNotFoundException;
 use Livewire\Mechanisms\HandleComponents\HandleComponents as Base;
@@ -21,22 +20,8 @@ class HandleComponents extends Base
 
         $finish = trigger('update', $component, $path, $value);
 
-        Log::debug('HandleComponents::updateProperty', [
-            '$property'  => $property,
-            '$component' => $component,
-            // 'path'      => $path,
-            'value'     => $value,
-            'context'   => $context,
-        ]);
-
         if (in_array(HasTabs::class, class_uses_recursive($component::class), true)) {
             if ($property === 'paginators') {
-                Log::debug('HandleComponents::updateProperty page', [
-                    'paginators' => $component->paginators,
-                    'page'       => $component->getPage(),
-                    'value'      => $value,
-                ]);
-
                 $value = $component->getPage();
             }
 

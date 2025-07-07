@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
-use Illuminate\Support\Facades\Log;
 
 /** @property int $perPage */
 trait HasTablePagination
@@ -21,10 +20,6 @@ trait HasTablePagination
         } else {
             $this->perPage = $this->resolvePerPage();
         }
-        Log::debug('mountHasTablePagination - '.get_class($this), [
-            'perPage'    => $this->perPage,
-            'paginators' => $this->paginators,
-        ]);
     }
 
     final public function queryStringHasTablePagination(): array
@@ -43,10 +38,6 @@ trait HasTablePagination
         $this->perPage = $perPage;
 
         $this->gotoPage(1);
-
-        Log::debug('setPerPage', [
-            'perPage' => $this->perPage,
-        ]);
     }
 
     // @phpstan-ignore-next-line
@@ -61,27 +52,15 @@ trait HasTablePagination
             $const = constant(static::class.'::PER_PAGE');
             // @phpstan-ignore-next-line
             if (is_int($const)) {
-                Log::debug('defaultPerPage 1 - '.static::class, [
-                    'perPage' => $const,
-                ]);
-
                 return $const;
             }
         }
-
-        Log::debug('defaultPerPage 2 - '.static::class, [
-            'perPage' => intval(config('arkscan.pagination.per_page')),
-        ]);
 
         return intval(config('arkscan.pagination.per_page'));
     }
 
     private function resolvePerPage(): int
     {
-        Log::debug('resolvePerPage', [
-            'perPage' => $this->perPage,
-        ]);
-
         return $this->perPage;
     }
 }

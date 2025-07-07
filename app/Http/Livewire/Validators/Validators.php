@@ -15,7 +15,6 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
 
 /**
  * @property bool $isAllSelected
@@ -53,52 +52,8 @@ final class Validators extends TabbedTableComponent
         ];
     }
 
-    public function updating($key, $value): void
-    {
-        Log::debug('Validators.class updating', [
-            'page'       => $this->getPage(),
-            '$key'       => $key,
-            '$value'     => $value,
-            'perPage'    => $this->perPage,
-            'paginators' => $this->paginators,
-        ]);
-    }
-
-    public function updated(): void
-    {
-        Log::debug('Validators.class updated', [
-            'page'       => $this->getPage(),
-            'perPage'    => $this->perPage,
-            'paginators' => $this->paginators,
-        ]);
-    }
-
-    public function hydrate(): void
-    {
-        Log::debug('Validators.class hydrate', [
-            'page'       => $this->getPage(),
-            'perPage'    => $this->perPage,
-            'paginators' => $this->paginators,
-        ]);
-    }
-
-    public function boot(): void
-    {
-        Log::debug('Validators.class boot', [
-            'page'       => $this->getPage(),
-            'perPage'    => $this->perPage,
-            'paginators' => $this->paginators,
-        ]);
-    }
-
     public function mount(bool $deferLoading = true): void
     {
-        Log::debug('Validators.class mount', [
-            'deferLoading'    => $deferLoading,
-            'page'            => $this->getPage(),
-            'perPage'         => $this->perPage,
-        ]);
-
         if (! $deferLoading) {
             $this->setIsReady();
         }
@@ -106,12 +61,6 @@ final class Validators extends TabbedTableComponent
 
     public function render(): View
     {
-        Log::debug('Validators.class render', [
-            'page'       => $this->getPage(),
-            'perPage'    => $this->perPage,
-            'sortKey'    => $this->sortKey,
-        ]);
-
         return view('livewire.validators.validators', [
             'validators' => ViewModelFactory::paginate($this->validators),
         ]);
@@ -132,11 +81,6 @@ final class Validators extends TabbedTableComponent
 
     public function getValidatorsProperty(): LengthAwarePaginator
     {
-        Log::debug('Validators.class getValidatorsProperty', [
-            'page'    => $this->getPage(),
-            'perPage' => $this->perPage,
-        ]);
-
         $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
         if (! $this->isReady) {
             return $emptyResults;
