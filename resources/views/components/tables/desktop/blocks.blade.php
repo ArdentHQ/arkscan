@@ -36,13 +36,6 @@
                 responsive
             />
 
-            <x-tables.headers.desktop.number
-                name="tables.blocks.volume"
-                :name-properties="['currency' => Network::currency()]"
-                class="whitespace-nowrap"
-                :tooltip="trans('pages.wallets.blocks.volume_tooltip')"
-            />
-
             @if (Network::canBeExchanged())
                 <x-tables.headers.desktop.number
                     name="tables.blocks.total_reward"
@@ -90,10 +83,6 @@
 
                 <x-ark-tables.cell class="text-right" responsive breakpoint="md-lg">
                     <x-tables.rows.desktop.encapsulated.transaction-count :model="$block" />
-                </x-ark-tables.cell>
-
-                <x-ark-tables.cell class="text-right">
-                    <x-tables.rows.desktop.encapsulated.volume :model="$block" />
                 </x-ark-tables.cell>
 
                 @if (Network::canBeExchanged())

@@ -2,11 +2,6 @@
 
 <x-general.page-section.container :title="trans('pages.block.block_summary')">
     <x-block.page.section-detail.row
-        :title="trans('pages.block.header.volume')"
-        :value="ExplorerNumberFormatter::networkCurrency($block->amount(), withSuffix: true)"
-    />
-
-    <x-block.page.section-detail.row
         :title="trans('pages.block.header.block_reward')"
         :value="ExplorerNumberFormatter::networkCurrency($block->reward(), withSuffix: true)"
     />

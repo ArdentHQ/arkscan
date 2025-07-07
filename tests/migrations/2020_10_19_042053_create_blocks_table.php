@@ -8,8 +8,7 @@ use Illuminate\Database\Schema\Grammars\PostgresGrammar;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Fluent;
 
-final class CreateBlocksTable extends Migration
-{
+return new class() extends Migration {
     public function up()
     {
         PostgresGrammar::macro('typeNumeric', function (Fluent $column) {
@@ -25,7 +24,6 @@ final class CreateBlocksTable extends Migration
             $table->unsignedBigInteger('number');
             $table->unsignedBigInteger('transactions_count');
             $table->integer('gas_used');
-            $table->addColumn('numeric', 'amount');
             $table->addColumn('numeric', 'fee');
             $table->addColumn('numeric', 'reward');
             $table->unsignedBigInteger('payload_size');
@@ -38,4 +36,4 @@ final class CreateBlocksTable extends Migration
             $table->string('signature');
         });
     }
-}
+};

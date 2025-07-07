@@ -13,16 +13,6 @@ final class BlockCache implements Contract
 {
     use ManagesCache;
 
-    public function getLargestIdByAmount(): ?string
-    {
-        return $this->get('largest/amount');
-    }
-
-    public function setLargestIdByAmount(string $id): void
-    {
-        $this->put('largest/amount', $id);
-    }
-
     public function getLargestIdByFees(): ?string
     {
         return $this->get('largest/fees');

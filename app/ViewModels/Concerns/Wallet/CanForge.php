@@ -21,11 +21,6 @@ trait CanForge
         return $this->feesForged()->plus($this->rewardsForged()->valueOf())->toFloat();
     }
 
-    public function amountForged(): BigNumber
-    {
-        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalAmounts(), $this->wallet->address, 0));
-    }
-
     public function feesForged(): BigNumber
     {
         return BigNumber::new(Arr::get((new ValidatorCache())->getTotalFees(), $this->wallet->address, 0));

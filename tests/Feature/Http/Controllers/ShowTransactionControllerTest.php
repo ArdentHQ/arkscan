@@ -68,7 +68,7 @@ it('should handle failed token transfers with missing data', function () {
 
 it('should show a locked amount for a validator registration', function () {
     $transaction = Transaction::factory()
-        ->validatorRegistration('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
         ->create();
 
     $this
@@ -82,7 +82,7 @@ it('should show a locked amount for a validator registration', function () {
 
 it('should show a corresponding validator registration', function () {
     $registrationTransaction = Transaction::factory()
-        ->validatorRegistration('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
         ->create();
 
     $resignationTransaction = Transaction::factory()

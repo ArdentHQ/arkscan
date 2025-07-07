@@ -5,23 +5,8 @@ declare(strict_types=1);
 use App\Events\Statistics\TransactionDetails;
 use App\Jobs\CacheBlocks;
 use App\Models\Block;
-use App\Models\Transaction;
 use App\Services\Cache\BlockCache;
 use Illuminate\Support\Facades\Event;
-
-it('should cache largest block by amount', function () {
-    Event::fake();
-
-    $cache = new BlockCache();
-
-    $largestBlock = Block::factory()->create(['amount' => 100 * 1e8]);
-
-    (new CacheBlocks())->handle($cache);
-
-    expect($cache->getLargestIdByAmount())->toBe($largestBlock->hash);
-
-    Event::assertDispatchedTimes(TransactionDetails::class, 1);
-});
 
 it('should cache largest block by fee', function () {
     Event::fake();
@@ -83,85 +68,28 @@ it('should not trigger event if no change', function () {
     Event::assertNotDispatched(TransactionDetails::class);
 });
 
-it('should trigger event if largest block by amount changes', function () {
-    Event::fake();
-
-    $cache = new BlockCache();
-
-    $largestByAmount = Block::factory()->create([
-        'amount'             => 1000 * 1e8,
-        'fee'                => 1 * 1e8,
-        'transactions_count' => 1,
-    ]);
-
-    $largestByFees = Block::factory()->create([
-        'amount'             => 100 * 1e8,
-        'fee'                => 100 * 1e8,
-        'transactions_count' => 1,
-    ]);
-
-    $largestByTransactions = Block::factory()->create([
-        'amount'             => 1 * 1e8,
-        'fee'                => 1 * 1e8,
-        'transactions_count' => 3,
-    ]);
-
-    (new CacheBlocks())->handle($cache);
-
-    expect($cache->getLargestIdByAmount())->toBe($largestByAmount->hash);
-    expect($cache->getLargestIdByFees())->toBe($largestByFees->hash);
-    expect($cache->getLargestIdByTransactionCount())->toBe($largestByTransactions->hash);
-
-    Event::assertDispatchedTimes(TransactionDetails::class, 1);
-
-    Event::fake();
-
-    (new CacheBlocks())->handle($cache);
-
-    Event::assertDispatchedTimes(TransactionDetails::class, 0);
-
-    $updatedLargestByAmount = Block::factory()->create([
-        'fee'                => 1 * 1e8,
-        'transactions_count' => 1,
-    ]);
-    Transaction::factory()->create([
-        'value'      => 10000 * 1e8,
-        'block_hash' => $updatedLargestByAmount->hash,
-    ]);
-
-    (new CacheBlocks())->handle($cache);
-
-    expect($cache->getLargestIdByAmount())->toBe($updatedLargestByAmount->hash);
-
-    Event::assertDispatchedTimes(TransactionDetails::class, 1);
-});
-
 it('should trigger event if largest block by fee changes', function () {
     Event::fake();
 
     $cache = new BlockCache();
 
-    $largestByAmount = Block::factory()->create([
-        'amount'             => 1000 * 1e8,
-        'fee'                => 1 * 1e8,
+    Block::factory()->create([
+        'fee'                => 10 * 1e8,
         'transactions_count' => 1,
     ]);
 
     $largestByFees = Block::factory()->create([
-        'amount'             => 100 * 1e8,
         'fee'                => 100 * 1e8,
-        'transactions_count' => 1,
+        'transactions_count' => 2,
     ]);
 
     $largestByTransactions = Block::factory()->create([
-        'amount'             => 1 * 1e8,
         'fee'                => 1 * 1e8,
         'transactions_count' => 3,
     ]);
 
     (new CacheBlocks())->handle($cache);
 
-    expect($cache->getLargestIdByAmount())->toBe($largestByAmount->hash);
     expect($cache->getLargestIdByFees())->toBe($largestByFees->hash);
     expect($cache->getLargestIdByTransactionCount())->toBe($largestByTransactions->hash);
 
@@ -173,9 +101,8 @@ it('should trigger event if largest block by fee changes', function () {
 
     Event::assertNotDispatched(TransactionDetails::class);
 
+    // same amount, but higher fee
     $updatedLargestByFees = Block::factory()->create([
-        // same amount, but higher fee
-        'amount'             => 1 * 1e8,
         'fee'                => 1000 * 1e8,
         'transactions_count' => 1,
     ]);
@@ -192,27 +119,23 @@ it('should trigger event if largest block by transaction count changes', functio
 
     $cache = new BlockCache();
 
-    $largestByAmount = Block::factory()->create([
-        'amount'             => 1000 * 1e8,
-        'fee'                => 1 * 1e8,
+    Block::factory()->create([
+        'fee'                => 10 * 1e8,
         'transactions_count' => 1,
     ]);
 
     $largestByFees = Block::factory()->create([
-        'amount'             => 100 * 1e8,
         'fee'                => 100 * 1e8,
-        'transactions_count' => 1,
+        'transactions_count' => 2,
     ]);
 
     $largestByTransactions = Block::factory()->create([
-        'amount'             => 1 * 1e8,
         'fee'                => 1 * 1e8,
         'transactions_count' => 3,
     ]);
 
     (new CacheBlocks())->handle($cache);
 
-    expect($cache->getLargestIdByAmount())->toBe($largestByAmount->hash);
     expect($cache->getLargestIdByFees())->toBe($largestByFees->hash);
     expect($cache->getLargestIdByTransactionCount())->toBe($largestByTransactions->hash);
 
@@ -224,9 +147,8 @@ it('should trigger event if largest block by transaction count changes', functio
 
     Event::assertNotDispatched(TransactionDetails::class);
 
+    // same amount, but more transactions
     $updatedLargestByTransactions = Block::factory()->create([
-        // same amount, but more transactions
-        'amount'             => 1 * 1e8,
         'fee'                => 1 * 1e8,
         'transactions_count' => 5,
     ]);

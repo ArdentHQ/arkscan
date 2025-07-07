@@ -37,6 +37,7 @@ it('should render transaction details', function (): void {
 
     Transaction::factory(12)->validatorRegistration()->create();
     Transaction::factory(13)->validatorResignation()->create();
+    Transaction::factory(24)->validatorUpdate()->create();
     Transaction::factory(14)->transfer()->create(['value' => 1 * 1e18]);
     Transaction::factory(15)->vote($wallet['address'])->create();
     Transaction::factory(16)->unvote()->create();
@@ -79,6 +80,7 @@ it('should render transaction details', function (): void {
             'unvote'                 => 16,
             'validator_registration' => 12,
             'validator_resignation'  => 13,
+            'validator_update'       => 24,
             'username_registration'  => 19,
             'username_resignation'   => 20,
         ],
@@ -100,6 +102,8 @@ it('should render transaction details', function (): void {
             '12',
             trans('pages.statistics.insights.transactions.header.validator_resignation'),
             '13',
+            trans('pages.statistics.insights.transactions.header.validator_update'),
+            '24',
             trans('pages.statistics.insights.transactions.header.username_registration'),
             '19',
             trans('pages.statistics.insights.transactions.header.username_resignation'),
@@ -173,6 +177,7 @@ it('should render transaction daily average', function (): void {
             trans('pages.statistics.insights.transactions.header.unvote'),
             trans('pages.statistics.insights.transactions.header.validator_registration'),
             trans('pages.statistics.insights.transactions.header.validator_resignation'),
+            trans('pages.statistics.insights.transactions.header.validator_update'),
             trans('pages.statistics.insights.transactions.header.username_registration'),
             trans('pages.statistics.insights.transactions.header.username_resignation'),
             trans('pages.statistics.insights.transactions.header.transactions'),
@@ -199,7 +204,6 @@ it('should render transaction records', function (): void {
     $otherBlock                = Block::factory()->create();
 
     (new TransactionCache())->setLargestIdByAmount($largestTransaction->hash);
-    (new BlockCache())->setLargestIdByAmount($largestBlock->hash);
     (new BlockCache())->setLargestIdByFees($largestBlockFee->hash);
     (new BlockCache())->setLargestIdByTransactionCount($blockWithMostTransactions->hash);
 
@@ -207,8 +211,6 @@ it('should render transaction records', function (): void {
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.largest_transaction'),
             $largestTransaction->hash,
-            trans('pages.statistics.insights.transactions.header.largest_block'),
-            $largestBlock->hash,
             trans('pages.statistics.insights.transactions.header.highest_fee'),
             $largestBlockFee->hash,
             trans('pages.statistics.insights.transactions.header.most_transactions_in_block'),

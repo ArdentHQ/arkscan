@@ -12,12 +12,12 @@ trait CanBeValidatorRegistration
 {
     public function validatorPublicKey(): ?string
     {
-        if (! $this->isValidatorRegistration()) {
+        if (! $this->isValidatorRegistration() && ! $this->isValidatorUpdate()) {
             return null;
         }
 
         /** @var array $methodData */
-        $methodData = $this->getMethodData();
+        $methodData = $this->transaction->getMethodData();
 
         [2 => $arguments] = $methodData;
 

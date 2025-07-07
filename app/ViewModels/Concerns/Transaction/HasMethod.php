@@ -23,11 +23,6 @@ trait HasMethod
         return $this->method->isTokenTransfer();
     }
 
-    public function isValidatorRegistration(): bool
-    {
-        return $this->method->isValidatorRegistration();
-    }
-
     public function isVote(): bool
     {
         return $this->method->isVote();
@@ -38,9 +33,19 @@ trait HasMethod
         return $this->method->isUnvote();
     }
 
+    public function isValidatorRegistration(): bool
+    {
+        return $this->method->isValidatorRegistration();
+    }
+
     public function isValidatorResignation(): bool
     {
         return $this->method->isValidatorResignation();
+    }
+
+    public function isValidatorUpdate(): bool
+    {
+        return $this->method->isValidatorUpdate();
     }
 
     public function isUsernameRegistration(): bool
@@ -70,6 +75,10 @@ trait HasMethod
         }
 
         if ($this->isValidatorResignation()) {
+            return true;
+        }
+
+        if ($this->isValidatorUpdate()) {
             return true;
         }
 

@@ -20,11 +20,11 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 22.11
 
-            - uses: pnpm/action-setup@v3
+            - uses: pnpm/action-setup@v4
               with:
-                  version: 9
+                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -48,11 +48,11 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 22.11
 
-            - uses: pnpm/action-setup@v3
+            - uses: pnpm/action-setup@v4
               with:
-                  version: 9
+                  version: 9 # Using pnpm 9 as v10 seems to break rustywind
 
             - name: Format
               run: |
@@ -77,11 +77,11 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 22.11
 
-            - uses: pnpm/action-setup@v3
+            - uses: pnpm/action-setup@v4
               with:
-                  version: 9
+                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -130,11 +130,11 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 22.11
 
-            - uses: pnpm/action-setup@v3
+            - uses: pnpm/action-setup@v4
               with:
-                  version: 9
+                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile

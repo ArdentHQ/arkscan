@@ -23,7 +23,6 @@ use Laravel\Scout\Searchable;
  * @property int $transactions_count
  * @property BigNumber $reward
  * @property int $timestamp
- * @property BigNumber $amount
  * @property BigNumber $fee
  * @property int $gas_used
  * @property string $proposer
@@ -77,13 +76,12 @@ final class Block extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'number'                 => BigInteger::class,
-        'transactions_count'     => 'int',
-        'reward'                 => BigInteger::class,
-        'timestamp'              => UnixSeconds::class,
-        'amount'                 => BigInteger::class,
-        'fee'                    => BigInteger::class,
-        'gas_used'               => 'int',
+        'number'             => BigInteger::class,
+        'transactions_count' => 'int',
+        'reward'             => BigInteger::class,
+        'timestamp'          => UnixSeconds::class,
+        'fee'                => BigInteger::class,
+        'gas_used'           => 'int',
     ];
 
     /**

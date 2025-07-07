@@ -35,10 +35,6 @@ it('should list the first page of blocks', function () {
         $component->assertSee(NumberFormatter::number($block->transactionCount()));
         $component->assertSeeInOrder([
             Network::currency(),
-            number_format($block->amount()),
-        ]);
-        $component->assertSeeInOrder([
-            Network::currency(),
             number_format($block->totalReward()),
         ]);
         $component->assertSeeInOrder([
