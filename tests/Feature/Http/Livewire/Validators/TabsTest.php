@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Http\Livewire\Validators\Tabs;
 use App\Livewire\SupportQueryString;
@@ -16,18 +17,24 @@ it('should set initial data', function () {
     Livewire::test(Tabs::class)
         ->assertSet('tabQueryData', [
             'validators' => [
-                'page'    => 1,
-                'perPage' => Network::validatorCount(),
+                'paginators.page' => 1,
+                'perPage'         => Network::validatorCount(),
+                'sortKey'         => 'rank',
+                'sortDirection'   => SortDirection::ASC,
             ],
 
             'missed-blocks' => [
-                'page'    => 1,
-                'perPage' => 25,
+                'paginators.page' => 1,
+                'perPage'         => 25,
+                'sortKey'         => 'age',
+                'sortDirection'   => SortDirection::DESC,
             ],
 
             'recent-votes' => [
-                'page'    => 1,
-                'perPage' => 25,
+                'paginators.page' => 1,
+                'perPage'         => 25,
+                'sortKey'         => 'age',
+                'sortDirection'   => SortDirection::DESC,
             ],
         ]);
 });
@@ -37,9 +44,11 @@ it('should get querystring data', function () {
         ->instance();
 
     expect($instance->queryString())->toBe([
-        'view'    => ['except' => 'validators'],
-        'page'    => ['except' => 1],
-        'perPage' => ['except' => Network::validatorCount()],
+        'view'            => ['except' => 'validators'],
+        'paginators.page' => ['except' => 1, 'history' => true],
+        'perPage'         => ['except' => Network::validatorCount()],
+        'sortKey'         => ['except' => 'rank'],
+        'sortDirection'   => ['except' => SortDirection::ASC],
     ]);
 });
 
@@ -49,9 +58,11 @@ it('should change querystring if different view', function () {
         ->instance();
 
     expect($instance->queryString())->toBe([
-        'view'    => ['except' => 'validators'],
-        'page'    => ['except' => 1],
-        'perPage' => ['except' => 25],
+        'view'            => ['except' => 'validators'],
+        'paginators.page' => ['except' => 1, 'history' => true],
+        'perPage'         => ['except' => 25],
+        'sortKey'         => ['except' => 'rank'],
+        'sortDirection'   => ['except' => SortDirection::ASC],
     ]);
 });
 
@@ -69,10 +80,5 @@ it('should apply url values to component', function () {
         ->test(Tabs::class)
         ->instance();
 
-    // $support = new SupportQueryString();
-    // $support->setComponent($instance);
-    // $support->mergeQueryStringWithRequest();
-
     expect($instance->getPage())->toBe(3);
-    // expect($instance->paginators['page'])->toBe(3);
 });
