@@ -53,7 +53,7 @@ trait HasTableFilter
         }
     }
 
-    public function updatingFilter($value, $key): void
+    public function updatingFilter(array|bool $value, ?string $key = null): void
     {
         if (Arr::get($this->filter, $key) === $value) {
             return;

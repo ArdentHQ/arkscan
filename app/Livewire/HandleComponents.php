@@ -12,6 +12,15 @@ use function Livewire\trigger;
 
 class HandleComponents extends Base
 {
+    /**
+     * Set a component property, aware of types.
+     *
+     * @param  mixed  $component
+     * @param  mixed  $path
+     * @param  mixed  $value
+     * @param  mixed  $context
+     * @return \Closure(mixed &$forward = null, mixed ...$extras): mixed
+     */
     public function updateProperty($component, $path, $value, $context)
     {
         $segments = explode('.', $path);
@@ -34,9 +43,10 @@ class HandleComponents extends Base
 
             // If this isn't a "deep" set, set it directly, otherwise we have to
             // recursively get up and set down the value through the synths...
-            if (empty($segments)) {
+            if (count($segments) === 0) {
                 $this->setComponentPropertyAwareOfTypes($component, $property, $value);
             } else {
+                // @phpstan-ignore-next-line
                 $propertyValue = $component->$property;
 
                 $this->setComponentPropertyAwareOfTypes(
