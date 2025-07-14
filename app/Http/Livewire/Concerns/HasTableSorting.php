@@ -12,10 +12,17 @@ trait HasTableSorting
 
     public SortDirection $sortDirection;
 
+    public string $internalSortKey;
+
+    public SortDirection $internalSortDirection;
+
     public function mountHasTableSorting(): void
     {
         $this->sortKey       = static::defaultSortKey();
         $this->sortDirection = $this->resolveSortDirection();
+
+        $this->internalSortKey       = $this->sortKey;
+        $this->internalSortDirection = $this->sortDirection;
     }
 
     public function queryStringHasTableSorting(): array
@@ -36,7 +43,7 @@ trait HasTableSorting
 
     public function sortBy(string $key): void
     {
-        if ($this->sortKey === $key) {
+        if ($this->internalSortKey === $key) {
             if ($this->sortDirection === SortDirection::ASC) {
                 $this->sortDirection = SortDirection::DESC;
             } else {
@@ -46,6 +53,9 @@ trait HasTableSorting
             $this->sortKey       = $key;
             $this->sortDirection = SortDirection::ASC;
         }
+
+        $this->internalSortKey       = $this->sortKey;
+        $this->internalSortDirection = $this->sortDirection;
 
         $this->gotoPage(1);
     }

@@ -9,6 +9,7 @@
     'sortingId' => null,
     'initialSort' => 'asc',
     'livewireSort' => false,
+    'isReady' => null,
 ])
 
 @if ($sortingId)
@@ -23,6 +24,7 @@
         :livewire-sort="$livewireSort"
         :sorting-id="$sortingId"
         :initial-sort="$initialSort"
+        :is-ready="$isReady"
     />
 @else
     <x-ark-tables.header

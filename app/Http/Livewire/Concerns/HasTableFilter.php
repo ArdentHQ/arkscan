@@ -59,7 +59,7 @@ trait HasTableFilter
             return;
         }
 
-        $this->setPage(1);
+        $this->gotoPage(1, false);
     }
 
     public function updatedFilter(): void

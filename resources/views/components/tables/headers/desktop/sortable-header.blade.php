@@ -13,7 +13,14 @@
     'sortDisabled' => false,
     'sortIconAlignment' => 'right',
     'hideSorting' => false,
+    'isReady' => null,
 ])
+
+@php
+    if ($isReady === null) {
+        $isReady = $this->isReady;
+    }
+@endphp
 
 <x-ark-tables.header
     :responsive="$responsive"
@@ -22,9 +29,9 @@
     :last-on="$lastOn"
     :width="$width"
     :class="Arr::toCssClasses(['group/header' => ! $hideSorting && $sortingId !== null,
-        'cursor-pointer' => ! $hideSorting && $sortingId !== null && (($livewireSort && $this->isReady) || ! $livewireSort),
+        'cursor-pointer' => ! $hideSorting && $sortingId !== null && (($livewireSort && $isReady) || ! $livewireSort),
         'flex-row-reverse space-x-0' => ! $hideSorting && $livewireSort && $sortingId !== null,
-        'disabled' => $sortDisabled || (! $hideSorting && $livewireSort && $sortingId !== null && ! $this->isReady),
+        'disabled' => $sortDisabled || (! $hideSorting && $livewireSort && $sortingId !== null && ! $isReady),
         $class,
     ])"
     :attributes="$attributes->merge([
@@ -54,7 +61,7 @@
                 wire:click="sortBy('{{ $sortingId }}')"
                 wire:loading.attr="disabled"
 
-                @if ($sortDisabled || ! $this->isReady)
+                @if ($sortDisabled || ! $isReady)
                     disabled
                 @endif
             @endif

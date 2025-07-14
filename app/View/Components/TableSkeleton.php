@@ -25,6 +25,7 @@ final class TableSkeleton extends Component
         private bool $encapsulated = false,
         private ?LengthAwarePaginator $paginator = null,
         private array $componentProperties = [],
+        private ?bool $isReady = null,
     ) {
         $this->items = collect($items);
         $this->class = $class;

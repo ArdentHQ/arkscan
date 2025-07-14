@@ -6,30 +6,38 @@ namespace App\Http\Livewire\Concerns;
 
 use App\Livewire\SupportQueryString;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 trait HasTabs
 {
     use SyncsInput;
-    use HasTablePagination;
+    // use HasTablePagination;
 
     public array $tabQueryData = [];
 
     public array $savedQueryData = [];
 
-    public function __get(mixed $property): mixed
+    public function __get(mixed $property)
     {
+        // if ($property === 'paginators.page') {
+        //     $value = $this->tabQueryData[$this->view]['paginators.page'] ?? null;
+        //     if ($value !== null) {
+        //         return $value;
+        //     }
+        // }
+
         $value = Arr::get($this->tabQueryData[$this->view], $property);
         if ($value !== null) {
             return $value;
         }
 
-        $value = Arr::get($this->tabQueryData[$this->previousView], $property);
-        if ($value !== null) {
-            return $value;
-        }
+        // $value = Arr::get($this->tabQueryData[$this->previousView], $property);
+        // if ($value !== null) {
+        //     return $value;
+        // }
 
-        return parent::__get($property);
+        // return parent::__get($property);
     }
 
     public function __set(string $property, mixed $value): void
@@ -41,9 +49,9 @@ trait HasTabs
 
     public function triggerViewIsReady(?string $view = null): void
     {
-        if (! array_key_exists($this->view, $this->savedQueryData)) {
-            $this->saveViewData();
-        }
+        // if (! array_key_exists($this->view, $this->savedQueryData)) {
+        //     $this->saveViewData();
+        // }
 
         if ($view === null) {
             $view = $this->view;
@@ -77,10 +85,10 @@ trait HasTabs
             return;
         }
 
-        $this->previousView = $this->view;
-
-        $this->saveViewData();
+        $this->saveViewData($newView);
         $this->loadViewData($newView);
+
+        $this->previousView = $this->view;
     }
 
     /**
@@ -90,16 +98,49 @@ trait HasTabs
      */
     public function updatedView(): void
     {
-        if (array_key_exists($this->view, $this->savedQueryData)) {
-            /** @var string $key */
-            foreach ($this->savedQueryData[$this->view] as $key => $value) {
-                if ($key === 'paginators') {
-                    $this->setPage($value['page']);
-                }
+        $this->updateViewData();
+    }
 
-                $this->syncInput($key, $value);
-            }
+    public function hasLoadedView(string $view): bool
+    {
+        if (! array_key_exists($view, $this->alreadyLoadedViews)) {
+            return false;
         }
+
+        return $this->alreadyLoadedViews[$view];
+    }
+
+    public function updateViewData(): void
+    {
+        $queryData = [
+            ...$this->tabQueryData[$this->view] ?? [],
+            ...$this->savedQueryData[$this->view] ?? [],
+        ];
+
+        foreach ($queryData as $key => $value) {
+            // if ($key === 'paginators.page') {
+            //     $this->gotoPage($value, false);
+
+            //     // continue;
+            // } else if ($key === 'perPage') {
+            //     $this->setPerPage($value);
+
+            //     // continue;
+            // }
+
+            $this->syncInput($key, $value);
+        }
+    }
+
+    public function gotoPage(int $page, bool $emitEvent = true): void
+    {
+        if ($emitEvent) {
+            $this->dispatch('pageChanged');
+        }
+
+        $this->setPage($page);
+
+        $this->tabQueryData[$this->view]['paginators.page'] = $page;
     }
 
     abstract private function tabbedComponent();
@@ -110,7 +151,9 @@ trait HasTabs
         $queryStringSupport->setComponent($this);
         $queryStringSupport->mergeQueryStringWithRequest();
 
-        $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
+
+
+        // $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
     }
 
     private function loadViewData(?string $newView = null): void
@@ -119,36 +162,39 @@ trait HasTabs
         $queryStringSupport->setComponent($this);
         $queryStringSupport->mergeQueryStringWithRequest();
 
-        // Reset the querystring data on view change to clear the URL
-        $queryStringData = $queryStringSupport->getQueryString();
 
-        $properties = $this->getAttributesByName();
 
-        /** @var string $key */
-        foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
-            $except = null;
+        // // Reset the querystring data on view change to clear the URL
+        // $queryStringData = $queryStringSupport->getQueryString();
 
-            if ($key === 'paginators') {
-                $key = 'paginators.page';
-            }
+        // $properties = $this->getAttributesByName();
 
-            $property = $properties->get($key);
-            if ($property !== null) {
-                $except = $property->except;
-            } elseif (Arr::get($queryStringData, $key.'.except') !== null) {
-                $except = $queryStringData[$key]['except'];
-            } else {
-                continue;
-            }
+        // /** @var string $key */
+        // foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
+        //     $except = null;
 
-            if ($key === 'paginators.page') {
-                $this->setPage($except);
+        //     if ($key === 'paginators') {
+        //         $key = 'paginators.page';
+        //     }
 
-                continue;
-            }
+        //     $property = $properties->get($key);
+        //     if ($property !== null) {
+        //         $except = $property->except;
+        //     } elseif (Arr::get($queryStringData, $key.'.except') !== null) {
+        //         $except = $queryStringData[$key]['except'];
+        //     } else {
+        //         continue;
+        //     }
 
-            $this->syncInput($key, $except);
-        }
+        //     if ($key === 'paginators.page') {
+        //         // $this->setPage($except);
+        //         $this->gotoPage($except, false);
+
+        //         continue;
+        //     }
+
+        //     $this->syncInput($key, $except);
+        // }
 
         $this->triggerViewIsReady($newView);
     }
@@ -158,15 +204,41 @@ trait HasTabs
         return request()->get('view', $this->view);
     }
 
-    private function resolvePage(): int
-    {
-        return (int) request()->get('page', $this->getPage());
-    }
+    // private function resolvePage(): int
+    // {
+    //     return (int) request()->get('page', $this->getPage());
+    // }
 
-    private function resolvePerPage(): ?int
-    {
-        $value = request()->get('perPage', $this->perPage);
+    // private function resolvePerPage(): ?int
+    // {
+    //     $value = request()->get('perPage', $this->perPage);
 
-        return $value === null ? null : (int) $value;
+    //     return $value === null ? null : (int) $value;
+    // }
+
+    public function hydrateHasTabs(): void
+    {
+        if (! array_key_exists($this->view, $this->tabQueryData)) {
+            return;
+        }
+
+        $this->updateViewData();
+
+        // $query = $this->tabQueryData[$this->view];
+
+        // $this->perPage = $query['perPage'];
+        // // $this->syncInput('perPage', $query['perPage']);
+        // $this->sortKey = $query['sortKey'];
+        // // $this->syncInput('sortKey', $query['sortKey']);
+        // $this->sortDirection = $query['sortDirection'];
+        // // $this->syncInput('sortDirection', $query['sortDirection']);
+
+        // Log::debug('Hydrating HasTabs', [
+        //     'view' => $this->view,
+        //     'query' => $query,
+        // ]);
+
+        // // $this->setPerPage($query['perPage'] ?? static::resolvePerPage());
+        // // $this->gotoPage($this->tabQueryData[$this->view]['paginators.page'] ?? static::resolvePage(), false);
     }
 }

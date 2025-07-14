@@ -1,7 +1,9 @@
+@props(['deferLoading' => true])
+
 <div
     x-show="tab === 'missed-blocks'"
     id="missed-blocks-list"
     {{ $attributes->class('w-full') }}
 >
-    <livewire:validators.missed-blocks />
+    <livewire:validators.missed-blocks :defer-loading="$deferLoading" />
 </div>

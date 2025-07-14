@@ -5,21 +5,32 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
+use Illuminate\Support\Facades\Log;
 
 /** @property int $perPage */
 trait HasTablePagination
 {
+    use SyncsInput;
     use HasPagination;
 
     public ?int $perPage = null;
 
+    public ?int $internalPerPage = null;
+
     final public function mountHasTablePagination(): void
     {
+        Log::debug('Mounting HasTablePagination', [
+            'class' => static::class,
+            'perPage' => $this->perPage,
+            'internalPerPage' => $this->internalPerPage,
+        ]);
         if ($this->perPage === null) {
             $this->perPage = static::defaultPerPage();
         } else {
             $this->perPage = $this->resolvePerPage();
         }
+
+        $this->internalPerPage = $this->perPage;
     }
 
     final public function queryStringHasTablePagination(): array
@@ -29,6 +40,18 @@ trait HasTablePagination
         ];
     }
 
+    final public function bootedHasTablePagination(): void
+    {
+        // $this->syncInput('perPage', $this->internalPerPage);
+        $this->perPage = $this->internalPerPage;
+    }
+
+    public function hydratedHasTablePagination(): void
+    {
+        // $this->syncInput('perPage', $this->internalPerPage);
+        $this->perPage = $this->resolvePerPage();
+    }
+
     final public function setPerPage(int $perPage): void
     {
         if (! in_array($perPage, static::perPageOptions(), true)) {
@@ -36,6 +59,8 @@ trait HasTablePagination
         }
 
         $this->perPage = $perPage;
+
+        $this->internalPerPage = $this->perPage;
 
         $this->gotoPage(1);
     }
@@ -61,6 +86,10 @@ trait HasTablePagination
 
     private function resolvePerPage(): int
     {
+        if ($this->internalPerPage !== null) {
+            return $this->internalPerPage;
+        }
+
         return $this->perPage;
     }
 }

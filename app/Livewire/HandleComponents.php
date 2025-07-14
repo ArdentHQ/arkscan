@@ -8,7 +8,6 @@ use App\Http\Livewire\Concerns\HasTabs;
 use Livewire\Drawer\Utils;
 use Livewire\Exceptions\PublicPropertyNotFoundException;
 use Livewire\Mechanisms\HandleComponents\HandleComponents as Base;
-use function Livewire\trigger;
 
 class HandleComponents extends Base
 {
@@ -27,19 +26,19 @@ class HandleComponents extends Base
 
         $property = array_shift($segments);
 
-        $finish = trigger('update', $component, $path, $value);
+        $finish = app(\Livewire\EventBus::class)->trigger('update', $component, $path, $value);
 
-        if (in_array(HasTabs::class, class_uses_recursive($component::class), true)) {
-            if ($property === 'paginators') {
-                $value = $component->getPage();
-            }
+        // if (in_array(HasTabs::class, class_uses_recursive($component::class), true)) {
+        //     // if ($property === 'paginators') {
+        //     //     $value = $component->getPage();
+        //     // }
 
-            $component->syncInput($property, $value);
-        } else {
+        //     $component->syncInput($path, $value);
+        // } else {
             // Ensure that it's a public property, not on the base class first...
-            if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)), true)) {
-                throw new PublicPropertyNotFoundException($property, $component->getName());
-            }
+            // if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)), true)) {
+            //     throw new PublicPropertyNotFoundException($property, $component->getName());
+            // }
 
             // If this isn't a "deep" set, set it directly, otherwise we have to
             // recursively get up and set down the value through the synths...
@@ -55,7 +54,7 @@ class HandleComponents extends Base
                     $this->recursivelySetValue($property, $propertyValue, $value, $segments, 0, $context)
                 );
             }
-        }
+        // }
 
         return $finish;
     }

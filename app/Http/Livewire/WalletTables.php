@@ -6,7 +6,6 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\HasTabs;
-use App\Http\Livewire\Concerns\SyncsInput;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
@@ -20,7 +19,6 @@ use Livewire\Component;
 final class WalletTables extends Component
 {
     use HasTabs;
-    use SyncsInput;
 
     public string $address;
 
@@ -36,19 +34,10 @@ final class WalletTables extends Component
 
     public function queryString(): array
     {
-        $params = [
-            'paginators.page' => ['except' => 1, 'as' => 'page'],
+        return [
+            'paginators.page' => ['except' => 1, 'history' => true],
             'perPage'         => ['except' => intval(config('arkscan.pagination.per_page'))],
             'view'            => ['except' => 'transactions', 'history' => true],
-        ];
-
-        // We need to pass in the transaction filters for previous view so we can hide it from the URL
-        if ($this->view !== 'transactions' && $this->previousView !== 'transactions') {
-            return $params;
-        }
-
-        return [
-            ...$params,
 
             // Transaction Filters
             'outgoing'      => ['except' => true, 'history' => true],
@@ -66,32 +55,23 @@ final class WalletTables extends Component
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'transactions' => [
+                    'paginators.page' => 1,
                     'perPage'         => WalletTransactionTable::defaultPerPage(),
                     'outgoing'        => true,
                     'incoming'        => true,
                     'transfers'       => true,
                     'votes'           => true,
                     'others'          => true,
-
-                    'paginators'      => [
-                        'page' => 1,
-                    ],
                 ],
 
                 'blocks' => [
-                    'perPage'  => WalletBlockTable::defaultPerPage(),
-
-                    'paginators' => [
-                        'page' => 1,
-                    ],
+                    'paginators.page' => 1,
+                    'perPage'         => WalletBlockTable::defaultPerPage(),
                 ],
 
                 'voters' => [
-                    'perPage'    => WalletVoterTable::defaultPerPage(),
-
-                    'paginators' => [
-                        'page' => 1,
-                    ],
+                    'paginators.page' => 1,
+                    'perPage'         => WalletVoterTable::defaultPerPage(),
                 ],
             ];
 
@@ -100,12 +80,8 @@ final class WalletTables extends Component
                 return;
             }
 
-            $this->tabQueryData[$view]['paginators']['page'] = $this->resolvePage();
-
-            $perPage = $this->resolvePerPage();
-            if ($perPage !== null) {
-                $this->tabQueryData[$view]['perPage'] = $perPage;
-            }
+            $this->gotoPage($this->resolvePage(), false);
+            $this->setPerPage($this->resolvePerPage());
         }
     }
 

@@ -19,9 +19,35 @@
 
         <x-validators.tables.validators />
 
-        <x-validators.tables.missed-blocks x-cloak />
+        @if ($this->hasLoadedView('missed-blocks'))
+            <x-validators.tables.missed-blocks
+                :defer-loading="false"
+                x-cloak
+            />
+        @else
+            <div x-show="tab === 'missed-blocks'">
+                <x-skeletons.validators.missed-blocks
+                    :paginator="new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1)"
+                    :is-ready="false"
+                    x-cloak
+                />
+            </div>
+        @endif
 
-        <x-validators.tables.recent-votes x-cloak />
+        @if ($this->hasLoadedView('recent-votes'))
+            <x-validators.tables.recent-votes
+                :defer-loading="false"
+                x-cloak
+            />
+        @else
+            <div x-show="tab === 'recent-votes'">
+                <x-skeletons.validators.recent-votes
+                    :paginator="new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10, 1)"
+                    :is-ready="false"
+                    x-cloak
+                />
+            </div>
+        @endif
 
         <x-script.onload-scroll-to-query selector="#validator-table-list" />
     </div>

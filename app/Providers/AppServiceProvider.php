@@ -49,7 +49,7 @@ final class AppServiceProvider extends ServiceProvider
             fn () => new (GasTracker::class)()
         );
 
-        $this->app->bind(
+        $this->app->singleton(
             HandleComponentsContract::class,
             fn () => new HandleComponents(),
         );

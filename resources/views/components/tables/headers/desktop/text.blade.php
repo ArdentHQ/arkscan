@@ -11,6 +11,7 @@
     'livewireSort' => false,
     'hideSorting' => false,
     'sortDisabled' => false,
+    'isReady' => null,
 ])
 
 @if ($sortingId)
@@ -27,6 +28,7 @@
         :sort-disabled="$sortDisabled"
         :initial-sort="$initialSort"
         :hide-sorting="$hideSorting"
+        :is-ready="$isReady"
     />
 @else
     <x-ark-tables.header

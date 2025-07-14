@@ -14,6 +14,7 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @property bool $isAllSelected
@@ -50,8 +51,14 @@ final class Validators extends TabbedTableComponent
         ];
     }
 
+    public function boot(): void
+    {
+        Log::debug('Booting Validators');
+    }
+
     public function mount(bool $deferLoading = true): void
     {
+        Log::debug('Mounting Validators');
         if (! $deferLoading) {
             $this->setIsReady();
         }
@@ -79,7 +86,7 @@ final class Validators extends TabbedTableComponent
 
     public function getValidatorsProperty(): LengthAwarePaginator
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
+        $emptyResults = new LengthAwarePaginator([], 0, $this->internalPerPage);
         if (! $this->isReady) {
             return $emptyResults;
         }
@@ -89,7 +96,7 @@ final class Validators extends TabbedTableComponent
         }
 
         return $this->getValidatorsQuery()
-            ->paginate($this->perPage);
+            ->paginate($this->internalPerPage);
     }
 
     public static function perPageOptions(): array
@@ -113,9 +120,11 @@ final class Validators extends TabbedTableComponent
     private function getValidatorsQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;
-        if ($this->sortDirection === SortDirection::DESC) {
+        if ($this->internalSortDirection === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
+
+        $sortKey = $this->internalSortKey;
 
         return Wallet::query()
             ->whereNotNull('attributes->validatorPublicKey')
@@ -132,10 +141,21 @@ final class Validators extends TabbedTableComponent
                     })))
                     ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
             }))
-            ->when($this->sortKey === 'rank', fn ($query) => $query->sortByRank($sortDirection))
-            ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
-            ->when($this->sortKey === 'votes' || $this->sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
-            ->when($this->sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
-            ->when($this->sortKey === 'missed_blocks', fn ($query) => $query->sortByMissedBlocks($sortDirection));
+            ->when($sortKey === 'rank', fn ($query) => $query->sortByRank($sortDirection))
+            ->when($sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
+            ->when($sortKey === 'votes' || $sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
+            ->when($sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
+            ->when($sortKey === 'missed_blocks', fn ($query) => $query->sortByMissedBlocks($sortDirection));
+    }
+
+    public function hydrate(): void
+    {
+        Log::debug('Hydrating Validators', [
+            'page' => $this->getPage(),
+            'isReady' => $this->isReady,
+            'perPage' => $this->perPage,
+            'sortKey' => $this->sortKey,
+            'sortDirection' => $this->sortDirection,
+        ]);
     }
 }

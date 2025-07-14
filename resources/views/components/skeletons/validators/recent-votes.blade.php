@@ -1,13 +1,21 @@
 @props([
     'rowCount' => 10,
     'paginator' => null,
+    'isReady' => null,
 ])
 
-@if (! $this->isReady)
+@php
+    if ($isReady === null) {
+        $isReady = $this->isReady;
+    }
+@endphp
+
+@if (! $isReady)
     <div wire:key="skeleton:recent-votes:not-ready">
         <x-tables.desktop.skeleton.validators.recent-votes
             :row-count="$rowCount"
             :paginator="$paginator"
+            :is-ready="$isReady"
         />
 
         <x-tables.mobile.skeleton.validators.recent-votes />
@@ -20,6 +28,7 @@
         <x-tables.desktop.skeleton.validators.recent-votes
             :row-count="$rowCount"
             :paginator="$paginator"
+            :is-ready="$isReady"
         />
 
         <x-tables.mobile.skeleton.validators.recent-votes />

@@ -36,6 +36,7 @@
                     :livewire-sort="Arr::get($header, 'livewireSort', null)"
                     :sort-disabled="Arr::get($header, 'sortDisabled', false)"
                     :tooltip="Arr::get($header, 'tooltip', null)"
+                    :is-ready="Arr::get($header, 'isReady', null)"
                 />
             @endforeach
         </tr>
@@ -55,6 +56,7 @@
                         :nested-data-breakpoint="Arr::get($row, 'nestedDataBreakpoint', null)"
                         :badge-width="Arr::get($row, 'badgeWidth', null)"
                         :badge-height="Arr::get($row, 'badgeHeight', null)"
+                    :is-ready="Arr::get($row, 'isReady', null)"
                     />
                 @endforeach
             </x-ark-tables.row>

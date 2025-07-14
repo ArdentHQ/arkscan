@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Validators;
 
 use App\Http\Livewire\Concerns\HasTabs;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 /**
@@ -20,19 +21,10 @@ final class Tabs extends Component
 
     public ?string $previousView = 'validators';
 
-    public array $tabQueryData = [];
-
-    public array $savedQueryData = [];
-
     public array $alreadyLoadedViews = [
         'validators'     => false,
         'missed-blocks'  => false,
         'recent-votes'   => false,
-    ];
-
-    /** @var mixed */
-    protected $listeners = [
-        'showValidatorsView',
     ];
 
     public function queryString(): array
@@ -46,7 +38,10 @@ final class Tabs extends Component
 
         return [
             'view'               => ['except' => 'validators'],
-            'paginators.page'    => ['except' => 1, 'history' => true],
+            'paginators.page'    => ['except' => 1],
+            // 'paginators' => [
+            //     'page'    => ['except' => 1],
+            // ],
             'perPage'            => ['except' => $perPage],
             'sortKey'            => ['except' => Validators::defaultSortKey()],
             'sortDirection'      => ['except' => Validators::defaultSortDirection()],
@@ -62,7 +57,10 @@ final class Tabs extends Component
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'validators' => [
-                    'paginators.page'    => 1,
+                    // 'paginators.page'    => 1,
+                    'paginators' => [
+                        'page'    => ['except' => 1],
+                    ],
                     'perPage'            => Validators::defaultPerPage(),
                     'sortKey'            => Validators::defaultSortKey(),
                     'sortDirection'      => Validators::defaultSortDirection(),
@@ -71,14 +69,20 @@ final class Tabs extends Component
                 ],
 
                 'missed-blocks' => [
-                    'paginators.page' => 1,
+                    // 'paginators.page' => 1,
+                    'paginators' => [
+                        'page'    => ['except' => 1],
+                    ],
                     'perPage'         => MissedBlocks::defaultPerPage(),
                     'sortKey'         => MissedBlocks::defaultSortKey(),
                     'sortDirection'   => MissedBlocks::defaultSortDirection(),
                 ],
 
                 'recent-votes' => [
-                    'paginators.page' => 1,
+                    // 'paginators.page' => 1,
+                    'paginators' => [
+                        'page'    => ['except' => 1],
+                    ],
                     'perPage'         => RecentVotes::defaultPerPage(),
                     'sortKey'         => RecentVotes::defaultSortKey(),
                     'sortDirection'   => RecentVotes::defaultSortDirection(),
@@ -86,6 +90,18 @@ final class Tabs extends Component
                     // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
             ];
+
+            $view = $this->resolveView();
+            if (! array_key_exists($view, $this->tabQueryData)) {
+                return;
+            }
+
+            // $perPage = $this->resolvePerPage();
+            // if ($perPage !== null) {
+            //     $this->tabQueryData[$view]['perPage'] = $perPage;
+            // }
+
+            // $this->gotoPage($this->resolvePage(), false);
         }
     }
 
@@ -94,6 +110,7 @@ final class Tabs extends Component
         return view('livewire.validators.tabs');
     }
 
+    #[On('showValidatorsView')]
     public function showValidatorsView(string $view): void
     {
         $this->syncInput('view', $view);

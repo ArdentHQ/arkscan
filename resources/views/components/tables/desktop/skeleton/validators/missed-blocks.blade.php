@@ -1,7 +1,14 @@
 @props([
     'rowCount' => 10,
     'paginator' => null,
+    'isReady' => null,
 ])
+
+@php
+    if ($isReady === null) {
+        $isReady = $this->isReady;
+    }
+@endphp
 
 @php
     $canSort = config('database.default') !== 'sqlite';
@@ -10,6 +17,7 @@
             'type' => 'text',
             'sortingId' => $canSort ? 'height' : null,
             'livewireSort' => $canSort,
+            'isReady' => $isReady,
             'nestedDataBreakpoint' => [
                 'from' => 'md',
                 'to' => 'md-lg',
@@ -21,28 +29,33 @@
             'breakpoint' => 'md-lg',
             'sortingId' => $canSort ? 'age' : null,
             'livewireSort' => $canSort,
+            'isReady' => $isReady,
         ],
         'tables.missed-blocks.validator' => [
             'type' => 'text',
             'sortingId' => $canSort ? 'name' : null,
             'livewireSort' => $canSort,
+            'isReady' => $isReady,
         ],
         'tables.missed-blocks.no_of_voters' => [
             'type'       => 'number',
             'sortingId' => $canSort ? 'no_of_voters' : null,
             'livewireSort' => $canSort,
+            'isReady' => $isReady,
         ],
         'tables.missed-blocks.votes' => [
             'type'       => 'number',
             'nameProperties' => ['currency' => Network::currency()],
             'sortingId' => $canSort ? 'votes' : null,
             'livewireSort' => $canSort,
+            'isReady' => $isReady,
         ],
         'tables.missed-blocks.percentage' => [
             'type'       => 'number',
             'tooltip' => trans('tables.missed-blocks.info.percentage'),
             'sortingId' => $canSort ? 'percentage_votes' : null,
             'livewireSort' => $canSort,
+            'isReady' => $isReady,
         ],
     ];
 @endphp

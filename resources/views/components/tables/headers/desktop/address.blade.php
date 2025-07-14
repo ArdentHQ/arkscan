@@ -7,6 +7,7 @@
     'name' => '',
     'sortingId' => null,
     'livewireSort' => false,
+    'isReady' => null,
 ])
 
 @if ($sortingId)
@@ -18,6 +19,7 @@
         :name="$name"
         :livewire-sort="$livewireSort"
         :sorting-id="$sortingId"
+        :is-ready="$isReady"
         :class="Arr::toCssClasses(['text-left',
             $class,
         ])"
