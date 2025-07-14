@@ -203,22 +203,22 @@ it('should not update initial page if view does not exist', function () {
     expect($instance->tabQueryData)->toBe([
         'transactions' => [
             'paginators.page' => 1,
-            'perPage'    => WalletTransactionTable::defaultPerPage(),
-            'outgoing'   => true,
-            'incoming'   => true,
-            'transfers'  => true,
-            'votes'      => true,
-            'others'     => true,
+            'perPage'         => WalletTransactionTable::defaultPerPage(),
+            'outgoing'        => true,
+            'incoming'        => true,
+            'transfers'       => true,
+            'votes'           => true,
+            'others'          => true,
         ],
 
         'blocks' => [
             'paginators.page' => 1,
-            'perPage'    => WalletBlockTable::defaultPerPage(),
+            'perPage'         => WalletBlockTable::defaultPerPage(),
         ],
 
         'voters' => [
             'paginators.page' => 1,
-            'perPage'    => WalletVoterTable::defaultPerPage(),
+            'perPage'         => WalletVoterTable::defaultPerPage(),
         ],
     ]);
 });

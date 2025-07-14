@@ -20,8 +20,8 @@ trait HasTablePagination
     final public function mountHasTablePagination(): void
     {
         Log::debug('Mounting HasTablePagination', [
-            'class' => static::class,
-            'perPage' => $this->perPage,
+            'class'           => static::class,
+            'perPage'         => $this->perPage,
             'internalPerPage' => $this->internalPerPage,
         ]);
         if ($this->perPage === null) {

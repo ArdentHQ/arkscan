@@ -104,6 +104,17 @@ final class Validators extends TabbedTableComponent
         return trans('tables.validators.validator_per_page_options');
     }
 
+    public function hydrate(): void
+    {
+        Log::debug('Hydrating Validators', [
+            'page'          => $this->getPage(),
+            'isReady'       => $this->isReady,
+            'perPage'       => $this->perPage,
+            'sortKey'       => $this->sortKey,
+            'sortDirection' => $this->sortDirection,
+        ]);
+    }
+
     private function hasFilters(): bool
     {
         if ($this->filter['active'] === true) {
@@ -146,16 +157,5 @@ final class Validators extends TabbedTableComponent
             ->when($sortKey === 'votes' || $sortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
             ->when($sortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
             ->when($sortKey === 'missed_blocks', fn ($query) => $query->sortByMissedBlocks($sortDirection));
-    }
-
-    public function hydrate(): void
-    {
-        Log::debug('Hydrating Validators', [
-            'page' => $this->getPage(),
-            'isReady' => $this->isReady,
-            'perPage' => $this->perPage,
-            'sortKey' => $this->sortKey,
-            'sortDirection' => $this->sortDirection,
-        ]);
     }
 }
