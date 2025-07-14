@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Http\Livewire\Validators\Tabs;
-use App\Livewire\SupportQueryString;
 use Livewire\Livewire;
 
 it('should render', function () {
