@@ -16,11 +16,14 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
+// use Livewire\Attributes\Isolate;
 
 /**
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $recentVotes
  * */
+// #[Isolate]
 final class RecentVotes extends TabbedTableComponent
 {
     use HasTableFilter;
@@ -77,7 +80,7 @@ final class RecentVotes extends TabbedTableComponent
 
     public function getRecentVotesProperty(): LengthAwarePaginator
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage);
+        $emptyResults = new LengthAwarePaginator([], 0, $this->internalPerPage, $this->internalPage);
         if (! $this->isReady) {
             return $emptyResults;
         }
@@ -86,8 +89,13 @@ final class RecentVotes extends TabbedTableComponent
             return $emptyResults;
         }
 
+        Log::debug('getRecentVotesProperty', [
+            'internalPage' => $this->internalPage,
+            'page' => $this->getPage(),
+        ]);
+
         return $this->getRecentVotesQuery()
-            ->paginate($this->perPage);
+            ->paginate($this->internalPerPage, page: $this->internalPage);
     }
 
     private function hasFilters(): bool

@@ -74,9 +74,9 @@ trait HasTabs
             }
         }
 
-        $this->dispatch('set'.Str::studly($view).'Ready');
-
         $this->alreadyLoadedViews[$view] = true;
+
+        $this->dispatch('set'.Str::studly($view).'Ready');
     }
 
     public function updatingView(string $newView): void
@@ -98,7 +98,8 @@ trait HasTabs
      */
     public function updatedView(): void
     {
-        $this->updateViewData();
+        Log::debug('updatedView');
+        // $this->updateViewData();
     }
 
     public function hasLoadedView(string $view): bool
@@ -128,6 +129,12 @@ trait HasTabs
             //     // continue;
             // }
 
+            Log::debug('Updating view data', [
+                'view' => $this->view,
+                'key' => $key,
+                'value' => $value,
+            ]);
+
             $this->syncInput($key, $value);
         }
     }
@@ -138,7 +145,7 @@ trait HasTabs
             $this->dispatch('pageChanged');
         }
 
-        $this->setPage($page);
+        // $this->setPage($page);
 
         $this->tabQueryData[$this->view]['paginators.page'] = $page;
     }
@@ -161,6 +168,7 @@ trait HasTabs
             return;
         }
 
+        Log::debug('hydrateHasTabs');
         $this->updateViewData();
 
         // $query = $this->tabQueryData[$this->view];
@@ -189,7 +197,7 @@ trait HasTabs
         $queryStringSupport->setComponent($this);
         $queryStringSupport->mergeQueryStringWithRequest();
 
-        // $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
+        $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
     }
 
     private function loadViewData(?string $newView = null): void
@@ -198,37 +206,60 @@ trait HasTabs
         $queryStringSupport->setComponent($this);
         $queryStringSupport->mergeQueryStringWithRequest();
 
-        // // Reset the querystring data on view change to clear the URL
-        // $queryStringData = $queryStringSupport->getQueryString();
+        // Reset the querystring data on view change to clear the URL
+        $queryStringData = $queryStringSupport->getQueryString();
 
-        // $properties = $this->getAttributesByName();
+        $properties = $this->getAttributesByName();
 
-        // /** @var string $key */
-        // foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
-        //     $except = null;
+        $view = $newView ?? $this->view;
 
-        //     if ($key === 'paginators') {
-        //         $key = 'paginators.page';
-        //     }
+        Log::debug('Loading view data', [
+            'view' => $view,
+            'queryStringData' => $queryStringData,
+        ]);
 
-        //     $property = $properties->get($key);
-        //     if ($property !== null) {
-        //         $except = $property->except;
-        //     } elseif (Arr::get($queryStringData, $key.'.except') !== null) {
-        //         $except = $queryStringData[$key]['except'];
-        //     } else {
-        //         continue;
-        //     }
+        /** @var string $key */
+        foreach (array_keys($this->tabQueryData[$view]) as $key) {
+            $except = null;
 
-        //     if ($key === 'paginators.page') {
-        //         // $this->setPage($except);
-        //         $this->gotoPage($except, false);
+            // if ($key === 'paginators') {
+            //     $key = 'paginators.page';
+            // }
 
-        //         continue;
-        //     }
+            // if ($key === 'paginators.page') {
+            //     $key = 'paginators';
+            // }
 
-        //     $this->syncInput($key, $except);
-        // }
+            $property = $properties->get($key);
+            if ($property !== null) {
+                $except = $property->except;
+            } elseif (Arr::get($queryStringData, $key.'.except') !== null) {
+                $except = Arr::get($queryStringData, $key.'.except');
+            } elseif ($queryStringData[$key]['except'] ?? null !== null) {
+                $except = $queryStringData[$key]['except'];
+            } else {
+                Log::debug('No except found for key', [
+                    'key' => $key,
+                    'view' => $view,
+                ]);
+
+                continue;
+            }
+
+            if ($key === 'paginators.page') {
+                // $this->setPage($except);
+                // $this->gotoPage($except, false);
+
+                // continue;
+            }
+
+            Log::debug('Loading view data', [
+                'key' => $key,
+                'except' => $except,
+            ]);
+
+            $this->syncInput($key, $except);
+        }
 
         $this->triggerViewIsReady($newView);
     }

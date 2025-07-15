@@ -6,6 +6,8 @@ namespace App\Http\Livewire\Validators;
 
 use App\Http\Livewire\Concerns\HasTabs;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
+// use Livewire\Attributes\Isolate;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -13,6 +15,7 @@ use Livewire\Component;
  * @property int $page
  * @property ?int $perPage
  */
+// #[Isolate]
 final class Tabs extends Component
 {
     use HasTabs;
@@ -55,9 +58,29 @@ final class Tabs extends Component
     public function mount(): void
     {
         if ($this->tabQueryData === []) {
+            $view = $this->resolveView();
+
+            $validatorsPage = 1;
+            $missedBlocksPage = 1;
+            $recentVotesPage = 1;
+            if ($view === 'validators') {
+                $validatorsPage = $this->paginators['page'] ?? 1;
+            } elseif ($view === 'missed-blocks') {
+                $missedBlocksPage = $this->paginators['page'] ?? 1;;
+            } elseif ($view === 'recent-votes') {
+                $recentVotesPage = $this->paginators['page'] ?? 1;;
+            }
+
+            Log::debug('Mounting Tabs component', [
+                'view' => $view,
+                'validatorsPage' => $validatorsPage,
+                'missedBlocksPage' => $missedBlocksPage,
+                'recentVotesPage' => $recentVotesPage,
+            ]);
+
             $this->tabQueryData = [
                 'validators' => [
-                    // 'paginators.page'    => 1,
+                    'paginators.page' => $validatorsPage,
                     // 'paginators' => [
                     //     'page'    => 1,
                     // ],
@@ -69,7 +92,7 @@ final class Tabs extends Component
                 ],
 
                 'missed-blocks' => [
-                    // 'paginators.page' => 1,
+                    'paginators.page' => $missedBlocksPage,
                     // 'paginators' => [
                     //     'page'    => 1,
                     // ],
@@ -79,7 +102,7 @@ final class Tabs extends Component
                 ],
 
                 'recent-votes' => [
-                    // 'paginators.page' => 1,
+                    'paginators.page' => $recentVotesPage,
                     // 'paginators' => [
                     //     'page'    => 1,
                     // ],

@@ -12,10 +12,13 @@ use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
+// use Livewire\Attributes\Isolate;
 
 /**
  * @property LengthAwarePaginator $missedBlocks
  * */
+// #[Isolate]
 final class MissedBlocks extends TabbedTableComponent
 {
     use HasTableSorting;
@@ -34,6 +37,7 @@ final class MissedBlocks extends TabbedTableComponent
         if (! $deferLoading) {
             $this->setIsReady();
         }
+        $this->resolvePage();
     }
 
     public function render(): View
@@ -41,6 +45,11 @@ final class MissedBlocks extends TabbedTableComponent
         return view('livewire.validators.missed-blocks', [
             'blocks' => ViewModelFactory::paginate($this->missedBlocks),
         ]);
+    }
+
+    public function hydrate(): void
+    {
+        $this->resolvePage();
     }
 
     public function getNoResultsMessageProperty(): null|string
@@ -55,11 +64,16 @@ final class MissedBlocks extends TabbedTableComponent
     public function getMissedBlocksProperty(): LengthAwarePaginator
     {
         if (! $this->isReady) {
-            return new LengthAwarePaginator([], 0, $this->perPage);
+            return new LengthAwarePaginator([], 0, $this->perPage, $this->internalPage);
         }
 
+        Log::debug('getMissedBlocksProperty', [
+            'internalPage' => $this->internalPage,
+            'page' => $this->getPage(),
+        ]);
+
         return $this->getMissedBlocksQuery()
-            ->paginate($this->perPage);
+            ->paginate($this->perPage, page: $this->internalPage);
     }
 
     private function getMissedBlocksQuery(): Builder

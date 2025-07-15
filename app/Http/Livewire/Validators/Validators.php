@@ -15,11 +15,13 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
+// use Livewire\Attributes\Isolate;
 
 /**
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $validators
  * */
+// #[Isolate]
 final class Validators extends TabbedTableComponent
 {
     use HasTableFilter;
@@ -62,6 +64,7 @@ final class Validators extends TabbedTableComponent
         if (! $deferLoading) {
             $this->setIsReady();
         }
+        $this->resolvePage();
     }
 
     public function render(): View
