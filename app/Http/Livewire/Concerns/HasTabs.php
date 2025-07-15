@@ -143,6 +143,44 @@ trait HasTabs
         $this->tabQueryData[$this->view]['paginators.page'] = $page;
     }
 
+    // private function resolvePage(): int
+    // {
+    //     return (int) request()->get('page', $this->getPage());
+    // }
+
+    // private function resolvePerPage(): ?int
+    // {
+    //     $value = request()->get('perPage', $this->perPage);
+
+    //     return $value === null ? null : (int) $value;
+    // }
+
+    public function hydrateHasTabs(): void
+    {
+        if (! array_key_exists($this->view, $this->tabQueryData)) {
+            return;
+        }
+
+        $this->updateViewData();
+
+        // $query = $this->tabQueryData[$this->view];
+
+        // $this->perPage = $query['perPage'];
+        // // $this->syncInput('perPage', $query['perPage']);
+        // $this->sortKey = $query['sortKey'];
+        // // $this->syncInput('sortKey', $query['sortKey']);
+        // $this->sortDirection = $query['sortDirection'];
+        // // $this->syncInput('sortDirection', $query['sortDirection']);
+
+        // Log::debug('Hydrating HasTabs', [
+        //     'view' => $this->view,
+        //     'query' => $query,
+        // ]);
+
+        // // $this->setPerPage($query['perPage'] ?? static::resolvePerPage());
+        // // $this->gotoPage($this->tabQueryData[$this->view]['paginators.page'] ?? static::resolvePage(), false);
+    }
+
     abstract private function tabbedComponent();
 
     private function saveViewData(?string $newView = null): void
@@ -150,8 +188,6 @@ trait HasTabs
         $queryStringSupport = new SupportQueryString();
         $queryStringSupport->setComponent($this);
         $queryStringSupport->mergeQueryStringWithRequest();
-
-
 
         // $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
     }
@@ -161,8 +197,6 @@ trait HasTabs
         $queryStringSupport = new SupportQueryString();
         $queryStringSupport->setComponent($this);
         $queryStringSupport->mergeQueryStringWithRequest();
-
-
 
         // // Reset the querystring data on view change to clear the URL
         // $queryStringData = $queryStringSupport->getQueryString();
@@ -202,43 +236,5 @@ trait HasTabs
     private function resolveView(): string
     {
         return request()->get('view', $this->view);
-    }
-
-    // private function resolvePage(): int
-    // {
-    //     return (int) request()->get('page', $this->getPage());
-    // }
-
-    // private function resolvePerPage(): ?int
-    // {
-    //     $value = request()->get('perPage', $this->perPage);
-
-    //     return $value === null ? null : (int) $value;
-    // }
-
-    public function hydrateHasTabs(): void
-    {
-        if (! array_key_exists($this->view, $this->tabQueryData)) {
-            return;
-        }
-
-        $this->updateViewData();
-
-        // $query = $this->tabQueryData[$this->view];
-
-        // $this->perPage = $query['perPage'];
-        // // $this->syncInput('perPage', $query['perPage']);
-        // $this->sortKey = $query['sortKey'];
-        // // $this->syncInput('sortKey', $query['sortKey']);
-        // $this->sortDirection = $query['sortDirection'];
-        // // $this->syncInput('sortDirection', $query['sortDirection']);
-
-        // Log::debug('Hydrating HasTabs', [
-        //     'view' => $this->view,
-        //     'query' => $query,
-        // ]);
-
-        // // $this->setPerPage($query['perPage'] ?? static::resolvePerPage());
-        // // $this->gotoPage($this->tabQueryData[$this->view]['paginators.page'] ?? static::resolvePage(), false);
     }
 }

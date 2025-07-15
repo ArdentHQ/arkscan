@@ -35,25 +35,25 @@ class HandleComponents extends Base
 
         //     $component->syncInput($path, $value);
         // } else {
-            // Ensure that it's a public property, not on the base class first...
-            // if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)), true)) {
+        // Ensure that it's a public property, not on the base class first...
+        // if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)), true)) {
             //     throw new PublicPropertyNotFoundException($property, $component->getName());
-            // }
+        // }
 
-            // If this isn't a "deep" set, set it directly, otherwise we have to
-            // recursively get up and set down the value through the synths...
-            if (count($segments) === 0) {
-                $this->setComponentPropertyAwareOfTypes($component, $property, $value);
-            } else {
-                // @phpstan-ignore-next-line
-                $propertyValue = $component->$property;
+        // If this isn't a "deep" set, set it directly, otherwise we have to
+        // recursively get up and set down the value through the synths...
+        if (count($segments) === 0) {
+            $this->setComponentPropertyAwareOfTypes($component, $property, $value);
+        } else {
+            // @phpstan-ignore-next-line
+            $propertyValue = $component->$property;
 
-                $this->setComponentPropertyAwareOfTypes(
-                    $component,
-                    $property,
-                    $this->recursivelySetValue($property, $propertyValue, $value, $segments, 0, $context)
-                );
-            }
+            $this->setComponentPropertyAwareOfTypes(
+                $component,
+                $property,
+                $this->recursivelySetValue($property, $propertyValue, $value, $segments, 0, $context)
+            );
+        }
         // }
 
         return $finish;
