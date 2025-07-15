@@ -130,8 +130,8 @@ trait HasTabs
             // }
 
             Log::debug('Updating view data', [
-                'view' => $this->view,
-                'key' => $key,
+                'view'  => $this->view,
+                'key'   => $key,
                 'value' => $value,
             ]);
 
@@ -214,7 +214,7 @@ trait HasTabs
         $view = $newView ?? $this->view;
 
         Log::debug('Loading view data', [
-            'view' => $view,
+            'view'            => $view,
             'queryStringData' => $queryStringData,
         ]);
 
@@ -239,7 +239,7 @@ trait HasTabs
                 $except = $queryStringData[$key]['except'];
             } else {
                 Log::debug('No except found for key', [
-                    'key' => $key,
+                    'key'  => $key,
                     'view' => $view,
                 ]);
 
@@ -254,7 +254,7 @@ trait HasTabs
             }
 
             Log::debug('Loading view data', [
-                'key' => $key,
+                'key'    => $key,
                 'except' => $except,
             ]);
 

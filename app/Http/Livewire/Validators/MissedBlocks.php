@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
+
 // use Livewire\Attributes\Isolate;
 
 /**
@@ -69,7 +70,7 @@ final class MissedBlocks extends TabbedTableComponent
 
         Log::debug('getMissedBlocksProperty', [
             'internalPage' => $this->internalPage,
-            'page' => $this->getPage(),
+            'page'         => $this->getPage(),
         ]);
 
         return $this->getMissedBlocksQuery()
