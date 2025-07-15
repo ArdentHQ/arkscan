@@ -27,6 +27,10 @@ final class Tabs extends Component
         'recent-votes'   => false,
     ];
 
+    public array $paginators = [
+        'page' => 1,
+    ];
+
     public function queryString(): array
     {
         $perPage = intval(config('arkscan.pagination.per_page'));
@@ -38,7 +42,7 @@ final class Tabs extends Component
 
         return [
             'view'               => ['except' => 'validators'],
-            'paginators.page'    => ['except' => 1],
+            'paginators.page'    => ['except' => 1, 'as' => 'page'],
             // 'paginators' => [
             //     'page'    => ['except' => 1],
             // ],
@@ -48,19 +52,15 @@ final class Tabs extends Component
         ];
     }
 
-    public function boot(): void
-    {
-    }
-
     public function mount(): void
     {
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'validators' => [
                     // 'paginators.page'    => 1,
-                    'paginators' => [
-                        'page'    => ['except' => 1],
-                    ],
+                    // 'paginators' => [
+                    //     'page'    => 1,
+                    // ],
                     'perPage'            => Validators::defaultPerPage(),
                     'sortKey'            => Validators::defaultSortKey(),
                     'sortDirection'      => Validators::defaultSortDirection(),
@@ -70,9 +70,9 @@ final class Tabs extends Component
 
                 'missed-blocks' => [
                     // 'paginators.page' => 1,
-                    'paginators' => [
-                        'page'    => ['except' => 1],
-                    ],
+                    // 'paginators' => [
+                    //     'page'    => 1,
+                    // ],
                     'perPage'         => MissedBlocks::defaultPerPage(),
                     'sortKey'         => MissedBlocks::defaultSortKey(),
                     'sortDirection'   => MissedBlocks::defaultSortDirection(),
@@ -80,9 +80,9 @@ final class Tabs extends Component
 
                 'recent-votes' => [
                     // 'paginators.page' => 1,
-                    'paginators' => [
-                        'page'    => ['except' => 1],
-                    ],
+                    // 'paginators' => [
+                    //     'page'    => 1,
+                    // ],
                     'perPage'         => RecentVotes::defaultPerPage(),
                     'sortKey'         => RecentVotes::defaultSortKey(),
                     'sortDirection'   => RecentVotes::defaultSortDirection(),

@@ -1,6 +1,7 @@
 @props([
     'mobile' => false,
     'withoutText' => false,
+    'disabled' => false,
 ])
 
 @if ($mobile)
@@ -32,6 +33,7 @@
                 'flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
                 'h-8 w-8 p-0' => $withoutText,
                 'w-full py-1.5 sm:px-4 md:p-2' => ! $withoutText,
+                'disabled' => $disabled,
             ])
             @click="shown = true"
         >
@@ -67,6 +69,7 @@
         ])"
         active-button-class=""
         :button-wrapper-class="Arr::toCssClasses(['w-full h-5 md:h-4' => ! $withoutText])"
+        :disabled="$disabled"
     >
         <x-slot name="button">
             <div class="inline-flex items-center mx-auto whitespace-nowrap">

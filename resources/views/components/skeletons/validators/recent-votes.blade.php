@@ -11,6 +11,8 @@
 @endphp
 
 @if (! $isReady)
+    <x-tables.toolbars.validators.recent-votes />
+
     <div wire:key="skeleton:recent-votes:not-ready">
         <x-tables.desktop.skeleton.validators.recent-votes
             :row-count="$rowCount"
