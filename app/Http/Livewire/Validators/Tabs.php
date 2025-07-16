@@ -49,7 +49,7 @@ final class Tabs extends Component
 
         return [
             'view'               => ['except' => 'validators'],
-            'page'    => ['except' => 1, 'as' => 'page'],
+            'page'               => ['except' => 1, 'as' => 'page'],
             // 'paginators' => [
             //     'page'    => ['except' => 1],
             // ],
