@@ -64,9 +64,9 @@ final class Tabs extends Component
         if ($this->tabQueryData === []) {
             $view = $this->resolveView();
 
-            $validatorsPage = 1;
+            $validatorsPage   = 1;
             $missedBlocksPage = 1;
-            $recentVotesPage = 1;
+            $recentVotesPage  = 1;
             if ($view === 'validators') {
                 $validatorsPage = $this->page ?? 1;
                 // $validatorsPage = $this->paginators['page'] ?? 1;
@@ -79,10 +79,10 @@ final class Tabs extends Component
             }
 
             Log::debug('Mounting Tabs component', [
-                'view' => $view,
-                'validatorsPage' => $validatorsPage,
+                'view'             => $view,
+                'validatorsPage'   => $validatorsPage,
                 'missedBlocksPage' => $missedBlocksPage,
-                'recentVotesPage' => $recentVotesPage,
+                'recentVotesPage'  => $recentVotesPage,
             ]);
 
             $this->tabQueryData = [
