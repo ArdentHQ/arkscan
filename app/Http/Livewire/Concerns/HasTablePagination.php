@@ -19,11 +19,12 @@ trait HasTablePagination
 
     final public function mountHasTablePagination(): void
     {
-        Log::debug('Mounting HasTablePagination', [
+        Log::debug('mountHasTablePagination', [
             'class'           => static::class,
             'perPage'         => $this->perPage,
             'internalPerPage' => $this->internalPerPage,
         ]);
+
         if ($this->perPage === null) {
             $this->perPage = static::defaultPerPage();
         } else {
@@ -36,7 +37,7 @@ trait HasTablePagination
     final public function queryStringHasTablePagination(): array
     {
         return [
-            'perPage' => ['except' => static::defaultPerPage()],
+            'perPage' => ['except' => static::defaultPerPage(), 'history' => true],
         ];
     }
 

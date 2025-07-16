@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full" wire:init="setIsReady">
     <x-tables.toolbars.validators.recent-votes :votes="$votes" />
 
     <x-skeletons.validators.recent-votes

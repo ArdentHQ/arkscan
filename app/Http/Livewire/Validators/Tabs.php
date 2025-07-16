@@ -30,9 +30,13 @@ final class Tabs extends Component
         'recent-votes'   => false,
     ];
 
-    public array $paginators = [
-        'page' => 1,
-    ];
+    public int $page = 1;
+
+    public int $perPage = 1;
+
+    // public array $paginators = [
+    //     'page' => 1,
+    // ];
 
     public function queryString(): array
     {
@@ -45,7 +49,7 @@ final class Tabs extends Component
 
         return [
             'view'               => ['except' => 'validators'],
-            'paginators.page'    => ['except' => 1, 'as' => 'page'],
+            'page'    => ['except' => 1, 'as' => 'page'],
             // 'paginators' => [
             //     'page'    => ['except' => 1],
             // ],
@@ -64,11 +68,14 @@ final class Tabs extends Component
             $missedBlocksPage = 1;
             $recentVotesPage = 1;
             if ($view === 'validators') {
-                $validatorsPage = $this->paginators['page'] ?? 1;
+                $validatorsPage = $this->page ?? 1;
+                // $validatorsPage = $this->paginators['page'] ?? 1;
             } elseif ($view === 'missed-blocks') {
-                $missedBlocksPage = $this->paginators['page'] ?? 1;;
+                $missedBlocksPage = $this->page ?? 1;
+                // $missedBlocksPage = $this->paginators['page'] ?? 1;
             } elseif ($view === 'recent-votes') {
-                $recentVotesPage = $this->paginators['page'] ?? 1;;
+                $recentVotesPage = $this->page ?? 1;
+                // $recentVotesPage = $this->paginators['page'] ?? 1;
             }
 
             Log::debug('Mounting Tabs component', [
@@ -80,7 +87,7 @@ final class Tabs extends Component
 
             $this->tabQueryData = [
                 'validators' => [
-                    'paginators.page' => $validatorsPage,
+                    'page' => $validatorsPage,
                     // 'paginators' => [
                     //     'page'    => 1,
                     // ],
@@ -92,7 +99,7 @@ final class Tabs extends Component
                 ],
 
                 'missed-blocks' => [
-                    'paginators.page' => $missedBlocksPage,
+                    'page' => $missedBlocksPage,
                     // 'paginators' => [
                     //     'page'    => 1,
                     // ],
@@ -102,7 +109,7 @@ final class Tabs extends Component
                 ],
 
                 'recent-votes' => [
-                    'paginators.page' => $recentVotesPage,
+                    'page' => $recentVotesPage,
                     // 'paginators' => [
                     //     'page'    => 1,
                     // ],

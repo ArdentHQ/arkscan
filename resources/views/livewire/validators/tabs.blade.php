@@ -34,7 +34,7 @@
             </div>
         @endif
 
-        @if ($this->hasLoadedView('recent-votes'))
+        {{-- @if ($this->hasLoadedView('recent-votes'))
             <x-validators.tables.recent-votes
                 :defer-loading="false"
                 x-cloak
@@ -47,7 +47,7 @@
                     x-cloak
                 />
             </div>
-        @endif
+        @endif --}}
 
         <x-script.onload-scroll-to-query selector="#validator-table-list" />
     </div>

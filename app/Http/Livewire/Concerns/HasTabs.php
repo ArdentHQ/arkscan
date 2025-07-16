@@ -76,7 +76,7 @@ trait HasTabs
 
         $this->alreadyLoadedViews[$view] = true;
 
-        $this->dispatch('set'.Str::studly($view).'Ready');
+        // $this->dispatch('set'.Str::studly($view).'Ready');
     }
 
     public function updatingView(string $newView): void

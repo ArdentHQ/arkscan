@@ -89,7 +89,7 @@ final class Validators extends TabbedTableComponent
 
     public function getValidatorsProperty(): LengthAwarePaginator
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->internalPerPage);
+        $emptyResults = new LengthAwarePaginator([], 0, $this->internalPerPage, $this->internalPage);
         if (! $this->isReady) {
             return $emptyResults;
         }
@@ -99,7 +99,7 @@ final class Validators extends TabbedTableComponent
         }
 
         return $this->getValidatorsQuery()
-            ->paginate($this->internalPerPage);
+            ->paginate($this->internalPerPage, page: $this->internalPage);
     }
 
     public static function perPageOptions(): array

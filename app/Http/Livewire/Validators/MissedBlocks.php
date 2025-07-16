@@ -32,6 +32,15 @@ final class MissedBlocks extends TabbedTableComponent
         'setMissedBlocksReady' => 'setIsReady',
     ];
 
+    public function queryString(): array
+    {
+        return [
+            // 'filter.active'   => ['as' => 'active', 'except' => true],
+            // 'filter.standby'  => ['as' => 'standby', 'except' => true],
+            // 'filter.resigned' => ['as' => 'resigned', 'except' => true],
+        ];
+    }
+
     public function mount(bool $deferLoading = true): void
     {
         if (! $deferLoading) {
@@ -64,7 +73,7 @@ final class MissedBlocks extends TabbedTableComponent
     public function getMissedBlocksProperty(): LengthAwarePaginator
     {
         if (! $this->isReady) {
-            return new LengthAwarePaginator([], 0, $this->perPage, $this->internalPage);
+            return new LengthAwarePaginator([], 0, $this->internalPerPage, $this->internalPage);
         }
 
         Log::debug('getMissedBlocksProperty', [
@@ -73,7 +82,7 @@ final class MissedBlocks extends TabbedTableComponent
         ]);
 
         return $this->getMissedBlocksQuery()
-            ->paginate($this->perPage, page: $this->internalPage);
+            ->paginate($this->internalPerPage, page: $this->internalPage);
     }
 
     private function getMissedBlocksQuery(): Builder

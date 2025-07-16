@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full" wire:init="setIsReady">
     <x-tables.toolbars.validators.list-table :validators="$validators" />
 
     <div class="sm:hidden">
