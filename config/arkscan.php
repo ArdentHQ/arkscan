@@ -121,6 +121,10 @@ return [
         'enabled' => env('ARKCONNECT_ENABLED', false),
     ],
 
+    'navbar' => [
+        'tag' => env('ARKSCAN_NAVBAR_TAG'),
+    ],
+
     'market_data' => [
         'coingecko' => [
             'exception_frequency' => env('COINGECKO_EXCEPTION_FREQUENCY', 60),
