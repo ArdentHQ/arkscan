@@ -12,10 +12,10 @@
 
         @if ($navbarTag)
             <div
-                class="flex bg-theme-danger-100 dark:bg-theme-dark-800 rounded-r-lg text-theme-danger-600 dark:text-theme-dark-200"
+                class="flex rounded-r-lg bg-theme-danger-100 text-theme-danger-600 dark:bg-theme-dark-800 dark:text-theme-dark-200"
                 data-tippy-content="@lang('general.navbar.release_tag_tooltip', ['tag' => $navbarTag])"
             >
-                <div class="flex leading-none items-center text-xs font-semibold px-2 h-full uppercase">
+                <div class="flex items-center px-2 h-full text-xs font-semibold leading-none uppercase">
                     {{ $navbarTag }}
                 </div>
             </div>
