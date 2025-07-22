@@ -15,11 +15,11 @@ use Livewire\Attributes\On;
  * */
 trait MissedBlocksTab
 {
-    public $missedBlocksIsReady = false;
-
     public const MISSED_BLOCKS_INITIAL_SORT_KEY = 'age';
 
     public const MISSED_BLOCKS_INITIAL_SORT_DIRECTION = SortDirection::DESC;
+
+    public $missedBlocksIsReady = false;
 
     public function mountMissedBlocksTab(bool $deferLoading = true): void
     {
@@ -31,10 +31,10 @@ trait MissedBlocksTab
     public function queryStringMissedBlocksTab(): array
     {
         return [
-            'paginators.missed-blocks' => ['except' => 1, 'as' => 'page', 'history' => true],
+            'paginators.missed-blocks'        => ['except' => 1, 'as' => 'page', 'history' => true],
             'paginatorsPerPage.missed-blocks' => ['except' => self::defaultPerPage('MISSED_BLOCKS'), 'as' => 'per-page', 'history' => true],
-            'sortKeys.missed-blocks' => ['as' => 'sort', 'except' => static::MISSED_BLOCKS_INITIAL_SORT_KEY],
-            'sortDirections.missed-blocks' => ['as' => 'sort-direction', 'except' => static::MISSED_BLOCKS_INITIAL_SORT_DIRECTION->value],
+            'sortKeys.missed-blocks'          => ['as' => 'sort', 'except' => static::MISSED_BLOCKS_INITIAL_SORT_KEY],
+            'sortDirections.missed-blocks'    => ['as' => 'sort-direction', 'except' => static::MISSED_BLOCKS_INITIAL_SORT_DIRECTION->value],
         ];
     }
 

@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Concerns;
 
 use App\Enums\SortDirection;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportAttributes\Attribute;
 use Livewire\Features\SupportAttributes\AttributeLevel;

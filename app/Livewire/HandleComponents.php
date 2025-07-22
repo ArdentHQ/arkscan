@@ -30,7 +30,7 @@ final class HandleComponents extends Base
 
         if (! is_a($component, TabbedComponent::class)) {
             // Ensure that it's a public property, not on the base class first...
-            if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)))) {
+            if (! in_array($property, array_keys(Utils::getPublicPropertiesDefinedOnSubclass($component)), true)) {
                 throw new PublicPropertyNotFoundException($property, $component->getName());
             }
         }
@@ -42,7 +42,9 @@ final class HandleComponents extends Base
         } else {
             $propertyValue = $component->$property;
 
-            $this->setComponentPropertyAwareOfTypes($component, $property,
+            $this->setComponentPropertyAwareOfTypes(
+                $component,
+                $property,
                 $this->recursivelySetValue($property, $propertyValue, $value, $segments, 0, $context)
             );
         }

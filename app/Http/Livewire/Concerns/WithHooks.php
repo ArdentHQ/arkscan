@@ -12,10 +12,10 @@ trait WithHooks
     private function setWithHooks(string $property, mixed $value, ?string $key = null): void
     {
         $beforePaginatorMethod = 'updating'.ucfirst($property);
-        $afterPaginatorMethod = 'updated'.ucfirst($property);
+        $afterPaginatorMethod  = 'updated'.ucfirst($property);
 
         $beforeMethod = 'updating'.ucfirst(Str::camel($key));
-        $afterMethod = 'updated'.ucfirst(Str::camel($key));
+        $afterMethod  = 'updated'.ucfirst(Str::camel($key));
 
         $args = [$value];
         if ($key !== null) {

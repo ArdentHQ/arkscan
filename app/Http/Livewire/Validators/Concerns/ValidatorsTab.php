@@ -17,24 +17,24 @@ use Livewire\Attributes\On;
  * */
 trait ValidatorsTab
 {
-    public $validatorsIsReady = false;
-
     public const VALIDATORS_PER_PAGE = 53;
 
     public const VALIDATORS_INITIAL_SORT_KEY = 'rank';
 
     public const VALIDATORS_INITIAL_SORT_DIRECTION = SortDirection::ASC;
 
+    public $validatorsIsReady = false;
+
     public function queryStringValidatorsTab(): array
     {
         return [
-            'paginators.validators' => ['except' => 1, 'as' => 'page', 'history' => true],
+            'paginators.validators'        => ['except' => 1, 'as' => 'page', 'history' => true],
             'paginatorsPerPage.validators' => ['except' => static::VALIDATORS_PER_PAGE, 'as' => 'per-page', 'history' => true],
-            'sortKeys.validators' => ['as' => 'sort', 'except' => static::VALIDATORS_INITIAL_SORT_KEY],
-            'sortDirections.validators' => ['as' => 'sort-direction', 'except' => static::VALIDATORS_INITIAL_SORT_DIRECTION->value],
-            'filters.validators.active'   => ['as' => 'active', 'except' => true],
-            'filters.validators.standby'  => ['as' => 'standby', 'except' => true],
-            'filters.validators.resigned' => ['as' => 'resigned', 'except' => true],
+            'sortKeys.validators'          => ['as' => 'sort', 'except' => static::VALIDATORS_INITIAL_SORT_KEY],
+            'sortDirections.validators'    => ['as' => 'sort-direction', 'except' => static::VALIDATORS_INITIAL_SORT_DIRECTION->value],
+            'filters.validators.active'    => ['as' => 'active', 'except' => true],
+            'filters.validators.standby'   => ['as' => 'standby', 'except' => true],
+            'filters.validators.resigned'  => ['as' => 'resigned', 'except' => true],
         ];
     }
 

@@ -19,21 +19,21 @@ use Livewire\Attributes\On;
  * */
 trait RecentVotesTab
 {
-    public $recentVotesIsReady = false;
-
     public const RECENT_VOTES_INITIAL_SORT_KEY = 'age';
 
     public const RECENT_VOTES_INITIAL_SORT_DIRECTION = SortDirection::DESC;
 
+    public $recentVotesIsReady = false;
+
     public function queryStringRecentVotesTab(): array
     {
         return [
-            'paginators.recent-votes' => ['except' => 1, 'as' => 'page', 'history' => true],
+            'paginators.recent-votes'        => ['except' => 1, 'as' => 'page', 'history' => true],
             'paginatorsPerPage.recent-votes' => ['except' => self::defaultPerPage('RECENT_VOTES'), 'as' => 'per-page', 'history' => true],
-            'sortKeys.recent-votes' => ['as' => 'sort', 'except' => static::RECENT_VOTES_INITIAL_SORT_KEY],
-            'sortDirections.recent-votes' => ['as' => 'sort-direction', 'except' => static::RECENT_VOTES_INITIAL_SORT_DIRECTION->value],
-            'filters.recent-votes.vote'   => ['as' => 'vote', 'except' => true],
-            'filters.recent-votes.unvote' => ['as' => 'unvote', 'except' => true],
+            'sortKeys.recent-votes'          => ['as' => 'sort', 'except' => static::RECENT_VOTES_INITIAL_SORT_KEY],
+            'sortDirections.recent-votes'    => ['as' => 'sort-direction', 'except' => static::RECENT_VOTES_INITIAL_SORT_DIRECTION->value],
+            'filters.recent-votes.vote'      => ['as' => 'vote', 'except' => true],
+            'filters.recent-votes.unvote'    => ['as' => 'unvote', 'except' => true],
         ];
     }
 

@@ -15,7 +15,7 @@ trait HasTableSorting
 
     public array $sortKeys = [];
 
-    /** @var SortDirection[] $sortDirections */
+    /** @var SortDirection[] */
     public array $sortDirections = [];
 
     public function mountHasTableSorting(): void
@@ -32,7 +32,7 @@ trait HasTableSorting
     public function queryStringHasTableSorting(): array
     {
         $queryString = [
-            'sortKeys.default' => ['as' => 'sort', 'except' => static::defaultSortKey()],
+            'sortKeys.default'       => ['as' => 'sort', 'except' => static::defaultSortKey()],
             'sortDirections.default' => ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value],
         ];
 
@@ -78,7 +78,7 @@ trait HasTableSorting
 
     public function setSortDirection(SortDirection $direction, string $name = 'default'): void
     {
-        data_set($this->sortDirections, $name,  $direction);
+        data_set($this->sortDirections, $name, $direction);
     }
 
     public static function defaultSortKey(string $prefix = ''): string
