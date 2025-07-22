@@ -5,62 +5,106 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use App\Enums\SortDirection;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 trait HasTableSorting
 {
-    public string $sortKey;
+    use NormalizesConstantPrefixes;
+    use WithHooks;
 
-    public SortDirection $sortDirection;
+    public array $sortKeys = [];
+
+    /** @var SortDirection[] $sortDirections */
+    public array $sortDirections = [];
 
     public function mountHasTableSorting(): void
     {
-        $this->sortKey       = static::defaultSortKey();
-        $this->sortDirection = $this->resolveSortDirection();
+        foreach ($this->sortDirections as $name => $direction) {
+            if (! is_string($direction)) {
+                continue;
+            }
+
+            $this->sortDirections[$name] = SortDirection::from(Str::lower($direction));
+        }
     }
 
     public function queryStringHasTableSorting(): array
     {
         $queryString = [
-            'sortKey' => ['as' => 'sort', 'except' => static::defaultSortKey()],
+            'sortKeys.default' => ['as' => 'sort', 'except' => static::defaultSortKey()],
+            'sortDirections.default' => ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value],
         ];
-
-        if (request()->has('sort-direction')) {
-            $sortDirection = request()->get('sort-direction');
-            if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value], true)) {
-                $queryString['sortDirection'] = ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value];
-            }
-        }
 
         return $queryString;
     }
 
-    public function sortBy(string $key): void
+    public function sortBy(string $sortKey, string $name = 'default'): void
     {
-        if ($this->sortKey === $key) {
-            if ($this->sortDirection === SortDirection::ASC) {
-                $this->sortDirection = SortDirection::DESC;
+        $currentSortKey = Arr::get($this->sortKeys, $name);
+        if ($currentSortKey === $sortKey) {
+            if (Arr::get($this->sortDirections, $name) === SortDirection::ASC) {
+                $this->setSortDirection(SortDirection::DESC, $name);
+                $this->setWithHooks('sortDirections', SortDirection::DESC, $name);
             } else {
-                $this->sortDirection = SortDirection::ASC;
+                $this->setSortDirection(SortDirection::ASC, $name);
+                $this->setWithHooks('sortDirections', SortDirection::ASC, $name);
             }
         } else {
-            $this->sortKey       = $key;
-            $this->sortDirection = SortDirection::ASC;
+            $this->setSortKey($sortKey, $name);
+            $this->setWithHooks('sortKeys', $sortKey, $name);
+
+            $this->setSortDirection(SortDirection::ASC, $name);
+            $this->setWithHooks('sortDirections', SortDirection::ASC, $name);
         }
 
-        $this->gotoPage(1);
+        $this->gotoPage(1, name: $name);
     }
 
-    public static function defaultSortKey(): string
+    public function getSortKey(string $name = 'default'): string
     {
-        return constant(static::class.'::INITIAL_SORT_KEY');
+        return Arr::get($this->sortKeys, $name, static::defaultSortKey($name));
     }
 
-    public static function defaultSortDirection(): SortDirection
+    public function setSortKey(string $key, string $name = 'default'): void
     {
-        return constant(static::class.'::INITIAL_SORT_DIRECTION');
+        data_set($this->sortKeys, $name, $key);
     }
 
-    private function resolveSortDirection(): SortDirection
+    public function getSortDirection(string $name = 'default'): SortDirection
+    {
+        return Arr::get($this->sortDirections, $name, static::defaultSortDirection($name));
+    }
+
+    public function setSortDirection(SortDirection $direction, string $name = 'default'): void
+    {
+        data_set($this->sortDirections, $name,  $direction);
+    }
+
+    public static function defaultSortKey(string $prefix = ''): string
+    {
+        $prefix = self::normalizePrefix($prefix, 'default');
+
+        return constant(static::class.'::'.$prefix.'INITIAL_SORT_KEY');
+    }
+
+    public static function defaultSortDirection(string $prefix = ''): SortDirection
+    {
+        $prefix = self::normalizePrefix($prefix, 'default');
+
+        return constant(static::class.'::'.$prefix.'INITIAL_SORT_DIRECTION');
+    }
+
+    protected function resolveSortKey(?string $default = null): string
+    {
+        if (request()->has('sort')) {
+            return request()->get('sort');
+        }
+
+        return $default ?? static::defaultSortKey();
+    }
+
+    protected function resolveSortDirection(?SortDirection $default = null): SortDirection
     {
         if (request()->has('sort-direction')) {
             $sortDirection = request()->get('sort-direction');
@@ -71,6 +115,6 @@ trait HasTableSorting
             return SortDirection::ASC;
         }
 
-        return static::defaultSortDirection();
+        return $default ?? static::defaultSortDirection();
     }
 }

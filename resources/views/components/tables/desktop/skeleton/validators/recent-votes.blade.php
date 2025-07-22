@@ -19,22 +19,26 @@
             'breakpoint' => 'xl',
             'sortingId' => 'age',
             'livewireSort' => true,
+            'componentId' => 'recent-votes',
         ],
         'tables.recent-votes.addressing' => [
             'type' => 'encapsulated.addressing',
             'header' => 'address',
             'sortingId' => 'address',
             'livewireSort' => true,
+            'componentId' => 'recent-votes',
         ],
         'tables.recent-votes.type'       => [
             'type' => 'text',
             'sortingId' => 'type',
             'livewireSort' => true,
+            'componentId' => 'recent-votes',
         ],
         'tables.recent-votes.validator'   => [
             'type' => 'text',
             'sortingId' => 'name',
             'livewireSort' => true,
+            'componentId' => 'recent-votes',
         ],
     ]"
     :component-properties="['rounded' => false]"

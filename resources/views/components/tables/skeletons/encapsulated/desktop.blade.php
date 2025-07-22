@@ -33,6 +33,7 @@
                     :class="Arr::get($header, 'class', null)"
                     :width="Arr::get($header, 'width', null)"
                     :sorting-id="Arr::get($header, 'sortingId', null)"
+                    :component-id="Arr::get($header, 'componentId', 'default')"
                     :livewire-sort="Arr::get($header, 'livewireSort', null)"
                     :sort-disabled="Arr::get($header, 'sortDisabled', false)"
                     :tooltip="Arr::get($header, 'tooltip', null)"

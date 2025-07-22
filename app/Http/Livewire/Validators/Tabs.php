@@ -4,19 +4,25 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Validators;
 
-use App\Http\Livewire\Concerns\HasTabs;
-use App\Http\Livewire\Concerns\SyncsInput;
+use App\Enums\SortDirection;
+use App\Http\Livewire\Concerns\HasTableFilter;
+use App\Http\Livewire\Abstracts\TabbedComponent;
+use App\Http\Livewire\Validators\Concerns\MissedBlocksTab;
+use App\Http\Livewire\Validators\Concerns\RecentVotesTab;
+use App\Http\Livewire\Validators\Concerns\ValidatorsTab;
+use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
-use Livewire\Component;
+use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 
-/**
- * @property int $page
- * @property ?int $perPage
- */
-final class Tabs extends Component
+final class Tabs extends TabbedComponent
 {
-    use HasTabs;
-    use SyncsInput;
+    use HasTableFilter;
+    use MissedBlocksTab;
+    use RecentVotesTab;
+    use ValidatorsTab;
+
+    public const INITIAL_VIEW = 'validators';
 
     public string $view = 'validators';
 
@@ -27,51 +33,52 @@ final class Tabs extends Component
     public array $savedQueryData = [];
 
     public array $alreadyLoadedViews = [
-        'validators'     => false,
-        'missed-blocks'  => false,
-        'recent-votes'   => false,
+        'validators'    => false,
+        'missed-blocks' => false,
+        'recent-votes'  => false,
     ];
-
-    /** @var mixed */
-    protected $listeners = [
-        'showValidatorsView',
-    ];
-
-    public function queryString(): array
-    {
-        $perPage = intval(config('arkscan.pagination.per_page'));
-        if ($this->view === 'validators') {
-            $perPage = Validators::defaultPerPage();
-        }
-
-        // TODO: Handle filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
-
-        return [
-            'view'    => ['except' => 'validators'],
-            'page'    => ['except' => 1],
-            'perPage' => ['except' => $perPage],
-        ];
-    }
 
     public function mount(): void
     {
+        parent::mount();
+
+        if (count($this->filters) === 0) {
+            $this->filters = [
+                'validators' => [
+                    'active'   => true,
+                    'standby'  => true,
+                    'resigned' => false,
+                ],
+                'recent-votes' => [
+                    'vote'   => true,
+                    'unvote' => true,
+                ],
+            ];
+        }
+
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'validators' => [
-                    'page'    => 1,
-                    'perPage' => Validators::defaultPerPage(),
+                    'paginators.validators' => $this->paginators['validators'],
+                    'paginatorsPerPage.validators' => $this->paginatorsPerPage['validators'],
+                    'sortKeys.validators' => static::defaultSortKey('VALIDATORS'),
+                    'sortDirections.validators' => static::defaultSortDirection('VALIDATORS')->value,
 
                     // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
 
                 'missed-blocks' => [
-                    'page'    => 1,
-                    'perPage' => MissedBlocks::defaultPerPage(),
+                    'paginators.missed-blocks'    => $this->paginators['missed-blocks'],
+                    'paginatorsPerPage.missed-blocks' => $this->paginatorsPerPage['missed-blocks'],
+                    'sortKeys.missed-blocks' => static::defaultSortKey('MISSED_BLOCKS'),
+                    'sortDirections.missed-blocks' => static::defaultSortDirection('MISSED_BLOCKS')->value,
                 ],
 
                 'recent-votes' => [
-                    'page'    => 1,
-                    'perPage' => RecentVotes::defaultPerPage(),
+                    'paginators.recent-votes'    => $this->paginators['recent-votes'],
+                    'paginatorsPerPage.recent-votes' => $this->paginatorsPerPage['recent-votes'],
+                    'sortKeys.recent-votes' => static::defaultSortKey('RECENT_VOTES'),
+                    'sortDirections.recent-votes' => static::defaultSortDirection('RECENT_VOTES')->value,
 
                     // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
@@ -81,20 +88,16 @@ final class Tabs extends Component
 
     public function render(): View
     {
-        return view('livewire.validators.tabs');
+        return view('livewire.validators.tabs', [
+            'validators' => ViewModelFactory::paginate($this->validators),
+            'missedBlocks' => ViewModelFactory::paginate($this->missedBlocks),
+            'recentVotes' => ViewModelFactory::paginate($this->recentVotes),
+        ]);
     }
 
+    #[On('showValidatorsView')]
     public function showValidatorsView(string $view): void
     {
         $this->syncInput('view', $view);
-    }
-
-    private function tabbedComponent(): string
-    {
-        return [
-            'validators'    => Validators::class,
-            'missed-blocks' => MissedBlocks::class,
-            'recent-votes'  => RecentVotes::class,
-        ][$this->view];
     }
 }

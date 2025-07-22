@@ -18,12 +18,14 @@
                 width="70"
                 sorting-id="rank"
                 livewire-sort
+                component-id="validators"
             />
 
             <x-tables.headers.desktop.address
                 name="tables.validators.validator"
                 sorting-id="name"
                 livewire-sort
+                component-id="validators"
             />
 
             <x-tables.headers.desktop.status name="tables.validators.status" />
@@ -33,6 +35,7 @@
                 sorting-id="no_of_voters"
                 class="whitespace-nowrap"
                 livewire-sort
+                component-id="validators"
             />
 
             <x-tables.headers.desktop.number
@@ -42,6 +45,7 @@
                 responsive
                 sorting-id="votes"
                 livewire-sort
+                component-id="validators"
             />
 
             <x-tables.headers.desktop.number
@@ -52,6 +56,7 @@
                 livewire-sort
                 class="!py-2.5"
                 :tooltip="trans('tables.validators.info.percentage')"
+                component-id="validators"
             />
 
             <x-tables.headers.desktop.number
@@ -59,6 +64,7 @@
                 class="whitespace-nowrap"
                 sorting-id="missed_blocks"
                 livewire-sort
+                component-id="validators"
             />
 
             <x-tables.headers.desktop.text width="70" />
@@ -81,7 +87,7 @@
                         />
 
                         @if (config('arkscan.arkconnect.enabled'))
-                            <div 
+                            <div
                                 x-data="{}"
                                 x-show="votingForAddress === '{{ $validator->address() }}'"
                             >

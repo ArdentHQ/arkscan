@@ -3,7 +3,7 @@
     'paginator' => null,
 ])
 
-@if (! $this->isReady)
+@if (! $this->missedBlocksIsReady)
     <div wire:key="skeleton:missed-blocks:not-ready">
         <x-tables.desktop.skeleton.validators.missed-blocks
             :row-count="$rowCount"

@@ -8,6 +8,7 @@ use App\Contracts\MarketDataProvider;
 use App\Contracts\Services\GasTracker as GasTrackerContract;
 use App\Contracts\Services\Monitor\MissedBlocksCalculator as MissedBlocksCalculatorContract;
 use App\Facades\Network;
+use App\Livewire\HandleComponents;
 use App\Services\BigNumber;
 use App\Services\GasTracker;
 use App\Services\Monitor\MissedBlocksCalculator;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
+use Livewire\Mechanisms\HandleComponents\HandleComponents as HandleComponentsContract;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +47,11 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             GasTrackerContract::class,
             fn () => new (GasTracker::class)()
+        );
+
+        $this->app->singleton(
+            HandleComponentsContract::class,
+            fn () => new HandleComponents(),
         );
     }
 

@@ -17,16 +17,19 @@
         <x-tables.filters.includes.group>
             <x-tables.filters.includes.checkbox
                 name="active"
+                model="filters.validators.active"
                 :label="trans('tables.filters.validators.active')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="standby"
+                model="filters.validators.standby"
                 :label="trans('tables.filters.validators.standby')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="resigned"
+                model="filters.validators.resigned"
                 :label="trans('tables.filters.validators.resigned')"
             />
         </x-tables.filters.includes.group>

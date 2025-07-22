@@ -6,8 +6,9 @@
 
 @php
     $isSelected = false;
-    if ($model && is_bool($this->{$model})) {
-        $isSelected = $this->{$model} === true;
+    // if ($model && is_bool($this->{$model})) {
+    if ($model && is_bool($this->getPropertyValue($model))) {
+        $isSelected = $this->getPropertyValue($model) === true;
     } else {
         $isSelected = $this->filter[$name] === true;
     }

@@ -17,11 +17,13 @@
         <x-tables.filters.includes.group>
             <x-tables.filters.includes.checkbox
                 name="vote"
+                model="filters.recent-votes.vote"
                 :label="trans('tables.filters.recent-votes.vote')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="unvote"
+                model="filters.recent-votes.unvote"
                 :label="trans('tables.filters.recent-votes.unvote')"
             />
         </x-tables.filters.includes.group>

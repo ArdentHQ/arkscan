@@ -13,6 +13,7 @@
     'sortDisabled' => false,
     'sortIconAlignment' => 'right',
     'hideSorting' => false,
+    'componentId' => '',
 ])
 
 <x-ark-tables.header
@@ -74,7 +75,10 @@
             @endif
 
             @if ($livewireSort)
-                <x-tables.headers.desktop.includes.livewire-sort-icon :id="$sortingId" />
+                <x-tables.headers.desktop.includes.livewire-sort-icon
+                    :sort-key="$sortingId"
+                    :component-id="$componentId"
+                />
             @elseif ($sortIconAlignment === 'right')
                 <x-tables.headers.desktop.includes.sort-icon
                     :id="$sortingId"

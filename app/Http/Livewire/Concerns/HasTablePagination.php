@@ -5,62 +5,82 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasPagination;
+use Illuminate\Support\Arr;
 
 /** @property int $perPage */
 trait HasTablePagination
 {
     use HasPagination;
+    use NormalizesConstantPrefixes;
+    use WithHooks;
 
-    public ?int $perPage = null;
+    public $paginatorsPerPage = [];
 
-    final public function mountHasTablePagination(): void
+    public function queryStringHasTablePagination(): array
     {
-        if ($this->perPage === null) {
-            $this->perPage = static::defaultPerPage();
-        } else {
-            $this->perPage = $this->resolvePerPage();
-        }
-    }
-
-    final public function queryStringHasTablePagination(): array
-    {
-        return [
-            'perPage' => ['except' => static::defaultPerPage()],
+        $queryString = [
+            'paginatorsPerPage.default' => ['as' => 'per-page', 'except' => static::defaultPerPage()],
         ];
+
+        return $queryString;
     }
 
-    final public function setPerPage(int $perPage): void
+    final public function getPerPage(string $name = 'default'): int
+    {
+        return (int) Arr::get($this->paginatorsPerPage, $name, static::defaultPerPage($name));
+    }
+
+    final public function setPerPage(int $perPage, string $name = 'default'): void
     {
         if (! in_array($perPage, static::perPageOptions(), true)) {
             return;
         }
 
-        $this->perPage = $perPage;
+        if ($this->getPerPage($name) === $perPage) {
+            return;
+        }
 
-        $this->gotoPage(1);
+        $this->setWithHooks('paginatorsPerPage', $perPage, $name);
+
+        if ($name === 'default') {
+            $this->gotoPage(1);
+        } else {
+            $this->gotoPage(1, name: $name);
+        }
     }
 
-    // @phpstan-ignore-next-line
+    public function getPerPageProperty(): int
+    {
+        return $this->getPerPage();
+    }
+
     public static function perPageOptions(): array
     {
         return trans('pagination.per_page_options');
     }
 
-    final public static function defaultPerPage(): int
+    final public static function defaultPerPage(string $prefix = ''): int
     {
-        if (defined(static::class.'::PER_PAGE')) {
-            $const = constant(static::class.'::PER_PAGE');
-            // @phpstan-ignore-next-line
+        $prefix = self::normalizePrefix($prefix, 'default');
+
+        if (defined(static::class.'::'.$prefix.'PER_PAGE')) {
+            $const = constant(static::class.'::'.$prefix.'PER_PAGE');
             if (is_int($const)) {
                 return $const;
             }
         }
 
-        return intval(config('arkscan.pagination.per_page'));
+        return (int) config('arkscan.pagination.per_page');
     }
 
-    private function resolvePerPage(): int
+    protected function resolvePerPage(?int $default = null): int
     {
-        return $this->perPage;
+        if (request()->exists('per-page') && ! is_numeric(request()->query('per-page'))) {
+            // $this->setPerPage(static::defaultPerPage());
+
+            return static::defaultPerPage();
+        }
+
+        return (int) request()->query('per-page', $default ?? $this->getPerPage());
     }
 }

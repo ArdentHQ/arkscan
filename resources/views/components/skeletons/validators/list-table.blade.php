@@ -3,7 +3,7 @@
     'paginator' => null,
 ])
 
-@if (! $this->isReady)
+@if (! $this->validatorsIsReady)
     <div wire:key="skeleton:validators:not-ready">
         <x-tables.desktop.skeleton.validators.list-table
             :row-count="$rowCount"

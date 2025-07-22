@@ -21,6 +21,7 @@
                 width="200"
                 :sorting-id="$canSort ? 'height' : null"
                 :livewire-sort="$canSort"
+                component-id="missed-blocks"
             />
 
             <x-tables.headers.desktop.text
@@ -29,12 +30,14 @@
                 responsive
                 :sorting-id="$canSort ? 'age' : null"
                 :livewire-sort="$canSort"
+                component-id="missed-blocks"
             />
 
             <x-tables.headers.desktop.address
                 name="tables.missed-blocks.validator"
                 :sorting-id="$canSort ? 'name' : null"
                 :livewire-sort="$canSort"
+                component-id="missed-blocks"
             />
 
             <x-tables.headers.desktop.number
@@ -42,6 +45,7 @@
                 class="whitespace-nowrap"
                 :sorting-id="$canSort ? 'no_of_voters' : null"
                 :livewire-sort="$canSort"
+                component-id="missed-blocks"
             />
 
             <x-tables.headers.desktop.number
@@ -50,6 +54,7 @@
                 class="whitespace-nowrap"
                 :sorting-id="$canSort ? 'votes' : null"
                 :livewire-sort="$canSort"
+                component-id="missed-blocks"
             />
 
             <x-tables.headers.desktop.number
@@ -57,6 +62,7 @@
                 :tooltip="trans('tables.missed-blocks.info.percentage')"
                 :sorting-id="$canSort ? 'percentage_votes' : null"
                 :livewire-sort="$canSort"
+                component-id="missed-blocks"
             />
         </tr>
     </thead>

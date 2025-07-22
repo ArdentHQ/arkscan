@@ -11,6 +11,7 @@
     'livewireSort' => false,
     'hideSorting' => false,
     'sortDisabled' => false,
+    'componentId' => '',
 ])
 
 @if ($sortingId)
@@ -27,6 +28,7 @@
         :sort-disabled="$sortDisabled"
         :initial-sort="$initialSort"
         :hide-sorting="$hideSorting"
+        :component-id="$componentId"
     />
 @else
     <x-ark-tables.header
