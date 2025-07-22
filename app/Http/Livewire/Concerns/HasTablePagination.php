@@ -76,8 +76,6 @@ trait HasTablePagination
     protected function resolvePerPage(?int $default = null): int
     {
         if (request()->exists('per-page') && ! is_numeric(request()->query('per-page'))) {
-            // $this->setPerPage(static::defaultPerPage());
-
             return static::defaultPerPage();
         }
 

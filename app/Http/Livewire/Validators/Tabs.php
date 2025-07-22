@@ -20,15 +20,13 @@ final class Tabs extends TabbedComponent
     use RecentVotesTab;
     use ValidatorsTab;
 
+    public const HAS_TABLE_SORTING = true;
+
     public const INITIAL_VIEW = 'validators';
 
     public string $view = 'validators';
 
     public ?string $previousView = 'validators';
-
-    public array $tabQueryData = [];
-
-    public array $savedQueryData = [];
 
     public array $alreadyLoadedViews = [
         'validators'    => false,

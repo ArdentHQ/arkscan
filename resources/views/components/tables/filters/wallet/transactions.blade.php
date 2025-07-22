@@ -12,7 +12,10 @@
         />
 
         <x-tables.filters.includes.group :label="trans('tables.filters.transactions.addressing')">
-            <x-tables.filters.includes.checkbox name="outgoing">
+            <x-tables.filters.includes.checkbox
+                name="outgoing"
+                model="filters.transactions.outgoing"
+            >
                 <x-slot name="label">
                     <span>@lang('tables.filters.transactions.outgoing')</span>
 
@@ -22,7 +25,10 @@
                 </x-slot>
             </x-tables.filters.includes.checkbox>
 
-            <x-tables.filters.includes.checkbox name="incoming">
+            <x-tables.filters.includes.checkbox
+                name="incoming"
+                model="filters.transactions.incoming"
+            >
                 <x-slot name="label">
                     <span>@lang('tables.filters.transactions.incoming')</span>
 
@@ -36,36 +42,43 @@
         <x-tables.filters.includes.group :label="trans('tables.filters.transactions.types')">
             <x-tables.filters.includes.checkbox
                 name="transfers"
+                model="filters.transactions.transfers"
                 :label="trans('tables.filters.transactions.transfers')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="multipayments"
+                model="filters.transactions.multipayments"
                 :label="trans('tables.filters.transactions.multipayments')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="votes"
+                model="filters.transactions.votes"
                 :label="trans('tables.filters.transactions.votes')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="validator"
+                model="filters.transactions.validator"
                 :label="trans('tables.filters.transactions.validator')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="username"
+                model="filters.transactions.username"
                 :label="trans('tables.filters.transactions.username')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="contract_deployment"
+                model="filters.transactions.contract_deployment"
                 :label="trans('tables.filters.transactions.contract_deployment')"
             />
 
             <x-tables.filters.includes.checkbox
                 name="others"
+                model="filters.transactions.others"
                 :label="trans('tables.filters.transactions.others')"
             />
         </x-tables.filters.includes.group>

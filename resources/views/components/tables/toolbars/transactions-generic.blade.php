@@ -11,4 +11,4 @@
             <x-tables.filters.transactions-generic mobile />
         </div>
     </div>
-</x-general.encapsulated.table-header>
+</x-tables.toolbars.toolbar>

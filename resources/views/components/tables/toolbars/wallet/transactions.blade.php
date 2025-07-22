@@ -8,9 +8,9 @@
         <livewire:modals.export-transactions :wallet="$wallet" />
 
         <div class="flex-1">
-            <x-tables.filters.transactions />
+            <x-tables.filters.wallet.transactions />
 
-            <x-tables.filters.transactions mobile />
+            <x-tables.filters.wallet.transactions mobile />
         </div>
     </div>
 </x-tables.toolbars.toolbar>

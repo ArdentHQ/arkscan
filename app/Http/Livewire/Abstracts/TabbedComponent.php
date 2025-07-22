@@ -29,6 +29,8 @@ abstract class TabbedComponent extends Component
         sortBy as sortByTrait;
     }
 
+    public const HAS_TABLE_SORTING = false;
+
     public array $tabQueryData = [];
 
     public array $savedQueryData = [];
@@ -69,19 +71,17 @@ abstract class TabbedComponent extends Component
         foreach (array_keys($this->alreadyLoadedViews) as $view) {
             $viewConstPrefix = str_replace('-', '_', $view);
 
-            $defaultPerPage       = self::defaultPerPage($viewConstPrefix);
-            $defaultSortKey       = self::defaultSortKey($viewConstPrefix);
-            $defaultSortDirection = self::defaultSortDirection($viewConstPrefix);
+            $defaultPerPage = self::defaultPerPage($viewConstPrefix);
 
             $this->paginators[$view]        = $view === $resolvedView ? $this->resolvePage() : 1;
             $this->paginatorsPerPage[$view] = $view === $resolvedView ? $this->resolvePerPage($defaultPerPage) : $defaultPerPage;
-            $this->sortKeys[$view]          = $view === $resolvedView ? $this->resolveSortKey($defaultSortKey) : self::defaultSortKey($viewConstPrefix);
-            $this->sortDirections[$view]    = $view === $resolvedView ? $this->resolveSortDirection($defaultSortDirection) : self::defaultSortDirection($viewConstPrefix);
 
-            if ($view === $resolvedView) {
-                // $this->setPaginatorsPerPage($this->paginatorsPerPage[$view], $view);
-                // $this->setSortKeys($this->sortKeys[$view], $view);
-                // $this->setSortDirections($this->sortDirections[$view], $view);
+            if (static::HAS_TABLE_SORTING) {
+                $defaultSortKey       = self::defaultSortKey($viewConstPrefix);
+                $defaultSortDirection = self::defaultSortDirection($viewConstPrefix);
+
+                $this->sortKeys[$view]       = $view === $resolvedView ? $this->resolveSortKey($defaultSortKey) : self::defaultSortKey($viewConstPrefix);
+                $this->sortDirections[$view] = $view === $resolvedView ? $this->resolveSortDirection($defaultSortDirection) : self::defaultSortDirection($viewConstPrefix);
             }
         }
     }
@@ -117,12 +117,14 @@ abstract class TabbedComponent extends Component
 
     public function queryStringHasTableSorting(): array
     {
-        $queryString = [
+        if (! static::HAS_TABLE_SORTING) {
+            return [];
+        }
+
+        return [
             'sortKeys.default'       => ['as' => 'sort', 'except' => static::defaultSortKey($this->view)],
             'sortDirections.default' => ['as' => 'sort-direction', 'except' => static::defaultSortDirection($this->view)->value],
         ];
-
-        return $queryString;
     }
 
     public function queryString(): array

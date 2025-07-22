@@ -19,11 +19,23 @@
     />
 
     <div id="wallet-table-list">
-        <x-wallet.tables.transactions :wallet="$wallet" />
+        <x-wallet.tables.transactions
+            :wallet="$wallet"
+            :transactions="$transactions"
+        />
 
         @if($wallet->isValidator())
-            <x-wallet.tables.voters :wallet="$wallet" x-cloak />
-            <x-wallet.tables.blocks :wallet="$wallet" x-cloak />
+            <x-wallet.tables.voters
+                :wallet="$wallet"
+                :voters="$voters"
+                x-cloak
+            />
+
+            <x-wallet.tables.blocks
+                :wallet="$wallet"
+                :blocks="$blocks"
+                x-cloak
+            />
         @endif
 
         <x-script.onload-scroll-to-query selector="#wallet-table-list" />

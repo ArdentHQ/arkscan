@@ -4,29 +4,29 @@
 ])
 
 @if (! $this->isReady)
-    <div wire:key="skeleton:blocks:not-ready">
-        <x-tables.desktop.skeleton.wallet-blocks
+    <div wire:key="skeleton:transactions:not-ready">
+        <x-tables.desktop.skeleton.wallet.transactions
             :row-count="$rowCount"
             :paginator="$paginator"
         />
 
-        <x-tables.mobile.skeleton.wallet-blocks />
+        <x-tables.mobile.skeleton.wallet.transactions />
     </div>
 @else
     <x-loading.visible
-        wire:key="skeleton:blocks:ready"
+        wire:key="skeleton:transactions:ready"
         display-type="block"
         wire:target="setPage,gotoPage,setPerPage"
     >
-        <x-tables.desktop.skeleton.wallet-blocks
+        <x-tables.desktop.skeleton.wallet.transactions
             :row-count="$rowCount"
             :paginator="$paginator"
         />
 
-        <x-tables.mobile.skeleton.wallet-blocks />
+        <x-tables.mobile.skeleton.wallet.transactions />
     </x-loading.visible>
 
-    <div wire:key="skeleton:blocks:hidden">
+    <div wire:key="skeleton:transactions:hidden">
         <x-loading.hidden wire:target="setPage,gotoPage,setPerPage">
             {{ $slot }}
         </x-loading.hidden>

@@ -5,12 +5,12 @@
 
 @if (! $this->isReady)
     <div wire:key="skeleton:voters:not-ready">
-        <x-tables.desktop.skeleton.wallet-voters
+        <x-tables.desktop.skeleton.wallet.voters
             :row-count="$rowCount"
             :paginator="$paginator"
         />
 
-        <x-tables.mobile.skeleton.wallet-voters />
+        <x-tables.mobile.skeleton.wallet.voters />
     </div>
 @else
     <x-loading.visible
@@ -18,12 +18,12 @@
         display-type="block"
         wire:target="setPage,gotoPage,setPerPage"
     >
-        <x-tables.desktop.skeleton.wallet-voters
+        <x-tables.desktop.skeleton.wallet.voters
             :row-count="$rowCount"
             :paginator="$paginator"
         />
 
-        <x-tables.mobile.skeleton.wallet-voters />
+        <x-tables.mobile.skeleton.wallet.voters />
     </x-loading.visible>
 
     <div wire:key="skeleton:voters:hidden">

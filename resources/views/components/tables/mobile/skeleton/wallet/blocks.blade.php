@@ -1,4 +1,4 @@
 <x-table-skeleton
-    device="mobile.wallet-voters"
+    device="mobile.wallet.blocks"
     :encapsulated="true"
 />

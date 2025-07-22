@@ -7,4 +7,4 @@
     <livewire:modals.export-blocks
         :wallet="$wallet"
     />
-</x-general.encapsulated.table-header>
+</x-tables.toolbars.toolbar>

@@ -1,4 +1,4 @@
 <x-table-skeleton
-    device="mobile.wallet-blocks"
+    device="mobile.wallet.transactions"
     :encapsulated="true"
 />

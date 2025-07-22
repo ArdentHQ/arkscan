@@ -3,6 +3,6 @@
     container-class="pt-6 md:pt-0"
 >
     <div class="w-full">
-        <livewire:wallet-tables :wallet="$wallet" />
+        <livewire:wallet.tabs :wallet="$wallet" />
     </div>
 </x-ark-container>
