@@ -37,13 +37,6 @@ trait RecentVotesTab
         ];
     }
 
-    public function mount(bool $deferLoading = true): void
-    {
-        if (! $deferLoading) {
-            $this->setRecentVotesIsReady();
-        }
-    }
-
     public function getRecentVotesNoResultsMessageProperty(): null|string
     {
         if (! $this->recentVotesHasFilters()) {

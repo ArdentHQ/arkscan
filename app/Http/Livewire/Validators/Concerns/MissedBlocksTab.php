@@ -21,13 +21,6 @@ trait MissedBlocksTab
 
     public $missedBlocksIsReady = false;
 
-    public function mountMissedBlocksTab(bool $deferLoading = true): void
-    {
-        if (! $deferLoading) {
-            $this->setMissedBlocksReady();
-        }
-    }
-
     public function queryStringMissedBlocksTab(): array
     {
         return [

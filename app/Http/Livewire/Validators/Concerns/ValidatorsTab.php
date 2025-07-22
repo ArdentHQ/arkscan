@@ -38,13 +38,6 @@ trait ValidatorsTab
         ];
     }
 
-    public function mount(bool $deferLoading = true): void
-    {
-        if (! $deferLoading) {
-            $this->setValidatorsReady();
-        }
-    }
-
     public function getValidatorsNoResultsMessageProperty(): null|string
     {
         if (! $this->validatorsHasFilters()) {
