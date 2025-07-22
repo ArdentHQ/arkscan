@@ -33,8 +33,8 @@ trait MissedBlocksTab
         return [
             'paginators.missed-blocks'        => ['except' => 1, 'as' => 'page', 'history' => true],
             'paginatorsPerPage.missed-blocks' => ['except' => self::defaultPerPage('MISSED_BLOCKS'), 'as' => 'per-page', 'history' => true],
-            'sortKeys.missed-blocks'          => ['as' => 'sort', 'except' => static::MISSED_BLOCKS_INITIAL_SORT_KEY],
-            'sortDirections.missed-blocks'    => ['as' => 'sort-direction', 'except' => static::MISSED_BLOCKS_INITIAL_SORT_DIRECTION->value],
+            'sortKeys.missed-blocks'          => ['as' => 'sort', 'except' => self::defaultSortKey('MISSED_BLOCKS')],
+            'sortDirections.missed-blocks'    => ['as' => 'sort-direction', 'except' => self::defaultSortDirection('MISSED_BLOCKS')->value],
         ];
     }
 

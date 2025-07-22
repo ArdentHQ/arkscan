@@ -29,9 +29,9 @@ trait ValidatorsTab
     {
         return [
             'paginators.validators'        => ['except' => 1, 'as' => 'page', 'history' => true],
-            'paginatorsPerPage.validators' => ['except' => static::VALIDATORS_PER_PAGE, 'as' => 'per-page', 'history' => true],
-            'sortKeys.validators'          => ['as' => 'sort', 'except' => static::VALIDATORS_INITIAL_SORT_KEY],
-            'sortDirections.validators'    => ['as' => 'sort-direction', 'except' => static::VALIDATORS_INITIAL_SORT_DIRECTION->value],
+            'paginatorsPerPage.validators' => ['except' => self::defaultPerPage('VALIDATORS'), 'as' => 'per-page', 'history' => true],
+            'sortKeys.validators'          => ['as' => 'sort', 'except' => self::defaultSortKey('VALIDATORS')],
+            'sortDirections.validators'    => ['as' => 'sort-direction', 'except' => self::defaultSortDirection('VALIDATORS')->value],
             'filters.validators.active'    => ['as' => 'active', 'except' => true],
             'filters.validators.standby'   => ['as' => 'standby', 'except' => true],
             'filters.validators.resigned'  => ['as' => 'resigned', 'except' => true],
