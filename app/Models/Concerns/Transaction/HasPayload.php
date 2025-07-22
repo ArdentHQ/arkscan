@@ -120,7 +120,7 @@ trait HasPayload
         return $recipients;
     }
 
-    public function getMethodData(): ?array
+    public function getMethodData(bool $tryAllAbis = false): ?array
     {
         $payload = $this->rawPayload();
         if ($payload === null) {
@@ -135,7 +135,11 @@ trait HasPayload
         }
 
         try {
-            $method = (new AbiDecoder())->decodeFunctionData($payload);
+            if ($tryAllAbis) {
+                $method = $this->decodeFunctionData($payload);
+            } else {
+                $method = (new AbiDecoder())->decodeFunctionData($payload);
+            }
 
             // @codeCoverageIgnoreStart
             // Unreachable on tests as all the methods in the `AbiDecoder` class
@@ -151,6 +155,26 @@ trait HasPayload
         }
 
         return [$functionName, $methodId, $arguments];
+    }
+
+    private function decodeFunctionData(string $payload): array
+    {
+        $contractAbiTypes = [
+            ContractAbiType::CUSTOM,
+            ContractAbiType::CONSENSUS,
+            ContractAbiType::MULTIPAYMENT,
+            ContractAbiType::USERNAMES,
+        ];
+
+        foreach ($contractAbiTypes as $type) {
+            try {
+                return (new AbiDecoder($type))->decodeFunctionData($payload);
+            } catch (\Throwable $e) {
+                // If the ABI type is not found, we will try the next one
+            }
+        }
+
+        throw new \Exception('Unable to decode function data from payload.');
     }
 
     private function payloadArguments(string $payload): ?array
