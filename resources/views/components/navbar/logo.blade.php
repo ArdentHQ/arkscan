@@ -5,14 +5,14 @@
             src="{{ Vite::image('logo.svg') }}"
             @class([
                 'h-8 bg-theme-danger-400',
-                'rounded-l-md' => $navbarTag !== null,
-                'rounded-md' => $navbarTag === null,
+                'rounded-l' => $navbarTag !== null,
+                'rounded' => $navbarTag === null,
             ])
         />
 
         @if ($navbarTag)
             <div
-                class="flex rounded-r-md bg-theme-danger-100 text-theme-danger-600 dark:bg-theme-dark-800 dark:text-theme-dark-200"
+                class="flex rounded-r bg-theme-danger-100 text-theme-danger-600 dark:bg-theme-dark-800 dark:text-theme-dark-200"
                 data-tippy-content="@lang('general.navbar.release_tag_tooltip', ['tag' => $navbarTag])"
             >
                 <div class="flex items-center px-2 h-full text-xs font-semibold leading-none uppercase">
