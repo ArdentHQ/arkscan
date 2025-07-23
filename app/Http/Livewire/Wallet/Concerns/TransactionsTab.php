@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Wallet\Concerns;
 
-use App\Facades\Wallets;
-use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
-use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
-use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
