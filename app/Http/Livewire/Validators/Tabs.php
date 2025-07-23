@@ -56,8 +56,8 @@ final class Tabs extends TabbedComponent
                     'sortKeys.validators'          => static::defaultSortKey('VALIDATORS'),
                     'sortDirections.validators'    => static::defaultSortDirection('VALIDATORS')->value,
 
-                    'filters.validators.active' => $this->filters['validators']['active'],
-                    'filters.validators.standby' => $this->filters['validators']['standby'],
+                    'filters.validators.active'   => $this->filters['validators']['active'],
+                    'filters.validators.standby'  => $this->filters['validators']['standby'],
                     'filters.validators.resigned' => $this->filters['validators']['resigned'],
                 ],
 

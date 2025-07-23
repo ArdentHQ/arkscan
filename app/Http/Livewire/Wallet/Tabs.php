@@ -68,15 +68,15 @@ final class Tabs extends TabbedComponent
                     'paginators.transactions'        => $this->paginators['transactions'],
                     'paginatorsPerPage.transactions' => $this->paginatorsPerPage['transactions'],
 
-                    'filters.transactions.outgoing' => $this->filters['transactions']['outgoing'],
-                    'filters.transactions.incoming' => $this->filters['transactions']['incoming'],
-                    'filters.transactions.transfers' => $this->filters['transactions']['transfers'],
-                    'filters.transactions.multipayments' => $this->filters['transactions']['multipayments'],
-                    'filters.transactions.votes' => $this->filters['transactions']['votes'],
-                    'filters.transactions.validator' => $this->filters['transactions']['validator'],
-                    'filters.transactions.username' => $this->filters['transactions']['username'],
+                    'filters.transactions.outgoing'            => $this->filters['transactions']['outgoing'],
+                    'filters.transactions.incoming'            => $this->filters['transactions']['incoming'],
+                    'filters.transactions.transfers'           => $this->filters['transactions']['transfers'],
+                    'filters.transactions.multipayments'       => $this->filters['transactions']['multipayments'],
+                    'filters.transactions.votes'               => $this->filters['transactions']['votes'],
+                    'filters.transactions.validator'           => $this->filters['transactions']['validator'],
+                    'filters.transactions.username'            => $this->filters['transactions']['username'],
                     'filters.transactions.contract_deployment' => $this->filters['transactions']['contract_deployment'],
-                    'filters.transactions.others' => $this->filters['transactions']['others'],
+                    'filters.transactions.others'              => $this->filters['transactions']['others'],
                 ],
 
                 'blocks' => [
