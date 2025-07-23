@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Abstracts;
 
 use App\Enums\SortDirection;
+use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Http\Livewire\Concerns\SyncsInput;
@@ -27,6 +28,9 @@ abstract class TabbedComponent extends Component
     }
     use HasTableSorting {
         sortBy as sortByTrait;
+    }
+    use HasTableFilter {
+        getFilter as getFilterTrait;
     }
 
     public const HAS_TABLE_SORTING = false;
@@ -67,6 +71,8 @@ abstract class TabbedComponent extends Component
 
     public function mount(): void
     {
+        $this->filters = static::defaultFilters();
+
         $resolvedView = $this->resolveView();
         foreach (array_keys($this->alreadyLoadedViews) as $view) {
             $viewConstPrefix = str_replace('-', '_', $view);
@@ -83,16 +89,23 @@ abstract class TabbedComponent extends Component
                 $this->sortKeys[$view]       = $view === $resolvedView ? $this->resolveSortKey($defaultSortKey) : self::defaultSortKey($viewConstPrefix);
                 $this->sortDirections[$view] = $view === $resolvedView ? $this->resolveSortDirection($defaultSortDirection) : self::defaultSortDirection($viewConstPrefix);
             }
+
+            if ($view !== $resolvedView) {
+                continue;
+            }
+
+            $this->filters[$view] = $this->resolveFilters($this->filters[$view], 'validators');
         }
     }
 
-    public function getFilterProperty(): array
+    public function getFilter(string $filter, string $name = 'default'): ?bool
     {
-        if (! array_key_exists($this->view, $this->filters)) {
-            return [];
-        }
+        return $this->getFilterTrait($filter, $this->view);
+    }
 
-        return $this->filters[$this->view];
+    public function getIsAllSelectedProperty(): bool
+    {
+        return ! collect($this->filters[$this->view])->contains(false);
     }
 
     public function updatedPaginators(int $value, $key): void
@@ -113,6 +126,18 @@ abstract class TabbedComponent extends Component
     public function updatedSortDirections(SortDirection $value, $key): void
     {
         $this->setTabbedArrayValue('sortDirections.'.$key, $value);
+    }
+
+    public function updatedFilters(bool $value, $key): void
+    {
+        $this->setTabbedArrayValue('filters.'.$key, $value);
+    }
+
+    public function updatedSelectAllFilters(bool $value): void
+    {
+        foreach (array_keys($this->filters[$this->view]) as $key) {
+            $this->filters[$this->view][$key] = $value;
+        }
     }
 
     public function queryStringHasTableSorting(): array
@@ -299,8 +324,10 @@ abstract class TabbedComponent extends Component
                 continue;
             }
 
-            if (in_array($key, ['paginators.page', 'paginatorsPerPage.page'], true)) {
+            if (in_array($key, ['paginators.'.$this->view, 'paginatorsPerPage.'.$this->view], true)) {
                 $except = (int) $except;
+            } elseif (str_starts_with($key, 'filters.'.$this->view)) {
+                $except = $except === 'true' || $except === '1' || $except === true;
             }
 
             $this->syncInput($key, $except);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Validators;
 
 use App\Http\Livewire\Abstracts\TabbedComponent;
-use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Validators\Concerns\MissedBlocksTab;
 use App\Http\Livewire\Validators\Concerns\RecentVotesTab;
 use App\Http\Livewire\Validators\Concerns\ValidatorsTab;
@@ -15,7 +14,6 @@ use Livewire\Attributes\On;
 
 final class Tabs extends TabbedComponent
 {
-    use HasTableFilter;
     use MissedBlocksTab;
     use RecentVotesTab;
     use ValidatorsTab;
@@ -23,6 +21,18 @@ final class Tabs extends TabbedComponent
     public const HAS_TABLE_SORTING = true;
 
     public const INITIAL_VIEW = 'validators';
+
+    public const INITIAL_FILTERS = [
+        'validators' => [
+            'active'   => true,
+            'standby'  => true,
+            'resigned' => false,
+        ],
+        'recent-votes' => [
+            'vote'   => true,
+            'unvote' => true,
+        ],
+    ];
 
     public string $view = 'validators';
 
@@ -38,20 +48,6 @@ final class Tabs extends TabbedComponent
     {
         parent::mount();
 
-        if (count($this->filters) === 0) {
-            $this->filters = [
-                'validators' => [
-                    'active'   => true,
-                    'standby'  => true,
-                    'resigned' => false,
-                ],
-                'recent-votes' => [
-                    'vote'   => true,
-                    'unvote' => true,
-                ],
-            ];
-        }
-
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'validators' => [
@@ -60,7 +56,9 @@ final class Tabs extends TabbedComponent
                     'sortKeys.validators'          => static::defaultSortKey('VALIDATORS'),
                     'sortDirections.validators'    => static::defaultSortDirection('VALIDATORS')->value,
 
-                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
+                    'filters.validators.active' => $this->filters['validators']['active'],
+                    'filters.validators.standby' => $this->filters['validators']['standby'],
+                    'filters.validators.resigned' => $this->filters['validators']['resigned'],
                 ],
 
                 'missed-blocks' => [
@@ -76,7 +74,8 @@ final class Tabs extends TabbedComponent
                     'sortKeys.recent-votes'          => static::defaultSortKey('RECENT_VOTES'),
                     'sortDirections.recent-votes'    => static::defaultSortDirection('RECENT_VOTES')->value,
 
-                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
+                    'filters.recent-votes.vote'   => $this->filters['recent-votes']['vote'],
+                    'filters.recent-votes.unvote' => $this->filters['recent-votes']['unvote'],
                 ],
             ];
         }

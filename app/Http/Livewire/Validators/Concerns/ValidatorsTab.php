@@ -34,7 +34,7 @@ trait ValidatorsTab
             'sortDirections.validators'    => ['as' => 'sort-direction', 'except' => self::defaultSortDirection('VALIDATORS')->value],
             'filters.validators.active'    => ['as' => 'active', 'except' => true],
             'filters.validators.standby'   => ['as' => 'standby', 'except' => true],
-            'filters.validators.resigned'  => ['as' => 'resigned', 'except' => true],
+            'filters.validators.resigned'  => ['as' => 'resigned', 'except' => false],
         ];
     }
 

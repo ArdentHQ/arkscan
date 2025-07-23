@@ -6,14 +6,10 @@ namespace App\Http\Livewire\Wallet;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedComponent;
-use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Http\Livewire\Concerns\HasTabs;
-use App\Http\Livewire\Concerns\SyncsInput;
 use App\Http\Livewire\Wallet\Concerns\BlocksTab;
 use App\Http\Livewire\Wallet\Concerns\TransactionsTab;
 use App\Http\Livewire\Wallet\Concerns\VotersTab;
 use App\ViewModels\ViewModelFactory;
-use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 
@@ -23,12 +19,25 @@ use Livewire\Attributes\On;
  */
 final class Tabs extends TabbedComponent
 {
-    use HasTableFilter;
     use BlocksTab;
     use TransactionsTab;
     use VotersTab;
 
     public const INITIAL_VIEW = 'transactions';
+
+    public const INITIAL_FILTERS = [
+        'transactions' => [
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
+        ],
+    ];
 
     public string $view = 'transactions';
 
@@ -42,31 +51,6 @@ final class Tabs extends TabbedComponent
         'voters'       => false,
     ];
 
-    // public function queryString(): array
-    // {
-    //     $params = [
-    //         'paginators.page' => ['except' => 1, 'as' => 'page'],
-    //         'perPage'         => ['except' => intval(config('arkscan.pagination.per_page'))],
-    //         'view'            => ['except' => 'transactions', 'history' => true],
-    //     ];
-
-    //     // We need to pass in the transaction filters for previous view so we can hide it from the URL
-    //     if ($this->view !== 'transactions' && $this->previousView !== 'transactions') {
-    //         return $params;
-    //     }
-
-    //     return [
-    //         ...$params,
-
-    //         // Transaction Filters
-    //         'outgoing'      => ['except' => true, 'history' => true],
-    //         'incoming'      => ['except' => true, 'history' => true],
-    //         'transfers'     => ['except' => true, 'history' => true],
-    //         'votes'         => ['except' => true, 'history' => true],
-    //         'others'        => ['except' => true, 'history' => true],
-    //     ];
-    // }
-
     public function getListeners(): array
     {
         return [
@@ -78,29 +62,21 @@ final class Tabs extends TabbedComponent
     {
         parent::mount();
 
-        if (count($this->filters) === 0) {
-            $this->filters = [
-                'transactions' => [
-                    'outgoing'            => true,
-                    'incoming'            => true,
-                    'transfers'           => true,
-                    'multipayments'       => true,
-                    'votes'               => true,
-                    'validator'           => true,
-                    'username'            => true,
-                    'contract_deployment' => true,
-                    'others'              => true,
-                ],
-            ];
-        }
-
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'transactions' => [
                     'paginators.transactions'        => $this->paginators['transactions'],
                     'paginatorsPerPage.transactions' => $this->paginatorsPerPage['transactions'],
 
-                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7
+                    'filters.transactions.outgoing' => $this->filters['transactions']['outgoing'],
+                    'filters.transactions.incoming' => $this->filters['transactions']['incoming'],
+                    'filters.transactions.transfers' => $this->filters['transactions']['transfers'],
+                    'filters.transactions.multipayments' => $this->filters['transactions']['multipayments'],
+                    'filters.transactions.votes' => $this->filters['transactions']['votes'],
+                    'filters.transactions.validator' => $this->filters['transactions']['validator'],
+                    'filters.transactions.username' => $this->filters['transactions']['username'],
+                    'filters.transactions.contract_deployment' => $this->filters['transactions']['contract_deployment'],
+                    'filters.transactions.others' => $this->filters['transactions']['others'],
                 ],
 
                 'blocks' => [
@@ -111,8 +87,6 @@ final class Tabs extends TabbedComponent
                 'voters' => [
                     'paginators.voters'        => $this->paginators['voters'],
                     'paginatorsPerPage.voters' => $this->paginatorsPerPage['voters'],
-
-                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7
                 ],
             ];
         }
