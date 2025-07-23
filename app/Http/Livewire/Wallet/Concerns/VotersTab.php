@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Wallet\Concerns;
 
-use App\Http\Livewire\Abstracts\TabbedTableComponent;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
-use App\ViewModels\ViewModelFactory;
-use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\View\View;
 use Livewire\Attributes\On;
 
 /** @property LengthAwarePaginator $wallets */

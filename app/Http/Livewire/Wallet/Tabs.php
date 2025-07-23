@@ -7,13 +7,10 @@ namespace App\Http\Livewire\Wallet;
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedComponent;
 use App\Http\Livewire\Concerns\HasTableFilter;
-use App\Http\Livewire\Concerns\HasTabs;
-use App\Http\Livewire\Concerns\SyncsInput;
 use App\Http\Livewire\Wallet\Concerns\BlocksTab;
 use App\Http\Livewire\Wallet\Concerns\TransactionsTab;
 use App\Http\Livewire\Wallet\Concerns\VotersTab;
 use App\ViewModels\ViewModelFactory;
-use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 
