@@ -15,7 +15,7 @@ trait WithHooks
         $afterPaginatorMethod  = 'updated'.ucfirst($property);
 
         $beforeMethod = null;
-        $afterMethod = null;
+        $afterMethod  = null;
         if ($key !== null) {
             $beforeMethod = 'updating'.ucfirst(Str::camel($key));
             $afterMethod  = 'updated'.ucfirst(Str::camel($key));

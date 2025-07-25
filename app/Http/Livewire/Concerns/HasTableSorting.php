@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Concerns;
 
 use App\Enums\SortDirection;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 trait HasTableSorting
 {
