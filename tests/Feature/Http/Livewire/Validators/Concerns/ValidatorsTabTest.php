@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\SortDirection;
 use App\Facades\Network;
-use App\Http\Livewire\Validators\Validators;
+use App\Http\Livewire\Validators\Tabs;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
@@ -29,33 +29,36 @@ beforeEach(function () {
 });
 
 it('should render', function () {
-    Livewire::test(Validators::class)
-        ->assertSet('isReady', false)
+    Livewire::test(Tabs::class)
+        ->assertSet('validatorsIsReady', false)
         ->assertSee('Showing 0 results');
 });
 
 it('should render with validators', function () {
     Wallet::factory(Network::validatorCount())->activeValidator()->create();
 
-    Livewire::test(Validators::class)
+    Livewire::test(Tabs::class)
         ->assertSee('Showing 0 results')
-        ->call('setIsReady')
+        ->call('setValidatorsReady')
         ->assertSee('Showing '.Network::validatorCount().' results');
 });
 
 it('should not defer loading if disabled', function () {
-    Livewire::test(Validators::class, ['deferLoading' => false])
-        ->assertSet('isReady', true)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->assertSet('validatorsIsReady', true)
         ->assertSee('Showing 0 results');
 });
 
 it('should show no results message if no validators', function () {
-    Livewire::test(Validators::class, ['deferLoading' => false])
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
         ->assertSee(trans('tables.validators.no_results.no_results'));
 });
 
 it('should have slightly different per-page options', function () {
-    $instance = Livewire::test(Validators::class, ['deferLoading' => false])
+    $instance = Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
         ->instance();
 
     expect($instance->perPageOptions())->toBe([
@@ -67,30 +70,32 @@ it('should have slightly different per-page options', function () {
 });
 
 it('should toggle all filters when "select all" is selected', function () {
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->assertSet('filter', [
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->assertSet('filters.validators', [
             'active'   => true,
             'standby'  => true,
             'resigned' => false,
         ])
-        ->set('filter.resigned', true)
-        ->assertSet('filter', [
+        ->set('filters.validators.resigned', true)
+        ->assertSet('filters.validators', [
             'active'   => true,
             'standby'  => true,
             'resigned' => true,
         ])
-        ->assertSet('selectAllFilters', true)
-        ->set('filter.active', true)
-        ->assertSet('selectAllFilters', true)
-        ->set('selectAllFilters', false)
-        ->assertSet('filter', [
+        ->assertSet('selectAllFilters.validators', true)
+        ->assertSet('isAllSelected', true)
+        ->set('filters.validators.active', true)
+        ->assertSet('selectAllFilters.validators', true)
+        ->assertSet('isAllSelected', true)
+        ->set('selectAllFilters.validators', false)
+        ->assertSet('filters.validators', [
             'active'   => false,
             'standby'  => false,
             'resigned' => false,
         ])
-        ->set('selectAllFilters', true)
-        ->assertSet('filter', [
+        ->set('selectAllFilters.validators', true)
+        ->assertSet('filters.validators', [
             'active'   => true,
             'standby'  => true,
             'resigned' => true,
@@ -98,24 +103,27 @@ it('should toggle all filters when "select all" is selected', function () {
 });
 
 it('should toggle "select all" when all filters are selected', function () {
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->assertSet('filter', [
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->assertSet('filters.validators', [
             'active'   => true,
             'standby'  => true,
             'resigned' => false,
         ])
-        ->set('filter.resigned', true)
-        ->assertSet('filter', [
+        ->set('filters.validators.resigned', true)
+        ->assertSet('filters.validators', [
             'active'   => true,
             'standby'  => true,
             'resigned' => true,
         ])
-        ->assertSet('selectAllFilters', true)
-        ->set('filter.outgoing', false)
-        ->assertSet('selectAllFilters', false)
-        ->set('filter.outgoing', true)
-        ->assertSet('selectAllFilters', true);
+        ->assertSet('isAllSelected', true)
+        ->assertSet('selectAllFilters.validators', true)
+        ->set('filters.validators.outgoing', false)
+        ->assertSet('isAllSelected', false)
+        ->assertSet('selectAllFilters.validators', false)
+        ->set('filters.validators.outgoing', true)
+        ->assertSet('isAllSelected', true)
+        ->assertSet('selectAllFilters.validators', true);
 });
 
 it('should filter active validators', function () {
@@ -123,13 +131,11 @@ it('should filter active validators', function () {
     $standby  = Wallet::factory()->standbyValidator(false)->create();
     $resigned = Wallet::factory()->standbyValidator()->create();
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'active'   => true,
-            'standby'  => false,
-            'resigned' => false,
-        ])
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('filters.validators.active', true)
+        ->set('filters.validators.standby', false)
+        ->set('filters.validators.resigned', false)
         ->assertSee($active->address)
         ->assertDontSee($standby->address)
         ->assertDontSee($resigned->address);
@@ -140,13 +146,11 @@ it('should filter standby validators', function () {
     $standby  = Wallet::factory()->standbyValidator(false)->create();
     $resigned = Wallet::factory()->standbyValidator()->create();
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'active'   => false,
-            'standby'  => true,
-            'resigned' => false,
-        ])
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('filters.validators.active', false)
+        ->set('filters.validators.standby', true)
+        ->set('filters.validators.resigned', false)
         ->assertSee($standby->address)
         ->assertDontSee($active->address)
         ->assertDontSee($resigned->address);
@@ -157,32 +161,28 @@ it('should filter resigned validators', function () {
     $standby  = Wallet::factory()->standbyValidator(false)->create();
     $resigned = Wallet::factory()->standbyValidator()->create();
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'active'   => false,
-            'standby'  => false,
-            'resigned' => true,
-        ])
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('filters.validators.active', false)
+        ->set('filters.validators.standby', false)
+        ->set('filters.validators.resigned', true)
         ->assertSee($resigned->address)
         ->assertDontSee($active->address)
         ->assertDontSee($standby->address);
 });
 
 it('should show correct message when no filters are selected', function () {
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'active'   => false,
-            'standby'  => false,
-            'resigned' => false,
-        ])
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('filters.validators.active', false)
+        ->set('filters.validators.standby', false)
+        ->set('filters.validators.resigned', false)
         ->assertSee(trans('tables.validators.no_results.no_filters'));
 });
 
 it('should show correct message when there are no results', function () {
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
         ->assertSee(trans('tables.validators.no_results.no_results'));
 });
 
@@ -199,8 +199,8 @@ it('should show the correct styling for "success" on missed blocks', function ()
     (new WalletCache())->setProductivity($wallet->address, (1 - (1 / 1001)) * 100);
     (new WalletCache())->setMissedBlocks($wallet->address, 1);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
         ->assertSee($wallet->address)
         ->assertSee('bg-theme-success-100 border-theme-success-100 text-theme-success-700 dark:border-theme-success-700 dark:text-theme-success-500');
 });
@@ -218,8 +218,8 @@ it('should show the correct styling for "warning" on missed blocks', function ()
     (new WalletCache())->setProductivity($wallet->address, (1 - (10 / 1001)) * 100);
     (new WalletCache())->setMissedBlocks($wallet->address, 10);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
         ->assertSee($wallet->address)
         ->assertSee('bg-theme-orange-light border-theme-orange-light text-theme-orange-dark dark:!border-theme-warning-600 dark:text-theme-warning-400 dim:text-theme-warning-400');
 });
@@ -237,8 +237,8 @@ it('should show the correct styling for "danger" on missed blocks', function () 
     (new WalletCache())->setProductivity($wallet->address, (1 - (50 / 1001)) * 100);
     (new WalletCache())->setMissedBlocks($wallet->address, 50);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
         ->assertSee($wallet->address)
         ->assertSee('bg-theme-danger-100 border-theme-danger-100 text-theme-danger-700');
 });
@@ -262,10 +262,10 @@ it('should sort by rank by default', function () {
         ],
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->assertSet('sortKey', 'rank')
-        ->assertSet('sortDirection', SortDirection::ASC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->assertSet('sortKeys.validators', 'rank')
+        ->assertSet('sortDirections.validators', SortDirection::ASC)
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
@@ -293,10 +293,10 @@ it('should sort rank in descending order', function () {
         ],
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->assertSet('sortKey', 'rank')
-        ->set('sortDirection', SortDirection::DESC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->assertSet('sortKeys.validators', 'rank')
+        ->set('sortDirections.validators', SortDirection::DESC)
         ->assertSeeInOrder([
             $wallet2->address,
             $wallet1->address,
@@ -339,10 +339,10 @@ it('should sort number of voters in ascending order', function () {
         $wallet2->address => 10,
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('sortKey', 'no_of_voters')
-        ->assertSet('sortDirection', SortDirection::ASC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('sortKeys.validators', 'no_of_voters')
+        ->assertSet('sortDirections.validators', SortDirection::ASC)
         ->assertSeeInOrder([
             $wallet2->address,
             $wallet1->address,
@@ -387,10 +387,10 @@ it('should sort number of voters in descending order', function () {
         $wallet2->address => 10,
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('sortKey', 'no_of_voters')
-        ->set('sortDirection', SortDirection::DESC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('sortKeys.validators', 'no_of_voters')
+        ->set('sortDirections.validators', SortDirection::DESC)
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
@@ -429,10 +429,10 @@ it('should handle no cached votes when sorting by number of voters', function ()
         ],
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('sortKey', 'no_of_voters')
-        ->set('sortDirection', SortDirection::DESC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('sortKeys.validators', 'no_of_voters')
+        ->set('sortDirections.validators', SortDirection::DESC)
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
@@ -462,10 +462,10 @@ it('should sort votes & percentage in ascending order', function (string $sortKe
         ],
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('sortKey', 'votes')
-        ->assertSet('sortDirection', SortDirection::ASC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('sortKeys.validators', 'votes')
+        ->assertSet('sortDirections.validators', SortDirection::ASC)
         ->assertSeeInOrder([
             $wallet2->address,
             $wallet1->address,
@@ -496,10 +496,10 @@ it('should sort votes & percentage in descending order', function (string $sortK
         ],
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('sortKey', $sortKey)
-        ->set('sortDirection', SortDirection::DESC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('sortKeys.validators', $sortKey)
+        ->set('sortDirections.validators', SortDirection::DESC)
         ->assertSeeInOrder([
             $wallet1->address,
             $wallet2->address,
@@ -576,10 +576,10 @@ it('should sort missed blocks in ascending order grouped by rank', function () {
         'address' => $wallet3->address,
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('sortKey', 'missed_blocks')
-        ->assertSet('sortDirection', SortDirection::ASC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('sortKeys.validators', 'missed_blocks')
+        ->assertSet('sortDirections.validators', SortDirection::ASC)
         ->assertSeeInOrder([
             $wallet1->address,
             $walletWithoutMissedBlocks->address,
@@ -661,10 +661,10 @@ it('should sort missed blocks in descending order grouped by rank', function () 
         'address' => $wallet3->address,
     ]);
 
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->set('sortKey', 'missed_blocks')
-        ->set('sortDirection', SortDirection::DESC)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->set('sortKeys.validators', 'missed_blocks')
+        ->set('sortDirections.validators', SortDirection::DESC)
         ->assertSeeInOrder([
             $wallet3->address,
             $wallet2->address,
@@ -693,21 +693,21 @@ it('should alternate sorting direction', function () {
 
     ForgingStats::factory(24)->create();
 
-    $component = Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->assertSet('sortKey', 'rank')
-        ->assertSet('sortDirection', SortDirection::ASC)
+    $component = Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->assertSet('sortKeys.validators', 'rank')
+        ->assertSet('sortDirections.validators', SortDirection::ASC)
         ->call('sortBy', 'rank')
-        ->assertSet('sortKey', 'rank')
-        ->assertSet('sortDirection', SortDirection::DESC);
+        ->assertSet('sortKeys.validators', 'rank')
+        ->assertSet('sortDirections.validators', SortDirection::DESC);
 
     foreach (['name', 'no_of_voters', 'votes', 'percentage_votes', 'missed_blocks'] as $column) {
         $component->call('sortBy', $column)
-            ->assertSet('sortKey', $column)
-            ->assertSet('sortDirection', SortDirection::ASC)
+            ->assertSet('sortKeys.validators', $column)
+            ->assertSet('sortDirections.validators', SortDirection::ASC)
             ->call('sortBy', $column)
-            ->assertSet('sortKey', $column)
-            ->assertSet('sortDirection', SortDirection::DESC);
+            ->assertSet('sortKeys.validators', $column)
+            ->assertSet('sortDirections.validators', SortDirection::DESC);
     }
 });
 
@@ -723,47 +723,43 @@ it('should handle sorting an empty table', function () {
 
     ForgingStats::factory(24)->create();
 
-    $component = Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->assertSet('sortKey', 'rank')
-        ->assertSet('sortDirection', SortDirection::ASC)
+    $component = Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->assertSet('sortKeys.validators', 'rank')
+        ->assertSet('sortDirections.validators', SortDirection::ASC)
         ->call('sortBy', 'rank')
-        ->assertSet('sortKey', 'rank')
-        ->assertSet('sortDirection', SortDirection::DESC);
+        ->assertSet('sortKeys.validators', 'rank')
+        ->assertSet('sortDirections.validators', SortDirection::DESC);
 
     foreach (['name', 'no_of_voters', 'votes', 'percentage_votes', 'missed_blocks'] as $column) {
         $component->call('sortBy', $column)
-            ->assertSet('sortKey', $column)
-            ->assertSet('sortDirection', SortDirection::ASC)
+            ->assertSet('sortKeys.validators', $column)
+            ->assertSet('sortDirections.validators', SortDirection::ASC)
             ->call('sortBy', $column)
-            ->assertSet('sortKey', $column)
-            ->assertSet('sortDirection', SortDirection::DESC);
+            ->assertSet('sortKeys.validators', $column)
+            ->assertSet('sortDirections.validators', SortDirection::DESC);
     }
 });
 
 it('should reset page on sorting change', function () {
-    Livewire::test(Validators::class)
-        ->call('setIsReady')
-        ->assertSet('paginators.page', 1)
-        ->assertSet('sortKey', 'rank')
-        ->assertSet('sortDirection', SortDirection::ASC)
-        ->set('paginators.page', 12)
+    Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
+        ->assertSet('paginators.validators', 1)
+        ->assertSet('sortKeys.validators', 'rank')
+        ->assertSet('sortDirections.validators', SortDirection::ASC)
+        ->set('paginators.validators', 12)
         ->call('sortBy', 'rank')
-        ->assertSet('paginators.page', 1)
-        ->assertSet('sortKey', 'rank')
-        ->assertSet('sortDirection', SortDirection::DESC)
-        ->set('paginators.page', 12)
+        ->assertSet('paginators.validators', 1)
+        ->assertSet('sortKeys.validators', 'rank')
+        ->assertSet('sortDirections.validators', SortDirection::DESC)
+        ->set('paginators.validators', 12)
         ->call('sortBy', 'rank')
-        ->assertSet('paginators.page', 1)
-        ->assertSet('sortKey', 'rank')
-        ->assertSet('sortDirection', SortDirection::ASC);
+        ->assertSet('paginators.validators', 1)
+        ->assertSet('sortKeys.validators', 'rank')
+        ->assertSet('sortDirections.validators', SortDirection::ASC);
 });
 
 it('should parse sorting direction from query string', function () {
-    Route::get('/test-validators', function () {
-        return BladeCompiler::render('<livewire:validators.validators :defer-loading="false" />');
-    });
-
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'validatorRank'           => 2,
@@ -781,6 +777,10 @@ it('should parse sorting direction from query string', function () {
             'validatorProducedBlocks' => 1000,
         ],
     ]);
+
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.tabs :defer-loading="false" />');
+    });
 
     $this->get('/test-validators?sort=name&sort-direction=asc')
         ->assertSeeInOrder([
@@ -796,10 +796,6 @@ it('should parse sorting direction from query string', function () {
 });
 
 it('should force ascending if invalid query string value', function () {
-    Route::get('/test-validators', function () {
-        return BladeCompiler::render('<livewire:validators.validators :defer-loading="false" />');
-    });
-
     $wallet1 = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'validatorRank'           => 2,
@@ -817,6 +813,10 @@ it('should force ascending if invalid query string value', function () {
             'validatorProducedBlocks' => 1000,
         ],
     ]);
+
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.tabs :defer-loading="false" />');
+    });
 
     $this->get('/test-validators?sort=name&sort-direction=desc')
         ->assertSeeInOrder([
@@ -873,10 +873,10 @@ it('should handle sorting several pages of validators without cached data', func
         return strcmp($aValue, $bValue);
     });
 
-    $component = Livewire::test(Validators::class)
-        ->call('setIsReady')
+    $component = Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
         ->call('sortBy', $columnSortBy)
-        ->set('sortDirection', SortDirection::ASC);
+        ->set('sortDirections.validators', SortDirection::ASC);
 
     foreach (range(1, 3) as $page) {
         $pageValidators = $validators->chunk(Network::validatorCount())->get($page - 1)->pluck('address');
@@ -984,10 +984,10 @@ it('should handle sorting several pages of validators with cached data', functio
         return strcmp($aValue, $bValue);
     });
 
-    $component = Livewire::test(Validators::class)
-        ->call('setIsReady')
+    $component = Livewire::test(Tabs::class)
+        ->call('setValidatorsReady')
         ->call('sortBy', $columnSortBy)
-        ->set('sortDirection', SortDirection::ASC);
+        ->set('sortDirections.validators', SortDirection::ASC);
 
     foreach (range(1, 3) as $page) {
         $pageValidators = $validators->chunk(Network::validatorCount())->get($page - 1)->pluck('address');

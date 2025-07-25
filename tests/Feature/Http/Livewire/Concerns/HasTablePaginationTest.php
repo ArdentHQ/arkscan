@@ -9,11 +9,9 @@ use Tests\Feature\Http\Livewire\__stubs\TablePaginationComponentStub;
 it('should use PER_PAGE constant if exists', function () {
     $instance = new HasTablePaginationStub();
 
-    expect($instance->perPage)->toBeNull();
+    expect($instance->paginatorsPerPage)->toBe([]);
 
-    $instance->mountHasTablePagination();
-
-    expect($instance->perPage)->toBe(HasTablePaginationStub::PER_PAGE);
+    expect($instance->defaultPerPage())->toBe(HasTablePaginationStub::PER_PAGE);
 });
 
 it('should use config if constant does not exist', function () {
@@ -21,9 +19,7 @@ it('should use config if constant does not exist', function () {
 
     $instance = new TablePaginationComponentStub();
 
-    expect($instance->perPage)->toBeNull();
+    expect($instance->paginatorsPerPage)->toBe([]);
 
-    $instance->mountHasTablePagination();
-
-    expect($instance->perPage)->toBe(100);
+    expect($instance->defaultPerPage())->toBe(100);
 });

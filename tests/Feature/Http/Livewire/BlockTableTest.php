@@ -161,7 +161,7 @@ it('should handle snapshot of blocks', function () {
 
     Livewire::test(BlockTable::class)
         ->call('setIsReady')
-        ->set('perPage', 25)
+        ->set('paginatorsPerPage.default', 25)
         ->assertSee('Page 1 of '.$pageCount);
 });
 

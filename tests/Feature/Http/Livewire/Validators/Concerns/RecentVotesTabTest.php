@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\SortDirection;
-use App\Http\Livewire\Validators\RecentVotes;
+use App\Http\Livewire\Validators\Tabs;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -80,7 +80,8 @@ function generateTransactions(): array
 beforeEach(fn () => $this->travelTo('2023-09-20 05:41:04'));
 
 it('should render', function () {
-    Livewire::test(RecentVotes::class)
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
         ->assertSet('isReady', false)
         ->assertSee('Showing 0 results');
 });
@@ -98,9 +99,10 @@ it('should render with votes', function () {
 
     generateReceipts();
 
-    Livewire::test(RecentVotes::class)
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
         ->assertSee('Showing 0 results')
-        ->call('setIsReady')
+        ->call('setRecentVotesReady')
         ->assertSee('Showing 27 results');
 });
 
@@ -122,63 +124,72 @@ it('should not render votes older than 30 days', function () {
 
     generateReceipts();
 
-    Livewire::test(RecentVotes::class)
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
         ->assertSee('Showing 0 results')
-        ->call('setIsReady')
+        ->call('setRecentVotesReady')
         ->assertSee('Showing 4 results');
 });
 
 it('should not defer loading if disabled', function () {
-    Livewire::test(RecentVotes::class, ['deferLoading' => false])
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->assertSet('isReady', true)
+        ->assertSet('recentVotesIsReady', true)
         ->assertSee('Showing 0 results');
 });
 
 it('should show no results message if no votes', function () {
-    Livewire::test(RecentVotes::class, ['deferLoading' => false])
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->assertSee(trans('tables.recent-votes.no_results.no_results'));
 });
 
 it('should toggle all filters when "select all" is selected', function () {
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->assertSet('filter', [
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
+        ->assertSet('filters.recent-votes', [
             'vote'   => true,
             'unvote' => true,
         ])
-        ->assertSet('selectAllFilters', true)
-        ->set('filter.vote', true)
-        ->assertSet('selectAllFilters', true)
-        ->set('selectAllFilters', false)
-        ->assertSet('filter', [
+        ->assertSet('selectAllFilters.recent-votes', true)
+        ->set('filters.recent-votes.vote', true)
+        ->assertSet('selectAllFilters.recent-votes', true)
+        ->set('selectAllFilters.recent-votes', false)
+        ->assertSet('filters.recent-votes', [
             'vote'   => false,
             'unvote' => false,
         ])
-        ->set('selectAllFilters', true)
-        ->assertSet('filter', [
+        ->set('selectAllFilters.recent-votes', true)
+        ->assertSet('filters.recent-votes', [
             'vote'   => true,
             'unvote' => true,
         ]);
 });
 
 it('should toggle "select all" when all filters are selected', function () {
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->assertSet('filter', [
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
+        ->assertSet('filters.recent-votes', [
             'vote'   => true,
             'unvote' => true,
         ])
-        ->assertSet('selectAllFilters', true)
-        ->set('filter.vote', false)
-        ->assertSet('selectAllFilters', false)
-        ->set('filter.vote', true)
-        ->assertSet('selectAllFilters', true);
+        ->assertSet('selectAllFilters.recent-votes', true)
+        ->set('filters.recent-votes.vote', false)
+        ->assertSet('selectAllFilters.recent-votes', false)
+        ->set('filters.recent-votes.vote', true)
+        ->assertSet('selectAllFilters.recent-votes', true);
 });
 
 it('should filter vote transactions', function () {
     $sender         = Wallet::factory()->create();
     $validator      = Wallet::factory()->activeValidator()->create();
-    $otherValidator = Wallet::factory()->activeValidator()->create();
+
+    Wallet::factory()->activeValidator()->create();
 
     $vote = Transaction::factory()->vote($validator->address)->create([
         'sender_public_key' => $sender->public_key,
@@ -192,12 +203,11 @@ it('should filter vote transactions', function () {
 
     generateReceipts();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'vote'   => true,
-            'unvote' => false,
-        ])
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
+        ->set('filters.recent-votes.vote', true)
+        ->set('filters.recent-votes.unvote', false)
         ->assertSee($vote->id)
         ->assertDontSee($unvote->id);
 });
@@ -219,39 +229,39 @@ it('should filter unvote transactions', function () {
 
     generateReceipts();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'vote'   => false,
-            'unvote' => true,
-        ])
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
+        ->set('filters.recent-votes.vote', false)
+        ->set('filters.recent-votes.unvote', true)
         ->assertSee($unvote->id)
         ->assertDontSee($vote->id);
 });
 
 it('should show correct message when no filters are selected', function () {
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->set('filter', [
-            'vote'   => false,
-            'unvote' => false,
-        ])
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
+        ->set('filters.recent-votes.vote', false)
+        ->set('filters.recent-votes.unvote', false)
         ->assertSee(trans('tables.recent-votes.no_results.no_filters'));
 });
 
 it('should show correct message when there are no results', function () {
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->assertSee(trans('tables.recent-votes.no_results.no_results'));
 });
 
 it('should sort by age descending by default', function () {
     $data = generateTransactions();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->assertSet('sortKey', 'age')
-        ->assertSet('sortDirection', SortDirection::DESC)
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
+        ->assertSet('sortKeys.recent-votes', 'age')
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC)
         ->assertSeeInOrder([
             'vote-item*'.$data['unvoteTransaction']->hash,
             $data['unvoteTransaction']->hash,
@@ -268,10 +278,11 @@ it('should sort by age descending by default', function () {
 it('should sort age in ascending order', function () {
     $data = generateTransactions();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'age')
-        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::ASC)
         ->assertSeeInOrder([
             'vote-item*'.$data['voteTransaction']->hash,
             $data['voteTransaction']->hash,
@@ -288,10 +299,11 @@ it('should sort age in ascending order', function () {
 it('should sort address in ascending order', function () {
     $data = generateTransactions();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'address')
-        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::ASC)
         ->assertSeeInOrder([
             'vote-item*'.$data['unvoteTransaction']->hash,
             $data['unvoteTransaction']->hash,
@@ -308,11 +320,12 @@ it('should sort address in ascending order', function () {
 it('should sort address in descending order', function () {
     $data = generateTransactions();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'address')
         ->call('sortBy', 'address')
-        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC)
         ->assertSeeInOrder([
             'vote-item*'.$data['voteTransaction']->hash,
             $data['voteTransaction']->hash,
@@ -329,10 +342,11 @@ it('should sort address in descending order', function () {
 it('should sort type in ascending order', function () {
     $data = generateTransactions();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'type')
-        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::ASC)
         ->assertSeeInOrder([
             'vote-item*'.$data['voteTransaction']->hash,
             $data['voteTransaction']->hash,
@@ -349,11 +363,12 @@ it('should sort type in ascending order', function () {
 it('should sort type in descending order', function () {
     $data = generateTransactions();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'type')
         ->call('sortBy', 'type')
-        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC)
         ->assertSeeInOrder([
             'vote-item*'.$data['unvoteTransaction']->hash,
             $data['unvoteTransaction']->hash,
@@ -368,50 +383,52 @@ it('should sort type in descending order', function () {
 });
 
 it('should alternate sorting direction', function () {
-    $component = Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->assertSet('sortKey', 'age')
-        ->assertSet('sortDirection', SortDirection::DESC)
+    $component = Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
+        ->assertSet('sortKeys.recent-votes', 'age')
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC)
         ->call('sortBy', 'age')
-        ->assertSet('sortKey', 'age')
-        ->assertSet('sortDirection', SortDirection::ASC);
+        ->assertSet('sortKeys.recent-votes', 'age')
+        ->assertSet('sortDirections.recent-votes', SortDirection::ASC);
 
     foreach (['name', 'address', 'type'] as $column) {
         $component->call('sortBy', $column)
-            ->assertSet('sortKey', $column)
-            ->assertSet('sortDirection', SortDirection::ASC)
+            ->assertSet('sortKeys.recent-votes', $column)
+            ->assertSet('sortDirections.recent-votes', SortDirection::ASC)
             ->call('sortBy', $column)
-            ->assertSet('sortKey', $column)
-            ->assertSet('sortDirection', SortDirection::DESC);
+            ->assertSet('sortKeys.recent-votes', $column)
+            ->assertSet('sortDirections.recent-votes', SortDirection::DESC);
     }
 });
 
 it('should reset page on sorting change', function () {
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
-        ->assertSet('paginators.page', 1)
-        ->assertSet('sortKey', 'age')
-        ->assertSet('sortDirection', SortDirection::DESC)
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
+        ->assertSet('paginators.recent-votes', 1)
+        ->assertSet('sortKeys.recent-votes', 'age')
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC)
         ->call('gotoPage', 12)
         ->call('sortBy', 'age')
-        ->assertSet('paginators.page', 1)
-        ->assertSet('sortKey', 'age')
-        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSet('paginators.recent-votes', 1)
+        ->assertSet('sortKeys.recent-votes', 'age')
+        ->assertSet('sortDirections.recent-votes', SortDirection::ASC)
         ->call('gotoPage', 12)
         ->call('sortBy', 'age')
-        ->assertSet('paginators.page', 1)
-        ->assertSet('sortKey', 'age')
-        ->assertSet('sortDirection', SortDirection::DESC);
+        ->assertSet('paginators.recent-votes', 1)
+        ->assertSet('sortKeys.recent-votes', 'age')
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC);
 });
 
 it('should parse sorting direction from query string', function () {
-    Route::get('/test-validators', function () {
-        return BladeCompiler::render('<livewire:validators.recent-votes :defer-loading="false" />');
-    });
-
     $data = generateTransactions();
 
-    $this->get('/test-validators?sort=type&sort-direction=asc')
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.tabs :defer-loading="false" />');
+    });
+
+    $this->get('/test-validators?view=recent-votes&sort=name&sort-direction=asc')
         ->assertSeeInOrder([
             'vote-item*'.$data['voteTransaction']->hash,
             $data['voteTransaction']->hash,
@@ -424,7 +441,7 @@ it('should parse sorting direction from query string', function () {
             $data['unvoteTransaction']->hash,
         ]);
 
-    $this->get('/test-validators?sort=type&sort-direction=desc')
+    $this->get('/test-validators?view=recent-votes&sort=type&sort-direction=desc')
         ->assertSeeInOrder([
             'vote-item*'.$data['unvoteTransaction']->hash,
             $data['unvoteTransaction']->hash,
@@ -439,13 +456,13 @@ it('should parse sorting direction from query string', function () {
 });
 
 it('should force default sort direction if invalid query string value', function () {
-    Route::get('/test-validators', function () {
-        return BladeCompiler::render('<livewire:validators.recent-votes :defer-loading="false" />');
-    });
-
     $data = generateTransactions();
 
-    $this->get('/test-validators?sort=type&sort-direction=desc')
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.tabs :defer-loading="false" />');
+    });
+
+    $this->get('/test-validators?view=recent-votes&sort=type&sort-direction=desc')
         ->assertSeeInOrder([
             'vote-item*'.$data['unvoteTransaction']->hash,
             $data['unvoteTransaction']->hash,
@@ -458,7 +475,7 @@ it('should force default sort direction if invalid query string value', function
             $data['voteTransaction']->hash,
         ]);
 
-    $this->get('/test-validators?sort=type&sort-direction=testing')
+    $this->get('/test-validators?view=recent-votes&sort=type&sort-direction=testing')
         ->assertSeeInOrder([
             'vote-item*'.$data['voteTransaction']->hash,
             $data['voteTransaction']->hash,
@@ -493,8 +510,9 @@ it('should not show failed transactions', function () {
         'status'                => true,
     ]);
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->assertDontSee($failedTransaction->hash)
         ->assertSee($successfulTransaction->hash);
 });
@@ -531,10 +549,11 @@ it('should sort name then address in ascending order when missing names', functi
 
     generateReceipts();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'name')
-        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::ASC)
         ->assertSeeInOrder([
             // Desktop
             'vote-item*'.$voteTransaction2->hash,
@@ -598,11 +617,12 @@ it('should sort name then address in descending order when missing names', funct
 
     generateReceipts();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'name')
         ->call('sortBy', 'name')
-        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC)
         ->assertSeeInOrder([
             // Desktop
             'vote-item*'.$voteTransaction->hash,
@@ -683,10 +703,11 @@ it('should sort known name, then name, then address in ascending order when miss
 
     generateReceipts();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'name')
-        ->assertSet('sortDirection', SortDirection::ASC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::ASC)
         ->assertSeeInOrder([
             // Desktop
             'vote-item*'.$voteTransaction2->hash,
@@ -775,11 +796,12 @@ it('should sort known name, then name, then address in descending order when mis
 
     generateReceipts();
 
-    Livewire::test(RecentVotes::class)
-        ->call('setIsReady')
+    Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('setRecentVotesReady')
         ->call('sortBy', 'name')
         ->call('sortBy', 'name')
-        ->assertSet('sortDirection', SortDirection::DESC)
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC)
         ->assertSeeInOrder([
             // Desktop
             'vote-item*'.$voteTransaction1->hash,

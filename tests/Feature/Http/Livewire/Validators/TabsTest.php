@@ -15,18 +15,29 @@ it('should set initial data', function () {
     Livewire::test(Tabs::class)
         ->assertSet('tabQueryData', [
             'validators' => [
-                'page'    => 1,
-                'perPage' => Network::validatorCount(),
+                'paginators.validators'    => 1,
+                'paginatorsPerPage.validators' => Network::validatorCount(),
+                'sortKeys.validators' => 'rank',
+                'sortDirections.validators' => 'asc',
+                'filters.validators.active' => true,
+                'filters.validators.standby' => true,
+                'filters.validators.resigned' => false,
             ],
 
             'missed-blocks' => [
-                'page'    => 1,
-                'perPage' => 25,
+                'paginators.missed-blocks'    => 1,
+                'paginatorsPerPage.missed-blocks' => 25,
+                'sortKeys.missed-blocks' => 'age',
+                'sortDirections.missed-blocks' => 'desc',
             ],
 
             'recent-votes' => [
-                'page'    => 1,
-                'perPage' => 25,
+                'paginators.recent-votes'    => 1,
+                'paginatorsPerPage.recent-votes' => 25,
+                'sortKeys.recent-votes' => 'age',
+                'sortDirections.recent-votes' => 'desc',
+                'filters.recent-votes.vote' => true,
+                'filters.recent-votes.unvote' => true,
             ],
         ]);
 });
@@ -36,9 +47,7 @@ it('should get querystring data', function () {
         ->instance();
 
     expect($instance->queryString())->toBe([
-        'view'    => ['except' => 'validators'],
-        'page'    => ['except' => 1],
-        'perPage' => ['except' => Network::validatorCount()],
+        'view'    => ['except' => 'validators', 'history' => true],
     ]);
 });
 
@@ -48,9 +57,7 @@ it('should change querystring if different view', function () {
         ->instance();
 
     expect($instance->queryString())->toBe([
-        'view'    => ['except' => 'validators'],
-        'page'    => ['except' => 1],
-        'perPage' => ['except' => 25],
+        'view' => ['except' => 'validators', 'history' => true],
     ]);
 });
 
@@ -61,4 +68,9 @@ it('should change view with event', function () {
         ->assertSet('view', 'missed-blocks')
         ->dispatch('showValidatorsView', 'validators')
         ->assertSet('view', 'validators');
+});
+
+it('should revert to validators tab with unknown view', function () {
+    $this->get('/validators?view=unknown')
+        ->assertOk();
 });

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
-use App\Http\Livewire\WalletBlockTable;
+use App\Http\Livewire\Wallet\Tabs;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\NumberFormatter;
@@ -14,7 +14,9 @@ use function Tests\fakeCryptoCompare;
 beforeEach(function () {
     fakeCryptoCompare();
 
-    $this->subject = Wallet::factory()->create();
+    $this->subject = Wallet::factory()
+        ->activeValidator()
+        ->create();
 });
 
 it('should list all blocks for the given address', function () {
@@ -22,8 +24,9 @@ it('should list all blocks for the given address', function () {
         'proposer' => $this->subject->address,
     ]);
 
-    $component = Livewire::test(WalletBlockTable::class, [ViewModelFactory::make($this->subject)])
-        ->call('setIsReady');
+    $component = Livewire::test(Tabs::class, [ViewModelFactory::make($this->subject)])
+        ->set('view', 'blocks')
+        ->call('setBlocksReady');
 
     foreach (ViewModelFactory::collection($blocks) as $block) {
         $component->assertSee($block->hash());
@@ -46,8 +49,9 @@ it('should show no data if not ready', function () {
         'proposer' => $this->subject->address,
     ]);
 
-    Livewire::test(WalletBlockTable::class, [ViewModelFactory::make($this->subject)])
+    Livewire::test(Tabs::class, [ViewModelFactory::make($this->subject)])
+        ->set('view', 'blocks')
         ->assertDontSee($block->hash)
-        ->call('setIsReady')
+        ->call('setBlocksReady')
         ->assertSee($block->hash);
 });
