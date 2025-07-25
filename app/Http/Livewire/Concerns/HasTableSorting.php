@@ -18,21 +18,6 @@ trait HasTableSorting
     /** @var SortDirection[] */
     public array $sortDirections = [];
 
-    public function mountHasTableSorting(): void
-    {
-        foreach ($this->sortDirections as $name => $direction) {
-            if (! is_string($direction)) {
-                continue;
-            }
-
-            if (Str::lower($direction) === SortDirection::DESC->value) {
-                $this->sortDirections[$name] = SortDirection::DESC;
-            } else {
-                $this->sortDirections[$name] = SortDirection::ASC;
-            }
-        }
-    }
-
     public function queryStringHasTableSorting(): array
     {
         $queryString = [

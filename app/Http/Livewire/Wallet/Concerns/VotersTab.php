@@ -10,10 +10,10 @@ use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
 
-/** @property LengthAwarePaginator $wallets */
+/** @property LengthAwarePaginator $voters */
 trait VotersTab
 {
-    public $votersIsReady = false;
+    public bool $votersIsReady = false;
 
     public function getListenersVotersTab(): array
     {
@@ -33,6 +33,7 @@ trait VotersTab
     // We're keeping it here as TabbedComponent has its own mount method
     // and we can't override it with arguments. Wallet is declared here as it's used
     // in the mount method of TransactionsTab.
+    // @phpstan-ignore-next-line - ignoring the type as we are not using it in this trait.
     public function mountVotersTab(WalletViewModel $wallet, bool $deferLoading = true): void
     {
         if (! $deferLoading) {
@@ -51,7 +52,7 @@ trait VotersTab
 
     public function getVotersProperty(): LengthAwarePaginator
     {
-        if (! $this->isReady) {
+        if (! $this->votersIsReady) {
             return new LengthAwarePaginator([], 0, $this->getPerPage('voters'), $this->getPage('voters'));
         }
 

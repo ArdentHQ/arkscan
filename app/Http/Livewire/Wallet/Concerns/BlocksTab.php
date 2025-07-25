@@ -13,7 +13,7 @@ use Livewire\Attributes\On;
 /** @property LengthAwarePaginator $blocks */
 trait BlocksTab
 {
-    public $blocksIsReady = false;
+    public bool $blocksIsReady = false;
 
     public function getListenersBlocksTab(): array
     {
@@ -33,6 +33,7 @@ trait BlocksTab
     // We're keeping it here as TabbedComponent has its own mount method
     // and we can't override it with arguments. Wallet is declared here as it's used
     // in the mount method of TransactionsTab.
+    // @phpstan-ignore-next-line - ignoring the type as we are not using it in this trait.
     public function mountBlocksTab(WalletViewModel $wallet, bool $deferLoading = true): void
     {
         if (! $deferLoading) {
@@ -51,7 +52,7 @@ trait BlocksTab
 
     public function getBlocksProperty(): LengthAwarePaginator
     {
-        if (! $this->isReady) {
+        if (! $this->blocksIsReady) {
             return new LengthAwarePaginator([], 0, $this->getPerPage('blocks'), $this->getPage('blocks'));
         }
 

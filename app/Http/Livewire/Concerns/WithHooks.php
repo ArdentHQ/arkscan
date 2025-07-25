@@ -14,8 +14,12 @@ trait WithHooks
         $beforePaginatorMethod = 'updating'.ucfirst($property);
         $afterPaginatorMethod  = 'updated'.ucfirst($property);
 
-        $beforeMethod = 'updating'.ucfirst(Str::camel($key));
-        $afterMethod  = 'updated'.ucfirst(Str::camel($key));
+        $beforeMethod = null;
+        $afterMethod = null;
+        if ($key !== null) {
+            $beforeMethod = 'updating'.ucfirst(Str::camel($key));
+            $afterMethod  = 'updated'.ucfirst(Str::camel($key));
+        }
 
         $args = [$value];
         if ($key !== null) {
@@ -23,24 +27,28 @@ trait WithHooks
         }
 
         if (method_exists($this, $beforePaginatorMethod)) {
+            // @phpstan-ignore-next-line - complains about array not being a valid callable type
             call_user_func_array([$this, $beforePaginatorMethod], $args);
         }
 
-        if (method_exists($this, $beforeMethod)) {
+        if ($beforeMethod !== null && method_exists($this, $beforeMethod)) {
+            // @phpstan-ignore-next-line - complains about array not being a valid callable type
             call_user_func_array([$this, $beforeMethod], $args);
         }
 
         if ($key !== null) {
-            data_set($this->{$property}, $key, $value);
+            data_set($this, $property.'.'.$key, $value);
         } else {
-            $this->{$property} = $value;
+            data_set($this, $property, $value);
         }
 
         if (method_exists($this, $afterPaginatorMethod)) {
+            // @phpstan-ignore-next-line - complains about array not being a valid callable type
             call_user_func_array([$this, $afterPaginatorMethod], $args);
         }
 
-        if (method_exists($this, $afterMethod)) {
+        if ($afterMethod !== null && method_exists($this, $afterMethod)) {
+            // @phpstan-ignore-next-line - complains about array not being a valid callable type
             call_user_func_array([$this, $afterMethod], $args);
         }
     }

@@ -23,7 +23,7 @@ trait RecentVotesTab
 
     public const RECENT_VOTES_INITIAL_SORT_DIRECTION = SortDirection::DESC;
 
-    public $recentVotesIsReady = false;
+    public bool $recentVotesIsReady = false;
 
     public function queryStringRecentVotesTab(): array
     {
@@ -62,7 +62,7 @@ trait RecentVotesTab
     public function getRecentVotesProperty(): LengthAwarePaginator
     {
         $emptyResults = new LengthAwarePaginator([], 0, $this->getPerPage('recent-votes'), $this->getPage('recent-votes'));
-        if (! $this->isReady) {
+        if (! $this->recentVotesIsReady) {
             return $emptyResults;
         }
 

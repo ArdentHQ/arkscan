@@ -23,7 +23,7 @@ trait ValidatorsTab
 
     public const VALIDATORS_INITIAL_SORT_DIRECTION = SortDirection::ASC;
 
-    public $validatorsIsReady = false;
+    public bool $validatorsIsReady = false;
 
     public function queryStringValidatorsTab(): array
     {

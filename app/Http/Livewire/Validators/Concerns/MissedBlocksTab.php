@@ -19,7 +19,7 @@ trait MissedBlocksTab
 
     public const MISSED_BLOCKS_INITIAL_SORT_DIRECTION = SortDirection::DESC;
 
-    public $missedBlocksIsReady = false;
+    public bool $missedBlocksIsReady = false;
 
     public function queryStringMissedBlocksTab(): array
     {
@@ -51,7 +51,7 @@ trait MissedBlocksTab
 
     public function getMissedBlocksProperty(): LengthAwarePaginator
     {
-        if (! $this->isReady) {
+        if (! $this->missedBlocksIsReady) {
             return new LengthAwarePaginator([], 0, $this->getPerPage('missed-blocks'), $this->getPage('missed-blocks'));
         }
 

@@ -14,7 +14,7 @@ trait HasTablePagination
     use NormalizesConstantPrefixes;
     use WithHooks;
 
-    public $paginatorsPerPage = [];
+    public array $paginatorsPerPage = [];
 
     public function queryStringHasTablePagination(): array
     {

@@ -10,7 +10,7 @@ trait NormalizesConstantPrefixes
 {
     protected static function normalizePrefix(string $prefix, string $default): string
     {
-        if (Str::of($prefix)->lower()->trim('_') === $default) {
+        if ((string) Str::of($prefix)->lower()->trim('_') === $default) {
             $prefix = '';
         } elseif ($prefix === '_') {
             $prefix = '';

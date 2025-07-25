@@ -17,6 +17,8 @@ use Livewire\Component;
 /**
  * @property int $page
  * @property ?int $perPage
+ * @property string $view
+ * @property string $previousView
  */
 abstract class TabbedComponent extends Component
 {
@@ -42,6 +44,8 @@ abstract class TabbedComponent extends Component
     public array $tabQueryData = [];
 
     public array $savedQueryData = [];
+
+    public array $alreadyLoadedViews = [];
 
     public function __get(mixed $property): mixed
     {
@@ -98,6 +102,10 @@ abstract class TabbedComponent extends Component
                 continue;
             }
 
+            if (! array_key_exists($view, $this->filters)) {
+                continue;
+            }
+
             $this->filters[$view] = $this->resolveFilters($this->filters[$view], 'validators');
         }
     }
@@ -109,30 +117,30 @@ abstract class TabbedComponent extends Component
 
     public function getIsAllSelectedProperty(): bool
     {
-        return ! collect($this->filters[$this->view])->contains(false);
+        return $this->hasAllSelectedFilters($this->filters[$this->view]);
     }
 
-    public function updatedPaginators(int $value, $key): void
+    public function updatedPaginators(int $value, string $key): void
     {
         $this->setTabbedArrayValue('paginators.'.$key, $value);
     }
 
-    public function updatedPaginatorsPerPage(int $value, $key): void
+    public function updatedPaginatorsPerPage(int $value, string $key): void
     {
         $this->setTabbedArrayValue('paginatorsPerPage.'.$key, $value);
     }
 
-    public function updatedSortKeys(string $value, $key): void
+    public function updatedSortKeys(string $value, string $key): void
     {
         $this->setTabbedArrayValue('sortKeys.'.$key, $value);
     }
 
-    public function updatedSortDirections(SortDirection $value, $key): void
+    public function updatedSortDirections(SortDirection $value, string $key): void
     {
         $this->setTabbedArrayValue('sortDirections.'.$key, $value);
     }
 
-    public function updatedFilters($value, $key): void
+    public function updatedFilters(bool $value, string $key): void
     {
         $this->updatedFiltersTrait();
 
@@ -158,16 +166,19 @@ abstract class TabbedComponent extends Component
         ];
     }
 
+    // @phpstan-ignore-next-line - ignoring $name as we are not using it in this override.
     public function setPage(int $page, string $name = 'page'): void
     {
         $this->setPageTrait($page, $this->view);
     }
 
+    // @phpstan-ignore-next-line - ignoring $name as we are not using it in this override.
     final public function setPerPage(int $perPage, string $name = 'default'): void
     {
         $this->setPerPageTrait($perPage, $this->view);
     }
 
+    // @phpstan-ignore-next-line - ignoring $name as we are not using it in this override.
     public function sortBy(string $sortKey, string $name = 'default'): void
     {
         $this->sortByTrait($sortKey, $this->view);
@@ -179,6 +190,7 @@ abstract class TabbedComponent extends Component
             return false;
         }
 
+        // @phpstan-ignore-next-line - ignoring as it's a dynamic method name depending on the view.
         return $this->{Str::camel($this->view).'IsReady'} ?? false;
     }
 
@@ -205,10 +217,11 @@ abstract class TabbedComponent extends Component
     public function perPageOptions(): array
     {
         if (method_exists($this, $this->view.'PerPageOptions')) {
+            // @phpstan-ignore-next-line - ignoring as it's a dynamic method name depending on the view.
             return $this->{$this->view.'PerPageOptions'}();
         }
 
-        return $this->perPageOptionsTrait();
+        return self::perPageOptionsTrait();
     }
 
     public function getNoResultsMessageProperty(): null|string
@@ -237,6 +250,7 @@ abstract class TabbedComponent extends Component
         if (array_key_exists('perPage', $this->tabQueryData[$this->view])) {
             $options = [];
             if (method_exists($this, $this->view.'PerPageOptions')) {
+                // @phpstan-ignore-next-line - ignoring as it's a dynamic method name depending on the view.
                 $options = $this->{$this->view.'PerPageOptions'}();
             } else {
                 $options = $this->perPageOptions();

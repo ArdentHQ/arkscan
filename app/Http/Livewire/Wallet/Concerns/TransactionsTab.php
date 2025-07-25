@@ -19,7 +19,7 @@ use Livewire\Attributes\On;
  * */
 trait TransactionsTab
 {
-    public $transactionsIsReady = false;
+    public bool $transactionsIsReady = false;
 
     public string $address;
 
@@ -81,7 +81,7 @@ trait TransactionsTab
     public function getTransactionsProperty(): LengthAwarePaginator
     {
         $emptyResults = new LengthAwarePaginator([], 0, $this->getPerPage('transactions'), $this->getPage('transactions'));
-        if (! $this->isReady) {
+        if (! $this->transactionsIsReady) {
             return $emptyResults;
         }
 

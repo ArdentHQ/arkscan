@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 trait HasTableFilter
 {
@@ -19,11 +20,11 @@ trait HasTableFilter
 
     public function mountHasTableFilter(): void
     {
-        if (empty($this->defaultFilters())) {
+        if (static::defaultFilters() === []){
             $this->filters['default'] = $this->resolveFilters($this->filters['default'], 'validators');
-            $this->selectAllFilters['default'] = ! collect($this->filters['default'])->contains(false);
+            $this->selectAllFilters['default'] = $this->hasAllSelectedFilters($this->filters['default']);
         } else {
-            foreach ($this->defaultFilters() as $name => $filters) {
+            foreach (static::defaultFilters() as $name => $filters) {
                 if (! array_key_exists($name, $this->filters)) {
                     $this->filters[$name] = [];
                 }
@@ -37,7 +38,7 @@ trait HasTableFilter
                 }
 
                 if (! array_key_exists($name, $this->selectAllFilters)) {
-                    $this->selectAllFilters[$name] = ! collect($this->filters[$name])->contains(false);
+                    $this->selectAllFilters[$name] = $this->hasAllSelectedFilters($this->filters[$name]);
                 }
             }
         }
@@ -77,7 +78,7 @@ trait HasTableFilter
     // Must be overridden in the component if a different default is required.
     public function getIsAllSelectedProperty(): bool
     {
-        return ! collect($this->filters['default'])->contains(false);
+        return $this->hasAllSelectedFilters($this->filters['default']);
     }
 
     public function updatedSelectAllFilters(bool $value, string $name = 'default'): void
@@ -90,7 +91,7 @@ trait HasTableFilter
     public function updatedFilters(): void
     {
         foreach ($this->filters as $name => $filters) {
-            $this->selectAllFilters[$name] = ! collect($filters)->contains(false);
+            $this->selectAllFilters[$name] = $this->hasAllSelectedFilters($filters);
         }
     }
 
@@ -113,7 +114,7 @@ trait HasTableFilter
 
         $requestValue = request()->query($filter, $default);
         if ($requestValue === null) {
-            return Arr::get(self::defaultFilters($name), $filter);
+            return Arr::get(static::defaultFilters($name), $filter);
         }
 
         if (is_bool($requestValue)) {
@@ -136,5 +137,10 @@ trait HasTableFilter
         }
 
         return $parsedFilters;
+    }
+
+    protected function hasAllSelectedFilters(array $filters): bool
+    {
+        return ! (new Collection($filters))->contains(false);
     }
 }

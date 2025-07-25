@@ -37,9 +37,10 @@ final class HandleComponents extends Base
 
         // If this isn't a "deep" set, set it directly, otherwise we have to
         // recursively get up and set down the value through the synths...
-        if (empty($segments)) {
+        if ($segments === []) {
             $this->setComponentPropertyAwareOfTypes($component, $property, $value);
         } else {
+            // @phpstan-ignore-next-line
             $propertyValue = $component->$property;
 
             $this->setComponentPropertyAwareOfTypes(
