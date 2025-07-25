@@ -47,26 +47,26 @@ it('should track querystring between tabs', function () {
 
         ->assertSet('tabQueryData', [
             'transactions' => [
-                'paginators.transactions' => 1,
-                'paginatorsPerPage.transactions'    => config('arkscan.pagination.per_page'),
-                'filters.transactions.outgoing'   => true,
-                'filters.transactions.incoming'   => true,
-                'filters.transactions.transfers'  => true,
-                'filters.transactions.votes'      => true,
-                'filters.transactions.others'     => true,
-                'filters.transactions.multipayments' => true,
-                'filters.transactions.validator' => true,
-                'filters.transactions.username' => true,
+                'paginators.transactions'                  => 1,
+                'paginatorsPerPage.transactions'           => config('arkscan.pagination.per_page'),
+                'filters.transactions.outgoing'            => true,
+                'filters.transactions.incoming'            => true,
+                'filters.transactions.transfers'           => true,
+                'filters.transactions.votes'               => true,
+                'filters.transactions.others'              => true,
+                'filters.transactions.multipayments'       => true,
+                'filters.transactions.validator'           => true,
+                'filters.transactions.username'            => true,
                 'filters.transactions.contract_deployment' => true,
             ],
 
             'blocks' => [
-                'paginators.blocks'      => 1,
+                'paginators.blocks'                => 1,
                 'paginatorsPerPage.blocks'         => config('arkscan.pagination.per_page'),
             ],
 
             'voters' => [
-                'paginators.voters'      => 1,
+                'paginators.voters'                => 1,
                 'paginatorsPerPage.voters'         => config('arkscan.pagination.per_page'),
             ],
         ])

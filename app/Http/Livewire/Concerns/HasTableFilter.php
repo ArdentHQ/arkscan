@@ -20,7 +20,7 @@ trait HasTableFilter
     public function mountHasTableFilter(): void
     {
         if (empty($this->defaultFilters())) {
-            $this->filters['default'] = $this->resolveFilters($this->filters['default'], 'validators');
+            $this->filters['default']          = $this->resolveFilters($this->filters['default'], 'validators');
             $this->selectAllFilters['default'] = ! collect($this->filters['default'])->contains(false);
         } else {
             foreach ($this->defaultFilters() as $name => $filters) {
