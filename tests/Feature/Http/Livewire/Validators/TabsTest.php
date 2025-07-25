@@ -15,29 +15,29 @@ it('should set initial data', function () {
     Livewire::test(Tabs::class)
         ->assertSet('tabQueryData', [
             'validators' => [
-                'paginators.validators'    => 1,
+                'paginators.validators'        => 1,
                 'paginatorsPerPage.validators' => Network::validatorCount(),
-                'sortKeys.validators' => 'rank',
-                'sortDirections.validators' => 'asc',
-                'filters.validators.active' => true,
-                'filters.validators.standby' => true,
-                'filters.validators.resigned' => false,
+                'sortKeys.validators'          => 'rank',
+                'sortDirections.validators'    => 'asc',
+                'filters.validators.active'    => true,
+                'filters.validators.standby'   => true,
+                'filters.validators.resigned'  => false,
             ],
 
             'missed-blocks' => [
-                'paginators.missed-blocks'    => 1,
+                'paginators.missed-blocks'        => 1,
                 'paginatorsPerPage.missed-blocks' => 25,
-                'sortKeys.missed-blocks' => 'age',
-                'sortDirections.missed-blocks' => 'desc',
+                'sortKeys.missed-blocks'          => 'age',
+                'sortDirections.missed-blocks'    => 'desc',
             ],
 
             'recent-votes' => [
-                'paginators.recent-votes'    => 1,
+                'paginators.recent-votes'        => 1,
                 'paginatorsPerPage.recent-votes' => 25,
-                'sortKeys.recent-votes' => 'age',
-                'sortDirections.recent-votes' => 'desc',
-                'filters.recent-votes.vote' => true,
-                'filters.recent-votes.unvote' => true,
+                'sortKeys.recent-votes'          => 'age',
+                'sortDirections.recent-votes'    => 'desc',
+                'filters.recent-votes.vote'      => true,
+                'filters.recent-votes.unvote'    => true,
             ],
         ]);
 });

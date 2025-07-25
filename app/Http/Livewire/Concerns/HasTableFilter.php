@@ -21,7 +21,7 @@ trait HasTableFilter
     public function mountHasTableFilter(): void
     {
         if (static::defaultFilters() === []){
-            $this->filters['default'] = $this->resolveFilters($this->filters['default'], 'validators');
+            $this->filters['default']          = $this->resolveFilters($this->filters['default'], 'validators');
             $this->selectAllFilters['default'] = $this->hasAllSelectedFilters($this->filters['default']);
         } else {
             foreach (static::defaultFilters() as $name => $filters) {
