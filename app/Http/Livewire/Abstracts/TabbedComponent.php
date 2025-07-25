@@ -31,9 +31,13 @@ abstract class TabbedComponent extends Component
     }
     use HasTableFilter {
         getFilter as getFilterTrait;
+        updatedFilters as updatedFiltersTrait;
     }
 
     public const HAS_TABLE_SORTING = false;
+
+    // The initial view to display when the component is mounted.
+    public const INITIAL_VIEW = '';
 
     public array $tabQueryData = [];
 
@@ -128,16 +132,11 @@ abstract class TabbedComponent extends Component
         $this->setTabbedArrayValue('sortDirections.'.$key, $value);
     }
 
-    public function updatedFilters(bool $value, $key): void
+    public function updatedFilters($value, $key): void
     {
-        $this->setTabbedArrayValue('filters.'.$key, $value);
-    }
+        $this->updatedFiltersTrait();
 
-    public function updatedSelectAllFilters(bool $value): void
-    {
-        foreach (array_keys($this->filters[$this->view]) as $key) {
-            $this->filters[$this->view][$key] = $value;
-        }
+        $this->setTabbedArrayValue('filters.'.$key, $value);
     }
 
     public function queryStringHasTableSorting(): array
@@ -256,6 +255,10 @@ abstract class TabbedComponent extends Component
 
     public function updatingView(string $newView): void
     {
+        if (! array_key_exists($newView, $this->alreadyLoadedViews)) {
+            $newView = static::INITIAL_VIEW;
+        }
+
         if ($newView === $this->view) {
             return;
         }
@@ -272,6 +275,12 @@ abstract class TabbedComponent extends Component
      */
     public function updatedView(): void
     {
+        if (! array_key_exists($this->view, $this->alreadyLoadedViews)) {
+            $this->view = static::INITIAL_VIEW;
+
+            return;
+        }
+
         if (array_key_exists($this->view, $this->savedQueryData)) {
             /** @var string $key */
             foreach ($this->savedQueryData[$this->view] as $key => $value) {
@@ -282,7 +291,14 @@ abstract class TabbedComponent extends Component
 
     protected function resolveView(): string
     {
-        return request()->get('view', $this->view);
+        $view = request()->get('view', $this->view);
+        if (array_key_exists($view, $this->alreadyLoadedViews)) {
+            return $view;
+        }
+
+        $this->view = static::INITIAL_VIEW;
+
+        return static::INITIAL_VIEW;
     }
 
     private function setTabbedArrayValue(string $key, mixed $value): void

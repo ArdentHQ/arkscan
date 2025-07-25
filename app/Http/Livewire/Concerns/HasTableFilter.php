@@ -8,7 +8,10 @@ use Illuminate\Support\Arr;
 
 trait HasTableFilter
 {
-    public bool $selectAllFilters = true;
+    use NormalizesConstantPrefixes;
+    use WithHooks;
+
+    public array $selectAllFilters = [];
 
     public array $filters = [];
 
@@ -16,17 +19,26 @@ trait HasTableFilter
 
     public function mountHasTableFilter(): void
     {
-        foreach ($this->defaultFilters() as $name => $filters) {
-            if (! array_key_exists($name, $this->filters)) {
-                $this->filters[$name] = [];
-            }
-
-            foreach ($filters as $key => $filter) {
-                if (array_key_exists($key, $this->filters[$name])) {
-                    continue;
+        if (empty($this->defaultFilters())) {
+            $this->filters['default'] = $this->resolveFilters($this->filters['default'], 'validators');
+            $this->selectAllFilters['default'] = ! collect($this->filters['default'])->contains(false);
+        } else {
+            foreach ($this->defaultFilters() as $name => $filters) {
+                if (! array_key_exists($name, $this->filters)) {
+                    $this->filters[$name] = [];
                 }
 
-                $this->filters[$name][$key] = $filter;
+                foreach ($filters as $key => $filter) {
+                    if (array_key_exists($key, $this->filters[$name])) {
+                        continue;
+                    }
+
+                    $this->filters[$name][$key] = $filter;
+                }
+
+                if (! array_key_exists($name, $this->selectAllFilters)) {
+                    $this->selectAllFilters[$name] = ! collect($this->filters[$name])->contains(false);
+                }
             }
         }
 
@@ -57,7 +69,7 @@ trait HasTableFilter
             $this->filters[$name] = [];
         }
 
-        data_set($this->sortDirections[$name], $filter, $value);
+        $this->setWithHooks('filters', $value, $name.'.'.$filter);
 
         $this->gotoPage(1, name: $name);
     }
@@ -68,10 +80,17 @@ trait HasTableFilter
         return ! collect($this->filters['default'])->contains(false);
     }
 
-    public function updatedSelectAllFilters(bool $value): void
+    public function updatedSelectAllFilters(bool $value, string $name = 'default'): void
     {
-        foreach (array_keys($this->filters['default']) as $key) {
-            $this->filters['default'][$key] = $value;
+        foreach (array_keys($this->filters[$name]) as $key) {
+            $this->filters[$name][$key] = $value;
+        }
+    }
+
+    public function updatedFilters(): void
+    {
+        foreach ($this->filters as $name => $filters) {
+            $this->selectAllFilters[$name] = ! collect($filters)->contains(false);
         }
     }
 
@@ -101,7 +120,7 @@ trait HasTableFilter
             return $requestValue;
         }
 
-        return $requestValue === 'true';
+        return in_array($requestValue, ['true', '1', 1, true], true);
     }
 
     protected function resolveFilters(array $filters, string $name = 'default'): array

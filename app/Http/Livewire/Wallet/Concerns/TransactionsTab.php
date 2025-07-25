@@ -49,13 +49,15 @@ trait TransactionsTab
         ];
     }
 
+    // We're keeping it here as TabbedComponent has its own mount method
+    // and we can't override it with arguments.
     public function mountTransactionsTab(WalletViewModel $wallet, bool $deferLoading = true): void
     {
         $this->address   = $wallet->address();
         $this->publicKey = $wallet->publicKey();
 
         if (! $deferLoading) {
-            $this->setIsReady();
+            $this->setTransactionsReady();
         }
     }
 

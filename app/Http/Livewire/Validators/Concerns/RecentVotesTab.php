@@ -37,6 +37,15 @@ trait RecentVotesTab
         ];
     }
 
+    // We're keeping it here as TabbedComponent has its own mount method
+    // and we can't override it with arguments.
+    public function mountRecentVotesTab(bool $deferLoading = true): void
+    {
+        if (! $deferLoading) {
+            $this->setRecentVotesReady();
+        }
+    }
+
     public function getRecentVotesNoResultsMessageProperty(): null|string
     {
         if (! $this->recentVotesHasFilters()) {

@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Wallet\Concerns;
 
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
+use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
 
@@ -27,6 +28,16 @@ trait BlocksTab
             'paginators.blocks'        => ['except' => 1, 'as' => 'page', 'history' => true],
             'paginatorsPerPage.blocks' => ['except' => self::defaultPerPage('BLOCKS'), 'as' => 'per-page', 'history' => true],
         ];
+    }
+
+    // We're keeping it here as TabbedComponent has its own mount method
+    // and we can't override it with arguments. Wallet is declared here as it's used
+    // in the mount method of TransactionsTab.
+    public function mountBlocksTab(WalletViewModel $wallet, bool $deferLoading = true): void
+    {
+        if (! $deferLoading) {
+            $this->setBlocksReady();
+        }
     }
 
     public function getBlocksNoResultsMessageProperty(): ?string

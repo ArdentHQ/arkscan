@@ -38,6 +38,15 @@ trait ValidatorsTab
         ];
     }
 
+    // We're keeping it here as TabbedComponent has its own mount method
+    // and we can't override it with arguments.
+    public function mountValidatorsTab(bool $deferLoading = true): void
+    {
+        if (! $deferLoading) {
+            $this->setValidatorsReady();
+        }
+    }
+
     public function getValidatorsNoResultsMessageProperty(): null|string
     {
         if (! $this->validatorsHasFilters()) {

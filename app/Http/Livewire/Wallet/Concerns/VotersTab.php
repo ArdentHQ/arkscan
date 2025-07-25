@@ -6,6 +6,7 @@ namespace App\Http\Livewire\Wallet\Concerns;
 
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
+use App\ViewModels\WalletViewModel;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
 
@@ -27,6 +28,16 @@ trait VotersTab
             'paginators.voters'        => ['except' => 1, 'as' => 'page', 'history' => true],
             'paginatorsPerPage.voters' => ['except' => self::defaultPerPage('VOTERS'), 'as' => 'per-page', 'history' => true],
         ];
+    }
+
+    // We're keeping it here as TabbedComponent has its own mount method
+    // and we can't override it with arguments. Wallet is declared here as it's used
+    // in the mount method of TransactionsTab.
+    public function mountVotersTab(WalletViewModel $wallet, bool $deferLoading = true): void
+    {
+        if (! $deferLoading) {
+            $this->setVotersReady();
+        }
     }
 
     public function getVotersNoResultsMessageProperty(): ?string

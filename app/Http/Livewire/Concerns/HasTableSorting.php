@@ -25,7 +25,11 @@ trait HasTableSorting
                 continue;
             }
 
-            $this->sortDirections[$name] = SortDirection::from(Str::lower($direction));
+            if (Str::lower($direction) === SortDirection::DESC->value) {
+                $this->sortDirections[$name] = SortDirection::DESC;
+            } else {
+                $this->sortDirections[$name] = SortDirection::ASC;
+            }
         }
     }
 
