@@ -55,3 +55,10 @@ it('should show no data if not ready', function () {
         ->call('setBlocksReady')
         ->assertSee($block->hash);
 });
+
+it('should have querystring data', function () {
+    $instance = Livewire::test(Tabs::class, [ViewModelFactory::make($this->subject)])
+        ->instance();
+
+    expect($instance->getListenersBlocksTab())->toBe(['reloadBlocks' => '$refresh']);
+});

@@ -16,12 +16,16 @@ use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
     fakeCryptoCompare();
+
+    $this->subject = Wallet::factory()
+        ->activeValidator()
+        ->create();
 });
 
 it('should render', function () {
-    $wallet = Wallet::factory()->create();
+    $this->subject = Wallet::factory()->create();
 
-    Livewire::test(Tabs::class, [new WalletViewModel($wallet)])
+    Livewire::test(Tabs::class, [new WalletViewModel($this->subject)])
         ->set('view', 'voters')
         ->assertSet('isReady', false)
         ->assertSet('votersIsReady', false)
@@ -33,13 +37,9 @@ it('should render', function () {
 });
 
 it('should list all voters for the given public key', function () {
-    $wallet = Wallet::factory()
-        ->activeValidator()
-        ->create();
-
     $voters = Wallet::factory(10)->create([
         'attributes' => [
-            'vote' => $wallet->address,
+            'vote' => $this->subject->address,
         ],
     ]);
 
@@ -47,7 +47,7 @@ it('should list all voters for the given public key', function () {
 
     (new NetworkCache())->setSupply(fn () => 10 * 1e18);
 
-    $component = Livewire::test(Tabs::class, [new WalletViewModel($wallet)])
+    $component = Livewire::test(Tabs::class, [new WalletViewModel($this->subject)])
         ->set('view', 'voters')
         ->call('setVotersReady');
 
@@ -62,21 +62,24 @@ it('should list all voters for the given public key', function () {
 });
 
 it('should show no data if not ready', function () {
-    $wallet = Wallet::factory()
-        ->activeValidator()
-        ->create();
-
     $voter = Wallet::factory()->create([
         'attributes' => [
-            'vote' => $wallet->address,
+            'vote' => $this->subject->address,
         ],
     ]);
 
-    Livewire::test(Tabs::class, [ViewModelFactory::make($wallet)])
+    Livewire::test(Tabs::class, [ViewModelFactory::make($this->subject)])
         ->set('view', 'voters')
         ->assertDontSee($voter->address)
         ->assertSet('view', 'voters')
         ->call('setVotersReady')
         ->assertSet('votersIsReady', true)
         ->assertSee($voter->address);
+});
+
+it('should have querystring data', function () {
+    $instance = Livewire::test(Tabs::class, [ViewModelFactory::make($this->subject)])
+        ->instance();
+
+    expect($instance->getListenersVotersTab())->toBe(['reloadVoters' => '$refresh']);
 });

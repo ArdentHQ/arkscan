@@ -693,3 +693,10 @@ it('should also sort transactions by index in block', function () {
             $transaction1->hash,
         ]);
 });
+
+it('should have querystring data', function () {
+    $instance = Livewire::test(Tabs::class, [new WalletViewModel($this->subject)])
+        ->instance();
+
+    expect($instance->getListenersTransactionsTab())->toBe(['reloadTransactions' => '$refresh']);
+});
