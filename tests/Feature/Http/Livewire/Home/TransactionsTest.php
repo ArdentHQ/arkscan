@@ -9,6 +9,12 @@ use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 
+it('should render', function () {
+    Livewire::test(Transactions::class)
+        ->assertStatus(200)
+        ->assertViewIs('livewire.home.transactions');
+});
+
 it('should list the first page of transactions', function () {
     $transactions = Transaction::factory(30)->transfer()->create([
         'value'     => 143.2232 * 1e18,
