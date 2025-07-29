@@ -733,6 +733,12 @@ it('should get that resigned validator is not an active validator', function () 
     expect($this->subject->isActive())->toBeFalse();
 });
 
+it('should get that dormant validator is not an active validator', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->dormantValidator()->create());
+
+    expect($this->subject->isActive())->toBeFalse();
+});
+
 it('should get that non validator is not an active validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [],

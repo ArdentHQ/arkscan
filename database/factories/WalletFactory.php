@@ -78,4 +78,23 @@ final class WalletFactory extends Factory
             ];
         });
     }
+
+    public function dormantValidator()
+    {
+        return $this->state(function () {
+            return [
+                'attributes' => [
+                    'validatorRank'           => 0,
+                    'validatorApproval'       => $this->faker->randomFloat(2, 0, 2),
+                    'validatorPublicKey'      => "",
+                    'validatorForgedFees'     => $this->faker->numberBetween(1, 100) * 1e18,
+                    'validatorForgedTotal'    => $this->faker->numberBetween(1, 100) * 1e18,
+                    'validatorVoteBalance'    => $this->faker->numberBetween(1, 100) * 1e18,
+                    'validatorForgedRewards'  => $this->faker->numberBetween(1, 100) * 1e18,
+                    'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
+                    'validatorResigned'       => false,
+                ],
+            ];
+        });
+    }
 }
