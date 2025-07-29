@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire;
 
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\ViewModels\ViewModelFactory;
@@ -16,22 +15,18 @@ use Illuminate\View\View;
 /** @property LengthAwarePaginator $wallets */
 final class WalletVoterTable extends TabbedTableComponent
 {
-    use DeferLoading;
-
-    public string $publicKey;
+    public string $address;
 
     /** @var mixed */
     protected $listeners = [
         'setVotersReady'  => 'setIsReady',
         'currencyChanged' => '$refresh',
+        'reloadVoters'    => '$refresh',
     ];
 
     public function mount(WalletViewModel $wallet): void
     {
-        /** @var string $publicKey */
-        $publicKey = $wallet->publicKey();
-
-        $this->publicKey = $publicKey;
+        $this->address = $wallet->address();
     }
 
     public function render(): View
@@ -56,7 +51,7 @@ final class WalletVoterTable extends TabbedTableComponent
             return new LengthAwarePaginator([], 0, $this->perPage);
         }
 
-        return Wallet::where('attributes->vote', $this->publicKey)
+        return Wallet::where('attributes->vote', $this->address)
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage);
     }

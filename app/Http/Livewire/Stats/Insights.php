@@ -34,59 +34,122 @@ use Livewire\Component;
 
 final class Insights extends Component
 {
+    public TransactionStatistics $transactionDetails;
+
+    public MarketDataStatistics $marketData;
+
+    public ValidatorStatistics $validatorDetails;
+
+    public AddressHoldingStatistics $addressHoldings;
+
+    public UniqueAddressesStatistics $uniqueAddresses;
+
+    public array $annualData;
+
     /** @var mixed */
-    protected $listeners = ['currencyChanged' => '$refresh'];
+    protected $listeners = [
+        'echo:statistics-update,Statistics\\TransactionDetails' => 'updateTransactionDetails',
+        'echo:statistics-update,Statistics\\MarketData'         => 'updateMarketData',
+        'echo:statistics-update,Statistics\\ValidatorDetails'   => 'updateValidatorDetails',
+        'echo:statistics-update,Statistics\\AddressHoldings'    => 'updateAddressHoldings',
+        'echo:statistics-update,Statistics\\UniqueAddresses'    => 'updateUniqueAddresses',
+        'echo:statistics-update,Statistics\\AnnualData'         => 'updateAnnualData',
+    ];
+
+    public function mount(): void
+    {
+        $this->updateData();
+    }
+
+    public function updateData(): void
+    {
+        $this->updateTransactionDetails();
+        $this->updateMarketData();
+        $this->updateValidatorDetails();
+        $this->updateAddressHoldings();
+        $this->updateUniqueAddresses();
+        $this->updateAnnualData();
+    }
+
+    public function updateTransactionDetails(): void
+    {
+        $transactionCache = new TransactionCache();
+
+        $this->transactionDetails = TransactionStatistics::make(
+            $this->getTransactionDetails($transactionCache),
+            $this->getTransactionAverages($transactionCache),
+            $this->getTransactionRecords($transactionCache),
+        );
+    }
+
+    public function updateMarketData(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->marketData = MarketDataStatistics::make(
+            $this->getMarketDataPrice($statisticsCache),
+            $this->getMarketDataVolume($statisticsCache),
+            $this->getMarketDataCap($statisticsCache),
+        );
+    }
+
+    public function updateValidatorDetails(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->validatorDetails = $this->validatorDetails($statisticsCache);
+    }
+
+    public function updateAddressHoldings(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->addressHoldings = $this->getAddressHoldings($statisticsCache);
+    }
+
+    public function updateUniqueAddresses(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->uniqueAddresses = $this->getUniqueAddresses($statisticsCache);
+    }
+
+    public function updateAnnualData(): void
+    {
+        $statisticsCache = new StatisticsCache();
+
+        $this->annualData = $this->getAnnualData($statisticsCache);
+    }
 
     public function render(): View
     {
-        $transactionCache = new TransactionCache();
-        $statisticsCache  = new StatisticsCache();
-
-        return view('livewire.stats.insights', [
-            'transactionDetails' => TransactionStatistics::make(
-                $this->transactionDetails($transactionCache),
-                $this->transactionAverages($transactionCache),
-                $this->transactionRecords($transactionCache),
-            ),
-
-            'marketData' => MarketDataStatistics::make(
-                $this->marketDataPrice($statisticsCache),
-                $this->marketDataVolume($statisticsCache),
-                $this->marketDataCap($statisticsCache),
-            ),
-
-            'validatorDetails'   => $this->validatorDetails($statisticsCache),
-            'addressHoldings'    => $this->addressHoldings($statisticsCache),
-            'uniqueAddresses'    => $this->uniqueAddresses($statisticsCache),
-            'annualData'         => $this->annualData($statisticsCache),
-        ]);
+        return view('livewire.stats.insights');
     }
 
-    private function transactionDetails(TransactionCache $cache): array
+    private function getTransactionDetails(TransactionCache $cache): array
     {
         return StatsTransactionType::all()
             ->mapWithKeys(fn ($type) => [$type => $cache->getHistoricalByType($type)])
             ->toArray();
     }
 
-    private function transactionAverages(TransactionCache $cache): TransactionAveragesStatistics
+    private function getTransactionAverages(TransactionCache $cache): TransactionAveragesStatistics
     {
         return TransactionAveragesStatistics::make($cache->getHistoricalAverages());
     }
 
-    private function transactionRecords(TransactionCache $transactionCache): TransactionRecordsStatistics
+    private function getTransactionRecords(TransactionCache $transactionCache): TransactionRecordsStatistics
     {
         $blockCache = new BlockCache();
 
         return TransactionRecordsStatistics::make(
-            Transaction::find($transactionCache->getLargestIdByAmount()),
-            Block::find($blockCache->getLargestIdByAmount()),
-            Block::find($blockCache->getLargestIdByFees()),
-            Block::find($blockCache->getLargestIdByTransactionCount()),
+            Transaction::where('hash', $transactionCache->getLargestIdByAmount())->first(),
+            Block::where('hash', $blockCache->getLargestIdByFees())->first(),
+            Block::where('hash', $blockCache->getLargestIdByTransactionCount())->first(),
         );
     }
 
-    private function marketDataPrice(StatisticsCache $cache): MarketDataPriceStatistics
+    private function getMarketDataPrice(StatisticsCache $cache): MarketDataPriceStatistics
     {
         $currency = Settings::currency();
 
@@ -98,7 +161,7 @@ final class Insights extends Component
         );
     }
 
-    private function marketDataVolume(StatisticsCache $cache): MarketDataVolumeStatistics
+    private function getMarketDataVolume(StatisticsCache $cache): MarketDataVolumeStatistics
     {
         $currency  = Settings::currency();
 
@@ -109,7 +172,7 @@ final class Insights extends Component
         );
     }
 
-    private function marketDataCap(StatisticsCache $cache): MarketDataRecordStatistics
+    private function getMarketDataCap(StatisticsCache $cache): MarketDataRecordStatistics
     {
         $currency = Settings::currency();
 
@@ -122,13 +185,13 @@ final class Insights extends Component
 
     private function validatorDetails(StatisticsCache $cache): ValidatorStatistics
     {
-        $mostUniqueVoters  = Wallet::firstWhere('public_key', $cache->getMostUniqueVoters());
-        $leastUniqueVoters = Wallet::firstWhere('public_key', $cache->getLeastUniqueVoters());
-        $mostBlocksForged  = Wallet::firstWhere('public_key', $cache->getMostBlocksForged());
+        $mostUniqueVoters  = Wallet::firstWhere('address', $cache->getMostUniqueVoters());
+        $leastUniqueVoters = Wallet::firstWhere('address', $cache->getLeastUniqueVoters());
+        $mostBlocksForged  = Wallet::firstWhere('address', $cache->getMostBlocksForged());
 
         $oldestActiveValidatorData = $cache->getOldestActiveValidator();
         if ($oldestActiveValidatorData !== null) {
-            $oldestActiveValidator = Wallet::firstWhere('public_key', $oldestActiveValidatorData['publicKey']);
+            $oldestActiveValidator = Wallet::firstWhere('address', $oldestActiveValidatorData['address']);
             if ($oldestActiveValidator !== null) {
                 $oldestActiveValidator = WalletWithValue::make($oldestActiveValidator, Carbon::createFromTimestamp($oldestActiveValidatorData['timestamp']));
             }
@@ -136,7 +199,7 @@ final class Insights extends Component
 
         $newestActiveValidatorData = $cache->getNewestActiveValidator();
         if ($newestActiveValidatorData !== null) {
-            $newestActiveValidator = Wallet::firstWhere('public_key', $newestActiveValidatorData['publicKey']);
+            $newestActiveValidator = Wallet::firstWhere('address', $newestActiveValidatorData['address']);
             if ($newestActiveValidator !== null) {
                 $newestActiveValidator = WalletWithValue::make($newestActiveValidator, Carbon::createFromTimestamp($newestActiveValidatorData['timestamp']));
             }
@@ -151,7 +214,7 @@ final class Insights extends Component
         );
     }
 
-    private function addressHoldings(StatisticsCache $cache): AddressHoldingStatistics
+    private function getAddressHoldings(StatisticsCache $cache): AddressHoldingStatistics
     {
         $holdings = $cache->getAddressHoldings();
 
@@ -168,7 +231,7 @@ final class Insights extends Component
         return AddressHoldingStatistics::make($summedValues);
     }
 
-    private function uniqueAddresses(StatisticsCache $cache): UniqueAddressesStatistics
+    private function getUniqueAddresses(StatisticsCache $cache): UniqueAddressesStatistics
     {
         return UniqueAddressesStatistics::make(
             $cache->getGenesisAddress(),
@@ -178,7 +241,7 @@ final class Insights extends Component
         );
     }
 
-    private function annualData(StatisticsCache $cache): array
+    private function getAnnualData(StatisticsCache $cache): array
     {
         $startYear   = Carbon::parse(Network::epoch())->year;
         $currentYear = Carbon::now()->year;

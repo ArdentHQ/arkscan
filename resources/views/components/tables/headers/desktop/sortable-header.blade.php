@@ -21,15 +21,14 @@
     :first-on="$firstOn"
     :last-on="$lastOn"
     :width="$width"
-    :class="Arr::toCssClasses([
-        'group/header' => ! $hideSorting && $sortingId !== null,
+    :class="Arr::toCssClasses(['group/header' => ! $hideSorting && $sortingId !== null,
         'cursor-pointer' => ! $hideSorting && $sortingId !== null && (($livewireSort && $this->isReady) || ! $livewireSort),
         'flex-row-reverse space-x-0' => ! $hideSorting && $livewireSort && $sortingId !== null,
         'disabled' => $sortDisabled || (! $hideSorting && $livewireSort && $sortingId !== null && ! $this->isReady),
         $class,
     ])"
     :attributes="$attributes->merge([
-        'x-ref' => $sortingId,
+        'sorting-id' => $sortingId,
         'x-on:click' => ! $hideSorting && ! $livewireSort && $sortingId !== null ? 'sortByColumn' : null,
         'data-initial-sort' => ! $hideSorting && ! $livewireSort && $sortingId !== null ? $initialSort : null,
         'wire:loading.class' => $sortDisabled || (! $hideSorting && $livewireSort && $sortingId !== null) ? 'disabled' : null,

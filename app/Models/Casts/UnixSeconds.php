@@ -20,7 +20,7 @@ final class UnixSeconds implements CastsAttributes
     public function get($model, string $key, $value, array $attributes)
     {
         // TODO: Database now stores timestamp in unix milliseconds,
-        // consider adapting all backend code to use Carbon instead of an int
+        // consider adapting all backend code to use Carbon instead of an int - https://app.clickup.com/t/86dvxzgt6
         return (int) floor($value / 1000);
     }
 

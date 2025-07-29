@@ -13,15 +13,19 @@ it('should aggregate the fees for 12 months', function () {
     $startTime = Carbon::parse('2020-10-19 04:54:16');
     $endTime   = Carbon::now()->subMinutes(10);
 
-    Transaction::factory(10)->create([
-        'fee'       => '100000000',
-        'timestamp' => $startTime->getTimestampMs(),
-    ])->sortByDesc('timestamp');
+    Transaction::factory(10)
+        ->withReceipt(10000)
+        ->create([
+            'gas_price' => 1,
+            'timestamp' => $startTime->getTimestampMs(),
+        ])->sortByDesc('timestamp');
 
-    Transaction::factory(10)->create([
-        'fee'       => '100000000',
-        'timestamp' => $endTime->getTimestampMs(),
-    ]);
+    Transaction::factory(10)
+        ->withReceipt(10000)
+        ->create([
+            'gas_price' => 1,
+            'timestamp' => $endTime->getTimestampMs(),
+        ]);
 
     $result = (new YearAggregate())->aggregate();
 
@@ -35,9 +39,9 @@ it('should aggregate the fees for 12 months', function () {
         'Jul' => 0,
         'Aug' => 0,
         'Sep' => 0,
-        'Oct' => 10.0,
+        'Oct' => 100000.0,
         'Nov' => 0,
-        'Dec' => 10.0,
+        'Dec' => 100000.0,
         'Jan' => 0,
     ]);
 });

@@ -38,8 +38,8 @@ trait HandlesMonitorDataBoxes
         $performances = [];
 
         foreach ($this->validators as $validator) {
-            $publicKey                = $validator->wallet()->model()->public_key;
-            $performances[$publicKey] = $this->getValidatorPerformance($publicKey);
+            $address                = $validator->wallet()->model()->address;
+            $performances[$address] = $this->getValidatorPerformance($address);
         }
 
         $parsedPerformances = array_count_values($performances);
@@ -51,10 +51,10 @@ trait HandlesMonitorDataBoxes
         ];
     }
 
-    public function getValidatorPerformance(string $publicKey): string
+    public function getValidatorPerformance(string $address): string
     {
         /** @var Wallet $validatorWallet */
-        $validatorWallet = (new WalletCache())->getValidator($publicKey);
+        $validatorWallet = (new WalletCache())->getValidator($address);
 
         /** @var WalletViewModel $validator */
         $validator = ViewModelFactory::make($validatorWallet);
@@ -76,7 +76,7 @@ trait HandlesMonitorDataBoxes
     {
         return (new MonitorCache())->setBlockCount(function (): string {
             return trans('pages.validators.statistics.blocks_generated', [
-                'forged' => Network::validatorCount() - (Monitor::heightRangeByRound(Rounds::current())[1] - Block::max('height')),
+                'forged' => Network::validatorCount() - (Monitor::heightRangeByRound(Rounds::current())[1] - Block::max('number')),
                 'total'  => Network::validatorCount(),
             ]);
         });

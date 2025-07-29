@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 use App\Contracts\Network as NetworkContract;
 use App\Models\Transaction;
+use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Transactions\Aggregates\Historical\AveragesAggregate;
 use Carbon\Carbon;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
-it('should return count', function () {
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
+it('should return count for non-multipayment', function () {
+    $daysSinceEpoch = 2;
+    $networkStub    = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
+
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
     expect((new AveragesAggregate())->aggregate())->toBe([
@@ -18,14 +22,77 @@ it('should return count', function () {
         'fee'    => 0,
     ]);
 
-    Transaction::factory(12)->validatorRegistration()->create([
-        'amount' => 0,
-        'fee'    => 25 * 1e8,
-    ]);
+    $transactionCount = 12;
+
+    Transaction::factory(6)
+        ->transfer()
+        ->withReceipt(data: ['status' => true])
+        ->create([
+            'value'     => 20 * 1e18,
+            'gas_price' => 25,
+        ]);
+
+    Transaction::factory(6)
+        ->withReceipt(data: ['status' => true])
+        ->unvote()
+        ->create([
+            'value'     => 0 * 1e18,
+            'gas_price' => 25,
+        ]);
+
+    expect(Transaction::count())->toBe($transactionCount);
 
     expect((new AveragesAggregate())->aggregate())->toBe([
-        'count'  => 12 / 2,
+        'count'  => $transactionCount / $daysSinceEpoch,
+        'amount' => 120 / $daysSinceEpoch,
+        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch),
+    ]);
+});
+
+it('should return count for multipayment', function () {
+    $daysSinceEpoch = 2;
+    $networkStub    = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
+
+    app()->singleton(NetworkContract::class, fn () => $networkStub);
+
+    expect((new AveragesAggregate())->aggregate())->toBe([
+        'count'  => 0,
         'amount' => 0,
-        'fee'    => (25 * 12) / 2,
+        'fee'    => 0,
+    ]);
+
+    $transactionCount = 4;
+
+    Transaction::factory(2)
+        ->withReceipt(data: ['status' => true])
+        ->create([
+            'value'     => 10 * 1e18,
+            'gas_price' => 25,
+        ]);
+
+    $recipient = Wallet::factory()->create();
+
+    Transaction::factory()
+        ->withReceipt(data: ['status' => true])
+        ->multiPayment([$recipient->address], [BigNumber::new(14 * 1e18)])
+        ->create([
+            'value'     => 0,
+            'gas_price' => 25,
+        ]);
+
+    Transaction::factory()
+        ->withReceipt(data: ['status' => true])
+        ->multiPayment([$recipient->address, $recipient->address], [BigNumber::new(14 * 1e18), BigNumber::new(14 * 1e18)])
+        ->create([
+            'value'     => 0,
+            'gas_price' => 25,
+        ]);
+
+    expect(Transaction::count())->toBe($transactionCount);
+
+    expect((new AveragesAggregate())->aggregate())->toBe([
+        'count'  => (int) round($transactionCount / $daysSinceEpoch),
+        'amount' => 62 / $daysSinceEpoch,
+        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch),
     ]);
 });

@@ -18,14 +18,19 @@ final class Payment
 
     public function __construct(private int $timestamp, array $payment)
     {
-        $this->amount      = $payment['amount'] / 1e8;
-        $this->address     = $payment['recipientId'];
-        $this->username    = Arr::get(Wallets::findByAddress($payment['recipientId']), 'attributes.username');
+        $this->amount   = $payment['amount'] / config('currencies.notation.crypto', 1e18);
+        $this->address  = $payment['recipientId'];
+        $this->username = Arr::get(Wallets::findByAddress($payment['recipientId']), 'attributes.username');
     }
 
     public function amount(): float
     {
         return $this->amount;
+    }
+
+    public function username(): ?string
+    {
+        return $this->username;
     }
 
     public function amountFiat(): string
@@ -36,11 +41,6 @@ final class Payment
     public function address(): string
     {
         return $this->address;
-    }
-
-    public function username(): ?string
-    {
-        return $this->username;
     }
 
     public function recipient(): self

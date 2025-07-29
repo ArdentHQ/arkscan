@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Models\State;
+use App\Services\BigNumber;
 use App\Services\Blockchain\Network;
-use ArkEcosystem\Crypto\Networks\Devnet;
 use ArkEcosystem\Crypto\Networks\Mainnet;
+use ArkEcosystem\Crypto\Networks\Testnet;
 use BitWasp\Bitcoin\Network\Network as Bitwasp;
 use Carbon\Carbon;
 use function Tests\fakeKnownWallets;
@@ -27,10 +29,12 @@ it('should have all required properties', function (array $config) {
     expect($subject->explorerTitle())->toBe(config('app.name'));
     expect($subject->mainnetExplorerUrl())->toBe($config['mainnetExplorerUrl']);
     expect($subject->testnetExplorerUrl())->toBe($config['testnetExplorerUrl']);
+    expect($subject->legacyExplorerUrl())->toBe($config['legacyExplorerUrl']);
     expect($subject->currency())->toBe($config['currency']);
     expect($subject->currencySymbol())->toBe($config['currencySymbol']);
     expect($subject->confirmations())->toBe($config['confirmations']);
     expect($subject->knownWallets())->toBeArray();
+    expect($subject->knownContracts())->toBeArray();
     expect($subject->canBeExchanged())->toBe($config['canBeExchanged']);
     expect($subject->epoch())->toBeInstanceOf(Carbon::class);
     expect($subject->validatorCount())->toBe($config['validatorCount']);
@@ -55,6 +59,8 @@ it('should have all required properties', function (array $config) {
         'base58Prefix'        => 23,
         'mainnetExplorerUrl'  => 'https://mainnet.ark.io/',
         'testnetExplorerUrl'  => 'https://testnet.ark.io/',
+        'legacyExplorerUrl'   => 'https://legacy.ark.io/',
+        'contract_addresses'  => [],
     ]],
     [[
         'name'                => 'ARK Development Network',
@@ -64,12 +70,32 @@ it('should have all required properties', function (array $config) {
         'currencySymbol'      => 'DѦ',
         'confirmations'       => 51,
         'canBeExchanged'      => false,
-        'epoch'               => Devnet::new()->epoch(),
+        'epoch'               => Testnet::new()->epoch(),
         'validatorCount'      => 51,
         'blockTime'           => 8,
         'blockReward'         => 2,
         'base58Prefix'        => 30,
         'mainnetExplorerUrl'  => 'https://mainnet.dark.io/',
         'testnetExplorerUrl'  => 'https://testnet.dark.io/',
+        'legacyExplorerUrl'   => 'https://legacy.dark.io/',
+        'contract_addresses'  => [],
     ]],
 ]);
+
+it('should return supply from first state', function () {
+    State::factory()->create(['supply' => BigNumber::new(123 * 1e18)]);
+
+    $subject = new Network([]);
+
+    expect($subject->supply())->toBeInstanceOf(BigNumber::class);
+
+    expect($subject->supply()->__toString())->toBe('123000000000000000000');
+});
+
+it('should return 0 as supply if no state', function () {
+    $subject = new Network([]);
+
+    expect($subject->supply())->toBeInstanceOf(BigNumber::class);
+
+    expect($subject->supply()->toInt())->toBe(0);
+});

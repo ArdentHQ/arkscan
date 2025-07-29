@@ -8,14 +8,15 @@ use App\Console\Commands\BuildForgingStats;
 use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheAnnualStatistics;
 use App\Console\Commands\CacheBlocks;
+use App\Console\Commands\CacheContractAddresses;
 use App\Console\Commands\CacheCurrenciesData;
 use App\Console\Commands\CacheFees;
+use App\Console\Commands\CacheGasTrackerData;
+use App\Console\Commands\CacheKnownWallets;
 use App\Console\Commands\CacheMarketDataStatistics;
-use App\Console\Commands\CacheMultiSignatureAddresses;
 use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CachePrices;
 use App\Console\Commands\CacheTransactions;
-use App\Console\Commands\CacheUsernames;
 use App\Console\Commands\CacheValidatorAggregates;
 use App\Console\Commands\CacheValidatorPerformance;
 use App\Console\Commands\CacheValidatorProductivity;
@@ -67,9 +68,9 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheFees::class)->everyFiveMinutes();
 
-        $schedule->command(CacheUsernames::class)->everyMinute();
+        $schedule->command(CacheGasTrackerData::class)->everyFiveMinutes();
 
-        $schedule->command(CacheMultiSignatureAddresses::class)->everyMinute();
+        $schedule->command(CacheKnownWallets::class)->everyMinute();
 
         $schedule->command(CacheValidatorsWithVoters::class)->everyMinute();
 
@@ -79,13 +80,14 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(BuildForgingStats::class)->everyMinute();
 
-        $schedule->command(CacheValidatorPerformance::class)->everyMinute();
+        $schedule->command(CacheContractAddresses::class)->everyMinute();
+
+        // TODO: enable when the monitor is fixed - https://app.clickup.com/t/86dvxzg15
+        // $schedule->command(CacheValidatorPerformance::class)->everyMinute();
 
         $schedule->command(CacheValidatorProductivity::class)->everyMinute();
 
         $schedule->command(CacheTransactions::class)->everyFiveMinutes();
-
-        $schedule->command(CacheBlocks::class)->everyFiveMinutes();
 
         $schedule->command(CacheAddressStatistics::class)->everyFiveMinutes();
 
@@ -102,11 +104,15 @@ final class Kernel extends ConsoleKernel
         $schedule->command(LoadExchanges::class)->daily();
 
         if (Network::canBeExchanged()) {
-            $schedule->command(FetchExchangesDetails::class)->hourly();
+            $schedule->command(FetchExchangesDetails::class)->everyMinute();
         }
 
         if (config('arkscan.scout.run_jobs', false) === true) {
             $schedule->command(ScoutIndexModels::class)->everyMinute();
+        }
+
+        if (config('broadcasting.default') !== 'reverb') {
+            $schedule->command(CacheBlocks::class)->everyFiveMinutes();
         }
     }
 

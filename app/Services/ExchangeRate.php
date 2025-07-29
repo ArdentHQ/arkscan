@@ -14,8 +14,12 @@ use Illuminate\Support\Collection;
 
 final class ExchangeRate
 {
-    public static function convert(float $amount, ?int $timestamp = null, bool $showSmallAmounts = false): string
+    public static function convert(float | BigNumber $amount, ?int $timestamp = null, bool $showSmallAmounts = false): string
     {
+        if ($amount instanceof BigNumber) {
+            $amount = $amount->toFloat();
+        }
+
         return NumberFormatter::currency(self::convertNumerical($amount, $timestamp), Settings::currency(), $showSmallAmounts);
     }
 

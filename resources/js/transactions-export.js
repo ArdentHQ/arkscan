@@ -11,7 +11,7 @@ import {
     getDateRange,
     queryTimestamp,
 } from "./includes/helpers";
-import { ExportStatus, TransactionType } from "./includes/enums";
+import { ExportStatus } from "./includes/enums";
 
 import { TransactionsApi } from "./api/transactions";
 
@@ -42,27 +42,8 @@ const TransactionsExport = ({
     };
 
     const getTransactionAmount = (transaction) => {
-        let amount = arktoshiToNumber(transaction.amount);
-        if (transaction.type === TransactionType.MultiPayment) {
-            return transaction.asset.payments.reduce(
-                (totalAmount, recipientData) => {
-                    if (recipientData.recipientId === address) {
-                        if (totalAmount < 0) {
-                            totalAmount = 0;
-                        }
-
-                        totalAmount += arktoshiToNumber(recipientData.amount);
-                    } else if (totalAmount <= 0) {
-                        totalAmount -= arktoshiToNumber(recipientData.amount);
-                    }
-
-                    return totalAmount;
-                },
-                0
-            );
-        }
-
-        if (transaction.sender === address) {
+        let amount = arktoshiToNumber(transaction.value);
+        if (transaction.from.toLowerCase() === address.toLowerCase()) {
             return -amount;
         }
 
@@ -70,35 +51,23 @@ const TransactionsExport = ({
     };
 
     const columnMapping = {
+        id: (transaction) => transaction.hash,
         timestamp: (transaction) =>
             dayjs(parseInt(transaction.timestamp)).format("L LTS"),
-        recipient: (transaction) => {
-            if (transaction.type === TransactionType.Transfer) {
-                return transaction.recipient;
-            }
-
-            if (transaction.type === TransactionType.Vote) {
-                return "Vote Transaction";
-            }
-
-            if (transaction.type === TransactionType.MultiPayment) {
-                return `Multiple (${transaction.asset.payments.length})`;
-            }
-
-            return "Other";
-        },
+        sender: (transaction) => transaction.from,
+        recipient: (transaction) => transaction.to,
         amount: getTransactionAmount,
         fee: (transaction) => {
-            if (transaction.sender === address) {
-                return -arktoshiToNumber(transaction.fee);
+            if (transaction.from.toLowerCase() === address.toLowerCase()) {
+                return -arktoshiToNumber(transaction.gasPrice);
             }
 
             return 0;
         },
         total: (transaction) => {
             const amount = getTransactionAmount(transaction);
-            if (transaction.sender === address) {
-                return amount - arktoshiToNumber(transaction.fee);
+            if (transaction.from.toLowerCase() === address.toLowerCase()) {
+                return amount - arktoshiToNumber(transaction.gasPrice);
             }
 
             return amount;
@@ -248,44 +217,47 @@ const TransactionsExport = ({
             return getDateRange(this.dateRange);
         },
 
-        requestData(withoutTransactionTypes = false) {
+        requestData() {
             const [dateFrom, dateTo] = this.getDateRange();
 
-            const data = {
+            const requestData = {
                 address,
-                type: [],
+                data: [],
             };
 
             if (dateFrom) {
-                data["timestamp.from"] = queryTimestamp(dateFrom);
-                data["timestamp.to"] = queryTimestamp(dateTo);
+                requestData["timestamp.from"] = queryTimestamp(dateFrom);
+                requestData["timestamp.to"] = queryTimestamp(dateTo);
             }
 
             if (this.types.transfers) {
-                data.type.push(TransactionType.Transfer);
+                requestData.data.push("0x");
             }
 
             if (this.types.votes) {
-                data.type.push(TransactionType.Vote);
-            }
-
-            if (this.types.multipayments) {
-                data.type.push(TransactionType.MultiPayment);
-            }
-
-            if (this.types.others) {
-                data.type.push(
-                    TransactionType.ValidatorRegistration,
-                    TransactionType.MultiSignature,
-                    TransactionType.ValidatorResignation,
-                    TransactionType.UsernameRegistration,
-                    TransactionType.UsernameResignation
+                requestData.data.push(
+                    network.contract_methods.vote,
+                    network.contract_methods.unvote
                 );
             }
 
-            data.type = data.type.join(",");
+            if (this.types.multipayments) {
+                requestData.data.push(network.contract_methods.multipayment);
+            }
 
-            return data;
+            if (this.types.others) {
+                requestData.data.push(
+                    network.contract_methods.validator_registration,
+                    network.contract_methods.validator_resignation,
+                    network.contract_methods.validator_update,
+                    network.contract_methods.username_registration,
+                    network.contract_methods.username_resignation
+                );
+            }
+
+            requestData.data = requestData.data.join(",");
+
+            return requestData;
         },
 
         getColumns() {

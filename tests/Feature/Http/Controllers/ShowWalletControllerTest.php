@@ -17,12 +17,11 @@ it('should render the page without any errors', function () {
 
     $wallet = Wallet::factory()->create();
 
-    (new NetworkCache())->setSupply(fn () => '10000000000');
+    (new NetworkCache())->setSupply(fn () => 100 * 1e18);
 
-    ((new ValidatorCache())->setTotalAmounts([$wallet->public_key => '1000000000']));
-    ((new ValidatorCache())->setTotalFees([$wallet->public_key => '1000000000']));
-    ((new ValidatorCache())->setTotalRewards([$wallet->public_key => '1000000000']));
-    ((new ValidatorCache())->setTotalBlocks([$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalFees([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalRewards([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalBlocks([$wallet->address => 10 * 1e18]));
 
     $this
         ->get(route('wallet', $wallet))
@@ -35,12 +34,11 @@ it('can lookup wallets by the username', function () {
     $wallet   = Wallet::factory()->create();
     $username = $wallet->attributes['username'];
 
-    (new NetworkCache())->setSupply(fn () => '10000000000');
+    (new NetworkCache())->setSupply(fn () => 100 * 1e18);
 
-    ((new ValidatorCache())->setTotalAmounts([$wallet->public_key => '1000000000']));
-    ((new ValidatorCache())->setTotalFees([$wallet->public_key => '1000000000']));
-    ((new ValidatorCache())->setTotalRewards([$wallet->public_key => '1000000000']));
-    ((new ValidatorCache())->setTotalBlocks([$wallet->public_key => '1000000000']));
+    ((new ValidatorCache())->setTotalFees([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalRewards([$wallet->address => 10 * 1e18]));
+    ((new ValidatorCache())->setTotalBlocks([$wallet->address => 10 * 1e18]));
 
     expect($username)->not->toBeEmpty();
 
@@ -61,7 +59,7 @@ it('should not double up currency for crypto', function () {
 
     $response = $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username())
+        ->assertSee($wallet->address)
         ->assertSee('0 BTC');
 
     $content = preg_replace('/\s+/', ' ', str_replace("\n", '', strip_tags($response->getContent())));
@@ -81,7 +79,7 @@ it('should show currency symbol and code for crypto', function () {
 
     $response = $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username())
+        ->assertSee($wallet->address)
         ->assertSeeInOrder([
             $wallet->balance->toFloat(),
             '£0.00',
@@ -102,7 +100,7 @@ it('should not show overview value if cannot be exchanged', function () {
 
     $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username())
+        ->assertSee($wallet->address)
         ->assertSeeInOrder([
             'Value',
             'N/A',
@@ -123,19 +121,19 @@ it('should filter transactions in url', function () {
 
     $this
         ->get('/test-transactions/'.$wallet->address)
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=false')
-        ->assertDontSee($transaction->id);
+        ->assertDontSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=0')
-        ->assertDontSee($transaction->id);
+        ->assertDontSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=1')
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
 });
 
 it('should get query data from referer', function () {
@@ -184,17 +182,17 @@ it('should not trim 0 at the end of votes or total forged', function () {
     $wallet = Wallet::factory()->activeValidator()->create([
         'attributes' => [
             'validatorPublicKey'      => 'publicKey',
-            'validatorVoteBalance'    => 1234037456742,
+            'validatorVoteBalance'    => 12340.37456742 * 1e18,
             'validatorProducedBlocks' => 12340,
         ],
     ]);
 
-    (new ValidatorCache())->setTotalFees([$wallet->public_key => 234037456741]);
-    (new ValidatorCache())->setTotalRewards([$wallet->public_key => 1000000000001]);
+    (new ValidatorCache())->setTotalFees([$wallet->address => 2340.37456741 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$wallet->address => 10000.00000001 * 1e18]);
 
     $this
         ->get(route('wallet', $wallet))
-        ->assertSee($wallet->username())
+        ->assertSee($wallet->address)
         ->assertSeeInOrder([
             '12,340 DARK',
             'Vote',

@@ -10,7 +10,7 @@
     $isReceived = $wallet && ! $model->isSent($wallet->address());
     $isSent = $wallet && $model->isSent($wallet->address());
 
-    $amount = $model->amount();
+    $amount = $model->amount($wallet?->address());
     $amountFiat = $model->amountFiat(true);
     $amountForItself = null;
 
@@ -62,8 +62,7 @@
     @unless ($withoutFee)
         <x-tables.rows.desktop.encapsulated.fee
             :model="$model"
-            :class="Arr::toCssClasses([
-                'hidden text-xs md:block text-theme-secondary-700 dark:text-theme-dark-200',
+            :class="Arr::toCssClasses(['hidden text-xs md:block text-theme-secondary-700 dark:text-theme-dark-200',
                 $feeBreakpointClass,
             ])"
             without-styling

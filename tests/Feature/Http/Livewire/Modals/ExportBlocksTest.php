@@ -12,7 +12,7 @@ it('should render', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
-        ->assertSet('publicKey', $wallet->publicKey())
+        ->assertSet('address', $wallet->address())
         ->assertSet('username', $wallet->username())
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'));
@@ -22,7 +22,7 @@ it('should handle non-validators', function () {
     $wallet = new WalletViewModel(Wallet::factory()->create(['attributes' => []]));
 
     Livewire::test(ExportBlocks::class, [$wallet])
-        ->assertSet('publicKey', $wallet->publicKey())
+        ->assertSet('address', $wallet->address())
         ->assertSet('username', null)
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'));
@@ -32,7 +32,7 @@ it('should open modal', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
-        ->assertSet('publicKey', $wallet->publicKey())
+        ->assertSet('address', $wallet->address())
         ->assertSet('username', $wallet->username())
         ->assertSee(trans('actions.export'))
         ->assertDontSee(trans('pages.wallet.export-blocks-modal.title'))
@@ -44,7 +44,7 @@ it('should close modal', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Livewire::test(ExportBlocks::class, [$wallet])
-        ->assertSet('publicKey', $wallet->publicKey())
+        ->assertSet('address', $wallet->address())
         ->assertSet('username', $wallet->username())
         ->assertSee(trans('actions.export'))
         ->call('openModal')
@@ -57,7 +57,7 @@ it('should not be enabled if not ready', function () {
     $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create());
 
     Block::factory()->create([
-        'generator_public_key' => $wallet->publicKey(),
+        'proposer' => $wallet->address(),
     ]);
 
     Livewire::test(ExportBlocks::class, [$wallet])

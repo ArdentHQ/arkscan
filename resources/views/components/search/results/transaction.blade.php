@@ -5,7 +5,7 @@
         <x-slot name="header">
             <div class="min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
                 <x-truncate-middle>
-                    {{ $transaction->id() }}
+                    {{ $transaction->hash() }}
                 </x-truncate-middle>
             </div>
         </x-slot>
@@ -25,7 +25,7 @@
 
             <div class="flex-1 min-w-0 link group-hover/result:no-underline hover:text-theme-primary-600">
                 <x-truncate-middle :length="20">
-                    {{ $transaction->id() }}
+                    {{ $transaction->hash() }}
                 </x-truncate-middle>
             </div>
         </div>
@@ -36,7 +36,7 @@
                     @lang('general.search.from')
                 </x-general.encapsulated.transaction-direction-badge>
 
-                @if ($transaction->isVote() || $transaction->isUnvote() || $transaction->isVoteCombination())
+                @if ($transaction->isVote() || $transaction->isUnvote())
                     <x-general.identity
                         :model="$transaction->isUnvote() ? $transaction->unvoted() : $transaction->voted()"
                         without-link
@@ -56,24 +56,12 @@
                     @lang('general.search.to')
                 </x-general.encapsulated.transaction-direction-badge>
 
-                @if ($transaction->isTransfer())
+                @if ($transaction->isTransfer() || $transaction->isTokenTransfer())
                     <x-general.identity
                         :model="$transaction->recipient()"
                         without-link
                         class="text-theme-secondary-900 dark:text-theme-dark-50"
                     />
-                @elseif ($transaction->isVoteCombination())
-                    <x-general.identity
-                        :model="$transaction->voted()"
-                        without-link
-                        class="text-theme-secondary-900 dark:text-theme-dark-50"
-                    />
-                @elseif ($transaction->isMultiPayment())
-                    <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                        @lang('tables.transactions.multiple')
-
-                        ({{ $transaction->recipientsCount() }})
-                    </span>
                 @else
                     <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                         @lang('general.search.contract')

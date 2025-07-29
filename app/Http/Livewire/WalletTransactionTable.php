@@ -6,13 +6,13 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
+use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OrderByTimestampScope;
+use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
-use ArkEcosystem\Crypto\Enums\Types;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -23,7 +23,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class WalletTransactionTable extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableFilter;
 
     public string $address;
@@ -31,29 +30,36 @@ final class WalletTransactionTable extends TabbedTableComponent
     public ?string $publicKey = null;
 
     public array $filter = [
-        'outgoing'      => true,
-        'incoming'      => true,
-        'transfers'     => true,
-        'votes'         => true,
-        'multipayments' => true,
-        'others'        => true,
+        'outgoing'            => true,
+        'incoming'            => true,
+        'transfers'           => true,
+        'multipayments'       => true,
+        'votes'               => true,
+        'validator'           => true,
+        'username'            => true,
+        'contract_deployment' => true,
+        'others'              => true,
     ];
 
     /** @var mixed */
     protected $listeners = [
         'setTransactionsReady' => 'setIsReady',
         'currencyChanged'      => '$refresh',
+        'reloadTransactions'   => '$refresh',
     ];
 
     public function queryString(): array
     {
         return [
-            'outgoing'      => ['except' => true],
-            'incoming'      => ['except' => true],
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
+            'filter.outgoing'            => ['as' => 'outgoing', 'except' => true],
+            'filter.incoming'            => ['as' => 'incoming', 'except' => true],
+            'filter.transfers'           => ['as' => 'transfers', 'except' => true],
+            'filter.multipayments'       => ['as' => 'multipayments', 'except' => true],
+            'filter.votes'               => ['as' => 'votes', 'except' => true],
+            'filter.validator'           => ['as' => 'validator', 'except' => true],
+            'filter.username'            => ['as' => 'username', 'except' => true],
+            'filter.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
+            'filter.others'              => ['as' => 'others', 'except' => true],
         ];
     }
 
@@ -109,6 +115,7 @@ final class WalletTransactionTable extends TabbedTableComponent
 
         return $this->getTransactionsQuery()
             ->withScope(OrderByTimestampScope::class)
+            ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage);
     }
 
@@ -127,11 +134,23 @@ final class WalletTransactionTable extends TabbedTableComponent
             return true;
         }
 
+        if ($this->filter['multipayments'] === true) {
+            return true;
+        }
+
         if ($this->filter['votes'] === true) {
             return true;
         }
 
-        if ($this->filter['multipayments'] === true) {
+        if ($this->filter['validator'] === true) {
+            return true;
+        }
+
+        if ($this->filter['username'] === true) {
+            return true;
+        }
+
+        if ($this->filter['contract_deployment'] === true) {
             return true;
         }
 
@@ -142,12 +161,15 @@ final class WalletTransactionTable extends TabbedTableComponent
     {
         return Transaction::query()
             ->withTypeFilter($this->filter)
+            ->with('votedFor')
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('recipient_id', $this->address)))
-                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query
-                        ->where('type', Types::MULTI_PAYMENT)
-                        ->whereJsonContains('asset->payments', [['recipientId' => $this->address]])));
+                    ->orWhere(fn ($query) => $query->when($this->filter['incoming'], fn ($query) => $query->where('to', $this->address)))
+                    ->orWhere(function ($query) {
+                        $query->withScope(MultiPaymentScope::class)
+                            // data for multipayment contains the address
+                            ->whereRaw("encode(data, 'hex') LIKE ?", '%'.strtolower(str_pad(ltrim($this->address, '0x'), 64, '0', STR_PAD_LEFT)).'%');
+                    });
             });
     }
 }

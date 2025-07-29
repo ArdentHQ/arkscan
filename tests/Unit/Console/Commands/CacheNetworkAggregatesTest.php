@@ -7,7 +7,7 @@ use App\Services\Cache\NetworkCache;
 
 it('should execute the command', function () {
     $cache = new NetworkCache();
-    $cache->setSupply(fn () => strval(100e8));
+    $cache->setSupply(fn () => strval(100 * 1e18));
 
     (new CacheNetworkAggregates())->handle($cache);
 

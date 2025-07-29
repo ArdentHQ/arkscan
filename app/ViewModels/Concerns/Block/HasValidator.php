@@ -10,12 +10,17 @@ trait HasValidator
 {
     public function validator(): MemoryWallet
     {
-        return MemoryWallet::fromPublicKey($this->block->generator_public_key);
+        return MemoryWallet::fromAddress($this->block->proposer);
     }
 
     public function address(): string
     {
         return $this->validator()->address() ?? 'Genesis';
+    }
+
+    public function hasUsername(): bool
+    {
+        return $this->validator()->hasUsername();
     }
 
     public function username(): string

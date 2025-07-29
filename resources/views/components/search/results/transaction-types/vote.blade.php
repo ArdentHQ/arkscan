@@ -18,16 +18,8 @@
             @lang('general.search.to')
         </x-general.encapsulated.transaction-direction-badge>
 
-        @if ($transaction->isVoteCombination())
-            <x-general.identity
-                :model="$transaction->voted()"
-                without-link
-                class="text-theme-secondary-900 dark:text-theme-dark-50"
-            />
-        @else
-            <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                @lang('general.search.contract')
-            </span>
-        @endif
+        <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+            @lang('general.search.contract')
+        </span>
     </div>
 </div>

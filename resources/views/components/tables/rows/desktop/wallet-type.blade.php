@@ -5,12 +5,6 @@
         </div>
     @endif
 
-    @if ($model->hasMultiSignature())
-        <div data-tippy-content="@lang('labels.multi_signature')">
-            <x-ark-icon name="app-multi-signature" size="sm" />
-        </div>
-    @endif
-
     @if ($model->isOwnedByExchange())
         <div data-tippy-content="@lang('labels.exchange')">
             <x-ark-icon name="app-exchange" size="sm" />

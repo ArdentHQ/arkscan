@@ -46,9 +46,9 @@ final class Validators extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'active'   => ['except' => true],
-            'standby'  => ['except' => true],
-            'resigned' => ['except' => true],
+            'filter.active'   => ['as' => 'active', 'except' => true],
+            'filter.standby'  => ['as' => 'standby', 'except' => true],
+            'filter.resigned' => ['as' => 'resigned', 'except' => true],
         ];
     }
 
@@ -62,7 +62,7 @@ final class Validators extends TabbedTableComponent
     public function render(): View
     {
         return view('livewire.validators.validators', [
-            'validators'  => ViewModelFactory::paginate($this->validators),
+            'validators' => ViewModelFactory::paginate($this->validators),
         ]);
     }
 
@@ -125,12 +125,12 @@ final class Validators extends TabbedTableComponent
                 $query->where(fn ($query) => $query->when($this->filter['active'] === true, fn ($query) => $query->where(function ($query) {
                     $query->where('attributes->validatorResigned', null)
                         ->orWhere('attributes->validatorResigned', false);
-                })->whereRaw('(attributes->>\'validatorRank\')::int <= ?', Network::validatorCount())))
+                })->whereRaw('COALESCE((attributes->>\'validatorRank\')::int, 0) <= ?', Network::validatorCount())))
                     ->orWhere(fn ($query) => $query->when($this->filter['standby'] === true, fn ($query) => $query->where(function ($query) {
                         $query->where('attributes->validatorResigned', null)
                             ->orWhere('attributes->validatorResigned', false);
                     })->where(function ($query) {
-                        $query->whereRaw('(attributes->>\'validatorRank\')::int > ?', Network::validatorCount());
+                        $query->whereRaw('COALESCE((attributes->>\'validatorRank\')::int, 0) > ?', Network::validatorCount());
                     })))
                     ->orWhere(fn ($query) => $query->when($this->filter['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
             }))

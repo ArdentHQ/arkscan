@@ -59,6 +59,13 @@ final class Wallet extends Model
     public $timestamps = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The column name of the primary key.
      *
      * @var string
@@ -166,7 +173,7 @@ final class Wallet extends Model
      */
     public function receivedTransactions(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'recipient_id', 'address');
+        return $this->hasMany(Transaction::class, 'to', 'address');
     }
 
     /**
@@ -176,7 +183,7 @@ final class Wallet extends Model
      */
     public function blocks(): HasMany
     {
-        return $this->hasMany(Block::class, 'generator_public_key', 'public_key');
+        return $this->hasMany(Block::class, 'proposer', 'address');
     }
 
     /**
@@ -189,15 +196,5 @@ final class Wallet extends Model
     public function getRouteKeyName()
     {
         return 'address';
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }

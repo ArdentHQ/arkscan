@@ -15,7 +15,7 @@
         'w-[47px] h-[21px] rounded border text-center leading-5 text-xs',
         'text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent dark:border-theme-dark-700 dark:text-theme-dark-200 encapsulated-badge' => $isSentToSelf,
         'text-theme-success-700 border-theme-success-100 dark:border-theme-success-700 dark:text-theme-success-500 bg-theme-success-100 dark:bg-transparent' => ! $isSent && ! $generic && ! $isSentToSelf,
-        'text-theme-orange-dark border-theme-orange-light dark:border-[#AA6868] dark:text-[#F39B9B] dim:border-[#AB8282] dim:text-[#CAA0A0] bg-theme-orange-light dark:bg-transparent' => $isSent && ! $generic && ! $isSentToSelf,
+        'text-theme-orange-dark border-theme-orange-light dark:border-theme-failed-state-bg dim:border-theme-failed-state-bg dark:text-theme-failed-state-text dim:text-theme-failed-state-text bg-theme-orange-light dark:bg-transparent' => $isSent && ! $generic && ! $isSentToSelf,
         'bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent dark:border-theme-dark-700 dark:text-theme-dark-200'=> $generic && ! $isSentToSelf,
     ])>
         @if ($isSentToSelf)
@@ -28,7 +28,7 @@
     </div>
 
     <div>
-        @if ($model->isTransfer() || $alwaysShowAddress)
+        @if ($model->isTransfer() || $model->isTokenTransfer() || $alwaysShowAddress)
             @php ($transactionWallet = $model->sender())
             @if ($isSent)
                 @php ($transactionWallet = $model->recipient())
@@ -58,27 +58,6 @@
                     @endif
                 </span>
             @endunless
-        @elseif ($model->isMultiPayment())
-            @if ($isSent)
-                <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                    @lang('tables.transactions.multiple')
-
-                    ({{ count($model->payments()) }})
-                </span>
-            @else
-                <a
-                    class="link"
-                    href="{{ route('wallet', $model->sender()->address()) }}"
-                >
-                    @if ($model->sender()->hasUsername())
-                        {{ $model->sender()->username() }}
-                    @elseif ($withoutTruncate)
-                        {{ $model->sender()->address }}
-                    @else
-                        <x-truncate-middle>{{ $model->sender()->address }}</x-truncate-middle>
-                    @endif
-                </a>
-            @endif
         @else
             <span class="text-theme-secondary-900 dark:text-theme-dark-50">
                 @lang('tables.transactions.contract')

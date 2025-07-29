@@ -11,6 +11,7 @@ final class ValidatorResignationAggregate
 {
     public function aggregate(): int
     {
-        return Transaction::withScope(ValidatorResignationScope::class)->count();
+        return Transaction::withScope(ValidatorResignationScope::class)
+            ->count();
     }
 }

@@ -10,11 +10,11 @@ beforeEach(function () {
 });
 
 it('should aggregate and format', function () {
-    (new NetworkCache())->setSupply(fn () => '13628098200000000');
+    (new NetworkCache())->setSupply(fn () => 136280982 * 1e18);
 
     $wallet  = Wallet::factory()->create();
     $wallet2 = Wallet::factory()->create([
-        'balance'    => '10000000000000000',
+        'balance'    => 100000000 * 1e18,
 
         'attributes' => [
             'vote' => $wallet->public_key,
@@ -25,11 +25,11 @@ it('should aggregate and format', function () {
 
     expect($aggregate)->toBeString();
     expect(number_format((float) $aggregate, 12))->toBe('73.377809972047');
-    expect(number_format((float) $aggregate, 12))->toBe(number_format(10000000000000000 / 13628098200000000 * 100, 12));
+    expect(number_format((float) $aggregate, 12))->toBe(number_format((100000000 * 1e18) / (136280982 * 1e18) * 100, 12));
 });
 
 it('should return zero if no vote balance', function () {
-    (new NetworkCache())->setSupply(fn () => '13628098200000000');
+    (new NetworkCache())->setSupply(fn () => 136280982 * 1e18);
 
     $aggregate = (new VotePercentageAggregate())->aggregate();
 

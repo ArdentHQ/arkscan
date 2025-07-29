@@ -11,7 +11,6 @@ use App\Services\Cache\WalletCache;
 use ArkEcosystem\Crypto\Networks\AbstractNetwork;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Http;
 
 final class Network implements Contract
 {
@@ -54,6 +53,11 @@ final class Network implements Contract
         return $this->config['testnetExplorerUrl'];
     }
 
+    public function legacyExplorerUrl(): string
+    {
+        return $this->config['legacyExplorerUrl'];
+    }
+
     public function currency(): string
     {
         return $this->config['currency'];
@@ -74,13 +78,38 @@ final class Network implements Contract
         return $this->config['confirmations'];
     }
 
+    public function knownWalletsUrl(): string
+    {
+        return $this->config['knownWallets'];
+    }
+
     public function knownWallets(): array
     {
         if (is_null(Arr::get($this->config, 'knownWallets'))) {
             return [];
         }
 
-        return (new WalletCache())->setKnown(fn () => Http::get($this->config['knownWallets'])->json());
+        return (new WalletCache())->getKnown();
+    }
+
+    public function knownContracts(): array
+    {
+        return $this->config['contract_addresses'];
+    }
+
+    public function knownContract(string $name): ?string
+    {
+        return Arr::get($this->knownContracts(), $name);
+    }
+
+    public function contractMethod(string $name, string $default): string
+    {
+        $method = Arr::get($this->config['contract_methods'], $name);
+        if ($method === null) {
+            return $default;
+        }
+
+        return $method;
     }
 
     public function canBeExchanged(): bool
@@ -108,9 +137,19 @@ final class Network implements Contract
         return $this->config['blockReward'];
     }
 
+    public function base58Prefix(): int
+    {
+        return $this->config['base58Prefix'];
+    }
+
     public function supply(): BigNumber
     {
-        return State::latest()->supply;
+        $latestState = State::first();
+        if ($latestState === null) {
+            return BigNumber::zero();
+        }
+
+        return $latestState->supply;
     }
 
     public function config(): AbstractNetwork

@@ -16,6 +16,7 @@
     <x-loading.visible
         wire:key="skeleton:transactions:ready"
         display-type="block"
+        wire:target="setPage,gotoPage,setPerPage"
     >
         <x-tables.desktop.skeleton.wallet-transactions
             :row-count="$rowCount"
@@ -26,7 +27,7 @@
     </x-loading.visible>
 
     <div wire:key="skeleton:transactions:hidden">
-        <x-loading.hidden>
+        <x-loading.hidden wire:target="setPage,gotoPage,setPerPage">
             {{ $slot }}
         </x-loading.hidden>
     </div>

@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
-use App\Livewire\SupportBrowserHistoryWrapper;
+use App\Livewire\SupportQueryString;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 trait HasTabs
 {
+    use SyncsInput;
+    use HasTablePagination;
+
     public array $tabQueryData = [];
 
     public array $savedQueryData = [];
@@ -63,7 +66,7 @@ trait HasTabs
             }
         }
 
-        $this->emit('set'.Str::studly($view).'Ready');
+        $this->dispatch('set'.Str::studly($view).'Ready');
 
         $this->alreadyLoadedViews[$view] = true;
     }
@@ -87,9 +90,13 @@ trait HasTabs
     public function updatedView(): void
     {
         if (array_key_exists($this->view, $this->savedQueryData)) {
+            /** @var string $key */
             foreach ($this->savedQueryData[$this->view] as $key => $value) {
-                // @phpstan-ignore-next-line
-                $this->{$key} = $value;
+                if ($key === 'paginators') {
+                    $this->setPage($value['page']);
+                }
+
+                $this->syncInput($key, $value);
             }
         }
     }
@@ -98,7 +105,9 @@ trait HasTabs
 
     private function saveViewData(?string $newView = null): void
     {
-        SupportBrowserHistoryWrapper::init()->mergeRequestQueryStringWithComponent($this);
+        $queryStringSupport = new SupportQueryString();
+        $queryStringSupport->setComponent($this);
+        $queryStringSupport->mergeQueryStringWithRequest();
 
         $this->savedQueryData[$this->view] = $this->tabQueryData[$this->view];
 
@@ -107,10 +116,32 @@ trait HasTabs
         }
 
         // Reset the querystring data on view change to clear the URL
-        $queryStringData = $this->queryString();
-        foreach ($this->tabQueryData[$this->view] as $key => $value) {
-            // @phpstan-ignore-next-line
-            $this->{$key} = $queryStringData[$key]['except'];
+        $queryStringData = $queryStringSupport->getQueryString();
+
+        $properties = $this->getAttributesByName();
+
+        /** @var string $key */
+        foreach (array_keys($this->tabQueryData[$this->view]) as $key) {
+            $except = null;
+
+            if ($key === 'paginators') {
+                $key = 'paginators.page';
+            }
+
+            $property = $properties->get($key);
+            if ($property !== null) {
+                $except = $property->except;
+            } else {
+                $except = $queryStringData[$key]['except'];
+            }
+
+            if ($key === 'paginators.page') {
+                $this->setPage($except);
+
+                continue;
+            }
+
+            $this->syncInput($key, $except);
         }
 
         $this->triggerViewIsReady($newView);
@@ -123,11 +154,13 @@ trait HasTabs
 
     private function resolvePage(): int
     {
-        return (int) request()->get('page', $this->page);
+        return (int) request()->get('page', $this->getPage());
     }
 
-    private function resolvePerPage(): int
+    private function resolvePerPage(): ?int
     {
-        return (int) request()->get('perPage', $this->perPage);
+        $value = request()->get('perPage', $this->perPage);
+
+        return $value === null ? null : (int) $value;
     }
 }

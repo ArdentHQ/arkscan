@@ -21,8 +21,7 @@
         <x-ark-icon
             :name="$icon"
             size="xs"
-            :class="Arr::toCssClasses([
-                'md:hidden' => $text,
+            :class="Arr::toCssClasses(['md:hidden' => $text,
             ])"
         />
 

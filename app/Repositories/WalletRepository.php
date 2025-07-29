@@ -35,11 +35,6 @@ final class WalletRepository implements Contract
         return Wallet::whereNotNull('public_key');
     }
 
-    public function allWithMultiSignature(): Builder
-    {
-        return Wallet::whereNotNull('attributes->multiSignature');
-    }
-
     public function findByAddress(string $address): Wallet
     {
         return Wallet::where('address', $address)->firstOrFail();

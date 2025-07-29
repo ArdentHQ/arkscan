@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Brick\Math\BigDecimal;
+use Brick\Math\RoundingMode;
 use Stringable;
 
 final class BigNumber implements Stringable
@@ -37,12 +38,27 @@ final class BigNumber implements Stringable
         return new static($value);
     }
 
+    public static function zero(): self
+    {
+        return new static(0);
+    }
+
     /**
      * @param BigDecimal|int|string $value
      */
     public function plus($value): self
     {
         $this->value = $this->value->plus($value);
+
+        return $this;
+    }
+
+    /**
+     * @param BigDecimal|int|float|string $value
+     */
+    public function multipliedBy($value): self
+    {
+        $this->value = $this->value->multipliedBy($value);
 
         return $this;
     }
@@ -57,9 +73,24 @@ final class BigNumber implements Stringable
         return intval($this->toFloat());
     }
 
-    public function toFloat(): float
+    /**
+     * @param float|null $divisor Defaults to 1e18 if not provided
+     *
+     * @return float
+     */
+    public function toFloat(?float $divisor = null, ?int $scale = null): float
     {
-        return $this->value->exactlyDividedBy(1e8)->toFloat();
+        if ($divisor === null) {
+            $divisor = config('currencies.notation.crypto', 1e18);
+        }
+
+        $value = $this->value->exactlyDividedBy($divisor);
+
+        if ($scale !== null) {
+            $value = $value->toScale($scale, RoundingMode::DOWN);
+        }
+
+        return $value->toFloat();
     }
 
     public function valueOf(): BigDecimal

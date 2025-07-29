@@ -1,23 +1,32 @@
 @props([
-    'model',
+    'model' => null,
     'withoutTruncate' => false,
     'withoutUsername' => false,
     'withoutClipboard' => false,
     'truncateBreakpoint' => 'xl',
     'withoutTransactionCount' => true,
     'validatorNameClass' => null,
+    'address' => null
 ])
 
 @php
+    if ($model === null && $address === null) {
+        throw new Exception('You must provide a model or an address');
+    }
+
     $truncateHiddenBreakpoint = [
         'sm' => 'sm:hidden',
+        'lg' => 'lg:hidden',
         'xl' => 'xl:hidden',
     ][$truncateBreakpoint];
 
     $truncateShowBreakpoint = [
         'sm' => 'hidden sm:inline',
+        'lg' => 'hidden lg:inline',
         'xl' => 'hidden xl:inline',
     ][$truncateBreakpoint];
+
+    $address = $model ? $model->address() : $address;
 @endphp
 
 <div class="flex flex-col">
@@ -28,27 +37,26 @@
                 :without-truncate="$withoutTruncate"
                 :without-username="$withoutUsername"
                 :validator-name-class="$validatorNameClass"
+                :address="$address"
             >
-                <x-slot name="address">
-                    @unless ($withoutTruncate)
-                        <span @class($truncateHiddenBreakpoint)>
-                            <x-truncate-middle>{{ $model->address() }}</x-truncate-middle>
-                        </span>
-                        <span @class($truncateShowBreakpoint)>
-                            {{ $model->address() }}
-                        </span>
-                    @else
-                        <span class="inline">
-                            {{ $model->address() }}
-                        </span>
-                    @endif
-                </x-slot>
+                @unless ($withoutTruncate)
+                    <span @class($truncateHiddenBreakpoint)>
+                        <x-truncate-middle>{{ $address }}</x-truncate-middle>
+                    </span>
+                    <span @class($truncateShowBreakpoint)>
+                        {{ $address }}
+                    </span>
+                @else
+                    <span class="inline">
+                        {{ $address }}
+                    </span>
+                @endif
             </x-general.identity>
         </span>
 
         @unless ($withoutClipboard)
             <x-clipboard
-                :value="$model->address()"
+                :value="$address"
                 :tooltip="trans('pages.wallet.address_copied')"
                 class="mr-3"
             />

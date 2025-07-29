@@ -12,7 +12,6 @@ final class ResignedValidatorScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        $builder->whereNotNull('attributes->validator->username');
         $builder->where('attributes->validator->resigned', true);
     }
 }

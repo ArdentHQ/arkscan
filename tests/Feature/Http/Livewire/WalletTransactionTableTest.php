@@ -2,13 +2,18 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Http\Livewire\WalletTransactionTable;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\ViewModels\ViewModelFactory;
+use App\Services\BigNumber;
+use App\Services\NumberFormatter;
+use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
 use Livewire\Livewire;
 use function Tests\fakeCryptoCompare;
+use function Tests\faker;
 
 beforeEach(function () {
     fakeCryptoCompare();
@@ -19,18 +24,18 @@ beforeEach(function () {
 it('should list all transactions', function () {
     $sent = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
-    ]);
+    ])->fresh();
 
     $received = Transaction::factory()->transfer()->create([
-        'recipient_id' => $this->subject->address,
-    ]);
+        'to' => $this->subject->address,
+    ])->fresh();
 
     $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady');
 
-    $sentTransaction = ViewModelFactory::make($sent);
+    $sentTransaction = new TransactionViewModel($sent);
 
-    $component->assertSee($sentTransaction->id());
+    $component->assertSee($sentTransaction->hash());
     $component->assertSee($sentTransaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -45,12 +50,12 @@ it('should list all transactions', function () {
     $component->assertSeeInOrder([
         '-',
         $sentTransaction->amount(),
-        $sentTransaction->fee(),
+        NumberFormatter::number($sentTransaction->fee()),
     ]);
 
-    $receivedTransaction = ViewModelFactory::make($received);
+    $receivedTransaction = new TransactionViewModel($received);
 
-    $component->assertSee($receivedTransaction->id());
+    $component->assertSee($receivedTransaction->hash());
     $component->assertSee($receivedTransaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -65,21 +70,21 @@ it('should list all transactions', function () {
     $component->assertSeeInOrder([
         '+',
         $receivedTransaction->amount(),
-        $receivedTransaction->fee(),
+        NumberFormatter::number($receivedTransaction->fee()),
     ]);
 });
 
 it('should list all transactions for cold wallet', function () {
     $received = Transaction::factory()->transfer()->create([
-        'recipient_id' => $this->subject->address,
-    ]);
+        'to' => $this->subject->address,
+    ])->fresh();
 
     $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady');
 
-    $transaction = ViewModelFactory::make($received);
+    $transaction = new TransactionViewModel($received);
 
-    $component->assertSee($transaction->id());
+    $component->assertSee($transaction->hash());
     $component->assertSee($transaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -94,163 +99,22 @@ it('should list all transactions for cold wallet', function () {
     $component->assertSeeInOrder([
         '+',
         $transaction->amount(),
-        $transaction->fee(),
-    ]);
-});
-
-it('should show sent multipayment', function () {
-    $recipient1 = Wallet::factory()->create();
-    $recipient2 = Wallet::factory()->create();
-    $recipient3 = Wallet::factory()->create();
-
-    $sent = Transaction::factory()->multiPayment()->create([
-        'sender_public_key' => $this->subject->public_key,
-        'recipient_id'      => $this->subject->address,
-
-        'asset' => [
-            'payments' => [
-                [
-                    'recipientId' => $recipient1->address,
-                    'amount'      => 1 * 1e8,
-                ],
-                [
-                    'recipientId' => $recipient2->address,
-                    'amount'      => 1 * 1e8,
-                ],
-                [
-                    'recipientId' => $recipient3->address,
-                    'amount'      => 1 * 1e8,
-                ],
-            ],
-        ],
-    ]);
-
-    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
-        ->call('setIsReady');
-
-    $transaction = ViewModelFactory::make($sent);
-
-    $component->assertSee($transaction->id());
-    $component->assertSee($transaction->timestamp());
-    $component->assertDontSee(sprintf(
-        '%s…%s',
-        substr($this->subject->address, 0, 5),
-        substr($this->subject->address, -5)
-    ));
-    $component->assertSeeInOrder(['Multiple', '(3)']);
-    $component->assertSeeInOrder([
-        '-',
-        $transaction->amount(),
-        $transaction->fee(),
-    ]);
-});
-
-it('should show received multipayment', function () {
-    $sender     = Wallet::factory()->create();
-    $recipient2 = Wallet::factory()->create();
-    $recipient3 = Wallet::factory()->create();
-
-    $received = Transaction::factory()->multiPayment()->create([
-        'sender_public_key' => $sender->public_key,
-        'recipient_id'      => $sender->address,
-
-        'asset' => [
-            'payments' => [
-                [
-                    'recipientId' => $this->subject->address,
-                    'amount'      => 1 * 1e8,
-                ],
-                [
-                    'recipientId' => $recipient2->address,
-                    'amount'      => 1 * 1e8,
-                ],
-                [
-                    'recipientId' => $recipient3->address,
-                    'amount'      => 1 * 1e8,
-                ],
-            ],
-        ],
-    ]);
-
-    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
-        ->call('setIsReady');
-
-    $transaction = ViewModelFactory::make($received);
-
-    $component->assertSee($transaction->id());
-    $component->assertSee($transaction->timestamp());
-    $component->assertSee(sprintf(
-        '%s…%s',
-        substr($sender->address, 0, 5),
-        substr($sender->address, -5)
-    ));
-    $component->assertDontSee('Multiple');
-    $component->assertSeeInOrder([
-        '-',
-        $transaction->amount(),
-        $transaction->fee(),
-    ]);
-});
-
-it('should show multipayment without amount sent to self', function () {
-    $recipient1 = Wallet::factory()->create();
-    $recipient2 = Wallet::factory()->create();
-
-    $sent = Transaction::factory()->multiPayment()->create([
-        'sender_public_key' => $this->subject->public_key,
-        'recipient_id'      => $this->subject->address,
-
-        'asset' => [
-            'payments' => [
-                [
-                    'recipientId' => $recipient1->address,
-                    'amount'      => 1 * 1e8,
-                ],
-                [
-                    'recipientId' => $recipient2->address,
-                    'amount'      => 1 * 1e8,
-                ],
-                [
-                    'recipientId' => $this->subject->address,
-                    'amount'      => 1 * 1e8,
-                ],
-            ],
-        ],
-    ]);
-
-    $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
-        ->call('setIsReady');
-
-    $transaction = ViewModelFactory::make($sent);
-
-    $component->assertSee($transaction->id());
-    $component->assertSee($transaction->timestamp());
-    $component->assertDontSee(sprintf(
-        '%s…%s',
-        substr($this->subject->address, 0, 5),
-        substr($this->subject->address, -5)
-    ));
-    $component->assertSeeInOrder(['Multiple', '(3)']);
-    $component->assertSeeInOrder([
-        'Excluding 1 DARK sent to self',
-        '-',
-        $transaction->amountExcludingItself(),
-        $transaction->fee(),
+        NumberFormatter::number($transaction->fee()),
     ]);
 });
 
 it('should show transfer without amount sent to self', function () {
     $sent = Transaction::factory()->transfer()->create([
-        'sender_public_key' => $this->subject->public_key,
-        'recipient_id'      => $this->subject->address,
-    ]);
+        'sender_public_key'      => $this->subject->public_key,
+        'to'                     => $this->subject->address,
+    ])->fresh();
 
     $component = Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady');
 
-    $transaction = ViewModelFactory::make($sent);
+    $transaction = new TransactionViewModel($sent);
 
-    $component->assertSee($transaction->id());
+    $component->assertSee($transaction->hash());
     $component->assertSee($transaction->timestamp());
     $component->assertSee(sprintf(
         '%s…%s',
@@ -260,7 +124,7 @@ it('should show transfer without amount sent to self', function () {
     $component->assertSeeInOrder([
         '-',
         '0.00',
-        $transaction->fee(),
+        NumberFormatter::number($transaction->fee()),
     ]);
 });
 
@@ -268,33 +132,42 @@ it('should toggle all filters when "select all" is selected', function () {
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->assertSet('filter', [
-            'outgoing'      => true,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.outgoing', true)
         ->assertSet('selectAllFilters', true)
         ->set('selectAllFilters', false)
         ->assertSet('filter', [
-            'outgoing'      => false,
-            'incoming'      => false,
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
+            'outgoing'            => false,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->set('selectAllFilters', true)
         ->assertSet('filter', [
-            'outgoing'      => true,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
         ]);
 });
 
@@ -302,12 +175,15 @@ it('should toggle "select all" when all filters are selected', function () {
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->assertSet('filter', [
-            'outgoing'      => true,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
         ])
         ->assertSet('selectAllFilters', true)
         ->set('filter.outgoing', false)
@@ -322,18 +198,21 @@ it('should filter by outgoing transactions', function () {
     ]);
 
     $received = Transaction::factory()->transfer()->create([
-        'recipient_id' => $this->subject->address,
+        'to' => $this->subject->address,
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => true,
-            'incoming'      => false,
-            'transfers'     => true,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => true,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertSee($sent->id)
         ->assertDontSee($received->id);
@@ -345,62 +224,21 @@ it('should filter by incoming transactions', function () {
     ]);
 
     $received = Transaction::factory()->transfer()->create([
-        'recipient_id' => $this->subject->address,
+        'to' => $this->subject->address,
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => false,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
-        ])
-        ->assertSee($received->id)
-        ->assertDontSee($sent->id);
-});
-
-it('should show multipayments when filtered by incoming transactions', function () {
-    $sent = Transaction::factory()->transfer()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
-    $multiPaymentSender = Wallet::factory()->create();
-    $recipient2         = Wallet::factory()->create();
-    $recipient3         = Wallet::factory()->create();
-    $received           = Transaction::factory()->multiPayment()->create([
-        'sender_public_key' => $multiPaymentSender->public_key,
-        'recipient_id'      => $multiPaymentSender->address,
-
-        'asset' => [
-            'payments' => [
-                [
-                    'recipientId' => $this->subject->address,
-                    'amount'      => 1 * 1e8,
-                ],
-                [
-                    'recipientId' => $recipient2->address,
-                    'amount'      => 1 * 1e8,
-                ],
-                [
-                    'recipientId' => $recipient3->address,
-                    'amount'      => 1 * 1e8,
-                ],
-            ],
-        ],
-    ]);
-
-    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
-        ->call('setIsReady')
-        ->set('filter', [
-            'outgoing'      => false,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => false,
-            'multipayments' => true,
-            'others'        => false,
+            'outgoing'            => false,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertSee($received->id)
         ->assertDontSee($sent->id);
@@ -409,21 +247,25 @@ it('should show multipayments when filtered by incoming transactions', function 
 it('should filter by incoming and outgoing transactions', function () {
     $sent = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
+        'to'                => $this->subject->address,
     ]);
 
     $received = Transaction::factory()->transfer()->create([
-        'recipient_id' => $this->subject->address,
+        'to' => $this->subject->address,
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => true,
-            'incoming'      => true,
-            'transfers'     => true,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertSee($sent->id)
         ->assertSee($received->id);
@@ -434,51 +276,25 @@ it('should filter by transfer transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $vote = Transaction::factory()->vote()->create([
+    $vote = Transaction::factory()->vote($this->subject->address)->create([
         'sender_public_key' => $this->subject->public_key,
-        'asset'             => [
-            'votes' => [$this->subject->public_key],
-        ],
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => true,
-            'incoming'      => false,
-            'transfers'     => true,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => true,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertSee($transfer->id)
         ->assertDontSee($vote->id);
-});
-
-it('should filter by vote transactions', function () {
-    $transfer = Transaction::factory()->transfer()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
-    $vote = Transaction::factory()->vote()->create([
-        'sender_public_key' => $this->subject->public_key,
-        'asset'             => [
-            'votes' => [$this->subject->public_key],
-        ],
-    ]);
-
-    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
-        ->call('setIsReady')
-        ->set('filter', [
-            'outgoing'      => true,
-            'incoming'      => false,
-            'transfers'     => false,
-            'votes'         => true,
-            'multipayments' => false,
-            'others'        => false,
-        ])
-        ->assertSee($vote->id)
-        ->assertDontSee($transfer->id);
 });
 
 it('should filter by multipayment transactions', function () {
@@ -486,49 +302,245 @@ it('should filter by multipayment transactions', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $multipayment = Transaction::factory()->multiPayment()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
+    $multiPayment = Transaction::factory()
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+        ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => true,
-            'incoming'      => false,
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => true,
-            'others'        => false,
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => true,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
-        ->assertSee($multipayment->id)
+        ->assertSee($multiPayment->id)
         ->assertDontSee($transfer->id);
 });
 
-it('should filter by other transactions', function () {
+it('should filter by vote transactions', function () {
+    $vote = Transaction::factory()->vote($this->subject->address)->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-04 11:33:44')->getTimestampMs(),
+    ]);
+
+    $unvote = Transaction::factory()->unvote()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->assertSee($transfer->id)
+        ->assertSee($unvote->id)
+        ->set('filter', [
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => true,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertSee($vote->id)
+        ->assertSee($unvote->id);
+});
+
+it('should filter by validator transactions', function () {
+    $registration = Transaction::factory()->validatorRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-04 11:33:44')->getTimestampMs(),
+    ]);
+
+    $resignation = Transaction::factory()->validatorResignation()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->assertSee($transfer->id)
+        ->assertSee($resignation->id)
+        ->set('filter', [
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => true,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertSee($registration->id)
+        ->assertSee($resignation->id);
+});
+
+it('should filter by username transactions', function () {
+    $registration = Transaction::factory()->usernameRegistration()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-04 11:33:44')->getTimestampMs(),
+    ]);
+
+    $resignation = Transaction::factory()->usernameResignation()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->assertSee($transfer->id)
+        ->assertSee($resignation->id)
+        ->set('filter', [
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => true,
+            'contract_deployment' => false,
+            'others'              => false,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertSee($registration->id)
+        ->assertSee($resignation->id);
+});
+
+it('should filter by contract deployment transactions', function () {
+    $contractDeployment = Transaction::factory()->contractDeployment()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
+    ]);
+
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-04 11:33:44')->getTimestampMs(),
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->assertSee($transfer->id)
+        ->assertSee($contractDeployment->id)
+        ->set('filter', [
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => true,
+            'others'              => false,
+        ])
+        ->assertDontSee($transfer->id)
+        ->assertSee($contractDeployment->id);
+});
+
+it('should filter by other transactions to consensus address', function () {
     $transfer = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
+    $other = Transaction::factory()->withPayload('12345678')->create([
         'sender_public_key' => $this->subject->public_key,
-    ]);
-
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
+        'to'                => Network::knownContract('consensus'),
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => true,
-            'incoming'      => false,
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => true,
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => true,
         ])
-        ->assertSee($validatorRegistration->id)
-        ->assertSee($usernameRegistration->id)
+        ->assertSee($other->id)
+        ->assertDontSee($transfer->id);
+});
+
+it('should filter by other transactions to non-consensus address', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $other = Transaction::factory()->withPayload('12345678')->create([
+        'sender_public_key' => $this->subject->public_key,
+        'to'                => 'not consensus address',
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => true,
+        ])
+        ->assertSee($other->id)
+        ->assertDontSee($transfer->id);
+});
+
+it('should not filter transfers to consensus as "other"', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'sender_public_key' => $this->subject->public_key,
+    ]);
+
+    $other = Transaction::factory()->create([
+        'sender_public_key' => $this->subject->public_key,
+        'to'                => Network::knownContract('consensus'),
+    ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'            => true,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => true,
+        ])
+        ->assertDontSee($other->id)
         ->assertDontSee($transfer->id);
 });
 
@@ -541,23 +553,21 @@ it('should show no transactions if no filters', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => false,
-            'incoming'      => false,
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
+            'outgoing'            => false,
+            'incoming'            => false,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_filters'));
 });
 
@@ -570,23 +580,21 @@ it('should show no transactions if no addressing filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => false,
-            'incoming'      => false,
-            'transfers'     => true,
-            'votes'         => true,
-            'multipayments' => true,
-            'others'        => true,
+            'outgoing'            => false,
+            'incoming'            => false,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_addressing_filters'));
 });
 
@@ -595,27 +603,27 @@ it('should show no transactions if no type filter', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $validatorRegistration = Transaction::factory()->validatorRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
-
-    $usernameRegistration = Transaction::factory()->usernameRegistration()->create([
-        'sender_public_key' => $this->subject->public_key,
-    ]);
+    $validatorRegistration = Transaction::factory()
+        ->validatorRegistration()
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+        ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
         ->call('setIsReady')
         ->set('filter', [
-            'outgoing'      => true,
-            'incoming'      => true,
-            'transfers'     => false,
-            'votes'         => false,
-            'multipayments' => false,
-            'others'        => false,
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => false,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
         ])
         ->assertDontSee($transfer->id)
         ->assertDontSee($validatorRegistration->id)
-        ->assertDontSee($usernameRegistration->id)
         ->assertSee(trans('tables.transactions.no_results.no_results'));
 });
 
@@ -626,16 +634,14 @@ it('should show no results message if no transactions matching filter', function
 });
 
 it('should reset pagination when filtering', function () {
-    $vote = Transaction::factory()->vote()->create([
+    $vote = Transaction::factory()->vote($this->subject->address)->create([
         'sender_public_key' => $this->subject->public_key,
-        'timestamp'         => 102982050, // oldest transaction
-        'asset'             => [
-            'votes' => [$this->subject->public_key],
-        ],
+        'timestamp'         => Carbon::parse('2024-11-03 11:33:44')->getTimestampMs(), // oldest transaction
     ]);
 
     Transaction::factory(30)->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
+        'timestamp'         => Carbon::parse('2024-11-04 11:33:44')->getTimestampMs(),
     ]);
 
     Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
@@ -643,8 +649,21 @@ it('should reset pagination when filtering', function () {
         ->assertDontSee($vote->id)
         ->call('setPage', 2)
         ->assertSee($vote->id)
+        ->assertSee('Showing 31 results')
         ->set('filter.transfers', false)
-        ->assertSet('page', 1)
+        ->assertSet('filter', [
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => false,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
+        ])
+        ->assertSet('paginators.page', 1)
+        ->assertSee('Showing 1 result')
         ->assertSee($vote->id);
 });
 
@@ -653,8 +672,56 @@ it('should show no data if not ready', function () {
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    Livewire::test(WalletTransactionTable::class, [ViewModelFactory::make($this->subject)])
-        ->assertDontSee($transaction->id)
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->assertDontSee($transaction->hash)
         ->call('setIsReady')
-        ->assertSee($transaction->id);
+        ->assertSee($transaction->hash);
+});
+
+it('should determine if has transaction type filters', function (string $filter) {
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->set('filter', [
+            'outgoing'            => false,
+            'incoming'            => false,
+            'transfers'           => $filter === 'transfers',
+            'multipayments'       => $filter === 'multipayments',
+            'votes'               => $filter === 'votes',
+            'validator'           => $filter === 'validator',
+            'username'            => $filter === 'username',
+            'contract_deployment' => $filter === 'contract_deployment',
+            'others'              => $filter === 'others',
+        ])
+        ->assertDontSee(trans('tables.transactions.no_results.no_filters'));
+})->with([
+    'transfers',
+    'multipayments',
+    'votes',
+    'validator',
+    'username',
+    'contract_deployment',
+    'others',
+]);
+
+it('should also sort transactions by index in block', function () {
+    $transaction1 = Transaction::factory()
+        ->transfer()
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'transaction_index' => 0,
+        ]);
+
+    $transaction2 = Transaction::factory()
+        ->transfer()
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'transaction_index' => 1,
+        ]);
+
+    Livewire::test(WalletTransactionTable::class, [new WalletViewModel($this->subject)])
+        ->call('setIsReady')
+        ->assertSeeInOrder([
+            $transaction2->hash,
+            $transaction1->hash,
+        ]);
 });

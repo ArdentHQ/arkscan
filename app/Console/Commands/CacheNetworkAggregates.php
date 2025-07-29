@@ -9,7 +9,6 @@ use App\Aggregates\TransactionCountAggregate;
 use App\Aggregates\TransactionVolumeAggregate;
 use App\Aggregates\VoteCountAggregate;
 use App\Aggregates\VotePercentageAggregate;
-use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Transaction;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Console\Command;
@@ -40,7 +39,8 @@ final class CacheNetworkAggregates extends Command
 
         $cache->setVotesPercentage((new VotePercentageAggregate())->aggregate());
 
-        $cache->setValidatorRegistrationCount(Transaction::withScope(ValidatorRegistrationScope::class)->count());
+        // TODO: re-add validator registration scope - https://app.clickup.com/t/86dvxzgaj
+        $cache->setValidatorRegistrationCount(Transaction::count());
 
         $cache->setFeesCollected((new DailyFeeAggregate())->aggregate());
     }

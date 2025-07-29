@@ -39,21 +39,21 @@ final class CacheValidatorVoterCounts extends Command
         $validatorCache = new ValidatorCache();
 
         $select = [
-            'wallets.public_key',
-            'COUNT(voters.public_key) total',
+            'wallets.address',
+            'COUNT(voters.address) total',
         ];
 
         $results = Wallets::allWithValidatorPublicKey()
             ->selectRaw(implode(', ', $select))
             ->join(
                 'wallets as voters',
-                'wallets.public_key',
+                'wallets.address',
                 (string) DB::raw('voters.attributes->vote')->getValue(DB::connection()->getQueryGrammar())
             )
-            ->groupBy('wallets.public_key')
-            ->pluck('total', 'public_key');
+            ->groupBy('wallets.address')
+            ->pluck('total', 'address');
 
-        $results->each(fn ($total, $publicKey) => $walletCache->setVoterCount($publicKey, $total));
+        $results->each(fn ($total, $address) => $walletCache->setVoterCount($address, $total));
 
         $validatorCache->setAllVoterCounts($results->toArray());
 
@@ -65,7 +65,7 @@ final class CacheValidatorVoterCounts extends Command
             return;
         }
 
-        $totalVoted = BigNumber::new(0);
+        $totalVoted = BigNumber::zero();
         foreach ($wallets as $wallet) {
             $totalVoted->plus($wallet['balance']->valueOf());
         }

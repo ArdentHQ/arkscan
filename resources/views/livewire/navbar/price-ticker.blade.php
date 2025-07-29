@@ -1,18 +1,13 @@
 @php ($isDisabled = app()->isDownForMaintenance() || ! Network::canBeExchanged() || config('arkscan.network') !== 'production' || ! $isAvailable)
 
 <div
-    {{--
-        @TODO: use events and websockets to handle when price ticker (and all other areas) are updated instead of polling
-
-        https://app.clickup.com/t/86dqjdxjm
-    --}}
-    @unless ($isDisabled)
+    @if (! $isDisabled && config('broadcasting.default') !== 'reverb')
         wire:poll.visible.30s
-    @endunless
+    @endif
     class="w-full md:w-auto"
     :class="{ 'opacity-50': busy }"
     x-data="{ busy: false }"
-    x-init="livewire.on('currencyChanged', () => busy = true);"
+    x-init="Livewire.on('currencyChanged', () => busy = true);"
     @has-loaded-price-data="busy = false"
 >
     <div @class([
@@ -75,7 +70,7 @@
                 </div>
             </x-slot>
 
-            @foreach (config('currencies') as $currency)
+            @foreach (config('currencies.currencies') as $currency)
                 <x-general.dropdown.list-item
                     :is-active="$currency['currency'] === $to"
                     wire:click="setCurrency('{{ $currency['currency'] }}')"

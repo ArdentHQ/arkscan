@@ -10,6 +10,8 @@ use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\WebhooksController;
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -66,8 +68,12 @@ Route::post('support', [SupportController::class, 'handle'])
 Route::redirect('/top-wallets', '/top-accounts');
 Route::redirect('/wallets', '/top-accounts');
 Route::get('/block/{block}', fn (Block $block) => redirect()->route('block', ['block' => $block]));
-Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redirect()->route('transaction', ['transaction' => $transaction]));
+Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redirect()->route('transaction', ['transaction' => $transaction->hash]));
 Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
 
 Route::view('/compatible-wallets', 'app.compatible-wallets')->name('compatible-wallets');
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
+
+Route::post('/webhooks', WebhooksController::class)
+    ->withoutMiddleware([VerifyCsrfToken::class])
+    ->name('webhooks');

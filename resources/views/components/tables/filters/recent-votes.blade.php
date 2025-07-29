@@ -24,11 +24,6 @@
                 name="unvote"
                 :label="trans('tables.filters.recent-votes.unvote')"
             />
-
-            <x-tables.filters.includes.checkbox
-                name="vote-swap"
-                :label="trans('tables.filters.recent-votes.vote_swap')"
-            />
         </x-tables.filters.includes.group>
     </div>
 </x-general.dropdown.filter>

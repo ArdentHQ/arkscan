@@ -76,6 +76,15 @@ final class MarketDataRecordStatistics
         return Carbon::createFromTimestamp($this->ath->timestamp)->format(DateFormat::DATE);
     }
 
+    public function toArray(): array
+    {
+        return [
+            'today' => $this->today,
+            'atl'   => $this->atl->toArray(),
+            'ath'   => $this->ath->toArray(),
+        ];
+    }
+
     /**
      * @param string|int|float $value
      */

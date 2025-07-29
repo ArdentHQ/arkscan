@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 final class Transaction extends Base
 {
-    public function transactionId(): string
+    public function transactionHash(): string
     {
         return hash('sha256', Str::random(8));
     }

@@ -5,10 +5,11 @@ declare(strict_types=1);
 return [
     'ardent'              => 'Ardent',
     'address'             => 'Address',
+    'recipients'          => 'Recipients',
     'beta_uppercase'      => 'BETA',
     'optional'            => 'Optional',
     'or'                  => 'or',
-    'arkscan'             => 'ARKScan',
+    'arkscan'             => 'ARK Scan',
     'scan'                => 'Scan',
     'height'              => 'Height',
     'network'             => 'Network',
@@ -37,6 +38,7 @@ return [
     'coming_soon'         => 'Coming Soon',
     'select_all'          => 'Select All',
     'success'             => 'Success',
+    'failed'              => 'Failed',
     'information'         => 'Information',
     'error'               => 'Error',
     'warning'             => 'Warning',
@@ -45,10 +47,13 @@ return [
     'filter'              => 'Filter',
     'now'                 => 'Now',
     'vote_with'           => 'Vote With',
+    'contract'            => 'Contract',
+    'gwei'                => 'Gwei',
+    'seconds_duration'    => '[1] ~ :duration sec|~ :duration secs',
 
     'arkconnect' => [
-        'mainnet_network'                => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
-        'testnet_network'                => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARKScan, please switch to <a class="link font-semibold" href="https://live.arkscan.io/">live.arkscan.io</a>.',
+        'mainnet_network'                => 'You\'re viewing data from the main network, but your wallet is connected to test network (ARK Testnet). To use ARK Scan, please switch to <a class="link font-semibold" href="https://test.arkscan.io/">test.arkscan.io</a>.',
+        'testnet_network'                => 'You\'re viewing data from the test network, but your wallet is connected to main network (ARK Mainnet). To use ARK Scan, please switch to <a class="link font-semibold" href="https://live.arkscan.io/">live.arkscan.io</a>.',
         'validator_resigned'             => '<span class="font-semibold" x-text="votedValidatorName"></span>, the validator you are voting for, has resigned.',
         'validator_resigned_switch_vote' => 'We recommend switching your vote to an active validator.',
         'validator_standby'              => 'The validator you are voting for <span class="font-semibold">(<span x-text="votedValidatorName"></span>)</span> is not in an active forging position at the moment.',
@@ -63,11 +68,12 @@ return [
     ],
 
     'navbar' => [
-        'search_placeholder' => 'Address / Tx ID / Block ID',
-        'mainnet'            => 'Mainnet',
-        'testnet'            => 'Testnet',
-        'price'              => 'Price',
-        'connect_wallet'     => 'Connect Wallet',
+        'search_placeholder'  => 'Address / Tx ID / Block ID',
+        'mainnet'             => 'Mainnet',
+        'testnet'             => 'Testnet',
+        'price'               => 'Price',
+        'connect_wallet'      => 'Connect Wallet',
+        'release_tag_tooltip' => 'This is an :tag release of ARK Scan',
 
         'theme' => [
             'light' => 'Light',
@@ -76,7 +82,7 @@ return [
         ],
 
         'arkconnect' => [
-            'my_address'   => 'My Address:',
+            'my_address'   => 'My Address',
             'copy_address' => 'Copy Address',
             'disconnect'   => 'Disconnect',
 
@@ -115,23 +121,20 @@ return [
         'block_id'                 => 'Block ID',
         'well-confirmed'           => 'Well Confirmed',
         'voting_validator'         => '<span class="font-semibold text-theme-secondary-500">Voting for <span class="text-white">:validator</span></span>',
-        'vote_validator'           => '<span class="font-semibold text-theme-secondary-500">Vote: <span class="text-white">:validator</span></span>',
-        'unvote_validator'         => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:validator</span></span>',
-        'vote_swap_validator'      => '<span class="font-semibold text-theme-secondary-500">Unvote: <span class="text-white">:validator_unvote</span> | Vote: <span class="text-white">:validator_vote</span></span>',
+        'vote_validator'           => '<span class="font-semibold text-theme-secondary-500 break-words"><span>Vote:</span><span class="text-white ml-1">:validator</span></span>',
 
         'types'                   => [
-            'validator-registration' => 'Registration',
-            'validator-resignation'  => 'Resignation',
-            'multi-payment'          => 'Multipayment',
-            'vote-combination'       => 'Vote Swap',
-            'multi-signature'        => 'Multisignature',
-            'username-registration'  => 'Username Registration',
-            'username-resignation'   => 'Username Resignation',
             'transfer'               => 'Transfer',
+            'multipayment'           => 'Multipayment',
             'unvote'                 => 'Unvote',
             'vote'                   => 'Vote',
             'unknown'                => 'Unknown',
-            'legacy'                 => 'Legacy',
+            'validator-registration' => 'Validator Registration',
+            'validator-resignation'  => 'Validator Resignation',
+            'validator-update'       => 'Validator Update',
+            'username-registration'  => 'Username Registration',
+            'username-resignation'   => 'Username Resignation',
+            'contract-deployment'    => 'Contract Deployment',
         ],
     ],
 

@@ -6,7 +6,6 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
 use App\ViewModels\ViewModelFactory;
@@ -17,28 +16,24 @@ use Illuminate\View\View;
 /** @property LengthAwarePaginator $blocks */
 final class WalletBlockTable extends TabbedTableComponent
 {
-    use DeferLoading;
-
-    public string $publicKey;
+    public string $address;
 
     /** @var mixed */
     protected $listeners = [
         'setBlocksReady'  => 'setIsReady',
         'currencyChanged' => '$refresh',
+        'reloadBlocks'    => '$refresh',
     ];
 
     public function mount(WalletViewModel $wallet): void
     {
-        /** @var string $publicKey */
-        $publicKey = $wallet->publicKey();
-
-        $this->publicKey = $publicKey;
+        $this->address = $wallet->address();
     }
 
     public function render(): View
     {
         return view('livewire.wallet-block-table', [
-            'wallet' => ViewModelFactory::make(Wallets::findByPublicKey($this->publicKey)),
+            'wallet' => ViewModelFactory::make(Wallets::findByAddress($this->address)),
             'blocks' => ViewModelFactory::paginate($this->blocks),
         ]);
     }
@@ -58,7 +53,7 @@ final class WalletBlockTable extends TabbedTableComponent
             return new LengthAwarePaginator([], 0, $this->perPage);
         }
 
-        return Block::where('generator_public_key', $this->publicKey)
+        return Block::where('proposer', $this->address)
             ->withScope(OrderByHeightScope::class)
             ->paginate($this->perPage);
     }

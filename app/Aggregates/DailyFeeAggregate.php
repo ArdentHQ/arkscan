@@ -13,6 +13,6 @@ final class DailyFeeAggregate implements Aggregate
 {
     public function aggregate(): string
     {
-        return (string) BigNumber::new(Block::where('timestamp', '>=', Timestamp::now()->subHours(24)->unix())->sum('total_fee'))->toFloat();
+        return (string) BigNumber::new(Block::where('timestamp', '>=', Timestamp::now()->subHours(24)->unix())->sum('fee'))->toFloat();
     }
 }

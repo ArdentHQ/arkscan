@@ -1,5 +1,3 @@
-import Alpine from "alpinejs";
-
 export const truncateMiddle = (text, maxLength = 10) => {
     if (typeof text !== "string") {
         return text;

@@ -9,7 +9,7 @@
 >
     @foreach ($blocks as $block)
         <x-tables.rows.mobile
-            wire:key="{{ Helpers::generateId('blocks-mobile-row', $block->id()) }}"
+            wire:key="{{ Helpers::generateId('blocks-mobile-row', $block->hash()) }}"
             content-class="sm:grid sm:grid-cols-5 sm:gap-6"
         >
             <x-slot name="header">
@@ -33,10 +33,6 @@
                 :model="$block"
                 class="leading-4.25"
             />
-
-            <div class="sm:flex sm:flex-1 sm:col-span-2 sm:justify-end">
-                <x-tables.rows.mobile.encapsulated.volume :model="$block" />
-            </div>
 
             <x-tables.rows.mobile.encapsulated.reward
                 :model="$block"

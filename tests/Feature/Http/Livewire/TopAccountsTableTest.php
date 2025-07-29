@@ -11,7 +11,7 @@ use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 
 it('should list the first page of records', function () {
-    (new NetworkCache())->setSupply(fn () => strval(10e8));
+    (new NetworkCache())->setSupply(fn () => strval(10 * 1e18));
 
     Wallet::factory(25)->create();
 
@@ -28,7 +28,7 @@ it('should list the first page of records', function () {
 });
 
 it('should change per page', function () {
-    (new NetworkCache())->setSupply(fn () => strval(10e8));
+    (new NetworkCache())->setSupply(fn () => strval(10 * 1e18));
 
     $visibleWallets    = Wallet::factory(10)->create(['balance' => 1000]);
     $notVisibleWallets = Wallet::factory(10)->create(['balance' => 10]);
@@ -53,7 +53,7 @@ it('should change per page', function () {
 });
 
 it('should not per page if not a valid option', function () {
-    (new NetworkCache())->setSupply(fn () => strval(10e8));
+    (new NetworkCache())->setSupply(fn () => strval(10 * 1e18));
 
     $visibleWallets    = Wallet::factory(10)->create(['balance' => 1000]);
     $notVisibleWallets = Wallet::factory(8)->create(['balance' => 10]);
@@ -83,20 +83,20 @@ it('should not per page if not a valid option', function () {
 });
 
 it('should go to page 1 when changing per page', function () {
-    (new NetworkCache())->setSupply(fn () => strval(10e8));
+    (new NetworkCache())->setSupply(fn () => strval(10 * 1e18));
 
     Wallet::factory(100)->create();
 
     Livewire::test(TopAccountsTable::class)
         ->call('setIsReady')
         ->call('gotoPage', 2)
-        ->assertSet('page', 2)
+        ->assertSet('paginators.page', 2)
         ->call('setPerPage', 25)
-        ->assertSet('page', 1);
+        ->assertSet('paginators.page', 1);
 });
 
 it('should defer loading', function () {
-    (new NetworkCache())->setSupply(fn () => strval(10e8));
+    (new NetworkCache())->setSupply(fn () => strval(10 * 1e18));
 
     $wallet = Wallet::factory()->create();
 

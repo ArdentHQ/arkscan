@@ -20,10 +20,10 @@ final class BlockSearch implements Search
      */
     public function search(string $query, int $limit): EloquentCollection
     {
-        if ($this->couldBeBlockID($query)) {
-            $builder = Block::where('id', strtolower($query))->take(1);
+        if ($this->couldBeBlockHash($query)) {
+            $builder = Block::where('hash', strtolower($query))->take(1);
         } else {
-            $builder = Block::where('id', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
+            $builder = Block::where('hash', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
         }
 
         return $builder->get();
@@ -41,7 +41,7 @@ final class BlockSearch implements Search
         }
 
         return (new SearchQuery())
-            ->setFilter(['id = '.sprintf('"%s"', addslashes($query))])
+            ->setFilter(['hash = '.sprintf('"%s"', addslashes($query))])
             ->setIndexUid('blocks')
             ->setLimit($limit);
     }

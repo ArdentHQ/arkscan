@@ -42,32 +42,32 @@ final class BuildForgingStats implements ShouldQueue
             $missedHeight = null;
             if ($statsForTimestamp['forged'] === false) {
                 /** @var array $missedBlock */
-                $missedBlock = Block::select('height')
-                    ->withCasts(['height' => 'int'])
+                $missedBlock = Block::select('number')
+                    ->withCasts(['number' => 'int'])
                     ->withScope(OrderByTimestampScope::class)
                     ->where('timestamp', '<=', $timestamp * 1000)
                     ->limit(1)
                     ->first();
 
-                $missedHeight = $missedBlock['height'] + 1;
+                $missedHeight = $missedBlock['number'] + 1;
             }
 
             $data[] = [
                 'missed_height' => $missedHeight,
                 'timestamp'     => $timestamp,
-                'public_key'    => $statsForTimestamp['publicKey'],
+                'address'       => $statsForTimestamp['address'],
                 'forged'        => $statsForTimestamp['forged'],
             ];
 
             if (count($data) > 1000) {
-                DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['public_key', 'forged']), attempts: 2);
+                DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['address', 'forged']), attempts: 2);
 
                 $data = [];
             }
         }
 
         if (count($data) > 0) {
-            DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['public_key', 'forged']), attempts: 2);
+            DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['address', 'forged']), attempts: 2);
         }
 
         // clean up old stats entries
@@ -78,18 +78,12 @@ final class BuildForgingStats implements ShouldQueue
     {
         $heightTimestamp = $this->getTimestampForHeight($height);
 
-        $startBlock = Block::where('timestamp', '<=', ($heightTimestamp - $timeRangeInSeconds) * 1000)
-            ->orderBy('height', 'desc')
+        return Block::where('timestamp', '<=', ($heightTimestamp - $timeRangeInSeconds) * 1000)
+            ->orderBy('number', 'desc')
             ->limit(1)
-            ->first();
-
-        if ($startBlock === null) {
-            return 1;
-        }
-
-        return $startBlock
-            ->height
-            ->toNumber();
+            ->first()
+            ?->number
+            ->toNumber() ?? 1;
     }
 
     private function getHeight(): int
@@ -97,8 +91,8 @@ final class BuildForgingStats implements ShouldQueue
         $height = $this->height;
 
         if ($height === 0) {
-            $lastBlock = Block::orderBy('height', 'DESC')->limit(1)->firstOrFail();
-            $height    = $lastBlock->height->toNumber();
+            $lastBlock = Block::orderBy('number', 'DESC')->limit(1)->firstOrFail();
+            $height    = $lastBlock->number->toNumber();
         }
 
         return $height;
@@ -108,7 +102,7 @@ final class BuildForgingStats implements ShouldQueue
     {
         $timeRange = intval($this->numberOfDays * 24 * 60 * 60);
         if ($timeRange === 0) {
-            $lastForgingInfoTs = (int) ForgingStats::orderBy('timestamp', 'DESC')
+            $lastForgingInfoTs = ForgingStats::orderBy('timestamp', 'DESC')
                 ->limit(1)
                 ->firstOr(function (): ForgingStats {
                     // by default if forging_stats table is not initialized we just build stats for past 30 days
@@ -137,6 +131,6 @@ final class BuildForgingStats implements ShouldQueue
 
     private function getTimestampForHeight(int $height): int
     {
-        return Block::where('height', $height)->firstOrFail()->timestamp;
+        return (int) (Block::where('number', $height)->firstOrFail()->timestamp / 1000);
     }
 }

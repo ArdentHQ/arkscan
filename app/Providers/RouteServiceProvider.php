@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Enums\Constants;
 use App\Exceptions\BlockNotFoundException;
 use App\Exceptions\TransactionNotFoundException;
 use App\Exceptions\WalletNotFoundException;
-use App\Facades\Network;
 use App\Facades\Wallets;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -49,12 +49,12 @@ final class RouteServiceProvider extends ServiceProvider
         });
 
         Route::bind('wallet', function (string $walletID): Wallet {
-            if (strlen($walletID) === 34) {
-                abort_unless(Address::validate($walletID, Network::config()), 404);
+            if (strlen($walletID) === Constants::ADDRESS_LENGTH) {
+                abort_unless(Address::validate($walletID), 404);
             }
 
             try {
-                return strlen($walletID) === 34
+                return strlen($walletID) === Constants::ADDRESS_LENGTH
                         ? Wallets::findByAddress($walletID)
                         : Wallets::findByUsername($walletID);
             } catch (Throwable) {
@@ -62,21 +62,21 @@ final class RouteServiceProvider extends ServiceProvider
             }
         });
 
-        Route::bind('transaction', function (string $transactionID): Transaction {
-            $transaction = Transaction::find($transactionID);
+        Route::bind('transaction', function (string $transactionHash): Transaction {
+            $transaction = Transaction::where('hash', $transactionHash)->first();
 
             if ($transaction === null) {
-                throw (new TransactionNotFoundException())->setModel(Transaction::class, [$transactionID]);
+                throw (new TransactionNotFoundException())->setModel(Transaction::class, [$transactionHash]);
             }
 
             return $transaction;
         });
 
-        Route::bind('block', function (string $blockID): Block {
-            $block = Block::find($blockID);
+        Route::bind('block', function (string $hash): Block {
+            $block = Block::where('hash', $hash)->first();
 
             if ($block === null) {
-                throw (new BlockNotFoundException())->setModel(Block::class, [$blockID]);
+                throw (new BlockNotFoundException())->setModel(Block::class, [$hash]);
             }
 
             return $block;

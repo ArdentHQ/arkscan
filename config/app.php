@@ -172,14 +172,13 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\BladeServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EloquentServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\ArkscanServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\DevelopmentServiceProvider::class,
-        App\Providers\LivewireServiceProvider::class,
         App\Testing\ParallelTestingServiceProvider::class,
         ARKEcosystem\Foundation\Providers\TelescopeServiceProvider::class,
 
@@ -246,6 +245,8 @@ return [
         'Forms'                   => App\Services\Forms::class,
         'Zendesk'                 => Huddle\Zendesk\Facades\Zendesk::class,
         'SortDirection'           => App\Enums\SortDirection::class,
+        'TokenTransferArgument'   => App\Enums\TokenTransferArgument::class,
+        'ArgumentDecoder'         => ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder::class,
     ],
 
 ];

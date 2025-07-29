@@ -12,13 +12,15 @@ use App\Services\Transactions\Aggregates\Historical\MonthAggregate;
 use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;
 use App\Services\Transactions\Aggregates\Historical\WeekAggregate;
 use App\Services\Transactions\Aggregates\Historical\YearAggregate;
-use App\Services\Transactions\Aggregates\Type\MultipaymentAggregate;
+use App\Services\Transactions\Aggregates\Type\MultiPaymentAggregate;
 use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
+use App\Services\Transactions\Aggregates\Type\UsernameRegistrationAggregate;
+use App\Services\Transactions\Aggregates\Type\UsernameResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
+use App\Services\Transactions\Aggregates\Type\ValidatorUpdateAggregate;
 use App\Services\Transactions\Aggregates\Type\VoteAggregate;
-use App\Services\Transactions\Aggregates\Type\VoteCombinationAggregate;
 use InvalidArgumentException;
 
 final class HistoricalAggregateFactory
@@ -52,14 +54,14 @@ final class HistoricalAggregateFactory
         throw new InvalidArgumentException('Invalid aggregate period.');
     }
 
-    public static function type(string $type): TransferAggregate | MultipaymentAggregate | VoteAggregate | UnvoteAggregate | VoteCombinationAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate
+    public static function type(string $type): TransferAggregate | MultiPaymentAggregate | VoteAggregate | UnvoteAggregate | ValidatorRegistrationAggregate | ValidatorResignationAggregate | ValidatorUpdateAggregate | UsernameRegistrationAggregate | UsernameResignationAggregate
     {
         if ($type === StatsTransactionType::TRANSFER) {
             return new TransferAggregate();
         }
 
         if ($type === StatsTransactionType::MULTIPAYMENT) {
-            return new MultipaymentAggregate();
+            return new MultiPaymentAggregate();
         }
 
         if ($type === StatsTransactionType::VOTE) {
@@ -70,16 +72,24 @@ final class HistoricalAggregateFactory
             return new UnvoteAggregate();
         }
 
-        if ($type === StatsTransactionType::SWITCH_VOTE) {
-            return new VoteCombinationAggregate();
-        }
-
         if ($type === StatsTransactionType::VALIDATOR_REGISTRATION) {
             return new ValidatorRegistrationAggregate();
         }
 
         if ($type === StatsTransactionType::VALIDATOR_RESIGNATION) {
             return new ValidatorResignationAggregate();
+        }
+
+        if ($type === StatsTransactionType::VALIDATOR_UPDATE) {
+            return new ValidatorUpdateAggregate();
+        }
+
+        if ($type === StatsTransactionType::USERNAME_REGISTRATION) {
+            return new UsernameRegistrationAggregate();
+        }
+
+        if ($type === StatsTransactionType::USERNAME_RESIGNATION) {
+            return new UsernameResignationAggregate();
         }
 
         throw new InvalidArgumentException('Invalid aggregate type.');

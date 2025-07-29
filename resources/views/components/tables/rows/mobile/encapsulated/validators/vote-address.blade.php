@@ -10,15 +10,20 @@
         </div>
     </x-slot>
 
-    @php
-        $validator = $transaction->voted();
-        if ($transaction->isUnvote()) {
-            $validator = $transaction->unvoted();
-        }
-    @endphp
+    @php($votedValidator = $transaction->voted())
 
-    <x-general.identity
-        :model="$validator"
-        :class="$valueClass"
-    />
+    @if ($votedValidator)
+        <a
+            href="{{ route('wallet', $votedValidator->address()) }}"
+            class="text-sm font-semibold link"
+        >
+            @if ($votedValidator->hasUsername())
+                {{ $votedValidator->username() }}
+            @else
+                <x-truncate-middle>
+                    {{ $votedValidator->address() }}
+                </x-truncate-middle>
+            @endif
+        </a>
+    @endif
 </x-tables.rows.mobile.encapsulated.cell>

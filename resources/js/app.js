@@ -9,10 +9,11 @@ import.meta.glob(["../images/**"]);
 
 import "./includes/page-scroll-handler";
 
+import Pusher from "pusher-js";
+import Echo from "laravel-echo";
 import dayjs from "dayjs/esm/index.js";
 import dayjsRelativeTime from "dayjs/esm/plugin/relativeTime/index.js";
 
-import Alpine from "alpinejs";
 import Wallet from "./wallet.js";
 import BlocksExport from "./blocks-export.js";
 import { Chart } from "chart.js";
@@ -38,7 +39,6 @@ import { truncateMiddle, TruncateDynamic } from "./truncate.js";
 import "./livewire-exception-handler.js";
 
 window.makeBlockie = makeBlockie;
-window.Alpine = Alpine;
 window.Wallet = Wallet;
 window.BlocksExport = BlocksExport;
 window.Chart = Chart;
@@ -52,8 +52,8 @@ window.Modal = Modal;
 window.ReadMore = ReadMore;
 window.RichSelect = RichSelect;
 window.PriceChart = PriceChart;
+window.Pusher = Pusher;
 window.Navbar = Navbar;
-window.CustomChart = CustomChart;
 window.CustomChart = CustomChart;
 window.TableSorting = TableSorting;
 window.ThemeManager = ThemeManager;
@@ -63,9 +63,26 @@ window.Search = Search;
 window.truncateMiddle = truncateMiddle;
 window.TruncateDynamic = TruncateDynamic;
 
-dayjs.extend(dayjsRelativeTime);
+if (import.meta.env.VITE_BROADCAST_DRIVER === "reverb") {
+    const options = {
+        broadcaster: "reverb",
+        key: import.meta.env.VITE_REVERB_APP_KEY,
+        wsHost: import.meta.env.VITE_REVERB_HOST,
+        wsPort: import.meta.env.VITE_REVERB_PORT,
+        forceTLS: false,
+        enabledTransports: ["ws"],
+    };
 
-Alpine.start();
+    if ((import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https") {
+        options.enabledTransports = ["ws", "wss"];
+        options.forceTLS = true;
+        options.wssPort = import.meta.env.VITE_REVERB_PORT_TLS;
+    }
+
+    window.Echo = new Echo(options);
+}
+
+dayjs.extend(dayjsRelativeTime);
 
 /**
  * If browser back button was used, flush cache
@@ -79,11 +96,17 @@ window.onpageshow = function (event) {
 };
 
 window.hideTableTooltipsOnLivewireEvent = (regex) => {
-    Livewire.hook("message.processed", (message, component) => {
-        if (!regex.test(component.name)) {
-            return;
-        }
+    Livewire.hook("commit", ({ component, succeed }) => {
+        succeed(() => {
+            if (!regex.test(component.name)) {
+                return;
+            }
 
-        window.hideAllTooltips();
+            window.hideAllTooltips();
+        });
     });
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+    Livewire.start();
+});

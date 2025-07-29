@@ -25,7 +25,15 @@ interface Network
 
     public function confirmations(): int;
 
+    public function knownWalletsUrl(): string;
+
     public function knownWallets(): array;
+
+    public function knownContracts(): array;
+
+    public function knownContract(string $name): ?string;
+
+    public function contractMethod(string $name, string $default): ?string;
 
     public function canBeExchanged(): bool;
 

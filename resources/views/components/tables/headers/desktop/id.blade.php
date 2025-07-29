@@ -16,8 +16,7 @@
     :first-on="$firstOn"
     :last-on="$lastOn"
     :width="$width"
-    :class="Arr::toCssClasses([
-        'text-left',
+    :class="Arr::toCssClasses(['text-left',
         'group/header cursor-pointer' => $sortingId !== null,
         'flex-row-reverse space-x-0' => $livewireSort && $sortingId !== null,
         $class,

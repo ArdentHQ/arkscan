@@ -8,6 +8,7 @@ use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
+use App\Services\Cache\RequestScopedCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use App\Services\Monitor\ValidatorTracker;
@@ -30,35 +31,35 @@ trait ValidatorData
     {
         Cache::remember('monitor:last-blocks', $this->cacheTtl(), function () use ($validators): bool {
             $blocks = Block::query()
-                ->orderBy('height', 'desc')
+                ->orderBy('number', 'desc')
                 ->limit(Network::validatorCount() * 2)
                 ->get();
 
-            $lastBlockIds = DB::connection('explorer')
+            $lastBlockHashes = DB::connection('explorer')
                 ->table('wallets')
-                ->whereIn('public_key', $validators)
+                ->whereIn('address', $validators)
                 ->select([
-                    'public_key',
-                    'last_block_id' => function ($query) {
-                        $query->select('id')
+                    'address',
+                    'last_block_hash' => function ($query) {
+                        $query->select('hash')
                             ->from('blocks')
-                            ->whereColumn('generator_public_key', 'public_key')
-                            ->orderBy('height', 'desc')
+                            ->whereColumn('proposer', 'address')
+                            ->orderBy('number', 'desc')
                             ->limit(1);
                     },
                 ]);
 
             /** @var Collection $lastBlocks */
-            $lastBlocks = Block::whereIn('id', $lastBlockIds->pluck('last_block_id'))
+            $lastBlocks = Block::whereIn('hash', $lastBlockHashes->pluck('last_block_hash'))
                 ->get()
-                ->groupBy('generator_public_key');
+                ->groupBy('proposer');
 
-            foreach ($validators as $validator) {
-                $block = $blocks->firstWhere('generator_public_key', $validator);
+            foreach ($validators as $address) {
+                $block = $blocks->firstWhere('proposer', $address);
 
                 // The validator hasn't forged in some rounds.
-                if (is_null($block) && $lastBlocks->has($validator)) {
-                    $block = $lastBlocks->get($validator)
+                if (is_null($block) && $lastBlocks->has($address)) {
+                    $block = $lastBlocks->get($address)
                         ->first();
                 }
 
@@ -67,11 +68,11 @@ trait ValidatorData
                     continue;
                 }
 
-                (new WalletCache())->setLastBlock($validator, [
-                    'id'                   => $block->id,
-                    'height'               => $block->height->toNumber(),
-                    'timestamp'            => $block->timestamp,
-                    'generator_public_key' => $block->generator_public_key,
+                (new WalletCache())->setLastBlock($address, [
+                    'hash'                   => $block->hash,
+                    'number'                 => $block->number->toNumber(),
+                    'timestamp'              => $block->timestamp,
+                    'proposer'               => $block->proposer,
                 ]);
             }
 
@@ -79,21 +80,23 @@ trait ValidatorData
         });
     }
 
-    private function getBlocksByRange(array $publicKeys, array $heightRange): Collection
+    private function getBlocksByRange(array $addresses, array $heightRange): Collection
     {
-        return Block::query()
-                ->whereIn('generator_public_key', $publicKeys)
-                ->whereBetween('height', $heightRange)
-                ->orderBy('height', 'asc')
+        return RequestScopedCache::remember('monitor:blocks-by-range', function () use ($addresses, $heightRange): Collection {
+            return Block::query()
+                ->whereIn('proposer', $addresses)
+                ->whereBetween('number', $heightRange)
+                ->orderBy('number', 'asc')
                 ->get();
+        });
     }
 
     private function hasRoundStarted(int $height): bool
     {
         return Cache::remember(
-            'delegate:round:'.$height,
+            'validator:round:'.$height,
             $this->cacheTtl(),
-            fn () => Block::where('height', $height)->exists()
+            fn () => Block::where('number', $height)->exists()
         );
     }
 
@@ -110,11 +113,11 @@ trait ValidatorData
         }
 
         $tracking        = ValidatorTracker::execute($validators, $heightRange[0]);
-        $roundBlocks     = $this->getBlocksByRange(Arr::pluck($tracking, 'publicKey'), $heightRange);
+        $roundBlocks     = $this->getBlocksByRange(Arr::pluck($tracking, 'address'), $heightRange);
         $blockTimestamp  = $roundBlocks->last()->timestamp;
         $validators      = [];
 
-        $roundBlockCount = $roundBlocks->groupBy('generator_public_key')
+        $roundBlockCount = $roundBlocks->groupBy('proposer')
             ->map(function ($blocks) {
                 return count($blocks);
             });
@@ -122,7 +125,7 @@ trait ValidatorData
         for ($i = 0; $i < count($tracking); $i++) {
             $validator = array_values($tracking)[$i];
 
-            $validatorWallet = (new WalletCache())->getValidator($validator['publicKey']);
+            $validatorWallet = (new WalletCache())->getValidator($validator['address']);
             if ($validatorWallet === null) {
                 continue;
             }
@@ -131,11 +134,11 @@ trait ValidatorData
             $walletViewModel = ViewModelFactory::make($validatorWallet);
 
             $validators[] = new Slot(
-                publicKey: $validator['publicKey'],
+                address: $validator['address'],
                 order: $i + 1,
                 wallet: $walletViewModel,
                 forgingAt: Timestamp::fromUnix($blockTimestamp)->addMilliseconds($validator['time']),
-                lastBlock: (new WalletCache())->getLastBlock($validator['publicKey']),
+                lastBlock: (new WalletCache())->getLastBlock($validator['address']),
                 status: $validator['status'],
                 roundBlockCount: $roundBlockCount,
                 roundNumber: $currentRound->round,

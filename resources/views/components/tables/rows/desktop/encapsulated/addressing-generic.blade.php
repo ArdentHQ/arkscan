@@ -2,7 +2,10 @@
     'model',
 ])
 
-@php ($transactionWallet = $model->sender())
+@php ($sender = $model->sender())
+@php ($recipient = $model->recipient())
+@php ($senderHasUsername = $sender->hasUsername())
+@php ($recipientHasUsername = $recipient->hasUsername())
 
 <div class="flex flex-col space-y-2 text-sm font-semibold sm:space-y-1 md:space-y-2 md-lg:items-center md-lg:flex-row md-lg:space-y-0 md-lg:space-x-9">
     <div class="flex items-center space-x-2 md-lg:w-41">
@@ -10,18 +13,16 @@
             @lang('tables.transactions.from')
         </x-general.badge>
 
-        <x-dynamic-tooltip tooltip="{{ $transactionWallet->hasUsername() ? $transactionWallet->username() : null }}">
-            <div
-                class="min-w-0 truncate"
-            >
+        <x-dynamic-tooltip tooltip="{{ $senderHasUsername ? $sender->username() : null }}">
+            <div class="min-w-0 truncate">
                 <a
                     class="whitespace-nowrap link"
-                    href="{{ route('wallet', $transactionWallet->address()) }}"
+                    href="{{ route('wallet', $sender->address()) }}"
                 >
-                    @if ($transactionWallet->hasUsername())
-                        {{ $transactionWallet->username() }}
+                    @if ($senderHasUsername)
+                        {{ $sender->username() }}
                     @else
-                        <x-truncate-middle>{{ $transactionWallet->address }}</x-truncate-middle>
+                        <x-truncate-middle>{{ $sender->address }}</x-truncate-middle>
                     @endif
                 </a>
             </div>
@@ -33,33 +34,26 @@
             @lang('tables.transactions.to')
         </x-general.badge>
 
-        @php ($recipient = $model->recipient())
-
-        <x-dynamic-tooltip tooltip="{{$model->isTransfer() && $recipient->hasUsername() ? $recipient->username() : null}}">
-            <div
-                class="min-w-0 truncate"
-            >
-                @if ($model->isTransfer())
+        <x-dynamic-tooltip tooltip="{{$model->isTransfer() && $recipientHasUsername ? $recipient->username() : null}}">
+            <div class="min-w-0 truncate">
+                @if ($model->isTransfer() || $model->isTokenTransfer())
                     <a
                         class="whitespace-nowrap link"
                         href="{{ route('wallet', $recipient->address()) }}"
                     >
-                        @if ($recipient->hasUsername())
+                        @if ($recipientHasUsername)
                             {{ $recipient->username() }}
                         @else
                             <x-truncate-middle>{{ $recipient->address }}</x-truncate-middle>
                         @endif
                     </a>
-                @elseif ($model->isMultiPayment())
-                    <span class="text-theme-secondary-900 dark:text-theme-dark-50">
-                        @lang('tables.transactions.multiple')
-
-                        ({{ $model->recipientsCount() }})
-                    </span>
                 @else
-                    <span class="text-theme-secondary-900 dark:text-theme-dark-50">
+                    <a
+                        class="whitespace-nowrap link"
+                        href="{{ route('wallet', $recipient->address()) }}"
+                    >
                         @lang('tables.transactions.contract')
-                    </span>
+                    </a>
                 @endif
             </div>
         </x-dynamic-tooltip>

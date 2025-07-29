@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Contracts\Network as Contract;
 use App\Models\ForgingStats;
 use App\Models\Wallet;
+use App\Services\Blockchain\NetworkFactory;
 use App\ViewModels\ForgingStatsViewModel;
 use Carbon\Carbon;
+use function Tests\fakeKnownWallets;
 
 beforeEach(function () {
-    ForgingStats::truncate();
+    $this->app->singleton(Contract::class, fn () => NetworkFactory::make('production'));
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
         'missed_height' => 54321,
@@ -35,7 +38,7 @@ it('should get the validator address', function () {
     $wallet = Wallet::factory()->activeValidator()->create();
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
-        'public_key' => $wallet->public_key,
+        'address' => $wallet->address,
     ]));
 
     expect($this->subject->validator()->address())->toBe($wallet->address);
@@ -43,34 +46,32 @@ it('should get the validator address', function () {
 
 it('should handle no validator', function () {
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
-        'public_key' => 'key-to-missing-validator',
+        'address' => 'address-to-missing-validator',
     ]));
 
     expect($this->subject->validator())->toBeNull();
 });
 
 it('should get the validator username', function () {
+    fakeKnownWallets();
+
     $wallet = Wallet::factory()
         ->activeValidator()
-        ->create([
-            'attributes' => [
-                'username' => 'joe.blogs',
-            ],
-        ]);
+        ->create(['address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF']);
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
-        'public_key' => $wallet->public_key,
+        'address' => $wallet->address,
     ]));
 
     expect($this->subject->username())->toBeString();
-    expect($this->subject->username())->toBe('joe.blogs');
+    expect($this->subject->username())->toBe('Binance');
 });
 
 it('should handle no validator username', function () {
     $wallet = Wallet::factory()->activeValidator()->create(['attributes' => []]);
 
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
-        'public_key' => $wallet->public_key,
+        'address' => $wallet->address,
     ]));
 
     expect($this->subject->username())->toBeNull();

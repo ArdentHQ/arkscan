@@ -10,33 +10,31 @@ use App\Models\Transaction;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
+use App\Services\Transactions\TransactionMethod;
 use App\Services\Transactions\TransactionState;
-use App\Services\Transactions\TransactionType;
+use App\ViewModels\Concerns\Transaction\CanBeValidatorRegistration;
+use App\ViewModels\Concerns\Transaction\CanHaveUsername;
 use App\ViewModels\Concerns\Transaction\HasDirection;
+use App\ViewModels\Concerns\Transaction\HasMethod;
+use App\ViewModels\Concerns\Transaction\HasPayload;
 use App\ViewModels\Concerns\Transaction\HasState;
-use App\ViewModels\Concerns\Transaction\HasType;
-use App\ViewModels\Concerns\Transaction\InteractsWithMultiPayment;
-use App\ViewModels\Concerns\Transaction\InteractsWithMultiSignature;
-use App\ViewModels\Concerns\Transaction\InteractsWithUsernames;
-use App\ViewModels\Concerns\Transaction\InteractsWithVendorField;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 
 final class TransactionViewModel implements ViewModel
 {
+    use CanBeValidatorRegistration;
+    use CanHaveUsername;
     use HasDirection;
+    use HasPayload;
     use HasState;
-    use HasType;
-    use InteractsWithMultiPayment;
-    use InteractsWithMultiSignature;
-    use InteractsWithUsernames;
-    use InteractsWithVendorField;
+    use HasMethod;
     use InteractsWithVotes;
     use InteractsWithWallets;
 
-    private TransactionType $type;
+    private TransactionMethod $method;
 
     private TransactionState $state;
 
@@ -44,14 +42,14 @@ final class TransactionViewModel implements ViewModel
 
     public function __construct(private Transaction $transaction)
     {
-        $this->type        = new TransactionType($transaction);
+        $this->method      = new TransactionMethod($transaction);
         $this->state       = new TransactionState($transaction);
         $this->direction   = new TransactionDirection($transaction);
     }
 
     public function url(): string
     {
-        return route('transaction', $this->transaction);
+        return route('transaction', $this->transaction->hash);
     }
 
     public function model(): Transaction
@@ -59,19 +57,19 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction;
     }
 
-    public function id(): string
+    public function hash(): string
     {
-        return $this->transaction->id;
+        return $this->transaction->hash;
     }
 
-    public function blockId(): string
+    public function blockHash(): string
     {
-        return $this->transaction->block_id;
+        return $this->transaction->block_hash;
     }
 
     public function blockHeight(): int
     {
-        return $this->transaction->block_height;
+        return $this->transaction->block_number;
     }
 
     public function timestamp(): string
@@ -89,80 +87,102 @@ final class TransactionViewModel implements ViewModel
         return $this->transaction->nonce;
     }
 
+    public function gas(): float
+    {
+        return UnitConverter::formatUnits((string) $this->transaction->gas, 'wei');
+    }
+
+    public function gasUsed(): float
+    {
+        $receipt = $this->transaction->receipt;
+
+        if ($receipt === null) {
+            return 0;
+        }
+
+        return UnitConverter::formatUnits((string) $receipt->gas_used, 'wei');
+    }
+
+    public function transactionIndex(): int
+    {
+        return $this->transaction->transaction_index;
+    }
+
     public function fee(): float
     {
-        return $this->transaction->fee->toFloat();
+        return UnitConverter::formatUnits((string) $this->transaction->fee(), 'ark');
     }
 
     public function feeFiat(bool $showSmallAmounts = false): string
     {
-        return ExchangeRate::convert($this->transaction->fee->toFloat(), $this->transaction->timestamp, $showSmallAmounts);
+        return ExchangeRate::convert($this->fee(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
     public function amountForItself(): float
     {
-        /** @var array<int, array<string, mixed>> */
-        $payments = Arr::get($this->transaction, 'asset.payments', []);
+        if (! $this->isMultiPayment()) {
+            return 0;
+        }
 
-        return collect($payments)
-            ->filter(function ($payment): bool {
+        $recipients = $this->multiPaymentRecipients();
+
+        $amount = collect($recipients)
+            ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender !== null && $sender->address === $payment['recipientId'];
+                return $sender !== null && strtolower($sender->address) === strtolower($recipient['address']);
             })
-            ->sum('amount') / 1e8;
+            ->sum('amount');
+
+        return $amount;
     }
 
     public function amountExcludingItself(): float
     {
-        /** @var array<int, array<string, mixed>> */
-        $payments = Arr::get($this->transaction, 'asset.payments', []);
+        if (! $this->isMultiPayment()) {
+            return 0;
+        }
 
-        return collect($payments)
-            ->filter(function ($payment): bool {
+        $recipients = $this->multiPaymentRecipients();
+
+        $amount = collect($recipients)
+            ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender === null || $sender->address !== $payment['recipientId'];
+                return $sender === null || strtolower($sender->address) !== strtolower($recipient['address']);
             })
-            ->sum('amount') / 1e8;
+            ->sum('amount');
+
+        return $amount;
     }
 
     public function amount(): float
     {
-        if ($this->isMultiPayment()) {
-            /** @var array<int, array<string, mixed>> */
-            $payments = Arr::get($this->transaction, 'asset.payments', []);
-
-            return collect($payments)
-                ->sum('amount') / 1e8;
+        if (! $this->isMultiPayment()) {
+            return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
         }
 
-        return $this->transaction->amount->toFloat();
+        return collect($this->multiPaymentRecipients())
+            ->sum('amount');
     }
 
     public function amountWithFee(): float
     {
-        $amount = $this->transaction->amount->toFloat();
-        if ($this->isMultiPayment()) {
-            /** @var array<int, array<string, mixed>> */
-            $payments = Arr::get($this->transaction, 'asset.payments', []);
-
-            return collect($payments)
-                ->sum('amount') / 1e8;
-        }
-
-        return $amount + $this->fee();
+        return $this->transaction->value->toFloat() + $this->fee();
     }
 
-    public function amountReceived(?string $wallet = null): float
+    public function amountReceived(?string $walletAddress = null): float
     {
-        if ($this->isMultiPayment() && $wallet !== null) {
-            /** @var array<int, array<string, mixed>> */
-            $payments = Arr::get($this->transaction, 'asset.payments', []);
+        if ($this->isMultiPayment() && $walletAddress !== null) {
+            return collect($this->multiPaymentRecipients())
+                ->filter(function ($recipient) use ($walletAddress) {
+                    if (strtolower($recipient['address']) === strtolower($walletAddress)) {
+                        return true;
+                    }
 
-            return collect($payments)
-                ->where('recipientId', $wallet)
-                ->sum('amount') / 1e8;
+                    return false;
+                })
+                ->sum('amount');
         }
 
         return $this->amount();
@@ -178,9 +198,9 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->amount(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
-    public function amountReceivedFiat(?string $wallet = null): string
+    public function amountReceivedFiat(?string $walletAddress = null): string
     {
-        return ExchangeRate::convert($this->amountReceived($wallet), $this->transaction->timestamp);
+        return ExchangeRate::convert($this->amountReceived($walletAddress), $this->transaction->timestamp);
     }
 
     public function totalFiat(bool $withSmallAmounts = false): string
@@ -190,6 +210,6 @@ final class TransactionViewModel implements ViewModel
 
     public function confirmations(): int
     {
-        return abs(CacheNetworkHeight::execute() - $this->transaction->block_height);
+        return abs(CacheNetworkHeight::execute() - $this->transaction->block_number);
     }
 }

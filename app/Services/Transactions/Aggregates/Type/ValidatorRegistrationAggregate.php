@@ -11,6 +11,7 @@ final class ValidatorRegistrationAggregate
 {
     public function aggregate(): int
     {
-        return Transaction::withScope(ValidatorRegistrationScope::class)->count();
+        return Transaction::withScope(ValidatorRegistrationScope::class)
+            ->count();
     }
 }

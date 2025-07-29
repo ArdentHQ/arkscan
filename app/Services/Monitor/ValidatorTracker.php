@@ -20,7 +20,7 @@ final class ValidatorTracker
     {
         // Arrange Block
         $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
-        $height    = $lastBlock->height->toNumber();
+        $height    = $lastBlock->number->toNumber();
 
         // Act
         $forgingInfo = ForgingInfoCalculator::calculate($startHeight, $height);
@@ -34,13 +34,13 @@ final class ValidatorTracker
         $slotOffset = static::slotOffset($startHeight, $validators);
 
         return collect($validators)
-            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $validatorCount, $slotOffset) {
-                return static::determineSlot($publicKey, $index, $forgingIndex, $forgingInfo, $validatorCount, $slotOffset);
+            ->map(function ($address, $index) use (&$forgingIndex, $forgingInfo, $validatorCount, $slotOffset) {
+                return static::determineSlot($address, $index, $forgingIndex, $forgingInfo, $validatorCount, $slotOffset);
             })
             ->toArray();
     }
 
-    private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $validatorCount, $slotOffset): array
+    private static function determineSlot($address, $index, &$forgingIndex, $forgingInfo, $validatorCount, $slotOffset): array
     {
         // Determine forging order based on the original offset
         $difference       = $forgingInfo['currentForger'] + $slotOffset;
@@ -49,10 +49,10 @@ final class ValidatorTracker
 
         if ($index === $normalizedOrder) {
             return [
-                'publicKey' => $publicKey,
-                'status'    => 'next',
-                'time'      => $secondsUntilSlot,
-                'order'     => $index,
+                'address' => $address,
+                'status'  => 'next',
+                'time'    => $secondsUntilSlot,
+                'order'   => $index,
             ];
         }
 
@@ -62,18 +62,18 @@ final class ValidatorTracker
             $forgingIndex++;
 
             return [
-                'publicKey' => $publicKey,
-                'status'    => 'pending',
-                'time'      => $nextTime,
-                'order'     => $index,
+                'address' => $address,
+                'status'  => 'pending',
+                'time'    => $nextTime,
+                'order'   => $index,
             ];
         }
 
         return [
-            'publicKey' => $publicKey,
-            'status'    => 'done',
-            'time'      => 0,
-            'order'     => $index,
+            'address' => $address,
+            'status'  => 'done',
+            'time'    => 0,
+            'order'   => $index,
         ];
     }
 
@@ -87,42 +87,43 @@ final class ValidatorTracker
      */
     private static function slotOffset(int $roundHeight, array $validators): int
     {
-        $lastForger = DB::connection('explorer')
+        $roundValidators = DB::connection('explorer')
             ->table('blocks')
-            ->select('generator_public_key', 'timestamp')
-            ->where('height', '>=', $roundHeight)
-            ->orderBy('height', 'desc')
-            ->limit(1)
-            ->first();
+            ->select('proposer')
+            ->where('number', '>=', $roundHeight)
+            ->orderBy('number', 'asc')
+            ->get();
 
-        if ($lastForger === null) {
+        if ($roundValidators->isEmpty()) {
             return 0;
         }
 
-        $roundBlockCount = DB::connection('explorer')
-            ->table('blocks')
-            ->select([
-                DB::raw('COUNT(*) as count'),
-                'generator_public_key',
-            ])
-            ->where('height', '>=', $roundHeight)
-            ->groupBy('generator_public_key')
-            ->get()
-            ->pluck('count', 'generator_public_key');
+        $lastForgerAddress = $roundValidators->last()->proposer;
+
+        $roundBlockCount = $roundValidators->reduce(function ($carry, $item) {
+            $count = 1;
+            if ($carry->has($item->proposer)) {
+                $count = $carry[$item->proposer] + 1;
+            }
+
+            $carry->put($item->proposer, $count);
+
+            return $carry;
+        }, collect());
 
         $offset = 0;
-        foreach ($validators as $publicKey) {
+        foreach ($validators as $address) {
             $hadBlock = false;
-            if ($roundBlockCount->has($publicKey)) {
-                $count = $roundBlockCount->get($publicKey) - 1;
+            if ($roundBlockCount->has($address)) {
+                $count = $roundBlockCount->get($address) - 1;
                 if ($count <= 0) {
-                    $roundBlockCount = $roundBlockCount->except($publicKey);
+                    $roundBlockCount = $roundBlockCount->except($address);
                 }
 
                 $hadBlock = true;
             }
 
-            if ($publicKey === $lastForger->generator_public_key) {
+            if ($address === $lastForgerAddress) {
                 break;
             }
 

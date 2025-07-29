@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\ViewModels\Concerns\Wallet;
 
 use App\Services\Cache\WalletCache;
+use Brick\Math\RoundingMode;
 use Illuminate\Support\Arr;
-use Mattiasgeniar\Percentage\Percentage;
 
 trait CanVote
 {
@@ -38,10 +38,6 @@ trait CanVote
 
     public function votePercentage(): ?float
     {
-        if (is_null($this->wallet->public_key)) {
-            return null;
-        }
-
         $vote = Arr::get($this->wallet, 'attributes.vote');
 
         if (is_null($vote)) {
@@ -58,6 +54,6 @@ trait CanVote
             return null;
         }
 
-        return Percentage::calculate($this->wallet->balance->toNumber(), (float) $validator->attributes['validatorVoteBalance']);
+        return $this->wallet->balance->valueOf()->multipliedBy(100)->dividedBy($validator->attributes['validatorVoteBalance'], 2, RoundingMode::DOWN)->toFloat();
     }
 }

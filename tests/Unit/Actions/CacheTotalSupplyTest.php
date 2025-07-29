@@ -8,9 +8,9 @@ use App\Services\Cache\NetworkCache;
 
 it('should execute the command', function () {
     State::create([
-        'id'     => 1,
-        'height' => 1000,
-        'supply' => 120.0 * 1e8,
+        'id'           => 1,
+        'block_number' => 1000,
+        'supply'       => 120.0 * 1e18,
     ]);
 
     CacheTotalSupply::execute();

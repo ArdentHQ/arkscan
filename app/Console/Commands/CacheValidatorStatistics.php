@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\TransactionTypeEnum;
 use App\Facades\Rounds;
 use App\Models\Block;
+use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Transaction;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\WalletCache;
@@ -34,54 +34,56 @@ final class CacheValidatorStatistics extends Command
     {
         $mostVotedValidator = (new UniqueVotersAggregate())->aggregate();
         if ($mostVotedValidator !== null) {
-            $cache->setMostUniqueVoters($mostVotedValidator['public_key']);
+            $cache->setMostUniqueVoters($mostVotedValidator['address']);
 
-            $walletCache->setVoterCount($mostVotedValidator['public_key'], $mostVotedValidator['voter_count']);
+            $walletCache->setVoterCount($mostVotedValidator['address'], $mostVotedValidator['voter_count']);
         }
 
         $leastVotedValidator = (new UniqueVotersAggregate())->aggregate(sortDescending: false);
         if ($leastVotedValidator !== null) {
-            $cache->setLeastUniqueVoters($leastVotedValidator['public_key']);
+            $cache->setLeastUniqueVoters($leastVotedValidator['address']);
 
-            $walletCache->setVoterCount($leastVotedValidator['public_key'], $leastVotedValidator['voter_count']);
+            $walletCache->setVoterCount($leastVotedValidator['address'], $leastVotedValidator['voter_count']);
         }
 
         $activeValidators = Rounds::current()->validators;
 
-        $newestActiveValidatorTx = Transaction::where('type', '=', TransactionTypeEnum::VALIDATOR_REGISTRATION)
-            ->whereIn('sender_public_key', $activeValidators)
+        /** @var Transaction|null $newestActiveValidatorTx */
+        $newestActiveValidatorTx = Transaction::withScope(ValidatorRegistrationScope::class)
+            ->whereIn('from', $activeValidators)
             ->orderBy('timestamp', 'desc')
             ->limit(1)
             ->first();
 
         if ($newestActiveValidatorTx !== null) {
             $cache->setNewestActiveValidator(
-                $newestActiveValidatorTx->sender_public_key,
+                $newestActiveValidatorTx->from,
                 $newestActiveValidatorTx->timestamp
             );
         }
 
-        $oldestActiveValidatorTx = Transaction::where('type', '=', TransactionTypeEnum::VALIDATOR_REGISTRATION)
-            ->whereIn('sender_public_key', $activeValidators)
+        /** @var Transaction|null $oldestActiveValidatorTx */
+        $oldestActiveValidatorTx = Transaction::withScope(ValidatorRegistrationScope::class)
+            ->whereIn('from', $activeValidators)
             ->orderBy('timestamp', 'asc')
             ->limit(1)
             ->first();
 
         if ($oldestActiveValidatorTx !== null) {
             $cache->setOldestActiveValidator(
-                $oldestActiveValidatorTx->sender_public_key,
+                $oldestActiveValidatorTx->from,
                 $oldestActiveValidatorTx->timestamp
             );
         }
 
-        $mostBlocksForged = Block::select(DB::raw('COUNT(*), generator_public_key'))
-            ->groupBy('generator_public_key')
+        $mostBlocksForged = Block::select(DB::raw('COUNT(*), proposer'))
+            ->groupBy('proposer')
             ->orderBy('count', 'desc')
             ->limit(1)
             ->first();
 
         if ($mostBlocksForged !== null) {
-            $cache->setMostBlocksForged($mostBlocksForged->generator_public_key);
+            $cache->setMostBlocksForged($mostBlocksForged->proposer);
         }
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTablePagination;
 use App\Models\Scopes\OrderByTimestampScope;
+use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
@@ -25,31 +26,38 @@ final class TransactionTable extends Component
     use HasTablePagination;
 
     public array $filter = [
-        'transfers'     => true,
-        'votes'         => true,
-        'multipayments' => true,
-        'others'        => true,
+        'transfers'           => true,
+        'multipayments'       => true,
+        'votes'               => true,
+        'validator'           => true,
+        'username'            => true,
+        'contract_deployment' => true,
+        'others'              => true,
     ];
 
     /** @var mixed */
     protected $listeners = [
-        'currencyChanged' => '$refresh',
+        'currencyChanged'                  => '$refresh',
+        'echo:transactions,NewTransaction' => '$refresh',
     ];
 
     public function queryString(): array
     {
         return [
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
+            'filter.transfers'           => ['as' => 'transfers', 'except' => true],
+            'filter.multipayments'       => ['as' => 'multipayments', 'except' => true],
+            'filter.votes'               => ['as' => 'votes', 'except' => true],
+            'filter.validator'           => ['as' => 'validator', 'except' => true],
+            'filter.username'            => ['as' => 'username', 'except' => true],
+            'filter.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
+            'filter.others'              => ['as' => 'others', 'except' => true],
         ];
     }
 
     public function render(): View
     {
         return view('livewire.transaction-table', [
-            'transactions'  => ViewModelFactory::paginate($this->transactions),
+            'transactions' => ViewModelFactory::paginate($this->transactions),
         ]);
     }
 
@@ -79,6 +87,8 @@ final class TransactionTable extends Component
 
         return Transaction::withTypeFilter($this->filter)
             ->withScope(OrderByTimestampScope::class)
+            ->withScope(OrderByTransactionIndexScope::class)
+            ->with('votedFor')
             ->paginate($this->perPage);
     }
 
@@ -88,11 +98,23 @@ final class TransactionTable extends Component
             return true;
         }
 
+        if ($this->filter['multipayments'] === true) {
+            return true;
+        }
+
         if ($this->filter['votes'] === true) {
             return true;
         }
 
-        if ($this->filter['multipayments'] === true) {
+        if ($this->filter['validator'] === true) {
+            return true;
+        }
+
+        if ($this->filter['username'] === true) {
+            return true;
+        }
+
+        if ($this->filter['contract_deployment'] === true) {
             return true;
         }
 

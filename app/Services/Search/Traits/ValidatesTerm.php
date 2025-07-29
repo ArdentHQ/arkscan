@@ -4,26 +4,28 @@ declare(strict_types=1);
 
 namespace App\Services\Search\Traits;
 
+use App\Enums\Constants;
+
 trait ValidatesTerm
 {
-    private function couldBeTransactionID(string $term): bool
+    private function couldBeTransactionHash(string $term): bool
     {
         return $this->is64CharsHexadecimalString($term);
     }
 
-    private function couldBeBlockID(string $term): bool
+    private function couldBeBlockHash(string $term): bool
     {
         return $this->is64CharsHexadecimalString($term);
     }
 
     private function couldBeAddress(string $term): bool
     {
-        return strlen($term) === 34;
+        return strlen($term) === Constants::ADDRESS_LENGTH;
     }
 
     private function couldntBeAddress(string $term): bool
     {
-        return strlen($term) > 34;
+        return strlen($term) > Constants::ADDRESS_LENGTH;
     }
 
     private function couldBePublicKey(string $term): bool

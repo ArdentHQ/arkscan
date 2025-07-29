@@ -10,9 +10,10 @@ use App\Models\Wallet;
 use App\Services\ArkVaultUrlBuilder;
 use App\Services\ExchangeRate;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
+use App\ViewModels\Concerns\Wallet\CanBeKnownWallet;
+use App\ViewModels\Concerns\Wallet\CanBeLegacy;
 use App\ViewModels\Concerns\Wallet\CanBeValidator;
 use App\ViewModels\Concerns\Wallet\CanForge;
-use App\ViewModels\Concerns\Wallet\CanHaveUsername;
 use App\ViewModels\Concerns\Wallet\CanVote;
 use App\ViewModels\Concerns\Wallet\HasType;
 use App\ViewModels\Concerns\Wallet\HasVoters;
@@ -21,9 +22,10 @@ use Mattiasgeniar\Percentage\Percentage;
 final class WalletViewModel implements ViewModel
 {
     use CanBeCold;
+    use CanBeKnownWallet;
+    use CanBeLegacy;
     use CanBeValidator;
     use CanForge;
-    use CanHaveUsername;
     use CanVote;
     use HasType;
     use HasVoters;
@@ -54,12 +56,16 @@ final class WalletViewModel implements ViewModel
 
     public function publicKey(): ?string
     {
+        if (is_string($this->wallet->public_key) && $this->wallet->public_key === '') {
+            return null;
+        }
+
         return $this->wallet->public_key;
     }
 
-    public function balance(): float
+    public function balance(int $scale = 8): float
     {
-        return $this->wallet->balance->toFloat();
+        return $this->wallet->balance->toFloat(scale: $scale);
     }
 
     public function balanceFiat(): string
@@ -69,7 +75,7 @@ final class WalletViewModel implements ViewModel
 
     public function balancePercentage(): float
     {
-        return Percentage::calculate($this->wallet->balance->toNumber(), CacheNetworkSupply::execute());
+        return Percentage::calculate($this->wallet->balance->valueOf()->toBigInteger()->toFloat(), CacheNetworkSupply::execute());
     }
 
     public function nonce(): int
@@ -79,9 +85,6 @@ final class WalletViewModel implements ViewModel
 
     public function voteUrl(): string
     {
-        /** @var string $subject */
-        $subject = $this->publicKey();
-
-        return ArkVaultUrlBuilder::get()->generateVote($subject);
+        return ArkVaultUrlBuilder::get()->generateVote($this->address());
     }
 }

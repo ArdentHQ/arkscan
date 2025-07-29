@@ -12,10 +12,10 @@ use Meilisearch\Endpoints\Indexes;
 beforeEach(function () {
     $this->subject = Wallet::factory()->create([
         'updated_at' => 148373,
-        'balance'    => '100000000000',
+        'balance'    => 1000 * 1e18,
         'attributes' => [
             'username'             => 'test',
-            'validatorVoteBalance' => '200000000000',
+            'validatorVoteBalance' => 2000 * 1e18,
         ],
     ]);
 });
@@ -43,7 +43,7 @@ it('has custom scout key name', function () {
     expect($this->subject->getScoutKeyName())->toBe('address');
 });
 
-it('adds the timestamp from the updated_at column and username when making searchable', function () {
+it('adds the timestamp from the updated_at column when making searchable', function () {
     $mock    = $this->mock(MeilisearchClient::class);
     $indexes = $this->mock(Indexes::class);
 
@@ -55,8 +55,7 @@ it('adds the timestamp from the updated_at column and username when making searc
         ->withArgs(function ($documents) {
             $document = collect($documents)->first(fn ($document) => $document['address'] === $this->subject->address);
 
-            return $document['username'] === 'test'
-                && $document['address'] === $this->subject->address
+            return $document['address'] === $this->subject->address
                 && $document['timestamp'] === 148373;
         });
 

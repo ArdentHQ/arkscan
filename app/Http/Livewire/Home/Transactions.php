@@ -50,6 +50,7 @@ final class Transactions extends Component
         }
 
         return Transaction::query()
+            ->with('votedFor')
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage);
     }

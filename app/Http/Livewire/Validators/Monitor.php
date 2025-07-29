@@ -35,6 +35,7 @@ final class Monitor extends Component
     /** @var mixed */
     protected $listeners = [
         'monitorIsReady',
+        'echo:blocks,NewBlock' => 'pollData',
     ];
 
     private array $validators = [];
@@ -117,16 +118,16 @@ final class Monitor extends Component
 
         /** @var Block $lastBlock */
         $lastBlock = Block::query()
-            ->orderBy('height', 'desc')
+            ->orderBy('number', 'desc')
             ->first();
 
         $heightRange = MonitorService::heightRangeByRound(Rounds::current());
 
         /** @var ?Block $lastRoundBlock */
         $lastRoundBlock = Block::query()
-            ->where('generator_public_key', $lastSlot->publicKey())
-            ->where('height', '>=', $heightRange[0])
-            ->orderBy('height', 'desc')
+            ->where('proposer', $lastSlot->address())
+            ->where('number', '>=', $heightRange[0])
+            ->orderBy('number', 'desc')
             ->first();
 
         if ($lastRoundBlock === null) {
@@ -134,16 +135,20 @@ final class Monitor extends Component
                 ->filter(fn (Slot $validator) => $validator->hasForged())
                 ->last();
 
-            /** @var Block $lastRoundBlock */
+            /** @var ?Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
-                ->where('generator_public_key', $lastSuccessfulForger->publicKey())
-                ->where('height', '>=', $heightRange[0])
-                ->orderBy('height', 'desc')
+                ->where('proposer', $lastSuccessfulForger->address())
+                ->where('number', '>=', $heightRange[0])
+                ->orderBy('number', 'desc')
                 ->first();
         }
 
-        $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
-            ->orderBy('height', 'asc')
+        if ($lastRoundBlock === null) {
+            return [];
+        }
+
+        $overflowBlocks = Block::where('number', '>', $lastRoundBlock->number)
+            ->orderBy('number', 'asc')
             ->get();
 
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
@@ -157,11 +162,11 @@ final class Monitor extends Component
         }
 
         $lastTimestamp = $lastRoundBlock->timestamp;
-        if ($overflowBlocks->isNotEmpty() && $overflowBlocks->last() !== null) {
+        if ($overflowBlocks->isNotEmpty()) {
             $lastTimestamp = $overflowBlocks->last()['timestamp'];
         }
 
-        $overflowBlockCount = $overflowBlocks->groupBy('generator_public_key')
+        $overflowBlockCount = $overflowBlocks->groupBy('proposer')
             ->map(function ($blocks) {
                 return count($blocks);
             });
@@ -255,7 +260,7 @@ final class Monitor extends Component
                 $missedSeconds   = 0;
             }
 
-            if ($validator->publicKey() === $lastBlock->generator_public_key) {
+            if ($validator->address() === $lastBlock->proposer) {
                 $hasReachedFinalSlot = true;
             }
 

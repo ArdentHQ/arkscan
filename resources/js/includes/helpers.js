@@ -1,5 +1,6 @@
 import dayjs from "dayjs/esm/index.js";
 import dayjsQuarterOfYear from "dayjs/esm/plugin/quarterOfYear/index.js";
+import Decimal from "decimal.js";
 
 dayjs.extend(dayjsQuarterOfYear);
 
@@ -10,7 +11,7 @@ const delimiters = {
     pipe: "|",
 };
 
-export const arktoshiToNumber = (value) => value / 1e8;
+export const arktoshiToNumber = (value) => value / 1e18;
 
 export const queryTimestamp = (date) => {
     return date.unix() * 1000;
@@ -75,26 +76,38 @@ export const generateCsv = (
     delimiter,
     includeHeaderRow
 ) => {
+    const formatCsvNumber = (value) => {
+        if (typeof value === "number") {
+            return new Decimal(value).toFixed();
+        }
+
+        return value;
+    };
+
     const csvRows = [];
     if (includeHeaderRow) {
         csvRows.push(columnTitles);
     }
 
     for (const entry of data) {
-        const data = [];
+        const dataRow = [];
+
         for (const [column, enabled] of Object.entries(columns)) {
             if (!enabled) {
                 continue;
             }
 
+            let value;
             if (columnMapping[column] !== undefined) {
-                data.push(columnMapping[column](entry));
+                value = columnMapping[column](entry);
             } else {
-                data.push(entry[column]);
+                value = entry[column];
             }
+
+            dataRow.push(formatCsvNumber(value));
         }
 
-        csvRows.push(data);
+        csvRows.push(dataRow);
     }
 
     return encodeURI(

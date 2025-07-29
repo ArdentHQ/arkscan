@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Block;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,9 +14,9 @@ use Meilisearch\Endpoints\Indexes;
 beforeEach(function () {
     $this->recipient = Wallet::factory()->create();
     $this->subject   = Transaction::factory()->create([
-        'fee'          => '100000000',
-        'amount'       => '200000000',
-        'recipient_id' => $this->recipient,
+        'gas_price'         => 1,
+        'value'             => 2 * 1e18,
+        'to'                => $this->recipient,
     ]);
 });
 
@@ -31,80 +32,27 @@ it('should belong to a sender', function () {
     expect($this->subject->sender)->toBeInstanceOf(Wallet::class);
 });
 
-it('should belong to a recipient', function () {
-    Wallet::factory()->create(['address' => $this->recipient->address]);
-
-    expect($this->subject->recipient())->toEqual($this->recipient->fresh());
-});
-
-it('should get recipient if vote', function () {
-    $validator = Wallet::factory()->activeValidator()->create();
-
+it('should throw an exception if the transaction has no recipient', function () {
     $transaction = Transaction::factory()
-        ->vote()
         ->create([
-            'recipient_id' => null,
-            'asset'        => [
-                'votes'   => [$validator->public_key],
-                'unvotes' => [],
-            ],
+            'to' => null,
         ]);
 
-    expect($transaction->recipient())->toEqual($validator->fresh());
+    $this->expectException(Exception::class);
+
+    $transaction->recipient();
 });
 
-it('should get recipient if unvote', function () {
-    $validator = Wallet::factory()->activeValidator()->create();
-
+it('should throw an exception if a vote has no recipient', function () {
     $transaction = Transaction::factory()
-        ->unvote()
+        ->vote('') // Invalid address
         ->create([
-            'recipient_id' => null,
-            'asset'        => [
-                'unvotes' => [$validator->public_key],
-                'votes'   => [],
-            ],
+            'to' => null,
         ]);
 
-    expect($transaction->recipient())->toEqual($validator->fresh());
-});
+    $this->expectException(Exception::class);
 
-it('should get vote recipient if vote combination', function () {
-    $validator    = Wallet::factory()->activeValidator()->create();
-    $oldValidator = Wallet::factory()->activeValidator()->create();
-
-    $transaction = Transaction::factory()
-        ->voteCombination()
-        ->create([
-            'recipient_id' => null,
-            'asset'        => [
-                'votes'   => [$validator->public_key],
-                'unvotes' => [$oldValidator->public_key],
-            ],
-        ]);
-
-    expect($transaction->recipient())->toEqual($validator->fresh());
-});
-
-it('should get vendorfield value multiple times despite resource', function () {
-    $transaction = Transaction::factory()->transfer()->create([
-        'recipient_id' => 'DENGkAwEfRvhhHKZYdEfQ1P3MEoRvPkHYj',
-        'fee'          => '10000000', // 0.1
-        'amount'       => '200000000', // 2
-        'vendor_field' => '0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0',
-    ]);
-
-    expect($transaction->vendor_field)->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-
-    $transaction = Transaction::find($transaction->id);
-
-    expect(is_resource($transaction->vendor_field))->toBeTrue();
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
-    expect($transaction->vendorField())->toBe('0xRKeoIZ9Kh2g4HslgeHr5B9yblHbnwWYgfeFgO36n0');
+    $transaction->recipient();
 });
 
 it('makes transactions searchable', function () {
@@ -119,7 +67,7 @@ it('makes transactions searchable', function () {
 
     $indexes->shouldReceive('addDocuments')
         ->withArgs(function ($documents) use ($transaction) {
-            $document = collect($documents)->first(fn ($document) => $document['id'] === $transaction->id);
+            $document = collect($documents)->first(fn ($document) => $document['hash'] === $transaction->hash);
 
             return json_encode($document) === json_encode($transaction->toSearchableArray());
         });
@@ -131,4 +79,25 @@ it('makes transactions searchable', function () {
 
     // Expect no exception to be thrown
     expect(true)->toBeTrue();
+});
+
+it('should calculate fee with receipt', function () {
+    $transaction = Transaction::factory()->create([
+        'gas_price' => 54,
+    ]);
+
+    Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => 21000,
+    ]);
+
+    expect($transaction->fresh()->fee()->toNumber())->toBe(1134000);
+});
+
+it('should return gas price if no receipt', function () {
+    $transaction = Transaction::factory()->create([
+        'gas_price' => 54,
+    ]);
+
+    expect($transaction->fresh()->fee()->toNumber())->toBe(54);
 });

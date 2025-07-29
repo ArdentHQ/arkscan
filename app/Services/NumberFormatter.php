@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enums\CryptoCurrencies;
 use App\Facades\Network;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
 use ReflectionClass;
@@ -34,14 +35,6 @@ final class NumberFormatter
     public static function percentage($value): string
     {
         return BetterNumberFormatter::new()->formatWithPercent((float) $value, 2);
-    }
-
-    /**
-     * @param string|int|float $value
-     */
-    public static function satoshi($value): string
-    {
-        return BetterNumberFormatter::new()->formatWithDecimal(BigNumber::new($value)->toFloat());
     }
 
     /**
@@ -180,6 +173,26 @@ final class NumberFormatter
             return false;
         }
 
-        return config('currencies.'.strtolower($currency).'.symbol') !== null;
+        return config('currencies.currencies.'.strtolower($currency).'.symbol') !== null;
+    }
+
+    public static function weiToArk(string | int | float $value, bool $withSuffix = true): string
+    {
+        $currency = null;
+        if ($withSuffix) {
+            $currency = Network::currency();
+        }
+
+        return UnitConverter::weiToArk($value, $currency);
+    }
+
+    public static function gweiToArk(string | int | float $value, bool $withSuffix = true): string
+    {
+        $currency = null;
+        if ($withSuffix) {
+            $currency = Network::currency();
+        }
+
+        return UnitConverter::gweiToArk($value, $currency);
     }
 }

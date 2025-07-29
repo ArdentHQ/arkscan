@@ -13,34 +13,30 @@ use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 
-beforeEach(function () {
-    ForgingStats::truncate();
-});
-
 it('should make an instance that has all properties', function (string $status) {
     $wallet = Wallet::factory()->create();
 
     $lastBlockHeight = 7521;
 
-    Block::factory()->create(['height' => $lastBlockHeight]);
+    Block::factory()->create(['number' => $lastBlockHeight]);
     Round::factory()->create([
         'round_height' => 7520,
     ]);
 
-    $roundBlockCount = Block::whereBetween('height', [1, 5])
+    $roundBlockCount = Block::whereBetween('number', [1, 5])
         ->get()
-        ->groupBy('generator_public_key')
+        ->groupBy('proposer')
         ->map(function ($blocks) {
             return count($blocks);
         });
 
     $subject = new Slot(
-        publicKey: $wallet->public_key,
+        address: $wallet->address,
         order: 5,
         wallet: new WalletViewModel($wallet),
         forgingAt: Carbon::now(),
         lastBlock: [
-            'publicKey' => $wallet->public_key,
+            'address'   => $wallet->address,
             'height'    => $lastBlockHeight,
         ],
         status: $status,
@@ -49,7 +45,7 @@ it('should make an instance that has all properties', function (string $status) 
         secondsUntilForge: 0,
     );
 
-    expect($subject->publicKey())->toBeString();
+    expect($subject->address())->toBeString();
     expect($subject->order())->toBeInt();
     expect($subject->wallet())->toBeInstanceOf(WalletViewModel::class);
     expect($subject->forgingAt())->toBeInstanceOf(Carbon::class);
@@ -73,15 +69,15 @@ it('should make an instance that has all properties', function (string $status) 
 it('should not be marked as missing if it never had a block', function () {
     $wallet = Wallet::factory()->create();
 
-    $roundBlockCount = Block::whereBetween('height', [1, 5])
+    $roundBlockCount = Block::whereBetween('number', [1, 5])
         ->get()
-        ->groupBy('generator_public_key')
+        ->groupBy('proposer')
         ->map(function ($blocks) {
             return count($blocks);
         });
 
     $subject = new Slot(
-        publicKey: $wallet->public_key,
+        address: $wallet->address,
         order: 1,
         wallet: ViewModelFactory::make($wallet),
         forgingAt: Timestamp::fromGenesis(1),
@@ -94,7 +90,7 @@ it('should not be marked as missing if it never had a block', function () {
 
     expect($subject->keepsMissing())->toBeFalse();
     $this->assertDatabaseMissing('forging_stats', [
-        'public_key' => $wallet->public_key,
+        'address' => $wallet->address,
     ]);
     expect($subject->missedCount())->toBe(0);
     expect($subject->currentRoundBlocks())->toBe(0);
@@ -103,20 +99,20 @@ it('should not be marked as missing if it never had a block', function () {
 it('should show the correct missed blocks amount when spanning multiple rounds', function () {
     $wallet = Wallet::factory()->create();
 
-    $roundBlockCount = Block::whereBetween('height', [1, 5])
+    $roundBlockCount = Block::whereBetween('number', [1, 5])
         ->get()
-        ->groupBy('generator_public_key')
+        ->groupBy('proposer')
         ->map(function ($blocks) {
             return count($blocks);
         });
 
     $subject = new Slot(
-        publicKey: $wallet->public_key,
+        address: $wallet->address,
         order: 1,
         wallet: ViewModelFactory::make($wallet),
         forgingAt: Timestamp::fromGenesis(1),
         lastBlock: [
-            'publicKey' => $wallet->public_key,
+            'address'   => $wallet->address,
             'height'    => 1,
         ],
         status: 'done',
@@ -125,32 +121,32 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
         secondsUntilForge: 0,
     );
 
-    expect(ForgingStats::where('public_key', $wallet->public_key)->exists())->toBeFalse();
+    expect(ForgingStats::where('address', $wallet->address)->exists())->toBeFalse();
 
     ForgingStats::create([
         'timestamp'  => 1,
-        'public_key' => $wallet->public_key,
+        'address'    => $wallet->address,
         'forged'     => true,
     ]);
 
     ForgingStats::create([
         'timestamp'  => 2,
-        'public_key' => $wallet->public_key,
+        'address'    => $wallet->address,
         'forged'     => false,
     ]);
 
     ForgingStats::create([
         'timestamp'  => 3,
-        'public_key' => $wallet->public_key,
+        'address'    => $wallet->address,
         'forged'     => false,
     ]);
 
-    expect(ForgingStats::where('public_key', $wallet->public_key)->exists())->toBeTrue();
+    expect(ForgingStats::where('address', $wallet->address)->exists())->toBeTrue();
 
-    $missed = ForgingStats::where('forged', false)->where('public_key', $wallet->public_key)->count();
+    $missed = ForgingStats::where('forged', false)->where('address', $wallet->address)->count();
 
     (new WalletCache())->setMissedBlocks(
-        $wallet->public_key,
+        $wallet->address,
         $missed
     );
 

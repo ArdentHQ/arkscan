@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Validators;
 
 use App\Http\Livewire\Concerns\HasTabs;
+use App\Http\Livewire\Concerns\SyncsInput;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 /**
  * @property int $page
- * @property int $perPage
+ * @property ?int $perPage
  */
 final class Tabs extends Component
 {
     use HasTabs;
+    use SyncsInput;
 
     public string $view = 'validators';
 
@@ -42,7 +44,7 @@ final class Tabs extends Component
             $perPage = Validators::defaultPerPage();
         }
 
-        // TODO: Handle filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
+        // TODO: Handle filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
 
         return [
             'view'    => ['except' => 'validators'],
@@ -51,7 +53,7 @@ final class Tabs extends Component
         ];
     }
 
-    public function boot(): void
+    public function mount(): void
     {
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
@@ -59,7 +61,7 @@ final class Tabs extends Component
                     'page'    => 1,
                     'perPage' => Validators::defaultPerPage(),
 
-                    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
+                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
 
                 'missed-blocks' => [
@@ -71,7 +73,7 @@ final class Tabs extends Component
                     'page'    => 1,
                     'perPage' => RecentVotes::defaultPerPage(),
 
-                    // TODO: Filters - https://app.clickup.com/t/861n4ydmh - see WalletTables
+                    // TODO: Filters - https://app.clickup.com/t/86dvxzge7 - see WalletTables
                 ],
             ];
         }

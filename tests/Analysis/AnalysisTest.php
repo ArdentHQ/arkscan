@@ -14,7 +14,7 @@ final class AnalysisTest extends TestCase
 {
     use AnalysisTrait;
 
-    public function getPaths(): array
+    public static function getPaths(): array
     {
         return [
             __DIR__.'/../../app',
@@ -38,7 +38,9 @@ final class AnalysisTest extends TestCase
             'Tests\createFullRound',
             'Tests\createPartialRound',
             'Tests\getRoundValidators',
+            'Tests\mockTaggedCache',
             'Tests\validatorsForRound',
+            'Tests\getValidatorForgingPosition',
         ];
     }
 }

@@ -18,15 +18,13 @@ interface WalletRepository
 
     public function allWithPublicKey(): Builder;
 
-    public function allWithMultiSignature(): Builder;
-
     public function findByAddress(string $address): Wallet;
 
     public function findByPublicKey(string $publicKey): Wallet;
 
     public function findByPublicKeys(array $publicKey): Collection;
 
-    public function findByUsername(string $username, bool $caseSensitive = true): Wallet;
+    public function findByUsername(string $address, bool $caseSensitive = true): Wallet;
 
     public function findByIdentifier(string $identifier): Wallet;
 }

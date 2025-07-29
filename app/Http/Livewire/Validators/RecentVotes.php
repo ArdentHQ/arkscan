@@ -6,9 +6,10 @@ namespace App\Http\Livewire\Validators;
 
 use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableFilter;
 use App\Http\Livewire\Concerns\HasTableSorting;
+use App\Models\Scopes\UnvoteScope;
+use App\Models\Scopes\VoteScope;
 use App\Models\Transaction;
 use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
@@ -22,7 +23,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class RecentVotes extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableFilter;
     use HasTableSorting;
 
@@ -31,9 +31,8 @@ final class RecentVotes extends TabbedTableComponent
     public const INITIAL_SORT_DIRECTION = SortDirection::DESC;
 
     public array $filter = [
-        'vote'      => true,
-        'unvote'    => true,
-        'vote-swap' => true,
+        'vote'   => true,
+        'unvote' => true,
     ];
 
     /** @var mixed */
@@ -44,9 +43,8 @@ final class RecentVotes extends TabbedTableComponent
     public function queryString(): array
     {
         return [
-            'vote'      => ['except' => true],
-            'unvote'    => ['except' => true],
-            'vote-swap' => ['except' => true],
+            'filter.vote'   => ['as' => 'vote', 'except' => true],
+            'filter.unvote' => ['as' => 'unvote', 'except' => true],
         ];
     }
 
@@ -98,11 +96,7 @@ final class RecentVotes extends TabbedTableComponent
             return true;
         }
 
-        if ($this->filter['unvote'] === true) {
-            return true;
-        }
-
-        return $this->filter['vote-swap'] === true;
+        return $this->filter['unvote'] === true;
     }
 
     private function getRecentVotesQuery(): Builder
@@ -112,23 +106,18 @@ final class RecentVotes extends TabbedTableComponent
             $sortDirection = SortDirection::DESC;
         }
 
-        // TODO: fixme
         return Transaction::query()
-            ->where('type', 3)
+            ->with('votedFor')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
+            ->where('receipts.status', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filter['vote'], function ($query) {
-                    $query->whereRaw('jsonb_array_length(asset->\'votes\') >= 1')
-                        ->whereRaw('jsonb_array_length(asset->\'unvotes\') = 0');
-                }))->orWhere(fn ($query) => $query->when($this->filter['unvote'], function ($query) {
-                    $query->whereRaw('jsonb_array_length(asset->\'unvotes\') >= 1')
-                        ->whereRaw('jsonb_array_length(asset->\'votes\') = 0');
-                }))->orWhere(fn ($query) => $query->when(
-                    $this->filter['vote-swap'],
-                    fn ($query) => $query
-                        ->whereRaw('jsonb_array_length(asset->\'votes\') >= 1')
-                        ->whereRaw('jsonb_array_length(asset->\'unvotes\') >= 1')
-                ));
+                    $query->withScope(VoteScope::class);
+                }))
+                ->orWhere(fn ($query) => $query->when($this->filter['unvote'], function ($query) {
+                    $query->withScope(UnvoteScope::class);
+                }));
             })
             ->when($this->sortKey === 'age', fn ($query) => $query->sortByAge($sortDirection))
             ->when($this->sortKey === 'address', fn ($query) => $query->sortByAddress($sortDirection))

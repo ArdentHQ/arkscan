@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\DTO\Statistics;
 
-final class TransactionStatistics
+use App\Models\Block;
+use App\Models\Transaction;
+use Livewire\Wireable;
+
+final class TransactionStatistics implements Wireable
 {
     public function __construct(
         public array $details,
@@ -23,6 +27,44 @@ final class TransactionStatistics
             $details,
             $averages,
             $records,
+        );
+    }
+
+    public function toLivewire(): array
+    {
+        $records = $this->records;
+
+        return [
+            'details'  => $this->details,
+            'averages' => $this->averages->toArray(),
+
+            'records'  => [
+                'largest_transaction'        => $this->records->largestTransaction?->hash(),
+                'highest_fee'                => $this->records->blockWithHighestFees?->hash(),
+                'most_transactions_in_block' => $this->records->blockWithMostTransactions?->hash(),
+            ],
+        ];
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return self
+     */
+    public static function fromLivewire($value)
+    {
+        return new self(
+            $value['details'],
+            TransactionAveragesStatistics::make([
+                'count'  => $value['averages']['transactions'],
+                'amount' => $value['averages']['transaction_volume'],
+                'fee'    => $value['averages']['transaction_fees'],
+            ]),
+            TransactionRecordsStatistics::make(
+                $value['records']['largest_transaction'] !== null ? Transaction::firstWhere('hash', $value['records']['largest_transaction']) : null,
+                $value['records']['highest_fee'] !== null ? Block::firstWhere('hash', $value['records']['highest_fee']) : null,
+                $value['records']['most_transactions_in_block'] !== null ? Block::firstWhere('hash', $value['records']['most_transactions_in_block']) : null,
+            ),
         );
     }
 }

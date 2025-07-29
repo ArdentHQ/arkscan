@@ -6,7 +6,6 @@ namespace App\Http\Livewire\Validators;
 
 use App\Enums\SortDirection;
 use App\Http\Livewire\Abstracts\TabbedTableComponent;
-use App\Http\Livewire\Concerns\DeferLoading;
 use App\Http\Livewire\Concerns\HasTableSorting;
 use App\Models\ForgingStats;
 use App\ViewModels\ViewModelFactory;
@@ -19,7 +18,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 final class MissedBlocks extends TabbedTableComponent
 {
-    use DeferLoading;
     use HasTableSorting;
 
     public const INITIAL_SORT_KEY = 'age';
@@ -67,7 +65,8 @@ final class MissedBlocks extends TabbedTableComponent
     private function getMissedBlocksQuery(): Builder
     {
         if (config('database.default') === 'sqlite') {
-            return ForgingStats::orderByDesc('timestamp')
+            return ForgingStats::with('validator')
+                ->orderByDesc('timestamp')
                 ->whereNotNull('missed_height');
         }
 
@@ -77,6 +76,7 @@ final class MissedBlocks extends TabbedTableComponent
         }
 
         return ForgingStats::query()
+            ->with('validator')
             ->when($this->sortKey === 'height', fn ($query) => $query->sortByHeight($sortDirection))
             ->when($this->sortKey === 'age', fn ($query) => $query->sortByAge($sortDirection))
             ->when($this->sortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))

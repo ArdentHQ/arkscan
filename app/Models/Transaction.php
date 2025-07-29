@@ -4,43 +4,43 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\TransactionTypeEnum;
 use App\Models\Casts\BigInteger;
 use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
 use App\Models\Concerns\Transaction\CanBeSorted;
+use App\Models\Concerns\Transaction\HasPayload;
+use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Scopes\MultiPaymentScope;
-use App\Models\Scopes\MultiSignatureScope;
+use App\Models\Scopes\OtherTransactionTypesScope;
 use App\Models\Scopes\TransferScope;
+use App\Models\Scopes\UnvoteScope;
 use App\Models\Scopes\UsernameRegistrationScope;
 use App\Models\Scopes\UsernameResignationScope;
 use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
-use App\Models\Scopes\VoteCombinationScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
-use App\Services\VendorField;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
 /**
- * @property string $id
- * @property array|null $asset
- * @property BigNumber $amount
- * @property BigNumber $fee
+ * @property string $hash
+ * @property string $block_hash
+ * @property BigNumber $value
+ * @property BigNumber $gas
+ * @property BigNumber $gas_price
  * @property int $timestamp
- * @property int $type
- * @property int $type_group
- * @property string $block_id
- * @property string|null $recipient_id
+ * @property int $transaction_index
+ * @property string|null $to
+ * @property string $from
  * @property string $sender_public_key
- * @property int $block_height
- * @property resource|string|null $vendor_field
+ * @property int $block_number
+ * @property resource|null $data
  * @property int $nonce
  * @property Wallet $sender
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
@@ -49,6 +49,7 @@ final class Transaction extends Model
 {
     use CanBeSorted;
     use HasFactory;
+    use HasPayload;
     use SearchesCaseInsensitive;
     use HasEmptyScope;
     use Searchable;
@@ -60,15 +61,12 @@ final class Transaction extends Model
      * all places that need to filter transactions by their type.
      */
     public const TYPE_SCOPES = [
-        'validatorRegistration'         => ValidatorRegistrationScope::class,
-        'validatorResignation'          => ValidatorResignationScope::class,
-        'multiPayment'                  => MultiPaymentScope::class,
-        'multiSignature'                => MultiSignatureScope::class,
-        'usernameRegistration'          => UsernameRegistrationScope::class,
-        'usernameResignation'           => UsernameResignationScope::class,
-        'transfer'                      => TransferScope::class,
-        'vote'                          => VoteScope::class,
-        'voteCombination'               => VoteCombinationScope::class,
+        'validatorRegistration' => ValidatorRegistrationScope::class,
+        'validatorResignation'  => ValidatorResignationScope::class,
+        'transfer'              => TransferScope::class,
+        'multiPayment'          => MultiPaymentScope::class,
+        'vote'                  => VoteScope::class,
+        'unvote'                => UnvoteScope::class,
     ];
 
     /**
@@ -86,6 +84,13 @@ final class Transaction extends Model
     public $incrementing = false;
 
     /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'hash';
+
+    /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
@@ -98,16 +103,17 @@ final class Transaction extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'amount'       => BigInteger::class,
-        'asset'        => 'array',
-        'fee'          => BigInteger::class,
-        'timestamp'    => UnixSeconds::class,
-        'type_group'   => 'int',
-        'type'         => 'int',
-        'block_height' => 'int',
+        'value'             => BigInteger::class,
+        'gas_price'         => BigInteger::class,
+        'gas'               => BigInteger::class,
+        'timestamp'         => UnixSeconds::class,
+        'transaction_index' => 'int',
+        'block_number'      => 'int',
     ];
 
-    private bool|string|null $vendorFieldContent = false;
+    protected $with = [
+        'receipt',
+    ];
 
     /**
      * Get the indexable data array for the model.
@@ -120,23 +126,17 @@ final class Transaction extends Model
         // for the search results.
         return [
             // Searchable id and used to link the transaction
-            'id' => $this->id,
+            'hash' => $this->hash,
             // Used to get the recipient wallet
-            'recipient_id' => $this->recipient_id,
+            'to' => $this->to,
 
             // Used to get the sender wallets
             'sender_public_key' => $this->sender_public_key,
 
-            // Used to show the transaction type
-            'type'       => $this->type,
-            'type_group' => $this->type_group,
-
-            // To get the amount for single payments
+            // To get the value for single payments
             // Using `__toString` since are instances of `BigNumber`
-            'amount' => $this->amount->__toString(),
-            'fee'    => $this->fee->__toString(),
-            // Contains the multipayments payments and vote related data
-            'asset' => $this->asset,
+            'value'  => $this->value->__toString(),
+            'fee'    => $this->gas_price->__toString(),
             // used to build the payments and sortable
             'timestamp' => $this->timestamp,
         ];
@@ -151,14 +151,11 @@ final class Transaction extends Model
 
         return $self->newQuery()
             ->select([
-                'id',
+                'hash',
                 'sender_public_key',
-                'recipient_id',
-                'type',
-                'type_group',
-                'amount',
-                'fee',
-                'asset',
+                'to',
+                'value',
+                'gas_price',
                 'timestamp',
             ])
             ->when(true, function ($query) use ($self) {
@@ -188,7 +185,7 @@ final class Transaction extends Model
      */
     public function block(): BelongsTo
     {
-        return $this->belongsTo(Block::class, 'block_id');
+        return $this->belongsTo(Block::class, 'block_hash', 'hash');
     }
 
     /**
@@ -202,51 +199,104 @@ final class Transaction extends Model
     }
 
     /**
-     * A transaction belongs to a recipient.
+     * A receipt belongs to a transaction.
      *
-     * @return Wallet
+     * @return HasOne
      */
-    public function recipient(): Wallet
+    public function receipt(): HasOne
     {
-        $recipientId = $this->recipient_id;
-        if (! is_null($recipientId)) {
-            return Wallet::where('address', $recipientId)->firstOrFail();
+        return $this->hasOne(Receipt::class, 'transaction_hash', 'hash');
+    }
+
+    public function getVotedForAddressAttribute(): ?string
+    {
+        $methodData = $this->getMethodData();
+        if ($methodData !== null) {
+            return $methodData[2][0] ?? null;
         }
 
-        $votePublicKey = Arr::get($this, 'asset.votes.0');
-        if (is_null($votePublicKey)) {
-            $votePublicKey = Arr::get($this, 'asset.unvotes.0');
-        }
+        return null;
+    }
 
-        return Wallet::where('public_key', $votePublicKey)->firstOrFail();
+    /**
+     * A receipt belongs to a transaction.
+     *
+     * @return HasOne
+     */
+    public function votedFor(): HasOne
+    {
+        return $this->hasOne(Wallet::class, 'address', 'votedForAddress');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
     {
+        $hasAdjustedFilters = in_array(false, $filter, true);
+
         return $query
-            ->where(function ($query) use ($filter) {
-                $query->where(fn ($query) => $query->when($filter['transfers'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::TRANSFER)))
-                    ->orWhere(fn ($query) => $query->when($filter['votes'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::VOTE)))
-                    ->orWhere(fn ($query) => $query->when($filter['multipayments'] === true, fn ($query) => $query->where('type', TransactionTypeEnum::MULTI_PAYMENT)))
-                    ->orWhere(fn ($query) => $query->when($filter['others'] === true, fn ($query) => $query
-                        ->orWhere(
-                            fn ($query) => $query
-                                ->whereNotIn('type', [
-                                    TransactionTypeEnum::TRANSFER,
-                                    TransactionTypeEnum::VOTE,
-                                    TransactionTypeEnum::MULTI_PAYMENT,
-                                ])
-                        )));
+            ->when($hasAdjustedFilters, function ($query) use ($filter) {
+                $query->where(function ($query) use ($filter) {
+                    $query->where(function ($query) use ($filter) {
+                        $query->when($filter['transfers'] === true, function ($query) {
+                            $query->withScope(TransferScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['multipayments'] === true, function ($query) {
+                            $query->withScope(MultiPaymentScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['votes'] === true, function ($query) {
+                            $query->withScope(VoteScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['votes'] === true, function ($query) {
+                            $query->withScope(UnvoteScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['validator'] === true, function ($query) {
+                            $query->withScope(ValidatorRegistrationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['validator'] === true, function ($query) {
+                            $query->withScope(ValidatorResignationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['username'] === true, function ($query) {
+                            $query->withScope(UsernameRegistrationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['username'] === true, function ($query) {
+                            $query->withScope(UsernameResignationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['contract_deployment'] === true, function ($query) {
+                            $query->withScope(ContractDeploymentScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['others'] === true, function ($query) {
+                            $query->withScope(OtherTransactionTypesScope::class);
+                        });
+                    });
+                });
             });
     }
 
-    public function vendorField(): string|null
+    public function fee(): BigNumber
     {
-        if (is_bool($this->vendorFieldContent)) {
-            $this->vendorFieldContent = VendorField::parse($this->vendor_field);
+        $gasPrice = clone $this->gas_price;
+        if ($this->receipt === null) {
+            return $gasPrice;
         }
 
-        return $this->vendorFieldContent;
+        return $gasPrice->multipliedBy($this->receipt->gas_used->valueOf());
     }
 
     /**

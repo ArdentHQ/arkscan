@@ -10,7 +10,7 @@ use App\Services\Cache\WalletCache;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
 
-it('should cache the past performance for a public key', function () {
+it('should cache the past performance for an address', function () {
     $currentRound = 16;
     $cache        = new WalletCache();
 
@@ -18,30 +18,30 @@ it('should cache the past performance for a public key', function () {
         ->activeValidator()
         ->create();
 
-    $publicKey = $wallets->first()->public_key;
+    $address = $wallets->first()->address;
 
     foreach (range($currentRound - 5, $currentRound - 1) as $round) {
         createRoundEntry($round, $round * Network::validatorCount(), $wallets);
 
         Block::factory()->create([
-            'generator_public_key' => $publicKey,
-            'height'               => $round * Network::validatorCount(),
+            'proposer'             => $address,
+            'number'               => $round * Network::validatorCount(),
         ]);
     }
 
-    expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(5);
-    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeFalse();
+    expect(Block::where('proposer', $address)->count())->toBe(5);
+    expect($cache->getCache()->has(md5('performance/'.$address)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();
 
-    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeTrue();
-    expect($cache->getPerformance($publicKey))->toBe([
+    expect($cache->getCache()->has(md5('performance/'.$address)))->toBeTrue();
+    expect($cache->getPerformance($address))->toBe([
         true,
         true,
     ]);
 });
 
-it('should cache end of a round missed blocks for a public key', function () {
+it('should cache end of a round missed blocks for an address', function () {
     $this->freezeTime();
 
     [0 => $validators] = createRealisticRound([
@@ -58,17 +58,17 @@ it('should cache end of a round missed blocks for a public key', function () {
         ],
     ], $this, false);
 
-    $publicKey = $validators->get(4)->public_key;
+    $address = $validators->get(4)->address;
 
     $cache = new WalletCache();
 
-    expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(2);
-    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeFalse();
+    expect(Block::where('proposer', $address)->count())->toBe(2);
+    expect($cache->getCache()->has(md5('performance/'.$address)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();
 
-    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeTrue();
-    expect($cache->getPerformance($publicKey))->toBe([true, false]);
+    expect($cache->getCache()->has(md5('performance/'.$address)))->toBeTrue();
+    expect($cache->getPerformance($address))->toBe([true, false]);
 });
 
 it('should cache concurrent failures', function () {
@@ -92,17 +92,17 @@ it('should cache concurrent failures', function () {
         ],
     ], $this, false);
 
-    $publicKey = $validators->get(4)->public_key;
+    $address = $validators->get(4)->address;
 
     $cache = new WalletCache();
 
-    expect(Block::whereGeneratorPublicKey($publicKey)->count())->toBe(1);
-    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeFalse();
+    expect(Block::where('proposer', $address)->count())->toBe(1);
+    expect($cache->getCache()->has(md5('performance/'.$address)))->toBeFalse();
 
     (new CacheValidatorPerformance())->handle();
 
-    expect($cache->getCache()->has(md5('performance/'.$publicKey)))->toBeTrue();
-    expect($cache->getPerformance($publicKey))->toBe([
+    expect($cache->getCache()->has(md5('performance/'.$address)))->toBeTrue();
+    expect($cache->getPerformance($address))->toBe([
         false,
         false,
     ]);

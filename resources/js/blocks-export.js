@@ -30,35 +30,37 @@ const csvColumns = {
 };
 
 const BlocksExport = ({
-    publicKey,
+    address,
     userCurrency,
     rates,
     network,
     canBeExchanged,
 }) => {
     const columnMapping = {
+        id: (block) => block.hash,
         timestamp: (block) => dayjs(parseInt(block.timestamp)).format("L LTS"),
-        volume: (block) => arktoshiToNumber(block.totalAmount),
+        numberOfTransactions: (block) => block.transactionsCount,
+        volume: (block) => arktoshiToNumber(block.amount),
         volumeFiat: function (block) {
             return this.volume(block) * this.rate(block);
         },
-        total: (block) => {
-            return arktoshiToNumber(
-                block.totalAmount + block.totalFee + block.reward
-            );
-        },
+        total: (block) =>
+            arktoshiToNumber(
+                parseInt(block.amount) +
+                    parseInt(block.fee) +
+                    parseInt(block.reward)
+            ),
         totalFiat: function (block) {
             return this.total(block) * this.rate(block);
         },
         rate: (block) => {
             const date = dayjs(parseInt(block.timestamp)).format("YYYY-MM-DD");
-
             return rates[date] ?? 0;
         },
     };
 
     return {
-        publicKey,
+        address,
         network,
         canBeExchanged,
         userCurrency,
@@ -111,7 +113,7 @@ const BlocksExport = ({
 
                     let blocks = await this.fetch({
                         query,
-                        publicKey,
+                        address,
                     });
 
                     if (blocks.length === 0) {
@@ -270,13 +272,13 @@ const BlocksExport = ({
             this.hasFinishedExport = false;
         },
 
-        async fetch({ query, publicKey, limit = 100 }) {
+        async fetch({ query, address, limit = 100 }) {
             return BlocksApi.fetchAll(
                 {
                     host: network.api,
                     limit,
                     query,
-                    publicKey,
+                    address,
                     height: query["height.to"],
                 },
                 this

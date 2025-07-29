@@ -10,7 +10,7 @@ it('should determine if the transaction is sent', function () {
     $sender      = Wallet::factory()->create();
     $transaction = Transaction::factory()->create([
         'sender_public_key' => $sender->public_key,
-        'recipient_id'      => Wallet::factory()->create()->address,
+        'to'                => Wallet::factory()->create()->address,
     ]);
 
     expect((new TransactionDirectionIcon($transaction))->name($sender->address))->toBe('sent');
@@ -19,7 +19,7 @@ it('should determine if the transaction is sent', function () {
 it('should determine if the transaction is received', function () {
     $transaction = Transaction::factory()->create([
         'sender_public_key' => Wallet::factory()->create()->public_key,
-        'recipient_id'      => $recipient = Wallet::factory()->create()->address,
+        'to'                => $recipient = Wallet::factory()->create()->address,
     ]);
 
     expect((new TransactionDirectionIcon($transaction))->name($recipient))->toBe('received');

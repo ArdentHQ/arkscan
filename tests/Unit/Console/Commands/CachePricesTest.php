@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Console\Commands\CachePrices;
 use App\Contracts\MarketDataProvider;
 use App\Contracts\Network;
+use App\Events\CurrencyUpdate;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceCache;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use function Tests\fakeCryptoCompare;
 
@@ -151,7 +153,7 @@ it('should not update prices if coingecko throws an exception', function () {
 });
 
 it('should update prices if coingecko does return a response', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -271,7 +273,7 @@ it('should not update prices if cryptocompare throws an exception', function () 
 });
 
 it('should update prices if cryptocompare does return a response', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -340,7 +342,9 @@ it('should update prices if cryptocompare does return a response', function () {
 });
 
 it('should stop updating prices if a response fails', function () {
-    Config::set('currencies', [
+    Event::fake();
+
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -375,7 +379,7 @@ it('should stop updating prices if a response fails', function () {
         ->push(null, 200)
         ->push(null, 200);
 
-    foreach (config('currencies') as $currency) {
+    foreach (config('currencies.currencies') as $currency) {
         $cryptoCache->setPrices($currency['currency'].'.day', collect([1, 2, 3]));
         $chartsCache->setHistorical($currency['currency'], 'day', collect([
             '12:00' => 1,
@@ -410,10 +414,17 @@ it('should stop updating prices if a response fails', function () {
             ],
         ]);
     }
+
+    Event::assertDispatchedTimes(CurrencyUpdate::class, 1);
+    Event::assertDispatched(CurrencyUpdate::class, function ($event) {
+        return $event->getId() === 'USD';
+    });
 });
 
 it('should update oldest currencies first', function () {
-    Config::set('currencies', [
+    Event::fake();
+
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',
@@ -487,10 +498,15 @@ it('should update oldest currencies first', function () {
 
     expect($cryptoCache->getPrices('EUR.day'))->toEqual(collect([]));
     expect($chartsCache->getHistorical('EUR', 'day'))->toEqual([]);
+
+    Event::assertDispatchedTimes(CurrencyUpdate::class, 1);
+    Event::assertDispatched(CurrencyUpdate::class, function ($event) {
+        return $event->getId() === 'GBP';
+    });
 });
 
 it('should not update if updated within 10 minutes', function () {
-    Config::set('currencies', [
+    Config::set('currencies.currencies', [
         'usd' => [
             'currency' => 'USD',
             'locale'   => 'en_US',

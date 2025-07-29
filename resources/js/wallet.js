@@ -1,4 +1,5 @@
 import { WalletsApi } from "./api/wallets";
+import { Alpine } from "../../vendor/livewire/livewire/dist/livewire.esm";
 
 Object.defineProperties(window, {
     _arkconnect: {
@@ -136,7 +137,12 @@ const Wallet = (network, xData = {}) => {
                 return null;
             }
 
-            return this.votingFor.attributes?.delegate?.username;
+            const username = this.votingFor.attributes?.username;
+            if (username) {
+                return username;
+            }
+
+            return truncateMiddle(this.votingForAddress);
         },
 
         async storeData() {
@@ -198,7 +204,7 @@ const Wallet = (network, xData = {}) => {
             this.votingFor = await WalletsApi.wallet(network.api, publicKey);
             this.isVotedValidatorOnStandby =
                 this.votingFor.attributes?.delegate?.rank >
-                this.network.delegateCount;
+                this.network.validatorCount;
             this.isVotedValidatorResigned =
                 this.votingFor.attributes?.delegate?.resigned === true;
             this.isVotedValidatorResignedIgnored =
@@ -302,6 +308,26 @@ const Wallet = (network, xData = {}) => {
             window.clipboard(false).copy(this.address);
         },
 
+        get version() {
+            if (!this.hasExtension) {
+                return null;
+            }
+
+            if (typeof this.extension().version !== "function") {
+                return "1.0.0";
+            }
+
+            return this.extension().version() || "1.0.0";
+        },
+
+        get delegateAddressKey() {
+            if (["1.8.0", "1.0.0", null].includes(this.version)) {
+                return "delegateAddress";
+            }
+
+            return "address";
+        },
+
         async performVote(address) {
             if (!this.hasExtension) {
                 return;
@@ -314,18 +340,18 @@ const Wallet = (network, xData = {}) => {
                 if (votingForAddress) {
                     voteData.unvote = {
                         amount: 0,
-                        delegateAddress: votingForAddress,
+                        [this.delegateAddressKey]: votingForAddress,
                     };
                 }
 
                 voteData.vote = {
                     amount: 0,
-                    delegateAddress: address,
+                    [this.delegateAddressKey]: address,
                 };
             } else {
                 voteData.unvote = {
                     amount: 0,
-                    delegateAddress: address,
+                    [this.delegateAddressKey]: address,
                 };
             }
 
@@ -418,6 +444,10 @@ const Wallet = (network, xData = {}) => {
             );
 
             return isCompatible && !isMobile;
+        },
+
+        get addressUrl() {
+            return `/addresses/${this.address}`;
         },
     });
 };

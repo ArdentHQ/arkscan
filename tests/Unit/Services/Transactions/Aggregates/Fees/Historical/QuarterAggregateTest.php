@@ -11,15 +11,19 @@ use function Spatie\Snapshots\assertMatchesSnapshot;
 it('should aggregate the fees for 3 months', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');
 
-    Transaction::factory(10)->create([
-        'fee'       => '100000000',
-        'timestamp' => Carbon::now()->subDays(90)->startOfDay()->getTimestampMs(),
-    ]);
+    Transaction::factory(10)
+        ->withReceipt(10000)
+        ->create([
+            'gas_price' => 1,
+            'timestamp' => Carbon::now()->subDays(90)->startOfDay()->getTimestampMs(),
+        ]);
 
-    Transaction::factory(10)->create([
-        'fee'       => '100000000',
-        'timestamp' => Carbon::now()->subMinutes(10)->getTimestampMs(),
-    ]);
+    Transaction::factory(10)
+        ->withReceipt(10000)
+        ->create([
+            'gas_price' => 1,
+            'timestamp' => Carbon::now()->subMinutes(10)->getTimestampMs(),
+        ]);
 
     $result = (new QuarterAggregate())->aggregate();
 

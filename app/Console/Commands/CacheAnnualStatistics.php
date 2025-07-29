@@ -4,21 +4,29 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\TransactionTypeEnum;
+use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
+use App\Events\Statistics\AnnualData;
+use App\Facades\Network;
+use App\Models\Scopes\MultiPaymentTotalAmountScope;
+use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 final class CacheAnnualStatistics extends Command
 {
+    use DispatchesStatisticsEvents;
+
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'explorer:cache-annual-statistics {--all}}';
+    protected $signature = 'explorer:cache-annual-statistics {--all}';
 
     /**
      * The console command description.
@@ -29,36 +37,32 @@ final class CacheAnnualStatistics extends Command
 
     public function handle(StatisticsCache $cache): void
     {
-        if ($this->option('all')) {
-            $this->cacheAllYears($cache);
-        } else {
-            $this->cacheCurrentYear($cache);
-        }
+        $this->cacheAllYears($cache);
+        $this->cacheCurrentYear($cache);
+
+        $this->dispatchEvent(AnnualData::class);
+    }
+
+    private function hasCachedAll(StatisticsCache $cache): bool
+    {
+        return $cache->getAnnualData(Network::epoch()->year) !== null;
     }
 
     private function cacheAllYears(StatisticsCache $cache): void
     {
-        $transactionData = DB::connection('explorer')
-            ->query()
-            ->select([
-                DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
-                DB::raw('COUNT(DISTINCT(transactions.id)) AS transactions'),
-                DB::raw('SUM(amount) / 1e8 AS amount'),
-                DB::raw('SUM(fee) / 1e8 AS fees'),
-            ])
-            ->from('transactions')
-            ->groupBy('year')
-            ->orderBy('year')
-            ->get();
+        if ($this->hasCachedAll($cache) && $this->option('all') === false) {
+            return;
+        }
 
-        $multipaymentData = DB::connection('explorer')
-            ->query()
-            ->select([
+        $transactionData = Transaction::select([
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
-                DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'),
+                DB::raw('COUNT(DISTINCT(transactions.hash)) AS transactions'),
+                DB::raw(sprintf('(SUM(value) FILTER (WHERE COALESCE(is_multipayment, FALSE) != TRUE)) / 1e%d AS value', config('currencies.decimals.crypto', 18))),
+                DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) AS fees')),
+                DB::raw('COALESCE(SUM(recipient_amount), 0) as recipient_value'),
             ])
-            ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
-            ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
+            ->withScope(MultiPaymentTotalAmountScope::class)
             ->groupBy('year')
             ->orderBy('year')
             ->get();
@@ -74,19 +78,27 @@ final class CacheAnnualStatistics extends Command
             ->orderBy('year')
             ->get();
 
-        $transactionData->each(function ($item, $key) use ($blocksData, $multipaymentData, $cache) {
-            $multipaymentAmount = $multipaymentData->first(function ($value) use ($item) {
-                return $value->year === $item->year;
-            })?->amount ?? '0';
+        foreach ($transactionData as $key => $item) {
+            $itemData = $item->toArray();
+            if (! $this->hasChanges) {
+                $existingData = $cache->getAnnualData((int) $itemData['year']) ?? [];
+                if (Arr::get($existingData, 'transactions') !== $itemData['transactions']) {
+                    $this->hasChanges = true;
+                }
+
+                if (! $this->hasChanges && Arr::get($existingData, 'blocks') !== $blocksData->get($key)?->blocks) {
+                    $this->hasChanges = true;
+                }
+            }
 
             $cache->setAnnualData(
-                (int) $item->year,
-                (int) $item->transactions,
-                BigNumber::new($item->amount)->plus($multipaymentAmount)->__toString(),
-                $item->fees,
-                $blocksData->get($key)->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
+                (int) $itemData['year'],
+                (int) $itemData['transactions'],
+                (string) $itemData['value']->plus(UnitConverter::formatUnits($itemData['recipient_value'], 'ark')),
+                (string) BigNumber::new(UnitConverter::formatUnits($itemData['fees'], 'ark')),
+                $blocksData->get($key)?->blocks, // We assume to have the same value of entries for blocks and transactions (years)
             );
-        });
+        }
     }
 
     private function cacheCurrentYear(StatisticsCache $cache): void
@@ -94,24 +106,18 @@ final class CacheAnnualStatistics extends Command
         $startOfYear = Carbon::now()->startOfYear()->getTimestampMs();
         $year        = Carbon::now()->year;
 
+        /** @var ?object{transactions: int, value: int, volume: string, fees: float} $transactionData */
         $transactionData = DB::connection('explorer')
             ->query()
             ->select([
                 DB::raw('COUNT(*) as transactions'),
-                DB::raw('SUM(amount) / 1e8 as amount'),
-                DB::raw('SUM(fee) / 1e8 as fees'),
+                DB::raw(sprintf('SUM(value) / 1e%d as value', config('currencies.decimals.crypto', 18))),
+                DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fees')),
             ])
             ->from('transactions')
+            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->where('timestamp', '>=', $startOfYear)
             ->first();
-
-        $multipaymentAmount = DB::connection('explorer')
-            ->query()
-            ->select(DB::raw('SUM((payment->>\'amount\')::bigint) / 1e8 AS amount'))
-            ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
-            ->where('transactions.type', '=', TransactionTypeEnum::MULTI_PAYMENT)
-            ->where('timestamp', '>=', $startOfYear)
-            ->first()?->amount ?? '0';
 
         $blocksData = DB::connection('explorer')
             ->query()
@@ -119,14 +125,26 @@ final class CacheAnnualStatistics extends Command
             ->where('timestamp', '>=', $startOfYear)
             ->count();
 
+        $transactionCount = (int) $transactionData?->transactions;
+        $volume           = (string) BigNumber::new($transactionData?->value ?? '0');
+        $fees             = (string) ($transactionData?->fees ?? '0');
+
+        if (! $this->hasChanges) {
+            $existingData = $cache->getAnnualData($year) ?? [];
+            if (Arr::get($existingData, 'transactions', 0) !== $transactionCount) {
+                $this->hasChanges = true;
+            }
+
+            if (! $this->hasChanges && Arr::get($existingData, 'blocks', 0) !== $blocksData) {
+                $this->hasChanges = true;
+            }
+        }
+
         $cache->setAnnualData(
             $year,
-            // @phpstan-ignore-next-line
-            (int) $transactionData?->transactions,
-            // @phpstan-ignore-next-line
-            BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString(),
-            // @phpstan-ignore-next-line
-            $transactionData?->fees ?? '0',
+            $transactionCount,
+            $volume,
+            (string) BigNumber::new(UnitConverter::formatUnits($fees, 'ark')),
             $blocksData,
         );
     }

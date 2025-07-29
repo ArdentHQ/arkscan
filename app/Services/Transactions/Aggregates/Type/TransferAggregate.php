@@ -11,6 +11,7 @@ final class TransferAggregate
 {
     public function aggregate(): int
     {
-        return Transaction::withScope(TransferScope::class)->count();
+        return Transaction::withScope(TransferScope::class)
+            ->count();
     }
 }

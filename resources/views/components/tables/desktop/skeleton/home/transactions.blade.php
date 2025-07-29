@@ -17,7 +17,7 @@
             'responsive' => true,
             'breakpoint' => 'xl',
         ],
-        'tables.transactions.type'       => 'text',
+        'tables.transactions.method'     => 'text',
         'tables.transactions.addressing' => [
             'type' => 'encapsulated.addressing',
             'header' => 'address',

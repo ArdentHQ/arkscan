@@ -10,13 +10,13 @@ use App\Services\Transactions\Aggregates\Historical\QuarterAggregate;
 use App\Services\Transactions\Aggregates\Historical\WeekAggregate;
 use App\Services\Transactions\Aggregates\Historical\YearAggregate;
 use App\Services\Transactions\Aggregates\HistoricalAggregateFactory;
-use App\Services\Transactions\Aggregates\Type\MultipaymentAggregate;
 use App\Services\Transactions\Aggregates\Type\TransferAggregate;
 use App\Services\Transactions\Aggregates\Type\UnvoteAggregate;
+use App\Services\Transactions\Aggregates\Type\UsernameRegistrationAggregate;
+use App\Services\Transactions\Aggregates\Type\UsernameResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorRegistrationAggregate;
 use App\Services\Transactions\Aggregates\Type\ValidatorResignationAggregate;
 use App\Services\Transactions\Aggregates\Type\VoteAggregate;
-use App\Services\Transactions\Aggregates\Type\VoteCombinationAggregate;
 
 it('should create an instance that matches the period', function (string $type, string $class) {
     expect(HistoricalAggregateFactory::period($type))->toBeInstanceOf($class);
@@ -37,12 +37,12 @@ it('should create an instance that matches the type', function (string $type, st
     expect(HistoricalAggregateFactory::type($type))->toBeInstanceOf($class);
 })->with([
     [StatsTransactionType::TRANSFER, TransferAggregate::class],
-    [StatsTransactionType::MULTIPAYMENT, MultipaymentAggregate::class],
     [StatsTransactionType::VOTE, VoteAggregate::class],
     [StatsTransactionType::UNVOTE, UnvoteAggregate::class],
-    [StatsTransactionType::SWITCH_VOTE, VoteCombinationAggregate::class],
     [StatsTransactionType::VALIDATOR_REGISTRATION, ValidatorRegistrationAggregate::class],
     [StatsTransactionType::VALIDATOR_RESIGNATION, ValidatorResignationAggregate::class],
+    [StatsTransactionType::USERNAME_REGISTRATION, UsernameRegistrationAggregate::class],
+    [StatsTransactionType::USERNAME_RESIGNATION, UsernameResignationAggregate::class],
 ]);
 
 it('should throw if an unknown type is used', function () {

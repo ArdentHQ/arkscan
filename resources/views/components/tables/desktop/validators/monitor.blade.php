@@ -7,7 +7,8 @@
 
 <div>
     <x-tables.encapsulated-table
-        x-data="TableSorting('header-favorite', 'desc', 'header-order', 'asc')"
+        id="validator-monitor"
+        x-data="TableSorting('validator-monitor', 'validators.monitor', 'header-favorite', 'desc', 'header-order', 'asc')"
         wire:key="{{ Helpers::generateId('validator-monitor', $round) }}"
         class="hidden w-full md:block validator-monitor"
         :with-bottom-border="count($overflowValidators) === 0"
@@ -29,7 +30,6 @@
 
                 <x-tables.headers.desktop.address
                     name="tables.validator-monitor.validator"
-                    width="190"
                 />
 
                 <x-tables.headers.desktop.status
@@ -51,16 +51,18 @@
                     class="whitespace-nowrap"
                     breakpoint="md-lg"
                     responsive
+                    width="160"
                 />
 
                 <x-tables.headers.desktop.number
                     name="tables.validator-monitor.block_height"
                     class="whitespace-nowrap"
+                    width="100"
                 />
             </tr>
         </thead>
 
-        <tbody x-ref="tbody">
+        <tbody>
             @foreach($validators as $validator)
                 <x-tables.rows.desktop.validators.monitor-row :validator="$validator" />
             @endforeach
@@ -75,7 +77,7 @@
             :with-header="false"
             :rounded="false"
         >
-            <tbody x-ref="tbody">
+            <tbody>
                 @foreach($overflowValidators as $validator)
                     <x-tables.rows.desktop.validators.monitor-row :validator="$validator" />
                 @endforeach

@@ -14,7 +14,7 @@
                 class="whitespace-nowrap md-lg:w-[130px] lg:w-[150px]"
             />
             <x-tables.headers.desktop.text
-                name="tables.transactions.type"
+                name="tables.transactions.method"
                 class="md-lg:w-[100px] lg:w-[150px]"
             />
             <x-tables.headers.desktop.text name="tables.transactions.addressing" />
@@ -34,7 +34,7 @@
     </thead>
     <tbody>
         @foreach($transactions as $transaction)
-            <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-item', $transaction->id()) }}">
+            <x-ark-tables.row wire:key="{{ Helpers::generateId('transaction-item', $transaction->hash()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.transaction-id
                         :model="$transaction"

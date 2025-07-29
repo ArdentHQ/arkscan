@@ -10,8 +10,7 @@
     @foreach ($validators as $validator)
         <x-tables.rows.mobile
             wire:key="{{ Helpers::generateId('validator-mobile', $validator->address()) }}"
-            :expand-class="Arr::toCssClasses([
-                'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $validator->isResigned(),
+            :expand-class="Arr::toCssClasses(['space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700' => ! $validator->isResigned(),
             ])"
             expandable
             :content-class="config('arkscan.arkconnect.enabled') ? '!pb-0 sm:!pb-3' : ''"

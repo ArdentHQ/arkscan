@@ -2,52 +2,53 @@
 
 declare(strict_types=1);
 
+use App\Events\Statistics\TransactionDetails;
 use App\Models\Block;
-use App\Models\Transaction;
 use App\Services\Cache\BlockCache;
+use Illuminate\Support\Facades\Event;
 
-it('should cache largest block by amount', function () {
+it('should run job', function () {
+    Event::fake();
+
     $cache = new BlockCache();
 
-    Transaction::factory()->create(['amount' => 0]);
+    $largestBlock = Block::factory()->create(['fee' => 100 * 1e18]);
 
-    $largestBlock = Block::factory()->create([
-        'total_amount' => 1000 * 1e8,
-    ]);
+    Block::factory()->create(['fee' => 10 * 1e18]);
 
-    Block::factory()->create([
-        'total_amount' => 0,
-    ]);
+    expect($cache->getLargestIdByFees())->toBeNull();
 
     $this->artisan('explorer:cache-blocks');
 
-    expect($cache->getLargestIdByAmount())->toBe($largestBlock->id);
+    expect($cache->getLargestIdByFees())->toBe($largestBlock->hash);
+
+    Event::assertDispatched(TransactionDetails::class);
 });
 
 it('should cache largest block by fee', function () {
     $cache = new BlockCache();
 
-    Block::factory()->create(['total_fee' => 0]);
+    Block::factory()->create(['fee' => 0]);
 
-    $largestBlock = Block::factory()->create(['total_fee' => 100 * 1e8]);
+    $largestBlock = Block::factory()->create(['fee' => 100 * 1e18]);
 
-    Block::factory()->create(['total_fee' => 0]);
+    Block::factory()->create(['fee' => 0]);
 
     $this->artisan('explorer:cache-blocks');
 
-    expect($cache->getLargestIdByFees())->toBe($largestBlock->id);
+    expect($cache->getLargestIdByFees())->toBe($largestBlock->hash);
 });
 
 it('should cache largest block by transaction count', function () {
     $cache = new BlockCache();
 
-    Block::factory()->create(['number_of_transactions' => 1]);
+    Block::factory()->create(['transactions_count' => 1]);
 
-    $largestBlock = Block::factory()->create(['number_of_transactions' => 50]);
+    $largestBlock = Block::factory()->create(['transactions_count' => 50]);
 
-    Block::factory()->create(['number_of_transactions' => 3]);
+    Block::factory()->create(['transactions_count' => 3]);
 
     $this->artisan('explorer:cache-blocks');
 
-    expect($cache->getLargestIdByTransactionCount())->toBe($largestBlock->id);
+    expect($cache->getLargestIdByTransactionCount())->toBe($largestBlock->hash);
 });

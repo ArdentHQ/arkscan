@@ -16,11 +16,15 @@ enum StatsTransactionType
 
     public const UNVOTE = 'unvote';
 
-    public const SWITCH_VOTE = 'switch_vote';
-
     public const VALIDATOR_REGISTRATION = 'validator_registration';
 
     public const VALIDATOR_RESIGNATION = 'validator_resignation';
+
+    public const VALIDATOR_UPDATE = 'validator_update';
+
+    public const USERNAME_REGISTRATION = 'username_registration';
+
+    public const USERNAME_RESIGNATION = 'username_resignation';
 
     public static function all(): Collection
     {
@@ -29,9 +33,11 @@ enum StatsTransactionType
             self::MULTIPAYMENT,
             self::VOTE,
             self::UNVOTE,
-            self::SWITCH_VOTE,
             self::VALIDATOR_REGISTRATION,
             self::VALIDATOR_RESIGNATION,
+            self::VALIDATOR_UPDATE,
+            self::USERNAME_REGISTRATION,
+            self::USERNAME_RESIGNATION,
         ]);
     }
 }

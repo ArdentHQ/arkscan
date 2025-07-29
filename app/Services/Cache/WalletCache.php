@@ -20,139 +20,118 @@ final class WalletCache implements Contract
         return $this->get('known', []);
     }
 
-    public function setKnown(Closure $callback): array
+    public function setKnown(Closure $callback, bool $force = false): array
     {
+        if ($force) {
+            $this->forget('known');
+        }
+
         return $this->remember('known', now()->addDay(), $callback);
     }
 
-    public function getLastBlock(string $publicKey): array
+    public function getLastBlock(string $address): array
     {
-        return $this->get(sprintf('last_block/%s', $publicKey), []);
+        return $this->get(sprintf('last_block/%s', $address), []);
     }
 
-    public function setLastBlock(string $publicKey, array $blocks): void
+    public function setLastBlock(string $address, array $blocks): void
     {
-        $this->put(sprintf('last_block/%s', $publicKey), $blocks);
+        $this->put(sprintf('last_block/%s', $address), $blocks);
     }
 
-    public function getPerformance(string $publicKey): array
+    public function getPerformance(string $address): array
     {
-        return $this->get(sprintf('performance/%s', $publicKey), [true, true]);
+        return $this->get(sprintf('performance/%s', $address), [true, true]);
     }
 
-    public function setPerformance(string $publicKey, array $value): void
+    public function setPerformance(string $address, array $value): void
     {
-        $this->put(sprintf('performance/%s', $publicKey), $value);
+        $this->put(sprintf('performance/%s', $address), $value);
     }
 
-    public function getProductivity(string $publicKey): float
+    public function getProductivity(string $address): float
     {
-        return (float) $this->get(sprintf('productivity/%s', $publicKey), -1);
+        return (float) $this->get(sprintf('productivity/%s', $address), -1);
     }
 
-    public function setProductivity(string $publicKey, float $value): void
+    public function setProductivity(string $address, float $value): void
     {
-        $this->put(sprintf('productivity/%s', $publicKey), $value);
+        $this->put(sprintf('productivity/%s', $address), $value);
     }
 
-    public function getResignationId(string $publicKey): ?string
+    public function getResignationId(string $address): ?string
     {
-        return $this->get(sprintf('resignation_id/%s', $publicKey));
+        return $this->get(sprintf('resignation_id/%s', $address));
     }
 
-    public function setResignationId(string $publicKey, string $id): void
+    public function setResignationId(string $address, string $id): void
     {
-        $this->put(sprintf('resignation_id/%s', $publicKey), $id);
+        $this->put(sprintf('resignation_id/%s', $address), $id);
     }
 
-    public function getVote(string $publicKey): ?Wallet
+    public function getVote(string $address): ?Wallet
     {
-        return $this->get(sprintf('vote/%s', $publicKey));
+        return $this->get(sprintf('vote/%s', $address));
     }
 
-    public function setVote(string $publicKey, Wallet $value): void
+    public function setVote(string $address, Wallet $value): void
     {
-        $this->put(sprintf('vote/%s', $publicKey), $value);
+        $this->put(sprintf('vote/%s', $address), $value);
     }
 
-    public function getMultiSignatureAddress(int $min, array $publicKeys): ?string
+    public function getValidator(string $address): ?Wallet
     {
-        return $this->get(sprintf('multi_signature/%s/%s', $min, serialize($publicKeys)));
+        return $this->get(sprintf('validator/%s', $address));
     }
 
-    public function setMultiSignatureAddress(int $min, array $publicKeys, Closure $callback): void
+    public function setValidator(string $address, Wallet $wallet): void
     {
-        $this->remember(sprintf('multi_signature/%s/%s', $min, serialize($publicKeys)), now()->addHour(), $callback);
+        $this->put(sprintf('validator/%s', $address), $wallet);
     }
 
-    public function getUsernameByAddress(string $address): ?string
+    public function getWalletNameByAddress(string $address): ?string
     {
-        return $this->get(sprintf('username_by_address/%s', $address));
+        return $this->get(sprintf('name_by_address/%s', $address));
     }
 
-    public function setUsernameByAddress(string $address, string $username): void
+    public function setWalletNameByAddress(string $address, string $name): void
     {
-        $this->put(sprintf('username_by_address/%s', $address), $username);
+        $this->put(sprintf('name_by_address/%s', $address), $name);
     }
 
-    public function forgetUsernameByAddress(string $address): void
+    public function forgetWalletNameByAddress(string $address): void
     {
-        $this->forget(sprintf('username_by_address/%s', $address));
+        $this->forget(sprintf('name_by_address/%s', $address));
     }
 
-    public function getValidatorPublicKeyByAddress(string $address): ?string
+    public function getVoterCount(string $address): int
     {
-        return $this->get(sprintf('validator_public_key_by_address/%s', $address));
+        return (int) $this->get(sprintf('voter_count/%s', $address), 0);
     }
 
-    public function setValidatorPublicKeyByAddress(string $address, string $validatorPublicKey): void
+    public function setVoterCount(string $address, int $count): void
     {
-        $this->put(sprintf('validator_public_key_by_address/%s', $address), $validatorPublicKey);
+        $this->put(sprintf('voter_count/%s', $address), $count);
     }
 
-    public function getUsernameByPublicKey(string $publicKey): ?string
+    public function getMissedBlocks(string $address): int
     {
-        return $this->get(sprintf('username_by_public_key/%s', $publicKey));
+        return (int) $this->get(sprintf('missed_blocks/%s', $address), 0);
     }
 
-    public function setUsernameByPublicKey(string $publicKey, string $username): void
+    public function setMissedBlocks(string $address, int $value): void
     {
-        $this->put(sprintf('username_by_public_key/%s', $publicKey), $username);
+        $this->put(sprintf('missed_blocks/%s', $address), $value);
     }
 
-    public function forgetUsernameByPublicKey(string $publicKey): void
+    public function getContractAddresses(): array
     {
-        $this->forget(sprintf('username_by_public_key/%s', $publicKey));
+        return $this->get('contract_addresses', []);
     }
 
-    public function getValidator(string $publicKey): ?Wallet
+    public function setContractAddresses(array $addresses): void
     {
-        return $this->get(sprintf('validator/%s', $publicKey));
-    }
-
-    public function setValidator(string $publicKey, Wallet $wallet): void
-    {
-        $this->put(sprintf('validator/%s', $publicKey), $wallet);
-    }
-
-    public function getVoterCount(string $publicKey): int
-    {
-        return (int) $this->get(sprintf('voter_count/%s', $publicKey), 0);
-    }
-
-    public function setVoterCount(string $publicKey, int $count): void
-    {
-        $this->put(sprintf('voter_count/%s', $publicKey), $count);
-    }
-
-    public function getMissedBlocks(string $publicKey): int
-    {
-        return (int) $this->get(sprintf('missed_blocks/%s', $publicKey), 0);
-    }
-
-    public function setMissedBlocks(string $publicKey, int $value): void
-    {
-        $this->put(sprintf('missed_blocks/%s', $publicKey), $value);
+        $this->put('contract_addresses', $addresses);
     }
 
     public function getCache(): TaggedCache

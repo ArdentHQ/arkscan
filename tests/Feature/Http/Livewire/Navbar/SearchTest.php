@@ -6,8 +6,8 @@ use App\Http\Livewire\Navbar\Search;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Cache\WalletCache;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Http;
 use Laravel\Scout\Engines\MeilisearchEngine;
 use Livewire\Livewire;
 use Meilisearch\Client as MeilisearchClient;
@@ -26,7 +26,7 @@ it('should search for a wallet', function () {
 
     Transaction::factory()
         ->transfer()
-        ->create(['block_id' => $block->id]);
+        ->create(['block_hash' => $block->hash]);
 
     Livewire::test(Search::class)
         ->set('query', $wallet->address)
@@ -37,18 +37,16 @@ it('should search for a wallet', function () {
 it('should search for a wallet username over a block generator', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'validator' => [
-                'username' => 'pieface',
-            ],
+            'username' => 'pieface',
         ],
     ]);
     $block = Block::factory()->create([
-        'generator_public_key' => $wallet->public_key,
+        'proposer' => $wallet->address,
     ]);
 
     Transaction::factory()
         ->transfer()
-        ->create(['block_id' => $block->id]);
+        ->create(['block_hash' => $block->hash]);
 
     Livewire::test(Search::class)
         ->set('query', $wallet->address)
@@ -64,33 +62,33 @@ it('should search for a transaction', function () {
 
     Transaction::factory()
         ->transfer()
-        ->create(['block_id' => $block->id]);
+        ->create(['block_hash' => $block->hash]);
 
     $transaction = Transaction::factory()
         ->transfer()
         ->create();
 
     Livewire::test(Search::class)
-        ->set('query', $transaction->id)
-        ->assertSee($transaction->id);
+        ->set('query', $transaction->hash)
+        ->assertSee($transaction->hash);
 });
 
 it('should search for a block', function () {
     $block = Block::factory()->create();
 
     Livewire::test(Search::class)
-        ->set('query', $block->id)
-        ->assertSee($block->id);
+        ->set('query', $block->hash)
+        ->assertSee($block->hash);
 });
 
 it('should clear search query', function () {
     $block = Block::factory()->create();
 
     Livewire::test(Search::class)
-        ->set('query', $block->id)
-        ->assertSee($block->id)
+        ->set('query', $block->hash)
+        ->assertSee($block->hash)
         ->call('clear')
-        ->assertDontSee($block->id)
+        ->assertDontSee($block->hash)
         ->assertOk();
 });
 
@@ -98,8 +96,8 @@ it('should redirect on submit', function () {
     $block = Block::factory()->create();
 
     Livewire::test(Search::class)
-        ->set('query', $block->id)
-        ->assertSee($block->id)
+        ->set('query', $block->hash)
+        ->assertSee($block->hash)
         ->call('goToFirstResult')
         ->assertRedirect(route('block', $block));
 });
@@ -109,7 +107,7 @@ it('should do nothing if no results on submit', function () {
 
     Livewire::test(Search::class)
         ->set('query', 'non-existant block id')
-        ->assertDontSee($block->id)
+        ->assertDontSee($block->hash)
         ->call('goToFirstResult')
         ->assertOk();
 });
@@ -195,7 +193,7 @@ it('should search only wallets when searching for an address', function () {
         ->assertDontSee($otherWallet->address);
 });
 
-it('should search only transactions and blocks when searching for id', function () {
+it('should search only transactions and blocks when searching for hash', function () {
     // Default value, overriden in phpunit.xml for the tests
     Config::set('scout.driver', 'meilisearch');
 
@@ -208,7 +206,7 @@ it('should search only transactions and blocks when searching for id', function 
     $transaction = Transaction::factory()
         ->transfer()
         ->create([
-            'id' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
+            'hash' => '01119cd018eef8c7314aed7fc3af13ec04b05ad55dd558dcc3ff7169f0af921c',
         ]);
 
     $this->mock(MeilisearchEngine::class)
@@ -234,8 +232,8 @@ it('should search only transactions and blocks when searching for id', function 
         ]);
 
     Livewire::test(Search::class)
-        ->set('query', $transaction->id)
-        ->assertSee($transaction->id);
+        ->set('query', $transaction->hash)
+        ->assertSee($transaction->hash);
 });
 
 it('should search for known wallets addresses with meilisearch', function () {
@@ -252,29 +250,29 @@ it('should search for known wallets addresses with meilisearch', function () {
 
     Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
 
-    Http::fake(Http::response([
+    (new WalletCache())->setKnown(fn () => [
         [
             'type'    => 'team',
             'name'    => 'Alfys hot Wallet',
-            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         ],
         [
             'type'    => 'team',
             'name'    => 'other wallet',
-            'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
+            'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
         ],
         [
             'type'    => 'team',
             'name'    => 'the alf wallet',
-            'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+            'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
         ],
-    ], 200));
+    ]);
 
     $knownWallet = Wallet::factory()->create([
-        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
     ]);
     $knownWallet2 = Wallet::factory()->create([
-        'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+        'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
     ]);
 
     $this->mock(MeilisearchEngine::class)
@@ -307,9 +305,9 @@ it('should search for known wallets addresses with meilisearch', function () {
 
     Livewire::test(Search::class)
         ->set('query', 'alf')
-        ->assertSee('AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67')
-        ->assertSee('AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk')
-        ->assertDontSee('Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d');
+        ->assertSee('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->assertSee('0x38b4a84773bC55e88D07cBFC76444C2A37600084')
+        ->assertDontSee('0x8eD03985e78c92E4506979cAAf7671275FFd953d');
 });
 
 it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisearch', function () {
@@ -326,21 +324,21 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
 
     Config::set('arkscan.networks.development.knownWallets', $knownWalletsUrl);
 
-    Http::fake(Http::response([
+    (new WalletCache())->setKnown(fn () => [
         [
             'type'    => 'team',
             'name'    => 'a1',
-            'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+            'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
         ],
         [
             'type'    => 'team',
             'name'    => 'a2',
-            'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
+            'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
         ],
         [
             'type'    => 'team',
             'name'    => 'a3',
-            'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+            'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
         ],
         [
             'type'    => 'team',
@@ -357,16 +355,16 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
             'name'    => 'a6',
             'address' => 'AKT8ji4purNoocKybdb3aHZYiVkaFimho9',
         ],
-    ], 200));
+    ]);
 
     $knownWallet = Wallet::factory()->create([
-        'address' => 'AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67',
+        'address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
     ]);
     $knownWallet2 = Wallet::factory()->create([
-        'address' => 'Ac6ofoku9qMurd3uibDbEqg6EFrENLXq2d',
+        'address' => '0x8eD03985e78c92E4506979cAAf7671275FFd953d',
     ]);
     $knownWallet3 = Wallet::factory()->create([
-        'address' => 'AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk',
+        'address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084',
     ]);
     $knownWallet4 = Wallet::factory()->create([
         'address' => 'AZiS7KXBJ8o8JgdhPo2m4t8MGpGt1Ucxe7',
@@ -411,7 +409,7 @@ it('should limit to RESULT_LIMIT_PER_TYPE known wallets addresses with meilisear
 
     Livewire::test(Search::class)
         ->set('query', 'a')
-        ->assertSee('AagJoLEnpXYkxYdYkmdDSNMLjjBkLJ6T67')
-        ->assertSee('AaH5Fx78kge1mPSPZEysW5nwubR6QCFQtk')
+        ->assertSee('0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->assertSee('0x38b4a84773bC55e88D07cBFC76444C2A37600084')
         ->assertDontSee('AKT8ji4purNoocKybdb3aHZYiVkaFimho9');
 });

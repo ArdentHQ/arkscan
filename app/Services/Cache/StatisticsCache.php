@@ -22,14 +22,15 @@ final class StatisticsCache implements Contract
     public function getTransactionData(): array
     {
         return $this->remember('transactions', self::STATS_TTL, function () {
-            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix() * 1000;
+            $timestamp = Carbon::now()->subDays(1)->getTimestampMs();
             $data      = (array) DB::connection('explorer')
                 ->table('transactions')
                 ->selectRaw('COUNT(*) as transaction_count')
-                ->selectRaw('SUM(amount) as volume')
-                ->selectRaw('SUM(fee) as total_fees')
-                ->selectRaw('AVG(fee) as average_fee')
+                ->selectRaw('SUM(transactions.value) as volume')
+                ->selectRaw('SUM(transactions.gas_price * COALESCE(receipts.gas_used, 0)) as total_fees')
+                ->selectRaw('AVG(transactions.gas_price * COALESCE(receipts.gas_used, 0)) as average_fee')
                 ->from('transactions')
+                ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
                 ->where('timestamp', '>', $timestamp)
                 ->first();
 
@@ -47,9 +48,9 @@ final class StatisticsCache implements Contract
         return $this->get('validator/mostUniqueVoters');
     }
 
-    public function setMostUniqueVoters(string $publicKey): void
+    public function setMostUniqueVoters(string $address): void
     {
-        $this->put('validator/mostUniqueVoters', $publicKey);
+        $this->put('validator/mostUniqueVoters', $address);
     }
 
     public function getLeastUniqueVoters(): ?string
@@ -57,35 +58,35 @@ final class StatisticsCache implements Contract
         return $this->get('validator/leastUniqueVoters');
     }
 
-    public function setLeastUniqueVoters(string $publicKey): void
+    public function setLeastUniqueVoters(string $address): void
     {
-        $this->put('validator/leastUniqueVoters', $publicKey);
+        $this->put('validator/leastUniqueVoters', $address);
     }
 
     /**
-     * @return array{'publicKey': string, 'timestamp': int}
+     * @return array{'address': string, 'timestamp': int}
      */
     public function getOldestActiveValidator(): ?array
     {
         return $this->get('validator/oldestActiveValidator');
     }
 
-    public function setOldestActiveValidator(string $publicKey, int $timestamp): void
+    public function setOldestActiveValidator(string $address, int $timestamp): void
     {
-        $this->put('validator/oldestActiveValidator', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
+        $this->put('validator/oldestActiveValidator', ['address' => $address, 'timestamp' => $timestamp]);
     }
 
     /**
-     * @return array{'publicKey': string, 'timestamp': int}
+     * @return array{'address': string, 'timestamp': int}
      */
     public function getNewestActiveValidator(): ?array
     {
         return $this->get('validator/newestActiveValidator');
     }
 
-    public function setNewestActiveValidator(string $publicKey, int $timestamp): void
+    public function setNewestActiveValidator(string $address, int $timestamp): void
     {
-        $this->put('validator/newestActiveValidator', ['publicKey' => $publicKey, 'timestamp' => $timestamp]);
+        $this->put('validator/newestActiveValidator', ['address' => $address, 'timestamp' => $timestamp]);
     }
 
     public function getMostBlocksForged(): ?string
@@ -93,9 +94,9 @@ final class StatisticsCache implements Contract
         return $this->get('validator/mostBlocksForged');
     }
 
-    public function setMostBlocksForged(string $publicKey): void
+    public function setMostBlocksForged(string $address): void
     {
-        $this->put('validator/mostBlocksForged', $publicKey);
+        $this->put('validator/mostBlocksForged', $address);
     }
 
     public function setAddressHoldings(array $value): void
@@ -117,7 +118,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'value': Carbon}
+     * @return ?array{'address': string, 'value': Carbon}
      */
     public function getGenesisAddress(): ?array
     {
@@ -130,7 +131,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'timestamp': int, 'value': Carbon}
+     * @return ?array{'address': string, 'timestamp': int, 'value': Carbon}
      */
     public function getNewestAddress(): ?array
     {
@@ -143,7 +144,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'value': int}
+     * @return ?array{'address': string, 'value': int}
      */
     public function getMostTransactions(): ?array
     {
@@ -156,7 +157,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'address': string, 'value': BigNumber}
+     * @return ?array{'address': string, 'value': BigNumber}
      */
     public function getLargestAddress(): ?array
     {
@@ -169,7 +170,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'low': float, 'high': float}
+     * @return ?array{'low': float, 'high': float}
      */
     public function getPriceRangeDaily(string $currency): ?array
     {
@@ -182,7 +183,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'low': float, 'high': float}
+     * @return ?array{'low': float, 'high': float}
      */
     public function getPriceRange52(string $currency): ?array
     {
@@ -195,7 +196,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getPriceAth(string $currency): ?array
     {
@@ -208,7 +209,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getPriceAtl(string $currency): ?array
     {
@@ -221,7 +222,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getVolumeAth(string $currency): ?array
     {
@@ -234,7 +235,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getVolumeAtl(string $currency): ?array
     {
@@ -247,7 +248,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getMarketCapAth(string $currency): ?array
     {
@@ -260,7 +261,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'timestamp': int, 'value': float}
+     * @return ?array{'timestamp': int, 'value': float}
      */
     public function getMarketCapAtl(string $currency): ?array
     {
@@ -279,7 +280,7 @@ final class StatisticsCache implements Contract
     }
 
     /**
-     * @return array{'year': int, 'transactions': int, 'volume': float, 'fees': float, 'blocks': int}
+     * @return ?array{'year': int, 'transactions': int, 'volume': string, 'fees': float, 'blocks': int}
      */
     public function getAnnualData(int $year): ?array
     {

@@ -6,18 +6,21 @@ namespace App\Http\Livewire;
 
 use App\Facades\Wallets;
 use App\Http\Livewire\Concerns\HasTabs;
+use App\Http\Livewire\Concerns\SyncsInput;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 /**
  * @property int $page
- * @property int $perPage
+ * @property ?int $perPage
  */
 final class WalletTables extends Component
 {
     use HasTabs;
+    use SyncsInput;
 
     public string $address;
 
@@ -31,17 +34,12 @@ final class WalletTables extends Component
         'voters'       => false,
     ];
 
-    /** @var mixed */
-    protected $listeners = [
-        'showWalletView',
-    ];
-
     public function queryString(): array
     {
         $params = [
-            'view'    => ['except' => 'transactions'],
-            'page'    => ['except' => 1],
-            'perPage' => ['except' => intval(config('arkscan.pagination.per_page'))],
+            'paginators.page' => ['except' => 1, 'as' => 'page'],
+            'perPage'         => ['except' => intval(config('arkscan.pagination.per_page'))],
+            'view'            => ['except' => 'transactions', 'history' => true],
         ];
 
         // We need to pass in the transaction filters for previous view so we can hide it from the URL
@@ -53,38 +51,47 @@ final class WalletTables extends Component
             ...$params,
 
             // Transaction Filters
-            'outgoing'      => ['except' => true],
-            'incoming'      => ['except' => true],
-            'transfers'     => ['except' => true],
-            'votes'         => ['except' => true],
-            'multipayments' => ['except' => true],
-            'others'        => ['except' => true],
+            'outgoing'      => ['except' => true, 'history' => true],
+            'incoming'      => ['except' => true, 'history' => true],
+            'transfers'     => ['except' => true, 'history' => true],
+            'votes'         => ['except' => true, 'history' => true],
+            'others'        => ['except' => true, 'history' => true],
         ];
     }
 
-    public function boot(): void
+    public function mount(WalletViewModel $wallet): void
     {
+        $this->address = $wallet->address();
+
         if ($this->tabQueryData === []) {
             $this->tabQueryData = [
                 'transactions' => [
-                    'page'          => 1,
-                    'perPage'       => WalletTransactionTable::defaultPerPage(),
-                    'outgoing'      => true,
-                    'incoming'      => true,
-                    'transfers'     => true,
-                    'votes'         => true,
-                    'multipayments' => true,
-                    'others'        => true,
+                    'perPage'         => WalletTransactionTable::defaultPerPage(),
+                    'outgoing'        => true,
+                    'incoming'        => true,
+                    'transfers'       => true,
+                    'votes'           => true,
+                    'others'          => true,
+
+                    'paginators'      => [
+                        'page' => 1,
+                    ],
                 ],
 
                 'blocks' => [
-                    'page'    => 1,
-                    'perPage' => WalletBlockTable::defaultPerPage(),
+                    'perPage'  => WalletBlockTable::defaultPerPage(),
+
+                    'paginators' => [
+                        'page' => 1,
+                    ],
                 ],
 
                 'voters' => [
-                    'page'    => 1,
-                    'perPage' => WalletVoterTable::defaultPerPage(),
+                    'perPage'    => WalletVoterTable::defaultPerPage(),
+
+                    'paginators' => [
+                        'page' => 1,
+                    ],
                 ],
             ];
 
@@ -93,15 +100,13 @@ final class WalletTables extends Component
                 return;
             }
 
-            $this->tabQueryData[$view]['page'] = $this->resolvePage();
+            $this->tabQueryData[$view]['paginators']['page'] = $this->resolvePage();
 
-            $this->tabQueryData[$view]['perPage'] = $this->resolvePerPage();
+            $perPage = $this->resolvePerPage();
+            if ($perPage !== null) {
+                $this->tabQueryData[$view]['perPage'] = $perPage;
+            }
         }
-    }
-
-    public function mount(WalletViewModel $wallet): void
-    {
-        $this->address = $wallet->address();
     }
 
     public function render(): View
@@ -111,6 +116,7 @@ final class WalletTables extends Component
         ]);
     }
 
+    #[On('showWalletView')]
     public function showWalletView(string $view): void
     {
         $this->syncInput('view', $view);

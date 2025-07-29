@@ -4,27 +4,36 @@ declare(strict_types=1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\Grammars\PostgresGrammar;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Fluent;
 
-final class CreateBlocksTable extends Migration
-{
+return new class() extends Migration {
     public function up()
     {
+        PostgresGrammar::macro('typeNumeric', function (Fluent $column) {
+            return 'numeric';
+        });
+
         Schema::create('blocks', function (Blueprint $table) {
-            $table->string('id');
-            $table->unsignedBigInteger('version');
+            $table->string('hash');
+            $table->integer('version');
             $table->unsignedBigInteger('timestamp');
-            $table->string('previous_block')->nullable();
-            $table->unsignedBigInteger('height');
-            $table->unsignedBigInteger('number_of_transactions');
-            $table->unsignedBigInteger('total_amount');
-            $table->unsignedBigInteger('total_fee');
-            $table->unsignedBigInteger('reward');
-            $table->unsignedBigInteger('payload_length');
-            $table->string('payload_hash');
-            $table->string('generator_public_key');
-            $table->string('block_signature');
-            $table->timestamps();
+            $table->string('parent_hash')->nullable();
+            $table->string('state_root')->nullable();
+            $table->unsignedBigInteger('number');
+            $table->unsignedBigInteger('transactions_count');
+            $table->integer('gas_used');
+            $table->addColumn('numeric', 'fee');
+            $table->addColumn('numeric', 'reward');
+            $table->unsignedBigInteger('payload_size');
+            $table->string('transactions_root');
+            $table->string('proposer');
+            $table->integer('round');
+            $table->integer('commit_round');
+            $table->integer('validator_round');
+            $table->integer('validator_set');
+            $table->string('signature');
         });
     }
-}
+};

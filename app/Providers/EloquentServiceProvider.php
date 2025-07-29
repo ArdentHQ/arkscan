@@ -18,6 +18,8 @@ use App\Repositories\WalletRepository;
 use App\Repositories\WalletRepositoryWithCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Query\Expression;
 use Illuminate\Support\ServiceProvider;
 use LogicException;
 
@@ -47,6 +49,24 @@ final class EloquentServiceProvider extends ServiceProvider
             $scope->apply($query, $query->getModel());
 
             return $query;
+        });
+
+        QueryBuilder::macro('joinSubLateral', function ($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false) {
+            /** @var QueryBuilder $this */
+
+            /** @var array $subQuery */
+            // Ignoring the next line as the createSub method is protected and PHPStan isn't recognizing it.
+            // @phpstan-ignore-next-line
+            $subQuery = $this->createSub($query);
+
+            $query    = $subQuery[0];
+            $bindings = $subQuery[1];
+
+            $expression = 'LATERAL ('.$query.') as '.$this->grammar->wrapTable($as);
+
+            $this->addBinding($bindings, 'join');
+
+            return $this->join(new Expression($expression), $first, $operator, $second, $type, $where);
         });
     }
 

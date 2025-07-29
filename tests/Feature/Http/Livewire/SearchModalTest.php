@@ -13,10 +13,10 @@ it('should search for a wallet', function () {
     $otherWallet = Wallet::factory()->create();
     Transaction::factory()->create();
     $block = Block::factory()->create();
-    Transaction::factory()->create(['block_id' => $block->id]);
+    Transaction::factory()->create(['block_hash' => $block->hash]);
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
+        ->dispatch('openSearchModal')
         ->set('query', $wallet->address)
         ->assertSee($wallet->address)
         ->assertDontSee($otherWallet->address);
@@ -25,18 +25,16 @@ it('should search for a wallet', function () {
 it('should search for a wallet username over a block generator', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
-            'validator' => [
-                'username' => 'pieface',
-            ],
+            'username' => 'pieface',
         ],
     ]);
     $block = Block::factory()->create([
-        'generator_public_key' => $wallet->public_key,
+        'proposer' => $wallet->address,
     ]);
-    Transaction::factory()->create(['block_id' => $block->id]);
+    Transaction::factory()->create(['block_hash' => $block->hash]);
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
+        ->dispatch('openSearchModal')
         ->set('query', $wallet->address)
         ->assertSee($wallet->address);
 });
@@ -44,30 +42,30 @@ it('should search for a wallet username over a block generator', function () {
 it('should search for a transaction', function () {
     Transaction::factory()->create();
     $block = Block::factory()->create();
-    Transaction::factory()->create(['block_id' => $block->id]);
+    Transaction::factory()->create(['block_hash' => $block->hash]);
     $transaction = Transaction::factory()->create();
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
-        ->set('query', $transaction->id)
-        ->assertSee($transaction->id);
+        ->dispatch('openSearchModal')
+        ->set('query', $transaction->hash)
+        ->assertSee($transaction->hash);
 });
 
 it('should search for a block', function () {
     $block = Block::factory()->create();
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
-        ->set('query', $block->id)
-        ->assertSee($block->id);
+        ->dispatch('openSearchModal')
+        ->set('query', $block->hash)
+        ->assertSee($block->hash);
 });
 
 it('should clear search when modal is closed', function () {
     $block = Block::factory()->create();
 
     Livewire::test(SearchModal::class)
-        ->emit('openSearchModal')
-        ->set('query', $block->id)
+        ->dispatch('openSearchModal')
+        ->set('query', $block->hash)
         ->call('closeModal')
         ->assertSet('query', '');
 });

@@ -34,9 +34,16 @@ final class Round extends Model
     public $timestamps = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The table associated with the model.
      *
-     * @var string
+     * @var string|null
      */
     protected $table = 'validator_rounds';
 
@@ -57,16 +64,6 @@ final class Round extends Model
         'round_height' => 'int',
         'validators'   => 'array',
     ];
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
-    }
 
     /**
      * @return Attribute

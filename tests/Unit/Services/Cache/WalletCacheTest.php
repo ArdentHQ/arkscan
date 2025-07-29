@@ -16,27 +16,27 @@ it('should get and set the known wallets', function () {
 });
 
 it('should get and set the last block', function () {
-    expect($this->subject->getLastBlock('publicKey'))->toBeArray();
+    expect($this->subject->getLastBlock('address'))->toBeArray();
 
-    $this->subject->setLastBlock('publicKey', [1, 2, 3]);
+    $this->subject->setLastBlock('address', [1, 2, 3]);
 
-    expect($this->subject->getLastBlock('publicKey'))->toBeArray();
+    expect($this->subject->getLastBlock('address'))->toBeArray();
 });
 
 it('should get and set the performance', function () {
-    expect($this->subject->getPerformance('publicKey'))->toBeArray();
+    expect($this->subject->getPerformance('address'))->toBeArray();
 
-    $this->subject->setPerformance('publicKey', [1, 2, 3]);
+    $this->subject->setPerformance('address', [1, 2, 3]);
 
-    expect($this->subject->getPerformance('publicKey'))->toBeArray();
+    expect($this->subject->getPerformance('address'))->toBeArray();
 });
 
 it('should get and set the productivity', function () {
-    expect($this->subject->getProductivity('publicKey'))->toBe(-1.0);
+    expect($this->subject->getProductivity('address'))->toBe(-1.0);
 
-    $this->subject->setProductivity('publicKey', 10);
+    $this->subject->setProductivity('address', 10);
 
-    expect($this->subject->getProductivity('publicKey'))->toBe(10.0);
+    expect($this->subject->getProductivity('address'))->toBe(10.0);
 });
 
 it('should get and set the resignation id', function () {
@@ -48,41 +48,25 @@ it('should get and set the resignation id', function () {
 });
 
 it('should get and set the vote', function () {
-    expect($this->subject->getVote('publicKey'))->toBeNull();
+    expect($this->subject->getVote('address'))->toBeNull();
 
-    $this->subject->setVote('publicKey', Wallet::factory()->create());
+    $this->subject->setVote('address', Wallet::factory()->create());
 
-    expect($this->subject->getVote('publicKey'))->toBeInstanceOf(Wallet::class);
-});
-
-it('should get and set the multi signature address', function () {
-    expect($this->subject->getMultiSignatureAddress(3, [1, 2, 3]))->toBeNull();
-
-    $this->subject->setMultiSignatureAddress(3, [1, 2, 3], fn () => '123');
-
-    expect($this->subject->getMultiSignatureAddress(3, [1, 2, 3]))->toBeString();
+    expect($this->subject->getVote('address'))->toBeInstanceOf(Wallet::class);
 });
 
 it('should get and set the username by address', function () {
-    expect($this->subject->getUsernameByAddress('address'))->toBeNull();
+    expect($this->subject->getWalletNameByAddress('address'))->toBeNull();
 
-    $this->subject->setUsernameByAddress('address', 'username');
+    $this->subject->setWalletNameByAddress('address', 'username');
 
-    expect($this->subject->getUsernameByAddress('address'))->toBeString();
+    expect($this->subject->getWalletNameByAddress('address'))->toBeString();
 });
 
-it('should get and set the username by public key', function () {
-    expect($this->subject->getUsernameByPublicKey('publicKey'))->toBeNull();
+it('should get and set the missed blocks by address', function () {
+    expect($this->subject->getMissedBlocks('address'))->toBe(0);
 
-    $this->subject->setUsernameByPublicKey('publicKey', 'username');
+    $this->subject->setMissedBlocks('address', 1);
 
-    expect($this->subject->getUsernameByPublicKey('publicKey'))->toBeString();
-});
-
-it('should get and set the missed blocks by public key', function () {
-    expect($this->subject->getMissedBlocks('publicKey'))->toBe(0);
-
-    $this->subject->setMissedBlocks('publicKey', 1);
-
-    expect($this->subject->getMissedBlocks('publicKey'))->toBe(1);
+    expect($this->subject->getMissedBlocks('address'))->toBe(1);
 });

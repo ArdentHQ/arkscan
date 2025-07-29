@@ -14,8 +14,6 @@ beforeEach(function () {
     $this->freezeTime();
     $this->travelTo(Carbon::parse('2024-04-03 01:12:44'));
 
-    ForgingStats::truncate();
-
     $validatorPublicKeysBalanceDesc = [
         '027716e659220085e41389efc7cf6a05f7f7c659cf3db9126caabce6cda9156582',
         '03d3c6889608074b44155ad2e6577c3368e27e6e129c457418eb3e5ed029544e8d',
@@ -81,7 +79,7 @@ beforeEach(function () {
 
         foreach ($validatorPublicKeysBalanceDesc as $key => $_) {
             Block::factory()->create([
-                'height'    => ($round - 1) * Network::validatorCount() + $key,
+                'number'    => ($round - 1) * Network::validatorCount() + $key,
                 'timestamp' => Carbon::now()->getTimestampMs(),
             ]);
 
@@ -95,7 +93,7 @@ it('should execute the command - with parameters', function () {
         '--height' => 7243669, '--days' => 0.01,
     ]);
 
-    expect(ForgingStats::all()->count())->toBe(159);
+    expect(ForgingStats::all()->count())->toBe(212);
 });
 
 it('should execute the command - without parameter', function () {
@@ -115,24 +113,24 @@ it('should not add multiple records to database', function () {
     Artisan::call('explorer:forging-stats:build', $args);
     Artisan::call('explorer:forging-stats:build', $args);
 
-    expect(ForgingStats::all()->count())->toBe(159);
+    expect(ForgingStats::all()->count())->toBe(212);
 });
 
 it('should store the height for missed blocks', function () {
     Block::factory()->create([
         'timestamp' => 45000,
-        'height'    => 20,
+        'number'    => 20,
     ]);
 
     MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
         ->once()
         ->andReturn([
             50000 => [
-                'publicKey' => 'test-public-key',
+                'address'   => 'test-address',
                 'forged'    => false,
             ],
             50001 => [
-                'publicKey' => 'test-public-key-2',
+                'address'   => 'test-address-2',
                 'forged'    => false,
             ],
         ]);
@@ -149,13 +147,13 @@ it('should store the height for missed blocks', function () {
 it('should batch upsert every 1000 records', function () {
     Block::factory()->create([
         'timestamp' => 45000,
-        'height'    => 20,
+        'number'    => 20,
     ]);
 
     $calculations = [];
     foreach (range(50001, 60000) as $index => $height) {
         $calculations[$height] = [
-            'publicKey' => 'test-public-key-'.$index,
+            'address'   => 'test-address-'.$index,
             'forged'    => false,
         ];
     }

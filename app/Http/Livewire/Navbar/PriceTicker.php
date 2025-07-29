@@ -24,7 +24,8 @@ final class PriceTicker extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'currencyChanged' => 'setValues',
+        'currencyChanged'   => 'setValues',
+        'reloadPriceTicker' => 'setValues',
     ];
 
     public function mount(): void
@@ -35,7 +36,7 @@ final class PriceTicker extends Component
     public function setValues(): void
     {
         $cache = new NetworkStatusBlockCache();
-        foreach (config('currencies') as $currency) {
+        foreach (config('currencies.currencies') as $currency) {
             if (! $cache->getIsAvailable(Network::currency(), $currency['currency'])) {
                 continue;
             }
@@ -45,7 +46,7 @@ final class PriceTicker extends Component
 
         $this->to = Settings::currency();
 
-        $this->dispatchBrowserEvent('has-loaded-price-data');
+        $this->dispatch('has-loaded-price-data');
     }
 
     public function render(): View
@@ -64,7 +65,7 @@ final class PriceTicker extends Component
         if ($originalCurrency !== $newCurrency) {
             $this->saveSetting('currency', $newCurrency);
 
-            $this->emit('currencyChanged', $newCurrency);
+            $this->dispatch('currencyChanged', $newCurrency);
         }
     }
 

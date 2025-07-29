@@ -33,12 +33,12 @@ final class RoundRepository implements Contract
         $validators  = new SupportCollection(ValidatorTracker::execute($validators, $heightRange[0]));
 
         if ($withBlock) {
-            $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_public_key');
+            $blocks = Block::whereBetween('number', $heightRange)->get()->keyBy('proposer');
 
             $validators = $validators->map(fn ($validator) => [
                 ...$validator,
 
-                'block' => $blocks->get($validator['publicKey']),
+                'block' => $blocks->get($validator['address']),
             ]);
         }
 

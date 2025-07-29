@@ -13,7 +13,7 @@ trait HasDirection
 
     public function isSentToSelf(string $address): bool
     {
-        if (! $this->isTransfer() && ! $this->isMultiPayment()) {
+        if (! $this->isTransfer() && ! $this->isTokenTransfer()) {
             return false;
         }
 
@@ -21,11 +21,11 @@ trait HasDirection
             return false;
         }
 
-        if ($this->isTransfer() && $this->recipient() !== null && $address === $this->recipient()->address) {
-            return true;
+        if (! $this->isMultiPayment() && $address !== $this->recipient()?->address) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     public function isReceived(string $address): bool

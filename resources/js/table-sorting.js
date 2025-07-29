@@ -2,6 +2,8 @@ import { sortRow } from "./includes/sorting";
 
 // Variation of https://codepen.io/ryangjchandler/pen/WNQQKeR
 const TableSorting = (
+    tableId,
+    componentId,
     sortBy = "",
     sortDirection = "asc",
     secondarySortBy = null,
@@ -13,18 +15,36 @@ const TableSorting = (
         secondarySortIndex: null,
         windowEvent: null,
 
+        getRef(ref) {
+            return this.$el.querySelector(`[sorting-id="${ref}"]`);
+        },
+
         init() {
             this.$nextTick(() => {
                 this.update();
             });
 
-            this.windowEvent = this.update.bind(this);
+            this.windowEvent = () => {
+                this.update();
+            };
 
             window.addEventListener("updateTableSorting", this.windowEvent);
 
             if (typeof Livewire !== "undefined") {
-                Livewire.hook("message.processed", () => {
-                    if (!this.$refs[this.sortBy]) {
+                Livewire.hook("morph.updating", ({ component, toEl }) => {
+                    if (component.name !== componentId) {
+                        return;
+                    }
+
+                    if (
+                        !toEl.getAttribute("wire:id") &&
+                        toEl.getAttribute("id") !== tableId &&
+                        !toEl.classList.contains("table-container")
+                    ) {
+                        return;
+                    }
+
+                    if (!this.getRef(this.sortBy)) {
                         if (this.windowEvent) {
                             window.removeEventListener(
                                 "updateTableSorting",
@@ -37,16 +57,20 @@ const TableSorting = (
                         return;
                     }
 
-                    this.update();
+                    toEl.querySelectorAll("table tbody").forEach((tbody) => {
+                        Alpine.morph(
+                            tbody,
+                            this.update(tbody.cloneNode(true)).outerHTML
+                        );
+                    });
                 });
             }
         },
 
-        update() {
+        update(table) {
             this.secondarySortIndex = null;
             if (secondarySortBy) {
-                const secondaryElement = this.$refs[secondarySortBy];
-
+                const secondaryElement = this.getRef(secondarySortBy);
                 if (secondaryElement) {
                     this.secondarySortIndex = Array.from(
                         secondaryElement.parentNode.children
@@ -55,18 +79,20 @@ const TableSorting = (
             }
 
             this.getTableRows().forEach((row, index) => {
-                row.dataset["rowIndex"] = index;
+                if (typeof row.dataset["rowIndex"] === "undefined") {
+                    row.dataset["rowIndex"] = index;
+                }
             });
 
-            this.sort(this.$refs[this.sortBy]);
+            return this.sort(this.getRef(this.sortBy), table);
         },
 
         sortByColumn($event) {
             const header = $event.target.closest("th");
-            if (this.sortBy === header.getAttribute("x-ref")) {
+            if (this.sortBy === header.getAttribute("sorting-id")) {
                 this.sortAsc = !this.sortAsc;
             } else {
-                this.sortBy = header.getAttribute("x-ref");
+                this.sortBy = header.getAttribute("sorting-id");
                 this.sortAsc =
                     (header.dataset["initialSort"] ?? "asc") === "asc";
             }
@@ -74,20 +100,34 @@ const TableSorting = (
             this.sort(header);
         },
 
-        sort(element) {
-            this.getTableRows()
+        table() {
+            return this.$el.closest(`#${tableId}`).querySelector("tbody");
+        },
+
+        sort(element, table) {
+            if (table === undefined) {
+                table = this.table();
+            }
+
+            this.getTableRows(table)
                 .sort(
                     this.sortCallback(
                         Array.from(element.parentNode.children).indexOf(element)
                     )
                 )
                 .forEach((tr) => {
-                    this.$refs.tbody.appendChild(tr);
+                    table.appendChild(tr);
                 });
+
+            return table;
         },
 
-        getTableRows() {
-            return Array.from(this.$refs.tbody.querySelectorAll("tr"));
+        getTableRows(tbody) {
+            if (tbody !== undefined) {
+                return Array.from(tbody.querySelectorAll("tr"));
+            }
+
+            return Array.from(this.table().querySelectorAll("tbody tr"));
         },
 
         getCellValue(row, index) {
@@ -106,6 +146,7 @@ const TableSorting = (
                     index,
                     this.sortAsc
                 );
+
                 if (sortResult === 0 && this.secondarySortIndex !== null) {
                     return this.sortRows(
                         row1,

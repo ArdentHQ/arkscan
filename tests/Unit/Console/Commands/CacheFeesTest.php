@@ -11,13 +11,13 @@ use Carbon\Carbon;
 it('should execute the command', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');
 
-    $start = Transaction::factory(10)->create([
-        'fee'       => '100000000',
+    Transaction::factory(10)->create([
+        'gas_price' => 1,
         'timestamp' => Timestamp::now()->subDays(365)->unix(),
     ])->sortByDesc('timestamp');
 
-    $end = Transaction::factory(10)->create([
-        'fee'       => '200000000',
+    Transaction::factory(10)->create([
+        'gas_price' => 2,
         'timestamp' => Timestamp::now()->endOfDay()->unix(),
     ])->sortByDesc('timestamp');
 
@@ -25,10 +25,5 @@ it('should execute the command', function () {
 
     foreach (['day', 'week', 'month', 'quarter', 'year'] as $period) {
         expect($cache->getHistorical($period))->toBeArray();
-        expect($cache->getMinimum($period))->toBeFloat();
-        expect($cache->getAverage($period))->toBeFloat();
-        expect($cache->getMaximum($period))->toBeFloat();
     }
-
-    expect($cache->all('day'))->toHaveKeys(['historical', 'min', 'avg', 'max']);
 });

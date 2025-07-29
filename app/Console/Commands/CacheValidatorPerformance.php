@@ -44,11 +44,11 @@ final class CacheValidatorPerformance extends Command
 
         $query = Wallet::query()
             ->select([
-                'wallets.public_key',
+                'wallets.address',
                 DB::raw('MAX(wallets.balance) as balance'),
             ])
-            ->whereIn('wallets.public_key', $mostRecentRound->validators)
-            ->join('blocks', 'blocks.generator_public_key', '=', 'wallets.public_key');
+            ->whereIn('wallets.address', $mostRecentRound->validators)
+            ->join('blocks', 'blocks.proposer', '=', 'wallets.address');
 
         $actualNumberOfRounds = min($maxRounds, $mostRecentRounds->count());
 
@@ -60,7 +60,7 @@ final class CacheValidatorPerformance extends Command
 
                 // `bool_or` is equivalent to `some` in PGSQL and is used here to
                 // check if there is at least one block on the range.
-                $query->addSelect(DB::raw(sprintf('bool_or(blocks.height BETWEEN %s AND %s) round_%s', $start, $end, ($actualNumberOfRounds - $index - 1))));
+                $query->addSelect(DB::raw(sprintf('bool_or(blocks.number BETWEEN %s AND %s) round_%s', $start, $end, ($actualNumberOfRounds - $index - 1))));
             });
 
         /**
@@ -68,12 +68,12 @@ final class CacheValidatorPerformance extends Command
          */
         $results = $query
             ->orderBy('balance', 'desc')
-            ->orderBy('wallets.public_key', 'asc')
-            ->groupBy('wallets.public_key')
+            ->orderBy('wallets.address', 'asc')
+            ->groupBy('wallets.address')
             ->get();
 
         $results->each(function ($row) : void {
-            (new WalletCache())->setPerformance($row['public_key'], [
+            (new WalletCache())->setPerformance($row['address'], [
                 $row['round_0'],
                 $row['round_1'],
             ]);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use App\Facades\Network;
 use App\Services\Cache\WalletCache;
 use App\Services\Identity;
 
@@ -28,6 +29,15 @@ final class MemoryWallet
         return $this->address;
     }
 
+    public function isContract(): bool
+    {
+        if (in_array($this->address(), Network::knownContracts(), true)) {
+            return true;
+        }
+
+        return in_array($this->address(), (new WalletCache())->getContractAddresses(), true);
+    }
+
     public function publicKey(): ?string
     {
         return $this->publicKey;
@@ -40,11 +50,11 @@ final class MemoryWallet
 
     public function username(): ?string
     {
-        return (new WalletCache())->getUsernameByAddress($this->address);
+        return (new WalletCache())->getWalletNameByAddress($this->address);
     }
 
     public function isValidator(): bool
     {
-        return (new WalletCache())->getValidatorPublicKeyByAddress($this->address) !== null;
+        return (new WalletCache())->getValidator($this->address) !== null;
     }
 }

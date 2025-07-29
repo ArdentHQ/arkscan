@@ -12,7 +12,7 @@ use Livewire\Livewire;
 use function Tests\createRoundEntry;
 
 beforeEach(function () {
-    $this->wallets = Wallet::factory(51)
+    $this->wallets = Wallet::factory(Network::validatorCount())
         ->activeValidator()
         ->create();
 
@@ -28,7 +28,7 @@ it('should render without errors', function () {
 
 it('should not error if no validator data', function () {
     foreach ($this->wallets as $wallet) {
-        expect((new WalletCache())->getValidator($wallet->public_key))->toBeNull();
+        expect((new WalletCache())->getValidator($wallet->address))->toBeNull();
     }
 
     Livewire::test(HeaderStats::class)
@@ -51,8 +51,6 @@ it('should show the correct number of votes', function () {
 });
 
 it('should pluralize missed validator count', function ($count, $text) {
-    ForgingStats::truncate();
-
     ForgingStats::factory($count)->create([
         'forged' => false,
     ]);

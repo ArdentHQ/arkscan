@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Services\Transactions\Aggregates;
 
-use App\Enums\TransactionTypeEnum;
 use App\Models\Transaction;
 
 final class LargestTransactionAggregate
 {
     public function aggregate(): ?Transaction
     {
-        return Transaction::whereIn('type', [TransactionTypeEnum::TRANSFER, TransactionTypeEnum::MULTI_PAYMENT])->orderBy('amount', 'desc')->limit(1)->first();
+        // TODO: add transaction type for transfer - https://app.clickup.com/t/86dvxzh7f
+        return Transaction::orderBy('value', 'desc')->limit(1)->first();
     }
 }

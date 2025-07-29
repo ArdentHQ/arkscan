@@ -21,3 +21,13 @@
     --theme-orange-dark: #a56d4c;
     --theme-orange-light: #fbeed6;
 }
+
+:root.dark {
+    --theme-failed-state-bg: #aa6868;
+    --theme-failed-state-text: #f39b9b;
+}
+
+:root.dim {
+    --theme-failed-state-bg: #ab8282;
+    --theme-failed-state-text: #caa0a0;
+}

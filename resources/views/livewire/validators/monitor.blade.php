@@ -1,9 +1,11 @@
 <div
     wire:init="monitorIsReady"
-    @if ($this->isReady && $this->hasValidators)
-        wire:poll.2s="pollData"
-    @elseif ($this->isReady)
-        wire:poll.4s="pollData"
+    @if (config('broadcasting.default') !== 'reverb')
+        @if ($this->isReady && $this->hasValidators)
+            wire:poll.2s="pollData"
+        @elseif ($this->isReady)
+            wire:poll.4s="pollData"
+        @endif
     @endif
 >
     <div class="px-6 pb-6 md:px-10 md:mx-auto md:max-w-7xl">

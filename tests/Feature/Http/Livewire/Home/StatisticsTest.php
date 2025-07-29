@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Facades\Settings;
 use App\Http\Livewire\Home\Statistics;
 use App\Models\Block;
+use App\Models\Receipt;
 use App\Models\State;
 use App\Models\Transaction;
 use App\Services\Cache\CryptoDataCache;
@@ -17,8 +18,8 @@ it('should render with a height, volume, supply and not available market cap', f
     Config::set('arkscan.network', 'development');
     Config::set('arkscan.networks.development.canBeExchanged', false);
 
-    Block::factory()->create(['height' => 5651290]);
-    State::factory()->create(['supply' => '13628098200000000']);
+    Block::factory()->create(['number' => 5651290]);
+    State::factory()->create(['supply' => 136280982 * 1e18]);
 
     Livewire::test(Statistics::class)
         ->assertSeeInOrder([
@@ -32,13 +33,18 @@ it('should render with a height, volume, supply and not available market cap', f
 it('should render with a height, volume, supply and market cap', function () {
     Config::set('arkscan.network', 'production');
 
-    Block::factory()->create(['height' => 5651290]);
-    State::factory()->create(['supply' => '13628098200000000']);
+    Block::factory()->create(['number' => 5651290]);
+    State::factory()->create(['supply' => 136280982 * 1e18]);
 
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
-        'amount'    => 18204 * 1e8,
-        'fee'       => 0.99 * 1e8,
+        'value'     => 18204 * 1e18,
+        'gas_price' => 0.99,
+    ]);
+
+    Receipt::factory()->create([
+        'transaction_hash'       => $transaction->hash,
+        'gas_used'               => 1e9,
     ]);
 
     $transaction->sender->balance           = 0;
@@ -66,13 +72,18 @@ it('should render with a height, volume, supply and market cap for BTC', functio
     Settings::shouldReceive('currency')->andReturn('BTC');
     Settings::shouldReceive('usesDarkTheme')->andReturn(false);
 
-    Block::factory()->create(['height' => 5651290]);
-    State::factory()->create(['supply' => '13628098200000000']);
+    Block::factory()->create(['number' => 5651290]);
+    State::factory()->create(['supply' => 136280982 * 1e18]);
 
     $transaction = Transaction::factory()->transfer()->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
-        'amount'    => 18204 * 1e8,
-        'fee'       => 0.99 * 1e8,
+        'value'     => 18204 * 1e18,
+        'gas_price' => 0.99,
+    ]);
+
+    Receipt::factory()->create([
+        'transaction_hash'       => $transaction->hash,
+        'gas_used'               => 1e9,
     ]);
 
     $transaction->sender->balance           = 0;

@@ -16,7 +16,7 @@ final class ExportBlocks extends Component
     use DeferLoading;
     use HasModal;
 
-    public string $publicKey;
+    public string $address;
 
     public ?string $username = null;
 
@@ -24,10 +24,7 @@ final class ExportBlocks extends Component
 
     public function mount(WalletViewModel $wallet): void
     {
-        /** @var string $publicKey */
-        $publicKey = $wallet->publicKey();
-
-        $this->publicKey = $publicKey;
+        $this->address = $wallet->address();
 
         if ($wallet->hasUsername()) {
             $this->username = $wallet->username();
@@ -41,7 +38,7 @@ final class ExportBlocks extends Component
 
     public function setIsReady(): void
     {
-        $wallet = Wallets::findByPublicKey($this->publicKey);
+        $wallet = Wallets::findByAddress($this->address);
 
         $this->hasForgedBlocks = $wallet->blocks()->count() > 0;
     }

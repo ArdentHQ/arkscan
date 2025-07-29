@@ -14,22 +14,22 @@
     'selected',
 ])
 
-<x-general.card class="flex flex-col py-4 w-full md:flex-row md:items-center md:py-6 md:pr-0 xl:flex-col xl:items-stretch xl:pr-6">
-    <div class="flex flex-col flex-1 mb-4 space-y-2 md:mb-0 xl:pb-6 xl:mb-6">
+<x-general.card class="flex flex-col py-4 w-full md:flex-col md:items-stretch md:py-4 md:pr-6">
+    <div class="flex flex-col flex-1 mb-4 space-y-2 md:pb-4 md:mb-4">
         <div class="mb-0 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
             {{ $mainTitle }}
         </div>
 
-        <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md:!leading-[29px] text-theme-secondary-900 dark:text-theme-dark-50">
+        <div class="text-lg font-semibold md-lg:text-2xl leading-5.25 md-lg:!leading-[29px] text-theme-secondary-900 dark:text-theme-dark-50">
             {{ $mainValue }}
         </div>
     </div>
 
-    <div class="p-4 -mx-4 -mb-4 rounded-b md:p-6 md:mx-0 md:-my-6 md:rounded-b-none md:rounded-r-xl xl:-mx-6 xl:-mb-6 xl:w-auto xl:rounded-b-xl xl:rounded-tr-none bg-theme-secondary-100 md:w-[24.5rem] dark:bg-theme-dark-950">
+    <div class="p-4 -mx-4 -mb-4 rounded-b md:px-6 md:-my-4 md:-mx-6 md:w-auto md:rounded-b-xl md:rounded-tr-none bg-theme-secondary-100 dark:bg-theme-dark-950">
         <div wire:ignore>
             <x-rich-select
-                wire:model="{{ $model }}"
-                wrapper-class="relative left-0 w-full xl:inline-block"
+                wire:model.live="{{ $model }}"
+                wrapper-class="relative left-0 w-full md:inline-block"
                 dropdown-class="left-0 mt-1 origin-top-left"
                 button-class="inline-block w-full text-left !px-3 !py-2 form-input transition-default dark:bg-theme-dark-900 dark:border-theme-dark-700 !text-sm font-semibold"
                 :initial-value="$selected"
@@ -39,7 +39,7 @@
         </div>
 
         <div @class([
-            'flex gap-4 sm:gap-6 xl:w-full',
+            'flex gap-4 sm:gap-6 md:w-full',
             'flex-col sm:flex-row sm:items-end' => ! $chart,
             'justify-between items-end' => $chart,
         ])>

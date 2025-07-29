@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property BigNumber $height
+ * @property BigNumber $block_number
  * @property BigNumber $supply
  */
 final class State extends Model
@@ -25,19 +25,26 @@ final class State extends Model
     public $timestamps = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'supply'    => BigInteger::class,
-        'height'    => BigInteger::class,
+        'supply'          => BigInteger::class,
+        'block_number'    => BigInteger::class,
     ];
 
     /**
      * The table associated with the model.
      *
-     * @var string
+     * @var string|null
      */
     protected $table = 'state';
 
@@ -47,15 +54,5 @@ final class State extends Model
     public static function latest(): self
     {
         return self::where('id', 1)->firstOrFail();
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }

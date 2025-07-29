@@ -7,17 +7,8 @@
     'allowEmpty' => false,
 ])
 
-@php
-    $headerWidth = 'w-[87px]';
-    if ($transaction->isVoteCombination()) {
-        $headerWidth = 'w-[109px]';
-    } elseif ($transaction->isLegacy()) {
-        $headerWidth = 'w-[110px]';
-    }
-@endphp
-
 <x-general.page-section.row
-    :header-width="$headerWidth"
+    :header-width="$transaction->recipient()->isContract() ? 'sm:w-[151px]' : 'sm:w-[132px]'"
     :title="$title"
     :value="$value"
     :value-class="$valueClass"

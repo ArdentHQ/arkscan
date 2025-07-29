@@ -6,6 +6,8 @@ namespace App\ViewModels\Concerns\Wallet;
 
 use App\Actions\CacheNetworkHeight;
 use App\Facades\Rounds;
+use App\Services\BigNumber;
+use App\Services\Cache\RequestScopedCache;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Carbon\Carbon;
@@ -16,22 +18,17 @@ trait CanForge
 {
     public function totalForged(): float
     {
-        return ($this->feesForged() + $this->rewardsForged()) / 1e8;
+        return $this->feesForged()->plus($this->rewardsForged()->valueOf())->toFloat();
     }
 
-    public function amountForged(): int
+    public function feesForged(): BigNumber
     {
-        return (int) Arr::get((new ValidatorCache())->getTotalAmounts(), $this->wallet->public_key, 0);
+        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalFees(), $this->wallet->address, 0));
     }
 
-    public function feesForged(): int
+    public function rewardsForged(): BigNumber
     {
-        return (int) Arr::get((new ValidatorCache())->getTotalFees(), $this->wallet->public_key, 0);
-    }
-
-    public function rewardsForged(): int
-    {
-        return (int) Arr::get((new ValidatorCache())->getTotalRewards(), $this->wallet->public_key, 0);
+        return BigNumber::new(Arr::get((new ValidatorCache())->getTotalRewards(), $this->wallet->address, 0));
     }
 
     public function productivity(): float
@@ -40,13 +37,9 @@ trait CanForge
             return 0;
         }
 
-        $publicKey = $this->publicKey();
+        $address = $this->address();
 
-        if (is_null($publicKey)) {
-            return 0;
-        }
-
-        $productivity = (new WalletCache())->getProductivity($publicKey);
+        $productivity = (new WalletCache())->getProductivity($address);
         if ($productivity <= 0) {
             return 0;
         }
@@ -60,13 +53,9 @@ trait CanForge
             return [];
         }
 
-        $publicKey = $this->publicKey();
+        $address = $this->address();
 
-        if (is_null($publicKey)) {
-            return [];
-        }
-
-        $performance = (new WalletCache())->getPerformance($publicKey);
+        $performance = (new WalletCache())->getPerformance($address);
 
         $currentRound = $this->currentSlot();
         if ($currentRound['status'] === 'done') {
@@ -108,13 +97,9 @@ trait CanForge
             return $this->wallet->missed_blocks;
         }
 
-        $publicKey = $this->publicKey();
+        $address = $this->address();
 
-        if (is_null($publicKey)) {
-            return 0;
-        }
-
-        return (new WalletCache())->getMissedBlocks($publicKey);
+        return (new WalletCache())->getMissedBlocks($address);
     }
 
     public function blocksSinceLastForged(): ?int
@@ -126,7 +111,7 @@ trait CanForge
 
         $height = CacheNetworkHeight::execute();
 
-        return $height - $lastBlock['height'];
+        return $height - $lastBlock['number'];
     }
 
     public function durationSinceLastForged(): ?string
@@ -158,17 +143,18 @@ trait CanForge
 
     public function currentSlot(): array
     {
-        return Rounds::validators()->firstWhere('publicKey', $this->publicKey());
+        $validators = RequestScopedCache::remember('wallet:validators', function () {
+            return Rounds::validators();
+        });
+
+        return $validators->firstWhere('address', $this->address());
     }
 
     private function lastBlock(): ?array
     {
-        $publicKey = $this->publicKey();
-        if (is_null($publicKey)) {
-            return null;
-        }
+        $address = $this->address();
 
-        $lastBlock = (new WalletCache())->getLastBlock($publicKey);
+        $lastBlock = (new WalletCache())->getLastBlock($address);
         if ($lastBlock === []) {
             return null;
         }

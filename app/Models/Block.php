@@ -18,14 +18,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
 /**
- * @property string $id
- * @property BigNumber $height
- * @property int $number_of_transactions
+ * @property string $hash
+ * @property BigNumber $number
+ * @property int $transactions_count
  * @property BigNumber $reward
  * @property int $timestamp
- * @property BigNumber $total_amount
- * @property BigNumber $total_fee
- * @property string $generator_public_key
+ * @property BigNumber $fee
+ * @property int $gas_used
+ * @property string $proposer
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Block extends Model
@@ -50,17 +50,38 @@ final class Block extends Model
     public $incrementing = false;
 
     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'hash';
+
+    /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
      */
     protected $casts = [
-        'height'                 => BigInteger::class,
-        'number_of_transactions' => 'int',
-        'reward'                 => BigInteger::class,
-        'timestamp'              => UnixSeconds::class,
-        'total_amount'           => BigInteger::class,
-        'total_fee'              => BigInteger::class,
+        'number'             => BigInteger::class,
+        'transactions_count' => 'int',
+        'reward'             => BigInteger::class,
+        'timestamp'          => UnixSeconds::class,
+        'fee'                => BigInteger::class,
+        'gas_used'           => 'int',
     ];
 
     /**
@@ -73,11 +94,11 @@ final class Block extends Model
         // Notice that we only need to index the data used on to hydrate the model
         // for the search results.
         return [
-            'id'     => $this->id,
+            'hash'     => $this->hash,
             // used to get the validator
-            'generator_public_key' => $this->generator_public_key,
+            'proposer' => $this->proposer,
             // shown on the results
-            'number_of_transactions' => $this->number_of_transactions,
+            'transactions_count' => $this->transactions_count,
             // sortable attribute
             'timestamp' => $this->timestamp,
         ];
@@ -92,9 +113,9 @@ final class Block extends Model
 
         return $self->newQuery()
             ->select([
-                'id',
-                'generator_public_key',
-                'number_of_transactions',
+                'hash',
+                'proposer',
+                'transactions_count',
                 'timestamp',
             ])
             ->when(true, function ($query) use ($self) {
@@ -124,7 +145,7 @@ final class Block extends Model
      */
     public function transactions(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'block_id', 'id');
+        return $this->hasMany(Transaction::class, 'block_hash', 'hash');
     }
 
     /**
@@ -134,7 +155,7 @@ final class Block extends Model
      */
     public function validator(): BelongsTo
     {
-        return $this->belongsTo(Wallet::class, 'generator_public_key', 'public_key');
+        return $this->belongsTo(Wallet::class, 'proposer', 'address');
     }
 
     /**
@@ -144,16 +165,6 @@ final class Block extends Model
      */
     public function previous(): HasOne
     {
-        return $this->hasOne(self::class, 'id', 'previous_block');
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
+        return $this->hasOne(self::class, 'hash', 'parent_hash');
     }
 }

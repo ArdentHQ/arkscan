@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Contracts\MarketDataProvider;
+use App\Contracts\Services\GasTracker as GasTrackerContract;
 use App\Contracts\Services\Monitor\MissedBlocksCalculator as MissedBlocksCalculatorContract;
 use App\Facades\Network;
 use App\Services\BigNumber;
+use App\Services\GasTracker;
 use App\Services\Monitor\MissedBlocksCalculator;
 use ARKEcosystem\Foundation\DataBags\DataBag;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -39,6 +41,11 @@ final class AppServiceProvider extends ServiceProvider
             MissedBlocksCalculatorContract::class,
             fn () => new (MissedBlocksCalculator::class)()
         );
+
+        $this->app->singleton(
+            GasTrackerContract::class,
+            fn () => new (GasTracker::class)()
+        );
     }
 
     /**
@@ -68,7 +75,7 @@ final class AppServiceProvider extends ServiceProvider
             return $collection->reduce(function ($result, $item) use ($key) {
                 /** @var array $item */
                 return $result->plus($item[$key]->valueOf());
-            }, BigNumber::new(0));
+            }, BigNumber::zero());
         });
 
         Collection::macro('ksort', function (): Collection {
@@ -88,11 +95,11 @@ final class AppServiceProvider extends ServiceProvider
                 'description' => 'Monitor Validator activity for the ARK Public Network. See Validator rankings and track Voting Power in the ARK Blockchain.',
             ],
             'wallets'   => [
-                'title'       => 'Wallet Addresses | ARKScan | Cryptocurrency Block Explorer',
-                'description' => 'See wallet addresses on the ARKScan. Track balances and see transaction activity for wallet addresses on the ARK Public Nework',
+                'title'       => 'Wallet Addresses | ARK Scan | Cryptocurrency Block Explorer',
+                'description' => 'See wallet addresses on the ARK Scan. Track balances and see transaction activity for wallet addresses on the ARK Public Nework',
             ],
             '*'         => [
-                'title'       => 'ARKScan | Cryptocurrency Block Explorer',
+                'title'       => 'ARK Scan | Cryptocurrency Block Explorer',
                 'description' => 'View cryptocurrency transactions and track cryptocurrency balances. A simple block explorer to monitor Blockchain activity on the ARK Public Network.',
             ],
         ]);

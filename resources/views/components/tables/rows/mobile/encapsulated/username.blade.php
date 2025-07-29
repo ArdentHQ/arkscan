@@ -4,7 +4,7 @@
     :attributes="$attributes"
     :label="trans('labels.name')"
 >
-    @if ($model->username())
+    @if ($model->hasUsername())
         <div class="inline-block text-theme-secondary-900 dark:text-theme-dark-50">
             {{ $model->username() }}
         </div>

@@ -2,7 +2,7 @@
 
 <x-tables.mobile.includes.encapsulated wire:key="{{ Helpers::generateId('block-transactions-mobile') }}">
     @foreach ($transactions as $transaction)
-        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('transactions-mobile-row', $transaction->id()) }}">
+        <x-tables.rows.mobile wire:key="{{ Helpers::generateId('transactions-mobile-row', $transaction->hash()) }}">
             <x-slot name="header">
                 <x-tables.rows.mobile.encapsulated.transaction-id
                     :model="$transaction"

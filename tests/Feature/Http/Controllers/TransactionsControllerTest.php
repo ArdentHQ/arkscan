@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\BigNumber;
+use App\Services\NumberFormatter;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {
@@ -15,16 +16,16 @@ it('should render the page without any errors', function () {
 it('should get the transaction stats for the last 24 hours', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(148)->create([
+    Transaction::factory(148)->withReceipt()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e8,
-        'fee'       => 0.99 * 1e8,
+        'value'     => 123 * 1e18,
+        'gas_price' => 5000000000,
     ]);
 
-    Transaction::factory(12)->create([
-        'timestamp' => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e8,
-        'fee'       => 0.99 * 1e8,
+    Transaction::factory(12)->withReceipt()->create([
+        'timestamp'  => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
+        'value'      => 123 * 1e18,
+        'gas_price'  => 5000000000,
     ]);
 
     $this
@@ -33,8 +34,8 @@ it('should get the transaction stats for the last 24 hours', function () {
         ->assertViewHas([
             'transactionCount' => 148,
             'volume'           => 18204,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01554,
+            'averageFee'       => 0.000105,
         ])
         ->assertSeeInOrder([
             'Transactions (24h)',
@@ -48,12 +49,12 @@ it('should get the transaction stats for the last 24 hours', function () {
         ])
         ->assertSeeInOrder([
             'Total Fees (24h)',
-            '146.52 DARK',
+            '0.01554 DARK',
             'Average Fee (24h)',
         ])
         ->assertSeeInOrder([
             'Average Fee (24h)',
-            '0.99 DARK',
+            '0.000105 DARK',
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 
@@ -70,14 +71,24 @@ it('should get the transaction stats for the last 24 hours', function () {
         ]);
 });
 
-it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee) {
+it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee, $expectedFormattedFee) {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory()->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => BigNumber::new($amount * 1e8),
-        'fee'       => $fee * 1e8,
-    ]);
+    $gasUsed = 21000;
+
+    Transaction::factory()
+        ->withReceipt(gasUsed: $gasUsed)
+        ->create([
+            'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+            'value'     => BigNumber::new($amount * 1e18),
+            'gas_price' => $fee,
+        ]);
+
+    $formattedFee = $fee * $gasUsed;
+
+    expect((string) $formattedFee)->toEqual($expectedFormattedFee);
+
+    $fee = BigNumber::new($formattedFee)->toFloat();
 
     $this
         ->get(route('transactions'))
@@ -100,75 +111,59 @@ it('should show the correct decimal places for the stats', function ($decimalPla
         ])
         ->assertSeeInOrder([
             'Total Fees (24h)',
-            $fee.' DARK',
+            NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
             'Average Fee (24h)',
         ])
         ->assertSeeInOrder([
             'Average Fee (24h)',
-            $fee.' DARK',
+            NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
             'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
         ]);
 })->with([
-    8 => [8, 919123.48392049, 0.99184739],
-    7 => [7, 919123.4839204, 0.9918473],
-    6 => [6, 919123.483929, 0.991839],
-    5 => [5, 919123.48392, 0.99739],
-    4 => [4, 919123.4839, 0.9918],
-    3 => [3, 919123.489, 0.479],
-    2 => [2, 919123.48, 0.99],
+    8 => [8, 919123.48392049, 99184739, '2082879519000'],
+    7 => [7, 919123.4839204, 99184730, '2082879330000'],
+    6 => [6, 919123.483929, 99183900, '2082861900000'],
+    5 => [5, 919123.48392, 99739000, '2094519000000'],
+    4 => [4, 919123.4839, 99180000, '2082780000000'],
+    3 => [3, 919123.489, 47900000, '1005900000000'],
+    2 => [2, 919123.48, 99000000, '2079000000000'],
 ]);
 
 it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(146)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => 123 * 1e8,
-        'fee'       => 0.99 * 1e8,
+    Transaction::factory(146)->withReceipt()->create([
+        'timestamp'       => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+        'value'           => 123 * 1e18,
+        'gas_price'       => 5000000000,
     ]);
 
-    Transaction::factory(2)->multiPayment()->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'amount'    => (432 + 42) * 1e8,
-        'fee'       => 0.99 * 1e8,
-        'asset'     => [
-            'payments' => [
-                [
-                    'amount' => 432 * 1e8,
-                ],
-                [
-                    'amount' => 42 * 1e8,
-                ],
-            ],
-        ],
-    ]);
-
-    $volume = (123 * 146) + ((432 + 42) * 2);
+    $volume = (123 * 146);
 
     $this
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 148,
+            'transactionCount' => 146,
             'volume'           => $volume,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01533,
+            'averageFee'       => 0.000105,
         ]);
 
-    Transaction::factory(12)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
-        'amount'    => 123 * 1e8,
-        'fee'       => 0.99 * 1e8,
+    Transaction::factory(12)->withReceipt()->create([
+        'timestamp'       => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
+        'value'           => 123 * 1e18,
+        'gas_price'       => 5000000000,
     ]);
 
     $this
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 148,
+            'transactionCount' => 146,
             'volume'           => $volume,
-            'totalFees'        => 146.52,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01533,
+            'averageFee'       => 0.000105,
         ]);
 
     $this->travelTo('2021-04-14 16:09:04');
@@ -179,9 +174,9 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertViewHas([
-            'transactionCount' => 160,
+            'transactionCount' => 158,
             'volume'           => $volume,
-            'totalFees'        => 158.4,
-            'averageFee'       => 0.99,
+            'totalFees'        => 0.01659,
+            'averageFee'       => 0.000105,
         ]);
 });

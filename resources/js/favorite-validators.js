@@ -1,5 +1,3 @@
-import Alpine from "alpinejs";
-
 function FavoriteValidators() {
     const favorites =
         JSON.parse(localStorage.getItem("favorite-validators")) ?? [];

@@ -17,10 +17,9 @@ export class TransactionsApi {
         try {
             const page = await this.fetch(host, {
                 limit,
-                orderBy: "timestamp:desc,sequence:desc",
+                orderBy: "timestamp:desc,transactionIndex:desc",
                 ...query,
                 "timestamp.to": timestamp,
-                transform: false,
             });
 
             if (instance?.hasAborted()) {

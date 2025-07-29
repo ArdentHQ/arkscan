@@ -26,12 +26,10 @@ return [
     'timestamp'               => 'Timestamp',
     'transaction_count'       => 'Transaction Count',
     'transaction_id'          => 'ID',
-    'username'                => 'Username',
     'name'                    => 'Name',
     'verified_address'        => 'Verified Address',
     'votes'                   => 'Votes',
     'wallet_type'             => 'Info',
-    'multi_signature'         => 'Multisignature',
-    'second_signature'        => 'Second Signature',
     'percentage'              => 'Percentage',
+    'second_signature'        => 'Second Signature',
 ];

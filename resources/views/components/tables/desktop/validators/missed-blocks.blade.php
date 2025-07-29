@@ -80,7 +80,7 @@
                 <x-ark-tables.cell>
                     @if ($validator)
                         <x-tables.rows.desktop.encapsulated.address
-                            :model="$block"
+                            :model="$validator"
                             without-clipboard
                         />
                     @else

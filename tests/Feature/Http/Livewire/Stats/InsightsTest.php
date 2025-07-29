@@ -11,8 +11,10 @@ use App\Enums\StatsTransactionType;
 use App\Facades\Settings;
 use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\BlockCache;
 use App\Services\Cache\CryptoDataCache;
@@ -21,53 +23,54 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
 use App\Services\MarketDataProviders\CoinGecko;
+use App\Services\Transactions\Aggregates\Historical\AveragesAggregate;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Livewire\Livewire;
+use function Tests\faker;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 it('should render transaction details', function (): void {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
     Transaction::factory(12)->validatorRegistration()->create();
     Transaction::factory(13)->validatorResignation()->create();
-    Transaction::factory(14)->transfer()->create([
-        'amount' => 1 * 1e8,
-    ]);
-    Transaction::factory(15)->vote()->create();
+    Transaction::factory(24)->validatorUpdate()->create();
+    Transaction::factory(14)->transfer()->create(['value' => 1 * 1e18]);
+    Transaction::factory(15)->vote($wallet['address'])->create();
     Transaction::factory(16)->unvote()->create();
-    Transaction::factory(17)->voteCombination()->create();
+    Transaction::factory(19)->usernameRegistration('test')->create();
+    Transaction::factory(20)->usernameResignation()->create();
 
-    $largest = Transaction::factory()->multiPayment()->create([
-        'amount' => 99 * 1e8,
-        'fee'    => 11 * 1e8,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 99 * 1e8,
-                ],
-            ],
-        ],
-    ]);
+    $largest = Transaction::factory()
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create([
+            'value'     => 9999 * 1e18,
+            'gas_price' => 11 * 1e18,
+        ]);
 
-    Transaction::factory(17)->multiPayment()->create([
-        'amount' => 2 * 1e8,
-        'fee'    => 11 * 1e8,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 2 * 1e8,
-                ],
-            ],
-        ],
-    ]);
+    Transaction::factory(17)
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create([
+            'value'     => 2 * 1e18,
+            'gas_price' => 11 * 1e18,
+        ]);
+
+    foreach (Transaction::all() as $transaction) {
+        Receipt::factory()->create([
+            'transaction_hash'       => $transaction->hash,
+            'gas_used'               => 1e9,
+        ]);
+    }
 
     $transactionCache = new TransactionCache();
     $transactionCache->getCache()->flush();
 
     Artisan::call('explorer:cache-transactions');
 
-    $largestTransaction = Transaction::find($largest->id);
+    $largestTransaction = $largest->fresh();
 
     $transactionDetails = TransactionStatistics::make(
         [
@@ -75,16 +78,17 @@ it('should render transaction details', function (): void {
             'multipayment'           => 18,
             'vote'                   => 15,
             'unvote'                 => 16,
-            'switch_vote'            => 17,
             'validator_registration' => 12,
             'validator_resignation'  => 13,
+            'validator_update'       => 24,
+            'username_registration'  => 19,
+            'username_resignation'   => 20,
         ],
         TransactionAveragesStatistics::make($transactionCache->getHistoricalAverages()),
         TransactionRecordsStatistics::make($largestTransaction),
     );
 
-    Livewire::test(Insights::class)
-        ->assertViewHas('transactionDetails', $transactionDetails)
+    $component = Livewire::test(Insights::class)
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.transfer'),
             '14',
@@ -94,46 +98,66 @@ it('should render transaction details', function (): void {
             '15',
             trans('pages.statistics.insights.transactions.header.unvote'),
             '16',
-            trans('pages.statistics.insights.transactions.header.switch_vote'),
-            '17',
             trans('pages.statistics.insights.transactions.header.validator_registration'),
             '12',
             trans('pages.statistics.insights.transactions.header.validator_resignation'),
             '13',
+            trans('pages.statistics.insights.transactions.header.validator_update'),
+            '24',
+            trans('pages.statistics.insights.transactions.header.username_registration'),
+            '19',
+            trans('pages.statistics.insights.transactions.header.username_resignation'),
+            '20',
         ]);
+
+    $actualTransactionDetails = $component->viewData('transactionDetails');
+
+    expect($actualTransactionDetails->details)->toEqual($transactionDetails->details);
+    expect($actualTransactionDetails->averages)->toEqual($transactionDetails->averages);
+    expect($actualTransactionDetails->records->largestTransaction->hash())->toEqual($transactionDetails->records->largestTransaction->hash());
 });
 
 it('should render transaction daily average', function (): void {
-    $networkStub = new NetworkStub(true, Carbon::now()->subDay(2));
+    $daysSinceEpoch = 2;
+    $networkStub    = new NetworkStub(true, Carbon::now()->subDay($daysSinceEpoch));
     app()->singleton(NetworkContract::class, fn () => $networkStub);
 
     $transactionCache = new TransactionCache();
 
-    Transaction::factory(2)->validatorRegistration()->create([
-        'amount' => 0,
-        'fee'    => 9 * 1e8,
-    ]);
-    Transaction::factory(3)->transfer()->create([
-        'amount' => 2000 * 1e8,
-        'fee'    => 10 * 1e8,
-    ]);
-    Transaction::factory(4)->multipayment()->create([
-        'amount' => 3000 * 1e8,
-        'fee'    => 11 * 1e8,
-        'asset'  => [
-            'payments' => [
-                [
-                    'amount' => 3000 * 1e8,
-                ],
-            ],
-        ],
-    ]);
+    Transaction::factory(2)
+        ->withReceipt(data: ['status' => true])
+        ->validatorRegistration()
+        ->create([
+            'value'     => 0,
+            'gas_price' => 9,
+        ]);
+
+    Transaction::factory(3)
+        ->withReceipt(data: ['status' => true])
+        ->transfer()
+        ->create([
+            'value'     => 2000 * 1e18,
+            'gas_price' => 10,
+        ]);
+
+    Transaction::factory(4)
+        ->withReceipt(data: ['status' => true])
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1000 * 1e18)])
+        ->create([
+            'gas_price' => 11,
+        ]);
 
     expect(Transaction::count())->toBe(9);
 
-    $transactionCount = (int) round(9 / 2);
-    $totalAmount      = (int) round(((4 * 3000) + (3 * 2000)) / 2);
-    $totalFees        = (int) round(((9 * 2) + (10 * 3) + (11 * 4)) / 2);
+    $transactionCount = (int) round(9 / $daysSinceEpoch);
+    $totalAmount      = (int) round(((1000 * 4) + (3 * 2000)) / $daysSinceEpoch);
+    $totalFees        = (float) round((((9 * 2) + (10 * 3) + (11 * 4)) * 21000) / $daysSinceEpoch);
+
+    expect((new AveragesAggregate())->aggregate())->toBe([
+        'count'  => $transactionCount,
+        'amount' => $totalAmount,
+        'fee'    => $totalFees,
+    ]);
 
     Artisan::call('explorer:cache-transactions');
 
@@ -142,19 +166,20 @@ it('should render transaction daily average', function (): void {
             ->mapWithKeys(fn ($type) => [$type => $transactionCache->getHistoricalByType($type)])
             ->toArray(),
         TransactionAveragesStatistics::make($transactionCache->getHistoricalAverages()),
-        TransactionRecordsStatistics::make(Transaction::find($transactionCache->getLargestIdByAmount())),
+        TransactionRecordsStatistics::make(Transaction::where('hash', $transactionCache->getLargestIdByAmount())->first()),
     );
 
-    Livewire::test(Insights::class)
-        ->assertViewHas('transactionDetails', $transactionDetails)
+    $component = Livewire::test(Insights::class)
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.transfer'),
             trans('pages.statistics.insights.transactions.header.multipayment'),
             trans('pages.statistics.insights.transactions.header.vote'),
             trans('pages.statistics.insights.transactions.header.unvote'),
-            trans('pages.statistics.insights.transactions.header.switch_vote'),
             trans('pages.statistics.insights.transactions.header.validator_registration'),
             trans('pages.statistics.insights.transactions.header.validator_resignation'),
+            trans('pages.statistics.insights.transactions.header.validator_update'),
+            trans('pages.statistics.insights.transactions.header.username_registration'),
+            trans('pages.statistics.insights.transactions.header.username_resignation'),
             trans('pages.statistics.insights.transactions.header.transactions'),
             $transactionCount,
             trans('pages.statistics.insights.transactions.header.transaction_volume'),
@@ -162,6 +187,12 @@ it('should render transaction daily average', function (): void {
             trans('pages.statistics.insights.transactions.header.transaction_fees'),
             number_format($totalFees).' DARK',
         ]);
+
+    $actualTransactionDetails = $component->viewData('transactionDetails');
+
+    expect($actualTransactionDetails->details)->toEqual($transactionDetails->details);
+    expect($actualTransactionDetails->averages)->toEqual($transactionDetails->averages);
+    expect($actualTransactionDetails->records->largestTransaction->hash())->toEqual($transactionDetails->records->largestTransaction->hash());
 });
 
 it('should render transaction records', function (): void {
@@ -172,24 +203,21 @@ it('should render transaction records', function (): void {
     $blockWithMostTransactions = Block::factory()->create();
     $otherBlock                = Block::factory()->create();
 
-    (new TransactionCache())->setLargestIdByAmount($largestTransaction->id);
-    (new BlockCache())->setLargestIdByAmount($largestBlock->id);
-    (new BlockCache())->setLargestIdByFees($largestBlockFee->id);
-    (new BlockCache())->setLargestIdByTransactionCount($blockWithMostTransactions->id);
+    (new TransactionCache())->setLargestIdByAmount($largestTransaction->hash);
+    (new BlockCache())->setLargestIdByFees($largestBlockFee->hash);
+    (new BlockCache())->setLargestIdByTransactionCount($blockWithMostTransactions->hash);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
             trans('pages.statistics.insights.transactions.header.largest_transaction'),
-            $largestTransaction->id,
-            trans('pages.statistics.insights.transactions.header.largest_block'),
-            $largestBlock->id,
+            $largestTransaction->hash,
             trans('pages.statistics.insights.transactions.header.highest_fee'),
-            $largestBlockFee->id,
+            $largestBlockFee->hash,
             trans('pages.statistics.insights.transactions.header.most_transactions_in_block'),
-            $blockWithMostTransactions->id,
+            $blockWithMostTransactions->hash,
         ])
-        ->assertDontSee($otherTransaction->id)
-        ->assertDontSee($otherBlock->id);
+        ->assertDontSee($otherTransaction->hash)
+        ->assertDontSee($otherBlock->hash);
 });
 
 it('should render address holdings', function (): void {
@@ -251,18 +279,18 @@ it('should render validator statistics', function (): void {
     $randomWallet       = Wallet::factory()->activeValidator()->create();
 
     $cache = new StatisticsCache();
-    $cache->setMostUniqueVoters($walletMostUnique->public_key);
-    $cache->setLeastUniqueVoters($walletLeastUnique->public_key);
-    $cache->setOldestActiveValidator($walletOldestActive->public_key, $currentDate->subMonth()->timestamp);
-    $cache->setNewestActiveValidator($walletNewestActive->public_key, $currentDate->timestamp);
-    $cache->setMostBlocksForged($walletMostBlocks->public_key);
+    $cache->setMostUniqueVoters($walletMostUnique->address);
+    $cache->setLeastUniqueVoters($walletLeastUnique->address);
+    $cache->setOldestActiveValidator($walletOldestActive->address, $currentDate->subMonth()->timestamp);
+    $cache->setNewestActiveValidator($walletNewestActive->address, $currentDate->timestamp);
+    $cache->setMostBlocksForged($walletMostBlocks->address);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
-            // trans('pages.statistics.insights.validators.header.most_unique_voters'),
-            // $walletMostUnique->address,
-            // trans('pages.statistics.insights.validators.header.least_unique_voters'),
-            // $walletLeastUnique->address,
+            trans('pages.statistics.insights.validators.header.most_unique_voters'),
+            $walletMostUnique->address,
+            trans('pages.statistics.insights.validators.header.least_unique_voters'),
+            $walletLeastUnique->address,
             trans('pages.statistics.insights.validators.header.oldest_active_validator'),
             $walletOldestActive->address,
             trans('pages.statistics.insights.validators.header.newest_active_validator'),
@@ -302,7 +330,7 @@ it('should render marketdata statistics for fiat', function (): void {
     $cache->setMarketCapAth($currency, $currentDate->timestamp, 30000);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'USD', 1.234);
-    (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 4.567 * 1e18);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([
@@ -361,7 +389,7 @@ it('should render marketdata statistics for crypto', function (): void {
     $cache->setMarketCapAth($currency, $currentDate->timestamp, 0.0003);
 
     (new NetworkStatusBlockCache())->setPrice('ARK', 'BTC', 0.00001234);
-    (new NetworkCache())->setSupply(fn () => 4.567 * 1e8);
+    (new NetworkCache())->setSupply(fn () => 4.567 * 1e18);
 
     Livewire::test(Insights::class)
         ->assertSeeInOrder([

@@ -46,7 +46,7 @@
     </thead>
     <tbody>
         @foreach($votes as $vote)
-            <x-ark-tables.row wire:key="{{ Helpers::generateId('vote-item', $vote->id()) }}">
+            <x-ark-tables.row wire:key="{{ Helpers::generateId('vote-item', $vote->hash()) }}">
                 <x-ark-tables.cell>
                     <x-tables.rows.desktop.encapsulated.transaction-id :model="$vote" />
                 </x-ark-tables.cell>
@@ -76,16 +76,21 @@
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell>
-                    @if ($vote->isVote())
-                        <x-tables.rows.desktop.encapsulated.address
-                            :model="$vote->voted()"
-                            without-clipboard
-                        />
-                    @else
-                        <x-tables.rows.desktop.encapsulated.address
-                            :model="$vote->unvoted()"
-                            without-clipboard
-                        />
+                    @php($votedValidator = $vote->voted())
+
+                    @if ($votedValidator)
+                        <a
+                            href="{{ route('wallet', $votedValidator->address()) }}"
+                            class="text-sm font-semibold link"
+                        >
+                            @if ($votedValidator->hasUsername())
+                                {{ $votedValidator->username() }}
+                            @else
+                                <x-truncate-middle>
+                                    {{ $votedValidator->address() }}
+                                </x-truncate-middle>
+                            @endif
+                        </a>
                     @endif
                 </x-ark-tables.cell>
             </x-ark-tables.row>
