@@ -86,7 +86,7 @@ final class WalletFactory extends Factory
                 'attributes' => [
                     'validatorRank'           => 0,
                     'validatorApproval'       => $this->faker->randomFloat(2, 0, 2),
-                    'validatorPublicKey'      => "",
+                    'validatorPublicKey'      => '',
                     'validatorForgedFees'     => $this->faker->numberBetween(1, 100) * 1e18,
                     'validatorForgedTotal'    => $this->faker->numberBetween(1, 100) * 1e18,
                     'validatorVoteBalance'    => $this->faker->numberBetween(1, 100) * 1e18,
