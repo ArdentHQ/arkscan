@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Livewire\Wallet\Tabs;
+use App\Livewire\SupportQueryString;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
@@ -118,8 +119,6 @@ it('should be able to get the property of the previous view', function () {
         ->instance();
 
     $instance->setFilter('outgoing', false, 'transactions');
-    // $instance->filters['transactions']['outgoing'] = false;
-    // data_set($instance, 'filters.transactions.outgoing', false);
 
     expect($instance->tabQueryData['transactions']['filters.transactions.outgoing'])->toBeFalse();
 
@@ -195,22 +194,22 @@ it('should parse perPage from URL', function () {
     expect($instance->tabQueryData['transactions']['paginatorsPerPage.transactions'])->toBe(10);
 });
 
-// it('should apply url values to component', function () {
-//     $wallet = Wallet::factory()->activeValidator()->create();
+it('should apply url values to component', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
 
-//     $instance = Livewire::withUrlParams(['view' => 'blocks', 'page' => 3])
-//         ->test(Tabs::class, [new WalletViewModel($wallet)])
-//         ->assertSet('view', 'blocks')
-//         ->instance();
+    $instance = Livewire::withUrlParams(['view' => 'blocks', 'page' => 3])
+        ->test(Tabs::class, [new WalletViewModel($wallet)])
+        ->assertSet('view', 'blocks')
+        ->instance();
 
-//     $support = new SupportQueryString();
-//     $support->setComponent($instance);
-//     $support->mergeQueryStringWithRequest();
+    $support = new SupportQueryString();
+    $support->setComponent($instance);
+    $support->mergeQueryStringWithRequest();
 
-//     expect($instance->view)->toBe('blocks');
-//     expect($instance->getPage())->toBe(3);
-//     expect($instance->paginators['page'])->toBe(3);
-// });
+    expect($instance->view)->toBe('blocks');
+    expect($instance->getPage())->toBe(3);
+    expect($instance->paginators['page'])->toBe(3);
+});
 
 it('should run hooks when property is updated with syncInput', function () {
     $wallet = Wallet::factory()->activeValidator()->create();
