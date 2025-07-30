@@ -25,6 +25,20 @@ trait CanBeValidator
         return $this->rank() > Network::validatorCount();
     }
 
+    public function isDormant(): bool
+    {
+        $validatorPublicKey = Arr::get($this->wallet, 'attributes.validatorPublicKey');
+        if ($validatorPublicKey === null) {
+            return true;
+        }
+
+        if ($validatorPublicKey === '') {
+            return true;
+        }
+
+        return false;
+    }
+
     public function isActive(): bool
     {
         if (! $this->isValidator()) {
@@ -32,6 +46,10 @@ trait CanBeValidator
         }
 
         if ($this->isResigned()) {
+            return false;
+        }
+
+        if ($this->isDormant()) {
             return false;
         }
 

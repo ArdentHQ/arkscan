@@ -72,27 +72,31 @@ it('should toggle all filters when "select all" is selected', function () {
         ->assertSet('filter', [
             'active'   => true,
             'standby'  => true,
+            'dormant'  => false,
             'resigned' => false,
         ])
         ->set('filter.resigned', true)
         ->assertSet('filter', [
             'active'   => true,
             'standby'  => true,
+            'dormant'  => false,
             'resigned' => true,
         ])
-        ->assertSet('selectAllFilters', true)
-        ->set('filter.active', true)
+        ->assertSet('selectAllFilters', false)
+        ->set('filter.dormant', true)
         ->assertSet('selectAllFilters', true)
         ->set('selectAllFilters', false)
         ->assertSet('filter', [
             'active'   => false,
             'standby'  => false,
+            'dormant'  => false,
             'resigned' => false,
         ])
         ->set('selectAllFilters', true)
         ->assertSet('filter', [
             'active'   => true,
             'standby'  => true,
+            'dormant'  => true,
             'resigned' => true,
         ]);
 });
@@ -103,12 +107,16 @@ it('should toggle "select all" when all filters are selected', function () {
         ->assertSet('filter', [
             'active'   => true,
             'standby'  => true,
+            'dormant'  => false,
             'resigned' => false,
         ])
         ->set('filter.resigned', true)
+        ->assertSet('selectAllFilters', false)
+        ->set('filter.dormant', true)
         ->assertSet('filter', [
             'active'   => true,
             'standby'  => true,
+            'dormant'  => true,
             'resigned' => true,
         ])
         ->assertSet('selectAllFilters', true)
@@ -121,6 +129,7 @@ it('should toggle "select all" when all filters are selected', function () {
 it('should filter active validators', function () {
     $active   = Wallet::factory()->activeValidator()->create();
     $standby  = Wallet::factory()->standbyValidator(false)->create();
+    $dormant  = Wallet::factory()->dormantValidator()->create();
     $resigned = Wallet::factory()->standbyValidator()->create();
 
     Livewire::test(Validators::class)
@@ -128,16 +137,19 @@ it('should filter active validators', function () {
         ->set('filter', [
             'active'   => true,
             'standby'  => false,
+            'dormant'  => false,
             'resigned' => false,
         ])
         ->assertSee($active->address)
         ->assertDontSee($standby->address)
+        ->assertDontSee($dormant->address)
         ->assertDontSee($resigned->address);
 });
 
 it('should filter standby validators', function () {
     $active   = Wallet::factory()->activeValidator()->create();
     $standby  = Wallet::factory()->standbyValidator(false)->create();
+    $dormant  = Wallet::factory()->dormantValidator()->create();
     $resigned = Wallet::factory()->standbyValidator()->create();
 
     Livewire::test(Validators::class)
@@ -145,16 +157,19 @@ it('should filter standby validators', function () {
         ->set('filter', [
             'active'   => false,
             'standby'  => true,
+            'dormant'  => false,
             'resigned' => false,
         ])
         ->assertSee($standby->address)
         ->assertDontSee($active->address)
+        ->assertDontSee($dormant->address)
         ->assertDontSee($resigned->address);
 });
 
-it('should filter resigned validators', function () {
+it('should filter dormant validators', function () {
     $active   = Wallet::factory()->activeValidator()->create();
     $standby  = Wallet::factory()->standbyValidator(false)->create();
+    $dormant  = Wallet::factory()->dormantValidator()->create();
     $resigned = Wallet::factory()->standbyValidator()->create();
 
     Livewire::test(Validators::class)
@@ -162,11 +177,33 @@ it('should filter resigned validators', function () {
         ->set('filter', [
             'active'   => false,
             'standby'  => false,
+            'dormant'  => true,
+            'resigned' => false,
+        ])
+        ->assertSee($dormant->address)
+        ->assertDontSee($active->address)
+        ->assertDontSee($standby->address)
+        ->assertDontSee($resigned->address);
+});
+
+it('should filter resigned validators', function () {
+    $active   = Wallet::factory()->activeValidator()->create();
+    $standby  = Wallet::factory()->standbyValidator(false)->create();
+    $dormant  = Wallet::factory()->dormantValidator()->create();
+    $resigned = Wallet::factory()->standbyValidator()->create();
+
+    Livewire::test(Validators::class)
+        ->call('setIsReady')
+        ->set('filter', [
+            'active'   => false,
+            'standby'  => false,
+            'dormant'  => false,
             'resigned' => true,
         ])
         ->assertSee($resigned->address)
         ->assertDontSee($active->address)
-        ->assertDontSee($standby->address);
+        ->assertDontSee($standby->address)
+        ->assertDontSee($dormant->address);
 });
 
 it('should show correct message when no filters are selected', function () {
@@ -175,6 +212,7 @@ it('should show correct message when no filters are selected', function () {
         ->set('filter', [
             'active'   => false,
             'standby'  => false,
+            'dormant'  => false,
             'resigned' => false,
         ])
         ->assertSee(trans('tables.validators.no_results.no_filters'));
