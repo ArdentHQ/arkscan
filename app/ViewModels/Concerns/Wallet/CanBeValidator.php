@@ -29,7 +29,7 @@ trait CanBeValidator
     {
         $validatorPublicKey = Arr::get($this->wallet, 'attributes.validatorPublicKey');
         if ($validatorPublicKey === null) {
-            return false;
+            return true;
         }
 
         if ($validatorPublicKey === '') {
