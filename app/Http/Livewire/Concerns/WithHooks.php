@@ -11,14 +11,14 @@ trait WithHooks
     // Hook logic taken from Livewire\Features\SupportPagination\HandlesPagination
     private function setWithHooks(string $property, mixed $value, ?string $key = null): void
     {
-        $beforePaginatorMethod = 'updating'.ucfirst($property);
-        $afterPaginatorMethod  = 'updated'.ucfirst($property);
+        $beforeMethod = 'updating'.ucfirst($property);
+        $afterMethod  = 'updated'.ucfirst($property);
 
-        $beforeMethod = null;
-        $afterMethod  = null;
+        $beforePropertyMethod = null;
+        $afterPropertyMethod  = null;
         if ($key !== null) {
-            $beforeMethod = 'updating'.ucfirst(Str::camel($key));
-            $afterMethod  = 'updated'.ucfirst(Str::camel($key));
+            $beforePropertyMethod = 'updating'.ucfirst(Str::of($key)->replace('.', ' ')->camel()->toString());
+            $afterPropertyMethod  = 'updated'.ucfirst(Str::of($key)->replace('.', ' ')->camel()->toString());
         }
 
         $args = [$value];
@@ -26,14 +26,14 @@ trait WithHooks
             $args[] = $key;
         }
 
-        if (method_exists($this, $beforePaginatorMethod)) {
-            // @phpstan-ignore-next-line - complains about array not being a valid callable type
-            call_user_func_array([$this, $beforePaginatorMethod], $args);
-        }
-
-        if ($beforeMethod !== null && method_exists($this, $beforeMethod)) {
+        if (method_exists($this, $beforeMethod)) {
             // @phpstan-ignore-next-line - complains about array not being a valid callable type
             call_user_func_array([$this, $beforeMethod], $args);
+        }
+
+        if ($beforePropertyMethod !== null && method_exists($this, $beforePropertyMethod)) {
+            // @phpstan-ignore-next-line - complains about array not being a valid callable type
+            call_user_func_array([$this, $beforePropertyMethod], $args);
         }
 
         if ($key !== null) {
@@ -42,14 +42,14 @@ trait WithHooks
             data_set($this, $property, $value);
         }
 
-        if (method_exists($this, $afterPaginatorMethod)) {
-            // @phpstan-ignore-next-line - complains about array not being a valid callable type
-            call_user_func_array([$this, $afterPaginatorMethod], $args);
-        }
-
-        if ($afterMethod !== null && method_exists($this, $afterMethod)) {
+        if (method_exists($this, $afterMethod)) {
             // @phpstan-ignore-next-line - complains about array not being a valid callable type
             call_user_func_array([$this, $afterMethod], $args);
+        }
+
+        if ($afterPropertyMethod !== null && method_exists($this, $afterPropertyMethod)) {
+            // @phpstan-ignore-next-line - complains about array not being a valid callable type
+            call_user_func_array([$this, $afterPropertyMethod], $args);
         }
     }
 }
