@@ -21,33 +21,6 @@ trait HasPayload
         return $this->decodePayload($this->data);
     }
 
-    /**
-     * @param resource|null $payload
-     */
-    private function decodePayload($payload): ?string
-    {
-        if ($payload === null) {
-            return null;
-        }
-
-        $payloadContent = stream_get_contents($payload, offset: 0);
-
-        // @codeCoverageIgnoreStart
-        // Not covered in tests, since it seems that the possibility of returning
-        // `false` instead of an exception seems to depends on the PHP configuration.
-        if ($payloadContent === false) {
-            return null;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $payload = bin2hex($payloadContent);
-        if (strlen($payload) === 0) {
-            return null;
-        }
-
-        return $payload;
-    }
-
     public function utf8Payload(): ?string
     {
         $payload = $this->rawPayload();
@@ -193,6 +166,33 @@ trait HasPayload
         }
 
         return null;
+    }
+
+    /**
+     * @param resource|null $payload
+     */
+    private function decodePayload($payload): ?string
+    {
+        if ($payload === null) {
+            return null;
+        }
+
+        $payloadContent = stream_get_contents($payload, offset: 0);
+
+        // @codeCoverageIgnoreStart
+        // Not covered in tests, since it seems that the possibility of returning
+        // `false` instead of an exception seems to depends on the PHP configuration.
+        if ($payloadContent === false) {
+            return null;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $payload = bin2hex($payloadContent);
+        if (strlen($payload) === 0) {
+            return null;
+        }
+
+        return $payload;
     }
 
     private function decodeFunctionData(string $payload): array
