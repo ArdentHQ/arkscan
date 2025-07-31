@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Http\Livewire\Validators\Tabs;
 use Livewire\Livewire;
@@ -84,3 +85,56 @@ it('should have sorting querystring data', function () {
         'sortDirections.default' => ['as' => 'sort-direction', 'except' => 'asc'],
     ]);
 });
+
+it('should get and set sort key for current view', function () {
+    $component = Livewire::test(Tabs::class)
+        ->set('view', 'recent-votes')
+        ->call('sortBy', 'age')
+        ->assertSet('sortKeys.recent-votes', 'age')
+        ->assertSet('sortDirections.recent-votes', SortDirection::ASC)
+        ->assertSet('sortKey', 'age')
+        ->assertSet('sortDirection', SortDirection::ASC)
+        ->set('view', 'missed-blocks')
+        ->call('sortBy', 'test-key')
+        ->call('sortBy', 'test-key')
+        ->assertSet('sortKeys.missed-blocks', 'test-key')
+        ->assertSet('sortDirections.recent-votes', SortDirection::DESC)
+        ->assertSet('sortKey', 'test-key')
+        ->assertSet('sortDirection', SortDirection::DESC);
+
+    expect($component->tabQueryData['missed-blocks']['sortKeys.missed-blocks'])->toBe('test-key');
+    expect($component->tabQueryData['missed-blocks']['sortDirections.missed-blocks'])->toBe(SortDirection::DESC);
+    expect($component->savedQueryData['recent-votes']['sortKeys.recent-votes'])->toBe('age');
+    expect($component->savedQueryData['recent-votes']['sortDirections.recent-votes'])->toBe(SortDirection::ASC);
+});
+
+it('should only trigger view is ready if view exists when updating via property', function () {
+    Livewire::test(Tabs::class)
+        ->set('view', 'unknown')
+        ->assertSet('view', 'validators')
+        ->assertNotDispatched('setUnknownReady')
+        ->set('view', 'missed-blocks')
+        ->assertSet('view', 'missed-blocks')
+        ->assertDispatched('setMissedBlocksReady')
+        ->set('view', 'validators')
+        ->assertSet('view', 'validators')
+        ->set('view', 'missed-blocks')
+        ->assertSet('view', 'missed-blocks')
+        ->assertNotDispatched('setMissedBlocksReady');
+});
+
+it('should only trigger view is ready if view exists when calling trigger method directly', function () {
+    $instance = Livewire::test(Tabs::class)->instance();
+
+    $instance->triggerViewIsReady('unknown');
+
+    expect(array_key_exists('unknown', $instance->alreadyLoadedViews))->toBeFalse();
+
+    $instance->triggerViewIsReady('validators');
+
+    expect($instance->alreadyLoadedViews['validators'])->toBeTrue();
+});
+
+it('should throw exception if noResultsMessage is called', function () {
+    Livewire::test(Tabs::class)->noResultsMessage;
+})->throws(\Exception::class, 'Base getNoResultsMessageProperty not implemented');

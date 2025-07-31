@@ -28,9 +28,11 @@ abstract class TabbedComponent extends Component
         setPerPage as setPerPageTrait;
         perPageOptions as perPageOptionsTrait;
     }
+
     use HasTableSorting {
         sortBy as sortByTrait;
     }
+
     use HasTableFilter {
         getFilter as getFilterTrait;
         updatedFilters as updatedFiltersTrait;
@@ -54,27 +56,7 @@ abstract class TabbedComponent extends Component
             return $value;
         }
 
-        if (array_key_exists($property, $this->tabQueryData[$this->view])) {
-            return $this->tabQueryData[$this->view][$property];
-        }
-
-        $value = Arr::get($this->tabQueryData[$this->previousView], $property);
-        if ($value !== null) {
-            return $value;
-        }
-
-        if (array_key_exists($property, $this->tabQueryData[$this->previousView])) {
-            return $this->tabQueryData[$this->previousView][$property];
-        }
-
         return parent::__get($property);
-    }
-
-    public function __set(string $property, mixed $value): void
-    {
-        if (Arr::has($this->tabQueryData[$this->view], $property)) {
-            $this->tabQueryData[$this->view][$property] = $value;
-        }
     }
 
     public function mount(): void
@@ -247,21 +229,6 @@ abstract class TabbedComponent extends Component
             return;
         }
 
-        if (array_key_exists('perPage', $this->tabQueryData[$this->view])) {
-            $options = [];
-            if (method_exists($this, $this->view.'PerPageOptions')) {
-                // @phpstan-ignore-next-line - ignoring as it's a dynamic method name depending on the view.
-                $options = $this->{$this->view.'PerPageOptions'}();
-            } else {
-                $options = $this->perPageOptions();
-            }
-
-            $perPage = (int) $this->tabQueryData[$this->view]['paginatorsPerPage.'.$this->view];
-            if (! in_array($perPage, $options, true)) {
-                $this->tabQueryData[$this->view]['paginatorsPerPage.'.$this->view] = self::defaultPerPage($this->view);
-            }
-        }
-
         $this->alreadyLoadedViews[$view] = true;
 
         $this->dispatch('set'.Str::studly($view).'Ready');
@@ -346,8 +313,6 @@ abstract class TabbedComponent extends Component
             $property = $properties->get($key);
             if ($property !== null) {
                 $except = $property->except;
-            } elseif (Arr::has($queryStringData, $key.'.except')) {
-                $except = Arr::get($queryStringData, $key.'.except');
             } elseif (Arr::has($queryStringData, $key)) {
                 $except = Arr::get($queryStringData, $key)['except'];
             } else {

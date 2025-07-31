@@ -121,6 +121,7 @@ it('should be able to get the property of the previous view', function () {
     $instance->setFilter('outgoing', false, 'transactions');
 
     expect($instance->tabQueryData['transactions']['filters.transactions.outgoing'])->toBeFalse();
+    expect($instance->getFilter('outgoing', 'unused-property-value'))->toBeFalse();
 
     $instance->updatingView('voters');
     $instance->showWalletView('voters');
@@ -128,7 +129,27 @@ it('should be able to get the property of the previous view', function () {
 
     expect($instance->filters['transactions']['outgoing'])->toBeTrue();
     expect($instance->tabQueryData['transactions']['filters.transactions.outgoing'])->toBeTrue();
-    expect($instance->getFilter('outgoing', 'transactions'))->toBeTrue();
+});
+
+it('should return null if no filter does not exist on current view', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    $instance = Livewire::test(Tabs::class, [new WalletViewModel($wallet)])
+        ->set('view', 'transactions')
+        ->instance();
+
+    $instance->setFilter('outgoing', false, 'transactions');
+
+    expect($instance->tabQueryData['transactions']['filters.transactions.outgoing'])->toBeFalse();
+    expect($instance->getFilter('outgoing', 'unused-property-value'))->toBeFalse();
+
+    $instance->updatingView('voters');
+    $instance->showWalletView('voters');
+    $instance->updatedView();
+
+    expect($instance->filters['transactions']['outgoing'])->toBeTrue();
+    expect($instance->tabQueryData['transactions']['filters.transactions.outgoing'])->toBeTrue();
+    expect($instance->getFilter('outgoing', 'unused-property-value'))->toBeNull(); // Transactions filter does not exist on voters view
 });
 
 it('should try to get property if not part of the querystring properties', function () {
@@ -243,4 +264,59 @@ it('should not have sorting querystring data', function () {
         ->instance();
 
     expect($instance->queryStringHasTableSorting())->toBe([]);
+});
+
+it('should get and set per-page for current view', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    $component = Livewire::test(Tabs::class, [new WalletViewModel($wallet)])
+        ->set('view', 'voters')
+        ->call('setPerPage', 10)
+        ->assertSet('paginatorsPerPage.voters', 10)
+        ->assertSet('perPage', 10)
+        ->set('view', 'blocks')
+        ->call('setPerPage', 50)
+        ->assertSet('paginatorsPerPage.blocks', 50)
+        ->assertSet('perPage', 50);
+
+    expect($component->tabQueryData['blocks']['paginatorsPerPage.blocks'])->toBe(50);
+    expect($component->savedQueryData['voters']['paginatorsPerPage.voters'])->toBe(10);
+});
+
+it('should return false for isReady if view method does not exist', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    $instance = Livewire::test(Tabs::class, [new WalletViewModel($wallet)])
+        ->set('view', 'testing')
+        ->assertSet('isReady', false)
+        ->instance();
+
+    expect($instance->getIsReadyProperty())->toBeFalse();
+});
+
+it('should get and set page for current view', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    $component = Livewire::test(Tabs::class, [new WalletViewModel($wallet)])
+        ->set('view', 'voters')
+        ->call('setPage', 3)
+        ->assertSet('paginators.voters', 3)
+        ->assertSet('page', 3)
+        ->set('view', 'blocks')
+        ->call('setPage', 8)
+        ->assertSet('paginators.blocks', 8)
+        ->assertSet('page', 8);
+
+    expect($component->tabQueryData['blocks']['paginators.blocks'])->toBe(8);
+    expect($component->savedQueryData['voters']['paginators.voters'])->toBe(3);
+});
+
+it('should ignore unknown tab query data', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    Livewire::test(Tabs::class, [new WalletViewModel($wallet)])
+        ->set('view', 'voters')
+        ->set('tabQueryData.voters.testing', 123)
+        ->set('view', 'blocks')
+        ->assertSet('savedQueryData.voters.testing', 123);
 });

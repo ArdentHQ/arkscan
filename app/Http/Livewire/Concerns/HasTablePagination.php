@@ -79,6 +79,11 @@ trait HasTablePagination
             return static::defaultPerPage();
         }
 
-        return (int) request()->query('per-page', $default ?? $this->getPerPage());
+        $perPage = (int) request()->query('per-page', $default ?? $this->getPerPage());
+        if (! in_array($perPage, static::perPageOptions(), true)) {
+            return static::defaultPerPage();
+        }
+
+        return $perPage ?? $default ?? $this->getPerPage();
     }
 }

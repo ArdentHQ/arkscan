@@ -489,6 +489,28 @@ it('should force default sort direction if invalid query string value', function
         ]);
 });
 
+it('should validate per-page option from query string', function () {
+    $data = generateTransactions();
+
+    Route::get('/test-validators', function () {
+        return BladeCompiler::render('<livewire:validators.tabs :defer-loading="false" />');
+    });
+
+    // Still show all data since 1 per-page is not a valid option
+    $this->get('/test-validators?view=recent-votes&per-page=1')
+        ->assertSeeInOrder([
+            'vote-item*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-item*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+
+            'vote-mobile*'.$data['unvoteTransaction']->hash,
+            $data['unvoteTransaction']->hash,
+            'vote-mobile*'.$data['voteTransaction']->hash,
+            $data['voteTransaction']->hash,
+        ]);
+});
+
 it('should not show failed transactions', function () {
     $validator = Wallet::factory()->activeValidator()->create();
 
