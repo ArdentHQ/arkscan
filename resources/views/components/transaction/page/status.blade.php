@@ -67,7 +67,7 @@
     </div>
 
     @if ($hasFailedStatus)
-        <div class="px-3 pt-2 mt-2 whitespace-normal border-t sm:pt-3 sm:pl-6 sm:mt-3 border-theme-danger-200 lg:hidden dark:border-theme-dark-700">
+        <div class="px-3 pt-2 mt-2 whitespace-normal border-t sm:pt-3 sm:pl-6 sm:mt-3 lg:hidden border-theme-danger-200 dark:border-theme-dark-700">
             @if ($transactionError)
                 @lang('pages.transaction.status.failed_message', [
                     'error' => preg_replace('/([A-Z])/', ' \1', $transactionError),
