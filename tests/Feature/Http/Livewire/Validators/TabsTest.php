@@ -74,3 +74,13 @@ it('should revert to validators tab with unknown view', function () {
     $this->get('/validators?view=unknown')
         ->assertOk();
 });
+
+it('should have sorting querystring data', function () {
+    $instance = Livewire::test(Tabs::class)
+        ->instance();
+
+    expect($instance->queryStringHasTableSorting())->toBe([
+        'sortKeys.default'       => ['as' => 'sort', 'except' => 'rank'],
+        'sortDirections.default' => ['as' => 'sort-direction', 'except' => 'asc'],
+    ]);
+});

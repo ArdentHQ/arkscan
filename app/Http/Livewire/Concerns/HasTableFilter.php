@@ -106,17 +106,9 @@ trait HasTableFilter
         return constant(static::class.'::'.$prefix.'INITIAL_FILTERS');
     }
 
-    protected function resolveFilter(string $filter, ?bool $default = null, string $name = 'default'): ?bool
+    protected function resolveFilter(string $filter, bool $default, string $name = 'default'): ?bool
     {
-        if ($default === null) {
-            $default = $this->getFilter($filter, $name);
-        }
-
         $requestValue = request()->query($filter, $default);
-        if ($requestValue === null) {
-            return Arr::get(static::defaultFilters($name), $filter);
-        }
-
         if (is_bool($requestValue)) {
             return $requestValue;
         }
@@ -128,12 +120,7 @@ trait HasTableFilter
     {
         $parsedFilters = [];
         foreach ($filters as $filter => $isFiltered) {
-            $resolvedFilter = $this->resolveFilter($filter, $isFiltered, $name);
-            if ($resolvedFilter === null) {
-                continue;
-            }
-
-            $parsedFilters[$filter] = $resolvedFilter;
+            $parsedFilters[$filter] = $this->resolveFilter($filter, $isFiltered, $name);
         }
 
         return $parsedFilters;

@@ -19,12 +19,10 @@ trait HasTableSorting
 
     public function queryStringHasTableSorting(): array
     {
-        $queryString = [
+        return [
             'sortKeys.default'       => ['as' => 'sort', 'except' => static::defaultSortKey()],
             'sortDirections.default' => ['as' => 'sort-direction', 'except' => static::defaultSortDirection()->value],
         ];
-
-        return $queryString;
     }
 
     public function sortBy(string $sortKey, string $name = 'default'): void

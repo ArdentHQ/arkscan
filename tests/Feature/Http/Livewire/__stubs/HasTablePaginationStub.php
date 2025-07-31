@@ -10,4 +10,9 @@ namespace Tests\Feature\Http\Livewire\__stubs;
 class HasTablePaginationStub extends TablePaginationComponentStub
 {
     public const PER_PAGE = 50;
+
+    public function callResolvePerPage(?int $default = null): int
+    {
+        return $this->resolvePerPage($default);
+    }
 }

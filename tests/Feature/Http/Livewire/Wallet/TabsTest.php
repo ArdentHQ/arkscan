@@ -128,6 +128,7 @@ it('should be able to get the property of the previous view', function () {
 
     expect($instance->filters['transactions']['outgoing'])->toBeTrue();
     expect($instance->tabQueryData['transactions']['filters.transactions.outgoing'])->toBeTrue();
+    expect($instance->getFilter('outgoing', 'transactions'))->toBeTrue();
 });
 
 it('should try to get property if not part of the querystring properties', function () {
@@ -233,4 +234,13 @@ it('should revert to transactions tab with unknown view', function () {
 
     $this->get('/addresses/'.$wallet->address.'?view=unknown')
         ->assertOk();
+});
+
+it('should not have sorting querystring data', function () {
+    $wallet = Wallet::factory()->activeValidator()->create();
+
+    $instance = Livewire::test(Tabs::class, [new WalletViewModel($wallet)])
+        ->instance();
+
+    expect($instance->queryStringHasTableSorting())->toBe([]);
 });
