@@ -101,3 +101,57 @@ it('should return gas price if no receipt', function () {
 
     expect($transaction->fresh()->fee()->toNumber())->toBe(54);
 });
+
+it('should return receipt error', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'output'           => function () {
+            // In-memory stream
+            $stream = fopen('php://temp', 'r+');
+            fwrite($stream, hex2bin('cd03235e'));
+            rewind($stream);
+
+            return $stream;
+        },
+    ]);
+
+    expect($transaction->parseReceiptError())->toBe('CallerIsNotValidator');
+});
+
+it('should return null if no receipt error', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()
+        ->create([
+            'transaction_hash' => $transaction->hash,
+        ]);
+
+    expect($transaction->parseReceiptError())->toBeNull();
+});
+
+it('should return null if no receipt record', function () {
+    $transaction = Transaction::factory()->create();
+
+    expect($transaction->parseReceiptError())->toBeNull();
+});
+
+it('should return null if no valid error', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()
+        ->create([
+            'transaction_hash' => $transaction->hash,
+            'output'           => function () {
+                // In-memory stream
+                $stream = fopen('php://temp', 'r+');
+                fwrite($stream, hex2bin('123456'));
+                rewind($stream);
+
+                return $stream;
+            },
+        ]);
+
+    expect($transaction->parseReceiptError())->toBeNull();
+});
