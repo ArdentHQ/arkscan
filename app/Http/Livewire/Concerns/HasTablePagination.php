@@ -84,6 +84,6 @@ trait HasTablePagination
             return static::defaultPerPage();
         }
 
-        return $perPage ?? $default ?? $this->getPerPage();
+        return $perPage;
     }
 }
