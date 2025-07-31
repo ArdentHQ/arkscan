@@ -136,8 +136,9 @@ return [
         ],
 
         'status' => [
-            'header'         => 'Status',
-            'failed_message' => 'Error encountered during contract execution',
+            'header'            => 'Status',
+            'failed_message'    => 'Error encountered during contract execution: :error',
+            'failed_no_message' => 'Error encountered during contract execution',
         ],
     ],
 
