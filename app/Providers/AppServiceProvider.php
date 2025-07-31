@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Fortify\Fortify;
-use Livewire\Mechanisms\HandleComponents\HandleComponents as HandleComponentsContract;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -47,11 +46,6 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             GasTrackerContract::class,
             fn () => new (GasTracker::class)()
-        );
-
-        $this->app->singleton(
-            HandleComponentsContract::class,
-            fn () => new HandleComponents(),
         );
     }
 
