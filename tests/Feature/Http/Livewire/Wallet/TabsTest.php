@@ -291,6 +291,8 @@ it('should return false for isReady if view method does not exist', function () 
         ->assertSet('isReady', false)
         ->instance();
 
+    $instance->view = 'unknown';
+
     expect($instance->getIsReadyProperty())->toBeFalse();
 });
 
