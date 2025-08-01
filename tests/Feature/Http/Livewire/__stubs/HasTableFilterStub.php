@@ -14,7 +14,7 @@ class HasTableFilterStub extends Component
 {
     use HasTableFilter;
 
-    const STUB_INITIAL_FILTERS = [
+    public const STUB_INITIAL_FILTERS = [
         'testing' => true,
     ];
 

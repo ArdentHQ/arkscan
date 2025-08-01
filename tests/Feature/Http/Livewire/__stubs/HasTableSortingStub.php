@@ -15,7 +15,7 @@ class HasTableSortingStub extends Component
 {
     use HasTableSorting;
 
-    const INITIAL_SORT_KEY = 'age';
+    public const INITIAL_SORT_KEY = 'age';
 
-    const INITIAL_SORT_DIRECTION = SortDirection::DESC;
+    public const INITIAL_SORT_DIRECTION = SortDirection::DESC;
 }

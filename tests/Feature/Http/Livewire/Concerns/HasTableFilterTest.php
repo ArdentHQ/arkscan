@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Tests\Feature\Http\Livewire\__stubs\HasTableFilterStub;
 
 it('should load default filter data', function () {
