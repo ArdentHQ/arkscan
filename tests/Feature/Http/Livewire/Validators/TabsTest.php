@@ -138,4 +138,4 @@ it('should only trigger view is ready if view exists when calling trigger method
 
 it('should throw exception if noResultsMessage is called', function () {
     Livewire::test(Tabs::class)->noResultsMessage;
-})->throws(\Exception::class, 'Base getNoResultsMessageProperty not implemented');
+})->throws(Exception::class, 'Base getNoResultsMessageProperty not implemented');
