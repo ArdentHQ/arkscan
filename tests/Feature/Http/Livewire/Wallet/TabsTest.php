@@ -202,7 +202,7 @@ it('should not allow invalid per page value', function () {
         ->call('triggerViewIsReady')
         ->instance();
 
-    expect($instance->tabQueryData['transactions']['paginatorsPerPage.transactions'])->toBe(config('arkscan.pagination.per_page'));
+    expect($instance->tabQueryData['transactions']['paginatorsPerPage.transactions'])->toBe((int) config('arkscan.pagination.per_page'));
 });
 
 it('should parse perPage from URL', function () {
