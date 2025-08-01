@@ -28,6 +28,11 @@
             />
 
             <x-tables.filters.includes.checkbox
+                name="dormant"
+                :label="trans('tables.filters.validators.dormant')"
+            />
+
+            <x-tables.filters.includes.checkbox
                 name="resigned"
                 model="filters.validators.resigned"
                 :label="trans('tables.filters.validators.resigned')"

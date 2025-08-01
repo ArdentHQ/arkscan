@@ -6,10 +6,13 @@ namespace App\Services\Transactions;
 
 use App\Enums\ContractMethod;
 use App\Models\Transaction;
+use Illuminate\Support\Str;
 
 final class TransactionMethod
 {
-    private ?string $methodHash;
+    private ?string $methodHash = null;
+
+    private ?string $methodName = null;
 
     private array $types = [
         'isTransfer'              => 'transfer',
@@ -27,7 +30,15 @@ final class TransactionMethod
 
     public function __construct(private Transaction $transaction)
     {
-        $this->methodHash = $transaction->methodHash();
+        $methodData = $this->transaction->getMethodData(true);
+        if ($methodData === null) {
+            $this->methodHash = $transaction->methodHash();
+        } else {
+            [$methodName, $methodHash] = $methodData;
+
+            $this->methodHash = $methodHash;
+            $this->methodName = $methodName;
+        }
     }
 
     public function name(): string
@@ -45,6 +56,10 @@ final class TransactionMethod
             if ($methodName !== null) {
                 return $methodName;
             }
+        }
+
+        if ($this->methodName !== null) {
+            return str_replace('_', ' ', Str::title(Str::snake($this->methodName)));
         }
 
         return '0x'.$this->methodHash;

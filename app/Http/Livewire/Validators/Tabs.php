@@ -26,6 +26,7 @@ final class Tabs extends TabbedComponent
         'validators' => [
             'active'   => true,
             'standby'  => true,
+            'dormant'  => false,
             'resigned' => false,
         ],
         'recent-votes' => [
@@ -58,6 +59,7 @@ final class Tabs extends TabbedComponent
 
                     'filters.validators.active'   => $this->filters['validators']['active'],
                     'filters.validators.standby'  => $this->filters['validators']['standby'],
+                    'filters.validators.dormant'  => $this->filters['validators']['dormant'],
                     'filters.validators.resigned' => $this->filters['validators']['resigned'],
                 ],
 

@@ -733,6 +733,24 @@ it('should get that resigned validator is not an active validator', function () 
     expect($this->subject->isActive())->toBeFalse();
 });
 
+it('should determine a dormant validator with empty validator public key', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->dormantValidator()->create());
+
+    expect($this->subject->isActive())->toBeFalse();
+    expect($this->subject->isDormant())->toBeTrue();
+});
+
+it('should determine a dormant validator with null validator public key', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->dormantValidator()->create([
+        'attributes' => [
+            'validatorPublicKey' => null,
+        ],
+    ]));
+
+    expect($this->subject->isActive())->toBeFalse();
+    expect($this->subject->isDormant())->toBeTrue();
+});
+
 it('should get that non validator is not an active validator', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->create([
         'attributes' => [],

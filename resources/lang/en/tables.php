@@ -160,6 +160,7 @@ return [
             'select_all' => 'Select All',
             'active'     => 'Active',
             'standby'    => 'Standby',
+            'dormant'    => 'Dormant',
             'resigned'   => 'Resigned',
         ],
 

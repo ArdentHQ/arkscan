@@ -68,11 +68,12 @@ return [
     ],
 
     'navbar' => [
-        'search_placeholder' => 'Address / Tx ID / Block ID',
-        'mainnet'            => 'Mainnet',
-        'testnet'            => 'Testnet',
-        'price'              => 'Price',
-        'connect_wallet'     => 'Connect Wallet',
+        'search_placeholder'  => 'Address / Tx ID / Block ID',
+        'mainnet'             => 'Mainnet',
+        'testnet'             => 'Testnet',
+        'price'               => 'Price',
+        'connect_wallet'      => 'Connect Wallet',
+        'release_tag_tooltip' => 'This is an :tag release of ARK Scan',
 
         'theme' => [
             'light' => 'Light',
@@ -163,6 +164,7 @@ return [
         'forging-status' => [
             'active'   => 'Active',
             'standby'  => 'Standby',
+            'dormant'  => 'Dormant',
             'resigned' => 'Resigned',
         ],
     ],

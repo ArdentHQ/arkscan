@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Transactions\TransactionMethod;
@@ -72,4 +73,19 @@ it('should return raw methodHash if no type matches and translation is missing',
     $transactionMethod = new TransactionMethod($transaction);
 
     expect($transactionMethod->name())->toBe('0x'.$unknownMethodHash);
+});
+
+it('should return the ABI name if not handled', function () {
+    $wallet = Wallet::factory()->create();
+    $method = 'e5abdcef'.str_pad(bin2hex('username'), 64, '0', STR_PAD_LEFT);
+
+    $transaction = Transaction::factory()
+        ->withPayload($method)
+        ->create([
+            'to' => Network::knownContract('username'),
+        ]);
+
+    $transactionMethod = new TransactionMethod($transaction);
+
+    expect($transactionMethod->name())->toBe('Add Username');
 });

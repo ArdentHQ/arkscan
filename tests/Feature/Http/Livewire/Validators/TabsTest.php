@@ -22,6 +22,7 @@ it('should set initial data', function () {
                 'sortDirections.validators'    => 'asc',
                 'filters.validators.active'    => true,
                 'filters.validators.standby'   => true,
+                'filters.validators.dormant'   => false,
                 'filters.validators.resigned'  => false,
             ],
 
