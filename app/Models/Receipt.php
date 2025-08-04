@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property BigNumber $gas_refunded
  * @property string|null $contract_address
  * @property array $logs
- * @property string $output
+ * @property resource|null $output
  */
 final class Receipt extends Model
 {
@@ -65,13 +65,12 @@ final class Receipt extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'transaction_hash'           => 'string',
-        'status'                     => 'bool',
-        'block_number'               => BigInteger::class,
-        'gas_used'                   => BigInteger::class,
-        'gas_refunded'               => BigInteger::class,
-        'logs'                       => 'array',
-        'output'                     => 'string',
+        'transaction_hash' => 'string',
+        'status'           => 'bool',
+        'block_number'     => BigInteger::class,
+        'gas_used'         => BigInteger::class,
+        'gas_refunded'     => BigInteger::class,
+        'logs'             => 'array',
     ];
 
     /**
