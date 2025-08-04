@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/php-crypto.git",
-                "reference": "5a9222d1b19cd3f8acf50f305476bbeace11498e"
+                "reference": "bec095d7dda7603652f15374f6aaaaab2d659225"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/5a9222d1b19cd3f8acf50f305476bbeace11498e",
-                "reference": "5a9222d1b19cd3f8acf50f305476bbeace11498e",
+                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/bec095d7dda7603652f15374f6aaaaab2d659225",
+                "reference": "bec095d7dda7603652f15374f6aaaaab2d659225",
                 "shasum": ""
             },
             "require": {
@@ -75,10 +75,10 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.59",
-                "graham-campbell/analyzer": "^3.1",
-                "illuminate/support": "^8.8",
-                "pestphp/pest": "^1.23",
-                "pestphp/pest-plugin-parallel": "^1.2"
+                "graham-campbell/analyzer": "4.2.x-dev",
+                "illuminate/support": "^12.18",
+                "pestphp/pest": "^2.34",
+                "phpunit/phpunit": "^10.5"
             },
             "type": "library",
             "extra": {
@@ -114,7 +114,7 @@
                 "issues": "https://github.com/ArkEcosystem/php-crypto/issues",
                 "source": "https://github.com/ArkEcosystem/php-crypto/tree/feat/mainsail"
             },
-            "time": "2025-02-26T10:27:57+00:00"
+            "time": "2025-07-31T12:07:46+00:00"
         },
         {
             "name": "arkecosystem/foundation",

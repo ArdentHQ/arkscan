@@ -1,9 +1,11 @@
 @props(['model'])
 
 @php
-    $hasFailedStatus = $model->hasFailedStatus();
+    $hasFailedStatus  = $model->hasFailedStatus();
+    $transactionError = null;
 
     if ($hasFailedStatus) {
+        $transactionError = $model->parseReceiptError();
         $icon = 'circle.cross';
     } else {
         $icon = 'double-check-mark';
@@ -52,15 +54,27 @@
         </div>
 
         @if ($hasFailedStatus)
-            <div class="hidden pl-2 sm:pl-3 md-lg:block">
-                @lang('pages.transaction.status.failed_message')
+            <div class="hidden pl-2 sm:pl-3 lg:block">
+                @if ($transactionError)
+                    @lang('pages.transaction.status.failed_message', [
+                        'error' => preg_replace('/([A-Z])/', ' \1', $transactionError),
+                    ])
+                @else
+                    @lang('pages.transaction.status.failed_no_message')
+                @endif
             </div>
         @endif
     </div>
 
     @if ($hasFailedStatus)
-        <div class="px-3 pt-2 mt-2 whitespace-normal border-t sm:pt-3 sm:pl-6 sm:mt-3 border-theme-danger-200 md-lg:hidden dark:border-theme-dark-700">
-            @lang('pages.transaction.status.failed_message')
+        <div class="px-3 pt-2 mt-2 whitespace-normal border-t sm:pt-3 sm:pl-6 sm:mt-3 lg:hidden border-theme-danger-200 dark:border-theme-dark-700">
+            @if ($transactionError)
+                @lang('pages.transaction.status.failed_message', [
+                    'error' => preg_replace('/([A-Z])/', ' \1', $transactionError),
+                ])
+            @else
+                @lang('pages.transaction.status.failed_no_message')
+            @endif
         </div>
     @endif
 </x-general.page-section.container>

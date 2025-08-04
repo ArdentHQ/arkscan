@@ -17,7 +17,7 @@ final class Legacy
     {
         $base58Prefix = Network::base58Prefix();
 
-        $ripemd160 = Hash::ripemd160(PublicKey::fromHex($publicKey)->getBuffer());
+        $ripemd160 = Hash::ripemd160(PublicKey::fromHex($publicKey)->instance->getBuffer());
         $seed      = Writer::bit8($base58Prefix).$ripemd160->getBinary();
 
         return Base58::encodeCheck(new Buffer($seed));
