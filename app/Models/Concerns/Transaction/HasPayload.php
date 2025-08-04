@@ -147,6 +147,10 @@ trait HasPayload
             return null;
         }
 
+        if ($this->receipt->status === true) {
+            return null;
+        }
+
         $outputPayload = $this->decodePayload($this->receipt->output);
         if ($outputPayload !== null) {
             $contractAbiTypes = [
