@@ -170,7 +170,7 @@ trait HasPayload
         }
 
         $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
-        $gasUsed                  = BigNumber::new($this->receipt->gas_used->valueOf());
+        $gasUsed                  = BigNumber::new($this->receipt->gas_used->valueOf()->toFloat());
         if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
             return 'InsufficientGas';
         }
