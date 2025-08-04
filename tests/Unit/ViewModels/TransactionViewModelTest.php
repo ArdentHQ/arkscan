@@ -661,3 +661,35 @@ it('should return null corresponding validator registration if not resignation',
 
     expect($validatorResignationViewModel->validatorRegistration())->toBeNull();
 });
+
+it('should return receipt error', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'output'           => function () {
+            $stream = fopen('php://temp', 'r+');
+            fwrite($stream, hex2bin('cd03235e'));
+            rewind($stream);
+
+            return $stream;
+        },
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->parseReceiptError())->toBe('CallerIsNotValidator');
+});
+
+it('should return null if no receipt error', function () {
+    $transaction = Transaction::factory()->create();
+
+    Receipt::factory()
+        ->create([
+            'transaction_hash' => $transaction->hash,
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->parseReceiptError())->toBeNull();
+});

@@ -18,26 +18,7 @@ trait HasPayload
 
     public function rawPayload(): ?string
     {
-        $payload = $this->data;
-        if ($payload === null) {
-            return null;
-        }
-
-        $payloadContent = stream_get_contents($payload, offset: 0);
-        // @codeCoverageIgnoreStart
-        // Not covered in tests, since it seems that the possibility of returning
-        // `false` instead of an exception seems to depends on the PHP configuration.
-        if ($payloadContent === false) {
-            return null;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $payload = bin2hex($payloadContent);
-        if (strlen($payload) === 0) {
-            return null;
-        }
-
-        return $payload;
+        return $this->decodePayload($this->data);
     }
 
     public function utf8Payload(): ?string
@@ -155,6 +136,63 @@ trait HasPayload
         }
 
         return [$functionName, $methodId, $arguments];
+    }
+
+    public function parseReceiptError(): ?string
+    {
+        // Code-wise, receipt could be null, but in practice it should never be.
+        if ($this->receipt === null) {
+            return null;
+        }
+
+        $outputPayload = $this->decodePayload($this->receipt->output);
+        if ($outputPayload === null) {
+            return null;
+        }
+
+        $contractAbiTypes = [
+            ContractAbiType::CUSTOM,
+            ContractAbiType::CONSENSUS,
+            ContractAbiType::MULTIPAYMENT,
+            ContractAbiType::USERNAMES,
+        ];
+
+        foreach ($contractAbiTypes as $type) {
+            try {
+                return (new AbiDecoder($type))->decodeError($outputPayload);
+            } catch (\Throwable $e) {
+                // If the ABI type is not found, we will try the next one
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param resource|null $payload
+     */
+    private function decodePayload($payload): ?string
+    {
+        if ($payload === null) {
+            return null;
+        }
+
+        $payloadContent = stream_get_contents($payload, offset: 0);
+
+        // @codeCoverageIgnoreStart
+        // Not covered in tests, since it seems that the possibility of returning
+        // `false` instead of an exception seems to depends on the PHP configuration.
+        if ($payloadContent === false) {
+            return null;
+        }
+        // @codeCoverageIgnoreEnd
+
+        $payload = bin2hex($payloadContent);
+        if (strlen($payload) === 0) {
+            return null;
+        }
+
+        return $payload;
     }
 
     private function decodeFunctionData(string $payload): array

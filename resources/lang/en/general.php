@@ -164,6 +164,7 @@ return [
         'forging-status' => [
             'active'   => 'Active',
             'standby'  => 'Standby',
+            'dormant'  => 'Dormant',
             'resigned' => 'Resigned',
         ],
     ],

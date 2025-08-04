@@ -26,6 +26,11 @@ trait HasPayload
         return $this->transaction->formattedPayload();
     }
 
+    public function parseReceiptError(): ?string
+    {
+        return $this->transaction->parseReceiptError();
+    }
+
     /**
      * @return array<int, array{address: string, amount: float}>
      */

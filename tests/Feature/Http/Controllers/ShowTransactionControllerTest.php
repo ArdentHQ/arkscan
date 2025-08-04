@@ -9,7 +9,10 @@ use Carbon\Carbon;
 it('should render the page without any errors', function ($type, $args) {
     $this->withoutExceptionHandling();
 
-    $transaction = Transaction::factory()->{$type}(...$args)->create();
+    $transaction = Transaction::factory()
+        ->{$type}(...$args)
+        ->withReceipt()
+        ->create();
 
     $this
         ->get(route('transaction', $transaction->hash))
@@ -24,9 +27,12 @@ it('should render the page without any errors', function ($type, $args) {
 it('should render the page for a vote transaction without any errors', function () {
     $this->withoutExceptionHandling();
 
-    $validator    = Wallet::factory()->activeValidator()->create();
+    $validator = Wallet::factory()->activeValidator()->create();
 
-    $transaction  = Transaction::factory()->vote($validator->address)->create();
+    $transaction = Transaction::factory()
+        ->vote($validator->address)
+        ->withReceipt()
+        ->create();
 
     $this
         ->get(route('transaction', $transaction->hash))
@@ -37,7 +43,10 @@ it('should render the page for a vote transaction without any errors', function 
 it('should render the page for a unvote transaction without any errors', function () {
     $this->withoutExceptionHandling();
 
-    $transaction  = Transaction::factory()->unvote()->create();
+    $transaction  = Transaction::factory()
+        ->unvote()
+        ->withReceipt()
+        ->create();
 
     $this
         ->get(route('transaction', $transaction->hash))
@@ -51,10 +60,13 @@ it('should handle failed token transfers with missing data', function () {
     $address = Wallet::factory()->create()->address;
     $amount  = (int) (34 * 1e9);
 
-    $transaction = Transaction::factory()->tokenTransfer($address, $amount)->create([
-        'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
-        'value'     => 123 * 1e18,
-    ]);
+    $transaction = Transaction::factory()
+        ->tokenTransfer($address, $amount)
+        ->withReceipt()
+        ->create([
+            'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
+            'value'     => 123 * 1e18,
+        ]);
 
     $this
         ->get(route('transaction', $transaction->hash))
@@ -69,6 +81,7 @@ it('should handle failed token transfers with missing data', function () {
 it('should show a locked amount for a validator registration', function () {
     $transaction = Transaction::factory()
         ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->withReceipt()
         ->create();
 
     $this
@@ -83,10 +96,12 @@ it('should show a locked amount for a validator registration', function () {
 it('should show a corresponding validator registration', function () {
     $registrationTransaction = Transaction::factory()
         ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->withReceipt()
         ->create();
 
     $resignationTransaction = Transaction::factory()
         ->validatorResignation()
+        ->withReceipt()
         ->create([
             'sender_public_key' => $registrationTransaction->sender_public_key,
         ]);
@@ -104,6 +119,7 @@ it('should show a corresponding validator registration', function () {
 it('should show 0 if no corresponding validator registration', function () {
     $transaction = Transaction::factory()
         ->validatorResignation()
+        ->withReceipt()
         ->create();
 
     $this
