@@ -6,6 +6,7 @@ use App\Models\Block;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Config;
 use Meilisearch\Client as MeilisearchClient;
@@ -118,6 +119,41 @@ it('should return receipt error', function () {
     ]);
 
     expect($transaction->parseReceiptError())->toBe('CallerIsNotValidator');
+});
+
+it('should return receipt error for insufficient gas', function () {
+    $transaction = Transaction::factory()->create([
+        'gas' => BigNumber::new(80131),
+    ]);
+
+    Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => BigNumber::new(79326)->valueOf(),
+    ]);
+
+    expect($transaction->parseReceiptError())->toBe('InsufficientGas');
+});
+
+it('should not modify gas used instance when getting receipt error', function () {
+    $transaction = Transaction::factory()->create([
+        'gas' => BigNumber::new(80131),
+    ]);
+
+    $receipt = Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => BigNumber::new(79326),
+        'output'           => function () {
+            // In-memory stream
+            $stream = fopen('php://temp', 'r+');
+            fwrite($stream, '');
+            rewind($stream);
+
+            return $stream;
+        },
+    ]);
+
+    expect($transaction->parseReceiptError())->toBe('InsufficientGas');
+    expect($transaction->receipt->gas_used)->toEqual($receipt->gas_used);
 });
 
 it('should return null if no receipt error', function () {

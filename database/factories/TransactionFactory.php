@@ -34,7 +34,7 @@ final class TransactionFactory extends Factory
             'to'                    => fn () => $wallet->address,
             'timestamp'             => 1603083256000,
             'gas_price'             => $this->faker->numberBetween(1, 100),
-            'gas'                   => 0,
+            'gas'                   => BigNumber::new(1000000),
             'value'                 => $this->faker->numberBetween(1, 100) * 1e18,
             'nonce'                 => 1,
             'data'                  => function () {
