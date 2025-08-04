@@ -667,6 +667,7 @@ it('should return receipt error', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
+        'status'           => false,
         'output'           => function () {
             $stream = fopen('php://temp', 'r+');
             fwrite($stream, hex2bin('cd03235e'));
@@ -687,6 +688,7 @@ it('should return null if no receipt error', function () {
     Receipt::factory()
         ->create([
             'transaction_hash' => $transaction->hash,
+            'status'           => false,
         ]);
 
     $viewModel = new TransactionViewModel($transaction);
@@ -702,11 +704,28 @@ it('should return receipt error for insufficient gas', function () {
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
         'gas_used'         => BigNumber::new(79326)->valueOf(),
+        'status'           => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
     expect($viewModel->parseReceiptError())->toBe('InsufficientGas');
+});
+
+it('should not return receipt error for insufficient gas if receipt did not fail', function () {
+    $transaction = Transaction::factory()->create([
+        'gas' => BigNumber::new(80131),
+    ]);
+
+    Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => BigNumber::new(79326)->valueOf(),
+        'status'           => true,
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->parseReceiptError())->toBeNull();
 });
 
 it('should not modify gas used instance when getting receipt error', function () {
@@ -717,14 +736,7 @@ it('should not modify gas used instance when getting receipt error', function ()
     $receipt = Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
         'gas_used'         => BigNumber::new(79326),
-        'output'           => function () {
-            // In-memory stream
-            $stream = fopen('php://temp', 'r+');
-            fwrite($stream, '');
-            rewind($stream);
-
-            return $stream;
-        },
+        'status'           => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
