@@ -63,6 +63,20 @@ final class BigNumber implements Stringable
         return $this;
     }
 
+    /**
+     * @param BigNumber|BigDecimal|int|float|string $value
+     */
+    public function dividedBy($value, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): self
+    {
+        if ($value instanceof BigNumber) {
+            $value = $value->valueOf();
+        }
+
+        $this->value = $this->value->dividedBy($value, $scale, $roundingMode);
+
+        return $this;
+    }
+
     public function toNumber(): int
     {
         return $this->value->toInt();
