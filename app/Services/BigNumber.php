@@ -68,7 +68,7 @@ final class BigNumber implements Stringable
      */
     public function dividedBy($value, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): self
     {
-        if ($value instanceof BigNumber) {
+        if ($value instanceof self) {
             $value = $value->valueOf();
         }
 

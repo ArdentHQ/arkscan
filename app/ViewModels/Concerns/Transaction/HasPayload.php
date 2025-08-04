@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use Brick\Math\RoundingMode;
-
 trait HasPayload
 {
     public function hasPayload(): bool
