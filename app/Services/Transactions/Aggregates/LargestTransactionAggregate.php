@@ -10,6 +10,8 @@ final class LargestTransactionAggregate
 {
     public function aggregate(): ?Transaction
     {
-        return Transaction::orderBy('value', 'desc')->limit(1)->first();
+        return Transaction::orderBy('value', 'desc')
+            ->limit(1)
+            ->first();
     }
 }
