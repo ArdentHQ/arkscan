@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Jobs\CacheResignationId;
-use App\Models\Transaction;
+use App\Jobs\CacheResignationIds;
 use Illuminate\Console\Command;
 
 final class CacheValidatorResignationIds extends Command
@@ -26,13 +25,6 @@ final class CacheValidatorResignationIds extends Command
 
     public function handle(): void
     {
-        Transaction::query()
-            ->select('sender_public_key', 'hash')
-            // TODO: re-add validator resignation scope - https://app.clickup.com/t/86dvxzgbh
-            ->cursor()
-            ->each(function ($transaction) {
-                // @phpstan-ignore-next-line
-                CacheResignationId::dispatch($transaction->sender_public_key, (string) $transaction->hash)->onQueue('resignations');
-            });
+        CacheResignationIds::dispatch()->onQueue('resignations');
     }
 }
