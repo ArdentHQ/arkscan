@@ -8,7 +8,7 @@ use App\Contracts\Network;
 use App\Events\CurrencyUpdate;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoDataCache;
-use App\Services\Cache\PriceCache;
+use App\Services\Cache\CommandsCache;
 use App\Services\Cache\PriceChartCache;
 use App\Services\MarketDataProviders\CoinGecko;
 use App\Services\MarketDataProviders\CryptoCompare;
@@ -59,7 +59,7 @@ it('should execute the command', function (string $network) {
 
     $cryptoCache        = app(CryptoDataCache::class);
     $chartsCache        = app(PriceChartCache::class);
-    $priceCache         = app(PriceCache::class);
+    $priceCache         = app(CommandsCache::class);
     $marketDataProvider = app(MarketDataProvider::class);
 
     app(CachePrices::class)->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
@@ -77,7 +77,7 @@ it('should not update prices if coingecko returns an empty response', function (
 
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -116,7 +116,7 @@ it('should not update prices if coingecko throws an exception', function () {
 
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -164,7 +164,7 @@ it('should update prices if coingecko does return a response', function () {
 
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -196,7 +196,7 @@ it('should update prices if coingecko does return a response', function () {
 it('should not update prices if cryptocompare returns an empty response', function () {
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -236,7 +236,7 @@ it('should not update prices if cryptocompare returns an empty response', functi
 it('should not update prices if cryptocompare throws an exception', function () {
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -284,7 +284,7 @@ it('should update prices if cryptocompare does return a response', function () {
 
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -363,7 +363,7 @@ it('should stop updating prices if a response fails', function () {
 
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -392,7 +392,7 @@ it('should stop updating prices if a response fails', function () {
 
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
-    expect($priceCache->getLastUpdated())->toBe([
+    expect($priceCache->getPricesLastUpdated())->toBe([
         'USD' => Carbon::now()->unix(),
     ]);
 
@@ -443,7 +443,7 @@ it('should update oldest currencies first', function () {
 
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -451,7 +451,7 @@ it('should update oldest currencies first', function () {
 
     $this->freezeTime();
 
-    $priceCache->setLastUpdated([
+    $priceCache->setPricesLastUpdated([
         'USD' => Carbon::parse('2023-04-05')->unix(),
     ]);
 
@@ -474,7 +474,7 @@ it('should update oldest currencies first', function () {
 
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
-    expect($priceCache->getLastUpdated())->toBe([
+    expect($priceCache->getPricesLastUpdated())->toBe([
         'USD' => Carbon::parse('2023-04-05')->unix(),
         'GBP' => Carbon::now()->unix(),
     ]);
@@ -525,7 +525,7 @@ it('should not update if updated within 10 minutes', function () {
 
     $cryptoCache = app(CryptoDataCache::class);
     $chartsCache = app(PriceChartCache::class);
-    $priceCache  = app(PriceCache::class);
+    $priceCache  = app(CommandsCache::class);
 
     $cryptoCache->getCache()->flush();
     $chartsCache->getCache()->flush();
@@ -533,7 +533,7 @@ it('should not update if updated within 10 minutes', function () {
 
     $this->freezeTime();
 
-    $priceCache->setLastUpdated([
+    $priceCache->setPricesLastUpdated([
         'USD' => Carbon::now()->sub('minutes', 8)->unix(),
         'GBP' => Carbon::now()->sub('minutes', 11)->unix(),
     ]);
@@ -556,7 +556,7 @@ it('should not update if updated within 10 minutes', function () {
 
     (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
-    expect($priceCache->getLastUpdated())->toBe([
+    expect($priceCache->getPricesLastUpdated())->toBe([
         'USD' => Carbon::now()->sub('minutes', 8)->unix(),
         'GBP' => Carbon::now()->unix(),
         'EUR' => Carbon::now()->unix(),

@@ -9,7 +9,7 @@ use App\Enums\StatsPeriods;
 use App\Events\CurrencyUpdate;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
-use App\Services\Cache\PriceCache;
+use App\Services\Cache\CommandsCache;
 use App\Services\Cache\PriceChartCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -44,14 +44,14 @@ final class CachePrices extends Command
     public function handle(
         CryptoDataCache $crypto,
         PriceChartCache $cache,
-        PriceCache $priceCache,
+        CommandsCache $commandsCache,
         MarketDataProvider $marketDataProvider,
     ): void {
         if (! Network::canBeExchanged()) {
             return;
         }
 
-        $currencyLastUpdated = $priceCache->getLastUpdated();
+        $currencyLastUpdated = $commandsCache->getPricesLastUpdated();
 
         $currencies = (new Collection(config('currencies.currencies')))
             ->pluck('currency')
@@ -93,7 +93,7 @@ final class CachePrices extends Command
             }
         }
 
-        $priceCache->setLastUpdated($currencyLastUpdated);
+        $commandsCache->setPricesLastUpdated($currencyLastUpdated);
     }
 
     private function statsByPeriod(string $period, Collection $datasets): Collection

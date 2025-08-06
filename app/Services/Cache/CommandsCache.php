@@ -9,22 +9,22 @@ use App\Services\Cache\Concerns\ManagesCache;
 use Illuminate\Cache\TaggedCache;
 use Illuminate\Support\Facades\Cache;
 
-final class PriceCache implements Contract
+final class CommandsCache implements Contract
 {
     use ManagesCache;
 
-    public function getLastUpdated(): array
+    public function getPricesLastUpdated(): array
     {
-        return $this->get('last_updated', []);
+        return $this->get('price:last_updated', []);
     }
 
-    public function setLastUpdated(array $data): void
+    public function setPricesLastUpdated(array $data): void
     {
-        $this->put('last_updated', $data);
+        $this->put('price:last_updated', $data);
     }
 
     public function getCache(): TaggedCache
     {
-        return Cache::tags('price');
+        return Cache::tags('commands');
     }
 }
