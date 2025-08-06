@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 final class CacheResignationIds implements ShouldQueue
 {
@@ -26,6 +27,7 @@ final class CacheResignationIds implements ShouldQueue
     {
         $currencyLastUpdated = $commandsCache->getResignationIdsLastUpdated();
 
+        /** @var Collection<Transaction> $transactions */
         $transactions = Transaction::select('sender_public_key', 'hash', 'timestamp')
             ->withScope(ValidatorResignationScope::class)
             ->where('timestamp', '>', $currencyLastUpdated)
