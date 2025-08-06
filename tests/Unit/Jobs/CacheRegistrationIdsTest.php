@@ -39,7 +39,7 @@ it('should only cache resignation IDs since last run', function () {
 
     Cache::tags('wallet')->set(md5("resignation_id/$transaction->sender_public_key"), 'overridden-hash');
 
-    expect(Cache::tags('commands')->get(md5("resignation_ids:last_updated")))->toBe(Carbon::now()->getTimestampMs());
+    expect(Cache::tags('commands')->get(md5('resignation_ids:last_updated')))->toBe(Carbon::now()->getTimestampMs());
     expect(Cache::tags('wallet')->get(md5("resignation_id/$transaction->sender_public_key")))->toBe('overridden-hash');
 
     $newTransaction = Transaction::factory()
