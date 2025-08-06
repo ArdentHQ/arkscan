@@ -51,7 +51,7 @@ it('should execute the command with data', function () {
         ]);
 
     Wallet::factory(10)->create([
-        'balance' => BigNumber::new(200 * 1e18),
+        'balance'          => BigNumber::new(200 * 1e18),
         'attributes->vote' => 'some_vote_value',
     ]);
 
