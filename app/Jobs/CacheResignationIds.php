@@ -6,7 +6,9 @@ namespace App\Jobs;
 
 use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Transaction;
+use App\Services\Cache\CommandsCache;
 use App\Services\Cache\WalletCache;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,14 +22,23 @@ final class CacheResignationIds implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function handle(WalletCache $cache): void
+    public function handle(WalletCache $walletCache, CommandsCache $commandsCache): void
     {
-        $transactions = Transaction::select('sender_public_key', 'hash')
+        $currencyLastUpdated = $commandsCache->getResignationIdsLastUpdated();
+
+        $transactions = Transaction::select('sender_public_key', 'hash', 'timestamp')
             ->withScope(ValidatorResignationScope::class)
+            ->where('timestamp', '>', $currencyLastUpdated)
             ->get();
 
-        foreach ($transactions as $transaction) {
-            $cache->setResignationId($transaction->sender_public_key, $transaction->hash);
+        if ($transactions->isEmpty()) {
+            return;
         }
+
+        foreach ($transactions as $transaction) {
+            $walletCache->setResignationId($transaction->sender_public_key, $transaction->hash);
+        }
+
+        $commandsCache->setResignationIdsLastUpdated(Carbon::now()->getTimestampMs());
     }
 }
