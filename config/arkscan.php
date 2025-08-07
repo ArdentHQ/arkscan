@@ -161,4 +161,8 @@ return [
             'ttl' => (int) env('ARKSCAN_WEBHOOKS_STATISTICS_UPDATE_TTL', 8),
         ],
     ],
+
+    'transaction' => [
+        'insufficient_gas_threshold' => (float) env('ARKSCAN_TRANSACTION_INSUFFICIENT_GAS_THRESHOLD', 0.95),
+    ],
 ];

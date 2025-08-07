@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Models\Concerns\Transaction;
 
 use App\Enums\ContractMethod;
+use App\Services\BigNumber;
 use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
+use Brick\Math\RoundingMode;
 
 trait HasPayload
 {
@@ -145,24 +147,32 @@ trait HasPayload
             return null;
         }
 
-        $outputPayload = $this->decodePayload($this->receipt->output);
-        if ($outputPayload === null) {
+        if ($this->receipt->status === true) {
             return null;
         }
 
-        $contractAbiTypes = [
-            ContractAbiType::CUSTOM,
-            ContractAbiType::CONSENSUS,
-            ContractAbiType::MULTIPAYMENT,
-            ContractAbiType::USERNAMES,
-        ];
+        $outputPayload = $this->decodePayload($this->receipt->output);
+        if ($outputPayload !== null) {
+            $contractAbiTypes = [
+                ContractAbiType::CUSTOM,
+                ContractAbiType::CONSENSUS,
+                ContractAbiType::MULTIPAYMENT,
+                ContractAbiType::USERNAMES,
+            ];
 
-        foreach ($contractAbiTypes as $type) {
-            try {
-                return (new AbiDecoder($type))->decodeError($outputPayload);
-            } catch (\Throwable $e) {
-                // If the ABI type is not found, we will try the next one
+            foreach ($contractAbiTypes as $type) {
+                try {
+                    return (new AbiDecoder($type))->decodeError($outputPayload);
+                } catch (\Throwable $e) {
+                    // If the ABI type is not found, we will try the next one
+                }
             }
+        }
+
+        $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
+        $gasUsed                  = BigNumber::new($this->receipt->gas_used->valueOf()->toFloat());
+        if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
+            return 'InsufficientGas';
         }
 
         return null;
