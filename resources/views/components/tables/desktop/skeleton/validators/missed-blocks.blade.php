@@ -10,6 +10,7 @@
             'type' => 'text',
             'sortingId' => $canSort ? 'height' : null,
             'livewireSort' => $canSort,
+            'componentId' => 'missed-blocks',
             'nestedDataBreakpoint' => [
                 'from' => 'md',
                 'to' => 'md-lg',
@@ -21,28 +22,33 @@
             'breakpoint' => 'md-lg',
             'sortingId' => $canSort ? 'age' : null,
             'livewireSort' => $canSort,
+            'componentId' => 'missed-blocks',
         ],
         'tables.missed-blocks.validator' => [
             'type' => 'text',
             'sortingId' => $canSort ? 'name' : null,
             'livewireSort' => $canSort,
+            'componentId' => 'missed-blocks',
         ],
         'tables.missed-blocks.no_of_voters' => [
             'type'       => 'number',
             'sortingId' => $canSort ? 'no_of_voters' : null,
             'livewireSort' => $canSort,
+            'componentId' => 'missed-blocks',
         ],
         'tables.missed-blocks.votes' => [
             'type'       => 'number',
             'nameProperties' => ['currency' => Network::currency()],
             'sortingId' => $canSort ? 'votes' : null,
             'livewireSort' => $canSort,
+            'componentId' => 'missed-blocks',
         ],
         'tables.missed-blocks.percentage' => [
             'type'       => 'number',
             'tooltip' => trans('tables.missed-blocks.info.percentage'),
             'sortingId' => $canSort ? 'percentage_votes' : null,
             'livewireSort' => $canSort,
+            'componentId' => 'missed-blocks',
         ],
     ];
 @endphp

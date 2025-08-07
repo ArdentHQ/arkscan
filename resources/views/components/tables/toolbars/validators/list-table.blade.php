@@ -6,9 +6,9 @@
 >
     <div class="flex space-x-3">
         <div class="flex-1">
-            <x-tables.filters.validators />
+            <x-tables.filters.validators.list-table />
 
-            <x-tables.filters.validators mobile />
+            <x-tables.filters.validators.list-table mobile />
         </div>
     </div>
 </x-general.encapsulated.table-header>

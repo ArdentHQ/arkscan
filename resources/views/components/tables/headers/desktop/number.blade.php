@@ -11,6 +11,7 @@
     'livewireSort' => false,
     'sortDisabled' => false,
     'tooltip' => null,
+    'componentId' => '',
 ])
 
 @if ($sortingId)
@@ -25,6 +26,7 @@
         :sorting-id="$sortingId"
         :initial-sort="$initialSort"
         :sort-disabled="$sortDisabled"
+        :component-id="$componentId"
         sort-icon-alignment="left"
         :class="Arr::toCssClasses(['leading-4.25 items-center',
             'text-right' => $livewireSort || $sortingId === null,

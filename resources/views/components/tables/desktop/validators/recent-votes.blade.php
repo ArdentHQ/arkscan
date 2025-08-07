@@ -17,6 +17,7 @@
                 name="tables.recent-votes.id"
                 class="whitespace-nowrap"
                 width="200"
+                component-id="recent-votes"
             />
 
             <x-tables.headers.desktop.text
@@ -25,22 +26,26 @@
                 responsive
                 sorting-id="age"
                 livewire-sort
+                component-id="recent-votes"
             />
 
             <x-tables.headers.desktop.text
                 name="tables.recent-votes.addressing"
                 sorting-id="address"
                 livewire-sort
+                component-id="recent-votes"
             />
             <x-tables.headers.desktop.text
                 name="tables.recent-votes.type"
                 sorting-id="type"
                 livewire-sort
+                component-id="recent-votes"
             />
             <x-tables.headers.desktop.text
                 name="tables.recent-votes.validator"
                 sorting-id="name"
                 livewire-sort
+                component-id="recent-votes"
             />
         </tr>
     </thead>

@@ -8,6 +8,7 @@
     'width' => '40',
     'sortingId' => null,
     'livewireSort' => false,
+    'componentId' => '',
 ])
 
 <x-ark-tables.header
@@ -31,7 +32,10 @@
         <span>@lang($name)</span>
 
         @if ($livewireSort)
-            <x-tables.headers.desktop.includes.livewire-sort-icon :id="$sortingId" />
+            <x-tables.headers.desktop.includes.livewire-sort-icon
+                :sort-key="$sortingId"
+                :component-id="$componentId"
+            />
         @endif
     </div>
 </x-ark-tables.header>

@@ -74,3 +74,15 @@ it('should not be enabled if no blocks', function () {
         ->call('setIsReady')
         ->assertSet('hasForgedBlocks', false);
 });
+
+it('should assign username if wallet has one', function () {
+    $wallet = new WalletViewModel(Wallet::factory()->activeValidator()->create([
+        'attributes' => ['username' => 'testuser'],
+    ]));
+
+    Livewire::test(ExportBlocks::class, [$wallet])
+        ->assertSet('username', 'testuser')
+        ->assertSet('hasForgedBlocks', false)
+        ->call('setIsReady')
+        ->assertSet('hasForgedBlocks', false);
+});

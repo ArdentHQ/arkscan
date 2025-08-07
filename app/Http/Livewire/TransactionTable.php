@@ -25,14 +25,16 @@ final class TransactionTable extends Component
     use HasTableFilter;
     use HasTablePagination;
 
-    public array $filter = [
-        'transfers'           => true,
-        'multipayments'       => true,
-        'votes'               => true,
-        'validator'           => true,
-        'username'            => true,
-        'contract_deployment' => true,
-        'others'              => true,
+    public const INITIAL_FILTERS = [
+        'default' => [
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
+        ],
     ];
 
     /** @var mixed */
@@ -44,13 +46,13 @@ final class TransactionTable extends Component
     public function queryString(): array
     {
         return [
-            'filter.transfers'           => ['as' => 'transfers', 'except' => true],
-            'filter.multipayments'       => ['as' => 'multipayments', 'except' => true],
-            'filter.votes'               => ['as' => 'votes', 'except' => true],
-            'filter.validator'           => ['as' => 'validator', 'except' => true],
-            'filter.username'            => ['as' => 'username', 'except' => true],
-            'filter.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
-            'filter.others'              => ['as' => 'others', 'except' => true],
+            'filters.default.transfers'           => ['as' => 'transfers', 'except' => true],
+            'filters.default.multipayments'       => ['as' => 'multipayments', 'except' => true],
+            'filters.default.votes'               => ['as' => 'votes', 'except' => true],
+            'filters.default.validator'           => ['as' => 'validator', 'except' => true],
+            'filters.default.username'            => ['as' => 'username', 'except' => true],
+            'filters.default.contract_deployment' => ['as' => 'contract-deployment', 'except' => true],
+            'filters.default.others'              => ['as' => 'others', 'except' => true],
         ];
     }
 
@@ -85,7 +87,7 @@ final class TransactionTable extends Component
             return $emptyResults;
         }
 
-        return Transaction::withTypeFilter($this->filter)
+        return Transaction::withTypeFilter($this->getFilters())
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
             ->with('votedFor')
@@ -94,30 +96,30 @@ final class TransactionTable extends Component
 
     private function hasTransactionTypeFilters(): bool
     {
-        if ($this->filter['transfers'] === true) {
+        if ($this->getFilter('transfers') === true) {
             return true;
         }
 
-        if ($this->filter['multipayments'] === true) {
+        if ($this->getFilter('multipayments') === true) {
             return true;
         }
 
-        if ($this->filter['votes'] === true) {
+        if ($this->getFilter('votes') === true) {
             return true;
         }
 
-        if ($this->filter['validator'] === true) {
+        if ($this->getFilter('validator') === true) {
             return true;
         }
 
-        if ($this->filter['username'] === true) {
+        if ($this->getFilter('username') === true) {
             return true;
         }
 
-        if ($this->filter['contract_deployment'] === true) {
+        if ($this->getFilter('contract_deployment') === true) {
             return true;
         }
 
-        return $this->filter['others'] === true;
+        return $this->getFilter('others') === true;
     }
 }

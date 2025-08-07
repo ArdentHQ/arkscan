@@ -6,6 +6,7 @@ use App\Models\Block;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Config;
 use Meilisearch\Client as MeilisearchClient;
@@ -107,6 +108,7 @@ it('should return receipt error', function () {
 
     Receipt::factory()->create([
         'transaction_hash' => $transaction->hash,
+        'status'           => false,
         'output'           => function () {
             // In-memory stream
             $stream = fopen('php://temp', 'r+');
@@ -120,12 +122,56 @@ it('should return receipt error', function () {
     expect($transaction->parseReceiptError())->toBe('CallerIsNotValidator');
 });
 
+it('should return receipt error for insufficient gas', function () {
+    $transaction = Transaction::factory()->create([
+        'gas' => BigNumber::new(80131),
+    ]);
+
+    Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => BigNumber::new(79326)->valueOf(),
+        'status'           => false,
+    ]);
+
+    expect($transaction->parseReceiptError())->toBe('InsufficientGas');
+});
+
+it('should not return receipt error for insufficient gas if receipt did not fail', function () {
+    $transaction = Transaction::factory()->create([
+        'gas' => BigNumber::new(80131),
+    ]);
+
+    Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => BigNumber::new(79326)->valueOf(),
+        'status'           => true,
+    ]);
+
+    expect($transaction->parseReceiptError())->toBeNull();
+});
+
+it('should not modify gas used instance when getting receipt error', function () {
+    $transaction = Transaction::factory()->create([
+        'gas' => BigNumber::new(80131),
+    ]);
+
+    $receipt = Receipt::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'gas_used'         => BigNumber::new(79326),
+        'status'           => false,
+    ]);
+
+    expect($transaction->parseReceiptError())->toBe('InsufficientGas');
+    expect($transaction->receipt->gas_used)->toEqual($receipt->gas_used);
+});
+
 it('should return null if no receipt error', function () {
     $transaction = Transaction::factory()->create();
 
     Receipt::factory()
         ->create([
             'transaction_hash' => $transaction->hash,
+            'status'           => false,
         ]);
 
     expect($transaction->parseReceiptError())->toBeNull();
@@ -143,14 +189,7 @@ it('should return null if no valid error', function () {
     Receipt::factory()
         ->create([
             'transaction_hash' => $transaction->hash,
-            'output'           => function () {
-                // In-memory stream
-                $stream = fopen('php://temp', 'r+');
-                fwrite($stream, hex2bin('123456'));
-                rewind($stream);
-
-                return $stream;
-            },
+            'status'           => false,
         ]);
 
     expect($transaction->parseReceiptError())->toBeNull();

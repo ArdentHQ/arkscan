@@ -3,7 +3,7 @@
     'paginator' => null,
 ])
 
-@if (! $this->isReady)
+@if (! $this->validatorsIsReady)
     <div wire:key="skeleton:validators:not-ready">
         <x-tables.desktop.skeleton.validators.list-table
             :row-count="$rowCount"
@@ -16,6 +16,7 @@
     <x-loading.visible
         wire:key="skeleton:validators:ready"
         display-type="block"
+        wire:target="setPage,gotoPage,setPerPage,filters"
     >
         <x-tables.desktop.skeleton.validators.list-table
             :row-count="$rowCount"
@@ -26,7 +27,7 @@
     </x-loading.visible>
 
     <div wire:key="skeleton:validators:hidden">
-        <x-loading.hidden>
+        <x-loading.hidden wire:target="setPage,gotoPage,setPerPage,filters">
             {{ $slot }}
         </x-loading.hidden>
     </div>

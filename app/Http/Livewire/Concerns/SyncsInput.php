@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
+use App\Enums\SortDirection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Livewire\Features\SupportAttributes\Attribute;
 use Livewire\Features\SupportAttributes\AttributeLevel;
 use Livewire\Features\SupportLifecycleHooks\SupportLifecycleHooks;
@@ -23,6 +25,14 @@ trait SyncsInput
         if ($propertyAttribute !== null) {
             $propertyAttribute->setValue($value);
         } else {
+            if (Str::startsWith($property, 'sortDirections.') && ! $value instanceof SortDirection) {
+                if ($value === 'desc') {
+                    $value = SortDirection::DESC;
+                } else {
+                    $value = SortDirection::ASC;
+                }
+            }
+
             data_set($this, $property, $value);
         }
 

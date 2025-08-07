@@ -35,7 +35,7 @@ it('should change per page', function () {
 
     $component = Livewire::test(TopAccountsTable::class)
         ->call('setIsReady')
-        ->set('perPage', 50);
+        ->set('paginatorsPerPage.default', 50);
 
     foreach ($visibleWallets->concat($notVisibleWallets) as $wallet) {
         $component->assertSee($wallet->address);
@@ -60,7 +60,7 @@ it('should not per page if not a valid option', function () {
 
     $component = Livewire::test(TopAccountsTable::class)
         ->call('setIsReady')
-        ->set('perPage', 10);
+        ->set('paginatorsPerPage.default', 10);
 
     foreach ($visibleWallets as $wallet) {
         $component->assertSee($wallet->address);
@@ -71,7 +71,7 @@ it('should not per page if not a valid option', function () {
     }
 
     $component->call('setPerPage', 18)
-        ->assertSet('perPage', 10);
+        ->assertSet('paginatorsPerPage.default', 10);
 
     foreach ($visibleWallets as $wallet) {
         $component->assertSee($wallet->address);
@@ -91,7 +91,7 @@ it('should go to page 1 when changing per page', function () {
         ->call('setIsReady')
         ->call('gotoPage', 2)
         ->assertSet('paginators.page', 2)
-        ->call('setPerPage', 25)
+        ->call('setPerPage', 10)
         ->assertSet('paginators.page', 1);
 });
 
