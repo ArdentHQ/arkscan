@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Console\Commands\CacheValidatorResignationIds;
-use App\Jobs\CacheResignationId;
+use App\Jobs\CacheResignationIds;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Queue;
 
@@ -14,5 +14,5 @@ it('should execute the command', function () {
 
     (new CacheValidatorResignationIds())->handle();
 
-    Queue::assertPushed(CacheResignationId::class, 10);
+    Queue::assertPushed(CacheResignationIds::class, 1);
 });
