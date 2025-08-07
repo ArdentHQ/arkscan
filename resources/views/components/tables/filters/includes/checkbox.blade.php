@@ -6,16 +6,15 @@
 
 @php
     $isSelected = false;
-    if ($model && is_bool($this->{$model})) {
-        $isSelected = $this->{$model} === true;
+    if ($model && is_bool($this->getPropertyValue($model))) {
+        $isSelected = $this->getPropertyValue($model) === true;
     } else {
-        $isSelected = $this->filter[$name] === true;
+        $isSelected = $this->getFilter($name) === true;
     }
-
 @endphp
 
 <div x-data="{
-    selected: @entangle($model ?? 'filter.'.$name).live,
+    selected: @entangle($model ?? 'filters.default.'.$name).live,
 }">
     <x-tables.filters.includes.item
         :attributes="$attributes->class('table-filter-item__checkbox')"

@@ -11,11 +11,13 @@
             'width' => '60',
             'sortingId' => 'rank',
             'livewireSort' => true,
+            'componentId' => 'validators',
         ],
         'tables.validators.validator' => [
             'type' => 'text',
             'sortingId' => 'name',
             'livewireSort' => true,
+            'componentId' => 'validators',
         ],
         'tables.validators.status' => 'text',
         'tables.validators.no_of_voters' => [
@@ -24,6 +26,7 @@
             'breakpoint' => 'md',
             'sortingId' => 'no_of_voters',
             'livewireSort' => true,
+            'componentId' => 'validators',
             'class' => 'whitespace-nowrap',
             'nestedDataBreakpoint' => [
                 'from' => 'md',
@@ -37,6 +40,7 @@
             'responsive' => true,
             'sortingId' => 'votes',
             'livewireSort' => true,
+            'componentId' => 'validators',
         ],
         'tables.validators.percentage' => [
             'type'       => 'number',
@@ -44,12 +48,14 @@
             'breakpoint' => 'lg',
             'sortingId' => 'percentage_votes',
             'livewireSort' => true,
+            'componentId' => 'validators',
             'tooltip' => trans('tables.validators.info.percentage'),
         ],
         'tables.validators.missed_blocks' => [
             'type' => 'badge',
             'sortingId' => 'missed_blocks',
             'livewireSort' => true,
+            'componentId' => 'validators',
             'class' => 'whitespace-nowrap text-right',
         ],
         '' => [

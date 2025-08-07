@@ -108,7 +108,7 @@ it('should not show overview value if cannot be exchanged', function () {
         ]);
 });
 
-it('should filter transactions in url', function () {
+it('should filter transactions via url', function () {
     $wallet = Wallet::factory()->create();
 
     $transaction = Transaction::factory()->transfer()->create([
@@ -116,23 +116,27 @@ it('should filter transactions in url', function () {
     ]);
 
     Route::get('/test-transactions/{wallet}', function () use ($wallet) {
-        return BladeCompiler::render('<livewire:wallet-transaction-table :wallet="$wallet" :defer-loading="false" />', ['wallet' => ViewModelFactory::make($wallet)]);
+        return BladeCompiler::render('<livewire:wallet.tabs :wallet="$wallet" :defer-loading="false" />', ['wallet' => ViewModelFactory::make($wallet)]);
     });
 
     $this
         ->get('/test-transactions/'.$wallet->address)
+        ->assertOk()
         ->assertSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=false')
+        ->assertOk()
         ->assertDontSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=0')
+        ->assertOk()
         ->assertDontSee($transaction->hash);
 
     $this
         ->get('/test-transactions/'.$wallet->address.'?outgoing=1')
+        ->assertOk()
         ->assertSee($transaction->hash);
 });
 

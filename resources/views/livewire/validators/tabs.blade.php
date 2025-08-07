@@ -17,11 +17,11 @@
             <x-validators.arkconnect.standby-validator-notice />
         </div>
 
-        <x-validators.tables.validators />
+        <x-validators.tables.validators :validators="$validators" />
 
-        <x-validators.tables.missed-blocks x-cloak />
+        <x-validators.tables.missed-blocks :missed-blocks="$missedBlocks" x-cloak />
 
-        <x-validators.tables.recent-votes x-cloak />
+        <x-validators.tables.recent-votes :recent-votes="$recentVotes" x-cloak />
 
         <x-script.onload-scroll-to-query selector="#validator-table-list" />
     </div>

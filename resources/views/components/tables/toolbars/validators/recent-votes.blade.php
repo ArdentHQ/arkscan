@@ -7,9 +7,9 @@
 >
     <div class="flex space-x-3">
         <div class="flex-1">
-            <x-tables.filters.recent-votes />
+            <x-tables.filters.validators.recent-votes />
 
-            <x-tables.filters.recent-votes mobile />
+            <x-tables.filters.validators.recent-votes mobile />
         </div>
     </div>
 </x-general.encapsulated.table-header>
