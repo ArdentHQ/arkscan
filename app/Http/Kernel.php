@@ -6,6 +6,7 @@ namespace App\Http;
 
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\EncryptCookies;
+use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\PreventRequestsDuringMaintenance;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SubstituteBindings;
@@ -66,6 +67,7 @@ final class Kernel extends HttpKernel
             SubstituteBindings::class,
             CacheResponse::class,
             DropInvalidLivewireRequests::class,
+            HandleInertiaRequests::class,
         ],
 
         'api' => [

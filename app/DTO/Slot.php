@@ -145,6 +145,28 @@ final class Slot
         return false;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'address'           => $this->address,
+            'order'             => $this->order,
+            'wallet'            => [
+                ...$this->wallet->model()->toArray(),
+
+                'isPending' => $this->isPending(),
+                'hasForged' => $this->hasForged(),
+                'justMissed' => $this->justMissed(),
+                'missedCount' => $this->missedCount(),
+            ],
+            'forgingAt'         => $this->forgingAt->toIso8601String(),
+            'lastBlock'         => $this->lastBlock,
+            'status'            => $this->status,
+            'roundBlockCount'   => $this->roundBlockCount->toArray(),
+            'roundNumber'       => $this->roundNumber,
+            'secondsUntilForge' => $this->secondsUntilForge,
+        ];
+    }
+
     /**
      * Clone the slot with the given overridden properties.
      *
