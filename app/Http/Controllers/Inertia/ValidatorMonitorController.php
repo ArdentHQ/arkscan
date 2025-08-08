@@ -29,6 +29,10 @@ final class ValidatorMonitorController
 
     public bool $isReady = true;
 
+    private array $validators = [];
+
+    private array $overflowValidators = [];
+
     // /** @var mixed */
     // protected $listeners = [
     //     'monitorIsReady',
@@ -52,9 +56,6 @@ final class ValidatorMonitorController
             'statistics'         => $this->statistics,
         ]);
     }
-
-    private array $validators = [];
-    private array $overflowValidators = [];
 
     public function monitorIsReady(): void
     {
