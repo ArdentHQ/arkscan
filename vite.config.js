@@ -23,6 +23,10 @@ export default ({ mode }) => defineConfig({
                 __dirname,
                 "resources/inertia/"
             ),
+            "@icons": resolve(
+                __dirname,
+                "resources/icons/"
+            ),
             "@ui": resolve(
                 __dirname,
                 "vendor/arkecosystem/foundation/resources/assets/"
