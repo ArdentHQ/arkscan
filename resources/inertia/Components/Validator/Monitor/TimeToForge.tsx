@@ -14,7 +14,7 @@ export default function TimeToForge({ forgingAt, wallet }) {
 
     useEffect(() => {
         setDateTime(dayjs(forgingAt));
-        setTooltip(dateTime.format('D MMM YYYY'));
+        setTooltip(dateTime.format('D MMM YYYY HH:mm:ss'));
 
         const updateOutput = () => {
             const now = dayjs(new Date());
