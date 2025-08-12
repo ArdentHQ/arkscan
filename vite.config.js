@@ -2,9 +2,13 @@ import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
 import laravel from "laravel-vite-plugin";
 import { detectServerConfig } from "./vendor/arkecosystem/foundation/resources/vite.config";
+import svgr from 'vite-plugin-svgr';
 
 export default ({ mode }) => defineConfig({
     plugins: [
+        svgr({
+            include: '**/*.svg',
+        }),
         laravel([
             'resources/css/app.css',
             'resources/js/app.js',
