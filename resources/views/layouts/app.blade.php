@@ -17,7 +17,7 @@
     />
 
     <x-ark-pages-includes-layout-body class="table-compact">
-        <x-navbar.navbar :navigation="$navigationEntries" />
+        <x-navbar.navbar />
 
         <x-slot name="footer">
             <x-ark-footer
