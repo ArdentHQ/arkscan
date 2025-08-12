@@ -153,9 +153,9 @@ final class Slot
             'wallet'            => [
                 ...$this->wallet->model()->toArray(),
 
-                'isPending' => $this->isPending(),
-                'hasForged' => $this->hasForged(),
-                'justMissed' => $this->justMissed(),
+                'isPending'   => $this->isPending(),
+                'hasForged'   => $this->hasForged(),
+                'justMissed'  => $this->justMissed(),
                 'missedCount' => $this->missedCount(),
             ],
             'forgingAt'         => $this->forgingAt->toIso8601String(),

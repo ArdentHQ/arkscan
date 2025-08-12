@@ -12,7 +12,6 @@ use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\WebhooksController;
-use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
 use App\Models\Transaction;
