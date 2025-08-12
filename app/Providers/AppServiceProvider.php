@@ -61,8 +61,6 @@ final class AppServiceProvider extends ServiceProvider
 
         Fortify::loginView(fn () => abort(404));
 
-        View::composer('layouts.app', fn ($view) => $view->with(['navigationEntries' => $this->navigationEntries()]));
-
         RateLimiter::for('coingecko_api_rate', fn () => Limit::perMinute(10));
     }
 
@@ -103,38 +101,5 @@ final class AppServiceProvider extends ServiceProvider
                 'description' => 'View cryptocurrency transactions and track cryptocurrency balances. A simple block explorer to monitor Blockchain activity on the ARK Public Network.',
             ],
         ]);
-    }
-
-    private function navigationEntries(): array
-    {
-        $navigationEntries = [
-            ['route' => 'home', 'label' => trans('menus.home')],
-            ['label' => trans('menus.blockchain'), 'children' => [
-                ['route' => 'blocks',           'label' => trans('menus.blocks')],
-                ['route' => 'transactions',     'label' => trans('menus.transactions')],
-                ['route' => 'validators',        'label' => trans('menus.validators')],
-                ['route' => 'top-accounts',     'label' => trans('menus.top_accounts')],
-                ['route' => 'statistics',       'label' => trans('menus.statistics')],
-            ]],
-            ['label' => trans('menus.resources'), 'children' => [
-                ['route' => 'validator-monitor', 'label' => trans('menus.validator_monitor')],
-                ['route' => 'compatible-wallets',  'label' => trans('menus.wallets')],
-            ]],
-            ['label' => trans('menus.developers'), 'children' => [
-                ['url' => trans('urls.docs.arkscan'),  'label' => trans('menus.docs')],
-                ['url' => trans('urls.docs.api'),  'label' => trans('menus.api')],
-                ['url' => trans('urls.github'),  'label' => trans('menus.github')],
-            ]],
-        ];
-
-        if (Network::canBeExchanged()) {
-            $navigationEntries[2]['children'][] = ['route' => 'exchanges',  'label' => trans('menus.exchanges')];
-        }
-
-        if (config('arkscan.support.enabled') === true) {
-            $navigationEntries[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.support')];
-        }
-
-        return $navigationEntries;
     }
 }
