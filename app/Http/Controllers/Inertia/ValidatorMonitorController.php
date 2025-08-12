@@ -5,21 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\Actions\CacheNetworkHeight;
-use App\DTO\Slot;
 use App\Facades\Network;
-use App\Facades\Rounds;
 use App\Http\Livewire\Concerns\ValidatorData;
 use App\Http\Livewire\Validators\Concerns\HandlesMonitorDataBoxes;
-use App\Models\Block;
-use App\Services\Monitor\Monitor as MonitorService;
-use App\Services\Timestamp;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
-use Throwable;
 
-// Heavily duplicated from app/Http/Livewire/Validators/Monitor.php for a Proof-of-Concept.
 final class ValidatorMonitorController
 {
     use HandlesMonitorDataBoxes;
