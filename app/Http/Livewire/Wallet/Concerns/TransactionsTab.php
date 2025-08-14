@@ -152,9 +152,11 @@ trait TransactionsTab
                 $query->where(fn ($query) => $query->when($this->filters['transactions']['outgoing'], fn ($query) => $query->where('sender_public_key', $this->publicKey)))
                     ->orWhere(fn ($query) => $query->when($this->filters['transactions']['incoming'], fn ($query) => $query->where('to', $this->address)))
                     ->orWhere(function ($query) {
-                        $query->withScope(MultiPaymentScope::class)
+                        $query->when($this->filters['transactions']['multipayments'], function ($query) {
+                            $query->withScope(MultiPaymentScope::class)
                             // data for multipayment contains the address
                             ->whereRaw("encode(data, 'hex') LIKE ?", '%'.strtolower(str_pad(ltrim($this->address, '0x'), 64, '0', STR_PAD_LEFT)).'%');
+                        });
                     });
             });
     }
