@@ -4,13 +4,13 @@ import Address from "@/Components/Wallet/Address";
 import FavoriteIcon from "@/Components/Validator/Monitor/FavoriteIcon";
 import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorFavoritesContext";
 import classNames from "@/utils/class-names";
-import LoadingTable from "../LoadingTable";
 import MobileTable from "../Table";
 import MobileTableRow from "../Row";
 import MissedWarning from "@/Components/Validator/Monitor/MissedWarning";
 import TableCell from "../TableCell";
 import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import MobileDivider from "@/Components/General/MobileDivider";
+import { MobileMonitorSkeletonTable } from "../Skeleton/Validators/Monitor";
 
 export function MonitorMobileHeader({ validator }) {
     return (
@@ -26,8 +26,8 @@ export function MonitorMobileHeader({ validator }) {
             </div>
 
             <div className="flex flex-1 justify-between items-center pl-3 min-w-0">
-                <div className="flex items-center">
-                    <TableCell>
+                <div className="flex flex-1 items-center min-w-0">
+                    <TableCell className="min-w-0">
                         <Address
                             wallet={validator.wallet}
                             truncate
@@ -46,11 +46,11 @@ export function MonitorMobileHeader({ validator }) {
 
                 <div className="flex items-center sm:space-x-3 h-[21px]">
                     <div className="flex items-center sm:hidden">
-                        <Status wallet={validator.wallet} withText={false} />
+                        <Status validator={validator} withText={false} />
                     </div>
 
                     <div className="hidden sm:block">
-                        <Status wallet={validator.wallet} />
+                        <Status validator={validator} />
                     </div>
                 </div>
             </div>
@@ -60,21 +60,6 @@ export function MonitorMobileHeader({ validator }) {
 
 export function MonitorMobileTable({ validators }: { validators: any[] }) {
     const { isFavorite } = useValidatorFavorites();
-
-    // const sortedValidators = [...validators].sort((a, b) => {
-    //     const aIsFavorite = isFavorite(a.wallet.public_key);
-    //     const bIsFavorite = isFavorite(b.wallet.public_key);
-
-    //     if (aIsFavorite === bIsFavorite) {
-    //         return a.order - b.order;
-    //     }
-
-    //     if (aIsFavorite) {
-    //         return -1;
-    //     }
-
-    //     return 1;
-    // });
 
     return (
         <MobileTable>
@@ -90,9 +75,9 @@ export function MonitorMobileTable({ validators }: { validators: any[] }) {
                     expandable={true}
                     header={<MonitorMobileHeader validator={validator} />}
                 >
-                    <TableCell label="Status">
+                    <TableCell label="Status" className="sm:hidden">
                         <Status
-                            wallet={validator.wallet}
+                            validator={validator}
                             className="sm:hidden"
                         />
                     </TableCell>
@@ -135,6 +120,8 @@ export function MobileFavoritesTable({ validators }: { validators: any[] }) {
             </div>
 
             <MonitorMobileTable validators={favoritedValidators} />
+
+            <MobileDivider className="my-6" />
         </div>
     );
 }
@@ -143,44 +130,11 @@ export default function MonitorMobileTableWrapper({ validators, rowCount }: {
     validators: any[];
     rowCount: number;
 }) {
-    // if (!validators || validators.length === 0) {
-    //     return (
-    //         <div className="md:hidden">
-    //             <LoadingTable
-    //                 rowCount={rowCount || 10}
-    //                 columns={[
-    //                     {
-    //                         type: 'id',
-    //                         width: 20,
-    //                     },
-    //                     {
-    //                         name: "Order",
-    //                         type: "number",
-    //                         width: 60,
-    //                     },
-    //                     {
-    //                         name: "Validator",
-    //                         className: "text-left",
-    //                     },
-    //                     {
-    //                         name: "Status",
-    //                         width: 374,
-    //                         type: "badge",
-    //                         className: "text-left",
-    //                     },
-    //                     {
-    //                         name: "Time to Forge",
-    //                         width: 160,
-    //                     },
-    //                     {
-    //                         name: "Block Height",
-    //                         className: "text-right",
-    //                     },
-    //                 ]}
-    //             />
-    //         </div>
-    //     );
-    // }
+    if (!validators || validators.length === 0) {
+        return (
+            <MobileMonitorSkeletonTable rowCount={rowCount} />
+        );
+    }
 
     const { isFavorite } = useValidatorFavorites();
 
@@ -189,8 +143,6 @@ export default function MonitorMobileTableWrapper({ validators, rowCount }: {
     return (
         <div className="md:hidden">
             <MobileFavoritesTable validators={validators} />
-
-            <MobileDivider className="my-6" />
 
             <MonitorMobileTable validators={unfavoritedValidators} />
         </div>

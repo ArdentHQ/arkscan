@@ -20,7 +20,6 @@ export default function Monitor({ validatorData, height, rowCount }) {
                 only: [
                     'height',
                     'validatorData',
-                    'rowCount',
                 ],
             });
         };

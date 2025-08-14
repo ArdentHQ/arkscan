@@ -26,7 +26,7 @@ final class ValidatorMonitorController
     {
         return Inertia::render('Validators/Monitor', [
             'height'   => Inertia::optional(fn () => CacheNetworkHeight::execute()),
-            'rowCount' => Inertia::optional(fn () => Network::validatorCount()),
+            'rowCount' => Network::validatorCount(),
 
             'validatorData' => Inertia::optional(function () {
                 $this->pollValidators();

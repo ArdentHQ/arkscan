@@ -34,18 +34,28 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
             </TableCell>
 
             <TableCell className="text-left">
-                <Address wallet={validator.wallet} />
+                <div className="md:hidden lg:block">
+                    <Address wallet={validator.wallet} />
+                </div>
+
+                <div className="hidden md:block lg:hidden">
+                    <Address wallet={validator.wallet} truncate />
+                </div>
             </TableCell>
 
             <TableCell
-                className="table-cell text-left"
-                width={374}
+                className="table-cell text-left hidden md:table-cell md-lg:hidden"
+                width={172}
             >
-                <Status wallet={validator.wallet} />
+                <Status validator={validator} withTime />
+            </TableCell>
+
+            <TableCell className="table-cell text-left md:hidden md-lg:table-cell md-lg:w-[172px] lg:w-[374px]">
+                <Status validator={validator} />
             </TableCell>
 
             <TableCell
-                className="md:table-cell text-left whitespace-nowrap"
+                className="md:table-cell text-left whitespace-nowrap md:hidden md-lg:table-cell"
                 width={160}
             >
                 <TimeToForge forgingAt={validator.forgingAt} wallet={validator.wallet} />
@@ -94,23 +104,27 @@ export function MonitorTable({ validators, overflowValidators }: {
                                 </th>
 
                                 <th sorting-id="header-order">
-                                    <span>Order</span>
+                                    Order
                                 </th>
 
                                 <th className="text-left">
                                     Validator
                                 </th>
 
-                                <th className="table-cell text-left">
-                                    <div>Status</div>
+                                <th className="table-cell text-left hidden md:table-cell md-lg:hidden">
+                                    Status / Time to Forge
                                 </th>
 
-                                <th className="table-cell whitespace-nowrap">
+                                <th className="table-cell text-left md:hidden md-lg:table-cell">
+                                    Status
+                                </th>
+
+                                <th className="table-cell whitespace-nowrap md:hidden md-lg:table-cell">
                                     Time to Forge
                                 </th>
 
                                 <th className="text-right whitespace-nowrap">
-                                    <span>Block Height</span>
+                                    Block Height
                                 </th>
                             </tr>
                         </thead>
@@ -153,7 +167,7 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
         return (
             <div className="hidden md:block">
                 <LoadingTable
-                    rowCount={rowCount || 10}
+                    rowCount={rowCount}
                     columns={[
                         {
                             type: 'id',
@@ -169,14 +183,21 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
                             className: "text-left",
                         },
                         {
+                            name: "Status / Time to Forge",
+                            width: 172,
+                            type: "badge",
+                            className: "text-left hidden md:table-cell md-lg:hidden",
+                        },
+                        {
                             name: "Status",
                             width: 374,
                             type: "badge",
-                            className: "text-left",
+                            className: "text-left md:hidden md-lg:table-cell",
                         },
                         {
                             name: "Time to Forge",
                             width: 160,
+                            className: "md:hidden md-lg:table-cell"
                         },
                         {
                             name: "Block Height",

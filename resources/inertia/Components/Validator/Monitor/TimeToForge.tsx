@@ -3,10 +3,23 @@ import dayjs, { Dayjs } from "dayjs"
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import classNames from "@/utils/class-names";
 
 dayjs.extend(dayjsRelativeTime);
 
-export default function TimeToForge({ forgingAt, wallet }) {
+export default function TimeToForge({
+    forgingAt,
+    wallet,
+    className = 'text-theme-secondary-900 dark:text-theme-dark-50',
+}: {
+    forgingAt: string | Date;
+    wallet: {
+        hasForged: boolean;
+        isPending: boolean;
+        justMissed?: boolean;
+    };
+    className?: string;
+}) {
     const [dateTime, setDateTime] = useState<Dayjs>(dayjs(forgingAt));
     const [output, setOutput] = useState("");
     const [tooltip, setTooltip] = useState("");
@@ -55,7 +68,10 @@ export default function TimeToForge({ forgingAt, wallet }) {
     }, [forgingAt]);
 
     return (
-        <div className="font-semibold !leading-4.25 text-sm text-theme-secondary-900 dark:text-theme-dark-50">
+        <div className={classNames({
+            "font-semibold !leading-4.25 text-sm": true,
+            [className]: true,
+        })}>
             {wallet.hasForged && <div>Completed</div>}
             {!wallet.isPending && !wallet.hasForged && !wallet.justMissed && <div>Now</div>}
             {wallet.justMissed && <div>Missed</div>}

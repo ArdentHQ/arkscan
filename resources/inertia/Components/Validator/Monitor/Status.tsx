@@ -1,13 +1,22 @@
 import Badge from '@/Components/General/Badge';
 import classNames from "@/utils/class-names";
+import TimeToForge from "./TimeToForge";
 
 export default function Status({
     width = 'min-w-[8.75rem]',
     withTime = false,
     withText = true,
-    wallet,
+    validator,
     className = '',
+}: {
+    width?: string;
+    withTime?: boolean;
+    withText?: boolean;
+    validator: any;
+    className?: string;
 }) {
+    const wallet = validator.wallet;
+
     return (
         <Badge colors={classNames({
             'inline-flex space-x-2 items-center whitespace-nowrap': true,
@@ -41,7 +50,11 @@ export default function Status({
                     {wallet.isPending && (
                         <>
                             {withTime ? (
-                                <span>TTF</span>
+                                <TimeToForge
+                                    forgingAt={validator.forgingAt}
+                                    wallet={validator.wallet}
+                                    className="text-xs font-semibold leading-3.75"
+                                />
                             ) : (
                                 <span>Pending</span>
                             )}
