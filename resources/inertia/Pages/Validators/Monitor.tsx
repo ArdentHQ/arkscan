@@ -4,6 +4,8 @@ import PageHeader from "@/Components/General/PageHeader";
 import MonitorTableWrapper from "@/Components/Tables/Desktop/Validators/Monitor";
 import HeaderStats from "@/Components/Validator/Monitor/HeaderStats";
 import ValidatorFavoritesProvider from "@/Providers/ValidatorFavorites/ValidatorFavoritesProvider";
+import MonitorMobileTableWrapper from "@/Components/Tables/Mobile/Validators/Monitor";
+import MobileDivider from "@/Components/General/MobileDivider";
 
 export default function Monitor({ validatorData, height, rowCount }) {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -51,6 +53,15 @@ export default function Monitor({ validatorData, height, rowCount }) {
                 overflowValidators={validatorData?.overflowValidators}
                 rowCount={rowCount}
             />
+
+            <MobileDivider />
+
+            <div className="pt-6 pb-8 md:pt-0 md:mx-auto md:max-w-7xl">
+                <MonitorMobileTableWrapper
+                    validators={validatorData?.validators}
+                    rowCount={rowCount}
+                />
+            </div>
         </ValidatorFavoritesProvider>
     </>);
 }

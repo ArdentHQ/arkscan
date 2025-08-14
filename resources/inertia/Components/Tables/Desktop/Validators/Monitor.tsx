@@ -2,11 +2,12 @@ import Number from "@/Components/General/Number";
 import Status from "@/Components/Validator/Monitor/Status";
 import TimeToForge from "@/Components/Validator/Monitor/TimeToForge";
 import Address from "@/Components/Wallet/Address";
-import TableCell from "../../TableCell";
+import TableCell from "../TableCell";
 import FavoriteIcon from "@/Components/Validator/Monitor/FavoriteIcon";
 import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorFavoritesContext";
 import classNames from "@/utils/class-names";
 import LoadingTable from "../LoadingTable";
+import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 
 export function MonitorRow({ validator, withFavoriteBorder = true }: {
     validator: any;
@@ -54,18 +55,7 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
                 className="text-right"
                 width={100}
             >
-                {validator.wallet.hasForged ? (
-                    <a
-                        href={`/blocks/${validator?.lastBlock?.hash}`}
-                        className="link"
-                    >
-                        <Number>{validator?.lastBlock?.number}</Number>
-                    </a>
-                ) : (
-                    <span className="text-theme-secondary-500 dark:text-theme-dark-500">
-                        {validator.wallet.justMissed ? 'N/A' : 'TBD'}
-                    </span>
-                )}
+                <BlockHeight validator={validator} />
             </TableCell>
         </tr>
     );
@@ -161,45 +151,49 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
 }) {
     if (!validators || validators.length === 0) {
         return (
-            <LoadingTable
-                rowCount={rowCount || 10}
-                columns={[
-                    {
-                        type: 'id',
-                        width: 20,
-                    },
-                    {
-                        name: "Order",
-                        type: "number",
-                        width: 60,
-                    },
-                    {
-                        name: "Validator",
-                        className: "text-left",
-                    },
-                    {
-                        name: "Status",
-                        width: 374,
-                        type: "badge",
-                        className: "text-left",
-                    },
-                    {
-                        name: "Time to Forge",
-                        width: 160,
-                    },
-                    {
-                        name: "Block Height",
-                        className: "text-right",
-                    },
-                ]}
-            />
+            <div className="hidden md:block">
+                <LoadingTable
+                    rowCount={rowCount || 10}
+                    columns={[
+                        {
+                            type: 'id',
+                            width: 20,
+                        },
+                        {
+                            name: "Order",
+                            type: "number",
+                            width: 60,
+                        },
+                        {
+                            name: "Validator",
+                            className: "text-left",
+                        },
+                        {
+                            name: "Status",
+                            width: 374,
+                            type: "badge",
+                            className: "text-left",
+                        },
+                        {
+                            name: "Time to Forge",
+                            width: 160,
+                        },
+                        {
+                            name: "Block Height",
+                            className: "text-right",
+                        },
+                    ]}
+                />
+            </div>
         );
     }
 
     return (
-        <MonitorTable
-            validators={validators}
-            overflowValidators={overflowValidators}
-        />
+        <div className="hidden md:block">
+            <MonitorTable
+                validators={validators}
+                overflowValidators={overflowValidators}
+            />
+        </div>
     );
 }

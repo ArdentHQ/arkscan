@@ -1,5 +1,5 @@
 import LoadingText from "@/Components/Loading/Text";
-import TableCell from "./TableCell";
+import TableCell from "../Desktop/TableCell";
 
 export default function LoadingTable({ columns, rowCount }: {
     columns: Array<{
@@ -11,7 +11,7 @@ export default function LoadingTable({ columns, rowCount }: {
     rowCount: number;
 }) {
     return (
-        <div className="hidden md:block px-6 pt-6 pb-8 md:px-10 md:pt-0 md:mx-auto md:max-w-7xl">
+        <div className="px-6 pt-6 pb-8 md:px-10 md:pt-0 md:mx-auto md:max-w-7xl">
             <div className="border border-theme-secondary-300 dark:border-theme-dark-700 overflow-hidden rounded-t-xl rounded-b-xl hidden w-full md:block validator-monitor">
                 <div className="px-6 table-container table-encapsulated encapsulated-table-header-gradient">
                     <table>

@@ -1,7 +1,13 @@
 import Badge from '@/Components/General/Badge';
 import classNames from "@/utils/class-names";
 
-export default function Status({ width = 'min-w-[8.75rem]', withTime = false, withText = true, wallet }) {
+export default function Status({
+    width = 'min-w-[8.75rem]',
+    withTime = false,
+    withText = true,
+    wallet,
+    className = '',
+}) {
     return (
         <Badge colors={classNames({
             'inline-flex space-x-2 items-center whitespace-nowrap': true,
@@ -12,6 +18,7 @@ export default function Status({ width = 'min-w-[8.75rem]', withTime = false, wi
             'border-transparent bg-theme-primary-100 dark:border-theme-dark-blue-600 dim:border-theme-dark-blue-800': withText && ! wallet.isPending && ! wallet.hasForged && ! wallet.justMissed,
             'border-none': ! withText,
             [width]: withText,
+            [className]: true,
         })}>
             <div className="flex items-center">
                 <div className={classNames({

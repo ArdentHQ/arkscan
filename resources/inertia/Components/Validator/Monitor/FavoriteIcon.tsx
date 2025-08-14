@@ -5,7 +5,7 @@ import FavoriteIconSvg from "@icons/favorite-star.svg";
 import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorFavoritesContext";
 import { useEffect, useState } from "react";
 
-export default function FavoriteIcon({ validator }: { validator: any }) {
+export default function FavoriteIcon({ validator, label }: { validator: any; label?: string }) {
     const { favorites, isFavorite, toggleFavorite } = useValidatorFavorites();
     const [isFavorited, setIsFavorited] = useState(false);
 
@@ -27,6 +27,12 @@ export default function FavoriteIcon({ validator }: { validator: any }) {
                 }}
             >
                 <FavoriteIconSvg width={20} />
+
+                {label && (
+                    <span className="text-sm leading-4.25">
+                        {label}
+                    </span>
+                )}
             </button>
         </div>
     );
