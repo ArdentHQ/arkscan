@@ -34,7 +34,7 @@ trait ValidatorData
             $this->validators = $this->fetchValidators();
 
             Cache::forget('poll-validators-exception-occurrence');
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             $occurrences = Cache::increment('poll-validators-exception-occurrence');
 
             if ($occurrences >= 3) {
