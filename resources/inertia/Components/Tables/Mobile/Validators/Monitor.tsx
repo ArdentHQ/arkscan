@@ -36,7 +36,7 @@ export function MonitorMobileHeader({ validator }) {
 
                         <Address
                             wallet={validator.wallet}
-                            truncate="dynamic"
+                            truncate={16}
                             className="hidden sm:block md:hidden"
                         />
                     </TableCell>

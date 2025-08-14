@@ -1,11 +1,10 @@
 import { Link } from "@inertiajs/react";
 import TruncateMiddle from "../General/TruncateMiddle";
 import classNames from '../../utils/class-names';
-import TruncateDynamic from "../TruncateDynamic";
 
 export default function Address({ wallet, truncate = false, className = '' }: {
     wallet: any;
-    truncate?: boolean | "dynamic";
+    truncate?: boolean | number;
     className?: string;
 }) {
     const name = wallet?.attributes?.username;
@@ -21,8 +20,18 @@ export default function Address({ wallet, truncate = false, className = '' }: {
                     href={`/addresses/${wallet.address}`}
                 >
                     {!!name ? name : (<>
-                        {truncate === true && <TruncateMiddle length={5}>{wallet.address}</TruncateMiddle>}
-                        {truncate === "dynamic" && <TruncateDynamic value={wallet.address} />}
+                        {truncate === true && (
+                            <TruncateMiddle length={5}>
+                                {wallet.address}
+                            </TruncateMiddle>
+                        )}
+
+                        {typeof truncate === 'number' && (
+                            <TruncateMiddle length={truncate}>
+                                {wallet.address}
+                            </TruncateMiddle>
+                        )}
+
                         {truncate === false && wallet.address}
                     </>)}
                 </Link>
