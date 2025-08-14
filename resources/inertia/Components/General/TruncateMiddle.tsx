@@ -8,8 +8,8 @@ export default function TruncateMiddle({ length = 10, children }: React.PropsWit
         return <span>{text}</span>;
     }
 
-    const start = text.slice(0, 10);
-    const end = text.slice(-10);
+    const start = text.slice(0, length);
+    const end = text.slice(-length);
 
     return <span>{start}…{end}</span>;
 }
