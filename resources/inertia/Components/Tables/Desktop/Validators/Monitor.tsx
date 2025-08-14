@@ -50,7 +50,10 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
                 <Status validator={validator} withTime />
             </TableCell>
 
-            <TableCell className="table-cell text-left md:hidden md-lg:table-cell md-lg:w-[172px] lg:w-[374px]">
+            <TableCell
+                className="table-cell text-left md:hidden md-lg:table-cell"
+                width={374}
+            >
                 <Status validator={validator} />
             </TableCell>
 
