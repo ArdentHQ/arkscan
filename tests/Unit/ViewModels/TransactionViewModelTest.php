@@ -109,7 +109,7 @@ it('should get the amount for itself', function () {
         ->create([
             'from'   => $transaction->from,
             'hash'   => $transaction->hash,
-            'amount' => BigNumber::new(30 * 1e18)
+            'amount' => BigNumber::new(30 * 1e18),
         ]);
 
     $viewModel = new TransactionViewModel($transaction);
@@ -146,7 +146,7 @@ it('should get the amount excluding itself', function () {
         ->create([
             'from'   => $transaction->from,
             'hash'   => $transaction->hash,
-            'amount' => BigNumber::new(30 * 1e18)
+            'amount' => BigNumber::new(30 * 1e18),
         ]);
 
     $viewModel = new TransactionViewModel($transaction);
@@ -209,7 +209,7 @@ it('should get the amount excluding self as fiat', function () {
         ->create([
             'from'   => $transaction->from,
             'hash'   => $transaction->hash,
-            'amount' => BigNumber::new(30 * 1e18)
+            'amount' => BigNumber::new(30 * 1e18),
         ]);
 
     $viewModel = new TransactionViewModel($transaction);
