@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Wallet\Concerns;
 
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
-use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
@@ -157,6 +156,6 @@ trait TransactionsTab
                             $query->withScope(HasMultiPaymentRecipientScope::class, $this->address);
                         });
                     });
-                });
+            });
     }
 }
