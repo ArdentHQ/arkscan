@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property BigNumber $amount
+ * @property string $to
+ * @property string $from
  */
 final class MultiPayment extends Model
 {

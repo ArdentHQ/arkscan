@@ -35,7 +35,7 @@ trait HasPayload
     }
 
     /**
-     * @return Collection<MultiPayment>
+     * @return Collection<int, MultiPayment>
      */
     public function multiPaymentRecipients(): Collection
     {

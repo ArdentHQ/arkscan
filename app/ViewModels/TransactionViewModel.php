@@ -185,7 +185,7 @@ final class TransactionViewModel implements ViewModel
     public function amountReceived(?string $walletAddress = null): float
     {
         if ($this->isMultiPayment() && $walletAddress !== null) {
-            /** @var Collection<string|int, MultiPayment> $results */
+            /** @var Collection<int, MultiPayment> $results */
             $results = (new Collection($this->multiPaymentRecipients()))
                 ->filter(function (MultiPayment $recipient) use ($walletAddress) {
                     if (strtolower($recipient->to) === strtolower($walletAddress)) {
