@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 use App\Models\Block;
+use App\Models\MultiPayment;
 use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Config;
 use Meilisearch\Client as MeilisearchClient;
@@ -193,4 +195,34 @@ it('should return null if no valid error', function () {
         ]);
 
     expect($transaction->parseReceiptError())->toBeNull();
+});
+
+it('should get recipients', function () {
+    $recipients = [
+        Wallet::factory()->create()->address,
+        Wallet::factory()->create()->address,
+    ];
+
+    $transaction = Transaction::factory()
+        ->multiPayment($recipients, [
+            BigNumber::new(1),
+            BigNumber::new(1),
+        ])
+        ->create();
+
+    MultiPayment::factory()
+        ->count(2)
+        ->state(new Sequence(
+            ['to' => $recipients[0]],
+            ['to' => $recipients[1]],
+        ))
+        ->create([
+            'from'   => $transaction->from,
+            'hash'   => $transaction->hash,
+            'amount' => BigNumber::new(1),
+        ]);
+
+    expect($transaction->multiPaymentRecipients->count())->toBe(2);
+    expect($transaction->multiPaymentRecipients->first()->to)->toBe($recipients[0]);
+    expect($transaction->multiPaymentRecipients->last()->to)->toBe($recipients[1]);
 });
