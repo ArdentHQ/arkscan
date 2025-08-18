@@ -6,9 +6,6 @@ import svgr from 'vite-plugin-svgr';
 
 export default ({ mode }) => defineConfig({
     plugins: [
-        svgr({
-            include: '**/*.svg',
-        }),
         laravel([
             'resources/css/app.css',
             'resources/js/app.js',

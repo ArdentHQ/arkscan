@@ -1,5 +1,5 @@
 import classNames from "@/utils/class-names";
-import ArrowSvg from "@ui/icons/arrows/chevron-down-small.svg";
+import ChevronDownSmall from "@/Assets/Icons/ChevronDownSmall";
 
 export default function DropdownArrow({
     isOpen = false,
@@ -19,7 +19,7 @@ export default function DropdownArrow({
             })}
             onClick={onClick}
         >
-            <ArrowSvg className="w-3 h-3" />
+            <ChevronDownSmall className="w-3 h-3" />
         </div>
     );
 }
