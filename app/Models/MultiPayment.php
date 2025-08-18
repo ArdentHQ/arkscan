@@ -25,20 +25,6 @@ final class MultiPayment extends Model
     public $timestamps = false;
 
     /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
-    protected $connection = 'explorer';
-
-    /**
-     * The primary key for the model.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'hash';
-
-    /**
      * The "type" of the primary key ID.
      *
      * @var string
@@ -51,6 +37,20 @@ final class MultiPayment extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = 'hash';
 
     /**
      * The attributes that should be cast.
