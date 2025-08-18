@@ -114,6 +114,7 @@ final class Transaction extends Model
 
     protected $with = [
         'receipt',
+        'multiPaymentRecipients',
     ];
 
     /**
@@ -231,7 +232,7 @@ final class Transaction extends Model
 
     public function multiPaymentRecipients(): HasMany
     {
-        return $this->hasMany(Multipayment::class, 'hash', 'hash');
+        return $this->hasMany(MultiPayment::class, 'hash', 'hash');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder

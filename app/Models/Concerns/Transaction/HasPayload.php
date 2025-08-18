@@ -70,39 +70,6 @@ trait HasPayload
         ])->render());
     }
 
-    /**
-     * @return array<int, array{address: string, amount: float}>
-     */
-    public function multiPaymentRecipients(): array
-    {
-        /**
-         * @var string $payload
-         */
-        $payload = $this->rawPayload();
-
-        if (! str_starts_with($payload, ContractMethod::multiPayment())) {
-            throw new \Exception('This transaction is not a multi-payment.');
-        }
-
-        $method = (new AbiDecoder(ContractAbiType::MULTIPAYMENT))->decodeFunctionData($payload);
-
-        $recipients = [];
-
-        $addresses = $method['args'][0];
-        $amounts   = $method['args'][1];
-
-        foreach ($addresses as $index => $address) {
-            if (isset($amounts[$index])) {
-                $recipients[] = [
-                    'address' => $address,
-                    'amount'  => UnitConverter::formatUnits($amounts[$index], 'ark'),
-                ];
-            }
-        }
-
-        return $recipients;
-    }
-
     public function getMethodData(bool $tryAllAbis = false): ?array
     {
         $payload = $this->rawPayload();
