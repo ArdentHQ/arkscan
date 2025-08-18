@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Wallet\Concerns;
 
+use App\Models\Scopes\HasMultiPaymentRecipientScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
@@ -153,11 +154,9 @@ trait TransactionsTab
                     ->orWhere(fn ($query) => $query->when($this->filters['transactions']['incoming'], fn ($query) => $query->where('to', $this->address)))
                     ->orWhere(function ($query) {
                         $query->when($this->filters['transactions']['multipayments'], function ($query) {
-                            $query->withScope(MultiPaymentScope::class)
-                            // data for multipayment contains the address
-                            ->whereRaw("encode(data, 'hex') LIKE ?", '%'.strtolower(str_pad(ltrim($this->address, '0x'), 64, '0', STR_PAD_LEFT)).'%');
+                            $query->withScope(HasMultiPaymentRecipientScope::class, $this->address);
                         });
                     });
-            });
+                });
     }
 }
