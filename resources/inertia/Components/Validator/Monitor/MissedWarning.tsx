@@ -1,7 +1,8 @@
+import { IValidator } from "@/types";
 import Tippy from "@tippyjs/react";
 import AlertTriangleIcon from '@/Assets/Icons/AlertTriangle';
 
-export default function MissedWarning({ validator }) {
+export default function MissedWarning({ validator }: { validator: IValidator}) {
     if (! validator.wallet.keepsMissing) {
         return null;
     }

@@ -1,11 +1,13 @@
-export default function BlockHeight({ validator }) {
-    if (validator?.wallet?.hasForged) {
+import { IValidator } from "@/types";
+
+export default function BlockHeight({ validator }: { validator: IValidator }) {
+    if (validator.wallet?.hasForged) {
         return (
             <a
                 href={`/blocks/${validator?.lastBlock?.hash}`}
                 className="link"
             >
-                {validator?.lastBlock?.number.toLocaleString()}
+                {validator.lastBlock?.number.toLocaleString()}
             </a>
         );
     }

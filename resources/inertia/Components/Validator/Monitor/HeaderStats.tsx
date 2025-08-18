@@ -3,6 +3,7 @@ import Detail from "@/Components/General/Detail";
 import Number from "@/Components/General/Number";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import LoadingText from "@/Components/Loading/Text";
+import { IStatistics } from "@/types";
 import classNames from "@/utils/class-names";
 
 export function HeaderStat({
@@ -38,7 +39,10 @@ export function HeaderStat({
     );
 }
 
-export default function HeaderStats({ height, statistics }) {
+export default function HeaderStats({ height, statistics }: {
+    height: number;
+    statistics?: IStatistics;
+}) {
     const isLoading = !statistics;
 
     return (

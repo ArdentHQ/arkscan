@@ -4,6 +4,7 @@ import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import classNames from "@/utils/class-names";
+import { IWallet } from "@/types";
 
 dayjs.extend(dayjsRelativeTime);
 
@@ -13,11 +14,7 @@ export default function TimeToForge({
     className = 'text-theme-secondary-900 dark:text-theme-dark-50',
 }: {
     forgingAt: string | Date;
-    wallet: {
-        hasForged: boolean;
-        isPending: boolean;
-        justMissed?: boolean;
-    };
+    wallet: IWallet;
     className?: string;
 }) {
     const [dateTime, setDateTime] = useState<Dayjs>(dayjs(forgingAt));

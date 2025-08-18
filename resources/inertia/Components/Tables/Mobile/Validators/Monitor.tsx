@@ -11,8 +11,9 @@ import TableCell from "../TableCell";
 import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { MobileMonitorSkeletonTable } from "../Skeleton/Validators/Monitor";
+import { IValidator } from "@/types";
 
-export function MonitorMobileHeader({ validator }) {
+export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
     return (
         <div className="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
             <div className="flex items-center">
@@ -58,7 +59,7 @@ export function MonitorMobileHeader({ validator }) {
     );
 }
 
-export function MonitorMobileTable({ validators }: { validators: any[] }) {
+export function MonitorMobileTable({ validators }: { validators: IValidator[] }) {
     const { isFavorite } = useValidatorFavorites();
 
     return (
@@ -67,7 +68,7 @@ export function MonitorMobileTable({ validators }: { validators: any[] }) {
                 <MobileTableRow
                     key={index}
                     expandClass={classNames({
-                        'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700': ! validator.wallet.isResigned,
+                        'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700': ! validator.wallet?.isResigned,
                     })}
                     className={classNames({
                         'validator-monitor-favorite': isFavorite(validator.wallet.public_key),
@@ -105,7 +106,7 @@ export function MonitorMobileTable({ validators }: { validators: any[] }) {
     );
 }
 
-export function MobileFavoritesTable({ validators }: { validators: any[] }) {
+export function MobileFavoritesTable({ validators }: { validators: IValidator[] }) {
     const { isFavorite } = useValidatorFavorites();
 
     const favoritedValidators = (validators || []).filter((validator) => isFavorite(validator.wallet.public_key));
@@ -127,7 +128,7 @@ export function MobileFavoritesTable({ validators }: { validators: any[] }) {
 }
 
 export default function MonitorMobileTableWrapper({ validators, rowCount }: {
-    validators: any[];
+    validators: IValidator[];
     rowCount: number;
 }) {
     if (!validators || validators.length === 0) {

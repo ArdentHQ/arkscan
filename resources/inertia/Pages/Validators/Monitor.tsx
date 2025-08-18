@@ -6,8 +6,13 @@ import HeaderStats from "@/Components/Validator/Monitor/HeaderStats";
 import ValidatorFavoritesProvider from "@/Providers/ValidatorFavorites/ValidatorFavoritesProvider";
 import MonitorMobileTableWrapper from "@/Components/Tables/Mobile/Validators/Monitor";
 import MobileDivider from "@/Components/General/MobileDivider";
+import { IValidatorData } from "@/types";
 
-export default function Monitor({ validatorData, height, rowCount }) {
+export default function Monitor({ validatorData, height, rowCount }: {
+    validatorData: IValidatorData;
+    height: number;
+    rowCount: number;
+}) {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
