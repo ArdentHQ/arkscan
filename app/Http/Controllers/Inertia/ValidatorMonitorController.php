@@ -25,9 +25,10 @@ final class ValidatorMonitorController
     public function __invoke(): Response
     {
         return Inertia::render('Validators/Monitor', [
-            'height'   => Inertia::optional(fn () => CacheNetworkHeight::execute()),
             'rowCount' => Network::validatorCount(),
 
+            // Deferred properties
+            'height'        => Inertia::optional(fn () => CacheNetworkHeight::execute()),
             'validatorData' => Inertia::optional(function () {
                 $this->pollValidators();
                 $this->overflowValidators = $this->getOverflowValidatorsProperty();
