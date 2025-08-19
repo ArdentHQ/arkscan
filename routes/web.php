@@ -32,9 +32,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/validators', 'app.validators')->name('validators');
-Route::view('/validator-monitor', 'app.validator-monitor')->name('validator-monitor');
-Route::get('/validator-monitor-inertia', ValidatorMonitorController::class)
-    ->name('validator-monitor-inertia');
+Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
