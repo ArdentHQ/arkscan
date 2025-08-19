@@ -1,20 +1,20 @@
 <?php
 
-use Inertia\Testing\AssertableInertia as Assert;
+declare(strict_types=1);
 
 use App\Contracts\RoundRepository as ContractsRoundRepository;
 use App\DTO\Slot;
 use App\Enums\ValidatorForgingStatus;
 use App\Facades\Network;
-use App\Http\Controllers\Inertia\ValidatorMonitorController;
-// use App\Http\Livewire\Validators\Monitor;
 use App\Models\Block;
+// use App\Http\Livewire\Validators\Monitor;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Inertia\Testing\AssertableInertia as Assert;
 use Livewire\Livewire;
 use function Tests\createBlock;
 use function Tests\createPartialRound;
@@ -41,7 +41,7 @@ function performRequest($context, $withReload = true, $pageCallback = null, $rel
                 $pageCallback($page);
             }
 
-            if (!$withReload) {
+            if (! $withReload) {
                 return;
             }
 
@@ -56,7 +56,6 @@ function performRequest($context, $withReload = true, $pageCallback = null, $rel
                 }
             });
         });
-
 }
 
 describe('Monitor', function () {
@@ -171,7 +170,6 @@ describe('Monitor', function () {
         createRoundEntry(1, 1, $wallets);
 
         performRequest($this, reloadCallback: fn (Assert $reload) => $reload->where('validatorData.validators', []));
-
     });
 
     // it('should show warning icon for validators missing blocks - minutes', function () {
@@ -611,8 +609,8 @@ describe('Monitor', function () {
         performRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
             $reload->where('validatorData.validators', function ($validators) {
                 return collect($validators)->groupBy(fn ($validator) => $validator['status'])->map(fn ($group) => $group->count())->toArray() === [
-                    'done' => 49,
-                    'next' => 1,
+                    'done'    => 49,
+                    'next'    => 1,
                     'pending' => 3,
                 ];
             })
