@@ -339,12 +339,18 @@ function getRoundValidators(bool $withBlock = true, ?int $roundNumber = null): S
     return $validators;
 }
 
-function mockTaggedCache($withTags = false)
+function mockTaggedCache($withTags = false, $withStore = true)
 {
     $taggedCache = Cache::tags('tags');
 
     $mockedCache = Cache::shouldReceive('driver')
         ->andReturn($taggedCache);
+
+    if ($withStore) {
+        $mockedCache
+            ->shouldReceive('store')
+            ->andReturn($taggedCache);
+    }
 
     if ($withTags) {
         $mockedCache
