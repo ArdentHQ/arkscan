@@ -1,5 +1,5 @@
 @props([
-    'colors' => 'border-transparent bg-theme-secondary-200 dark:border-theme-dark-700 dark:text-theme-dark-200',
+    'colors' => 'border-transparent bg-theme-secondary-200 dark:border-theme-dark-700 text-theme-secondary-700 dark:text-theme-dark-200',
 ])
 
 <div {{ $attributes->class([
