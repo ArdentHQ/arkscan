@@ -16440,16 +16440,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v8.2.1",
+            "version": "v8.2.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "f2c0957aa4fbb4a78394e77b8caf969903f28050"
+                "reference": "c667db6d8795f0ccc8f63d54a7780ce8a0cc3d3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/f2c0957aa4fbb4a78394e77b8caf969903f28050",
-                "reference": "f2c0957aa4fbb4a78394e77b8caf969903f28050",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/c667db6d8795f0ccc8f63d54a7780ce8a0cc3d3c",
+                "reference": "c667db6d8795f0ccc8f63d54a7780ce8a0cc3d3c",
                 "shasum": ""
             },
             "require": {
@@ -16506,9 +16506,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/dusk/issues",
-                "source": "https://github.com/laravel/dusk/tree/v8.2.1"
+                "source": "https://github.com/laravel/dusk/tree/v8.2.11"
             },
-            "time": "2024-07-08T06:42:12+00:00"
+            "time": "2024-11-07T21:51:32+00:00"
         },
         {
             "name": "maximebf/debugbar",
