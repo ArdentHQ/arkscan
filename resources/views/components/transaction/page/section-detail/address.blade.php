@@ -52,7 +52,7 @@
         <div class="hidden items-center md:flex">
             <div class="mx-2 border-l border-theme-secondary-300 h-[17px] dark:border-theme-dark-700"></div>
 
-            <x-general.badge class="border-transparent bg-theme-secondary-200 dark:border-theme-dark-700 dark:text-theme-dark-200 inline text-theme-secondary-700 dark:text-theme-dark-200 flex items-center space-x-1.5">
+            <x-general.badge class="inline flex items-center space-x-1.5 border-transparent bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:text-theme-dark-200">
                 <x-ark-icon name="transaction.contract" size="xs" />
 
                 <span>@lang('general.contract')</span>
