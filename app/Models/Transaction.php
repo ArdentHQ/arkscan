@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
@@ -113,6 +114,7 @@ final class Transaction extends Model
 
     protected $with = [
         'receipt',
+        'multiPaymentRecipients',
     ];
 
     /**
@@ -226,6 +228,11 @@ final class Transaction extends Model
     public function votedFor(): HasOne
     {
         return $this->hasOne(Wallet::class, 'address', 'votedForAddress');
+    }
+
+    public function multiPaymentRecipients(): HasMany
+    {
+        return $this->hasMany(MultiPayment::class, 'hash', 'hash');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder

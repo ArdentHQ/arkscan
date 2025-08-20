@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Repositories\TransactionRepository;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 beforeEach(fn () => $this->subject = new TransactionRepository());
 
@@ -44,6 +46,14 @@ describe('allByWallet', function () {
             ->transfer()
             ->create();
 
+        MultiPayment::factory()
+            ->create([
+                'to'     => $wallet->address,
+                'from'   => $transaction->from,
+                'hash'   => $transaction->hash,
+                'amount' => BigNumber::new(1),
+            ]);
+
         $result = $this->subject->allByWallet($wallet->address, $wallet->public_key);
 
         expect($result->count())->toBe(1);
@@ -64,9 +74,17 @@ describe('allByWallet', function () {
             ])
             ->create();
 
-        Transaction::factory()
-            ->transfer()
-            ->create();
+        MultiPayment::factory()
+            ->count(2)
+            ->state(new Sequence(
+                ['to' => $wallet->address],
+                ['to' => $otherWallet->address],
+            ))
+            ->create([
+                'from'   => $transaction->from,
+                'hash'   => $transaction->hash,
+                'amount' => BigNumber::new(1),
+            ]);
 
         $result = $this->subject->allByWallet($otherWallet->address, $otherWallet->public_key);
 
