@@ -8,6 +8,7 @@ export default function Detail({
     isLoading = false,
     className = '',
     children,
+    ...props
 }: React.PropsWithChildren<{
     title: string;
     titleClass?: string;
@@ -16,7 +17,10 @@ export default function Detail({
     className?: string;
 }>) {
     return (
-        <div className="flex flex-col space-y-2 font-semibold">
+        <div
+            className="flex flex-col space-y-2 font-semibold"
+            {...props}
+        >
             <div className={classNames({
                 "text-sm whitespace-nowrap text-theme-secondary-700 dark:text-theme-dark-200": true,
                 [titleClass]: true,

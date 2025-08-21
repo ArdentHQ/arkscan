@@ -11,6 +11,7 @@ export function HeaderStat({
     value,
     color,
     isLoading,
+    ...props
 }: {
     title: string;
     value?: string | number | null;
@@ -21,6 +22,7 @@ export function HeaderStat({
         <Detail
             title={title}
             className="flex items-center space-x-2"
+            {...props}
         >
             <div className={classNames({
                 "rounded-full w-3 h-3": true,
@@ -57,6 +59,7 @@ export default function HeaderStats({ height, statistics }: {
                         value={statistics?.performances?.forging}
                         color="bg-theme-success-700 dark:bg-theme-success-500"
                         isLoading={isLoading || statistics?.performances?.forging === undefined}
+                        data-testid="forging-count"
                     />
 
                     <HeaderStat
@@ -64,6 +67,7 @@ export default function HeaderStats({ height, statistics }: {
                         value={statistics?.performances?.missed}
                         color="bg-theme-warning-700 dark:bg-theme-warning-400"
                         isLoading={isLoading || statistics?.performances?.missed === undefined}
+                        data-testid="missed-count"
                     />
 
                     <HeaderStat
@@ -71,6 +75,7 @@ export default function HeaderStats({ height, statistics }: {
                         value={statistics?.performances?.missing}
                         color="bg-theme-danger-600 dark:bg-theme-danger-400"
                         isLoading={isLoading || statistics?.performances?.missing === undefined}
+                        data-testid="not-forging-count"
                     />
                 </Card>
 
