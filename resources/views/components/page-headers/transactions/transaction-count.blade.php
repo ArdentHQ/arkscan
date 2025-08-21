@@ -4,5 +4,5 @@
     :title="trans('pages.transactions.transactions_24h')"
     :attributes="$attributes"
 >
-    <span>{{ $count }}</span>
+    <x-number>{{ $count }}</x-number>
 </x-page-headers.header-item>
