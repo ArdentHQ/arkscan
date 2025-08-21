@@ -523,9 +523,6 @@ describe('Monitor', function () {
         6 => [6, '2024-02-01 14:02:36'],
     ]);
 
-
-
-
     it('should show warning icon for validators missing blocks - minutes', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
