@@ -165,4 +165,10 @@ module.exports = {
             addVariant("dim-hover", ":is(.dark.dim &:hover)");
         }),
     ],
+
+    content: [
+        ...defaultConfig.content,
+
+        "./resources/inertia/**/*.tsx",
+    ],
 };

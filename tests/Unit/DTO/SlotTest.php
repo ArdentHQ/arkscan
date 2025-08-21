@@ -7,6 +7,7 @@ use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
@@ -50,6 +51,7 @@ it('should make an instance that has all properties', function (string $status) 
     expect($subject->wallet())->toBeInstanceOf(WalletViewModel::class);
     expect($subject->forgingAt())->toBeInstanceOf(Carbon::class);
     expect($subject->lastBlock())->toBeArray();
+    expect($subject->roundNumber())->toBeInt();
     expect($subject->hasForged())->toBeBool();
     expect($subject->justMissed())->toBeBool();
     expect($subject->keepsMissing())->toBeBool();
@@ -152,4 +154,54 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
 
     expect($subject->missedCount())->toBe(2);
     expect($subject->currentRoundBlocks())->toBe(0);
+});
+
+it('should convert to array', function () {
+    $wallet = Wallet::factory()->create([
+        'balance' => BigNumber::new(1000),
+    ])->fresh();
+
+    $roundBlockCount = Block::whereBetween('number', [1, 5])
+        ->get()
+        ->groupBy('proposer')
+        ->map(function ($blocks) {
+            return count($blocks);
+        });
+
+    $subject = new Slot(
+        address: $wallet->address,
+        order: 1,
+        wallet: ViewModelFactory::make($wallet),
+        forgingAt: Timestamp::fromGenesis(1),
+        lastBlock: [
+            'address'   => $wallet->address,
+            'height'    => 1,
+        ],
+        status: 'done',
+        roundBlockCount: $roundBlockCount,
+        roundNumber: 10,
+        secondsUntilForge: 24,
+    );
+
+    expect($subject->toArray())->toEqual([
+        'address'           => $wallet->address,
+        'order'             => 1,
+        'wallet'            => [
+            ...$wallet->toArray(),
+
+            'isPending'   => false,
+            'hasForged'   => false,
+            'justMissed'  => true,
+            'missedCount' => 0,
+        ],
+        'forgingAt'         => Timestamp::fromGenesis(1)->toIso8601String(),
+        'lastBlock'         => [
+            'address'   => $wallet->address,
+            'height'    => 1,
+        ],
+        'status'            => 'done',
+        'roundBlockCount'   => $roundBlockCount->toArray(),
+        'roundNumber'       => 10,
+        'secondsUntilForge' => 24,
+    ]);
 });

@@ -22,6 +22,10 @@ final class BigInteger implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
+        if ($value instanceof BigNumber) {
+            return $value;
+        }
+
         return BigNumber::new($value === null ? 0 : $value);
     }
 

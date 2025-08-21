@@ -20,4 +20,5 @@ coverage.xml
 auth.json
 TxtVoteReport.txt
 .env.testing
+.env.dusk.*
 /.phpunit.cache
