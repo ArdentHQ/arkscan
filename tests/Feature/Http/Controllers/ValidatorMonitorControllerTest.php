@@ -8,6 +8,7 @@ use App\Models\Block;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Services\Cache\WalletCache;
+use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -521,6 +522,97 @@ describe('Monitor', function () {
         5 => [5, '2024-02-01 14:02:00'], // doubles up because we hit the batch of missing validators on the second passthrough
         6 => [6, '2024-02-01 14:02:36'],
     ]);
+
+
+
+
+    it('should show warning icon for validators missing blocks - minutes', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $validators] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        $validator = (new WalletViewModel($validators->get(4)));
+
+        expect($validator->performance())->toBe([false, false]);
+    });
+
+    it('should show warning icon for validators missing blocks - hours', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $validators] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        $this->travelTo(Carbon::parse('2024-02-01 15:00:00Z'));
+
+        $validator = (new WalletViewModel($validators->get(4)));
+
+        expect($validator->performance())->toBe([false, false]);
+    });
+
+    it('should show warning icon for validators missing blocks - days', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $validators] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+        $validator = (new WalletViewModel($validators->get(4)));
+
+        expect($validator->performance())->toBe([false, false]);
+    });
 });
 
 describe('Data Boxes', function () {
@@ -684,5 +776,240 @@ describe('Data Boxes', function () {
         performRequest($this, reloadCallback: function (Assert $reload) {
             $reload->where('validatorData.statistics.nextValidator', null);
         });
+    });
+
+    it('should determine if validators are not forging based on their round history', function () {
+        [$validators] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        performRequest($this);
+
+        $validatorWallet = $validators->get(4);
+        $validator       = new WalletViewModel($validatorWallet);
+
+        expect($validator->performance())->toBe([false, false]);
+    });
+
+    it('should calculate forged correctly with current round', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [$validators, $round, $height] = createRealisticRound([
+            array_fill(0, 53, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        for ($i = 0; $i < 3; $i++) {
+            createRoundEntry($round, $height, $validators);
+            $validatorsOrder = getRoundValidators(false, $round);
+            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['address'] === $validators->get(4)->address);
+            if ($validatorIndex < 51) {
+                break;
+            }
+
+            [$validators, $round, $height] = createRealisticRound([
+                array_fill(0, 53, true),
+                [
+                    ...array_fill(0, 4, true),
+                    false,
+                    ...array_fill(0, 48, true),
+                ],
+            ], $this);
+        }
+
+        createPartialRound($round, $height, 51, $this, [], [$validators->get(4)->address]);
+
+        expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
+    });
+
+    it('should calculate forged correctly for previous rounds', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $validators] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            array_fill(0, 53, true),
+            array_fill(0, 53, true),
+        ], $this);
+
+        expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, true]);
+    });
+
+    it('should calculate missed correctly with current round', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [$validators, $round, $height] = createRealisticRound([
+            array_fill(0, 53, true),
+            array_fill(0, 53, true),
+            array_fill(0, 53, true),
+        ], $this);
+
+        for ($i = 0; $i < 3; $i++) {
+            createRoundEntry($round, $height, $validators);
+            $validatorsOrder = getRoundValidators(false, $round);
+            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['address'] === $validators->get(4)->address);
+            if ($validatorIndex < 51) {
+                break;
+            }
+
+            [$validators, $round, $height] = createRealisticRound([
+                array_fill(0, 53, true),
+            ], $this);
+        }
+
+        createPartialRound($round, $height, 51, $this, [$validators->get(4)->address], [$validators->get(4)->address]);
+
+        expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
+    });
+
+    it('should calculate missed correctly for previous rounds', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $validators] = createRealisticRound([
+            array_fill(0, 53, true),
+            array_fill(0, 53, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
+    });
+
+    it('should calculate not forging correctly with current round', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [$validators, $round, $height] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        for ($i = 0; $i < 3; $i++) {
+            createRoundEntry($round, $height, $validators);
+            $validatorsOrder = getRoundValidators(false, $round);
+            $validatorIndex  = $validatorsOrder->search(fn ($validator) => $validator['address'] === $validators->get(4)->address);
+            if ($validatorIndex < 51) {
+                break;
+            }
+
+            [$validators, $round, $height] = createRealisticRound([
+                [
+                    ...array_fill(0, 4, true),
+                    false,
+                    ...array_fill(0, 48, true),
+                ],
+            ], $this);
+        }
+
+        createPartialRound($round, $height, 51, $this, [$validators->get(4)->address], [$validators->get(4)->address]);
+
+        expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
+    });
+
+    it('should calculate not forging correctly for previous rounds', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        [0 => $validators] = createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        performRequest($this);
+
+        expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
+    });
+
+    it('should determine if validators are forging after missing 4 slots based on their round history', function () {
+        createRoundWithValidatorsAndPerformances([false, true]);
+
+        performRequest($this);
+    });
+
+    it('should reload on new block event', function () {
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        createRealisticRound([
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 48, true),
+            ],
+        ], $this);
+
+        performRequest($this);
+    });
+
+    it('should determine if validators are forging based on their round history', function () {
+        createRoundWithValidatorsAndPerformances([true, true]);
+
+        performRequest($this);
     });
 });

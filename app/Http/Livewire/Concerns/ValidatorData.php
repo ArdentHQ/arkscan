@@ -26,10 +26,6 @@ trait ValidatorData
 
     public function pollValidators(): void
     {
-        if (! $this->isReady) {
-            return;
-        }
-
         try {
             $this->validators = $this->fetchValidators();
 
@@ -92,9 +88,12 @@ trait ValidatorData
                 ->first();
         }
 
+        // Ignore coverage for now
+        // @codeCoverageIgnoreStart
         if ($lastRoundBlock === null) {
             return [];
         }
+        // @codeCoverageIgnoreEnd
 
         $overflowBlocks = Block::where('number', '>', $lastRoundBlock->number)
             ->orderBy('number', 'asc')

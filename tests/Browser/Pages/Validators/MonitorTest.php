@@ -763,5 +763,4 @@ describe('Data Boxes', function () {
             });
         });
     });
-
 });
