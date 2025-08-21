@@ -24,6 +24,7 @@ beforeEach(function () {
     $this->withoutExceptionHandling();
 });
 
+// @TODO: implement dusk tests - https://app.clickup.com/t/86dxjarym
 describe('Monitor', function () {
     beforeEach(function () {
         $this->activeValidators = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
@@ -264,16 +265,6 @@ describe('Data Boxes', function () {
         performRequest($this, reloadCallback: function (Assert $reload) {
             $validatorWallet = Wallet::first();
             $validator       = new WalletViewModel($validatorWallet);
-
-            dd($reload);
-
-            // $reload->where('validatorData.statistics.performances', function ($performances) {
-            //     return collect($performances)->keys()->toArray() === [
-            //         'forging',
-            //         'missed',
-            //         'missing',
-            //     ];
-            // });
         });
 
         // expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::forging);
@@ -690,8 +681,6 @@ describe('Data Boxes', function () {
         performRequest($this, reloadCallback: function (Assert $reload) {
             $validatorWallet = Wallet::first();
             $validator       = new WalletViewModel($validatorWallet);
-
-            dd($reload);
 
             // $reload->where('validatorData.statistics.performances', function ($performances) {
             //     return collect($performances)->keys()->toArray() === [

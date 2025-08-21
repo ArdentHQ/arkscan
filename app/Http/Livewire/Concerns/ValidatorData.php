@@ -88,7 +88,7 @@ trait ValidatorData
                 ->first();
         }
 
-        // Ignore coverage for now
+        // @TODO: cover this line as part of the dusk tests update - https://app.clickup.com/t/86dxjarym
         // @codeCoverageIgnoreStart
         if ($lastRoundBlock === null) {
             return [];
