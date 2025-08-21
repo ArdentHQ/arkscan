@@ -19,12 +19,14 @@ use App\Models\Scopes\UsernameRegistrationScope;
 use App\Models\Scopes\UsernameResignationScope;
 use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
+use App\Models\Scopes\ValidatorUpdateScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
@@ -113,6 +115,7 @@ final class Transaction extends Model
 
     protected $with = [
         'receipt',
+        'multiPaymentRecipients',
     ];
 
     /**
@@ -228,6 +231,11 @@ final class Transaction extends Model
         return $this->hasOne(Wallet::class, 'address', 'votedForAddress');
     }
 
+    public function multiPaymentRecipients(): HasMany
+    {
+        return $this->hasMany(MultiPayment::class, 'hash', 'hash');
+    }
+
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
     {
         $hasAdjustedFilters = in_array(false, $filter, true);
@@ -263,6 +271,11 @@ final class Transaction extends Model
                     ->orWhere(function ($query) use ($filter) {
                         $query->when($filter['validator'] === true, function ($query) {
                             $query->withScope(ValidatorResignationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['validator'] === true, function ($query) {
+                            $query->withScope(ValidatorUpdateScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {

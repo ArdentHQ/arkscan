@@ -6,7 +6,7 @@
     @unless ($noResultsMessage)
         {{ $slot }}
     @else
-        <div class="dark:text-theme-dark-200">
+        <div class="leading-7 dark:text-theme-dark-200">
             {{ $noResultsMessage }}
         </div>
     @endunless

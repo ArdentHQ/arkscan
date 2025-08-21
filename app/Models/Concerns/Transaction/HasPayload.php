@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns\Transaction;
 
-use App\Enums\ContractMethod;
 use App\Services\BigNumber;
 use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
-use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Brick\Math\RoundingMode;
 
 trait HasPayload
@@ -68,39 +66,6 @@ trait HasPayload
             'methodId'  => $methodId,
             'arguments' => $arguments,
         ])->render());
-    }
-
-    /**
-     * @return array<int, array{address: string, amount: float}>
-     */
-    public function multiPaymentRecipients(): array
-    {
-        /**
-         * @var string $payload
-         */
-        $payload = $this->rawPayload();
-
-        if (! str_starts_with($payload, ContractMethod::multiPayment())) {
-            throw new \Exception('This transaction is not a multi-payment.');
-        }
-
-        $method = (new AbiDecoder(ContractAbiType::MULTIPAYMENT))->decodeFunctionData($payload);
-
-        $recipients = [];
-
-        $addresses = $method['args'][0];
-        $amounts   = $method['args'][1];
-
-        foreach ($addresses as $index => $address) {
-            if (isset($amounts[$index])) {
-                $recipients[] = [
-                    'address' => $address,
-                    'amount'  => UnitConverter::formatUnits($amounts[$index], 'ark'),
-                ];
-            }
-        }
-
-        return $recipients;
     }
 
     public function getMethodData(bool $tryAllAbis = false): ?array

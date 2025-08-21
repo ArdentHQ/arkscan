@@ -7,7 +7,6 @@ namespace App\Models\Scopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Support\Facades\DB;
 
 final class HasMultiPaymentRecipientScope implements Scope
 {
@@ -18,13 +17,11 @@ final class HasMultiPaymentRecipientScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $builder->withScope(MultiPaymentScope::class)
-            ->whereIn(
-                DB::raw("'".strtolower($this->address)."'"),
-                function ($query) {
-                    $query->selectRaw('LOWER(CONCAT(\'0x\', RIGHT(encode(substring(transactions.data, 69 + (n * 32), 32), \'hex\'), 40)))')
-                        ->from(DB::raw('generate_series(1, CAST(encode(SUBSTRING(transactions.data, 69, 32), \'hex\') AS int)) n'));
-                }
-            );
+        $builder->whereExists(function ($query) {
+            $query->selectRaw('1')
+                ->from('multi_payments')
+                ->whereColumn('transactions.hash', 'multi_payments.hash')
+                ->where('multi_payments.to', $this->address);
+        });
     }
 }
