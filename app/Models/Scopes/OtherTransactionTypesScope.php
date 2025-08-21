@@ -28,6 +28,7 @@ final class OtherTransactionTypesScope implements Scope
                             ContractMethod::unvote(),
                             ContractMethod::validatorRegistration(),
                             ContractMethod::validatorResignation(),
+                            ContractMethod::validatorUpdate(),
                         ])
                 );
             });

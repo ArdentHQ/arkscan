@@ -19,6 +19,7 @@ use App\Models\Scopes\UsernameRegistrationScope;
 use App\Models\Scopes\UsernameResignationScope;
 use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
+use App\Models\Scopes\ValidatorUpdateScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Builder;
@@ -270,6 +271,11 @@ final class Transaction extends Model
                     ->orWhere(function ($query) use ($filter) {
                         $query->when($filter['validator'] === true, function ($query) {
                             $query->withScope(ValidatorResignationScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['validator'] === true, function ($query) {
+                            $query->withScope(ValidatorUpdateScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
