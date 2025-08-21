@@ -683,7 +683,6 @@ describe('Data Boxes', function () {
             ]);
     });
 
-
     it('should determine if validators are forging based on their round history', function () {
         createRoundWithValidatorsAndPerformances([true, true]);
 

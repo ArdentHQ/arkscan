@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Casts\BigInteger;
 use App\Models\Wallet;
 use App\Services\BigNumber;
