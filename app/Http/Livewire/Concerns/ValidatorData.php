@@ -8,6 +8,7 @@ use App\DTO\Slot;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
+use App\Models\Wallet;
 use App\Services\Cache\RequestScopedCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\DB;
 trait ValidatorData
 {
     public const MISSED_INCREMENT_SECONDS = 2;
+
+    public const CACHE_TTL_SECONDS = 2;
 
     public function pollValidators(): void
     {
@@ -153,57 +156,29 @@ trait ValidatorData
         );
     }
 
-    private function cacheTtl(): int
-    {
-        return (int) ceil(Network::blockTime() / 2);
-    }
-
     private function cacheLastBlocks(array $validators): void
     {
-        Cache::remember('monitor:last-blocks', $this->cacheTtl(), function () use ($validators): bool {
-            $blocks = Block::query()
-                ->orderBy('number', 'desc')
-                ->limit(Network::validatorCount() * 2)
+        Cache::remember('monitor:last-blocks', static::CACHE_TTL_SECONDS, function () use ($validators): bool {
+            $validatorEntries = Wallet::whereIn('address', $validators)
                 ->get();
 
-            $lastBlockHashes = DB::connection('explorer')
-                ->table('wallets')
-                ->whereIn('address', $validators)
-                ->select([
-                    'address',
-                    'last_block_hash' => function ($query) {
-                        $query->select('hash')
-                            ->from('blocks')
-                            ->whereColumn('proposer', 'address')
-                            ->orderBy('number', 'desc')
-                            ->limit(1);
-                    },
-                ]);
-
-            /** @var Collection $lastBlocks */
-            $lastBlocks = Block::whereIn('hash', $lastBlockHashes->pluck('last_block_hash'))
-                ->get()
-                ->groupBy('proposer');
-
-            foreach ($validators as $address) {
-                $block = $blocks->firstWhere('proposer', $address);
-
-                // The validator hasn't forged in some rounds.
-                if (is_null($block) && $lastBlocks->has($address)) {
-                    $block = $lastBlocks->get($address)
-                        ->first();
-                }
+            foreach ($validatorEntries as $validator) {
+                $block = $validator->attributes['validatorLastBlock'] ?? null;
 
                 // The validator has never forged.
                 if (is_null($block)) {
                     continue;
                 }
 
-                (new WalletCache())->setLastBlock($address, [
-                    'hash'                   => $block->hash,
-                    'number'                 => $block->number->toNumber(),
-                    'timestamp'              => $block->timestamp,
-                    'proposer'               => $block->proposer,
+                if ($block === []) {
+                    continue;
+                }
+
+                (new WalletCache())->setLastBlock($validator->address, [
+                    'hash'                   => $block['hash'],
+                    'number'                 => $block['number'],
+                    'timestamp'              => $block['timestamp'],
+                    'proposer'               => $validator->address,
                 ]);
             }
 
@@ -224,11 +199,7 @@ trait ValidatorData
 
     private function hasRoundStarted(int $height): bool
     {
-        return Cache::remember(
-            'validator:round:'.$height,
-            $this->cacheTtl(),
-            fn () => Block::where('number', $height)->exists()
-        );
+        return Cache::remember('validator:round:'.$height, static::CACHE_TTL_SECONDS, fn () => Block::where('number', $height)->exists());
     }
 
     private function fetchValidators(): array
