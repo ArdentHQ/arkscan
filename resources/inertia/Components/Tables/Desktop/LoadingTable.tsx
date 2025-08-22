@@ -20,7 +20,6 @@ export default function LoadingTable({ columns, rowCount }: {
                                 {columns.map((column, index) => (
                                     <th
                                         key={index}
-                                        style={{ width: column.width }}
                                         className={column.className}
                                     >
                                         {column.name || ''}

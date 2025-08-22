@@ -22,14 +22,11 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
                 "validator-monitor-favorite": withFavoriteBorder && isFavorite(validator.wallet.public_key),
             })}
         >
-            <TableCell
-                className="text-center"
-                width={20}
-            >
+            <TableCell className="text-center w-[20px]">
                 <FavoriteIcon validator={validator} />
             </TableCell>
 
-            <TableCell width={60}>
+            <TableCell className="w-[60px]">
                 {validator.order}
             </TableCell>
 
@@ -43,31 +40,19 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
                 </div>
             </TableCell>
 
-            <TableCell
-                className="table-cell text-left hidden md:table-cell md-lg:hidden"
-                width={172}
-            >
+            <TableCell className="table-cell text-left hidden md:table-cell md-lg:hidden w-[180px]">
                 <Status validator={validator} withTime />
             </TableCell>
 
-            <TableCell
-                className="table-cell text-left md:hidden md-lg:table-cell"
-                width={374}
-            >
+            <TableCell className="table-cell text-left md:hidden md-lg:table-cell w-[180px] xl:w-[374px]">
                 <Status validator={validator} />
             </TableCell>
 
-            <TableCell
-                className="md:table-cell text-left whitespace-nowrap md:hidden md-lg:table-cell"
-                width={160}
-            >
+            <TableCell className="md:table-cell text-left whitespace-nowrap md:hidden md-lg:table-cell w-[160px]">
                 <TimeToForge forgingAt={validator.forgingAt} wallet={validator.wallet} />
             </TableCell>
 
-            <TableCell
-                className="text-right"
-                width={100}
-            >
+            <TableCell className="text-right w-[100px]">
                 <BlockHeight validator={validator} />
             </TableCell>
         </tr>
@@ -174,12 +159,12 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
                     columns={[
                         {
                             type: 'id',
-                            width: 20,
+                            className: "w-[20px]",
                         },
                         {
                             name: "Order",
                             type: "number",
-                            width: 60,
+                            className: "w-[60px]",
                         },
                         {
                             name: "Validator",
@@ -187,24 +172,21 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
                         },
                         {
                             name: "Status / Time to Forge",
-                            width: 172,
                             type: "badge",
-                            className: "text-left hidden md:table-cell md-lg:hidden",
+                            className: "text-left hidden md:table-cell md-lg:hidden w-[180px]",
                         },
                         {
                             name: "Status",
-                            width: 374,
                             type: "badge",
-                            className: "text-left md:hidden md-lg:table-cell",
+                            className: "text-left md:hidden md-lg:table-cell w-[180px] xl:w-[374px]",
                         },
                         {
                             name: "Time to Forge",
-                            width: 160,
-                            className: "md:hidden md-lg:table-cell"
+                            className: "md:hidden md-lg:table-cell w-[160px]",
                         },
                         {
                             name: "Block Height",
-                            className: "text-right",
+                            className: "text-right w-[100px]",
                         },
                     ]}
                 />
