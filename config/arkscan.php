@@ -26,7 +26,7 @@ return [
             'coin'               => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Public Network'),
             'alias'              => env('ARKSCAN_NETWORK_ALIAS', 'mainnet'),
-            'api'                => env('ARKSCAN_NETWORK_API', 'https://wallets.mainsailhq.com/api'),
+            'api'                => env('ARKSCAN_NETWORK_API', 'https://mainnet.mainsailhq.com/api'),
             'nethash'            => env('ARKSCAN_NETHASH', '6e84d08bd299ed97c212c886c98a57e36545c8f5d645ca7eeae63a8bd62d8988'),
             'mainnetExplorerUrl' => $mainnetExplorer,
             'testnetExplorerUrl' => $testnetExplorer,
@@ -49,7 +49,7 @@ return [
         'development' => [
             'coin'               => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),
             'name'               => env('ARKSCAN_NETWORK_NAME', 'ARK Development Network'),
-            'api'                => env('ARKSCAN_NETWORK_API', 'https://dwallets.mainsailhq.com/api'),
+            'api'                => env('ARKSCAN_NETWORK_API', 'https://testnet.mainsailhq.com/api'),
             'alias'              => env('ARKSCAN_NETWORK_ALIAS', 'devnet'),
             'nethash'            => env('ARKSCAN_NETHASH', '7b9a7c6a14d3f8fb3f47c434b8c6ef0843d5622f6c209ffeec5411aabbf4bf1c'),
             'mainnetExplorerUrl' => $mainnetExplorer,
