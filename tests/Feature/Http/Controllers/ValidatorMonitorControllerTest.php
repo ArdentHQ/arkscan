@@ -150,12 +150,38 @@ describe('Monitor', function () {
         });
 
         $wallets->first()->blocks()->delete();
+        $wallets->get(1)->forceFill([
+            'attributes' => [
+                ...$wallets->get(1)->attributes,
+
+                'validatorLastBlock' => [],
+            ],
+        ])->save();
+
+        foreach ($wallets->skip(2) as $wallet) {
+            $lastBlock = Block::where('proposer', $wallet->address)
+                ->orderBy('number', 'desc')
+                ->first();
+
+            $wallet->forceFill([
+                'attributes' => [
+                    ...$wallet->attributes,
+
+                    'validatorLastBlock' => [
+                        'hash'      => $lastBlock->hash,
+                        'number'    => $lastBlock->number->toNumber(),
+                        'timestamp' => $lastBlock->timestamp,
+                    ],
+                ],
+            ])->save();
+        }
 
         performRequest($this);
 
         expect((new WalletCache())->getLastBlock($wallets->first()->address))->toBe([]);
+        expect((new WalletCache())->getLastBlock($wallets->get(1)->address))->toBe([]);
 
-        foreach ($wallets->skip(1) as $wallet) {
+        foreach ($wallets->skip(2) as $wallet) {
             expect((new WalletCache())->getLastBlock($wallet->address))->not()->toBe([]);
         }
     });
