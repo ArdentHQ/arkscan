@@ -53,7 +53,7 @@ export default function TimeToForge({
 
         updateOutput();
 
-        tickingTimerRef.current = setInterval(updateOutput, 2000);
+        tickingTimerRef.current = setInterval(updateOutput, 1000);
 
         return () => {
             if (! tickingTimerRef.current) {
