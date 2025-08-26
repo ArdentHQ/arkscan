@@ -19,13 +19,13 @@
     </thead>
     <tbody>
         @foreach($recepients as $recipient)
-            <x-ark-tables.row wire:key="recipient-{{ $recipient['address'] }}-{{ $recipient['amount'] }}-{{ $loop->index }}">
+            <x-ark-tables.row wire:key="recipient-{{ $recipient['to'] }}-{{ $recipient['amount'] }}-{{ $loop->index }}">
                 <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.address truncateBreakpoint="lg" :address="$recipient['address']" />
+                    <x-tables.rows.desktop.encapsulated.address truncateBreakpoint="lg" :address="$recipient['to']" />
                 </x-ark-tables.cell>
 
                 <x-ark-tables.cell class="text-right">
-                    <x-general.amount-small :amount="$recipient['amount']" />
+                    <x-general.amount-small :amount="ExplorerNumberFormatter::weiToArk($recipient['amount'])" />
                 </x-ark-tables.cell>
             </x-ark-tables.row>
         @endforeach
