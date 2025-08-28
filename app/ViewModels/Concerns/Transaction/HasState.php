@@ -13,10 +13,6 @@ trait HasState
 
     public function hasFailedStatus(): bool
     {
-        if ($this->transaction->receipt === null) {
-            return true;
-        }
-
-        return $this->transaction->receipt->status === false;
+        return $this->transaction->status === false;
     }
 }

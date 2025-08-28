@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Models\Receipt;
+use App\Models\Transaction;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 
@@ -26,9 +26,9 @@ class CacheContractAddresses extends Command
 
     public function handle(): void
     {
-        $addresses = Receipt::where('contract_address', '!=', null)
+        $addresses = Transaction::where('deployed_contract_address', '!=', null)
             ->distinct()
-            ->pluck('contract_address')
+            ->pluck('deployed_contract_address')
             ->toArray();
 
         (new WalletCache())->setContractAddresses($addresses);

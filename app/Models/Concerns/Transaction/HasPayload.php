@@ -107,16 +107,11 @@ trait HasPayload
 
     public function parseReceiptError(): ?string
     {
-        // Code-wise, receipt could be null, but in practice it should never be.
-        if ($this->receipt === null) {
+        if ($this->status === true) {
             return null;
         }
 
-        if ($this->receipt->status === true) {
-            return null;
-        }
-
-        $outputPayload = $this->decodePayload($this->receipt->output);
+        $outputPayload = $this->decodePayload($this->output);
         if ($outputPayload !== null) {
             $contractAbiTypes = [
                 ContractAbiType::CUSTOM,
@@ -135,7 +130,7 @@ trait HasPayload
         }
 
         $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
-        $gasUsed                  = BigNumber::new($this->receipt->gas_used->valueOf()->toFloat());
+        $gasUsed                  = BigNumber::new($this->gas_used->valueOf()->toFloat());
         if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
             return 'InsufficientGas';
         }

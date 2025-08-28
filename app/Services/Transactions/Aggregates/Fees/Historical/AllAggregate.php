@@ -20,13 +20,12 @@ final class AllAggregate
     public function aggregate(): Collection
     {
         $select = [
-            'SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fee',
+            'SUM(gas_price * COALESCE(gas_used, 0)) as fee',
             sprintf("to_char(to_timestamp(%d+timestamp) AT TIME ZONE 'UTC', '%s') as formatted_date", Network::epoch()->timestamp, 'YYYY-MM'),
         ];
 
         return Transaction::query()
             ->select(DB::raw(implode(', ', $select)))
-            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->orderBy('formatted_date')
             ->groupBy('formatted_date')
             ->pluck('fee', 'formatted_date')
