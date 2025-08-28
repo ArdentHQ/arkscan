@@ -305,7 +305,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
 it('should fallback to the sender if no recipient address exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'to' => null,
+        'to'                        => null,
         'deployed_contract_address' => null,
     ]));
 
@@ -317,7 +317,7 @@ it('should fallback to receipt deployed contract address if set', function () {
 
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
         'deployed_contract_address' => $wallet->address,
-        'to' => null,
+        'to'                        => null,
     ]));
 
     expect($this->subject->recipient()->address())->toBe('deployedContractAddress');
@@ -761,7 +761,7 @@ it('should not return receipt error for insufficient gas if receipt did not fail
 });
 
 it('should not modify gas used instance when getting receipt error', function () {
-    $gasUsed = BigNumber::new(79326);
+    $gasUsed     = BigNumber::new(79326);
     $transaction = Transaction::factory()->create([
         'gas'      => BigNumber::new(80131),
         'gas_used' => $gasUsed,

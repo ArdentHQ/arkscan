@@ -17,14 +17,14 @@ it('should aggregate the fees for 12 months', function () {
         ->create([
             'gas_price' => 1,
             'timestamp' => $startTime->getTimestampMs(),
-            'gas_used' => 10000,
+            'gas_used'  => 10000,
         ])->sortByDesc('timestamp');
 
     Transaction::factory(10)
         ->create([
             'gas_price' => 1,
             'timestamp' => $endTime->getTimestampMs(),
-            'gas_used' => 10000,
+            'gas_used'  => 10000,
         ]);
 
     $result = (new YearAggregate())->aggregate();

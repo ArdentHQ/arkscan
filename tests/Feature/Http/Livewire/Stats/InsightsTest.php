@@ -135,7 +135,7 @@ it('should render transaction daily average', function (): void {
         ]);
 
     $recipientAddress = faker()->wallet['address'];
-    $amount = BigNumber::new(1000 * 1e18);
+    $amount           = BigNumber::new(1000 * 1e18);
     Transaction::factory(4)
         ->multiPayment([$recipientAddress], [$amount])
         ->create([

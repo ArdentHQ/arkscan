@@ -129,7 +129,7 @@ it('should not return error for insufficient gas if receipt did not fail', funct
 });
 
 it('should not modify gas used instance when getting receipt error', function () {
-    $gasUsed = BigNumber::new(79326);
+    $gasUsed     = BigNumber::new(79326);
     $transaction = Transaction::factory()->create([
         'gas'      => BigNumber::new(80131),
         'gas_used' => $gasUsed,

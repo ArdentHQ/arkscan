@@ -49,13 +49,13 @@ function generateTransactions(): array
             'status'         => true,
         ]);
 
-        $unvoteTransaction = Transaction::factory()
-        ->unvote()
-        ->create([
-            'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
-            'from'           => $sender2->address,
-            'status'         => true,
-        ]);
+    $unvoteTransaction = Transaction::factory()
+    ->unvote()
+    ->create([
+        'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
+        'from'           => $sender2->address,
+        'status'         => true,
+    ]);
 
     return [
         'validator1'           => $validator1,
