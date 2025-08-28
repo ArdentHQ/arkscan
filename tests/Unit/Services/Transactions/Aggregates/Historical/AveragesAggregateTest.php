@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Contracts\Network as NetworkContract;
+use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -26,17 +27,17 @@ it('should return count for non-multipayment', function () {
 
     Transaction::factory(6)
         ->transfer()
-        ->withReceipt(data: ['status' => true])
         ->create([
             'value'     => 20 * 1e18,
             'gas_price' => 25,
+            'status'    => true,
         ]);
 
     Transaction::factory(6)
-        ->withReceipt(data: ['status' => true])
         ->unvote()
         ->create([
             'value'     => 0 * 1e18,
+            'status'    => true,
             'gas_price' => 25,
         ]);
 
@@ -64,28 +65,45 @@ it('should return count for multipayment', function () {
     $transactionCount = 4;
 
     Transaction::factory(2)
-        ->withReceipt(data: ['status' => true])
         ->create([
             'value'     => 10 * 1e18,
             'gas_price' => 25,
+            'status'    => true,
         ]);
 
     $recipient = Wallet::factory()->create();
 
-    Transaction::factory()
-        ->withReceipt(data: ['status' => true])
+    $multipaymentTransaction = Transaction::factory()
         ->multiPayment([$recipient->address], [BigNumber::new(14 * 1e18)])
         ->create([
             'value'     => 0,
+            'status'    => true,
             'gas_price' => 25,
         ]);
 
-    Transaction::factory()
-        ->withReceipt(data: ['status' => true])
+    MultiPayment::factory()
+        ->create([
+            'to'     => $recipient->address,
+            'from'   => $multipaymentTransaction->from,
+            'hash'   => $multipaymentTransaction->hash,
+            'amount' => BigNumber::new(14 * 1e18),
+        ]);
+
+    $multipaymentTransaction = Transaction::factory()
         ->multiPayment([$recipient->address, $recipient->address], [BigNumber::new(14 * 1e18), BigNumber::new(14 * 1e18)])
         ->create([
             'value'     => 0,
+            'status'    => true,
             'gas_price' => 25,
+        ]);
+
+    MultiPayment::factory()
+        ->count(2)
+        ->create([
+            'to'     => $recipient->address,
+            'from'   => $multipaymentTransaction->from,
+            'hash'   => $multipaymentTransaction->hash,
+            'amount' => BigNumber::new(14 * 1e18),
         ]);
 
     expect(Transaction::count())->toBe($transactionCount);

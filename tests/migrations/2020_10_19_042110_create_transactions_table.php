@@ -25,6 +25,12 @@ return new class() extends Migration {
             $table->binary('data')->nullable();
             $table->string('signature')->nullable();
             $table->string('legacy_second_signature')->nullable();
+            $table->boolean('status');
+            $table->addColumn('numeric', 'gas_used');
+            $table->addColumn('numeric', 'gas_refunded');
+            $table->string('deployed_contract_address')->nullable();
+            $table->jsonb('logs')->nullable();
+            $table->binary('output')->nullable();
             $table->timestamps();
         });
     }

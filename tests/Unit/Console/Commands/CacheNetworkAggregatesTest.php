@@ -32,7 +32,6 @@ it('should execute the command with data', function () {
     $cache->setSupply(fn () => strval(20000 * 1e18));
 
     Transaction::factory(10)
-        ->withReceipt()
         ->create([
             'value'     => BigNumber::new(1000 * 1e18),
             'gas_price' => 12,
@@ -42,7 +41,6 @@ it('should execute the command with data', function () {
 
     Transaction::factory(2)
         ->validatorRegistration()
-        ->withReceipt()
         ->create([
             'value'     => BigNumber::new(25 * 1e18),
             'gas_price' => 12,

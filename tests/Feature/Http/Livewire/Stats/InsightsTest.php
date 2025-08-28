@@ -11,7 +11,7 @@ use App\Enums\StatsTransactionType;
 use App\Facades\Settings;
 use App\Http\Livewire\Stats\Insights;
 use App\Models\Block;
-use App\Models\Receipt;
+use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -56,14 +56,8 @@ it('should render transaction details', function (): void {
         ->create([
             'value'     => 2 * 1e18,
             'gas_price' => 11 * 1e18,
+            'gas_used'  => 1e9,
         ]);
-
-    foreach (Transaction::all() as $transaction) {
-        Receipt::factory()->create([
-            'transaction_hash'       => $transaction->hash,
-            'gas_used'               => 1e9,
-        ]);
-    }
 
     $transactionCache = new TransactionCache();
     $transactionCache->getCache()->flush();
@@ -125,27 +119,37 @@ it('should render transaction daily average', function (): void {
     $transactionCache = new TransactionCache();
 
     Transaction::factory(2)
-        ->withReceipt(data: ['status' => true])
         ->validatorRegistration()
         ->create([
             'value'     => 0,
             'gas_price' => 9,
+            'status'    => true,
         ]);
 
     Transaction::factory(3)
-        ->withReceipt(data: ['status' => true])
         ->transfer()
         ->create([
             'value'     => 2000 * 1e18,
             'gas_price' => 10,
+            'status'    => true,
         ]);
 
+    $recipientAddress = faker()->wallet['address'];
+    $amount = BigNumber::new(1000 * 1e18);
     Transaction::factory(4)
-        ->withReceipt(data: ['status' => true])
-        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1000 * 1e18)])
+        ->multiPayment([$recipientAddress], [$amount])
         ->create([
             'gas_price' => 11,
-        ]);
+            'status'    => true,
+        ])->each(function ($transaction) use ($recipientAddress, $amount) {
+            MultiPayment::factory()
+                ->create([
+                    'to'     => $recipientAddress,
+                    'from'   => $transaction->from,
+                    'hash'   => $transaction->hash,
+                    'amount' => $amount,
+                ]);
+        });
 
     expect(Transaction::count())->toBe(9);
 

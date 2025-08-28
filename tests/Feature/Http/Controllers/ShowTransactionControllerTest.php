@@ -14,7 +14,6 @@ it('should render the page without any errors', function ($type, $args) {
 
     $transaction = Transaction::factory()
         ->{$type}(...$args)
-        ->withReceipt()
         ->create();
 
     $this
@@ -34,7 +33,6 @@ it('should render the page for a vote transaction without any errors', function 
 
     $transaction = Transaction::factory()
         ->vote($validator->address)
-        ->withReceipt()
         ->create();
 
     $this
@@ -48,7 +46,6 @@ it('should render the page for a unvote transaction without any errors', functio
 
     $transaction  = Transaction::factory()
         ->unvote()
-        ->withReceipt()
         ->create();
 
     $this
@@ -65,7 +62,6 @@ it('should handle failed token transfers with missing data', function () {
 
     $transaction = Transaction::factory()
         ->tokenTransfer($address, $amount)
-        ->withReceipt()
         ->create([
             'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
             'value'     => 123 * 1e18,
@@ -84,7 +80,6 @@ it('should handle failed token transfers with missing data', function () {
 it('should show a locked amount for a validator registration', function () {
     $transaction = Transaction::factory()
         ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
-        ->withReceipt()
         ->create();
 
     $this
@@ -99,12 +94,10 @@ it('should show a locked amount for a validator registration', function () {
 it('should show a corresponding validator registration', function () {
     $registrationTransaction = Transaction::factory()
         ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
-        ->withReceipt()
         ->create();
 
     $resignationTransaction = Transaction::factory()
         ->validatorResignation()
-        ->withReceipt()
         ->create([
             'sender_public_key' => $registrationTransaction->sender_public_key,
         ]);
@@ -122,7 +115,6 @@ it('should show a corresponding validator registration', function () {
 it('should show 0 if no corresponding validator registration', function () {
     $transaction = Transaction::factory()
         ->validatorResignation()
-        ->withReceipt()
         ->create();
 
     $this
@@ -138,7 +130,6 @@ it('should show 0 if no corresponding validator registration', function () {
 it('should render the page for basic transaction types without any errors', function ($transactionType) {
     $transaction = Transaction::factory()
         ->{$transactionType}()
-        ->withReceipt()
         ->create();
 
     $this
@@ -161,7 +152,6 @@ it('should render the page for votes without any errors', function () {
 
     $transaction = Transaction::factory()
         ->vote($validator->address)
-        ->withReceipt()
         ->create();
 
     $this
@@ -183,7 +173,6 @@ it('should render the page for multipayments without any errors', function () {
             BigNumber::new(123 * 1e18),
             BigNumber::new(456 * 1e18),
         ])
-        ->withReceipt()
         ->create();
 
     MultiPayment::factory()
