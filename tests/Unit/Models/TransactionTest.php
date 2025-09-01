@@ -95,7 +95,7 @@ it('should calculate fee', function () {
 it('should return error', function () {
     $transaction = Transaction::factory()->create([
         'status'           => false,
-        'decoded_error' => 'CallerIsNotValidator',
+        'decoded_error'    => 'CallerIsNotValidator',
     ]);
 
     expect($transaction->transactionError())->toBe('Caller Is Not Validator');
@@ -138,7 +138,7 @@ it('should not modify gas used instance when getting receipt error', function ()
 it('should not format errors with a space', function () {
     $transaction = Transaction::factory()->create([
         'status'           => false,
-        'decoded_error' => 'Error (Must send exactly 0.001 ETH to set message)',
+        'decoded_error'    => 'Error (Must send exactly 0.001 ETH to set message)',
     ]);
 
     expect($transaction->transactionError())->toBe('Error (Must send exactly 0.001 ETH to set message)');
