@@ -22,6 +22,7 @@ use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\ValidatorUpdateScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use Brick\Math\RoundingMode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -306,6 +307,34 @@ final class Transaction extends Model
         $gasPrice = clone $this->gas_price;
 
         return $gasPrice->multipliedBy($this->gas_used->valueOf());
+    }
+
+    public function transactionError(): ?string
+    {
+        if ($this->status === true) {
+            return null;
+        }
+
+        $error = null;
+        if ($this->decoded_error && $this->decoded_error !== 'execution reverted') {
+            $error = $this->decoded_error;
+        } elseif ($this->decoded_error === 'execution reverted') {
+            $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
+            $gasUsed                  = BigNumber::new($this->gas_used->valueOf()->toFloat());
+            if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
+                $error = 'Out of gas?';
+            }
+        }
+
+        if ($error === null) {
+            return null;
+        }
+
+        if (str_contains($error, ' ')) {
+            return $error;
+        }
+
+        return trim(preg_replace('/([A-Z])/', ' \1', $error));
     }
 
     /**

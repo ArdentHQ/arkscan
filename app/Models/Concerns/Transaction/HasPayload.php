@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns\Transaction;
 
-use App\Services\BigNumber;
 use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
-use Brick\Math\RoundingMode;
 
 trait HasPayload
 {
@@ -103,39 +101,6 @@ trait HasPayload
         }
 
         return [$functionName, $methodId, $arguments];
-    }
-
-    public function parseReceiptError(): ?string
-    {
-        if ($this->status === true) {
-            return null;
-        }
-
-        $outputPayload = $this->decodePayload($this->output);
-        if ($outputPayload !== null) {
-            $contractAbiTypes = [
-                ContractAbiType::CUSTOM,
-                ContractAbiType::CONSENSUS,
-                ContractAbiType::MULTIPAYMENT,
-                ContractAbiType::USERNAMES,
-            ];
-
-            foreach ($contractAbiTypes as $type) {
-                try {
-                    return (new AbiDecoder($type))->decodeError($outputPayload);
-                } catch (\Throwable $e) {
-                    // If the ABI type is not found, we will try the next one
-                }
-            }
-        }
-
-        $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
-        $gasUsed                  = BigNumber::new($this->gas_used->valueOf()->toFloat());
-        if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
-            return 'InsufficientGas';
-        }
-
-        return null;
     }
 
     /**
