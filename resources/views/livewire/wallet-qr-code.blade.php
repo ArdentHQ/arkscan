@@ -25,10 +25,7 @@
         button-wrapper-class=""
         button-class="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
     >
-        <x-slot
-            name="button"
-            wire:click="toggleQrCode"
-        >
+        <x-slot name="button">
             <div>
                 <x-ark-icon name="qr-code" size="sm" />
             </div>

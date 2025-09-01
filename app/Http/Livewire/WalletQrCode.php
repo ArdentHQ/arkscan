@@ -7,7 +7,6 @@ namespace App\Http\Livewire;
 use App\Facades\Wallets;
 use App\Services\ArkVaultUrlBuilder;
 use App\ViewModels\ViewModelFactory;
-use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
 use ARKEcosystem\Foundation\UserInterface\Support\QRCode;
 use BaconQrCode\Renderer\Color\Alpha;
 use BaconQrCode\Renderer\Color\Gray;
@@ -20,8 +19,6 @@ use Livewire\Component;
  */
 final class WalletQrCode extends Component
 {
-    use HasModal;
-
     public const QR_CODE_SIZE = 224;
 
     public string $address;
@@ -44,7 +41,6 @@ final class WalletQrCode extends Component
         ]);
     }
 
-    // @codeCoverageIgnoreStart
     public function updated(string $propertyName): void
     {
         $this->validateOnly($propertyName, [
@@ -53,21 +49,6 @@ final class WalletQrCode extends Component
         ]);
     }
 
-    // @codeCoverageIgnoreEnd
-
-    public function toggleQrCode(): void
-    {
-        if ($this->modalShown) {
-            $this->closeModal();
-        } else {
-            $this->openModal();
-
-            $this->amount      = null;
-            $this->smartbridge = null;
-        }
-    }
-
-    // @codeCoverageIgnoreStart
     public function getWalletUriProperty(): string
     {
         $options = [];
@@ -82,8 +63,6 @@ final class WalletQrCode extends Component
 
         return ArkVaultUrlBuilder::get()->generateTransfer($this->address, $options);
     }
-
-    // @codeCoverageIgnoreEnd
 
     public function getCodeProperty(): string
     {
