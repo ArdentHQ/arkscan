@@ -70,7 +70,7 @@
                     class="font-normal"
                     input-class="qr-code-amount"
                     :errors="$errors"
-                    :placeholder="trans('pages.wallet.qrcode.currency_amount', ['currency' => Network::currency()])"
+                    :label="trans('pages.wallet.qrcode.currency_amount', ['currency' => Network::currency()])"
                     x-on:wheel="preventAmountScroll"
                     hide-label
                     autofocus
