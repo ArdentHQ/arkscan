@@ -75,17 +75,6 @@
                     hide-label
                     autofocus
                 />
-
-                <x-ark-textarea
-                    id="smartbridge"
-                    name="smartbridge"
-                    maxlength="255"
-                    rows="4"
-                    class="font-normal"
-                    :placeholder="trans('pages.wallet.qrcode.memo_optional')"
-                    :errors="$errors"
-                    hide-label
-                />
             </div>
 
             <div class="flex flex-col items-center">
@@ -133,7 +122,7 @@
                                 <button
                                     type="button"
                                     class="w-full button-primary"
-                                    x-on:click="await performSend('{{ $this->address }}', '{{ $this->amount }}', '{{ $this->smartbridge }}')"
+                                    x-on:click="await performSend('{{ $this->address }}', '{{ $this->amount }}')"
                                     @if (! $this->hasAmount)
                                         disabled
                                     @endif

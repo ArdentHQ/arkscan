@@ -25,8 +25,6 @@ final class WalletQrCode extends Component
 
     public ?string $amount = null;
 
-    public ?string $smartbridge = null;
-
     public ?string $class = null;
 
     public function mount(?string $class = null): void
@@ -44,8 +42,7 @@ final class WalletQrCode extends Component
     public function updated(string $propertyName): void
     {
         $this->validateOnly($propertyName, [
-            'amount'      => ['numeric', 'min:0.00000001'],
-            'smartbridge' => ['string', 'max:255'],
+            'amount' => ['numeric', 'min:0.00000001'],
         ]);
     }
 
@@ -55,10 +52,6 @@ final class WalletQrCode extends Component
 
         if ($this->amount !== null && $this->amount !== '' && floatval($this->amount) > 0) {
             $options['amount'] = $this->amount;
-        }
-
-        if ($this->smartbridge !== null && $this->smartbridge !== '') {
-            $options['memo'] = rawurlencode($this->smartbridge);
         }
 
         return ArkVaultUrlBuilder::get()->generateTransfer($this->address, $options);

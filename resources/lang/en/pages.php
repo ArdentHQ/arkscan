@@ -89,7 +89,6 @@ return [
         'transaction_id_copied'       => 'Transaction ID Copied',
         'transaction_details'         => 'Transaction Details',
         'addressing'                  => 'Addressing',
-        'memo'                        => 'Memo (SmartBridge)',
         'transaction_summary'         => 'Transaction Summary',
         'more_details'                => 'More Details',
         'gas_information'             => 'Gas Information',
@@ -175,7 +174,6 @@ return [
         'commission'             => 'Commission',
         'balance'                => 'Balance',
         'amount'                 => 'Amount',
-        'smartbridge'            => 'Smartbridge',
         'vote_rank'              => '#:0',
         'status'                 => 'Status',
         'productivity'           => 'Productivity',
@@ -196,7 +194,6 @@ return [
             'specify_amount'                    => 'Specify Amount',
             'send_from_wallet'                  => 'Send From Wallet',
             'currency_amount'                   => ':currency Amount',
-            'memo_optional'                     => 'Memo (optional)',
             'arkconnect_specify_amount_tooltip' => 'Specify amount to send with ARK Connect',
         ],
 

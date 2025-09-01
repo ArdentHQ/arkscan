@@ -386,7 +386,7 @@ const Wallet = (network, xData = {}) => {
             }
         },
 
-        async performSend(address, amount, memo) {
+        async performSend(address, amount) {
             if (!this.hasExtension) {
                 return;
             }
@@ -394,7 +394,6 @@ const Wallet = (network, xData = {}) => {
             const transactionData = {
                 amount: parseFloat(amount),
                 receiverAddress: address,
-                memo: memo || null,
             };
 
             if (transactionData.amount === NaN) {
