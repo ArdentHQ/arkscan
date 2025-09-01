@@ -52,6 +52,7 @@ use Laravel\Scout\Searchable;
  * @property string|null $deployed_contract_address
  * @property array $logs
  * @property resource|null $output
+ * @property string|null $decoded_error
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Transaction extends Model
