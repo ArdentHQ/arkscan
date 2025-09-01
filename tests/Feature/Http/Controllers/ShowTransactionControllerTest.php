@@ -201,3 +201,30 @@ it('should render the page for multipayments without any errors', function () {
             '456.00 DARK',
         ]);
 });
+
+it('should show transaction error', function () {
+    $gasUsed     = BigNumber::new(79326);
+    $transaction = Transaction::factory()->create([
+        'gas'           => BigNumber::new(80131),
+        'gas_used'      => $gasUsed,
+        'status'        => false,
+        'decoded_error' => 'execution reverted',
+    ]);
+
+    $this
+        ->get(route('transaction', $transaction->hash))
+        ->assertOk()
+        ->assertSee('Error encountered during contract execution: Out of gas?');
+});
+
+it('should show generic error', function () {
+    $transaction = Transaction::factory()->create([
+        'status'        => false,
+        'decoded_error' => 'execution reverted',
+    ]);
+
+    $this
+        ->get(route('transaction', $transaction->hash))
+        ->assertOk()
+        ->assertSee('Error encountered during contract execution.');
+});

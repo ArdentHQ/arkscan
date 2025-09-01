@@ -711,19 +711,13 @@ it('should return null corresponding validator registration if not resignation',
 
 it('should return receipt error', function () {
     $transaction = Transaction::factory()->create([
-        'status'           => false,
-        'output'           => function () {
-            $stream = fopen('php://temp', 'r+');
-            fwrite($stream, hex2bin('cd03235e'));
-            rewind($stream);
-
-            return $stream;
-        },
+        'status'        => false,
+        'decoded_error' => 'CallerIsNotValidator',
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBe('CallerIsNotValidator');
+    expect($viewModel->transactionError())->toBe('Caller Is Not Validator');
 });
 
 it('should return null if no receipt error', function () {
@@ -733,19 +727,20 @@ it('should return null if no receipt error', function () {
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBeNull();
+    expect($viewModel->transactionError())->toBeNull();
 });
 
 it('should return receipt error for insufficient gas', function () {
     $transaction = Transaction::factory()->create([
-        'gas'      => BigNumber::new(80131),
-        'gas_used' => BigNumber::new(79326),
-        'status'   => false,
+        'gas'           => BigNumber::new(80131),
+        'gas_used'      => BigNumber::new(79326),
+        'status'        => false,
+        'decoded_error' => 'execution reverted',
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBe('InsufficientGas');
+    expect($viewModel->transactionError())->toBe('Out of gas?');
 });
 
 it('should not return receipt error for insufficient gas if receipt did not fail', function () {
@@ -757,19 +752,31 @@ it('should not return receipt error for insufficient gas if receipt did not fail
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBeNull();
+    expect($viewModel->transactionError())->toBeNull();
 });
 
 it('should not modify gas used instance when getting receipt error', function () {
     $gasUsed     = BigNumber::new(79326);
     $transaction = Transaction::factory()->create([
-        'gas'      => BigNumber::new(80131),
-        'gas_used' => $gasUsed,
-        'status'   => false,
+        'gas'           => BigNumber::new(80131),
+        'gas_used'      => $gasUsed,
+        'status'        => false,
+        'decoded_error' => 'execution reverted',
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBe('InsufficientGas');
+    expect($viewModel->transactionError())->toBe('Out of gas?');
     expect($transaction->gas_used)->toEqual($gasUsed);
+});
+
+it('should not format errors with a space', function () {
+    $transaction = Transaction::factory()->create([
+        'status'        => false,
+        'decoded_error' => 'Error (Must send exactly 0.001 ETH to set message)',
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->transactionError())->toBe('Error (Must send exactly 0.001 ETH to set message)');
 });
