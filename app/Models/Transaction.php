@@ -317,7 +317,7 @@ final class Transaction extends Model
         }
 
         $error = null;
-        if ($this->decoded_error && $this->decoded_error !== 'execution reverted') {
+        if ($this->decoded_error !== null && $this->decoded_error !== 'execution reverted') {
             $error = $this->decoded_error;
         } elseif ($this->decoded_error === 'execution reverted') {
             $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
@@ -335,7 +335,12 @@ final class Transaction extends Model
             return $error;
         }
 
-        return trim(preg_replace('/([A-Z])/', ' \1', $error));
+        $formatted = preg_replace('/([A-Z])/', ' \1', $error);
+        if ($formatted === null) {
+            return null;
+        }
+
+        return trim($formatted);
     }
 
     /**
