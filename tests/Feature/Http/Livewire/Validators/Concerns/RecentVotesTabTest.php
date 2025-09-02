@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Enums\SortDirection;
 use App\Http\Livewire\Validators\Tabs;
-use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
@@ -15,16 +14,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use function Tests\fakeKnownWallets;
-
-function generateReceipts(): void
-{
-    foreach (Transaction::all() as $transaction) {
-        Receipt::factory()->create([
-            'transaction_hash'      => $transaction->hash,
-            'status'                => true,
-        ]);
-    }
-}
 
 function generateTransactions(): array
 {
@@ -57,16 +46,16 @@ function generateTransactions(): array
         ->create([
             'timestamp'      => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
             'from'           => $sender1->address,
+            'status'         => true,
         ]);
 
     $unvoteTransaction = Transaction::factory()
-        ->unvote()
-        ->create([
-            'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
-            'from'           => $sender2->address,
-        ]);
-
-    generateReceipts();
+    ->unvote()
+    ->create([
+        'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
+        'from'           => $sender2->address,
+        'status'         => true,
+    ]);
 
     return [
         'validator1'           => $validator1,
@@ -95,9 +84,8 @@ it('should render with votes', function () {
     Transaction::factory(27)->vote($validator->address)->create([
         'timestamp'         => Carbon::parse('2020-03-21 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
+        'status'            => true,
     ]);
-
-    generateReceipts();
 
     Livewire::test(Tabs::class)
         ->set('view', 'recent-votes')
@@ -115,14 +103,14 @@ it('should not render votes older than 30 days', function () {
     Transaction::factory(27)->vote($validator->address)->create([
         'timestamp'         => Carbon::parse('2020-03-21 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
+        'status'            => true,
     ]);
 
     Transaction::factory(4)->vote($validator->address)->create([
         'timestamp'         => Carbon::parse('2020-04-20 14:12:00')->getTimestampMs(),
         'sender_public_key' => $wallet->public_key,
+        'status'            => true,
     ]);
-
-    generateReceipts();
 
     Livewire::test(Tabs::class)
         ->set('view', 'recent-votes')
@@ -194,14 +182,14 @@ it('should filter vote transactions', function () {
     $vote = Transaction::factory()->vote($validator->address)->create([
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
+        'status'            => true,
     ]);
 
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
+        'status'            => true,
     ]);
-
-    generateReceipts();
 
     Livewire::test(Tabs::class)
         ->set('view', 'recent-votes')
@@ -220,14 +208,14 @@ it('should filter unvote transactions', function () {
     $vote = Transaction::factory()->vote($validator->address)->create([
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
+        'status'            => true,
     ]);
 
     $unvote = Transaction::factory()->unvote()->create([
         'sender_public_key' => $sender->public_key,
         'timestamp'         => Carbon::now()->subMinute(1)->getTimestampMs(),
+        'status'            => true,
     ]);
-
-    generateReceipts();
 
     Livewire::test(Tabs::class)
         ->set('view', 'recent-votes')
@@ -516,20 +504,12 @@ it('should not show failed transactions', function () {
 
     $failedTransaction = Transaction::factory()->vote($validator->address)->create([
         'timestamp' => Carbon::now()->subMinute(2)->getTimestampMs(),
+        'status'    => false,
     ]);
 
     $successfulTransaction = Transaction::factory()->vote($validator->address)->create([
         'timestamp' => Carbon::now()->subMinute(1)->getTimestampMs(),
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash'      => $failedTransaction->hash,
-        'status'                => false,
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash'      => $successfulTransaction->hash,
-        'status'                => true,
+        'status'    => true,
     ]);
 
     Livewire::test(Tabs::class)
@@ -555,21 +535,23 @@ it('should sort name then address in ascending order when missing names', functi
 
     $voteTransaction = Transaction::factory()->vote($validator1->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $unvoteTransaction = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $voteTransaction2 = Transaction::factory()->vote($validator2->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $unvoteTransaction2 = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+        'status'    => true,
     ]);
-
-    generateReceipts();
 
     Livewire::test(Tabs::class)
         ->set('view', 'recent-votes')
@@ -623,21 +605,23 @@ it('should sort name then address in descending order when missing names', funct
 
     $voteTransaction = Transaction::factory()->vote($validator1->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $unvoteTransaction = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $voteTransaction2 = Transaction::factory()->vote($validator2->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $unvoteTransaction2 = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+        'status'    => true,
     ]);
-
-    generateReceipts();
 
     Livewire::test(Tabs::class)
         ->set('view', 'recent-votes')
@@ -703,27 +687,30 @@ it('should sort known name, then name, then address in ascending order when miss
 
     $voteTransaction1 = Transaction::factory()->vote($validator1->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $unvoteTransaction = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $voteTransaction2 = Transaction::factory()->vote($validator2->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $unvoteTransaction2 = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $voteTransaction3 = Transaction::factory()->vote($validator3->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     Artisan::call('explorer:cache-known-wallets');
-
-    generateReceipts();
 
     Livewire::test(Tabs::class)
         ->set('view', 'recent-votes')
@@ -796,27 +783,30 @@ it('should sort known name, then name, then address in descending order when mis
 
     $voteTransaction1 = Transaction::factory()->vote($validator1->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $unvoteTransaction = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $voteTransaction2 = Transaction::factory()->vote($validator2->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $unvoteTransaction2 = Transaction::factory()->unvote()->create([
         'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     $voteTransaction3 = Transaction::factory()->vote($validator3->address())->create([
         'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
+        'status'    => true,
     ]);
 
     Artisan::call('explorer:cache-known-wallets');
-
-    generateReceipts();
 
     Livewire::test(Tabs::class)
         ->set('view', 'recent-votes')

@@ -97,13 +97,7 @@ final class TransactionViewModel implements ViewModel
 
     public function gasUsed(): float
     {
-        $receipt = $this->transaction->receipt;
-
-        if ($receipt === null) {
-            return 0;
-        }
-
-        return UnitConverter::formatUnits((string) $receipt->gas_used, 'wei');
+        return UnitConverter::formatUnits((string) $this->transaction->gas_used, 'wei');
     }
 
     public function transactionIndex(): int

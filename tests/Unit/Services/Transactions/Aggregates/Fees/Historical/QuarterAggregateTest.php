@@ -12,17 +12,17 @@ it('should aggregate the fees for 3 months', function () {
     Carbon::setTestNow('2021-01-01 00:00:00');
 
     Transaction::factory(10)
-        ->withReceipt(10000)
         ->create([
             'gas_price' => 1,
             'timestamp' => Carbon::now()->subDays(90)->startOfDay()->getTimestampMs(),
+            'gas_used'  => 10000,
         ]);
 
     Transaction::factory(10)
-        ->withReceipt(10000)
         ->create([
             'gas_price' => 1,
             'timestamp' => Carbon::now()->subMinutes(10)->getTimestampMs(),
+            'gas_used'  => 10000,
         ]);
 
     $result = (new QuarterAggregate())->aggregate();

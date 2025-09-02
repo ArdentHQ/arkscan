@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\MultiPayment;
-use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -30,6 +29,7 @@ beforeEach(function () {
         'block_number'             => 1,
         'gas_price'                => 1,
         'gas'                      => 21000,
+        'gas_used'                 => 1,
         'value'                    => 2 * 1e18,
         'sender_public_key'        => $this->sender->public_key,
         'to'                       => Wallet::factory()->create(['address' => 'recipient'])->address,
@@ -305,7 +305,8 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
 it('should fallback to the sender if no recipient address exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'to' => null,
+        'to'                        => null,
+        'deployed_contract_address' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
@@ -314,11 +315,9 @@ it('should fallback to the sender if no recipient address exists', function () {
 it('should fallback to receipt deployed contract address if set', function () {
     $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
 
-    $receipt = Receipt::factory()
-        ->state(['contract_address' => $wallet->address]);
-
-    $this->subject = new TransactionViewModel(Transaction::factory()->has($receipt)->create([
-        'to' => null,
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'deployed_contract_address' => $wallet->address,
+        'to'                        => null,
     ]));
 
     expect($this->subject->recipient()->address())->toBe('deployedContractAddress');
@@ -485,11 +484,7 @@ MethodID: 0x6dd7d8ea');
 it('should calculate fee with receipt', function () {
     $transaction = Transaction::factory()->create([
         'gas_price' => 54 * 1e9,
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => 21000,
+        'gas_used'  => 21000,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -497,31 +492,10 @@ it('should calculate fee with receipt', function () {
     expect($viewModel->fee())->toEqual(0.001134);
 });
 
-it('should return gas price if no receipt', function () {
-    $transaction = Transaction::factory()->create([
-        'gas_price' => 54 * 1e9,
-    ]);
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->fee())->toEqual(0.000000054);
-});
-
 it('should should determine if transaction failed', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'status'           => false,
+    $transaction = Transaction::factory()->create([
+        'status' => false,
     ]);
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->hasFailedStatus())->toBeTrue();
-});
-
-it('should should determine if transaction failed if no receipt', function () {
-    $transaction = Transaction::factory()->create();
 
     $viewModel = new TransactionViewModel($transaction->fresh());
 
@@ -529,11 +503,8 @@ it('should should determine if transaction failed if no receipt', function () {
 });
 
 it('should should determine transaction has not failed', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'status'           => true,
+    $transaction = Transaction::factory()->create([
+        'status' => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -542,24 +513,13 @@ it('should should determine transaction has not failed', function () {
 });
 
 it('should get the gas used', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => 8,
+    $transaction = Transaction::factory()->create([
+        'gas_used' => 8,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
 
     expect($viewModel->gasUsed())->toEqual(8);
-});
-
-it('should get the gas used if no receipt', function () {
-    $transaction = Transaction::factory()->create();
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->gasUsed())->toEqual(0);
 });
 
 it('should get the username if set', function () {
@@ -750,10 +710,7 @@ it('should return null corresponding validator registration if not resignation',
 });
 
 it('should return receipt error', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
+    $transaction = Transaction::factory()->create([
         'status'           => false,
         'output'           => function () {
             $stream = fopen('php://temp', 'r+');
@@ -770,13 +727,9 @@ it('should return receipt error', function () {
 });
 
 it('should return null if no receipt error', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()
-        ->create([
-            'transaction_hash' => $transaction->hash,
-            'status'           => false,
-        ]);
+    $transaction = Transaction::factory()->create([
+        'status' => false,
+    ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
@@ -785,13 +738,9 @@ it('should return null if no receipt error', function () {
 
 it('should return receipt error for insufficient gas', function () {
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326)->valueOf(),
-        'status'           => false,
+        'gas'      => BigNumber::new(80131),
+        'gas_used' => BigNumber::new(79326),
+        'status'   => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
@@ -801,13 +750,9 @@ it('should return receipt error for insufficient gas', function () {
 
 it('should not return receipt error for insufficient gas if receipt did not fail', function () {
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326)->valueOf(),
-        'status'           => true,
+        'gas'      => BigNumber::new(80131),
+        'gas_used' => BigNumber::new(79326),
+        'status'   => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
@@ -816,18 +761,15 @@ it('should not return receipt error for insufficient gas if receipt did not fail
 });
 
 it('should not modify gas used instance when getting receipt error', function () {
+    $gasUsed     = BigNumber::new(79326);
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
-    ]);
-
-    $receipt = Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326),
-        'status'           => false,
+        'gas'      => BigNumber::new(80131),
+        'gas_used' => $gasUsed,
+        'status'   => false,
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
     expect($viewModel->parseReceiptError())->toBe('InsufficientGas');
-    expect($transaction->receipt->gas_used)->toEqual($receipt->gas_used);
+    expect($transaction->gas_used)->toEqual($gasUsed);
 });

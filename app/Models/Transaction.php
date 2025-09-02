@@ -45,6 +45,12 @@ use Laravel\Scout\Searchable;
  * @property resource|null $data
  * @property int $nonce
  * @property Wallet $sender
+ * @property bool $status
+ * @property BigNumber $gas_used
+ * @property BigNumber $gas_refunded
+ * @property string|null $deployed_contract_address
+ * @property array $logs
+ * @property resource|null $output
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Transaction extends Model
@@ -111,10 +117,13 @@ final class Transaction extends Model
         'timestamp'         => UnixSeconds::class,
         'transaction_index' => 'int',
         'block_number'      => 'int',
+        'status'            => 'bool',
+        'gas_used'          => BigInteger::class,
+        'gas_refunded'      => BigInteger::class,
+        'logs'              => 'array',
     ];
 
     protected $with = [
-        'receipt',
         'multiPaymentRecipients',
     ];
 
@@ -199,16 +208,6 @@ final class Transaction extends Model
     public function sender(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'sender_public_key', 'public_key');
-    }
-
-    /**
-     * A receipt belongs to a transaction.
-     *
-     * @return HasOne
-     */
-    public function receipt(): HasOne
-    {
-        return $this->hasOne(Receipt::class, 'transaction_hash', 'hash');
     }
 
     public function getVotedForAddressAttribute(): ?string
@@ -305,11 +304,8 @@ final class Transaction extends Model
     public function fee(): BigNumber
     {
         $gasPrice = clone $this->gas_price;
-        if ($this->receipt === null) {
-            return $gasPrice;
-        }
 
-        return $gasPrice->multipliedBy($this->receipt->gas_used->valueOf());
+        return $gasPrice->multipliedBy($this->gas_used->valueOf());
     }
 
     /**

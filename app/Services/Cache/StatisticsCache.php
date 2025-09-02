@@ -27,10 +27,9 @@ final class StatisticsCache implements Contract
                 ->table('transactions')
                 ->selectRaw('COUNT(*) as transaction_count')
                 ->selectRaw('SUM(transactions.value) as volume')
-                ->selectRaw('SUM(transactions.gas_price * COALESCE(receipts.gas_used, 0)) as total_fees')
-                ->selectRaw('AVG(transactions.gas_price * COALESCE(receipts.gas_used, 0)) as average_fee')
+                ->selectRaw('SUM(transactions.gas_price * COALESCE(gas_used, 0)) as total_fees')
+                ->selectRaw('AVG(transactions.gas_price * COALESCE(gas_used, 0)) as average_fee')
                 ->from('transactions')
-                ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
                 ->where('timestamp', '>', $timestamp)
                 ->first();
 

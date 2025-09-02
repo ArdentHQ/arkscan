@@ -16,13 +16,13 @@ it('should render the page without any errors', function () {
 it('should get the transaction stats for the last 24 hours', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(148)->withReceipt()->create([
+    Transaction::factory(148)->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'value'     => 123 * 1e18,
         'gas_price' => 5000000000,
     ]);
 
-    Transaction::factory(12)->withReceipt()->create([
+    Transaction::factory(12)->create([
         'timestamp'  => Carbon::parse('2021-04-13 13:02:04')->getTimestampMs(),
         'value'      => 123 * 1e18,
         'gas_price'  => 5000000000,
@@ -77,11 +77,11 @@ it('should show the correct decimal places for the stats', function ($decimalPla
     $gasUsed = 21000;
 
     Transaction::factory()
-        ->withReceipt(gasUsed: $gasUsed)
         ->create([
             'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
             'value'     => BigNumber::new($amount * 1e18),
             'gas_price' => $fee,
+            'gas_used'  => $gasUsed,
         ]);
 
     $formattedFee = $fee * $gasUsed;
@@ -132,7 +132,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
 it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:02:04');
 
-    Transaction::factory(146)->withReceipt()->create([
+    Transaction::factory(146)->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'value'           => 123 * 1e18,
         'gas_price'       => 5000000000,
@@ -150,7 +150,7 @@ it('should cache the transaction stats for 5 minutes', function () {
             'averageFee'       => 0.000105,
         ]);
 
-    Transaction::factory(12)->withReceipt()->create([
+    Transaction::factory(12)->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
         'value'           => 123 * 1e18,
         'gas_price'       => 5000000000,

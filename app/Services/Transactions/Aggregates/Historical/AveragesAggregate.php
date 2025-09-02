@@ -19,11 +19,10 @@ final class AveragesAggregate
         /** @var object{count: int, fee: string, value: BigNumber, recipient_value: BigNumber} */
         $data = Transaction::select([
                 DB::raw('COUNT(*) as count'),
-                DB::raw('SUM(transactions.gas_price * COALESCE(receipts.gas_used, 0)) as fee'),
+                DB::raw('SUM(transactions.gas_price * COALESCE(gas_used, 0)) as fee'),
                 DB::raw('SUM(transactions.value) FILTER (WHERE COALESCE(is_multipayment, FALSE) != TRUE) as value'),
                 DB::raw('COALESCE(SUM(recipient_amount), 0) as recipient_value'),
             ])
-            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->withScope(MultiPaymentTotalAmountScope::class)
             ->first();
 

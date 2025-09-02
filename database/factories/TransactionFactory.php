@@ -7,7 +7,6 @@ namespace Database\Factories;
 use App\Enums\ContractMethod;
 use App\Facades\Network;
 use App\Models\Block;
-use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -26,18 +25,25 @@ final class TransactionFactory extends Factory
         $wallet = Wallet::factory()->create();
 
         return [
-            'hash'                  => $this->faker->transactionHash,
-            'block_hash'            => fn () => Block::factory()->create()->hash,
-            'block_number'          => $this->faker->numberBetween(1, 10000),
-            'sender_public_key'     => fn () => $wallet->public_key,
-            'from'                  => fn () => $wallet->address,
-            'to'                    => fn () => $wallet->address,
-            'timestamp'             => 1603083256000,
-            'gas_price'             => $this->faker->numberBetween(1, 100),
-            'gas'                   => BigNumber::new(1000000),
-            'value'                 => $this->faker->numberBetween(1, 100) * 1e18,
-            'nonce'                 => 1,
-            'data'                  => function () {
+            'hash'                      => $this->faker->transactionHash,
+            'block_hash'                => fn () => Block::factory()->create()->hash,
+            'block_number'              => $this->faker->numberBetween(1, 10000),
+            'sender_public_key'         => fn () => $wallet->public_key,
+            'from'                      => fn () => $wallet->address,
+            'to'                        => fn () => $wallet->address,
+            'timestamp'                 => 1603083256000,
+            'gas_price'                 => $this->faker->numberBetween(1, 100),
+            'gas'                       => BigNumber::new(1000000),
+            'value'                     => $this->faker->numberBetween(1, 100) * 1e18,
+            'nonce'                     => 1,
+            'transaction_index'         => 1,
+            'status'                    => $this->faker->boolean,
+            'gas_used'                  => 21000,
+            'gas_refunded'              => $this->faker->numberBetween(1, 100),
+            'deployed_contract_address' => fn () => Wallet::factory()->create()->address,
+            'logs'                      => [],
+            'output'                    => null,
+            'data'                      => function () {
                 // In-memory stream
                 $stream = fopen('php://temp', 'r+');
                 fwrite($stream, '');
@@ -45,13 +51,7 @@ final class TransactionFactory extends Factory
 
                 return $stream;
             },
-            'transaction_index'          => 1,
         ];
-    }
-
-    public function withReceipt(int $gasUsed = 21000, array $data = []): Factory
-    {
-        return $this->has(Receipt::factory()->state(fn () => ['gas_used' => $gasUsed, ...$data]));
     }
 
     public function transfer(): Factory
