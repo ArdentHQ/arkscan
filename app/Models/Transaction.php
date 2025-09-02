@@ -335,10 +335,8 @@ final class Transaction extends Model
             return $error;
         }
 
+        /** @var string $formatted */
         $formatted = preg_replace('/([A-Z])/', ' \1', $error);
-        if ($formatted === null) {
-            return null;
-        }
 
         return trim($formatted);
     }
