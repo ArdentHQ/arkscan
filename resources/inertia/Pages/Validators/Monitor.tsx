@@ -7,6 +7,7 @@ import ValidatorFavoritesProvider from "@/Providers/ValidatorFavorites/Validator
 import MonitorMobileTableWrapper from "@/Components/Tables/Mobile/Validators/Monitor";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { IValidatorData } from "@/types";
+import MissedBlocksTrackerProvider from "@/Providers/MissedBlocksTracker/MissedBlocksTrackerProvider";
 
 export default function Monitor({ validatorData, height, rowCount }: {
     validatorData: IValidatorData;
@@ -52,20 +53,25 @@ export default function Monitor({ validatorData, height, rowCount }: {
         />
 
         <ValidatorFavoritesProvider>
-            <MonitorTableWrapper
-                validators={validatorData?.validators}
-                overflowValidators={validatorData?.overflowValidators}
-                rowCount={rowCount}
-            />
-
-            <MobileDivider />
-
-            <div className="pt-6 pb-8 md:pt-0 md:mx-auto md:max-w-7xl">
-                <MonitorMobileTableWrapper
+            <MissedBlocksTrackerProvider validators={[
+                ...(validatorData?.validators ?? []),
+                ...(validatorData?.overflowValidators ?? []),
+            ]}>
+                <MonitorTableWrapper
                     validators={validatorData?.validators}
+                    overflowValidators={validatorData?.overflowValidators}
                     rowCount={rowCount}
                 />
-            </div>
+
+                <MobileDivider />
+
+                <div className="pt-6 pb-8 md:pt-0 md:mx-auto md:max-w-7xl">
+                    <MonitorMobileTableWrapper
+                        validators={validatorData?.validators}
+                        rowCount={rowCount}
+                    />
+                </div>
+            </MissedBlocksTrackerProvider>
         </ValidatorFavoritesProvider>
     </>);
 }
