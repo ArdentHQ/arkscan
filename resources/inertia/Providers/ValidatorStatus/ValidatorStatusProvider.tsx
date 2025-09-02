@@ -5,7 +5,7 @@ import ValidatorStatusContext from "./ValidatorStatusContext";
 import { IValidator } from '../../types';
 import dayjs, { Dayjs } from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
-import { ForgingStatus, ForgingStatusGenerated, ForgingStatusGenerating, ForgingStatusMissed, ForgingStatusPending, ValidatorStatusContextType } from "./types";
+import { ForgingStatus, ForgingStatusGenerated, ForgingStatusGenerating, ForgingStatusMissed, ForgingStatusPending, IValidatorStatusContextType } from "./types";
 import { useMissedBlocksTracker } from "../MissedBlocksTracker/MissedBlocksTrackerContext";
 
 dayjs.extend(dayjsRelativeTime);
@@ -23,12 +23,42 @@ export default function ValidatorStatusProvider({
     const [output, setOutput] = useState("");
     const tickingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const [status, setStatus] = useState<ForgingStatus>(ForgingStatusPending);
+    const [seconds, setSeconds] = useState(0);
 
     const { secondsOffset, currentForger } = useMissedBlocksTracker();
 
     useEffect(() => {
         setDateTime(dayjs(forgingAt));
 
+        const updateSeconds = () => {
+            const now = dayjs(new Date());
+            const secondsDifference = dateTime.diff(now, 'second');
+
+            setSeconds(secondsDifference);
+
+            if (secondsDifference < 60) {
+                setOutput(`~ ${secondsDifference} seconds`);
+
+                return;
+            }
+
+            setOutput(now.to(dateTime));
+        }
+
+        updateSeconds();
+
+        tickingTimerRef.current = setInterval(updateSeconds, 100);
+
+        return () => {
+            if (! tickingTimerRef.current) {
+                return;
+            }
+
+            clearInterval(tickingTimerRef.current);
+        }
+    }, [forgingAt]);
+
+    useEffect(() => {
         if (validator.wallet.hasForged) {
             setStatus(ForgingStatusGenerated);
 
@@ -41,55 +71,39 @@ export default function ValidatorStatusProvider({
             return;
         }
 
-        const updateOutput = () => {
-            const now = dayjs(new Date());
-            const seconds = dateTime.diff(now, 'second');
+        if (currentForger?.wallet.address !== validator.wallet.address && seconds >= 60) {
+            setStatus(ForgingStatusPending);
 
-            if (currentForger?.wallet.address !== validator.wallet.address && seconds <= 0 - secondsOffset) {
-                setStatus(ForgingStatusMissed);
+            // setJustMissed(true);
+            // setOutput(now.to(dateTime));
 
-                // setJustMissed(true);
-                // setOutput(now.to(dateTime));
-
-                return;
-            }
-
-            if (currentForger?.wallet.address === validator.wallet.address) {
-                setStatus(ForgingStatusGenerating);
-
-                // setOutput('Nowwww');
-                // setOutput(now.to(dateTime));
-
-                return;
-            }
-
-            if (seconds < 60) {
-                setOutput(`~ ${seconds} seconds`);
-
-                return;
-            }
-
-            setOutput(now.to(dateTime));
+            return;
         }
 
-        updateOutput();
+        if (currentForger?.wallet.address !== validator.wallet.address && seconds <= 0 - secondsOffset) {
+            console.log('missed', seconds);
+            setStatus(ForgingStatusMissed);
 
-        tickingTimerRef.current = setInterval(updateOutput, 100);
+            // setJustMissed(true);
+            // setOutput(now.to(dateTime));
 
-        return () => {
-            if (! tickingTimerRef.current) {
-                return;
-            }
-
-            clearInterval(tickingTimerRef.current);
+            return;
         }
-    }, [forgingAt, validator.wallet]);
 
-    const value: ValidatorStatusContextType = {
+        if (currentForger?.wallet.address === validator.wallet.address) {
+            setStatus(ForgingStatusGenerating);
+
+            // setOutput('Nowwww');
+            // setOutput(now.to(dateTime));
+        }
+    }, [validator.wallet, currentForger, seconds]);
+
+    const value: IValidatorStatusContextType = {
         output,
         dateTime,
         status,
         validator,
+        seconds,
     };
 
     return (

@@ -64,7 +64,10 @@ export default function MissedBlocksTrackerProvider({
 
                 const secondsDifference = dayjs(validator.forgingAt).diff(now, 'second');
                 // if (secondsDifference >= -3) {
-                if (secondsDifference >= 8) {
+                if (secondsDifference >= 6) {
+                // if (secondsDifference >= 4) {
+                // if (secondsDifference >= -4) {
+                // if (secondsDifference >= 8) {
                 // if (secondsDifference >= -4) {
                     break;
                 }

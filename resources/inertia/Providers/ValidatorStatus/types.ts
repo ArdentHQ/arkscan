@@ -1,11 +1,12 @@
 import { IValidator } from "@/types";
 import { Dayjs } from "dayjs";
 
-export interface ValidatorStatusContextType {
+export interface IValidatorStatusContextType {
     output: string;
     dateTime: Dayjs;
     status: ForgingStatus;
     validator: IValidator;
+    seconds: number;
 }
 
 export type ForgingStatus = 'generated' | 'missed' | 'pending' | 'generating';
