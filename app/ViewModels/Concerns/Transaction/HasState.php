@@ -15,4 +15,9 @@ trait HasState
     {
         return $this->transaction->status === false;
     }
+
+    public function transactionError(): ?string
+    {
+        return $this->transaction->transactionError();
+    }
 }

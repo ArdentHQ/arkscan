@@ -22,6 +22,7 @@ use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\ValidatorUpdateScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use Brick\Math\RoundingMode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -51,6 +52,7 @@ use Laravel\Scout\Searchable;
  * @property string|null $deployed_contract_address
  * @property array $logs
  * @property resource|null $output
+ * @property string|null $decoded_error
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Transaction extends Model
@@ -306,6 +308,37 @@ final class Transaction extends Model
         $gasPrice = clone $this->gas_price;
 
         return $gasPrice->multipliedBy($this->gas_used->valueOf());
+    }
+
+    public function transactionError(): ?string
+    {
+        if ($this->status === true) {
+            return null;
+        }
+
+        $error = null;
+        if ($this->decoded_error !== null && $this->decoded_error !== 'execution reverted') {
+            $error = $this->decoded_error;
+        } elseif ($this->decoded_error === 'execution reverted') {
+            $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
+            $gasUsed                  = BigNumber::new($this->gas_used->valueOf()->toFloat());
+            if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
+                $error = 'Out of gas?';
+            }
+        }
+
+        if ($error === null) {
+            return null;
+        }
+
+        if (str_contains($error, ' ')) {
+            return $error;
+        }
+
+        /** @var string $formatted */
+        $formatted = preg_replace('/([A-Z])/', ' \1', $error);
+
+        return trim($formatted);
     }
 
     /**

@@ -31,6 +31,7 @@ return new class() extends Migration {
             $table->string('deployed_contract_address')->nullable();
             $table->jsonb('logs')->nullable();
             $table->binary('output')->nullable();
+            $table->string('decoded_error')->nullable();
             $table->timestamps();
         });
     }
