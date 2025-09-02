@@ -1,6 +1,7 @@
 <div
     wire:init="setIsReady"
     class="flex-1 sm:h-8 export-modal"
+    x-data="{ hasBeenOpened: false }"
 >
     <div @class(['cursor-not-allowed' => !$hasForgedBlocks])>
         <button
@@ -29,7 +30,14 @@
                 rates: {{ ExchangeRate::rates() ?? '{}' }},
                 canBeExchanged: {{ Network::canBeExchanged() ? 'true' : 'false' }},
             })"
-            x-init="resetForm"
+            x-init="() => {
+                resetForm();
+
+                if (! hasBeenOpened) {
+                    sa_event('wallet_modal_export_blocks_opened');
+                    hasBeenOpened = true;
+                }
+            }"
         >
             <x-ark-modal
                 title-class="mb-6 text-lg font-semibold text-left dark:text-theme-dark-50"

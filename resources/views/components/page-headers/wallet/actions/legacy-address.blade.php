@@ -3,6 +3,7 @@
 <x-page-headers.wallet.actions.popup-modal
     :value="$address"
     :title="trans('pages.wallet.legacy-address.title')"
+    id="legacy_address"
 >
     <x-slot name="button">
         <x-ark-icon name="arrows.clock" size="sm" />
