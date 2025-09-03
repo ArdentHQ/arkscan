@@ -45,7 +45,7 @@ it('should validate amount', function () {
         ->assertHasErrors()
         ->set('amount', 1)
         ->assertHasNoErrors()
-        ->assertSeeHtml('href="https://app.arkvault.io/#/?coin=Mainsail&amp;nethash='.config('arkscan.networks.production.nethash').'&amp;method=transfer&amp;recipient=AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR&amp;amount=1"');;
+        ->assertSeeHtml('href="https://app.arkvault.io/#/?coin=Mainsail&amp;nethash='.config('arkscan.networks.production.nethash').'&amp;method=transfer&amp;recipient=AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR&amp;amount=1"');
 });
 
 it('should determine if amount is set', function () {
