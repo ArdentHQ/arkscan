@@ -12,6 +12,7 @@
     'initApine' => true,
     'closeOnClick' => true,
     'onClose' => null,
+    'onOpen' => null,
     'buttonExtra' => null,
     'placement' => 'bottom',
     'placementFallbacks' => null,
@@ -39,6 +40,7 @@
         :button-class="$buttonClass"
         :close-on-click="$closeOnClick"
         :on-close="$onClose"
+        :on-open="$onOpen"
         :placement-fallbacks="$placementFallbacks"
         :dropdown-property="$dropdownProperty"
         :content-class="$contentClass"

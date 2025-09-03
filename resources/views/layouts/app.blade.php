@@ -46,6 +46,9 @@
             @endif
 
             <livewire:search-modal />
+
+            <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+            <script async src="https://scripts.simpleanalyticscdn.com/auto-events.js"></script>
         </x-slot>
     </x-ark-pages-includes-layout-body>
 </html>
