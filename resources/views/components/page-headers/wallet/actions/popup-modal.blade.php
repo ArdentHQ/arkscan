@@ -2,18 +2,29 @@
     'value',
     'button',
     'title',
+    'id',
     'additionalButtons' => null,
 ])
 
 <div
-    x-data="{ modalVisible: false }"
+    x-data="{
+        modalVisible: false,
+        hasBeenOpened: false,
+    }"
     class="flex-1 ml-2 w-full"
     @keydown.document.escape="modalVisible = false"
     {{ $attributes }}
 >
     <button
         type="button"
-        @click="modalVisible = !modalVisible"
+        @click="() => {
+            modalVisible = !modalVisible;
+            if (modalVisible && ! hasBeenOpened) {
+                sa_event('wallet_modal_{{ $id }}_opened');
+
+                hasBeenOpened = true;
+            }
+        }"
         {{ $button->attributes->class('p-2 w-full focus-visible:ring-inset button button-secondary button-icon') }}
     >
         {{ $button }}
