@@ -11,7 +11,6 @@
             name="select-all"
             model="selectAllFilters.validators"
             :label="trans('tables.filters.validators.select_all')"
-            class="pb-4 mb-4 border-b md:pb-2 md:mb-1 border-theme-secondary-300 dark:border-theme-dark-800"
         />
 
         <x-tables.filters.includes.group>

@@ -8,9 +8,7 @@
     x-ref="nav"
     class="hidden relative z-30 bg-white border-b md:flex md:flex-col border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700"
 >
-    <div
-        class="flex justify-between items-center w-full content-container"
-    >
+    <div class="flex justify-between items-center w-full content-container">
         <div class="flex items-center">
             <div class="flex flex-shrink-0 items-center">
                 <a class="flex items-center" href="{{ route('home') }}">
@@ -47,11 +45,11 @@
 
                                     <div
                                         x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                        class="absolute z-30 max-w-4xl whitespace-nowrap bg-white rounded-lg shadow-lg top-[4.5rem] dark:bg-theme-dark-800"
+                                        class="absolute z-30 max-w-4xl whitespace-nowrap bg-white rounded-xl shadow-lg top-[4.5rem] dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1"
                                         x-transition.origin.top
                                         x-cloak
                                     >
-                                        <div class="flex flex-col pt-2 pb-2">
+                                        <div class="flex flex-col py-[0.125rem]">
                                             @foreach ($navItem['children'] as $menuItem)
                                                 <x-navbar.list-item
                                                     :route="$menuItem['route'] ?? null"

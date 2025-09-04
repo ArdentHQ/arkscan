@@ -57,16 +57,16 @@
 
     <x-general.dropdown.dropdown
         dropdown-wrapper-class="flex relative flex-col w-full"
-        dropdown-class="rounded"
-        dropdown-rounding="rounded"
-        dropdown-padding="py-1 mx-6 sm:mx-0"
-        dropdown-background="bg-white dark:bg-theme-dark-700 dim:bg-theme-dark-900 dim:border dim:border-theme-dark-700"
+        dropdown-class="rounded-xl"
+        dropdown-rounding="rounded-xl"
+        dropdown-background="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 py-[0.125rem]"
         :width="$dropdownWidth"
         :close-on-click="! $multiple"
         :init-alpine="false"
         button-class="w-full"
         button-wrapper-class="w-full rounded-md"
         active-button-class="bg-white dark:text-theme-dark-600 dark:bg-theme-dark-900"
+        content-class=""
     >
         <x-slot
             name="button"
@@ -100,7 +100,7 @@
                 </div>
             @else
                 <span
-                    x-html="$refs[{{ $id }}]?.innerHTML ?? '{{ $placeholder }}'"
+                    x-html="$refs[{{ $id }} + '_value']?.innerHTML ?? '{{ $placeholder }}'"
                     :class="{
                         'text-theme-secondary-900 dark:text-theme-dark-50': (! Array.isArray({{ $id }}) && {{ $id }} !== null) || (Array.isArray({{ $id }}) && {{ $id }}.length > 0),
                     }"
@@ -140,7 +140,7 @@
             @endforeach
 
             @if (count($extraItems) > 0)
-                <div class="flex flex-col border-t border-theme-secondary-300 dark:border-theme-dark-500">
+                <div class="flex flex-col border-t border-theme-secondary-300 dark:border-theme-dark-500 pt-[0.125rem] mt-0.5">
                     @foreach ($extraItems as $item)
                         <x-general.dropdown.alpine-list-item
                             :id="$item['value']"

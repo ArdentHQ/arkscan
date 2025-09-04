@@ -30,9 +30,12 @@
         <x-general.dropdown.dropdown
             active-button-class=""
             button-class="rounded-r rounded-l md:bg-white md:rounded-l-none bg-theme-secondary-200 text-theme-secondary-700 dim:hover:bg-theme-dark-700 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600 md:hover:text-theme-secondary-900 dark:bg-theme-dark-800 dark:hover:bg-theme-secondary-800 dark:text-theme-dark-200 hover:bg-theme-secondary-200"
-            dropdown-class="right-0 min-w-[125px]"
-            scroll-class="max-h-[246px] md:max-h-[332px]"
+            dropdown-class="right-0 min-w-[160px]"
+            scroll-class=""
             :disabled="$isDisabled"
+            dropdown-background="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 py-[0.125rem]"
+            dropdown-padding=""
+            content-class=""
         >
             <x-slot
                 name="button"
@@ -70,20 +73,35 @@
                 </div>
             </x-slot>
 
-            @foreach (config('currencies.currencies') as $currency)
-                <x-general.dropdown.list-item
-                    :is-active="$currency['currency'] === $to"
-                    wire:click="setCurrency('{{ $currency['currency'] }}')"
-                >
-                    {{ $currency['currency'] }}
+            <div class="pl-1 pr-1 md-lg:pr-0.5 flex overflow-y-scroll flex-col h-full custom-scroll overscroll-contain max-h-[246px] md:max-h-[332px]">
+                @foreach (config('currencies.currencies') as $currency)
+                    <x-general.dropdown.list-item
+                        :is-active="$currency['currency'] === $to"
+                        wire:click="setCurrency('{{ $currency['currency'] }}')"
+                        class="inline-flex justify-between items-center"
+                    >
+                        <div>
+                            {{ $currency['currency'] }}
 
-                    @if ($currency['symbol'] !== null)
-                        <span class="text-theme-secondary-500 dark:text-theme-dark-200">
-                            ({{ $currency['symbol'] }})
-                        </span>
-                    @endif
-                </x-general.dropdown.list-item>
-            @endforeach
+                            @if ($currency['symbol'] !== null)
+                                <span class="text-theme-secondary-500 dark:text-theme-dark-200">
+                                    ({{ $currency['symbol'] }})
+                                </span>
+                            @endif
+                        </div>
+
+                        @if ($currency['currency'] === $to)
+                            <span>
+                                <x-ark-icon
+                                    name="double-check-mark"
+                                    size="sm"
+                                    class="text-theme-primary-600 dark:text-theme-dark-50"
+                                />
+                            </span>
+                        @endif
+                    </x-general.dropdown.list-item>
+                @endforeach
+            </div>
         </x-general.dropdown>
     </div>
 </div>

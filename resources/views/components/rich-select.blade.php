@@ -123,61 +123,85 @@ $initialText = $grouped
                 x-ref="listbox"
                 role="listbox"
                 aria-labelledby="listbox-label"
-                class="custom-scroll py-3 overflow-auto bg-white rounded-md outline-none dark:bg-theme-dark-800 shadow-lg dark:text-theme-dark-200 hover:outline-none {{ $dropdownListClass }}"
+                class="custom-scroll px-1 overflow-auto rounded-xl shadow-lg bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 {{ $dropdownListClass }}"
                 tabindex="-1"
             >
                 @isset($dropdownList)
                     {{ $dropdownList }}
                 @else
                     @if(!$grouped)
-                    <template x-for="(optionValue, index) in Object.keys(options)" :key="optionValue">
-                        <div
-                            data-option
-                            x-description="Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation."
-                            x-state:on="Highlighted"
-                            x-state:off="Not Highlighted"
-                            :id="`listbox-option-${optionValue}`"
-                            role="option"
-                            @click="choose(optionValue)"
-                            @mouseenter="selected = index"
-                            @mouseleave="selected = null"
-                            :class="{
-                                'rich-select-dropdown-entry-selected': value === optionValue,
-                                'rich-select-dropdown-entry-hover': selected === index && value !== optionValue,
-                            }"
-                            class="rich-select-dropdown-entry"
-                            x-text="options[optionValue]"
-                        ></div>
-                    </template>
+                        <template x-for="(optionValue, index) in Object.keys(options)" :key="optionValue">
+                            <div
+                                data-option
+                                x-description="Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation."
+                                x-state:on="Highlighted"
+                                x-state:off="Not Highlighted"
+                                :id="`listbox-option-${optionValue}`"
+                                role="option"
+                                @click="choose(optionValue)"
+                                @mouseenter="selected = index"
+                                @mouseleave="selected = null"
+                                :class="{
+                                    'bg-theme-secondary-200 dark:bg-theme-dark-950 text-theme-primary-600 dark:text-theme-dark-50': value === optionValue,
+                                    'text-theme-secondary-700 hover:dark:text-theme-dark-50 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950': selected === index && value !== optionValue,
+                                }"
+                                class="px-6 cursor-pointer font-semibold leading-5 group focus:outline-none focus:ring-inset transition-default h-full relative hover:dark:bg-theme-dark-950 hover:bg-theme-secondary-200 rounded-lg py-[0.875rem] my-[0.25rem] dark:text-theme-dark-200 flex items-center justify-between"
+                            >
+                                <div x-text="options[optionValue]"></div>
+
+                                <span
+                                    x-show="value === optionValue"
+                                    x-cloak
+                                >
+                                    <x-ark-icon
+                                        name="double-check-mark"
+                                        size="sm"
+                                        class="text-theme-primary-600 dark:text-theme-dark-50"
+                                    />
+                                </span>
+                            </div>
+                        </template>
                     @else
-                    <template x-for="(groupName, index) in Object.keys(options)" :key="index">
-                        <div>
-                            <span x-show="groupName" class="flex items-center px-8 pt-8 w-full text-sm font-bold leading-5 text-left text-theme-secondary-500" x-text="groupName"></span>
+                        <template x-for="(groupName, index) in Object.keys(options)" :key="index">
+                            <div>
+                                <span x-show="groupName" class="flex items-center px-8 pt-8 w-full text-sm font-bold leading-5 text-left text-theme-secondary-500" x-text="groupName"></span>
 
-                            <template x-for="(optionValue, index2) in Object.keys(options[groupName])" :key="`${index}-${index2}`">
-                                <div
-                                    data-option
-                                    :data-group="groupName"
-                                    x-description="Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation."
-                                    x-state:on="Highlighted"
-                                    x-state:off="Not Highlighted"
-                                    :id="`listbox-option-${optionValue}`"
-                                    role="option"
-                                    @click="choose(optionValue, groupName)"
-                                    @mouseenter="selected = getOptionIndex(index, index2); selectedGroup = groupName"
-                                    @mouseleave="selected = null; selectedGroup = null"
-                                    :class="{
-                                        'rich-select-dropdown-entry-selected': value === optionValue,
-                                        'rich-select-dropdown-entry-hover': selected === getOptionIndex(index, index2) && value !== optionValue,
-                                    }"
-                                    class="rich-select-dropdown-entry"
-                                    x-text="options[groupName][optionValue]"
-                                ></div>
-                            </template>
+                                <template x-for="(optionValue, index2) in Object.keys(options[groupName])" :key="`${index}-${index2}`">
+                                    <div
+                                        data-option
+                                        :data-group="groupName"
+                                        x-description="Select option, manage highlight styles based on mouseenter/mouseleave and keyboard navigation."
+                                        x-state:on="Highlighted"
+                                        x-state:off="Not Highlighted"
+                                        :id="`listbox-option-${optionValue}`"
+                                        role="option"
+                                        @click="choose(optionValue, groupName)"
+                                        @mouseenter="selected = getOptionIndex(index, index2); selectedGroup = groupName"
+                                        @mouseleave="selected = null; selectedGroup = null"
+                                        :class="{
+                                            'bg-theme-secondary-200 dark:bg-theme-dark-950 text-theme-primary-600 dark:text-theme-dark-50': value === optionValue,
+                                            'text-theme-secondary-700 hover:dark:text-theme-dark-50 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950': selected === getOptionIndex(index, index2) && value !== optionValue,
+                                        }"
+                                        class="px-6 cursor-pointer font-semibold leading-5 group focus:outline-none focus:ring-inset transition-default h-full relative hover:dark:bg-theme-dark-950 hover:bg-theme-secondary-200 rounded-lg py-[0.875rem] my-[0.25rem] dark:text-theme-dark-200 flex items-center justify-between"
+                                    >
+                                        <div x-text="options[groupName][optionValue]"></div>
 
-                            <hr x-show="index < Object.keys(options).length - 1" class="mx-8 mt-4 border-b border-dashed border-theme-dark-200" />
-                        </div>
-                    </template>
+                                        <span
+                                            x-show="value === optionValue"
+                                            x-cloak
+                                        >
+                                            <x-ark-icon
+                                                name="double-check-mark"
+                                                size="sm"
+                                                class="text-theme-primary-600 dark:text-theme-dark-50"
+                                            />
+                                        </span>
+                                    </div>
+                                </template>
+
+                                <hr x-show="index < Object.keys(options).length - 1" class="mx-8 mt-4 border-b border-dashed border-theme-dark-200" />
+                            </div>
+                        </template>
                     @endif
                 @endif
             </div>
