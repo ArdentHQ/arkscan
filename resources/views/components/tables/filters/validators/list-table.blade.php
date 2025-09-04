@@ -29,6 +29,7 @@
 
             <x-tables.filters.includes.checkbox
                 name="dormant"
+                model="filters.validators.dormant"
                 :label="trans('tables.filters.validators.dormant')"
             />
 
