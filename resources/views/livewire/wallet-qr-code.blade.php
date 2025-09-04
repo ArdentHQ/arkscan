@@ -1,24 +1,28 @@
 <div>
-    <div class="flex justify-between items-center p-6 border-b border-theme-secondary-300 dark:border-theme-dark-800">
+    <div class="flex justify-between items-center text-lg font-semibold text-left dark:text-theme-dark-50 px-6 py-[0.875rem]">
         <div class="text-lg text-theme-secondary-900 dark:text-theme-dark-200">
             @lang('pages.wallet.qrcode.title')
         </div>
 
+        {{-- close-button-class="absolute top-0 right-0 p-0 mt-4 mr-6 w-6 h-6 bg-transparent rounded-none sm:mt-[0.875rem] sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
+        title-class="mb-[0.875rem] text-lg font-semibold text-left dark:text-theme-dark-50"
+        padding-class="px-6 py-4 sm:pt-[0.875rem] sm:pb-4"
+        buttons-style="flex flex-col-reverse sm:flex-row sm:justify-end !mt-4 sm:!mt-6 sm:space-x-3 border-t border-theme-secondary-300 dark:border-theme-dark-700 px-6 -mx-6 pt-4" --}}
         <div>
             <button
                 type="button"
-                class="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-600 hover:bg-theme-primary-700"
+                class="flex w-6 h-6 p-0 items-center justify-center hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-600 hover:bg-theme-primary-700"
                 @click="dropdownOpen = false"
             >
                 <x-ark-icon
                     name="cross"
-                    size="sm"
+                    size="xs"
                 />
             </button>
         </div>
     </div>
 
-    <div class="p-6">
+    <div class="px-6 pb-6 pt-[0.875rem] border-t border-theme-secondary-300 dark:border-theme-dark-700">
         <div
             x-show="showOptions"
             class="font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
@@ -28,7 +32,7 @@
 
         <div
             x-show="showOptions"
-            class="pt-2 pb-4 space-y-3"
+            class="py-4"
         >
             <x-ark-input
                 type="number"
@@ -59,12 +63,12 @@
 
             <div
                 x-show="showOptions"
-                class="mt-4 mb-1 font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
+                class="mt-4 font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
             >
                 @lang('pages.wallet.qrcode.automatic_notice')
             </div>
 
-            <div class="flex items-center mt-2 space-x-3 w-full">
+            <div class="flex items-center mt-3 space-x-3 w-full">
                 <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
 
                 <div class="font-semibold text-theme-secondary-700 dark:text-theme-dark-200">

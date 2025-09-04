@@ -34,6 +34,7 @@
         }"
         button-wrapper-class=""
         button-class="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
+        content-class=""
     >
         <x-slot name="button">
             <div>

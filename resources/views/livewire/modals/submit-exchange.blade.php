@@ -8,20 +8,9 @@
     </button>
 
     @if($this->modalShown)
-        <x-ark-modal
-            :title="trans('pages.exchanges.submit-modal.title')"
-            title-class="text-lg text-left sm:text-2xl"
-            padding-class="p-6 sm:p-10"
-            wire-close="cancel"
-            close-button-class="absolute top-0 right-0 p-0 mt-0 mr-0 w-8 h-8 rounded-none sm:mt-6 sm:mr-6 sm:rounded button button-secondary text-theme-secondary-900 dim:bg-transparent dim:shadow-none hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
-            buttons-style="flex flex-col sm:flex-row sm:justify-end !mt-6 sm:space-x-3 space-y-3 sm:space-y-0"
-            breakpoint="sm"
-            wrapper-class="max-w-full sm:max-w-[430px]"
-            content-class="relative bg-white sm:mx-auto sm:shadow-2xl sm:rounded-2.5xl dark:bg-theme-dark-900"
-            overlay-class="dim:bg-theme-dark-950"
-        >
+        <x-modals.modal :title="trans('pages.exchanges.submit-modal.title')">
             <x-slot name="description">
-                <div class="flex flex-col pt-2 space-y-5">
+                <div class="px-6 -mx-6 mt-1 font-normal text-theme-secondary-700 dark:text-theme-dark-200 pt-4 border-t border-theme-secondary-300 dark:border-theme-dark-700 flex flex-col space-y-4">
                     <x-ark-input
                         name="name"
                         :label="trans('pages.exchanges.submit-modal.name')"
@@ -70,6 +59,6 @@
                     @lang('actions.submit')
                 </button>
             </x-slot>
-        </x-ark-modal>
+        </x-modals.modal>
     @endif
 </div>
