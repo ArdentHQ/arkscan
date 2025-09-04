@@ -73,7 +73,7 @@
                 </div>
             </x-slot>
 
-            <div class="pl-1 pr-1 md-lg:pr-0.5 flex overflow-y-scroll flex-col h-full custom-scroll overscroll-contain max-h-[246px] md:max-h-[332px]">
+            <div class="flex overflow-y-scroll overscroll-contain flex-col pr-1 pl-1 h-full custom-scroll max-h-[246px] md-lg:pr-0.5 md:max-h-[332px]">
                 @foreach (config('currencies.currencies') as $currency)
                     <x-general.dropdown.list-item
                         :is-active="$currency['currency'] === $to"

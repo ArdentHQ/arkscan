@@ -145,7 +145,7 @@ $initialText = $grouped
                                     'bg-theme-secondary-200 dark:bg-theme-dark-950 text-theme-primary-600 dark:text-theme-dark-50': value === optionValue,
                                     'text-theme-secondary-700 hover:dark:text-theme-dark-50 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950': selected === index && value !== optionValue,
                                 }"
-                                class="px-6 cursor-pointer font-semibold leading-5 group focus:outline-none focus:ring-inset transition-default h-full relative hover:dark:bg-theme-dark-950 hover:bg-theme-secondary-200 rounded-lg py-[0.875rem] my-[0.25rem] dark:text-theme-dark-200 flex items-center justify-between"
+                                class="flex relative justify-between items-center px-6 h-full font-semibold leading-5 rounded-lg cursor-pointer focus:ring-inset focus:outline-none group transition-default py-[0.875rem] my-[0.25rem] dark:text-theme-dark-200 hover:dark:bg-theme-dark-950 hover:bg-theme-secondary-200"
                             >
                                 <div x-text="options[optionValue]"></div>
 
@@ -182,7 +182,7 @@ $initialText = $grouped
                                             'bg-theme-secondary-200 dark:bg-theme-dark-950 text-theme-primary-600 dark:text-theme-dark-50': value === optionValue,
                                             'text-theme-secondary-700 hover:dark:text-theme-dark-50 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950': selected === getOptionIndex(index, index2) && value !== optionValue,
                                         }"
-                                        class="px-6 cursor-pointer font-semibold leading-5 group focus:outline-none focus:ring-inset transition-default h-full relative hover:dark:bg-theme-dark-950 hover:bg-theme-secondary-200 rounded-lg py-[0.875rem] my-[0.25rem] dark:text-theme-dark-200 flex items-center justify-between"
+                                        class="flex relative justify-between items-center px-6 h-full font-semibold leading-5 rounded-lg cursor-pointer focus:ring-inset focus:outline-none group transition-default py-[0.875rem] my-[0.25rem] dark:text-theme-dark-200 hover:dark:bg-theme-dark-950 hover:bg-theme-secondary-200"
                                     >
                                         <div x-text="options[groupName][optionValue]"></div>
 

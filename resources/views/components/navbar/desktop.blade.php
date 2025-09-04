@@ -45,7 +45,7 @@
 
                                     <div
                                         x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                        class="absolute z-30 max-w-4xl whitespace-nowrap bg-white rounded-xl shadow-lg top-[4.5rem] dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1"
+                                        class="absolute z-30 px-1 max-w-4xl whitespace-nowrap bg-white rounded-xl border border-white shadow-lg top-[4.5rem] dark:bg-theme-dark-900 dark:border-theme-dark-700"
                                         x-transition.origin.top
                                         x-cloak
                                     >

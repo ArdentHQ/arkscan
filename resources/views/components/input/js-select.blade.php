@@ -140,7 +140,7 @@
             @endforeach
 
             @if (count($extraItems) > 0)
-                <div class="flex flex-col border-t border-theme-secondary-300 dark:border-theme-dark-500 pt-[0.125rem] mt-0.5">
+                <div class="flex flex-col mt-0.5 border-t border-theme-secondary-300 pt-[0.125rem] dark:border-theme-dark-500">
                     @foreach ($extraItems as $item)
                         <x-general.dropdown.alpine-list-item
                             :id="$item['value']"
