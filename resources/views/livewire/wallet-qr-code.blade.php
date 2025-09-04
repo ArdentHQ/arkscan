@@ -1,17 +1,17 @@
 <div>
-    <div class="flex justify-between items-center text-lg font-semibold text-left dark:text-theme-dark-50 px-6 py-[0.875rem]">
+    <div class="flex justify-between items-center px-6 text-lg font-semibold text-left py-[0.875rem] dark:text-theme-dark-50">
         <div class="text-lg text-theme-secondary-900 dark:text-theme-dark-200">
             @lang('pages.wallet.qrcode.title')
         </div>
 
-        {{-- close-button-class="absolute top-0 right-0 p-0 mt-4 mr-6 w-6 h-6 bg-transparent rounded-none sm:mt-[0.875rem] sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
-        title-class="mb-[0.875rem] text-lg font-semibold text-left dark:text-theme-dark-50"
-        padding-class="px-6 py-4 sm:pt-[0.875rem] sm:pb-4"
+        {{-- close-button-class="absolute top-0 right-0 p-0 mt-4 mr-6 w-6 h-6 bg-transparent rounded-none sm:rounded dark:bg-transparent dark:shadow-none button button-secondary text-theme-secondary-700 dim:bg-transparent dim:shadow-none sm:mt-[0.875rem] dark:text-theme-dark-200 hover:dark:text-theme-dark-50 hover:dark:bg-theme-dark-blue-600"
+        title-class="text-lg font-semibold text-left mb-[0.875rem] dark:text-theme-dark-50"
+        padding-class="py-4 px-6 sm:pb-4 sm:pt-[0.875rem]"
         buttons-style="flex flex-col-reverse sm:flex-row sm:justify-end !mt-4 sm:!mt-6 sm:space-x-3 border-t border-theme-secondary-300 dark:border-theme-dark-700 px-6 -mx-6 pt-4" --}}
         <div>
             <button
                 type="button"
-                class="flex w-6 h-6 p-0 items-center justify-center hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-600 hover:bg-theme-primary-700"
+                class="flex justify-center items-center p-0 w-6 h-6 hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-600 hover:bg-theme-primary-700"
                 @click="dropdownOpen = false"
             >
                 <x-ark-icon
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="px-6 pb-6 pt-[0.875rem] border-t border-theme-secondary-300 dark:border-theme-dark-700">
+    <div class="px-6 pb-6 border-t pt-[0.875rem] border-theme-secondary-300 dark:border-theme-dark-700">
         <div
             x-show="showOptions"
             class="font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"

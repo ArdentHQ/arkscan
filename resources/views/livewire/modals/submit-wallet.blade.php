@@ -10,7 +10,7 @@
     @if($this->modalShown)
         <x-modals.modal :title="trans('pages.compatible-wallets.submit-modal.title')">
             <x-slot name="description">
-                <div class="px-6 -mx-6 mt-1 font-normal text-theme-secondary-700 dark:text-theme-dark-200 pt-4 border-t border-theme-secondary-300 dark:border-theme-dark-700 flex flex-col space-y-4">
+                <div class="flex flex-col px-6 pt-4 -mx-6 mt-1 space-y-4 font-normal border-t text-theme-secondary-700 border-theme-secondary-300 dark:text-theme-dark-200 dark:border-theme-dark-700">
                     <x-ark-input
                         name="name"
                         :label="trans('pages.compatible-wallets.submit-modal.name')"

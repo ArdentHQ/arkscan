@@ -41,7 +41,7 @@
         >
             <x-modals.modal :title="trans('pages.wallet.export-blocks-modal.title')">
                 <x-slot name="description">
-                    <div class="px-6 -mx-6 mt-1 font-normal text-theme-secondary-700 dark:text-theme-dark-200 pt-4 border-t border-theme-secondary-300 dark:border-theme-dark-700">
+                    <div class="px-6 pt-4 -mx-6 mt-1 font-normal border-t text-theme-secondary-700 border-theme-secondary-300 dark:text-theme-dark-200 dark:border-theme-dark-700">
                         @lang('pages.wallet.export-blocks-modal.description')
                     </div>
 
