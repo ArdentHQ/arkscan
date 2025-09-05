@@ -1,4 +1,3 @@
-import { Link } from "@inertiajs/react";
 import TruncateMiddle from "../General/TruncateMiddle";
 import classNames from '../../utils/class-names';
 
@@ -15,7 +14,7 @@ export default function Address({ wallet, truncate = false, className = '' }: {
             [className]: true,
         })}>
             <div className="min-w-0 truncate">
-                <Link
+                <a
                     className="whitespace-nowrap link"
                     href={`/addresses/${wallet.address}`}
                 >
@@ -34,7 +33,7 @@ export default function Address({ wallet, truncate = false, className = '' }: {
 
                         {truncate === false && wallet.address}
                     </>)}
-                </Link>
+                </a>
             </div>
         </div>
     );
