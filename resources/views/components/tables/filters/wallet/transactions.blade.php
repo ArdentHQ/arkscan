@@ -7,7 +7,6 @@
         <x-tables.filters.includes.checkbox
             name="select-all"
             :label="trans('tables.filters.transactions.select_all')"
-            class="pb-4 mb-4 border-b md:pb-2 md:mb-1 border-theme-secondary-300 dark:border-theme-dark-800"
             model="selectAllFilters.transactions"
         />
 
