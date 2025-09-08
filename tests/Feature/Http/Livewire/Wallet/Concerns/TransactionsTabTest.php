@@ -711,7 +711,7 @@ it('should show a locked amount for a validator registration', function () {
     $response = Livewire::test(Tabs::class, [new WalletViewModel($this->subject)])
         ->call('setTransactionsReady');
 
-    $hasMatch = !! preg_match('/-\s+250\.00 DARK/', $response->html());
+    $hasMatch = (bool) preg_match('/-\s+250\.00 DARK/', $response->html());
 
     expect($hasMatch)->toBeTrue();
 });
@@ -734,8 +734,8 @@ it('should show an unlocked amount for a validator resignation', function () {
     $response = Livewire::test(Tabs::class, [new WalletViewModel($this->subject)])
         ->call('setTransactionsReady');
 
-    $hasNegativeMatch = !! preg_match('/-\s+250\.00 DARK/', $response->html());
-    $hasPositiveMatch = !! preg_match('/\+\s+250\.00 DARK/', $response->html());
+    $hasNegativeMatch = (bool) preg_match('/-\s+250\.00 DARK/', $response->html());
+    $hasPositiveMatch = (bool) preg_match('/\+\s+250\.00 DARK/', $response->html());
 
     expect($hasNegativeMatch)->toBeTrue();
     expect($hasPositiveMatch)->toBeTrue();
