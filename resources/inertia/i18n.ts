@@ -10,7 +10,7 @@ for (const path in files) {
     }
 
     resources[match[1]] = {
-        translation: JSON.parse(JSON.stringify((await files[path]()).default).replace(/:([A-Za-z0-9_]+)/g, "{{$1}}"))
+        translation: JSON.parse(JSON.stringify(files[path].default).replace(/:([A-Za-z0-9_]+)/g, "{{$1}}"))
     };
 }
 
@@ -26,8 +26,6 @@ i18n
 
         interpolation: {
             escapeValue: false,
-            // prefix: ":",
-            // suffix: "",
         },
     });
 
