@@ -2,7 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
 import laravel from "laravel-vite-plugin";
 import { detectServerConfig } from "./vendor/arkecosystem/foundation/resources/vite.config";
-import svgr from 'vite-plugin-svgr';
+import i18n from 'laravel-react-i18n/vite'
 
 export default ({ mode }) => defineConfig({
     plugins: [
@@ -13,6 +13,9 @@ export default ({ mode }) => defineConfig({
             'resources/js/chart-tooltip.js',
             'resources/js/webhooks.js',
         ]),
+        i18n({
+            langDirname: 'resources/lang',
+        }),
     ],
     resolve: {
         alias: {

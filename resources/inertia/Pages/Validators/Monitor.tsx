@@ -7,12 +7,14 @@ import ValidatorFavoritesProvider from "@/Providers/ValidatorFavorites/Validator
 import MonitorMobileTableWrapper from "@/Components/Tables/Mobile/Validators/Monitor";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { IValidatorData } from "@/types";
+import { useTranslation } from "react-i18next";
 
 export default function Monitor({ validatorData, height, rowCount }: {
     validatorData: IValidatorData;
     height: number;
     rowCount: number;
 }) {
+    const { t } = useTranslation();
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
@@ -42,8 +44,8 @@ export default function Monitor({ validatorData, height, rowCount }: {
 
     return (<>
         <PageHeader
-            title="Validator Monitor"
-            subtitle="Validator block production observer tool"
+            title={t('pages.validator-monitor.title')}
+            subtitle={t('pages.validator-monitor.subtitle')}
         />
 
         <HeaderStats

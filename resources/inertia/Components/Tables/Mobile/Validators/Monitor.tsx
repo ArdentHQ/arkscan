@@ -12,6 +12,7 @@ import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { MobileMonitorSkeletonTable } from "../Skeleton/Validators/Monitor";
 import { IValidator } from "@/types";
+import { useTranslation } from "react-i18next";
 
 export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
     return (
@@ -60,6 +61,7 @@ export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
 }
 
 export function MonitorMobileTable({ validators }: { validators: IValidator[] }) {
+    const { t } = useTranslation();
     const { isFavorite } = useValidatorFavorites();
 
     return (
@@ -76,28 +78,28 @@ export function MonitorMobileTable({ validators }: { validators: IValidator[] })
                     expandable={true}
                     header={<MonitorMobileHeader validator={validator} />}
                 >
-                    <TableCell label="Status" className="sm:hidden">
+                    <TableCell label={t('tables.validator-monitor.status')} className="sm:hidden">
                         <Status
                             validator={validator}
                             className="sm:hidden"
                         />
                     </TableCell>
 
-                    <TableCell label="Time to Forge">
+                    <TableCell label={t('tables.validator-monitor.time_to_forge')}>
                         <TimeToForge
                             forgingAt={validator.forgingAt}
                             wallet={validator.wallet}
                         />
                     </TableCell>
 
-                    <TableCell label="Block Height">
+                    <TableCell label={t('tables.validator-monitor.block_height')}>
                         <BlockHeight validator={validator} />
                     </TableCell>
 
                     <div className="sm:hidden pt-4 mt-4 border-t sm:border-t-0 sm:pt-0 sm:mt-0 border-theme-secondary-300 dark:border-theme-dark-700">
                         <FavoriteIcon
                             validator={validator}
-                            label="Favorite"
+                            label={t('tables.validator-monitor.favorite')}
                         />
                     </div>
                 </MobileTableRow>

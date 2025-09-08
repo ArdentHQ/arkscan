@@ -5,6 +5,7 @@ import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import LoadingText from "@/Components/Loading/Text";
 import { IStatistics } from "@/types";
 import classNames from "@/utils/class-names";
+import { useTranslation } from "react-i18next";
 
 export function HeaderStat({
     title,
@@ -45,6 +46,8 @@ export default function HeaderStats({ height, statistics }: {
     height: number;
     statistics?: IStatistics;
 }) {
+    const { t } = useTranslation();
+
     const isLoading = !statistics;
 
     return (
@@ -55,7 +58,7 @@ export default function HeaderStats({ height, statistics }: {
             >
                 <Card className="flex items-center space-x-6">
                     <HeaderStat
-                        title="Forging"
+                        title={t('pages.validator-monitor.stats.forging')}
                         value={statistics?.performances?.forging}
                         color="bg-theme-success-700 dark:bg-theme-success-500"
                         isLoading={isLoading || statistics?.performances?.forging === undefined}
@@ -63,7 +66,7 @@ export default function HeaderStats({ height, statistics }: {
                     />
 
                     <HeaderStat
-                        title="Missed"
+                        title={t('pages.validator-monitor.stats.missed')}
                         value={statistics?.performances?.missed}
                         color="bg-theme-warning-700 dark:bg-theme-warning-400"
                         isLoading={isLoading || statistics?.performances?.missed === undefined}
@@ -71,7 +74,7 @@ export default function HeaderStats({ height, statistics }: {
                     />
 
                     <HeaderStat
-                        title="Not Forging"
+                        title={t('pages.validator-monitor.stats.not_forging')}
                         value={statistics?.performances?.missing}
                         color="bg-theme-danger-600 dark:bg-theme-danger-400"
                         isLoading={isLoading || statistics?.performances?.missing === undefined}
@@ -81,7 +84,7 @@ export default function HeaderStats({ height, statistics }: {
 
                 <Card>
                     <Detail
-                        title="Current Height"
+                        title={t('pages.validator-monitor.stats.current_height')}
                         isLoading={!height}
                     >
                         <Number>{height}</Number>
@@ -90,7 +93,7 @@ export default function HeaderStats({ height, statistics }: {
 
                 <Card>
                     <Detail
-                        title="Current Round"
+                        title={t('pages.validator-monitor.stats.current_round')}
                         isLoading={statistics?.blockCount === undefined}
                     >
                         {statistics?.blockCount || 'N/A'}
@@ -99,7 +102,7 @@ export default function HeaderStats({ height, statistics }: {
 
                 <Card>
                     <Detail
-                        title="Next Slot"
+                        title={t('pages.validator-monitor.stats.next_slot')}
                         isLoading={isLoading}
                     >
                         {!! statistics?.nextValidator && statistics?.nextValidator?.address ? (
