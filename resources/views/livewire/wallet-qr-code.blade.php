@@ -1,5 +1,5 @@
 <div>
-    <div class="flex justify-between items-center p-6 border-b border-theme-secondary-300 dark:border-theme-dark-800">
+    <div class="flex justify-between items-center px-6 text-lg font-semibold text-left py-[0.875rem] dark:text-theme-dark-50">
         <div class="text-lg text-theme-secondary-900 dark:text-theme-dark-200">
             @lang('pages.wallet.qrcode.title')
         </div>
@@ -7,18 +7,18 @@
         <div>
             <button
                 type="button"
-                class="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-600 hover:bg-theme-primary-700"
+                class="flex justify-center items-center p-0 w-6 h-6 hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-600 hover:bg-theme-primary-700"
                 @click="dropdownOpen = false"
             >
                 <x-ark-icon
                     name="cross"
-                    size="sm"
+                    size="xs"
                 />
             </button>
         </div>
     </div>
 
-    <div class="p-6">
+    <div class="px-6 pb-6 border-t pt-[0.875rem] border-theme-secondary-300 dark:border-theme-dark-700">
         <div
             x-show="showOptions"
             class="font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
@@ -28,7 +28,7 @@
 
         <div
             x-show="showOptions"
-            class="pt-2 pb-4 space-y-3"
+            class="py-4"
         >
             <x-ark-input
                 type="number"
@@ -59,12 +59,12 @@
 
             <div
                 x-show="showOptions"
-                class="mt-4 mb-1 font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
+                class="mt-4 font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200"
             >
                 @lang('pages.wallet.qrcode.automatic_notice')
             </div>
 
-            <div class="flex items-center mt-2 space-x-3 w-full">
+            <div class="flex items-center mt-3 space-x-3 w-full">
                 <div class="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
 
                 <div class="font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
