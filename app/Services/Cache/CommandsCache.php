@@ -25,7 +25,7 @@ final class CommandsCache implements Contract
 
     public function getResignationIdsLastUpdated(): int
     {
-        return $this->get('resignation_ids:last_updated', 0);
+        return (int) $this->get('resignation_ids:last_updated', 0);
     }
 
     public function setResignationIdsLastUpdated(int $data): void
