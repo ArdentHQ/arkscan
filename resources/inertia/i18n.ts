@@ -10,8 +10,6 @@ export default async function loadI18n() {
             continue;
         }
 
-        console.log((files[path])());
-
         resources[match[1]] = {
             translation: JSON.parse(JSON.stringify((await files[path]()).default).replace(/:([A-Za-z0-9_]+)/g, "{{$1}}"))
         };
