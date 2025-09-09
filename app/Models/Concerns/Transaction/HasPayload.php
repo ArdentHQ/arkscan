@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns\Transaction;
 
-use App\Enums\ContractMethod;
-use App\Services\BigNumber;
 use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
-use ArkEcosystem\Crypto\Utils\UnitConverter;
-use Brick\Math\RoundingMode;
 
 trait HasPayload
 {
@@ -70,39 +66,6 @@ trait HasPayload
         ])->render());
     }
 
-    /**
-     * @return array<int, array{address: string, amount: float}>
-     */
-    public function multiPaymentRecipients(): array
-    {
-        /**
-         * @var string $payload
-         */
-        $payload = $this->rawPayload();
-
-        if (! str_starts_with($payload, ContractMethod::multiPayment())) {
-            throw new \Exception('This transaction is not a multi-payment.');
-        }
-
-        $method = (new AbiDecoder(ContractAbiType::MULTIPAYMENT))->decodeFunctionData($payload);
-
-        $recipients = [];
-
-        $addresses = $method['args'][0];
-        $amounts   = $method['args'][1];
-
-        foreach ($addresses as $index => $address) {
-            if (isset($amounts[$index])) {
-                $recipients[] = [
-                    'address' => $address,
-                    'amount'  => UnitConverter::formatUnits($amounts[$index], 'ark'),
-                ];
-            }
-        }
-
-        return $recipients;
-    }
-
     public function getMethodData(bool $tryAllAbis = false): ?array
     {
         $payload = $this->rawPayload();
@@ -138,44 +101,6 @@ trait HasPayload
         }
 
         return [$functionName, $methodId, $arguments];
-    }
-
-    public function parseReceiptError(): ?string
-    {
-        // Code-wise, receipt could be null, but in practice it should never be.
-        if ($this->receipt === null) {
-            return null;
-        }
-
-        if ($this->receipt->status === true) {
-            return null;
-        }
-
-        $outputPayload = $this->decodePayload($this->receipt->output);
-        if ($outputPayload !== null) {
-            $contractAbiTypes = [
-                ContractAbiType::CUSTOM,
-                ContractAbiType::CONSENSUS,
-                ContractAbiType::MULTIPAYMENT,
-                ContractAbiType::USERNAMES,
-            ];
-
-            foreach ($contractAbiTypes as $type) {
-                try {
-                    return (new AbiDecoder($type))->decodeError($outputPayload);
-                } catch (\Throwable $e) {
-                    // If the ABI type is not found, we will try the next one
-                }
-            }
-        }
-
-        $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
-        $gasUsed                  = BigNumber::new($this->receipt->gas_used->valueOf()->toFloat());
-        if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
-            return 'InsufficientGas';
-        }
-
-        return null;
     }
 
     /**

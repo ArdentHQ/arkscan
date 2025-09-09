@@ -98,8 +98,7 @@ trait RecentVotesTab
 
         return Transaction::query()
             ->with('votedFor')
-            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
-            ->where('receipts.status', true)
+            ->where('status', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
                 $query->where(fn ($query) => $query->when($this->filters['recent-votes']['vote'], function ($query) {

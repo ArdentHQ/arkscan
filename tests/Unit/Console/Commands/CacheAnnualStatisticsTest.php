@@ -24,7 +24,6 @@ it('should cache annual data for current year', function () {
 
     Transaction::factory()
         ->count(5)
-        ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
             'value'     => 10 * 1e18,
@@ -82,7 +81,6 @@ it('should cache annual data for all time', function () {
     $initialDate = Carbon::parse('2017-03-21 13:00:00');
     Transaction::factory()
         ->count(6)
-        ->withReceipt()
         ->create([
             'timestamp' => $initialDate->getTimestampMs(),
             'value'     => 10 * 1e18,
@@ -102,7 +100,6 @@ it('should cache annual data for all time', function () {
             [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
         )
         ->count(3)
-        ->withReceipt()
         ->create([
             'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
@@ -110,7 +107,6 @@ it('should cache annual data for all time', function () {
     // Current year
     Transaction::factory()
         ->count(5)
-        ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
             'value'     => 10 * 1e18,
@@ -122,7 +118,6 @@ it('should cache annual data for all time', function () {
             $addresses,
             [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
         )
-        ->withReceipt()
         ->create([
             'value'     => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
             'timestamp' => $timestamp,
@@ -188,7 +183,6 @@ it('should not dispatch event if nothing changes', function () {
 
     Transaction::factory()
         ->count(5)
-        ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
             'value'     => 10 * 1e18,
@@ -227,7 +221,6 @@ it('should dispatch event for all data when the transaction count changes', func
     $timestamp   = Timestamp::now()->getTimestampMs();
 
     Transaction::factory(5)
-        ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
             'value'     => 10 * 1e18,
@@ -255,7 +248,6 @@ it('should dispatch event for all data when the transaction count changes', func
     Event::fake();
 
     Transaction::factory()
-        ->withReceipt()
         ->create([
             'block_hash'  => Block::first()->hash,
             'timestamp'   => Carbon::parse('2020-03-03 01:01:01')->getTimestampMs(),
@@ -313,7 +305,6 @@ it('should dispatch event for specific year when the transaction count changes',
     // since cached data points to 5 transactions it should mark as changed
     // and dispatch event if transaction count changes
     Transaction::factory(6)
-        ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
             'value'     => 10 * 1e18,
@@ -342,7 +333,6 @@ it('should dispatch event for all data when the block count changes', function (
     ]);
 
     Transaction::factory(5)
-        ->withReceipt()
         ->create([
             'timestamp'   => $timestamp,
             'value'       => 10 * 1e18,
@@ -355,7 +345,6 @@ it('should dispatch event for all data when the block count changes', function (
     ]);
 
     Transaction::factory(2)
-        ->withReceipt()
         ->create([
             'timestamp'   => Carbon::parse('2023-03-03 00:00:00')->getTimestampMs(),
             'value'       => 10 * 1e18,
@@ -419,7 +408,6 @@ it('should dispatch event for current year when the transaction count changes', 
     $timestamp   = Timestamp::now()->getTimestampMs();
 
     Transaction::factory(5)
-        ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
             'value'     => 10 * 1e18,
@@ -445,7 +433,6 @@ it('should dispatch event for current year when the transaction count changes', 
     Event::fake();
 
     Transaction::factory()
-        ->withReceipt()
         ->create([
             'block_hash'  => Block::first()->hash,
             'timestamp'   => Carbon::parse('2024-01-02 00:00:00')->getTimestampMs(),
@@ -477,7 +464,6 @@ it('should dispatch event for current year when the block count changes', functi
     $timestamp   = Timestamp::now()->getTimestampMs();
 
     Transaction::factory(5)
-        ->withReceipt()
         ->create([
             'timestamp' => $timestamp,
             'value'     => 10 * 1e18,
@@ -528,7 +514,6 @@ it('should get all annual data if not already set', function () {
 
     // 2017
     Transaction::factory(6)
-        ->withReceipt()
         ->create([
             'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
             'value'     => 10 * 1e18,
@@ -540,7 +525,6 @@ it('should get all annual data if not already set', function () {
             Wallet::factory()->create()->address,
             Wallet::factory()->create()->address,
         ], [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)])
-        ->withReceipt()
         ->create([
             'timestamp' => Carbon::parse('2017-03-21 13:00:00')->getTimestampMs(),
             'value'     => 11 * 1e18,
@@ -588,7 +572,6 @@ it('should not cache all annual data if already set', function () {
     // 2020, default timestamp. Needed as transaction factory will create blocks in addition
     Transaction::factory()
         ->count(3)
-        ->withReceipt()
         ->create();
 
     Block::factory()->create();
@@ -599,7 +582,6 @@ it('should not cache all annual data if already set', function () {
             [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
         )
         ->count(3)
-        ->withReceipt()
         ->create([
             'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);
@@ -648,7 +630,6 @@ it('should cache all annual data with flag even if not already set', function ()
     // 2020, default timestamp. Needed as transaction factory will create blocks in addition
     Transaction::factory()
         ->count(3)
-        ->withReceipt()
         ->create();
 
     Block::factory()->create();
@@ -659,7 +640,6 @@ it('should cache all annual data with flag even if not already set', function ()
             [BigNumber::new(10 * 1e18), BigNumber::new(1 * 1e18)]
         )
         ->count(3)
-        ->withReceipt()
         ->create([
             'value' => BigNumber::new(10 * 1e18)->plus(1 * 1e18),
         ]);

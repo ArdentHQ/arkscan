@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 use App\Models\Block;
-use App\Models\Receipt;
+use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Config;
 use Meilisearch\Client as MeilisearchClient;
@@ -82,115 +83,115 @@ it('makes transactions searchable', function () {
     expect(true)->toBeTrue();
 });
 
-it('should calculate fee with receipt', function () {
+it('should calculate fee', function () {
     $transaction = Transaction::factory()->create([
         'gas_price' => 54,
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => 21000,
+        'gas_used'  => 21000,
     ]);
 
     expect($transaction->fresh()->fee()->toNumber())->toBe(1134000);
 });
 
-it('should return gas price if no receipt', function () {
+it('should return error', function () {
     $transaction = Transaction::factory()->create([
-        'gas_price' => 54,
-    ]);
-
-    expect($transaction->fresh()->fee()->toNumber())->toBe(54);
-});
-
-it('should return receipt error', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
         'status'           => false,
-        'output'           => function () {
-            // In-memory stream
-            $stream = fopen('php://temp', 'r+');
-            fwrite($stream, hex2bin('cd03235e'));
-            rewind($stream);
-
-            return $stream;
-        },
+        'decoded_error'    => 'CallerIsNotValidator',
     ]);
 
-    expect($transaction->parseReceiptError())->toBe('CallerIsNotValidator');
+    expect($transaction->transactionError())->toBe('Caller Is Not Validator');
 });
 
-it('should return receipt error for insufficient gas', function () {
+it('should return error for insufficient gas', function () {
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
+        'gas'           => BigNumber::new(80131),
+        'gas_used'      => BigNumber::new(79326),
+        'status'        => false,
+        'decoded_error' => 'execution reverted',
     ]);
 
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326)->valueOf(),
-        'status'           => false,
-    ]);
-
-    expect($transaction->parseReceiptError())->toBe('InsufficientGas');
+    expect($transaction->transactionError())->toBe('Out of gas?');
 });
 
-it('should not return receipt error for insufficient gas if receipt did not fail', function () {
+it('should not return error for insufficient gas if receipt did not fail', function () {
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
+        'gas'      => BigNumber::new(80131),
+        'gas_used' => BigNumber::new(79326),
+        'status'   => true,
     ]);
 
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326)->valueOf(),
-        'status'           => true,
-    ]);
-
-    expect($transaction->parseReceiptError())->toBeNull();
+    expect($transaction->transactionError())->toBeNull();
 });
 
 it('should not modify gas used instance when getting receipt error', function () {
+    $gasUsed     = BigNumber::new(79326);
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
+        'gas'           => BigNumber::new(80131),
+        'gas_used'      => $gasUsed,
+        'status'        => false,
+        'decoded_error' => 'execution reverted',
     ]);
 
-    $receipt = Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326),
+    expect($transaction->transactionError())->toBe('Out of gas?');
+    expect($transaction->gas_used)->toEqual($gasUsed);
+});
+
+it('should not format errors with a space', function () {
+    $transaction = Transaction::factory()->create([
         'status'           => false,
+        'decoded_error'    => 'Error (Must send exactly 0.001 ETH to set message)',
     ]);
 
-    expect($transaction->parseReceiptError())->toBe('InsufficientGas');
-    expect($transaction->receipt->gas_used)->toEqual($receipt->gas_used);
+    expect($transaction->transactionError())->toBe('Error (Must send exactly 0.001 ETH to set message)');
 });
 
 it('should return null if no receipt error', function () {
-    $transaction = Transaction::factory()->create();
+    $transaction = Transaction::factory()->create([
+        'status' => false,
+    ]);
 
-    Receipt::factory()
-        ->create([
-            'transaction_hash' => $transaction->hash,
-            'status'           => false,
-        ]);
-
-    expect($transaction->parseReceiptError())->toBeNull();
+    expect($transaction->transactionError())->toBeNull();
 });
 
 it('should return null if no receipt record', function () {
     $transaction = Transaction::factory()->create();
 
-    expect($transaction->parseReceiptError())->toBeNull();
+    expect($transaction->transactionError())->toBeNull();
 });
 
 it('should return null if no valid error', function () {
-    $transaction = Transaction::factory()->create();
+    $transaction = Transaction::factory()->create([
+        'status' => false,
+    ]);
 
-    Receipt::factory()
+    expect($transaction->transactionError())->toBeNull();
+});
+
+it('should get recipients', function () {
+    $recipients = [
+        Wallet::factory()->create()->address,
+        Wallet::factory()->create()->address,
+    ];
+
+    $transaction = Transaction::factory()
+        ->multiPayment($recipients, [
+            BigNumber::new(1),
+            BigNumber::new(1),
+        ])
+        ->create();
+
+    MultiPayment::factory()
+        ->count(2)
+        ->state(new Sequence(
+            ['to' => $recipients[0]],
+            ['to' => $recipients[1]],
+        ))
         ->create([
-            'transaction_hash' => $transaction->hash,
-            'status'           => false,
+            'from'   => $transaction->from,
+            'hash'   => $transaction->hash,
+            'amount' => BigNumber::new(1),
         ]);
 
-    expect($transaction->parseReceiptError())->toBeNull();
+    expect($transaction->multiPaymentRecipients->count())->toBe(2);
+    expect($transaction->multiPaymentRecipients->first()->to)->toBe($recipients[0]);
+    expect($transaction->multiPaymentRecipients->last()->to)->toBe($recipients[1]);
 });

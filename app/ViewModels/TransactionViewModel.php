@@ -6,7 +6,9 @@ namespace App\ViewModels;
 
 use App\Actions\CacheNetworkHeight;
 use App\Contracts\ViewModel;
+use App\Models\MultiPayment;
 use App\Models\Transaction;
+use App\Services\BigNumber;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\Services\Transactions\TransactionDirection;
@@ -22,6 +24,7 @@ use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 final class TransactionViewModel implements ViewModel
 {
@@ -94,13 +97,7 @@ final class TransactionViewModel implements ViewModel
 
     public function gasUsed(): float
     {
-        $receipt = $this->transaction->receipt;
-
-        if ($receipt === null) {
-            return 0;
-        }
-
-        return UnitConverter::formatUnits((string) $receipt->gas_used, 'wei');
+        return UnitConverter::formatUnits((string) $this->transaction->gas_used, 'wei');
     }
 
     public function transactionIndex(): int
@@ -124,17 +121,19 @@ final class TransactionViewModel implements ViewModel
             return 0;
         }
 
-        $recipients = $this->multiPaymentRecipients();
-
-        $amount = collect($recipients)
+        $recipients = $this->multiPaymentRecipients()
             ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender !== null && strtolower($sender->address) === strtolower($recipient['address']);
-            })
-            ->sum('amount');
+                return $sender !== null && strtolower($sender->address) === strtolower($recipient['to']);
+            });
 
-        return $amount;
+        $amount = BigNumber::zero();
+        foreach ($recipients as $recipient) {
+            $amount->plus((string) $recipient->amount);
+        }
+
+        return $amount->toFloat();
     }
 
     public function amountExcludingItself(): float
@@ -143,17 +142,19 @@ final class TransactionViewModel implements ViewModel
             return 0;
         }
 
-        $recipients = $this->multiPaymentRecipients();
-
-        $amount = collect($recipients)
+        $recipients = $this->multiPaymentRecipients()
             ->filter(function ($recipient): bool {
                 $sender = $this->sender();
 
-                return $sender === null || strtolower($sender->address) !== strtolower($recipient['address']);
-            })
-            ->sum('amount');
+                return $sender === null || strtolower($sender->address) !== strtolower($recipient['to']);
+            });
 
-        return $amount;
+        $amount = BigNumber::zero();
+        foreach ($recipients as $recipient) {
+            $amount->plus((string) $recipient->amount);
+        }
+
+        return $amount->toFloat();
     }
 
     public function amount(): float
@@ -162,8 +163,12 @@ final class TransactionViewModel implements ViewModel
             return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
         }
 
-        return collect($this->multiPaymentRecipients())
-            ->sum('amount');
+        $amount = BigNumber::zero();
+        foreach ($this->multiPaymentRecipients() as $recipient) {
+            $amount->plus((string) $recipient->amount);
+        }
+
+        return $amount->toFloat();
     }
 
     public function amountWithFee(): float
@@ -174,15 +179,22 @@ final class TransactionViewModel implements ViewModel
     public function amountReceived(?string $walletAddress = null): float
     {
         if ($this->isMultiPayment() && $walletAddress !== null) {
-            return collect($this->multiPaymentRecipients())
-                ->filter(function ($recipient) use ($walletAddress) {
-                    if (strtolower($recipient['address']) === strtolower($walletAddress)) {
+            /** @var Collection<int, MultiPayment> $results */
+            $results = (new Collection($this->multiPaymentRecipients()))
+                ->filter(function (MultiPayment $recipient) use ($walletAddress) {
+                    if (strtolower($recipient->to) === strtolower($walletAddress)) {
                         return true;
                     }
 
                     return false;
-                })
-                ->sum('amount');
+                });
+
+            $amount = BigNumber::zero();
+            foreach ($results as $recipient) {
+                $amount->plus((string) $recipient->amount);
+            }
+
+            return $amount->toFloat();
         }
 
         return $this->amount();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Facades\Settings;
 use App\Models\Block;
-use App\Models\Receipt;
+use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -13,6 +13,7 @@ use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
@@ -28,6 +29,7 @@ beforeEach(function () {
         'block_number'             => 1,
         'gas_price'                => 1,
         'gas'                      => 21000,
+        'gas_used'                 => 1,
         'value'                    => 2 * 1e18,
         'sender_public_key'        => $this->sender->public_key,
         'to'                       => Wallet::factory()->create(['address' => 'recipient'])->address,
@@ -99,6 +101,17 @@ it('should get the amount for itself', function () {
             'sender_public_key' => $this->sender->public_key,
         ]);
 
+    MultiPayment::factory()
+        ->count(1)
+        ->state(new Sequence(
+            ['to' => $this->sender->address],
+        ))
+        ->create([
+            'from'   => $transaction->from,
+            'hash'   => $transaction->hash,
+            'amount' => BigNumber::new(30 * 1e18),
+        ]);
+
     $viewModel = new TransactionViewModel($transaction);
 
     expect($viewModel->amountForItself())->toBe(30.0);
@@ -109,10 +122,12 @@ it('should return zero for the amount for itself when not multipayment', functio
 });
 
 it('should get the amount excluding itself', function () {
+    $otherAddress = Wallet::factory()->create()->address;
+
     $transaction = Transaction::factory()
         ->multiPayment([
             $this->sender->address,
-            Wallet::factory()->create()->address,
+            $otherAddress,
         ], [
             BigNumber::new(30 * 1e18),
             BigNumber::new(30 * 1e18),
@@ -120,6 +135,18 @@ it('should get the amount excluding itself', function () {
         ->create([
             'sender_public_key' => $this->sender->public_key,
             'value'             => BigNumber::new(60 * 1e18),
+        ]);
+
+    MultiPayment::factory()
+        ->count(2)
+        ->state(new Sequence(
+            ['to' => $this->sender->address],
+            ['to' => $otherAddress],
+        ))
+        ->create([
+            'from'   => $transaction->from,
+            'hash'   => $transaction->hash,
+            'amount' => BigNumber::new(30 * 1e18),
         ]);
 
     $viewModel = new TransactionViewModel($transaction);
@@ -158,10 +185,12 @@ it('should get the amount excluding self as fiat', function () {
         Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
     ]));
 
+    $otherAddress = Wallet::factory()->create()->address;
+
     $transaction = Transaction::factory()
         ->multiPayment([
             $this->sender->address,
-            Wallet::factory()->create()->address,
+            $otherAddress,
         ], [
             BigNumber::new(30 * 1e18),
             BigNumber::new(30 * 1e18),
@@ -169,6 +198,18 @@ it('should get the amount excluding self as fiat', function () {
         ->create([
             'sender_public_key' => $this->sender->public_key,
             'value'             => BigNumber::new(60 * 1e18),
+        ]);
+
+    MultiPayment::factory()
+        ->count(2)
+        ->state(new Sequence(
+            ['to' => $this->sender->address],
+            ['to' => $otherAddress],
+        ))
+        ->create([
+            'from'   => $transaction->from,
+            'hash'   => $transaction->hash,
+            'amount' => BigNumber::new(30 * 1e18),
         ]);
 
     $viewModel = new TransactionViewModel($transaction);
@@ -264,7 +305,8 @@ it('should determine if the transaction is self-receiving', function (string $ty
 
 it('should fallback to the sender if no recipient address exists', function () {
     $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'to' => null,
+        'to'                        => null,
+        'deployed_contract_address' => null,
     ]));
 
     expect($this->subject->recipient())->toEqual($this->subject->sender());
@@ -273,11 +315,9 @@ it('should fallback to the sender if no recipient address exists', function () {
 it('should fallback to receipt deployed contract address if set', function () {
     $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
 
-    $receipt = Receipt::factory()
-        ->state(['contract_address' => $wallet->address]);
-
-    $this->subject = new TransactionViewModel(Transaction::factory()->has($receipt)->create([
-        'to' => null,
+    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+        'deployed_contract_address' => $wallet->address,
+        'to'                        => null,
     ]));
 
     expect($this->subject->recipient()->address())->toBe('deployedContractAddress');
@@ -391,51 +431,60 @@ MethodID: 0x6dd7d8ea');
 
     it('should get formatted multi payment receipts', function () {
         $transaction = new TransactionViewModel(Transaction::factory()
-        ->multiPayment([
-            '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
-            '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
-            '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
-        ], [
-            BigNumber::new(100000000),
-            BigNumber::new(200000000),
-            BigNumber::new(1234567),
-        ])->create());
+            ->multiPayment([
+                '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+                '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+                '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
+            ], [
+                BigNumber::new(100000000),
+                BigNumber::new(200000000),
+                BigNumber::new(1234567),
+            ])
+            ->create());
 
-        expect($transaction->multiPaymentRecipients())->toEqual([
+        MultiPayment::factory()
+            ->count(3)
+            ->state(new Sequence(
+                ['to' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A', 'amount' => BigNumber::new(100000000)],
+                ['to' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A', 'amount' => BigNumber::new(200000000)],
+                ['to' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF', 'amount' => BigNumber::new(1234567)],
+            ))
+            ->create([
+                'from'   => $transaction->model()->from,
+                'hash'   => $transaction->model()->hash,
+            ]);
+
+        $recipients = $transaction->multiPaymentRecipients()
+            ->map(function (MultiPayment $recipient) {
+                return [
+                    'address' => $recipient->to,
+                    'amount'  => $recipient->amount,
+                ];
+            })
+            ->values()
+            ->toArray();
+
+        expect($recipients)->toEqual([
             '0' => [
                 'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
-                'amount'  => '1.0E-10',
+                'amount'  => BigNumber::new(100000000),
             ],
             '1' => [
                 'address' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
-                'amount'  => '2.0E-10',
+                'amount'  => BigNumber::new(200000000),
             ],
             '2' => [
                 'address' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF',
-                'amount'  => '1.234567E-12',
+                'amount'  => BigNumber::new(1234567),
             ],
         ]);
-    });
-
-    it('should fail to get formatted multi payment recipients if invalid a multi payment', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
-            ->withPayload('123456')
-            ->create());
-
-        expect(function () use ($transaction) {
-            $transaction->multiPaymentRecipients();
-        })->toThrow(Exception::class, 'This transaction is not a multi-payment.');
     });
 });
 
 it('should calculate fee with receipt', function () {
     $transaction = Transaction::factory()->create([
         'gas_price' => 54 * 1e9,
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => 21000,
+        'gas_used'  => 21000,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -443,31 +492,10 @@ it('should calculate fee with receipt', function () {
     expect($viewModel->fee())->toEqual(0.001134);
 });
 
-it('should return gas price if no receipt', function () {
-    $transaction = Transaction::factory()->create([
-        'gas_price' => 54 * 1e9,
-    ]);
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->fee())->toEqual(0.000000054);
-});
-
 it('should should determine if transaction failed', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'status'           => false,
+    $transaction = Transaction::factory()->create([
+        'status' => false,
     ]);
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->hasFailedStatus())->toBeTrue();
-});
-
-it('should should determine if transaction failed if no receipt', function () {
-    $transaction = Transaction::factory()->create();
 
     $viewModel = new TransactionViewModel($transaction->fresh());
 
@@ -475,11 +503,8 @@ it('should should determine if transaction failed if no receipt', function () {
 });
 
 it('should should determine transaction has not failed', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'status'           => true,
+    $transaction = Transaction::factory()->create([
+        'status' => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
@@ -488,24 +513,13 @@ it('should should determine transaction has not failed', function () {
 });
 
 it('should get the gas used', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => 8,
+    $transaction = Transaction::factory()->create([
+        'gas_used' => 8,
     ]);
 
     $viewModel = new TransactionViewModel($transaction->fresh());
 
     expect($viewModel->gasUsed())->toEqual(8);
-});
-
-it('should get the gas used if no receipt', function () {
-    $transaction = Transaction::factory()->create();
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->gasUsed())->toEqual(0);
 });
 
 it('should get the username if set', function () {
@@ -588,6 +602,23 @@ it('should get the correct amount for a given wallet address in multipayment', f
         [BigNumber::new(1 * 1e18), BigNumber::new(2 * 1e18)]
     )->create();
 
+    MultiPayment::factory()
+        ->count(2)
+        ->state(new Sequence(
+            [
+                'to'     => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
+                'amount' => BigNumber::new(1 * 1e18),
+            ],
+            [
+                'to'     => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+                'amount' => BigNumber::new(2 * 1e18),
+            ],
+        ))
+        ->create([
+            'from'   => $transaction->from,
+            'hash'   => $transaction->hash,
+        ]);
+
     $viewModel = new TransactionViewModel($transaction);
 
     expect($viewModel->amount())->toEqual(3.0);
@@ -611,6 +642,22 @@ it('should get the correct amount for many wallet addresses in multipayment', fu
     )->create([
         'value' => BigNumber::new(60000 * 1e18),
     ]);
+
+    MultiPayment::factory()
+        ->count(count($wallets))
+        ->state(new Sequence(
+            ['to' => '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A'],
+            ['to' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B'],
+            ['to' => '0xEd0C906b8fcCDe71A19322DFfe929c6e04460cFF'],
+            ['to' => '0x1234567890abcdef1234567890abcdef12345678'],
+            ['to' => '0xabcdef1234567890abcdef1234567890abcdef12'],
+            ['to' => '0x7890abcdef1234567890abcdef1234567890abcd'],
+        ))
+        ->create([
+            'from'   => $transaction->from,
+            'hash'   => $transaction->hash,
+            'amount' => BigNumber::new(10000 * 1e18),
+        ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
@@ -663,84 +710,73 @@ it('should return null corresponding validator registration if not resignation',
 });
 
 it('should return receipt error', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'status'           => false,
-        'output'           => function () {
-            $stream = fopen('php://temp', 'r+');
-            fwrite($stream, hex2bin('cd03235e'));
-            rewind($stream);
-
-            return $stream;
-        },
+    $transaction = Transaction::factory()->create([
+        'status'        => false,
+        'decoded_error' => 'CallerIsNotValidator',
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBe('CallerIsNotValidator');
+    expect($viewModel->transactionError())->toBe('Caller Is Not Validator');
 });
 
 it('should return null if no receipt error', function () {
-    $transaction = Transaction::factory()->create();
-
-    Receipt::factory()
-        ->create([
-            'transaction_hash' => $transaction->hash,
-            'status'           => false,
-        ]);
+    $transaction = Transaction::factory()->create([
+        'status' => false,
+    ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBeNull();
+    expect($viewModel->transactionError())->toBeNull();
 });
 
 it('should return receipt error for insufficient gas', function () {
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326)->valueOf(),
-        'status'           => false,
+        'gas'           => BigNumber::new(80131),
+        'gas_used'      => BigNumber::new(79326),
+        'status'        => false,
+        'decoded_error' => 'execution reverted',
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBe('InsufficientGas');
+    expect($viewModel->transactionError())->toBe('Out of gas?');
 });
 
 it('should not return receipt error for insufficient gas if receipt did not fail', function () {
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
-    ]);
-
-    Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326)->valueOf(),
-        'status'           => true,
+        'gas'      => BigNumber::new(80131),
+        'gas_used' => BigNumber::new(79326),
+        'status'   => true,
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBeNull();
+    expect($viewModel->transactionError())->toBeNull();
 });
 
 it('should not modify gas used instance when getting receipt error', function () {
+    $gasUsed     = BigNumber::new(79326);
     $transaction = Transaction::factory()->create([
-        'gas' => BigNumber::new(80131),
-    ]);
-
-    $receipt = Receipt::factory()->create([
-        'transaction_hash' => $transaction->hash,
-        'gas_used'         => BigNumber::new(79326),
-        'status'           => false,
+        'gas'           => BigNumber::new(80131),
+        'gas_used'      => $gasUsed,
+        'status'        => false,
+        'decoded_error' => 'execution reverted',
     ]);
 
     $viewModel = new TransactionViewModel($transaction);
 
-    expect($viewModel->parseReceiptError())->toBe('InsufficientGas');
-    expect($transaction->receipt->gas_used)->toEqual($receipt->gas_used);
+    expect($viewModel->transactionError())->toBe('Out of gas?');
+    expect($transaction->gas_used)->toEqual($gasUsed);
+});
+
+it('should not format errors with a space', function () {
+    $transaction = Transaction::factory()->create([
+        'status'        => false,
+        'decoded_error' => 'Error (Must send exactly 0.001 ETH to set message)',
+    ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    expect($viewModel->transactionError())->toBe('Error (Must send exactly 0.001 ETH to set message)');
 });

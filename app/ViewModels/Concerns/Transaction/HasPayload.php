@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
+use App\Models\MultiPayment;
+use Illuminate\Database\Eloquent\Collection;
+
 trait HasPayload
 {
     public function hasPayload(): bool
@@ -26,16 +29,11 @@ trait HasPayload
         return $this->transaction->formattedPayload();
     }
 
-    public function parseReceiptError(): ?string
-    {
-        return $this->transaction->parseReceiptError();
-    }
-
     /**
-     * @return array<int, array{address: string, amount: float}>
+     * @return Collection<int, MultiPayment>
      */
-    public function multiPaymentRecipients(): array
+    public function multiPaymentRecipients(): Collection
     {
-        return $this->transaction->multiPaymentRecipients();
+        return $this->transaction->multiPaymentRecipients;
     }
 }

@@ -7,6 +7,7 @@ use App\Enums\StatsPeriods;
 use App\Enums\StatsTransactionType;
 use App\Events\Statistics\TransactionDetails;
 use App\Facades\Network;
+use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\Cache\TransactionCache;
@@ -37,35 +38,44 @@ it('should cache data', function (): void {
     $cache = new TransactionCache();
 
     Transaction::factory(2)
-        ->withReceipt(data: ['status' => true])
         ->validatorRegistration('5c038505a35f9D20435EDafa79A4F8Bbc643BB86')
         ->create([
             'value'     => 0,
             'gas_price' => 9,
+            'status'    => true,
         ]);
 
     Transaction::factory(3)
-        ->withReceipt(data: ['status' => true])
         ->transfer()
         ->create([
             'value'     => 2000 * 1e18,
             'gas_price' => 10,
+            'status'    => true,
         ]);
 
     Transaction::factory(4)
-        ->withReceipt(data: ['status' => true])
         ->multiPayment(['0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86'], [BigNumber::new(3000 * 1e18)])
         ->create([
             'value'     => 0,
             'gas_price' => 11,
-        ]);
+            'status'    => true,
+        ])
+        ->each(function (Transaction $transaction) {
+            MultiPayment::factory()
+                ->create([
+                    'to'     => '0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86',
+                    'from'   => $transaction->from,
+                    'hash'   => $transaction->hash,
+                    'amount' => BigNumber::new(3000 * 1e18),
+                ]);
+        });
 
     $largestTransaction = Transaction::factory()
-        ->withReceipt(data: ['status' => true])
         ->transfer()
         ->create([
             'value'     => 9000 * 1e18,
             'gas_price' => 10,
+            'status'    => true,
         ]);
 
     expect(Transaction::count())->toBe(10);
@@ -171,7 +181,16 @@ it('should not trigger event if nothing changed', function (): void {
         ->create([
             'value'     => 0,
             'gas_price' => 11 * 1e8,
-        ]);
+        ])
+        ->each(function (Transaction $transaction) {
+            MultiPayment::factory()
+                ->create([
+                    'to'     => '0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86',
+                    'from'   => $transaction->from,
+                    'hash'   => $transaction->hash,
+                    'amount' => BigNumber::new(3000 * 1e18),
+                ]);
+        });
 
     Transaction::factory()
         ->transfer()
@@ -215,7 +234,16 @@ it('should trigger event if largest transaction has changed', function (): void 
         ->create([
             'value'     => 0,
             'gas_price' => 11 * 1e8,
-        ]);
+        ])
+        ->each(function (Transaction $transaction) {
+            MultiPayment::factory()
+                ->create([
+                    'to'     => '0x5c038505a35f9D20435EDafa79A4F8Bbc643BB86',
+                    'from'   => $transaction->from,
+                    'hash'   => $transaction->hash,
+                    'amount' => BigNumber::new(3000 * 1e18),
+                ]);
+        });
 
     $largest = Transaction::factory()
         ->transfer()

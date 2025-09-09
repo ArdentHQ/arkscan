@@ -19,12 +19,15 @@ use App\Models\Scopes\UsernameRegistrationScope;
 use App\Models\Scopes\UsernameResignationScope;
 use App\Models\Scopes\ValidatorRegistrationScope;
 use App\Models\Scopes\ValidatorResignationScope;
+use App\Models\Scopes\ValidatorUpdateScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use Brick\Math\RoundingMode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Scout\Searchable;
 
@@ -43,6 +46,13 @@ use Laravel\Scout\Searchable;
  * @property resource|null $data
  * @property int $nonce
  * @property Wallet $sender
+ * @property bool $status
+ * @property BigNumber $gas_used
+ * @property BigNumber $gas_refunded
+ * @property string|null $deployed_contract_address
+ * @property array $logs
+ * @property resource|null $output
+ * @property string|null $decoded_error
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Transaction extends Model
@@ -109,10 +119,14 @@ final class Transaction extends Model
         'timestamp'         => UnixSeconds::class,
         'transaction_index' => 'int',
         'block_number'      => 'int',
+        'status'            => 'bool',
+        'gas_used'          => BigInteger::class,
+        'gas_refunded'      => BigInteger::class,
+        'logs'              => 'array',
     ];
 
     protected $with = [
-        'receipt',
+        'multiPaymentRecipients',
     ];
 
     /**
@@ -198,16 +212,6 @@ final class Transaction extends Model
         return $this->belongsTo(Wallet::class, 'sender_public_key', 'public_key');
     }
 
-    /**
-     * A receipt belongs to a transaction.
-     *
-     * @return HasOne
-     */
-    public function receipt(): HasOne
-    {
-        return $this->hasOne(Receipt::class, 'transaction_hash', 'hash');
-    }
-
     public function getVotedForAddressAttribute(): ?string
     {
         $methodData = $this->getMethodData();
@@ -226,6 +230,11 @@ final class Transaction extends Model
     public function votedFor(): HasOne
     {
         return $this->hasOne(Wallet::class, 'address', 'votedForAddress');
+    }
+
+    public function multiPaymentRecipients(): HasMany
+    {
+        return $this->hasMany(MultiPayment::class, 'hash', 'hash');
     }
 
     public function scopeWithTypeFilter(Builder $query, array $filter): Builder
@@ -266,6 +275,11 @@ final class Transaction extends Model
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['validator'] === true, function ($query) {
+                            $query->withScope(ValidatorUpdateScope::class);
+                        });
+                    })
+                    ->orWhere(function ($query) use ($filter) {
                         $query->when($filter['username'] === true, function ($query) {
                             $query->withScope(UsernameRegistrationScope::class);
                         });
@@ -292,11 +306,39 @@ final class Transaction extends Model
     public function fee(): BigNumber
     {
         $gasPrice = clone $this->gas_price;
-        if ($this->receipt === null) {
-            return $gasPrice;
+
+        return $gasPrice->multipliedBy($this->gas_used->valueOf());
+    }
+
+    public function transactionError(): ?string
+    {
+        if ($this->status === true) {
+            return null;
         }
 
-        return $gasPrice->multipliedBy($this->receipt->gas_used->valueOf());
+        $error = null;
+        if ($this->decoded_error !== null && $this->decoded_error !== 'execution reverted') {
+            $error = $this->decoded_error;
+        } elseif ($this->decoded_error === 'execution reverted') {
+            $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
+            $gasUsed                  = BigNumber::new($this->gas_used->valueOf()->toFloat());
+            if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
+                $error = 'Out of gas?';
+            }
+        }
+
+        if ($error === null) {
+            return null;
+        }
+
+        if (str_contains($error, ' ')) {
+            return $error;
+        }
+
+        /** @var string $formatted */
+        $formatted = preg_replace('/([A-Z])/', ' \1', $error);
+
+        return trim($formatted);
     }
 
     /**

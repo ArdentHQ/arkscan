@@ -58,10 +58,9 @@ final class CacheAnnualStatistics extends Command
                 DB::raw('DATE_PART(\'year\', TO_TIMESTAMP((transactions.timestamp) / 1000)) AS year'),
                 DB::raw('COUNT(DISTINCT(transactions.hash)) AS transactions'),
                 DB::raw(sprintf('(SUM(value) FILTER (WHERE COALESCE(is_multipayment, FALSE) != TRUE)) / 1e%d AS value', config('currencies.decimals.crypto', 18))),
-                DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) AS fees')),
+                DB::raw(sprintf('SUM(gas_price * COALESCE(gas_used, 0)) AS fees')),
                 DB::raw('COALESCE(SUM(recipient_amount), 0) as recipient_value'),
             ])
-            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->withScope(MultiPaymentTotalAmountScope::class)
             ->groupBy('year')
             ->orderBy('year')
@@ -112,10 +111,9 @@ final class CacheAnnualStatistics extends Command
             ->select([
                 DB::raw('COUNT(*) as transactions'),
                 DB::raw(sprintf('SUM(value) / 1e%d as value', config('currencies.decimals.crypto', 18))),
-                DB::raw(sprintf('SUM(gas_price * COALESCE(receipts.gas_used, 0)) as fees')),
+                DB::raw(sprintf('SUM(gas_price * COALESCE(gas_used, 0)) as fees')),
             ])
             ->from('transactions')
-            ->join('receipts', 'transactions.hash', '=', 'receipts.transaction_hash')
             ->where('timestamp', '>=', $startOfYear)
             ->first();
 

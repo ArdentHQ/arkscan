@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\BlocksController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
@@ -31,7 +32,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/validators', 'app.validators')->name('validators');
-Route::view('/validator-monitor', 'app.validator-monitor')->name('validator-monitor');
+Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');

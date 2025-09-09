@@ -14,17 +14,17 @@ it('should aggregate the fees for 12 months', function () {
     $endTime   = Carbon::now()->subMinutes(10);
 
     Transaction::factory(10)
-        ->withReceipt(10000)
         ->create([
             'gas_price' => 1,
             'timestamp' => $startTime->getTimestampMs(),
+            'gas_used'  => 10000,
         ])->sortByDesc('timestamp');
 
     Transaction::factory(10)
-        ->withReceipt(10000)
         ->create([
             'gas_price' => 1,
             'timestamp' => $endTime->getTimestampMs(),
+            'gas_used'  => 10000,
         ]);
 
     $result = (new YearAggregate())->aggregate();

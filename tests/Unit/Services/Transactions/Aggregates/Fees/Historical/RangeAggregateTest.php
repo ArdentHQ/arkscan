@@ -14,18 +14,18 @@ it('should aggregate the fees for the given range', function () {
     $endTime   = Carbon::now()->addDays(200);
 
     $start = Transaction::factory(10)
-        ->withReceipt(10000)
         ->create([
             'gas_price' => 1,
             'timestamp' => $startTime->getTimestampMs(),
+            'gas_used'  => 10000,
         ])
         ->sortByDesc('timestamp');
 
     $end = Transaction::factory(10)
-        ->withReceipt(10000)
         ->create([
             'gas_price' => 1,
             'timestamp' => $endTime->getTimestampMs(),
+            'gas_used'  => 10000,
         ])
         ->sortByDesc('timestamp');
 

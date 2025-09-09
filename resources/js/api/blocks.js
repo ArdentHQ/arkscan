@@ -1,5 +1,5 @@
-import axios from "axios";
 import { FailedExportRequest } from "../includes/helpers";
+import axios from "axios";
 
 export class BlocksApi {
     static async request(host, query, address) {
@@ -47,7 +47,7 @@ export class BlocksApi {
                 return blocks;
             }
 
-            height = page.data[page.data.length - 1]["height"] - 1;
+            height = page.data[page.data.length - 1]["number"] - 1;
         } catch (e) {
             throw new FailedExportRequest(
                 "There was a problem fetching blocks.",

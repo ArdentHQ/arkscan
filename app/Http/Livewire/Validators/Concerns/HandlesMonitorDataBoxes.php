@@ -22,10 +22,6 @@ trait HandlesMonitorDataBoxes
 
     public function pollStatistics(): void
     {
-        if (! $this->isReady) {
-            return;
-        }
-
         $this->statistics = [
             'blockCount'    => $this->getBlockCount(),
             'nextValidator' => $this->getNextValidator(),
