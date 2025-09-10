@@ -8,6 +8,8 @@ use Huddle\Zendesk\Facades\Zendesk;
 use Zendesk\API\Exceptions\ApiResponseException;
 
 it('should render the page without any errors', function () {
+    $this->withoutExceptionHandling();
+
     $this->get(route('contact'))
         ->assertOk();
 });

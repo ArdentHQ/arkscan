@@ -8,6 +8,8 @@ use App\Services\NumberFormatter;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {
+    $this->withoutExceptionHandling();
+
     $this
         ->get(route('transactions'))
         ->assertOk();

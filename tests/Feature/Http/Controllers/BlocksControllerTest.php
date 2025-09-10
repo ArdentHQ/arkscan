@@ -8,6 +8,8 @@ use App\Models\Transaction;
 use Carbon\Carbon;
 
 it('should render the page without any errors', function () {
+    $this->withoutExceptionHandling();
+
     $block = Block::factory()->create([
         'timestamp' => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'reward'    => 2 * 1e18,
