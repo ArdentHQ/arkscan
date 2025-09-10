@@ -29,7 +29,8 @@ export default function MissedBlocksTrackerProvider({
             const now = dayjs(new Date());
 
             const forger = sortedValidators.filter(validator => {
-                if (dayjs(validator.forgingAt).isBefore(now)) {
+                const secondsDifference = dayjs(validator.forgingAt).diff(now, 'second');
+                if (secondsDifference < -4) {
                     return false;
                 }
 
@@ -63,18 +64,12 @@ export default function MissedBlocksTrackerProvider({
                 }
 
                 const secondsDifference = dayjs(validator.forgingAt).diff(now, 'second');
-                // if (secondsDifference >= -3) {
-                if (secondsDifference >= 6) {
-                // if (secondsDifference >= 4) {
-                // if (secondsDifference >= -4) {
-                // if (secondsDifference >= 8) {
-                // if (secondsDifference >= -4) {
+                if (secondsDifference >= -4) {
                     break;
                 }
 
                 missedBlocksCount++;
-                calculatedSecondsOffset += 2;
-                // calculatedSecondsOffset += missedBlocksCount * 2;
+                calculatedSecondsOffset += missedBlocksCount * 2;
             }
 
             if (missedBlocksCount !== consecutiveMissedBlocks) {

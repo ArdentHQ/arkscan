@@ -74,18 +74,11 @@ export default function ValidatorStatusProvider({
         if (currentForger?.wallet.address !== validator.wallet.address && seconds >= 60) {
             setStatus(ForgingStatusPending);
 
-            // setJustMissed(true);
-            // setOutput(now.to(dateTime));
-
             return;
         }
 
-        if (currentForger?.wallet.address !== validator.wallet.address && seconds <= 0 - secondsOffset) {
-            console.log('missed', seconds);
+        if (currentForger?.wallet.address !== validator.wallet.address && seconds <= -4 - secondsOffset) {
             setStatus(ForgingStatusMissed);
-
-            // setJustMissed(true);
-            // setOutput(now.to(dateTime));
 
             return;
         }
@@ -93,8 +86,13 @@ export default function ValidatorStatusProvider({
         if (currentForger?.wallet.address === validator.wallet.address) {
             setStatus(ForgingStatusGenerating);
 
-            // setOutput('Nowwww');
-            // setOutput(now.to(dateTime));
+            return;
+        }
+
+        if (status === ForgingStatusGenerating && currentForger?.wallet.address !== validator.wallet.address) {
+            setStatus(ForgingStatusMissed);
+
+            return;
         }
     }, [validator.wallet, currentForger, seconds]);
 
