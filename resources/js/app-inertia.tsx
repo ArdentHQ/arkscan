@@ -1,8 +1,11 @@
 import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
+import loadI18n from '../inertia/i18n';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+
+loadI18n();
 
 createInertiaApp({
     id: 'inertia-body',

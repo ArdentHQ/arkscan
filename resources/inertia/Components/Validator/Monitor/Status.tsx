@@ -1,6 +1,7 @@
 import Badge from '@/Components/General/Badge';
 import classNames from "@/utils/class-names";
 import TimeToForge from "./TimeToForge";
+import { useTranslation } from "react-i18next";
 
 export default function Status({
     width = 'min-w-[8.75rem]',
@@ -15,6 +16,8 @@ export default function Status({
     validator: any;
     className?: string;
 }) {
+    const { t } = useTranslation();
+
     const wallet = validator.wallet;
 
     return (
@@ -56,16 +59,16 @@ export default function Status({
                                     className="text-xs font-semibold leading-3.75"
                                 />
                             ) : (
-                                <span>Pending</span>
+                                <span>{t('tables.validator-monitor.forging-status.pending')}</span>
                             )}
                         </>
                     )}
 
-                    {wallet.hasForged && <span>Block Generated</span>}
-                    {wallet.justMissed && <span>{wallet.missedCount} Blocks Missed</span>}
+                    {wallet.hasForged && <span>{t('tables.validator-monitor.forging-status.block_generated')}</span>}
+                    {wallet.justMissed && <span>{t('tables.validator-monitor.forging-status.blocks_missed', { count: wallet.missedCount })}</span>}
 
                     {!wallet.isPending && !wallet.hasForged && !wallet.justMissed && (
-                        <span>Generating ...</span>
+                        <span>{t('tables.validator-monitor.forging-status.generating')}</span>
                     )}
                 </div>
             )}
