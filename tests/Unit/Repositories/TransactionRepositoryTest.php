@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Repositories\TransactionRepository;
 use App\Services\BigNumber;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 
 beforeEach(fn () => $this->subject = new TransactionRepository());
 

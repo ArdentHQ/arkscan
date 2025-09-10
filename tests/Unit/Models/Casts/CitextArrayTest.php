@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Casts\CitextArray;
 use App\Models\Transaction;
-use App\Services\BigNumber;
 
 it('should convert from string to array', function () {
     $transaction = Transaction::factory()->create();

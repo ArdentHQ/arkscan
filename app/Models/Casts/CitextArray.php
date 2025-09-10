@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models\Casts;
 
-use App\Services\BigNumber;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
