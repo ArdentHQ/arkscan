@@ -9,7 +9,6 @@ loadI18n();
 
 createInertiaApp({
     id: 'inertia-body',
-    title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`../inertia/Pages/${name}.tsx`, import.meta.glob('../inertia/Pages/**/*.tsx')),
     setup({ el, App, props }) {
         const root = createRoot(el) // This requires react-dom/client
