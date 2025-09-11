@@ -1,8 +1,12 @@
 <x-navbar.dropdown
-    class="w-8"
+    dropdown-background="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 py-[0.125rem]"
+    dropdown-padding=""
     without-dropdown-icon
 >
-    <x-slot name="button">
+    <x-slot
+        name="button"
+        class="w-8"
+    >
         <div class="dim:text-theme-dark-300">
             <span x-show="theme === 'dark'" x-cloak>
                 <x-ark-icon
@@ -30,8 +34,8 @@
     <x-general.dropdown.alpine-list-item
         id="light"
         variable-name="theme"
-        active-class="font-semibold border-theme-primary-600 bg-theme-primary-50 dim:bg-theme-dark-950 text-theme-secondary-900 dark:border-theme-dark-blue-500 dark:bg-theme-dark-900 dark:text-theme-dark-50"
-        inactive-class="font-semibold border-transparent text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-700 hover:bg-theme-secondary-100 hover:dark:bg-theme-dark-900"
+        active-class="font-semibold border-theme-primary-600 bg-theme-secondary-200 dim:bg-theme-dark-950 text-theme-primary-600 dark:border-theme-dark-blue-500 dark:bg-theme-dark-900 dark:text-theme-dark-50"
+        inactive-class="font-semibold border-transparent text-theme-secondary-700 dark:text-theme-dark-200 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50"
     >
         @lang('general.navbar.theme.light')
     </x-general.dropdown.alpine-list-item>
@@ -39,7 +43,7 @@
     <x-general.dropdown.alpine-list-item
         id="dark"
         variable-name="theme"
-        inactive-class="font-semibold border-transparent text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-700 hover:bg-theme-secondary-100 hover:dark:bg-theme-dark-900"
+        inactive-class="font-semibold border-transparent text-theme-secondary-700 dark:text-theme-dark-200 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50"
     >
         @lang('general.navbar.theme.dark')
     </x-general.dropdown.alpine-list-item>
@@ -47,7 +51,7 @@
     <x-general.dropdown.alpine-list-item
         id="dim"
         variable-name="theme"
-        inactive-class="font-semibold border-transparent text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-700 hover:bg-theme-secondary-100 hover:dark:bg-theme-dark-900"
+        inactive-class="font-semibold border-transparent text-theme-secondary-700 dark:text-theme-dark-200 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50"
     >
         @lang('general.navbar.theme.dim')
     </x-general.dropdown.alpine-list-item>

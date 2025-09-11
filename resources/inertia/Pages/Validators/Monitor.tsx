@@ -1,4 +1,4 @@
-import { router } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 import PageHeader from "@/Components/General/PageHeader";
 import MonitorTableWrapper from "@/Components/Tables/Desktop/Validators/Monitor";
@@ -6,15 +6,20 @@ import HeaderStats from "@/Components/Validator/Monitor/HeaderStats";
 import ValidatorFavoritesProvider from "@/Providers/ValidatorFavorites/ValidatorFavoritesProvider";
 import MonitorMobileTableWrapper from "@/Components/Tables/Mobile/Validators/Monitor";
 import MobileDivider from "@/Components/General/MobileDivider";
-import { IValidatorData } from "@/types";
+import { INetwork, IValidatorData } from "@/types";
 import MissedBlocksTrackerProvider from "@/Providers/MissedBlocksTracker/MissedBlocksTrackerProvider";
+import { useTranslation } from "react-i18next";
+import { usePageMetadata } from "@/Components/General/Metadata";
 
-export default function Monitor({ validatorData, height, rowCount }: {
+export default function Monitor({ validatorData, height, rowCount, network }: {
     validatorData: IValidatorData;
     height: number;
     rowCount: number;
+    network: INetwork;
 }) {
+    const { t } = useTranslation();
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const metadata = usePageMetadata({ page: "validator-monitor", detail: { name: network.name } });
 
     useEffect(() => {
         router.on('success', () => {
@@ -42,9 +47,11 @@ export default function Monitor({ validatorData, height, rowCount }: {
     }, []);
 
     return (<>
+        <Head>{metadata}</Head>
+
         <PageHeader
-            title="Validator Monitor"
-            subtitle="Validator block production observer tool"
+            title={t('pages.validator-monitor.title')}
+            subtitle={t('pages.validator-monitor.subtitle')}
         />
 
         <HeaderStats

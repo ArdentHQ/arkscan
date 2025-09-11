@@ -3,6 +3,7 @@
 <x-page-headers.wallet.actions.popup-modal
     :value="$publicKey"
     :title="trans('pages.wallet.public_key.title')"
+    id="public_key"
 >
     <x-slot name="button">
         <x-ark-icon name="key" size="sm" />

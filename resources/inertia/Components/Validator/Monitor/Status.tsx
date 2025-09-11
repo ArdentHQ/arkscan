@@ -3,6 +3,7 @@ import classNames from "@/utils/class-names";
 import TimeToForge from "./TimeToForge";
 import { useValidatorStatus } from "@/Providers/ValidatorStatus/ValidatorStatusContext";
 import { ForgingStatusGenerated, ForgingStatusMissed, ForgingStatusPending } from "@/Providers/ValidatorStatus/types";
+import { useTranslation } from "react-i18next";
 
 export default function Status({
     width = 'min-w-[8.75rem]',
@@ -15,11 +16,14 @@ export default function Status({
     withText?: boolean;
     className?: string;
 }) {
+    const { t } = useTranslation();
     const { status, validator } = useValidatorStatus();
 
     const isPending = status === ForgingStatusPending;
     const hasForged = status === ForgingStatusGenerated;
     const justMissed = status === ForgingStatusMissed;
+
+    const wallet = validator.wallet;
 
     return (
         <Badge colors={classNames({
@@ -56,16 +60,16 @@ export default function Status({
                             {withTime ? (
                                 <TimeToForge className="text-xs font-semibold leading-3.75" />
                             ) : (
-                                <span>Pending</span>
+                                <span>{t('tables.validator-monitor.forging-status.pending')}</span>
                             )}
                         </>
                     )}
 
-                    {hasForged && <span>Block Generated</span>}
-                    {justMissed && <span>{validator.wallet.missedCount} Blocks Missed</span>}
+                    {hasForged && <span>{t('tables.validator-monitor.forging-status.block_generated')}</span>}
+                    {justMissed && <span>{t('tables.validator-monitor.forging-status.blocks_missed', { count: wallet.missedCount })}</span>}
 
                     {!isPending && !hasForged && !justMissed && (
-                        <span>Generating ...</span>
+                        <span>{t('tables.validator-monitor.forging-status.generating')}</span>
                     )}
                 </div>
             )}

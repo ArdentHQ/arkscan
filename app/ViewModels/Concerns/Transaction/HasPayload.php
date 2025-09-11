@@ -29,11 +29,6 @@ trait HasPayload
         return $this->transaction->formattedPayload();
     }
 
-    public function parseReceiptError(): ?string
-    {
-        return $this->transaction->parseReceiptError();
-    }
-
     /**
      * @return Collection<int, MultiPayment>
      */

@@ -5,7 +5,7 @@
     $transactionError = null;
 
     if ($hasFailedStatus) {
-        $transactionError = $model->parseReceiptError();
+        $transactionError = $model->transactionError();
         $icon = 'circle.cross';
     } else {
         $icon = 'double-check-mark';
@@ -57,7 +57,7 @@
             <div class="hidden pl-2 sm:pl-3 lg:block">
                 @if ($transactionError)
                     @lang('pages.transaction.status.failed_message', [
-                        'error' => preg_replace('/([A-Z])/', ' \1', $transactionError),
+                        'error' => $transactionError,
                     ])
                 @else
                     @lang('pages.transaction.status.failed_no_message')
@@ -70,7 +70,7 @@
         <div class="px-3 pt-2 mt-2 whitespace-normal border-t sm:pt-3 sm:pl-6 sm:mt-3 lg:hidden border-theme-danger-200 dark:border-theme-dark-700">
             @if ($transactionError)
                 @lang('pages.transaction.status.failed_message', [
-                    'error' => preg_replace('/([A-Z])/', ' \1', $transactionError),
+                    'error' => $transactionError,
                 ])
             @else
                 @lang('pages.transaction.status.failed_no_message')

@@ -45,7 +45,10 @@
         "@tippyjs/react": "^4.2.6",
         "axios": "^1.6.8",
         "decimal.js": "^10.4.3",
+        "i18next": "^25.5.2",
+        "laravel-react-i18n": "^2.0.5",
         "react": "^19.1.1",
-        "react-dom": "^19.1.1"
+        "react-dom": "^19.1.1",
+        "react-i18next": "^15.7.3"
     }
 }

@@ -1,4 +1,3 @@
-import Number from "@/Components/General/Number";
 import Status from "@/Components/Validator/Monitor/Status";
 import TimeToForge from "@/Components/Validator/Monitor/TimeToForge";
 import Address from "@/Components/Wallet/Address";
@@ -10,6 +9,7 @@ import LoadingTable from "../LoadingTable";
 import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import ValidatorStatusProvider from "@/Providers/ValidatorStatus/ValidatorStatusProvider";
 import { IValidator } from "@/types";
+import { useTranslation } from "react-i18next";
 
 export function MonitorRow({ validator, withFavoriteBorder = true }: {
     validator: IValidator;
@@ -67,6 +67,7 @@ export function MonitorTable({ validators, overflowValidators }: {
     validators: IValidator[];
     overflowValidators: IValidator[];
 }) {
+    const { t } = useTranslation();
     const { isFavorite } = useValidatorFavorites();
 
     const sortedValidators = [...validators].sort((a, b) => {
@@ -96,27 +97,27 @@ export function MonitorTable({ validators, overflowValidators }: {
                                 </th>
 
                                 <th sorting-id="header-order">
-                                    Order
+                                    {t('tables.validator-monitor.order')}
                                 </th>
 
                                 <th className="text-left">
-                                    Validator
+                                    {t('tables.validator-monitor.validator')}
                                 </th>
 
                                 <th className="table-cell text-left hidden md:table-cell md-lg:hidden">
-                                    Status / Time to Forge
+                                    {t('tables.validator-monitor.status_time_to_forge')}
                                 </th>
 
                                 <th className="table-cell text-left md:hidden md-lg:table-cell">
-                                    Status
+                                    {t('tables.validator-monitor.status')}
                                 </th>
 
                                 <th className="table-cell whitespace-nowrap md:hidden md-lg:table-cell">
-                                    Time to Forge
+                                    {t('tables.validator-monitor.time_to_forge')}
                                 </th>
 
                                 <th className="text-right whitespace-nowrap">
-                                    Block Height
+                                    {t('tables.validator-monitor.block_height')}
                                 </th>
                             </tr>
                         </thead>
@@ -159,6 +160,8 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
     rowCount: number;
 }) {
     if (!validators || validators.length === 0) {
+        const { t } = useTranslation();
+
         return (
             <div className="hidden md:block">
                 <LoadingTable
@@ -169,30 +172,30 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
                             className: "w-[20px]",
                         },
                         {
-                            name: "Order",
+                            name: t('tables.validator-monitor.order'),
                             type: "number",
                             className: "w-[60px]",
                         },
                         {
-                            name: "Validator",
+                            name: t('tables.validator-monitor.validator'),
                             className: "text-left",
                         },
                         {
-                            name: "Status / Time to Forge",
+                            name: t('tables.validator-monitor.status_time_to_forge'),
                             type: "badge",
                             className: "text-left hidden md:table-cell md-lg:hidden w-[180px]",
                         },
                         {
-                            name: "Status",
+                            name: t('tables.validator-monitor.status'),
                             type: "badge",
                             className: "text-left md:hidden md-lg:table-cell w-[180px] xl:w-[374px]",
                         },
                         {
-                            name: "Time to Forge",
+                            name: t('tables.validator-monitor.time_to_forge'),
                             className: "md:hidden md-lg:table-cell w-[160px]",
                         },
                         {
-                            name: "Block Height",
+                            name: t('tables.validator-monitor.block_height'),
                             className: "text-right w-[100px]",
                         },
                     ]}

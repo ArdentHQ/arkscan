@@ -5,7 +5,7 @@
         x-data="Wallet({{ json_encode(Network::toArray()) }})"
     @endif
 >
-    <x-ark-pages-includes-layout-head
+    <x-ark-pages-includes-layout-head-inertia
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
         microsoft-tile-color="#de5846"
@@ -13,16 +13,13 @@
     >
         @vite('resources/js/app-inertia.tsx')
         @inertiaHead
-    </x-ark-pages-includes-layout-head>
+    </x-ark-pages-includes-layout-head-inertia>
 
     <x-ark-pages-includes-layout-body class="table-compact">
         <x-navbar.navbar />
-        {{-- <x-navbar.navbar :navigation="$navigationEntries" /> --}}
 
         <x-slot name="content">
             @inertia('inertia-body')
-
-            {{-- @vite('resources/css/app.css') --}}
         </x-slot>
 
         <x-slot name="footer">

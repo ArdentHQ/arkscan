@@ -2,14 +2,14 @@
     'label' => null,
 ])
 
-<div>
+<div class="mt-1 border-t border-theme-secondary-300 pt-[0.125rem] dark:border-theme-dark-800">
     @if ($label)
         <div class="px-8 mt-3 mb-1 font-semibold leading-5 md:px-4 text-theme-secondary-900 group dark:text-theme-dark-200">
             {{ $label }}
         </div>
     @endif
 
-    <div class="flex flex-col space-y-2">
+    <div class="flex flex-col">
         {{ $slot }}
     </div>
 </div>

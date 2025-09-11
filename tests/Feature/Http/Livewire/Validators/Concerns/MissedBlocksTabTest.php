@@ -652,10 +652,19 @@ it('should handle sorting several pages without cached data', function ($columnS
         }
 
         if (is_numeric($bValue) && is_numeric($aValue)) {
+            if ((int) $aValue === (int) $bValue) {
+                return $b->timestamp - $a->timestamp;
+            }
+
             return (int) $aValue - (int) $bValue;
         }
 
-        return strcmp($aValue, $bValue);
+        $value = strcmp($aValue, $bValue);
+        if ($value === 0) {
+            return $b->timestamp - $a->timestamp;
+        }
+
+        return $value;
     });
 
     $component = Livewire::test(Tabs::class)
@@ -682,6 +691,9 @@ it('should handle sorting several pages without cached data', function ($columnS
 ]);
 
 it('should handle sorting several pages with cached data', function ($columnSortBy, $modelSortBy) {
+    $this->freezeTime();
+    $this->travelTo('2025-09-04 13:44:12');
+
     $validatorData = [];
 
     $sortByVotesData = [];
@@ -754,10 +766,19 @@ it('should handle sorting several pages with cached data', function ($columnSort
         }
 
         if (is_numeric($bValue) && is_numeric($aValue)) {
+            if ((int) $aValue === (int) $bValue) {
+                return $b->timestamp - $a->timestamp;
+            }
+
             return (int) $aValue - (int) $bValue;
         }
 
-        return strcmp($aValue, $bValue);
+        $value = strcmp($aValue, $bValue);
+        if ($value === 0) {
+            return $b->timestamp - $a->timestamp;
+        }
+
+        return $value;
     });
 
     $component = Livewire::test(Tabs::class)

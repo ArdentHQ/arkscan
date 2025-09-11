@@ -700,3 +700,43 @@ it('should have querystring data', function () {
 
     expect($instance->getListenersTransactionsTab())->toBe(['reloadTransactions' => '$refresh']);
 });
+
+it('should show a locked amount for a validator registration', function () {
+    Transaction::factory()
+        ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+        ]);
+
+    $response = Livewire::test(Tabs::class, [new WalletViewModel($this->subject)])
+        ->call('setTransactionsReady');
+
+    $hasMatch = (bool) preg_match('/-\s+250\.00 DARK/', $response->html());
+
+    expect($hasMatch)->toBeTrue();
+});
+
+it('should show an unlocked amount for a validator resignation', function () {
+    Transaction::factory()
+        ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'transaction_index' => 0,
+        ]);
+
+    Transaction::factory()
+        ->validatorResignation()
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'transaction_index' => 1,
+        ]);
+
+    $response = Livewire::test(Tabs::class, [new WalletViewModel($this->subject)])
+        ->call('setTransactionsReady');
+
+    $hasNegativeMatch = (bool) preg_match('/-\s+250\.00 DARK/', $response->html());
+    $hasPositiveMatch = (bool) preg_match('/\+\s+250\.00 DARK/', $response->html());
+
+    expect($hasNegativeMatch)->toBeTrue();
+    expect($hasPositiveMatch)->toBeTrue();
+});

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "275de2c1c984597a5987108322bf9d36",
+    "content-hash": "9e5778abef526c354a00fe59993d7f0f",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -118,16 +118,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "dev-refactor/handle-name-in-pagination",
+            "version": "19.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "c1a14c44569352e83ab27898e0d2763ae07f4081"
+                "reference": "56f57cc58ef1a4d5f11e8c6676e1774fda3fcb82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/c1a14c44569352e83ab27898e0d2763ae07f4081",
-                "reference": "c1a14c44569352e83ab27898e0d2763ae07f4081",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/56f57cc58ef1a4d5f11e8c6676e1774fda3fcb82",
+                "reference": "56f57cc58ef1a4d5f11e8c6676e1774fda3fcb82",
                 "shasum": ""
             },
             "require": {
@@ -203,9 +203,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/refactor/handle-name-in-pagination"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/19.10.0"
             },
-            "time": "2025-07-22T22:20:58+00:00"
+            "time": "2025-09-03T13:32:56+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -17177,8 +17177,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "ardenthq/arkvault-url": 20,
-        "arkecosystem/crypto": 20,
-        "arkecosystem/foundation": 20
+        "arkecosystem/crypto": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
