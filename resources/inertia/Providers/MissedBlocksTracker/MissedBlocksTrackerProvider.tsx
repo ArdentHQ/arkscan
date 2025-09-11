@@ -92,10 +92,6 @@ export default function MissedBlocksTrackerProvider({
         }
     }, [validators]);
 
-    useEffect(() => {
-        console.log({currentForger: currentForger?.wallet.address, consecutiveMissedBlocks, secondsOffset});
-    }, [currentForger, consecutiveMissedBlocks]);
-
     const value: MissedBlocksTrackerContextType = {
         consecutiveMissedBlocks,
         currentForger,
