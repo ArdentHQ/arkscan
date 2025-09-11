@@ -6,6 +6,7 @@ import { IValidator } from '../../types';
 import dayjs from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import { MissedBlocksTrackerContextType } from "./types";
+import { MISSED_BLOCKS_SECONDS_THRESHOLD } from "@/constants";
 
 dayjs.extend(dayjsRelativeTime);
 
@@ -30,7 +31,7 @@ export default function MissedBlocksTrackerProvider({
 
             const forger = sortedValidators.filter(validator => {
                 const secondsDifference = dayjs(validator.forgingAt).diff(now, 'second');
-                if (secondsDifference < -4) {
+                if (secondsDifference < MISSED_BLOCKS_SECONDS_THRESHOLD) {
                     return false;
                 }
 
@@ -64,7 +65,7 @@ export default function MissedBlocksTrackerProvider({
                 }
 
                 const secondsDifference = dayjs(validator.forgingAt).diff(now, 'second');
-                if (secondsDifference >= -4) {
+                if (secondsDifference >= MISSED_BLOCKS_SECONDS_THRESHOLD) {
                     break;
                 }
 

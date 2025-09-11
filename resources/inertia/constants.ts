@@ -1,0 +1,1 @@
+export const MISSED_BLOCKS_SECONDS_THRESHOLD = -4;

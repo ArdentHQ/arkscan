@@ -7,6 +7,7 @@ import dayjs, { Dayjs } from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import { ForgingStatus, ForgingStatusGenerated, ForgingStatusGenerating, ForgingStatusMissed, ForgingStatusPending, IValidatorStatusContextType } from "./types";
 import { useMissedBlocksTracker } from "../MissedBlocksTracker/MissedBlocksTrackerContext";
+import { MISSED_BLOCKS_SECONDS_THRESHOLD } from "@/constants";
 
 dayjs.extend(dayjsRelativeTime);
 
@@ -77,7 +78,7 @@ export default function ValidatorStatusProvider({
             return;
         }
 
-        if (currentForger?.wallet.address !== validator.wallet.address && seconds <= -4 - secondsOffset) {
+        if (currentForger?.wallet.address !== validator.wallet.address && seconds <= MISSED_BLOCKS_SECONDS_THRESHOLD - secondsOffset) {
             setStatus(ForgingStatusMissed);
 
             return;
