@@ -99,7 +99,7 @@ trait ValidatorData
             ->orderBy('number', 'asc')
             ->get();
 
-        $lastStatus = $lastSlot?->status() ?? 'pending';
+        $lastStatus = $lastSlot->status();
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
             return $this->getOverflowSlots(
                 $missedCount,
