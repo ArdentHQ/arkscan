@@ -57,7 +57,7 @@ final class ValidatorTracker
         }
 
         if ($index > $normalizedOrder) {
-            $nextTime = (($forgingIndex - 1) * $secondsUntilSlot);
+            $nextTime = ($forgingIndex * $secondsUntilSlot);
 
             $forgingIndex++;
 

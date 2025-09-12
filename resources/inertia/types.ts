@@ -11,6 +11,7 @@ export interface IWallet {
     isResigned?: boolean;
     isPending?: boolean;
     keepsMissing?: boolean;
+    missedCount?: number;
     blocksSinceLastForged?: number;
     public_key: string;
 }
@@ -20,6 +21,8 @@ export interface IValidator {
     lastBlock: IBlock | null;
     order: number;
     forgingAt: string | Date;
+    status: 'done' | 'next' | 'pending';
+    secondsUntilForge: number;
 }
 
 export interface IValidatorData {

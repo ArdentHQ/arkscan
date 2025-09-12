@@ -427,9 +427,9 @@ describe('Monitor', function () {
         $this->travel(Network::blockTime() + 2)->seconds();
 
         // Overflow slot 3
-        createBlock($height + 1, $validators->get(2)['address'], $this);
+        $lastBlock = createBlock($height + 1, $validators->get(2)['address'], $this);
 
-        $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds((Network::blockTime() * (Network::validatorCount() + 4)) + $totalMissedSeconds + 2);
+        $overflowForgeTime = Carbon::createFromTimestamp($lastBlock->timestamp)->subSeconds((Network::blockTime() * 2) + 2);
 
         performRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
             $reload->has('validatorData.overflowValidators', 6)
@@ -473,7 +473,7 @@ describe('Monitor', function () {
 
         expect($height)->toBe((3 * Network::validatorCount()) - 4);
 
-        $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds(Network::blockTime() * Network::validatorCount());
+        $overflowForgeTime = Carbon::now()->addSeconds((Network::blockTime() * 5)); // 4 unforged slots + extra slot to get the start time of the overflow slot
 
         performRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
             $reload->where('validatorData.validators', function ($validators) {

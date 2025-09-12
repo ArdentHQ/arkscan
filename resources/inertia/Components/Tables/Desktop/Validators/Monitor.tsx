@@ -1,4 +1,3 @@
-import Number from "@/Components/General/Number";
 import Status from "@/Components/Validator/Monitor/Status";
 import TimeToForge from "@/Components/Validator/Monitor/TimeToForge";
 import Address from "@/Components/Wallet/Address";
@@ -8,10 +7,12 @@ import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorF
 import classNames from "@/utils/class-names";
 import LoadingTable from "../LoadingTable";
 import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
+import ValidatorStatusProvider from "@/Providers/ValidatorStatus/ValidatorStatusProvider";
+import { IValidator } from "@/types";
 import { useTranslation } from "react-i18next";
 
 export function MonitorRow({ validator, withFavoriteBorder = true }: {
-    validator: any;
+    validator: IValidator;
     withFavoriteBorder?: boolean;
 }) {
     const { isFavorite } = useValidatorFavorites();
@@ -23,46 +24,48 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
                 "validator-monitor-favorite": withFavoriteBorder && isFavorite(validator.wallet.public_key),
             })}
         >
-            <TableCell className="text-center w-[20px]">
-                <FavoriteIcon validator={validator} />
-            </TableCell>
+            <ValidatorStatusProvider forgingAt={validator.forgingAt} validator={validator}>
+                <TableCell className="text-center w-[20px]">
+                    <FavoriteIcon validator={validator} />
+                </TableCell>
 
-            <TableCell className="w-[60px]">
-                {validator.order}
-            </TableCell>
+                <TableCell className="w-[60px]">
+                    {validator.order}
+                </TableCell>
 
-            <TableCell className="text-left">
-                <div className="md:hidden lg:block">
-                    <Address wallet={validator.wallet} />
-                </div>
+                <TableCell className="text-left">
+                    <div className="md:hidden lg:block">
+                        <Address wallet={validator.wallet} />
+                    </div>
 
-                <div className="hidden md:block lg:hidden">
-                    <Address wallet={validator.wallet} truncate />
-                </div>
-            </TableCell>
+                    <div className="hidden md:block lg:hidden">
+                        <Address wallet={validator.wallet} truncate />
+                    </div>
+                </TableCell>
 
-            <TableCell className="table-cell text-left hidden md:table-cell md-lg:hidden w-[180px]">
-                <Status validator={validator} withTime />
-            </TableCell>
+                <TableCell className="table-cell text-left hidden md:table-cell md-lg:hidden w-[180px]">
+                    <Status validator={validator} withTime />
+                </TableCell>
 
-            <TableCell className="table-cell text-left md:hidden md-lg:table-cell w-[180px] xl:w-[374px]">
-                <Status validator={validator} />
-            </TableCell>
+                <TableCell className="table-cell text-left md:hidden md-lg:table-cell w-[180px] xl:w-[374px]">
+                    <Status validator={validator} />
+                </TableCell>
 
-            <TableCell className="md:table-cell text-left whitespace-nowrap md:hidden md-lg:table-cell w-[160px]">
-                <TimeToForge forgingAt={validator.forgingAt} wallet={validator.wallet} />
-            </TableCell>
+                <TableCell className="md:table-cell text-left whitespace-nowrap md:hidden md-lg:table-cell w-[160px]">
+                    <TimeToForge validator={validator} />
+                </TableCell>
 
-            <TableCell className="text-right w-[100px]">
-                <BlockHeight validator={validator} />
-            </TableCell>
+                <TableCell className="text-right w-[100px]">
+                    <BlockHeight validator={validator} />
+                </TableCell>
+            </ValidatorStatusProvider>
         </tr>
     );
 }
 
 export function MonitorTable({ validators, overflowValidators }: {
-    validators: any[];
-    overflowValidators: any[];
+    validators: IValidator[];
+    overflowValidators: IValidator[];
 }) {
     const { t } = useTranslation();
     const { isFavorite } = useValidatorFavorites();
@@ -120,7 +123,10 @@ export function MonitorTable({ validators, overflowValidators }: {
                         </thead>
                         <tbody>
                             {sortedValidators.map((validator, index) => (
-                                <MonitorRow key={index} validator={validator} />
+                                <MonitorRow
+                                    key={index}
+                                    validator={validator}
+                                />
                             ))}
                         </tbody>
                     </table>
@@ -149,8 +155,8 @@ export function MonitorTable({ validators, overflowValidators }: {
 }
 
 export default function MonitorTableWrapper({ validators, overflowValidators, rowCount }: {
-    validators: any[];
-    overflowValidators: any[];
+    validators: IValidator[];
+    overflowValidators: IValidator[];
     rowCount: number;
 }) {
     if (!validators || validators.length === 0) {

@@ -56,9 +56,7 @@ trait ValidatorData
             ->count();
 
         /** @var ?Slot $lastSlot */
-        $lastSlot   = collect($this->validators)->last();
-        $lastStatus = $lastSlot?->status() ?? 'pending';
-
+        $lastSlot = collect($this->validators)->last();
         if ($lastSlot === null) {
             return [];
         }
@@ -101,6 +99,7 @@ trait ValidatorData
             ->orderBy('number', 'asc')
             ->get();
 
+        $lastStatus = $lastSlot->status();
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
             return $this->getOverflowSlots(
                 $missedCount,
@@ -111,18 +110,17 @@ trait ValidatorData
             );
         }
 
-        $lastTimestamp = $lastRoundBlock->timestamp;
-        if ($overflowBlocks->isNotEmpty()) {
-            $lastTimestamp = $overflowBlocks->last()['timestamp'];
-        }
-
         $overflowBlockCount = $overflowBlocks->groupBy('proposer')
             ->map(function ($blocks) {
                 return count($blocks);
             });
 
-        $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock->timestamp;
+        $hasReachedFinalSlot = $lastRoundBlock->number === $heightRange[1];
+        if ($overflowBlocks->isNotEmpty()) {
+            $hasReachedFinalSlot = $overflowBlocks->last()['number'] === $heightRange[1];
+        }
 
+        $lastTimestamp = $lastRoundBlock->timestamp;
         $overflowSlots = $this->getOverflowSlots(
             $missedCount,
             $lastStatus,
