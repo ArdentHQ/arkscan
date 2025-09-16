@@ -389,6 +389,7 @@ return [
         'active'             => 'Active',
         'standby'            => 'Standby',
         'resigned'           => 'Resigned',
+        'dormant'            => 'Dormant',
         'order'              => 'Order',
         'name'               => 'Validator Name',
         'forging_at'         => 'Time to Forge',

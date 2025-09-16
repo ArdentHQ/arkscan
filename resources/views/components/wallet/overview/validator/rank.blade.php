@@ -6,12 +6,16 @@
     :has-empty-value="! $wallet->isValidator()"
 >
     <x-slot name="value">
-        @unless($wallet->isResigned())
+        @if (! $wallet->isResigned() && ! $wallet->isDormant())
             <span>#{{ $wallet->rank() }}</span>
             <span>/</span>
-        @endunless
+        @endif
 
-        @if($wallet->isResigned())
+        @if($wallet->isDormant())
+            <span class="text-theme-warning-800 dark:text-theme-warning-400">
+                @lang('pages.validators.dormant')
+            </span>
+        @elseif($wallet->isResigned())
             <span class="text-theme-danger-700 dark:text-theme-danger-400">
                 @lang('pages.validators.resigned')
             </span>
