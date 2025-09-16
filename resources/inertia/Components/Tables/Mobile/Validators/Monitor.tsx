@@ -29,7 +29,7 @@ export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
             </div>
 
             <div className="flex flex-1 justify-between items-center pl-3 min-w-0">
-                <div className="flex flex-1 items-center min-w-0">
+                <div className="flex flex-1 items-center min-w-0 space-x-2">
                     <TableCell className="min-w-0">
                         <Address
                             wallet={validator.wallet}
