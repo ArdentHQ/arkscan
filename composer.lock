@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e5778abef526c354a00fe59993d7f0f",
+    "content-hash": "89a86212465c73140db8c7e81ee65486",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
-            "version": "dev-feat/mainsail",
+            "version": "dev-refactor/update-vote-public-key-option-key",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArdentHQ/arkvault-url-php.git",
-                "reference": "eb031293dfb9c77d79f382bf6659e58802a2eb43"
+                "reference": "241462de4de3ffc89b5c625b5a5fb2c6d75c5d0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArdentHQ/arkvault-url-php/zipball/eb031293dfb9c77d79f382bf6659e58802a2eb43",
-                "reference": "eb031293dfb9c77d79f382bf6659e58802a2eb43",
+                "url": "https://api.github.com/repos/ArdentHQ/arkvault-url-php/zipball/241462de4de3ffc89b5c625b5a5fb2c6d75c5d0b",
+                "reference": "241462de4de3ffc89b5c625b5a5fb2c6d75c5d0b",
                 "shasum": ""
             },
             "require": {
@@ -48,9 +48,9 @@
             "description": "Deeplink URL generator for ARK based networks",
             "support": {
                 "issues": "https://github.com/ArdentHQ/arkvault-url-php/issues",
-                "source": "https://github.com/ArdentHQ/arkvault-url-php/tree/feat/mainsail"
+                "source": "https://github.com/ArdentHQ/arkvault-url-php/tree/refactor/update-vote-public-key-option-key"
             },
-            "time": "2024-05-29T12:09:00+00:00"
+            "time": "2025-09-16T22:48:40+00:00"
         },
         {
             "name": "arkecosystem/crypto",

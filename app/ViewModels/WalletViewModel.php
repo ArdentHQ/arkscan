@@ -85,6 +85,6 @@ final class WalletViewModel implements ViewModel
 
     public function voteUrl(): string
     {
-        return ArkVaultUrlBuilder::get()->generateVote($this->address());
+        return ArkVaultUrlBuilder::get()->generateVote($this->publicKey());
     }
 }
