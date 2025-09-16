@@ -28,12 +28,29 @@ export default function ValidatorStatusProvider({
 
     const { secondsOffset, currentForger } = useMissedBlocksTracker();
 
+    // const [secondsOffset, setSecondsOffset] = useState(0);
+    // const { calculateSecondsOffset, currentForger } = useMissedBlocksTracker();
+    // useEffect(() => {
+    //     const offset = calculateSecondsOffset(validator);
+
+    //     setSecondsOffset(offset);
+    // }, [validator.forgingAt]);
+
     useEffect(() => {
+        if (validator.wallet.hasForged) {
+            return;
+        }
+
+        if (validator.wallet.justMissed) {
+            return;
+        }
+
         setDateTime(dayjs(forgingAt));
 
         const updateSeconds = () => {
             const now = dayjs(new Date());
-            const secondsDifference = dateTime.diff(now, 'second');
+            const forgingAtDateTime = dateTime.clone().add(secondsOffset ?? 0, 'second');
+            const secondsDifference = forgingAtDateTime.diff(now, 'second');
 
             setSeconds(secondsDifference);
 
@@ -43,7 +60,7 @@ export default function ValidatorStatusProvider({
                 return;
             }
 
-            setOutput(now.to(dateTime));
+            setOutput(now.to(forgingAtDateTime));
         }
 
         updateSeconds();
@@ -57,7 +74,7 @@ export default function ValidatorStatusProvider({
 
             clearInterval(tickingTimerRef.current);
         }
-    }, [forgingAt]);
+    }, [forgingAt, validator.wallet.hasForged, validator.wallet.justMissed, secondsOffset]);
 
     useEffect(() => {
         if (validator.wallet.hasForged) {
@@ -78,7 +95,8 @@ export default function ValidatorStatusProvider({
             return;
         }
 
-        if (currentForger?.wallet.address !== validator.wallet.address && seconds <= MISSED_BLOCKS_SECONDS_THRESHOLD - secondsOffset) {
+        if (currentForger?.wallet.address !== validator.wallet.address && seconds <= MISSED_BLOCKS_SECONDS_THRESHOLD + secondsOffset) {
+            console.log('secondsOffset', secondsOffset);
             setStatus(ForgingStatusMissed);
 
             return;
@@ -95,7 +113,7 @@ export default function ValidatorStatusProvider({
 
             return;
         }
-    }, [validator.wallet, currentForger, seconds]);
+    }, [validator.wallet, currentForger, seconds, status]);
 
     const value: IValidatorStatusContextType = {
         output,

@@ -7,7 +7,11 @@ export default function BlockHeight({ validator }: { validator: IValidator }) {
                 href={`/blocks/${validator?.lastBlock?.hash}`}
                 className="link"
             >
-                {validator.lastBlock?.number.toLocaleString()}
+                {validator.lastBlock?.number ? (<>
+                    {validator.lastBlock?.number.toLocaleString()}
+                </>) : (<>
+                    h{validator.lastBlock?.height.toLocaleString()}
+                </>)}
             </a>
         );
     }

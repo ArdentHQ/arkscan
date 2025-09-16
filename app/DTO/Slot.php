@@ -85,8 +85,16 @@ final class Slot
 
     public function keepsMissing(): bool
     {
+        // if ($this->isWaiting()) {
+        //     return false;
+        // }
+
         if ($this->getLastHeight() === 0) {
             return false;
+        }
+
+        if ($this->address === '0x539e6F974904B3A3d7077024071B2f568020211D') {
+            // dd($this->roundNumber, Monitor::roundNumberFromHeight($this->getLastHeight()), $this->getLastHeight(), ($this->roundNumber - Monitor::roundNumberFromHeight($this->getLastHeight())));
         }
 
         // Since we're not waiting in current round, more than 1 round between current and last forged block means we're missing 2+ consecutive rounds

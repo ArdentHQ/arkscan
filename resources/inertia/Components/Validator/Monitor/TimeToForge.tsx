@@ -12,7 +12,7 @@ dayjs.extend(dayjsRelativeTime);
 export default function TimeToForge({ className = 'text-theme-secondary-900 dark:text-theme-dark-50' }: { className?: string }) {
     const [tooltip, setTooltip] = useState<string>();
 
-    const { dateTime, output, status } = useValidatorStatus();
+    const { dateTime, output, status, validator } = useValidatorStatus();
 
     useEffect(() => {
         setTooltip(dateTime.format('D MMM YYYY HH:mm:ss'));
@@ -40,6 +40,16 @@ export default function TimeToForge({ className = 'text-theme-secondary-900 dark
                     <span>{output}</span>
                 </Tippy>
             )}
+
+            {validator.wallet.justMissed && (
+                <>
+                    <div>missed</div>
+                </>
+            )}
+
+            <div>{validator.forgingAt}</div>
+            <div>{validator.secondsUntilForge}</div>
+            <div>{validator.order}</div>
         </div>
     )
 }
