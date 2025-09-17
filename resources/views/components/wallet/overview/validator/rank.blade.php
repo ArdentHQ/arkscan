@@ -27,7 +27,7 @@
                 @lang('pages.validators.resigned')
             </span>
         @elseif($wallet->rank() > Network::validatorCount())
-            <span class="text-theme-secondary-500 dark:text-theme-dark-700">
+            <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                 @lang('pages.validators.standby')
             </span>
         @else
