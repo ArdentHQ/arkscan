@@ -12,7 +12,7 @@
         @endif
 
         @if($wallet->isDormant())
-            <div class="space-x-2 flex items-center">
+            <div class="flex items-center space-x-2">
                 <span class="text-theme-secondary-700 dark:text-theme-dark-500">
                     @lang('pages.validators.dormant')
                 </span>
