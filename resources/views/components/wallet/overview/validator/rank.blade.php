@@ -12,9 +12,16 @@
         @endif
 
         @if($wallet->isDormant())
-            <span class="text-theme-warning-800 dark:text-theme-warning-400">
-                @lang('pages.validators.dormant')
-            </span>
+            <div class="space-x-2 flex items-center">
+                <span class="text-theme-secondary-700 dark:text-theme-dark-500">
+                    @lang('pages.validators.dormant')
+                </span>
+
+                <x-ark-info
+                    :tooltip="trans('pages.validators.dormant_tooltip')"
+                    type="info"
+                />
+            </div>
         @elseif($wallet->isResigned())
             <span class="text-theme-danger-700 dark:text-theme-danger-400">
                 @lang('pages.validators.resigned')

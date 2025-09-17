@@ -403,6 +403,8 @@ return [
         'now'                => 'Now',
         'monitor'            => 'Monitor',
 
+        'dormant_tooltip' => 'Inactive Validator: awaiting BLS key registration',
+
         'arkconnect'         => [
             'voting_for_tooltip'     => 'You\'re voting for this validator',
             'recommend_switch_votes' => 'We recommend switching your vote to an active validator.',
