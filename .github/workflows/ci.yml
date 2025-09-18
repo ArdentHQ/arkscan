@@ -173,3 +173,77 @@ jobs:
                   ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
                   ARKSCAN_DB_USERNAME: arkscan_test_db
                   ARKSCAN_DB_PASSWORD: password
+
+    browser:
+        needs: [unit]
+
+        runs-on: ubuntu-latest
+
+        services:
+            postgres:
+                image: postgres:12
+                env:
+                    POSTGRES_DB: arkscan_test_db
+                    POSTGRES_USER: arkscan_test_db
+                    POSTGRES_PASSWORD: password
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd="pg_isready -d arkscan_test_db -U arkscan_test_db"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.head_ref }}
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.3"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+                  coverage: pcov
+
+            - name: Cache dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.composer/cache/files
+                  key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+            - name: Install Composer dependencies
+              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22.11
+
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
+
+            - name: Build public-facing assets
+              run: pnpm build
+
+            - name: Clear Config
+              run: php artisan config:clear && php artisan route:clear
+
+            - name: Create second database for explorer
+              run: |
+                  psql -h 127.0.0.1 -U arkscan_test_db -c "CREATE DATABASE arkscan_test_db_explorer;"
+              env:
+                  PGPASSWORD: password
+
+            - name: Cache PHPUnit coverage
+              uses: actions/cache@v4
+              with:
+                  path: .phpunit.cache
+                  key: phpunit-cache-${{ runner.os }}-${{ hashFiles('composer.json') }}
+
+            - name: Run Tests
+              run: composer test:browser
