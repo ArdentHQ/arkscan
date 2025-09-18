@@ -63,6 +63,7 @@ describe('Monitor', function () {
     {
         $wallets = Wallet::factory(Network::validatorCount())->create();
 
+        createRoundEntry(112168, 5944904 - Network::validatorCount(), $wallets); // create previous round
         createRoundEntry(112168, 5944904, $wallets);
 
         $wallets->each(function ($wallet) {
