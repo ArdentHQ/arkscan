@@ -245,5 +245,14 @@ jobs:
                   path: .phpunit.cache
                   key: phpunit-cache-${{ runner.os }}-${{ hashFiles('composer.json') }}
 
+            - name: Upgrade Chrome Driver
+              run: php artisan dusk:chrome-driver --detect
+
+            - name: Start Chrome Driver
+              run: ./vendor/laravel/dusk/bin/chromedriver-linux --port=9515 &
+
+            - name: Run Laravel Server
+              run: php artisan serve --no-reload &
+
             - name: Run Tests
               run: composer test:browser
