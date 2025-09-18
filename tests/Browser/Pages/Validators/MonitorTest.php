@@ -3,19 +3,14 @@
 declare(strict_types=1);
 
 use App\Contracts\RoundRepository as ContractsRoundRepository;
-use App\Enums\ValidatorForgingStatus;
 use App\Facades\Network;
-use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cache;
-use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Dusk\Browser;
-use Livewire\Livewire;
 use function Tests\createBlock;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;

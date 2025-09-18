@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Illuminate\Contracts\Console\Kernel;
 use App\Contracts\MarketDataProvider;
 use App\Services\MarketDataProviders\CryptoCompare;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Collection;
