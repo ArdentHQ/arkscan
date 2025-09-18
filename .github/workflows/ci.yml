@@ -230,6 +230,9 @@ jobs:
             - name: Build public-facing assets
               run: pnpm build
 
+            - name: Prepare the application
+              run: cp .env.example .env && php artisan key:generate
+
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
 
