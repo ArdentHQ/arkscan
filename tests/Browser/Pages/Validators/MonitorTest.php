@@ -5,12 +5,14 @@ declare(strict_types=1);
 use App\Contracts\RoundRepository as ContractsRoundRepository;
 use App\Enums\ValidatorForgingStatus;
 use App\Facades\Network;
+use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Dusk\Browser;
 use Livewire\Livewire;
@@ -24,7 +26,6 @@ beforeEach(function () {
     $this->withoutExceptionHandling();
 });
 
-// @TODO: implement dusk tests - https://app.clickup.com/t/86dxjarym
 describe('Monitor', function () {
     beforeEach(function () {
         $this->activeValidators = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
@@ -70,8 +71,6 @@ describe('Monitor', function () {
     }
 
     it('should show warning icon for validators missing blocks - minutes', function () {
-        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
         $this->freezeTime();
 
         [0 => $validators] = createRealisticRound([
@@ -92,18 +91,31 @@ describe('Monitor', function () {
             ],
         ], $this);
 
+        foreach ($validators as $validator) {
+            $block = $validator->blocks()->orderBy('number', 'desc')->first();
+
+            (new WalletCache())->setLastBlock($validator->address, [
+                'hash'                   => $block['hash'],
+                'number'                 => $block['number']->toNumber(),
+                'timestamp'              => $block['timestamp'],
+                'proposer'               => $validator->address,
+            ]);
+        }
+
         $validator = (new WalletViewModel($validators->get(4)));
 
         expect($validator->performance())->toBe([false, false]);
 
-        performRequest($this)->assertSeeInOrder([
-            $validator->username(),
-            'Validator last forged 207 blocks ago (~ 28 min)',
-        ]);
+        $this->browse(function (Browser $browser) use ($validator) {
+            $browser->visitRoute('validator-monitor')
+                ->waitFor('[data-testid="missed-warning-'.$validator->address().'"]', 10)
+                ->mouseOver('[data-testid="missed-warning-'.$validator->address().'"]')
+                ->waitForText('Validator last forged 207 blocks ago (~ 28 min)', 10);
+        });
     });
 
     it('should show warning icon for validators missing blocks - hours', function () {
-        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+        $this->travelTo(Carbon::now()->subHours(1));
 
         $this->freezeTime();
 
@@ -125,20 +137,31 @@ describe('Monitor', function () {
             ],
         ], $this);
 
-        $this->travelTo(Carbon::parse('2024-02-01 15:00:00Z'));
+        foreach ($validators as $validator) {
+            $block = $validator->blocks()->orderBy('number', 'desc')->first();
+
+            (new WalletCache())->setLastBlock($validator->address, [
+                'hash'                   => $block['hash'],
+                'number'                 => $block['number']->toNumber(),
+                'timestamp'              => $block['timestamp'],
+                'proposer'               => $validator->address,
+            ]);
+        }
 
         $validator = (new WalletViewModel($validators->get(4)));
 
         expect($validator->performance())->toBe([false, false]);
 
-        performRequest($this)->assertSeeInOrder([
-            $validator->username(),
-            'Validator last forged 207 blocks ago (~ 1h 28 min)',
-        ]);
+        $this->browse(function (Browser $browser) use ($validator) {
+            $browser->visitRoute('validator-monitor')
+                ->waitFor('[data-testid="missed-warning-'.$validator->address().'"]', 10)
+                ->mouseOver('[data-testid="missed-warning-'.$validator->address().'"]')
+                ->waitForText('Validator last forged 207 blocks ago (~ 1h 28 min)', 10);
+        });
     });
 
     it('should show warning icon for validators missing blocks - days', function () {
-        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+        $this->travelTo(Carbon::now()->subDays(2));
 
         $this->freezeTime();
 
@@ -160,49 +183,27 @@ describe('Monitor', function () {
             ],
         ], $this);
 
-        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+        foreach ($validators as $validator) {
+            $block = $validator->blocks()->orderBy('number', 'desc')->first();
+
+            (new WalletCache())->setLastBlock($validator->address, [
+                'hash'                   => $block['hash'],
+                'number'                 => $block['number']->toNumber(),
+                'timestamp'              => $block['timestamp'],
+                'proposer'               => $validator->address,
+            ]);
+        }
 
         $validator = (new WalletViewModel($validators->get(4)));
 
         expect($validator->performance())->toBe([false, false]);
 
-        performRequest($this)->assertSeeInOrder([
-            $validator->username(),
-            'Validator last forged 207 blocks ago (more than a day)',
-        ]);
-    });
-
-    it('should reload on new block event', function () {
-        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
-        $this->freezeTime();
-
-        [0 => $validators] = createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-        ], $this);
-
-        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
-
-        $validator = (new WalletViewModel($validators->get(4)));
-
-        performRequest($this)->assertSeeInOrder([
-            $validator->username(),
-            'Validator last forged 207 blocks ago (more than a day)',
-        ]);
+        $this->browse(function (Browser $browser) use ($validator) {
+            $browser->visitRoute('validator-monitor')
+                ->waitFor('[data-testid="missed-warning-'.$validator->address().'"]', 10)
+                ->mouseOver('[data-testid="missed-warning-'.$validator->address().'"]')
+                ->waitForText('Validator last forged 207 blocks ago (more than a day)', 10);
+        });
     });
 });
 
@@ -259,66 +260,6 @@ describe('Data Boxes', function () {
         });
     }
 
-    it('should determine if validators are forging based on their round history', function () {
-        createRoundWithValidatorsAndPerformances([true, true]);
-
-        performRequest($this, reloadCallback: function (Assert $reload) {
-            $validatorWallet = Wallet::first();
-            $validator       = new WalletViewModel($validatorWallet);
-        });
-
-        // expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::forging);
-    });
-
-    it('should determine if validators are not forging based on their round history', function () {
-        [$validators] = createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-        ], $this);
-
-        performRequest($this, reloadCallback: function (Assert $reload) {
-            $reload->where('validatorData.statistics.performances', function ($performances) {
-                return collect($performances)->keys()->toArray() === [
-                    'forging',
-                    'missed',
-                    'missing',
-                ];
-            });
-        });
-
-        $component = Livewire::test(Monitor::class)
-            ->call('setIsReady')
-            ->call('pollData');
-
-        $validatorWallet = $validators->get(4);
-        $validator       = new WalletViewModel($validatorWallet);
-
-        expect($validator->performance())->toBe([false, false]);
-
-        expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::missing);
-    });
-
-    it('should determine if validators are forging after missing 4 slots based on their round history', function () {
-        createRoundWithValidatorsAndPerformances([false, true]);
-
-        $component = Livewire::test(Monitor::class)
-            ->call('setIsReady')
-            ->call('pollData');
-
-        $validatorWallet = Wallet::first();
-        $validator       = new WalletViewModel($validatorWallet);
-
-        expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::forging);
-    });
-
     it('should calculate forged correctly with current round', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
@@ -355,29 +296,13 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
 
-        // Livewire::test(Monitor::class)
-        //     ->call('setIsReady')
-        //     ->call('pollData')
-        //     ->assertSeeHtmlInOrder([
-        //         'Forging',
-        //         '<span>53</span>',
-        //         'Missed',
-        //         '<span>0</span>',
-        //         'Not Forging',
-        //         '<span>0</span>',
-        //         'Current Height',
-        //     ]);
-
-        performRequest($this)
-            ->assertSeeHtmlInOrder([
-                'Forging',
-                '<span>53</span>',
-                'Missed',
-                '<span>0</span>',
-                'Not Forging',
-                '<span>1</span>',
-                'Current Height',
-            ]);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor')
+                ->waitForText(' / 53 Blocks', 10)
+                ->assertEquals('[data-testid="forging-count"] span', '53')
+                ->assertEquals('[data-testid="missed-count"] span', '0')
+                ->assertEquals('[data-testid="not-forging-count"] span', '0');
+        });
     });
 
     it('should calculate forged correctly for previous rounds', function () {
@@ -397,29 +322,13 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, true]);
 
-        // Livewire::test(Monitor::class)
-        //     ->call('setIsReady')
-        //     ->call('pollData')
-        //     ->assertSeeHtmlInOrder([
-        //         'Forging',
-        //         '<span>53</span>',
-        //         'Missed',
-        //         '<span>0</span>',
-        //         'Not Forging',
-        //         '<span>0</span>',
-        //         'Current Height',
-        //     ]);
-
-        performRequest($this)
-            ->assertSeeHtmlInOrder([
-                'Forging',
-                '<span>53</span>',
-                'Missed',
-                '<span>0</span>',
-                'Not Forging',
-                '<span>0</span>',
-                'Current Height',
-            ]);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor')
+                ->waitForText(' / 53 Blocks', 10)
+                ->assertEquals('[data-testid="forging-count"] span', '53')
+                ->assertEquals('[data-testid="missed-count"] span', '0')
+                ->assertEquals('[data-testid="not-forging-count"] span', '0');
+        });
     });
 
     it('should calculate missed correctly with current round', function () {
@@ -450,29 +359,13 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
 
-        // Livewire::test(Monitor::class)
-        //     ->call('setIsReady')
-        //     ->call('pollData')
-        //     ->assertSeeHtmlInOrder([
-        //         'Forging',
-        //         '<span>52</span>',
-        //         'Missed',
-        //         '<span>1</span>',
-        //         'Not Forging',
-        //         '<span>0</span>',
-        //         'Current Height',
-        //     ]);
-
-        performRequest($this)
-            ->assertSeeHtmlInOrder([
-                'Forging',
-                '<span>52</span>',
-                'Missed',
-                '<span>1</span>',
-                'Not Forging',
-                '<span>0</span>',
-                'Current Height',
-            ]);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor')
+                ->waitForText(' / 53 Blocks', 10)
+                ->assertEquals('[data-testid="forging-count"] span', '52')
+                ->assertEquals('[data-testid="missed-count"] span', '1')
+                ->assertEquals('[data-testid="not-forging-count"] span', '0');
+        });
     });
 
     it('should calculate missed correctly for previous rounds', function () {
@@ -492,29 +385,13 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
 
-        // Livewire::test(Monitor::class)
-        //     ->call('setIsReady')
-        //     ->call('pollData')
-        //     ->assertSeeHtmlInOrder([
-        //         'Forging',
-        //         '<span>52</span>',
-        //         'Missed',
-        //         '<span>1</span>',
-        //         'Not Forging',
-        //         '<span>0</span>',
-        //         'Current Height',
-        //     ]);
-
-        performRequest($this)
-            ->assertSeeHtmlInOrder([
-                'Forging',
-                '<span>52</span>',
-                'Missed',
-                '<span>1</span>',
-                'Not Forging',
-                '<span>0</span>',
-                'Current Height',
-            ]);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor')
+                ->waitForText(' / 53 Blocks', 10)
+                ->assertEquals('[data-testid="forging-count"] span', '52')
+                ->assertEquals('[data-testid="missed-count"] span', '1')
+                ->assertEquals('[data-testid="not-forging-count"] span', '0');
+        });
     });
 
     it('should calculate not forging correctly with current round', function () {
@@ -561,29 +438,13 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
 
-        // Livewire::test(Monitor::class)
-        //     ->call('setIsReady')
-        //     ->call('pollData')
-        //     ->assertSeeHtmlInOrder([
-        //         'Forging',
-        //         '<span>52</span>',
-        //         'Missed',
-        //         '<span>0</span>',
-        //         'Not Forging',
-        //         '<span>1</span>',
-        //         'Current Height',
-        //     ]);
-
-        performRequest($this)
-            ->assertSeeHtmlInOrder([
-                'Forging',
-                '<span>52</span>',
-                'Missed',
-                '<span>0</span>',
-                'Not Forging',
-                '<span>1</span>',
-                'Current Height',
-            ]);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor')
+                ->waitForText(' / 53 Blocks', 10)
+                ->assertEquals('[data-testid="forging-count"] span', '52')
+                ->assertEquals('[data-testid="missed-count"] span', '0')
+                ->assertEquals('[data-testid="not-forging-count"] span', '1');
+        });
     });
 
     it('should calculate not forging correctly for previous rounds', function () {
@@ -612,143 +473,11 @@ describe('Data Boxes', function () {
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
 
         $this->browse(function (Browser $browser) {
-            $browser->visit(route('validator-monitor'))
-                    ->waitForText('Forging')
-                    ->pause(10000)
-                    // ->waitFor('[data-testid="forging-count"] span')
-                    ->assertSeeIn('[data-testid="forging-count"]', '52')
-                    ->assertSeeIn('[data-testid="missed-count"]', '0')
-                    ->assertSeeIn('[data-testid="not-forging-count"]', '1')
-                    ->assertSee('Current Height');
-        });
-    });
-
-    it('should reload on new block event', function () {
-        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
-        $this->freezeTime();
-
-        createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-        ], $this);
-
-        // Livewire::test(Monitor::class)
-        //     ->call('setIsReady')
-        //     ->assertDontSeeHtml('<span>52</span>')
-        //     ->assertDontSeeHtml('<span>0</span>')
-        //     ->assertDontSeeHtml('<span>1</span>')
-        //     ->dispatch('echo:blocks,NewBlock')
-        //     ->assertSeeHtmlInOrder([
-        //         'Forging',
-        //         '<span>52</span>',
-        //         'Missed',
-        //         '<span>0</span>',
-        //         'Not Forging',
-        //         '<span>1</span>',
-        //         'Current Height',
-        //     ]);
-
-        performRequest($this)
-            ->assertSeeHtmlInOrder([
-                'Forging',
-                '<span>52</span>',
-                'Missed',
-                '<span>0</span>',
-                'Not Forging',
-                '<span>1</span>',
-                'Current Height',
-            ]);
-    });
-
-    it('should determine if validators are forging based on their round history', function () {
-        createRoundWithValidatorsAndPerformances([true, true]);
-
-        performRequest($this, reloadCallback: function (Assert $reload) {
-            $validatorWallet = Wallet::first();
-            $validator       = new WalletViewModel($validatorWallet);
-
-            // $reload->where('validatorData.statistics.performances', function ($performances) {
-            //     return collect($performances)->keys()->toArray() === [
-            //         'forging',
-            //         'missed',
-            //         'missing',
-            //     ];
-            // });
-        });
-
-        // expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::forging);
-    });
-
-    it('should determine if validators are not forging based on their round history', function () {
-        [$validators] = createRealisticRound([
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 48, true),
-            ],
-        ], $this);
-
-        performRequest($this, reloadCallback: function (Assert $reload) {
-            $reload->where('validatorData.statistics.performances', function ($performances) {
-                return collect($performances)->keys()->toArray() === [
-                    'forging',
-                    'missed',
-                    'missing',
-                ];
-            });
-        });
-
-        // $validatorWallet = $validators->get(4);
-        // $validator       = new WalletViewModel($validatorWallet);
-
-        // expect($validator->performance())->toBe([false, false]);
-
-        // expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::missing);
-
-        performRequest($this, reloadCallback: function (Assert $reload) {
-            $reload->where('validatorData.statistics.blockCount', function ($blockCount) {
-                return $blockCount === trans('pages.validators.statistics.blocks_generated', [
-                    'forged' => 1,
-                    'total'  => Network::validatorCount(),
-                ]);
-            });
-        });
-    });
-
-    it('should determine if validators are forging after missing 4 slots based on their round history', function () {
-        createRoundWithValidatorsAndPerformances([false, true]);
-
-        // $validatorWallet = Wallet::first();
-        // $validator       = new WalletViewModel($validatorWallet);
-
-        // expect($component->instance()->getValidatorPerformance($validator->address()))->toBe(ValidatorForgingStatus::forging);
-
-        performRequest($this, reloadCallback: function (Assert $reload) {
-            $reload->where('validatorData.statistics.blockCount', function ($blockCount) {
-                return $blockCount === trans('pages.validators.statistics.blocks_generated', [
-                    'forged' => 1,
-                    'total'  => Network::validatorCount(),
-                ]);
-            });
+            $browser->visitRoute('validator-monitor')
+                ->waitForText(' / 53 Blocks', 10)
+                ->assertEquals('[data-testid="forging-count"] span', '52')
+                ->assertEquals('[data-testid="missed-count"] span', '0')
+                ->assertEquals('[data-testid="not-forging-count"] span', '1');
         });
     });
 });

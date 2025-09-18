@@ -86,6 +86,7 @@ export default function HeaderStats({ height, statistics }: {
                     <Detail
                         title={t('pages.validator-monitor.stats.current_height')}
                         isLoading={!height}
+                        data-testid="current-height"
                     >
                         <Number>{height}</Number>
                     </Detail>
