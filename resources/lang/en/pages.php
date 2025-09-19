@@ -389,6 +389,7 @@ return [
         'active'             => 'Active',
         'standby'            => 'Standby',
         'resigned'           => 'Resigned',
+        'dormant'            => 'Dormant',
         'order'              => 'Order',
         'name'               => 'Validator Name',
         'forging_at'         => 'Time to Forge',
@@ -401,6 +402,8 @@ return [
         'next'               => 'Next',
         'now'                => 'Now',
         'monitor'            => 'Monitor',
+
+        'dormant_tooltip' => 'Inactive Validator: awaiting BLS key registration',
 
         'arkconnect'         => [
             'voting_for_tooltip'     => 'You\'re voting for this validator',
