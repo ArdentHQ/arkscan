@@ -231,14 +231,13 @@ jobs:
               run: pnpm build
 
             - name: Prepare the application
-              run: cp .env.example .env && php artisan key:generate
+              run: cp .env.dusk.testing .env
 
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
 
             - name: Create second database for explorer
-              run: |
-                  psql -h 127.0.0.1 -U arkscan_test_db -c "CREATE DATABASE arkscan_test_db_explorer;"
+              run: psql -h 127.0.0.1 -U arkscan_test_db -c "CREATE DATABASE arkscan_test_db_explorer;"
               env:
                   PGPASSWORD: password
 

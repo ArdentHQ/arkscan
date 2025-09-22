@@ -26,45 +26,6 @@ describe('Monitor', function () {
         $this->activeValidators = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
     });
 
-    function createRoundWithValidators(): void
-    {
-        $wallets = Wallet::factory(Network::validatorCount())->create();
-
-        createRoundEntry(112168, 5944904, $wallets);
-
-        $wallets->each(function ($wallet) {
-            $block = Block::factory()->create([
-                'number'            => 5944900,
-                'timestamp'         => 113620904,
-                'proposer'          => $wallet->address,
-            ]);
-
-            // Start height for round 112168
-            Block::factory()->create([
-                'number'            => 5944904,
-                'timestamp'         => 113620904,
-                'proposer'          => $wallet->address,
-            ]);
-
-            (new WalletCache())->setValidator($wallet->address, $wallet);
-
-            (new WalletCache())->setLastBlock($wallet->address, [
-                'id'     => $block->hash,
-                'number' => $block->number->toNumber(),
-            ]);
-        });
-    }
-
-    function forgeBlock(string $address, int $height): void
-    {
-        $block = createBlock($height, $address);
-
-        (new WalletCache())->setLastBlock($address, [
-            'id'     => $block->hash,
-            'number' => $block->number->toNumber(),
-        ]);
-    }
-
     it('should show warning icon for validators missing blocks - minutes', function () {
         $this->freezeTime();
 
@@ -212,49 +173,6 @@ describe('Data Boxes', function () {
         $this->freezeTime();
     });
 
-    function createRoundWithValidatorsAndPerformances(?array $performances = null, bool $addBlockForNextRound = true, int $walletCount = 53, int $baseIndex = 0): void
-    {
-        $wallets = Wallet::factory($walletCount)
-            ->activeValidator()
-            ->create();
-
-        createRoundEntry(112168, 5944904, $wallets);
-
-        $wallets->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
-            $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
-
-            $block = Block::factory()->create([
-                'number'            => 5944900,
-                'timestamp'         => $timestamp,
-                'proposer'          => $wallet->address,
-            ]);
-
-            // Start height for round 112168
-            if ($addBlockForNextRound) {
-                Block::factory()->create([
-                    'number'            => 5944904,
-                    'timestamp'         => $timestamp,
-                    'proposer'          => $wallet->address,
-                ]);
-            }
-
-            (new WalletCache())->setValidator($wallet->address, $wallet);
-
-            if (is_null($performances)) {
-                for ($i = 0; $i < 2; $i++) {
-                    $performances[] = (bool) mt_rand(0, 1);
-                }
-            }
-
-            (new WalletCache())->setPerformance($wallet->address, $performances);
-
-            (new WalletCache())->setLastBlock($wallet->address, [
-                'id'     => $block->hash,
-                'number' => $block->number->toNumber(),
-            ]);
-        });
-    }
-
     it('should calculate forged correctly with current round', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
@@ -290,6 +208,17 @@ describe('Data Boxes', function () {
         createPartialRound($round, $height, 51, $this, [], [$validators->get(4)->address]);
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, true]);
+
+        foreach ($validators as $validator) {
+            $block = $validator->blocks()->orderBy('number', 'desc')->first();
+
+            (new WalletCache())->setLastBlock($validator->address, [
+                'hash'                   => $block['hash'],
+                'number'                 => $block['number']->toNumber(),
+                'timestamp'              => $block['timestamp'],
+                'proposer'               => $validator->address,
+            ]);
+        }
 
         $this->browse(function (Browser $browser) {
             $browser->visitRoute('validator-monitor')
