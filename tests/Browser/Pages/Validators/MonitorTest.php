@@ -3,15 +3,11 @@
 declare(strict_types=1);
 
 use App\Contracts\RoundRepository as ContractsRoundRepository;
-use App\Facades\Network;
-use App\Models\Block;
-use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Laravel\Dusk\Browser;
-use function Tests\createBlock;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
