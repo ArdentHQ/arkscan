@@ -278,3 +278,4 @@ jobs:
                   ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
                   ARKSCAN_DB_USERNAME: arkscan_test_db
                   ARKSCAN_DB_PASSWORD: password
+                  APP_ENV: testing
