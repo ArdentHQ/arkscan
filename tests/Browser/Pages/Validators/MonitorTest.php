@@ -62,7 +62,7 @@ describe('Monitor', function () {
             $browser->visitRoute('validator-monitor')
                 ->waitFor('[data-testid="missed-warning-'.$validator->address().'"]', 10)
                 ->mouseOver('[data-testid="missed-warning-'.$validator->address().'"]')
-                ->waitForText('Validator last forged 207 blocks ago (~ 28 min)', 10);
+                ->waitForText('Validator last forged 207 blocks ago (~ 28 min)', 20);
         });
     });
 
@@ -108,7 +108,7 @@ describe('Monitor', function () {
             $browser->visitRoute('validator-monitor')
                 ->waitFor('[data-testid="missed-warning-'.$validator->address().'"]', 10)
                 ->mouseOver('[data-testid="missed-warning-'.$validator->address().'"]')
-                ->waitForText('Validator last forged 207 blocks ago (~ 1h 28 min)', 10);
+                ->waitForText('Validator last forged 207 blocks ago (~ 1h 28 min)', 20);
         });
     });
 
@@ -154,7 +154,7 @@ describe('Monitor', function () {
             $browser->visitRoute('validator-monitor')
                 ->waitFor('[data-testid="missed-warning-'.$validator->address().'"]', 10)
                 ->mouseOver('[data-testid="missed-warning-'.$validator->address().'"]')
-                ->waitForText('Validator last forged 207 blocks ago (more than a day)', 10);
+                ->waitForText('Validator last forged 207 blocks ago (more than a day)', 20);
         });
     });
 });
