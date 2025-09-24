@@ -4,30 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89a86212465c73140db8c7e81ee65486",
+    "content-hash": "391586fe23d5045cc94c1e0c49af655d",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
-            "version": "dev-refactor/update-vote-public-key-option-key",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArdentHQ/arkvault-url-php.git",
-                "reference": "241462de4de3ffc89b5c625b5a5fb2c6d75c5d0b"
+                "reference": "4482a31c07d0d4b02b4d9318709f7168d7aff3ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArdentHQ/arkvault-url-php/zipball/241462de4de3ffc89b5c625b5a5fb2c6d75c5d0b",
-                "reference": "241462de4de3ffc89b5c625b5a5fb2c6d75c5d0b",
+                "url": "https://api.github.com/repos/ArdentHQ/arkvault-url-php/zipball/4482a31c07d0d4b02b4d9318709f7168d7aff3ba",
+                "reference": "4482a31c07d0d4b02b4d9318709f7168d7aff3ba",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.34",
-                "pestphp/pest": "^1.21",
-                "phpstan/phpstan": "^1.10",
-                "rector/rector": "^0.18"
+                "friendsofphp/php-cs-fixer": "^3.64",
+                "pestphp/pest": "^2.5",
+                "phpstan/phpstan": "^1.12",
+                "rector/rector": "^1.2"
             },
             "type": "library",
             "autoload": {
@@ -48,9 +48,9 @@
             "description": "Deeplink URL generator for ARK based networks",
             "support": {
                 "issues": "https://github.com/ArdentHQ/arkvault-url-php/issues",
-                "source": "https://github.com/ArdentHQ/arkvault-url-php/tree/refactor/update-vote-public-key-option-key"
+                "source": "https://github.com/ArdentHQ/arkvault-url-php/tree/1.2.0"
             },
-            "time": "2025-09-16T22:48:40+00:00"
+            "time": "2025-09-24T08:21:34+00:00"
         },
         {
             "name": "arkecosystem/crypto",
@@ -17176,7 +17176,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ardenthq/arkvault-url": 20,
         "arkecosystem/crypto": 20
     },
     "prefer-stable": true,
