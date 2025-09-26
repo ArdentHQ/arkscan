@@ -16,6 +16,9 @@ export default ({ mode }) => defineConfig({
         i18n({
             langDirname: 'resources/lang',
         }),
+        i18n({
+            langDirname: 'vendor/arkecosystem/foundation/resources/lang',
+        }),
     ],
     resolve: {
         alias: {
