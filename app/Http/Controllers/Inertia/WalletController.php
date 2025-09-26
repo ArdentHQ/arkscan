@@ -32,16 +32,6 @@ final class WalletController
         ],
     ];
 
-    private function page(): int
-    {
-        return (int) request()->get('page', 1);
-    }
-
-    private function perPage(): int
-    {
-        return (int) request()->get('per-page', 25);
-    }
-
     public function __invoke(Wallet $wallet): Response
     {
         return Inertia::render('Wallet', [
@@ -74,17 +64,26 @@ final class WalletController
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage(), page: $this->page())
-            ->through(fn (Transaction $transaction) => (new \App\DTO\Inertia\Transaction($transaction))->toArray())
-            ;
+            ->through(fn (Transaction $transaction) => (new \App\DTO\Inertia\Transaction($transaction))->toArray());
 
         // dd($paginator);
 
         // $paginator->setCollection(
         //     $paginator->getCollection()->map(fn (Transaction $transaction) => (new \App\DTO\Inertia\Transaction($transaction))->toArray())
         // );
-            // ->toArray();
+        // ->toArray();
 
         return $paginator;
+    }
+
+    private function page(): int
+    {
+        return (int) request()->get('page', 1);
+    }
+
+    private function perPage(): int
+    {
+        return (int) request()->get('per-page', 25);
     }
 
     private function getTransactionsQuery(Wallet $wallet): Builder
