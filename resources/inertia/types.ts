@@ -65,3 +65,77 @@ export interface INetwork {
     blockReward: number;
     supply: number;
 }
+
+export interface ITransaction {
+    hash: string;
+    blockHash: string;
+    blockNumber: number;
+    transactionIndex: string;
+    timestamp: number;
+    nonce: number;
+    sender_public_key: string;
+    from: string;
+    to: string;
+    value: string;
+    gas_price: string;
+    gas: string;
+    data: string;
+    signature: string;
+    legacy_second_signature: string | null;
+    status: boolean;
+    gas_used: string;
+    gas_refunded: string;
+    deployed_contract_address: string | null;
+    logs: any[];
+    output: string;
+    decoded_error: string | null;
+    created_at: string;
+    updated_at: string;
+    multi_payment_recipients: any[] | null;
+
+    amount: number;
+    amountForItself: number;
+    amountExcludingItself: number;
+    amountWithFee: number;
+    amountReceived: number;
+    fee: number;
+    type: string;
+
+    isTransfer: boolean;
+    isTokenTransfer: boolean;
+    isVote: boolean;
+    isUnvote: boolean;
+    isValidatorRegistration: boolean;
+    isValidatorResignation: boolean;
+    isValidatorUpdate: boolean;
+    isUsernameRegistration: boolean;
+    isUsernameResignation: boolean;
+    isContractDeployment: boolean;
+    isMultiPayment: boolean;
+    isSelfReceiving: boolean;
+    votedFor: string | null;
+}
+
+export interface IPaginatedResponse<T> {
+    data: T[];
+    current_page: number;
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: Array<{
+        url: string | null;
+        label: string;
+        active: boolean;
+    }>;
+    meta: {
+        pageName: string;
+        urlParams: Record<string, any>;
+    };
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}
