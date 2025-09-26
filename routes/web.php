@@ -6,6 +6,7 @@ use App\Http\Controllers\BlocksController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
+use App\Http\Controllers\Inertia\WalletController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
@@ -44,6 +45,8 @@ Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
 Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
 Route::get('/addresses/{wallet}?view=voters', ShowWalletController::class)->name('wallet.voters');
 Route::get('/addresses/{wallet}?view=blocks', ShowWalletController::class)->name('wallet.blocks');
+
+Route::get('/addresses-inertia/{wallet}', WalletController::class)->name('wallet');
 
 Route::get('/wallets/{wallet}', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
