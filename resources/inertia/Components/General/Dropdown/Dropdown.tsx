@@ -1,0 +1,133 @@
+import EllipsisVertical from "@/Assets/Icons/EllipsisVertical";
+import classNames from "@/utils/class-names";
+import Tippy from "@tippyjs/react";
+import { useState } from "react";
+import { Placement, useFloating, autoUpdate, offset, flip, useTransitionStyles, useInteractions, useDismiss } from '@floating-ui/react';
+import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
+
+export default function Dropdown({
+    dropdownContentClasses = 'bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 rounded-xl',
+    buttonClassExpanded = 'text-theme-primary-500',
+    buttonClassClosed = '',
+    buttonClass = 'bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700',
+    dropdownClasses = 'w-40',
+    zIndex = 'z-10',
+    wrapperClass = '',
+    fullScreen = false,
+    buttonTooltip,
+    closeOnClick = true,
+    disabled = false,
+    placement = 'bottom',
+    button,
+    children,
+}: {
+    dropdownContentClasses?: string;
+    buttonClassExpanded?: string;
+    buttonClassClosed?: string;
+    buttonClass?: string;
+    dropdownClasses?: string;
+    zIndex?: string;
+    wrapperClass?: string;
+    fullScreen?: boolean;
+    dusk?: boolean;
+    buttonTooltip?: string;
+    closeOnClick?: boolean;
+    disabled?: boolean;
+    placement?: Placement;
+    button?: React.ReactNode;
+    children: React.ReactNode;
+}) {
+    const { isOpen, setIsOpen } = useDropdown();
+
+    const {context, refs, floatingStyles} = useFloating({
+        open: isOpen,
+        placement,
+        whileElementsMounted: autoUpdate,
+        middleware: [
+            offset(8),
+            flip(),
+        ],
+        onOpenChange(nextOpen) {
+            setIsOpen(nextOpen);
+        },
+    });
+
+    const dismiss = useDismiss(context);
+
+    const {getReferenceProps, getFloatingProps} = useInteractions([
+        dismiss,
+    ]);
+
+    const {isMounted: isFloatingOpen, styles: floatingTransitionStyled} = useTransitionStyles(context);
+
+    let dropdownButton = (
+        <div>
+            <button
+                ref={refs.setReference}
+                className={classNames({
+                    "flex items-center focus:outline-none dropdown-button transition-default": true,
+                    'text-theme-secondary-500 bg-theme-secondary-200 dark:text-theme-dark-500 dark:bg-theme-dark-800 dark:border-theme-dark-700': disabled,
+                    'bg-theme-secondary-200 dark:bg-theme-dark-800 md:bg-white md:dark:text-theme-dark-600 md:hover:text-theme-secondary-900 md:dark:bg-theme-dark-900 text-theme-secondary-700 dark:text-theme-dark-200 md:hover:text-theme-secondary-900 dark:hover:bg-theme-dark-700': ! disabled,
+                    [buttonClass]: true,
+                    [buttonClassExpanded]: isOpen,
+                    [buttonClassClosed]: ! isOpen,
+                })}
+                onClick={() => setIsOpen(!isOpen)}
+                type="button"
+                disabled={disabled}
+                {...getReferenceProps()}
+            >
+                {button !== undefined && button}
+                {button === undefined && (
+                    <EllipsisVertical className="w-5 h-5" />
+                )}
+            </button>
+        </div>
+    );
+
+    if (buttonTooltip !== undefined) {
+        dropdownButton = (
+            <Tippy content={buttonTooltip}>
+                {dropdownButton}
+            </Tippy>
+        );
+    }
+
+    return (
+        (
+            <div
+                className={wrapperClass}
+            >
+                {dropdownButton}
+
+                {isFloatingOpen && (
+                    <div
+                        ref={refs.setFloating}
+                        style={floatingStyles}
+                        {...getFloatingProps()}
+                    >
+                        <div style={floatingTransitionStyled}>
+                            <div className={classNames({
+                                'dropdown': true,
+                                [dropdownClasses]: true,
+                                [zIndex]: true,
+                                'w-screen -mx-8 md:w-auto md:mx-0': fullScreen,
+                            })}>
+                                <div
+                                    className={dropdownContentClasses}
+                                    onClick={() => {
+                                        if (closeOnClick) {
+                                            setIsOpen(false);
+                                        }
+                                    }}
+                                >
+                                    {children}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        )
+    );
+}
