@@ -166,6 +166,7 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
             <div className="hidden md:block">
                 <LoadingTable
                     rowCount={rowCount}
+                    indicatorHeight="h-[20px]"
                     columns={[
                         {
                             type: 'id',
