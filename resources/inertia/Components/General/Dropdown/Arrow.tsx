@@ -1,5 +1,5 @@
 import classNames from "@/utils/class-names";
-import ChevronDownSmall from "@/Assets/Icons/ChevronDownSmall";
+import ChevronDownSmall from "@/Assets/Icons/Arrows/ChevronDownSmall";
 
 export default function DropdownArrow({
     isOpen = false,
