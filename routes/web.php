@@ -46,7 +46,7 @@ Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
 Route::get('/addresses/{wallet}?view=voters', ShowWalletController::class)->name('wallet.voters');
 Route::get('/addresses/{wallet}?view=blocks', ShowWalletController::class)->name('wallet.blocks');
 
-Route::get('/addresses-inertia/{wallet}', WalletController::class);
+Route::get('/addresses-inertia/{wallet}', WalletController::class)->name('wallet-inertia');
 
 Route::get('/wallets/{wallet}', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
