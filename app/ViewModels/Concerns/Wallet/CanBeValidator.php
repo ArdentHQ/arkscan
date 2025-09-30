@@ -27,6 +27,10 @@ trait CanBeValidator
 
     public function isDormant(): bool
     {
+        if (! $this->isValidator()) {
+            return false;
+        }
+
         $validatorPublicKey = Arr::get($this->wallet, 'attributes.validatorPublicKey');
         if ($validatorPublicKey === null) {
             return true;
