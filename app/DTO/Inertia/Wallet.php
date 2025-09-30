@@ -22,7 +22,7 @@ class Wallet
     public function toArray(): array
     {
         $votedWallet = null;
-        $vote = $this->viewModel->vote();
+        $vote        = $this->viewModel->vote();
         if ($vote !== null) {
             $votedWallet = (new self($vote->model()))->toArray();
         }
