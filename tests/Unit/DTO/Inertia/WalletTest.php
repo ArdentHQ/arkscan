@@ -16,7 +16,7 @@ it('should make an instance for non-validators', function () {
 
     $wallet = Wallet::factory()
         ->create([
-            'balance' => 100.34123 * 1e18,
+            'balance'    => 100.34123 * 1e18,
             'attributes' => [
                 'username' => 'joe.blogs',
                 'isLegacy' => true,
@@ -142,7 +142,7 @@ it('should make an instance for a voting wallet', function () {
 
     $wallet = Wallet::factory()
         ->create([
-            'balance' => 100.34123 * 1e18,
+            'balance'    => 100.34123 * 1e18,
             'attributes' => [
                 'username' => 'joe.blogs',
                 'vote'     => $votedWallet->address,
