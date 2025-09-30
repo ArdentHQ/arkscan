@@ -47,7 +47,7 @@ export default function Overview({ wallet }: { wallet: IWallet }) {
                 label={t('general.address')}
                 extra={<OverviewActions wallet={wallet} />}
             >
-                <TruncateDynamic>{wallet.address}</TruncateDynamic>
+                <TruncateDynamic value={wallet.address} />
             </PageHeaderContainer>
 
             <div className="md:px-10 md:pb-6 md:mx-auto md:max-w-7xl">

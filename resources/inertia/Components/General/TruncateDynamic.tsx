@@ -1,10 +1,7 @@
 import { useEffect, useRef } from "react";
 
-export default function TruncateDynamic({ length = 10, children }: React.PropsWithChildren<{
-    length?: number;
-}>) {
+export default function TruncateDynamic({ value }: { value: string }) {
     const ref = useRef<HTMLDivElement>(null);
-    const value = children as string;
 
     useEffect(() => {
         if (!ref.current) {
@@ -24,22 +21,25 @@ export default function TruncateDynamic({ length = 10, children }: React.PropsWi
 
             ref.current.innerHTML = ''
             ref.current.appendChild(document.createTextNode(value));
+            console.log('value', value)
 
             if (!hasOverflow(ref.current)) {
                 return;
             }
 
-            let length = value.length;
+            const baseLength = value.length;
+            let length = baseLength;
+
             do {
                 const a = value.substring(0, length);
-                const b = value.substring(-length);
+                const b = value.substring(baseLength-length);
                 const truncated = a + '...' + b;
 
                 ref.current.innerHTML = ''
                 ref.current.appendChild(document.createTextNode(truncated));
 
                 length--;
-            } while(hasOverflow(ref.current) && length >= 0)
+            } while(hasOverflow(ref.current) && length >= 0);
         }
 
         const throttledTruncate = () => {
@@ -56,6 +56,8 @@ export default function TruncateDynamic({ length = 10, children }: React.PropsWi
 
         new ResizeObserver(throttledTruncate).observe(ref.current);
 
+        window.addEventListener("resize", throttledTruncate);
+
         return () => {
             window.removeEventListener('resize', throttledTruncate);
         }
@@ -66,7 +68,7 @@ export default function TruncateDynamic({ length = 10, children }: React.PropsWi
             ref={ref}
             className="inline-flex overflow-hidden w-full max-w-full whitespace-nowrap"
         >
-            {children}
+            {value}
         </div>
     )
 }

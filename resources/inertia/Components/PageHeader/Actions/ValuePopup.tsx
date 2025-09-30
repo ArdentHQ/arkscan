@@ -72,7 +72,7 @@ export default function PageHeaderValuePopup({
                         </span>
 
                         <span className="font-semibold text-theme-secondary-900 dark:text-theme-dark-200">
-                            <TruncateDynamic>{value}</TruncateDynamic>
+                            <TruncateDynamic value={value} />
                         </span>
                     </div>
 
