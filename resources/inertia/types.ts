@@ -13,6 +13,7 @@ export interface IWallet {
     keepsMissing?: boolean;
     missedCount?: number;
     blocksSinceLastForged?: number;
+    durationSinceLastForged?: number;
     public_key: string;
 
     isCold: boolean;

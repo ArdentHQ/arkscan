@@ -10,7 +10,7 @@
     "require": {
         "php": "^8.3",
         "ext-gmp": "*",
-        "ardenthq/arkvault-url": "dev-feat/mainsail",
+        "ardenthq/arkvault-url": "^1.2",
         "arkecosystem/crypto": "dev-feat/mainsail",
         "arkecosystem/foundation": "^19.10.0",
         "blade-ui-kit/blade-icons": "^1.7",
@@ -131,6 +131,9 @@
         ],
         "test:coverage": [
             "./vendor/bin/pest --parallel --coverage --min=100 --coverage-html=.coverage --coverage-clover=coverage.xml"
+        ],
+        "test:browser": [
+            "php artisan dusk"
         ]
     }
 }

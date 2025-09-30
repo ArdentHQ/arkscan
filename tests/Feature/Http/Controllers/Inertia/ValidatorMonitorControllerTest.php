@@ -63,18 +63,19 @@ describe('Monitor', function () {
     {
         $wallets = Wallet::factory(Network::validatorCount())->create();
 
-        createRoundEntry(112168, 5944904, $wallets);
+        createRoundEntry(112168, 5944852 - Network::validatorCount(), $wallets); // create previous round
+        createRoundEntry(112168, 5944852, $wallets);
 
         $wallets->each(function ($wallet) {
             $block = Block::factory()->create([
-                'number'            => 5944900,
+                'number'            => 5944848,
                 'timestamp'         => 113620904,
                 'proposer'          => $wallet->address,
             ]);
 
             // Start height for round 112168
             Block::factory()->create([
-                'number'            => 5944904,
+                'number'            => 5944852,
                 'timestamp'         => 113620904,
                 'proposer'          => $wallet->address,
             ]);
@@ -654,13 +655,14 @@ describe('Data Boxes', function () {
             ->activeValidator()
             ->create();
 
-        createRoundEntry(112168, 5944904, $wallets);
+        createRoundEntry(112167, 5944852 - Network::validatorCount(), $wallets); // create previous round
+        createRoundEntry(112168, 5944852, $wallets);
 
         $wallets->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
             $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
 
             $block = Block::factory()->create([
-                'number'            => 5944900,
+                'number'            => 5944848,
                 'timestamp'         => $timestamp,
                 'proposer'          => $wallet->address,
             ]);
@@ -668,7 +670,7 @@ describe('Data Boxes', function () {
             // Start height for round 112168
             if ($addBlockForNextRound) {
                 Block::factory()->create([
-                    'number'            => 5944904,
+                    'number'            => 5944852,
                     'timestamp'         => $timestamp,
                     'proposer'          => $wallet->address,
                 ]);
@@ -685,8 +687,9 @@ describe('Data Boxes', function () {
             (new WalletCache())->setPerformance($wallet->address, $performances);
 
             (new WalletCache())->setLastBlock($wallet->address, [
-                'id'     => $block->hash,
-                'number' => $block->number->toNumber(),
+                'id'        => $block->hash,
+                'number'    => $block->number->toNumber(),
+                'timestamp' => $block->timestamp,
             ]);
         });
     }
@@ -776,17 +779,17 @@ describe('Data Boxes', function () {
             ->activeValidator()
             ->create();
 
-        createRoundEntry(112168, 5944904, $wallets);
+        createRoundEntry(112168, 5944852, $wallets);
 
         $wallets->each(function ($wallet) {
             Block::factory()->create([
-                'number'            => 5944900,
+                'number'            => 5944848,
                 'timestamp'         => 113620904,
                 'proposer'          => $wallet->address,
             ]);
 
             Block::factory()->create([
-                'number'            => 5944904,
+                'number'            => 5944852,
                 'timestamp'         => 113620904,
                 'proposer'          => $wallet->address,
             ]);

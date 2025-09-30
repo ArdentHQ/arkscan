@@ -180,6 +180,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\DevelopmentServiceProvider::class,
         App\Testing\ParallelTestingServiceProvider::class,
+        App\Testing\DuskServiceProvider::class,
         ARKEcosystem\Foundation\Providers\TelescopeServiceProvider::class,
 
     ],

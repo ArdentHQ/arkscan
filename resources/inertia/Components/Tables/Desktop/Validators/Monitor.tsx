@@ -10,6 +10,7 @@ import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import ValidatorStatusProvider from "@/Providers/ValidatorStatus/ValidatorStatusProvider";
 import { IValidator } from "@/types";
 import { useTranslation } from "react-i18next";
+import MissedWarning from "@/Components/Validator/Monitor/MissedWarning";
 
 export function MonitorRow({ validator, withFavoriteBorder = true }: {
     validator: IValidator;
@@ -34,12 +35,18 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
                 </TableCell>
 
                 <TableCell className="text-left">
-                    <div className="md:hidden lg:block">
-                        <Address wallet={validator.wallet} />
-                    </div>
+                    <div className="flex items-center space-x-2 min-w-0">
+                        <div>
+                            <div className="md:hidden lg:block">
+                                <Address wallet={validator.wallet} />
+                            </div>
 
-                    <div className="hidden md:block lg:hidden">
-                        <Address wallet={validator.wallet} truncate />
+                            <div className="hidden md:block lg:hidden">
+                                <Address wallet={validator.wallet} truncate />
+                            </div>
+                        </div>
+
+                        <MissedWarning validator={validator} />
                     </div>
                 </TableCell>
 

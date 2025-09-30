@@ -189,10 +189,13 @@ it('should convert to array', function () {
         'wallet'            => [
             ...$wallet->toArray(),
 
-            'isPending'   => false,
-            'hasForged'   => false,
-            'justMissed'  => true,
-            'missedCount' => 0,
+            'isPending'               => false,
+            'hasForged'               => false,
+            'justMissed'              => true,
+            'missedCount'             => 0,
+            'keepsMissing'            => false,
+            'blocksSinceLastForged'   => null,
+            'durationSinceLastForged' => null,
         ],
         'forgingAt'         => Timestamp::fromGenesis(1)->toIso8601String(),
         'lastBlock'         => [
