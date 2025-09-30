@@ -9,7 +9,6 @@ import WalletOverviewWallet from "./Wallet";
 import WalletOverviewValidator from "./Validator/Validator";
 
 function OverviewActions({ wallet }: { wallet: IWallet }) {
-    console.log('wallet', wallet)
     const { t } = useTranslation();
 
     return (

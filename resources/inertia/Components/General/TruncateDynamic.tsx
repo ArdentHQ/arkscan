@@ -21,7 +21,6 @@ export default function TruncateDynamic({ value }: { value: string }) {
 
             ref.current.innerHTML = ''
             ref.current.appendChild(document.createTextNode(value));
-            console.log('value', value)
 
             if (!hasOverflow(ref.current)) {
                 return;
