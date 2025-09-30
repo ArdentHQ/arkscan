@@ -1,6 +1,6 @@
 import { Head, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
-import PageHeader from "@/Components/General/PageHeader";
+import PageHeader from "@/Components/PageHeader/PageHeader";
 import MonitorTableWrapper from "@/Components/Tables/Desktop/Validators/Monitor";
 import HeaderStats from "@/Components/Validator/Monitor/HeaderStats";
 import ValidatorFavoritesProvider from "@/Providers/ValidatorFavorites/ValidatorFavoritesProvider";

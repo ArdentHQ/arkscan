@@ -14,6 +14,23 @@ export interface IWallet {
     missedCount?: number;
     blocksSinceLastForged?: number;
     public_key: string;
+
+    isCold: boolean;
+    isLegacy: boolean;
+    isDormant: boolean;
+    isValidator: boolean;
+    isActive: boolean;
+    productivity: number;
+    legacyAddress: string | null;
+    vote: IWallet | null;
+    attributes: Record<string, any> | null;
+    votes: string;
+
+    balance: string;
+    formattedBalanceTwoDecimals: string;
+    formattedBalanceFull: string;
+    fiatValue: number | string;
+    totalForged: string;
 }
 
 export interface IValidator {
@@ -52,6 +69,7 @@ export interface INetwork {
     alias: string;
     api: string;
     explorerTitle: string;
+    legacyExplorerUrl: string;
     currency: string;
     currencySymbol: string;
     confirmations: number;
@@ -65,3 +83,23 @@ export interface INetwork {
     blockReward: number;
     supply: number;
 }
+
+export interface ISettings {
+    currency: string;
+    priceChart: boolean;
+    feeChart: boolean;
+    theme: string;
+}
+
+export interface ICurrency {
+    currency: string;
+    locale: string | null;
+    symbol: string | null;
+}
+
+export interface IConfigProductivity {
+    warning: number;
+    danger: number;
+}
+
+export type Currencies = Record<string, ICurrency>;

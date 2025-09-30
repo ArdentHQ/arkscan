@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Facades\Network;
+use App\Facades\Settings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -41,7 +42,10 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
 
-            'network' => Network::toArray(),
+            'currencies'   => config('currencies.currencies'),
+            'network'      => Network::toArray(),
+            'productivity' => config('arkscan.productivity'),
+            'settings'     => Settings::all(),
         ];
     }
 }
