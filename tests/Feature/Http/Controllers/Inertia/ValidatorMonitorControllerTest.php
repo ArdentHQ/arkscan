@@ -23,7 +23,7 @@ beforeEach(function () {
     $this->withoutExceptionHandling();
 });
 
-function performRequest($context, $withReload = true, $pageCallback = null, $reloadCallback = null): mixed
+function performValidatorMonitorRequest($context, $withReload = true, $pageCallback = null, $reloadCallback = null): mixed
 {
     return $context->get(route('validator-monitor'))
         ->assertOk()
@@ -56,7 +56,7 @@ function performRequest($context, $withReload = true, $pageCallback = null, $rel
 
 describe('Monitor', function () {
     beforeEach(function () {
-        $this->activeValidators = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
+        $this->activeValidators = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
     });
 
     function createRoundWithValidators(): void
@@ -101,7 +101,7 @@ describe('Monitor', function () {
     it('should render without errors', function () {
         createRoundWithValidators();
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
     });
 
     it('should throw an exception after 3 tries', function () {
@@ -114,7 +114,7 @@ describe('Monitor', function () {
             ->shouldReceive('increment')
             ->andReturn(1, 2, 3);
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
     });
 
     it('should not throw an exception if fails to poll 2 times', function () {
@@ -130,7 +130,7 @@ describe('Monitor', function () {
             ->shouldReceive('forget')
             ->andReturn(null);
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
     });
 
     it('should get the last blocks from the last 2 rounds and beyond', function () {
@@ -176,7 +176,7 @@ describe('Monitor', function () {
             ])->save();
         }
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
 
         expect((new WalletCache())->getLastBlock($wallets->first()->address))->toBe([]);
         expect((new WalletCache())->getLastBlock($wallets->get(1)->address))->toBe([]);
@@ -191,7 +191,7 @@ describe('Monitor', function () {
 
         createRoundEntry(1, 1, $wallets);
 
-        performRequest($this, reloadCallback: fn (Assert $reload) => $reload->where('validatorData.validators', []));
+        performValidatorMonitorRequest($this, reloadCallback: fn (Assert $reload) => $reload->where('validatorData.validators', []));
     });
 
     it('should cache last blocks', function () {
@@ -205,7 +205,7 @@ describe('Monitor', function () {
 
         expect(Cache::has('monitor:last-blocks'))->toBeFalse();
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
 
         expect(Cache::has('monitor:last-blocks'))->toBeTrue();
     });
@@ -221,7 +221,7 @@ describe('Monitor', function () {
 
         $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->where('validatorData.overflowValidators', []);
         });
     });
@@ -239,7 +239,7 @@ describe('Monitor', function () {
 
         $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->where('validatorData.overflowValidators', []);
         });
     });
@@ -263,7 +263,7 @@ describe('Monitor', function () {
 
         expect(Carbon::now()->format('Y-m-d H:i:s'))->toBe('2024-02-01 14:01:00');
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->has('validatorData.overflowValidators', 5)
                 ->where('validatorData.overflowValidators', function ($overflowValidators) {
                     return collect($overflowValidators)->map(fn ($validator) => $validator['status'])->toArray() === [
@@ -302,7 +302,7 @@ describe('Monitor', function () {
 
         expect($height)->toBe((3 * Network::validatorCount()) - 4);
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->has('validatorData.overflowValidators', 5)
                 ->where('validatorData.overflowValidators', function ($overflowValidators) {
                     return collect($overflowValidators)->map(fn ($validator) => $validator['status'])->toArray() === [
@@ -339,7 +339,7 @@ describe('Monitor', function () {
             $validators->get(8)->address,
         ]);
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->has('validatorData.overflowValidators', 5)
                 ->where('validatorData.overflowValidators', function ($overflowValidators) {
                     return collect($overflowValidators)->map(fn ($validator) => $validator['status'])->toArray() === [
@@ -381,7 +381,7 @@ describe('Monitor', function () {
         createBlock($height, $validators->get(0)['address'], $this);
         createBlock($height + 1, $validators->get(1)['address'], $this);
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->has('validatorData.overflowValidators', 5)
                 ->where('validatorData.overflowValidators', function ($overflowValidators) {
                     return collect($overflowValidators)->map(fn ($validator) => $validator['status'])->toArray() === [
@@ -431,7 +431,7 @@ describe('Monitor', function () {
 
         $overflowForgeTime = Carbon::createFromTimestamp($lastBlock->timestamp)->subSeconds((Network::blockTime() * 2) + 2);
 
-        performRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
             $reload->has('validatorData.overflowValidators', 6)
                 ->where('validatorData.overflowValidators', function ($overflowValidators) {
                     return collect($overflowValidators)->map(fn ($validator) => $validator['status'])->toArray() === [
@@ -475,7 +475,7 @@ describe('Monitor', function () {
 
         $overflowForgeTime = Carbon::now()->addSeconds((Network::blockTime() * 5)); // 4 unforged slots + extra slot to get the start time of the overflow slot
 
-        performRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
             $reload->where('validatorData.validators', function ($validators) {
                 return collect($validators)->groupBy(fn ($validator) => $validator['status'])->map(fn ($group) => $group->count())->toArray() === [
                     'done'    => 49,
@@ -504,7 +504,7 @@ describe('Monitor', function () {
             array_fill(0, 53, true),
         ], $this);
 
-        performRequest($this, reloadCallback: function (Assert $reload) use ($round, $height) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) use ($round, $height) {
             $this->travel(53)->seconds();
 
             createRoundEntry($round, $height, Wallet::all());
@@ -694,7 +694,7 @@ describe('Data Boxes', function () {
     it('should get the performances of active validators and parse it into a readable array', function () {
         createRoundWithValidatorsAndPerformances();
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->where('validatorData.statistics.performances', function ($performances) {
                 return collect($performances)->keys()->toArray() === [
                     'forging',
@@ -708,7 +708,7 @@ describe('Data Boxes', function () {
     it('should return the block count', function () {
         createRoundWithValidatorsAndPerformances();
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->where('validatorData.statistics.blockCount', function ($blockCount) {
                 return $blockCount === trans('pages.validators.statistics.blocks_generated', [
                     'forged' => 1,
@@ -723,7 +723,7 @@ describe('Data Boxes', function () {
 
         createPartialRound($round, $height, 12, $this);
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->has('validatorData.statistics.nextValidator.attributes')
                 ->has('validatorData.statistics.nextValidator.address')
                 ->has('validatorData.statistics.nextValidator.public_key')
@@ -766,7 +766,7 @@ describe('Data Boxes', function () {
         // Overflow slot 3
         createBlock($height + 1, $validators->get(2)['address'], $this);
 
-        performRequest($this, reloadCallback: function (Assert $reload) use ($validators) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) use ($validators) {
             $reload->where('validatorData.statistics.nextValidator.address', $validators->get(4)['address']);
         });
     });
@@ -796,7 +796,7 @@ describe('Data Boxes', function () {
             expect((new WalletCache())->getValidator($wallet->address))->toBeNull();
         }
 
-        performRequest($this, reloadCallback: function (Assert $reload) {
+        performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) {
             $reload->where('validatorData.statistics.nextValidator', null);
         });
     });
@@ -815,7 +815,7 @@ describe('Data Boxes', function () {
             ],
         ], $this);
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
 
         $validatorWallet = $validators->get(4);
         $validator       = new WalletViewModel($validatorWallet);
@@ -993,7 +993,7 @@ describe('Data Boxes', function () {
             ],
         ], $this);
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
     });
@@ -1001,7 +1001,7 @@ describe('Data Boxes', function () {
     it('should determine if validators are forging after missing 4 slots based on their round history', function () {
         createRoundWithValidatorsAndPerformances([false, true]);
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
     });
 
     it('should reload on new block event', function () {
@@ -1027,12 +1027,12 @@ describe('Data Boxes', function () {
             ],
         ], $this);
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
     });
 
     it('should determine if validators are forging based on their round history', function () {
         createRoundWithValidatorsAndPerformances([true, true]);
 
-        performRequest($this);
+        performValidatorMonitorRequest($this);
     });
 });
