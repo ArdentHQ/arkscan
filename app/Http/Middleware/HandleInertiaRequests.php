@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
             'arkconnect'   => [
                 'enabled'  => config('arkscan.arkconnect.enabled'),
                 'vaultUrl' => config('arkscan.urls.vault_url'),
-            ]
+            ],
         ];
     }
 }
