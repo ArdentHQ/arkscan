@@ -1,16 +1,18 @@
 import { Head } from "@inertiajs/react";
-import { INetwork, IWallet, Currencies, ISettings, IConfigProductivity } from '@/types';
+import { INetwork, IWallet, Currencies, ISettings, IConfigProductivity, IConfigArkConnect } from '@/types';
 import { usePageMetadata } from "@/Components/General/Metadata";
 import ConfigProvider from "@/Providers/Config/ConfigProvider";
 import Overview from "@/Components/Wallet/Overview/Overview";
 
 export default function Wallet({
+    arkconnect,
     currencies,
     network,
     productivity,
     settings,
     wallet,
 }: {
+    arkconnect: IConfigArkConnect;
     currencies: Currencies;
     network: INetwork;
     productivity: IConfigProductivity;
@@ -26,6 +28,7 @@ export default function Wallet({
         <Head>{metadata}</Head>
 
         <ConfigProvider
+            arkconnect={arkconnect}
             currencies={currencies}
             productivity={productivity}
             network={network}

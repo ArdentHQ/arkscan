@@ -78,6 +78,7 @@ export interface INetwork {
     knownWallets: string[];
     knownContracts: string[];
     canBeExchanged: boolean;
+    nethash: string;
     epoch: string;
     validatorCount: number;
     blockTime: number;
@@ -101,6 +102,11 @@ export interface ICurrency {
 export interface IConfigProductivity {
     warning: number;
     danger: number;
+}
+
+export interface IConfigArkConnect {
+    enabled: boolean;
+    vaultUrl: string;
 }
 
 export type Currencies = Record<string, ICurrency>;
