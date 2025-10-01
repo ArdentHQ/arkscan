@@ -9,9 +9,9 @@ export default function Key({ className = '' }: { className?: string }) {
                 transform="translate(-35.75 84.006)"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
             >
                 <circle
                     cx="40.8"

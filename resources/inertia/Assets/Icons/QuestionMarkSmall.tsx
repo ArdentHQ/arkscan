@@ -8,9 +8,9 @@ export default function QuestionMarkSmall({ className = "" }: { className?: stri
             <g
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
             >
                 <path d="M5 9h0M3.2 2.8C3.2 1.9 3.9 1 5 1s1.8.8 1.8 1.8c0 .8-.4 1.5-1.3 1.7-.3.2-.5.5-.5.8v.9" />
             </g>

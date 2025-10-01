@@ -7,9 +7,9 @@ export default function Cross({ className = '' }: { className?: string }) {
         >
             <path
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M.954 18.981l18-18M18.954 18.981l-18-18"
             />
         </svg>
