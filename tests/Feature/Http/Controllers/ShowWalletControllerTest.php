@@ -53,7 +53,9 @@ it('should not double up currency for crypto', function () {
     Settings::shouldReceive('currency')
         ->andReturn('BTC')
         ->shouldReceive('get')
-        ->andReturnNull();
+        ->andReturnNull()
+        ->shouldReceive('all')
+        ->andReturn([]);
 
     $wallet = Wallet::factory()->create();
 
@@ -73,7 +75,9 @@ it('should show currency symbol and code for crypto', function () {
     Settings::shouldReceive('currency')
         ->andReturn('GBP')
         ->shouldReceive('get')
-        ->andReturnNull();
+        ->andReturnNull()
+        ->shouldReceive('all')
+        ->andReturn([]);
 
     $wallet = Wallet::factory()->create();
 
@@ -94,7 +98,9 @@ it('should not show overview value if cannot be exchanged', function () {
     Settings::shouldReceive('currency')
         ->andReturn('GBP')
         ->shouldReceive('get')
-        ->andReturnNull();
+        ->andReturnNull()
+        ->shouldReceive('all')
+        ->andReturn([]);
 
     $wallet = Wallet::factory()->create();
 
