@@ -1,8 +1,9 @@
 import EllipsisVertical from "@/Assets/Icons/EllipsisVertical";
 import classNames from "@/utils/class-names";
 import Tippy from "@tippyjs/react";
-import { Placement, useFloating, autoUpdate, offset, flip, useTransitionStyles, useInteractions, useDismiss } from '@floating-ui/react';
+import { Placement, useFloating, autoUpdate, offset, useTransitionStyles, useInteractions, useDismiss, shift } from '@floating-ui/react';
 import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
+import { useEffect } from "react";
 
 export default function Dropdown({
     dropdownContentClasses = 'bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 rounded-xl',
@@ -40,13 +41,15 @@ export default function Dropdown({
 }) {
     const { isOpen, setIsOpen } = useDropdown();
 
-    const {context, refs, floatingStyles} = useFloating({
+    const {context, refs, floatingStyles, update} = useFloating({
         open: isOpen,
         placement,
         whileElementsMounted: autoUpdate,
         middleware: [
             offset(8),
-            flip(),
+            shift({
+                crossAxis: false,
+            }),
         ],
         onOpenChange(nextOpen) {
             setIsOpen(nextOpen);
@@ -56,6 +59,20 @@ export default function Dropdown({
             }
         },
     });
+
+    useEffect(() => {
+        const onResize = () => {
+            if (isOpen) {
+                update();
+            }
+        }
+
+        window.addEventListener('resize', onResize);
+
+        return () => {
+            window.removeEventListener('resize', onResize);
+        }
+    }, [isOpen]);
 
     const dismiss = useDismiss(context);
 

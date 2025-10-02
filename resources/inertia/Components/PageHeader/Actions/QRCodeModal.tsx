@@ -104,7 +104,7 @@ function QRCodeContent({ wallet }: { wallet: IWallet }) {
     return (
         <DropdownPopup
             title={t('pages.wallet.qrcode.title')}
-            width="w-full sm:max-w-[320px]"
+            width="w-[calc(100vw-1rem)] sm:max-w-[320px]"
             button={
                 <div className="p-2 w-full focus-visible:ring-inset button button-secondary button-icon">
                     <QRCodeIcon className="w-4 h-4" />
@@ -146,11 +146,13 @@ function QRCodeContent({ wallet }: { wallet: IWallet }) {
                 </>
             )}
 
-            <div className="inline-block p-2 bg-white rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-dark-300">
-                <QRCode
-                    value={walletUri}
-                    size={224}
-                />
+            <div className="flex justify-center">
+                <div className="inline-block p-2 bg-white rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-dark-300">
+                    <QRCode
+                        value={walletUri}
+                        size={224}
+                    />
+                </div>
             </div>
 
             {! showOptions && <button
