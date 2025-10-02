@@ -8,7 +8,7 @@ import { useState } from "react";
 import ExternalLink from "@/Components/General/ExternalLink";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Tippy from "@tippyjs/react";
-import { URLBuilder } from "@ardenthq/arkvault-url-js";
+import { URLBuilder } from "@ardenthq/arkvault-url";
 import Input from "@/Components/Input/Input";
 import ArkConnectDisabledAction from "@/Components/General/ArkConnect/DisabledAction";
 
