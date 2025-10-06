@@ -7,6 +7,7 @@ import PageHeaderPublicKeyAction from "../../PageHeader/Actions/PublicKey";
 import PageHeaderLegacyAddressAction from "../../PageHeader/Actions/LegacyAddress";
 import WalletOverviewWallet from "./Wallet";
 import WalletOverviewValidator from "./Validator/Validator";
+import PageHeaderQRCodeModalAction from "@/Components/PageHeader/Actions/QRCodeModal";
 
 function OverviewActions({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
@@ -32,7 +33,7 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
                 </>
             }
 
-            {/* <x-wallet.qr-code-modal :address="$wallet->address()" /> */}
+            <PageHeaderQRCodeModalAction wallet={wallet} />
         </>
     );
 }

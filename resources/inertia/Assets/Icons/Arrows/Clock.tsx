@@ -9,10 +9,10 @@ export default function Clock({ className = '' }: { className?: string }) {
                 transform="translate(1.5 1.5)"
                 fill="none"
                 stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-miterlimit="10"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeMiterlimit="10"
             >
                 <circle
                     cx="8.5"

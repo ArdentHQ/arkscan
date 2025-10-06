@@ -1,4 +1,4 @@
-export default function Cross({ className = '' }: { className?: string }) {
+export default function QRCode({ className = '' }: { className?: string }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,8 @@ export default function Cross({ className = '' }: { className?: string }) {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M.954 18.981l18-18M18.954 18.981l-18-18"
+                d="M8 1H1v7h7V1zm11 0h-7v7h7V1zM8 12H1v7h7v-7zm4 0h2m-2 3v4h2m1-3.5h4V12h-2m0 7h2"
+                fill="none"
             />
         </svg>
     );
