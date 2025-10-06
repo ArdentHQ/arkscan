@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import '@ui/js/clipboard';
 import classNames from "@/utils/class-names";
-import DoubleCheckMark from "@/Assets/Icons/DoubleCheckMark";
-import Copy from "@/Assets/Icons/Copy";
 import Tippy from "@tippyjs/react";
+import CopyIcon from "@ui/icons/copy.svg?react";
+import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
 
 export default function Clipboard({
     value,
@@ -69,7 +69,7 @@ export default function Clipboard({
                                     'opacity-0': clipboardInstance.showCheckmarks,
                                 })}
                             >
-                                <Copy className="h-4 w-4" />
+                                <CopyIcon className="h-4 w-4" />
 
                                 {children}
                             </div>
@@ -81,7 +81,7 @@ export default function Clipboard({
                                         [checkmarksClass]: !! checkmarksClass,
                                     })}
                                 >
-                                    <DoubleCheckMark className="h-4 w-4" />
+                                    <DoubleCheckMarkIcon name="double-check-mark" className="h-4 w-4" />
                                 </div>
                             )}
                         </>
@@ -89,7 +89,7 @@ export default function Clipboard({
 
                     {! withCheckmarks &&
                         <>
-                            <Copy className="h-4 w-4" />
+                            <CopyIcon className="h-4 w-4" />
 
                             {children}
                         </>

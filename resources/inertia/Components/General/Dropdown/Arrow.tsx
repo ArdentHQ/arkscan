@@ -1,5 +1,5 @@
 import classNames from "@/utils/class-names";
-import ChevronDownSmall from "@/Assets/Icons/ChevronDownSmall";
+import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
 
 export default function DropdownArrow({
     isOpen = false,
@@ -19,7 +19,7 @@ export default function DropdownArrow({
             })}
             onClick={onClick}
         >
-            <ChevronDownSmall className="w-3 h-3" />
+            <ChevronDownSmallIcon className="w-3 h-3" />
         </div>
     );
 }

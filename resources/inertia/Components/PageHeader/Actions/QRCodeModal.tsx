@@ -1,7 +1,6 @@
 import { IWallet } from "@/types";
 import { useTranslation } from "react-i18next";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
-import QRCodeIcon from "@/Assets/Icons/QRCode";
 import DropdownPopup from "@/Components/General/Dropdown/DropdownPopup";
 import QRCode from "react-qr-code";
 import { useState } from "react";
@@ -11,6 +10,7 @@ import Tippy from "@tippyjs/react";
 import { URLBuilder } from "@ardenthq/arkvault-url";
 import Input from "@/Components/Input/Input";
 import ArkConnectDisabledAction from "@/Components/General/ArkConnect/DisabledAction";
+import QRCodeIcon from "@ui/icons/qr-code.svg?react";
 
 function ArkVaultButton({ hasAmount, isOnSameNetwork = true, walletUri }: { hasAmount: boolean; isOnSameNetwork: boolean; walletUri: string }) {
     const { t } = useTranslation();

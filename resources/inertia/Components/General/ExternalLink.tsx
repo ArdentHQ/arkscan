@@ -1,4 +1,4 @@
-import ArrowExternal from "@/Assets/Icons/Arrows/ArrowExternal";
+import ArrowExternalIcon from "@ui/icons/arrows/arrow-external.svg?react";
 
 export default function ExternalLink({
     url,
@@ -29,7 +29,7 @@ export default function ExternalLink({
 
                 {! noIcon && (
                     <span>
-                        <ArrowExternal className={iconClass} />
+                        <ArrowExternalIcon className={iconClass} />
                     </span>
                 )}
             </div>

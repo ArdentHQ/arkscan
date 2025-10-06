@@ -1,4 +1,4 @@
-import EllipsisVertical from "@/Assets/Icons/EllipsisVertical";
+import EllipsisVerticalIcon from "@ui/icons/ellipsis-vertical.svg?react";
 import classNames from "@/utils/class-names";
 import Tippy from "@tippyjs/react";
 import { Placement, useFloating, autoUpdate, offset, useTransitionStyles, useInteractions, useDismiss, shift } from '@floating-ui/react';
@@ -103,7 +103,7 @@ export default function Dropdown({
             >
                 {button !== undefined && button}
                 {button === undefined && (
-                    <EllipsisVertical className="w-5 h-5" />
+                    <EllipsisVerticalIcon className="w-5 h-5" />
                 )}
             </button>
         </div>
