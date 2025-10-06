@@ -46,21 +46,21 @@ function ArkVaultButton({ hasAmount, isOnSameNetwork = true, walletUri }: { hasA
         <div className="mt-2 w-full">
             {arkconnect!.enabled && (
                 <div className="flex flex-col w-full">
-                    {arkconnectButton}
-
                     {/* @TODO: handle arkconnect functionality - https://app.clickup.com/t/86dxxbq8r */}
-                    <ArkConnectDisabledAction
-                        isConnected={false}
-                        isOnSameNetwork={false}
-                    >
-                        <button
-                            type="button"
-                            className="w-full button-primary"
-                            disabled
+                    {!! arkconnectButton ? arkconnectButton : (
+                        <ArkConnectDisabledAction
+                            isConnected={false}
+                            isOnSameNetwork={isOnSameNetwork}
                         >
-                            {t('brands.arkconnect')}
-                        </button>
-                    </ArkConnectDisabledAction>
+                            <button
+                                type="button"
+                                className="w-full button-primary"
+                                disabled
+                            >
+                                {t('brands.arkconnect')}
+                            </button>
+                        </ArkConnectDisabledAction>
+                    )}
 
                     <ExternalLink
                         url={walletUri}
