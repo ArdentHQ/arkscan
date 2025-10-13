@@ -42,13 +42,13 @@ trait HasTransactions
 
     public function totalReward(): float
     {
-        return BigNumber::new($this->block->reward->valueOf())->plus($this->block->total_fee->valueOf())->toFloat();
+        return BigNumber::new((string) $this->block->reward)->plus($this->block->total_fee->valueOf())->toFloat();
     }
 
     public function totalRewardFiat(): string
     {
         return ExchangeRate::convert(
-            BigNumber::new($this->block->reward->valueOf())->plus($this->block->total_fee->valueOf())->toFloat(),
+            BigNumber::new((string) $this->block->reward)->plus($this->block->total_fee->valueOf())->toFloat(),
             $this->block->timestamp
         );
     }
