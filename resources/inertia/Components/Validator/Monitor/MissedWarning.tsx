@@ -1,7 +1,7 @@
 import { IValidator } from "@/types";
 import Tippy from "@tippyjs/react";
-import AlertTriangleIcon from '@/Assets/Icons/AlertTriangle';
 import { useTranslation } from "react-i18next";
+import AlertTriangleIcon from "@ui/icons/alert-triangle.svg?react";
 
 export default function MissedWarning({ validator }: { validator: IValidator}) {
     const { t } = useTranslation();

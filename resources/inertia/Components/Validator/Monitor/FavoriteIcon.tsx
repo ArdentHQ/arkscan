@@ -1,9 +1,9 @@
 import classNames from "@/utils/class-names";
 
 // @ts-ignore
-import FavoriteStarIcon from "@/Assets/Icons/FavoriteStar";
 import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorFavoritesContext";
 import { useEffect, useState } from "react";
+import FavoriteStarIcon from "@icons/favorite-star.svg?react";
 
 export default function FavoriteIcon({ validator, label }: { validator: any; label?: string }) {
     const { favorites, isFavorite, toggleFavorite } = useValidatorFavorites();
@@ -26,7 +26,7 @@ export default function FavoriteIcon({ validator, label }: { validator: any; lab
                     toggleFavorite(validator.wallet.public_key);
                 }}
             >
-                <FavoriteStarIcon className="w-[20px]" />
+                <FavoriteStarIcon name="favorite-star-icon" className="w-[20px]" />
 
                 {label && (
                     <span className="text-sm leading-4.25">

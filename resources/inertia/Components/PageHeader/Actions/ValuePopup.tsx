@@ -1,8 +1,8 @@
-import Cross from "@/Assets/Icons/Cross";
 import Clipboard from "@/Components/General/Clipboard";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import CrossIcon from "@ui/icons/cross.svg?react";
 
 export default function PageHeaderValuePopup({
     value,
@@ -93,7 +93,7 @@ export default function PageHeaderValuePopup({
                             className="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-500 hover:bg-theme-primary-700"
                             onClick={() => setModalVisible(false)}
                         >
-                            <Cross className="h-4 w-4" />
+                            <CrossIcon className="h-4 w-4" />
                         </button>
                     </div>
                 </div>

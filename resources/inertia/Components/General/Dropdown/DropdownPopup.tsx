@@ -1,7 +1,6 @@
 import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
 import Dropdown from "./Dropdown";
-import Cross from "@/Assets/Icons/Cross";
-import { Placement } from "@floating-ui/react";
+import CrossIcon from "@ui/icons/cross.svg?react";
 import classNames from "@/utils/class-names";
 
 export default function DropdownPopup({
@@ -46,7 +45,7 @@ export default function DropdownPopup({
                             setIsOpen(false);
                         }}
                     >
-                        <Cross className="h-3 w-3" />
+                        <CrossIcon className="h-3 w-3" />
                     </button>
                 </div>
             </div>

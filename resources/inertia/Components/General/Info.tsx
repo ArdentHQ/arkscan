@@ -1,5 +1,5 @@
-import HintSmall from "@/Assets/Icons/HintSmall";
-import QuestionMarkSmall from "@/Assets/Icons/QuestionMarkSmall";
+import HintSmallIcon from "@ui/icons/hint-small.svg?react";
+import QuestionMarkSmallIcon from "@ui/icons/question-mark-small.svg?react";
 import classNames from "@/utils/class-names";
 import Tippy from "@tippyjs/react";
 
@@ -15,7 +15,7 @@ export default function Info({
     className?: string;
 }) {
     let iconOutput = (
-        <HintSmall className={classNames({
+        <HintSmallIcon className={classNames({
             'w-3 h-3': ! large,
             'w-4 h-4': large,
         })} />
@@ -23,7 +23,7 @@ export default function Info({
 
     if (type === 'question') {
         iconOutput = (
-            <QuestionMarkSmall className={classNames({
+            <QuestionMarkSmallIcon className={classNames({
                 'w-3 h-3': ! large,
                 'w-4 h-4': large,
             })} />
