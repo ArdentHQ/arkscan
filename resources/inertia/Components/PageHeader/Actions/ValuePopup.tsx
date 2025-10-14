@@ -51,7 +51,7 @@ export default function PageHeaderValuePopup({
                 onClick={() => {
                     setModalVisible(!modalVisible);
                     if (modalVisible && ! hasBeenOpened) {
-                        sa_event(`wallet_modal_${id}_opened`);
+                        (window as any).sa_event(`wallet_modal_${id}_opened`);
 
                         setHasBeenOpened(true);
                     }
