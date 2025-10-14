@@ -11,6 +11,7 @@ export default function Dropdown({
     buttonClassClosed = '',
     buttonClass = 'bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700',
     dropdownClasses = 'w-40',
+    popupStyles = {},
     zIndex = 'z-10',
     wrapperClass = '',
     fullScreen = false,
@@ -27,6 +28,7 @@ export default function Dropdown({
     buttonClassClosed?: string;
     buttonClass?: string;
     dropdownClasses?: string;
+    popupStyles?: React.CSSProperties;
     zIndex?: string;
     wrapperClass?: string;
     fullScreen?: boolean;
@@ -128,7 +130,10 @@ export default function Dropdown({
                 {isFloatingOpen && (
                     <div
                         ref={refs.setFloating}
-                        style={floatingStyles}
+                        style={{
+                            ...floatingStyles,
+                            ...popupStyles,
+                        }}
                         {...getFloatingProps()}
                     >
                         <div style={floatingTransitionStyled}>

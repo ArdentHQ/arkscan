@@ -27,7 +27,7 @@ export default function MobileTableRow({
         })}>
             <div
                 className={classNames({
-                    "flex justify-between items-center rounded-t bg-theme-secondary-100 dark:bg-theme-dark-950 py-3 px-4": true,
+                    "flex justify-between items-center rounded-t bg-theme-secondary-100 dark:bg-theme-dark-950 py-3 px-4 font-semibold": true,
                     "rounded-b": !children && (!expandable || (!isExpanded && expandable)),
                     "sm:rounded-b-none": expandable,
                     [expandClass]: expandable,

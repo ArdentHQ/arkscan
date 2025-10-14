@@ -32,7 +32,8 @@ export default function TableCell({
             colSpan={colspan || undefined}
         >
             <div className="table-cell-bg"></div>
-            <div className="table-cell-content">
+
+            <div className="table-cell-content text-theme-secondary-900 dark:text-theme-secondary-50">
                 {children}
             </div>
         </td>
