@@ -7,11 +7,9 @@ import { useTabs } from "@/Providers/Tabs/TabsContext";
 import TransactionsTableWrapper from "@/Components/Tables/Desktop/Wallet/Transactions";
 import ConfigProvider from "@/Providers/Config/ConfigProvider";
 import { IPaginatedResponse } from '../types';
-// import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
-import MobileDivider from "@/Components/General/MobileDivider";
 import TransactionsMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Transactions";
 
 const WalletTabsWrapper = ({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) => {

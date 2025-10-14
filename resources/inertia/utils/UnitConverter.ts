@@ -1,17 +1,9 @@
 import BigNumber from 'bignumber.js';
 
-// UnitFormatter.ts
-
 const WEI_MULTIPLIER = new BigNumber(1);
 const GWEI_MULTIPLIER = new BigNumber(1_000_000_000); // 1e9
 const ARK_MULTIPLIER = new BigNumber(1_000_000_000_000_000_000); // 1e18
 
-/**
- * Parse a value into the appropriate units.
- * @param value number | string
- * @param unit 'wei' | 'gwei' | 'ark'
- * @returns BigNumber
- */
 export function parseUnits(value: number | string | BigNumber, unit: 'wei' | 'gwei' | 'ark' = 'ark'): BigNumber {
     const val = new BigNumber(value);
     switch (unit.toLowerCase()) {
@@ -26,12 +18,6 @@ export function parseUnits(value: number | string | BigNumber, unit: 'wei' | 'gw
     }
 }
 
-/**
- * Format a value from smaller units to a larger unit.
- * @param value string | number | BigNumber
- * @param unit 'wei' | 'gwei' | 'ark'
- * @returns number
- */
 export function formatUnits(value: string | number | BigNumber, unit: 'wei' | 'gwei' | 'ark' = 'ark', decimals?: number): string {
     const val = new BigNumber(value);
     let divisor: BigNumber;
@@ -56,12 +42,6 @@ export function formatUnits(value: string | number | BigNumber, unit: 'wei' | 'g
     return val.dividedBy(divisor).toString();
 }
 
-/**
- * Convert wei to ARK.
- * @param value string | number
- * @param suffix string | undefined
- * @returns string
- */
 export function weiToArk(value: string | number | BigNumber, suffix?: string, decimals?: number): string {
     const arkValue = formatUnits(parseUnits(value, 'wei'), 'ark', decimals);
     const result = arkValue.toString();
@@ -69,12 +49,6 @@ export function weiToArk(value: string | number | BigNumber, suffix?: string, de
     return suffix ? `${result} ${suffix}` : result;
 }
 
-/**
- * Convert gwei to ARK.
- * @param value string | number
- * @param suffix string | undefined
- * @returns string
- */
 export function gweiToArk(value: string | number | BigNumber, suffix?: string): string {
     const arkValue = formatUnits(parseUnits(value, 'gwei'), 'ark');
     const result = arkValue.toString().replace(/\.?0+$/, ''); // strip trailing zeros

@@ -20,8 +20,6 @@ export default function PaginationMiddle({
 }) {
     const { t } = useTranslation();
 
-    // const { urlParams } = paginator.meta;
-
     const [showSearch, setShowSearch] = useState(false);
     const searchRef = useRef<HTMLInputElement>(null);
 
