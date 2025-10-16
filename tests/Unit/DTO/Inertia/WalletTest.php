@@ -47,6 +47,7 @@ it('should make an instance for non-validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
+        'hasUsername'                 => true,
     ]);
 });
 
@@ -87,6 +88,7 @@ it('should make an instance for active validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
+        'hasUsername'                 => false,
     ]);
 });
 
@@ -127,6 +129,7 @@ it('should make an instance for standby validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
+        'hasUsername'                 => false,
     ]);
 });
 
@@ -197,5 +200,6 @@ it('should make an instance for a voting wallet', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
+        'hasUsername'                 => true,
     ]);
 });
