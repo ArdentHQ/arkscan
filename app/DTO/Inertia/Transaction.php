@@ -42,7 +42,7 @@ class Transaction
             $recipient = (new WalletDTO($recipientWallet))->toArray();
         }
 
-        $validatorRegistration = null;
+        $validatorRegistration            = null;
         $validatorRegistrationTransaction = $this->viewModel->validatorRegistration();
         if ($validatorRegistrationTransaction !== null) {
             $validatorRegistration = (new WalletDTO($validatorRegistrationTransaction))->toArray();
