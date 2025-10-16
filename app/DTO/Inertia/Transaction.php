@@ -28,7 +28,7 @@ class Transaction
             }
         }
 
-        $sender = null;
+        $sender        = null;
         $senderAddress = $this->viewModel->sender()?->address();
         if ($senderAddress !== null) {
             $senderWallet = Wallets::findByAddress($senderAddress);
@@ -36,7 +36,7 @@ class Transaction
             $sender = (new WalletDTO($senderWallet))->toArray();
         }
 
-        $recipient = null;
+        $recipient        = null;
         $recipientAddress = $this->viewModel->recipient()?->address();
         if ($recipientAddress !== null) {
             $recipientWallet = Wallets::findByAddress($recipientAddress);
