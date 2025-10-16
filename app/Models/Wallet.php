@@ -130,7 +130,7 @@ final class Wallet extends Model
 
         return $self->newQuery()
             ->select([
-                DB::raw("wallets.attributes->>'username' AS validator_username"),
+                DB::raw("wallets.attributes->>'username' AS username"),
                 'wallets.address',
                 'wallets.attributes',
                 'wallets.balance',
