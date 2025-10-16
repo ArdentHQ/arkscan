@@ -14,9 +14,6 @@ export default function Method({ transaction }: { transaction: ITransaction }) {
                 </Tippy>
             );
         }
-        return (
-            <Badge className="encapsulated-badge">Vote</Badge>
-        );
     }
 
     return (

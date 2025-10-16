@@ -6,6 +6,7 @@ export interface IBlock {
 export interface IWallet {
     address: string;
     username?: string;
+    hasUsername?: boolean;
     hasForged?: boolean;
     justMissed?: boolean;
     isResigned?: boolean;
@@ -134,6 +135,12 @@ export interface ITransaction {
     isMultiPayment: boolean;
     isSelfReceiving: boolean;
     votedFor: string | null;
+    sender: IWallet | null;
+    recipient: IWallet | null;
+
+    isSent: boolean;
+    isReceived: boolean;
+    isSentToSelf: boolean;
 }
 
 export interface IPaginatedResponse<T> {

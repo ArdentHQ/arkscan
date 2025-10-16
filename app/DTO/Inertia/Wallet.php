@@ -41,6 +41,7 @@ class Wallet
             'isDormant'     => $this->viewModel->isDormant(),
             'legacyAddress' => $this->viewModel->legacyAddress(),
             'username'      => $this->viewModel->username(),
+            'hasUsername'   => $this->viewModel->hasUsername(),
             'vote'          => $votedWallet,
             'votes'         => (string) $this->viewModel->votes(),
             'productivity'  => $this->viewModel->productivity(),

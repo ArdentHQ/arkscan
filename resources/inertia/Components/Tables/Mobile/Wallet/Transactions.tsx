@@ -10,6 +10,7 @@ import { IPaginatedResponse } from '../../../../types';
 import Amount from "@/Components/Transaction/Amount";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Fee from "@/Components/Transaction/Fee";
+import Addressing from "@/Components/Transaction/Addressing";
 
 export function TransactionsMobileTable({ transactions }: { transactions: ITransaction[] }) {
     const { t } = useTranslation();
@@ -28,6 +29,13 @@ export function TransactionsMobileTable({ transactions }: { transactions: ITrans
                         </>
                     )}
                 >
+                    <TableCell label={transaction.type}>
+                        <Addressing
+                            transaction={transaction}
+                            withoutLink={transaction.isSentToSelf}
+                        />
+                    </TableCell>
+
                     <TableCell label={t('tables.transactions.amount', { currency: network?.currency })}>
                         <Amount transaction={transaction} />
                     </TableCell>

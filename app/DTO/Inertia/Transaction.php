@@ -6,12 +6,14 @@ namespace App\DTO\Inertia;
 
 use App\Models\Transaction as Model;
 use App\ViewModels\TransactionViewModel;
+use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Facades\Wallets;
 
 class Transaction
 {
     private TransactionViewModel $viewModel;
 
-    public function __construct(public Model $transaction)
+    public function __construct(public Model $transaction, public ?string $address = null)
     {
         $this->viewModel = new TransactionViewModel($transaction);
     }
@@ -24,6 +26,20 @@ class Transaction
             if ($votedFor !== null) {
                 $votedFor = $votedFor->address();
             }
+        }
+
+        $sender = null;
+        if ($this->viewModel->sender() !== null) {
+            $senderWallet = Wallets::findByAddress($this->viewModel->sender()->address());
+
+            $sender = (new WalletDTO($senderWallet))->toArray();
+        }
+
+        $recipient = null;
+        if ($this->viewModel->recipient() !== null) {
+            $recipientWallet = Wallets::findByAddress($this->viewModel->recipient()->address());
+
+            $recipient = (new WalletDTO($recipientWallet))->toArray();
         }
 
         return [
@@ -68,7 +84,12 @@ class Transaction
             'isContractDeployment'      => $this->viewModel->isContractDeployment(),
             'isMultiPayment'            => $this->viewModel->isMultiPayment(),
             'isSelfReceiving'           => $this->viewModel->isSelfReceiving(),
+            'isSent'                    => $this->viewModel->isSent($this->address),
+            'isSentToSelf'              => $this->viewModel->isSentToSelf($this->address),
+            'isReceived'                => $this->viewModel->isReceived($this->address),
             'votedFor'                  => $votedFor,
+            'sender'                    => $sender,
+            'recipient'                 => $recipient,
         ];
     }
 }

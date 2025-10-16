@@ -4,7 +4,17 @@ import classNames from "@/utils/class-names";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-function TableHeader({ breakpoint = "sm", resultCount, resultSuffix, children }: { breakpoint: "sm" | "md" | "none"; resultCount: number; resultSuffix?: string; children?: React.ReactNode }) {
+function TableHeader({
+    breakpoint = "sm",
+    resultCount,
+    resultSuffix,
+    children,
+}: {
+    breakpoint: "sm" | "md" | "none";
+    resultCount: number;
+    resultSuffix?: string;
+    children?: React.ReactNode;
+}) {
     const { t } = useTranslation();
 
     let breakpointClass = {
@@ -57,6 +67,7 @@ export function Table({
     paginator,
     rowComponent,
     mobile,
+    headerActions,
 }: {
     columns: React.ReactNode;
     withHeader?: boolean;
@@ -66,6 +77,7 @@ export function Table({
     paginator: IPaginatedResponse<any>;
     rowComponent: React.ComponentType<{ row: any; key?: React.Key }>;
     mobile?: React.ReactNode;
+    headerActions?: React.ReactNode;
 }) {
     const tableRef = useRef<HTMLDivElement>(null);
 
@@ -79,7 +91,9 @@ export function Table({
                     resultCount={resultCount}
                     resultSuffix={resultSuffix}
                     breakpoint="md"
-                />
+                >
+                    {headerActions}
+                </TableHeader>
             )}
 
             <div className={classNames({

@@ -9,6 +9,9 @@ import Fee from "@/Components/Transaction/Fee";
 import { Table } from "../Table";
 import Method from "@/Components/Transaction/Method";
 import { useConfig } from "@/Providers/Config/ConfigContext";
+import Addressing from "@/Components/Transaction/Addressing";
+import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
+import FilterIcon from "@ui/icons/filter.svg?react";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -26,7 +29,10 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell>
-                Addressing
+                <Addressing
+                    transaction={row}
+                    withoutLink={row.isSentToSelf}
+                />
             </TableCell>
 
             <TableCell className="text-right">
@@ -58,6 +64,7 @@ export function TransactionsTable({
             rowComponent={Row}
             resultCount={transactions.total ?? 0}
             mobile={mobile}
+            headerActions={<HeaderActions />}
             columns={<>
                 <th sorting-id="header-order">
                     {t('tables.transactions.id')}
@@ -154,6 +161,42 @@ export default function TransactionsTableWrapper({
                 transactions={transactions}
                 mobile={mobile}
             />
+        </div>
+    );
+}
+
+function HeaderActions() {
+    const { t } = useTranslation();
+
+    return (
+        <div className="flex items-center justify-end space-x-3">
+            <div className="flex-1">
+                <button
+                    type="button"
+                    className="flex justify-center items-center py-1.5 space-x-2 w-full sm:px-4 button-secondary"
+                    disabled
+                >
+                    <UnderlineArrowDownIcon className="h-4 w-4" />
+
+                    <span>{t('actions.export')}</span>
+                </button>
+            </div>
+
+            <div className="flex-1">
+                <button
+                    type="button"
+                    className="flex items-center focus:outline-none dropdown-button transition-default flex-1 justify-center rounded sm:flex-none button-secondary w-full py-1.5 sm:px-4 md:p-2"
+                    disabled
+                >
+                    <div className="inline-flex items-center mx-auto whitespace-nowrap">
+                        <FilterIcon className="h-4 w-4" />
+
+                        <div className="ml-2 md:hidden">
+                            {t('actions.filter')}
+                        </div>
+                    </div>
+                </button>
+            </div>
         </div>
     );
 }
