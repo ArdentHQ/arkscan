@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Block;
 
+use App\Services\BigNumber;
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
 
@@ -41,13 +42,13 @@ trait HasTransactions
 
     public function totalReward(): float
     {
-        return  $this->block->reward->plus($this->block->total_fee->valueOf())->toFloat();
+        return BigNumber::new((string) $this->block->reward)->plus($this->block->total_fee->valueOf())->toFloat();
     }
 
     public function totalRewardFiat(): string
     {
         return ExchangeRate::convert(
-            $this->block->reward->plus($this->block->total_fee->valueOf())->toFloat(),
+            BigNumber::new((string) $this->block->reward)->plus($this->block->total_fee->valueOf())->toFloat(),
             $this->block->timestamp
         );
     }
