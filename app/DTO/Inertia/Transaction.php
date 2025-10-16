@@ -29,15 +29,17 @@ class Transaction
         }
 
         $sender = null;
-        if ($this->viewModel->sender() !== null) {
-            $senderWallet = Wallets::findByAddress($this->viewModel->sender()->address());
+        $senderAddress = $this->viewModel->sender()?->address();
+        if ($senderAddress !== null) {
+            $senderWallet = Wallets::findByAddress($senderAddress);
 
             $sender = (new WalletDTO($senderWallet))->toArray();
         }
 
         $recipient = null;
-        if ($this->viewModel->recipient() !== null) {
-            $recipientWallet = Wallets::findByAddress($this->viewModel->recipient()->address());
+        $recipientAddress = $this->viewModel->recipient()?->address();
+        if ($recipientAddress !== null) {
+            $recipientWallet = Wallets::findByAddress($recipientAddress);
 
             $recipient = (new WalletDTO($recipientWallet))->toArray();
         }
@@ -45,8 +47,10 @@ class Transaction
         $validatorRegistration = null;
         $validatorRegistrationTransaction = $this->viewModel->validatorRegistration();
         if ($validatorRegistrationTransaction !== null) {
-            $validatorRegistration = (new WalletDTO($validatorRegistrationTransaction))->toArray();
+            $validatorRegistration = (new self($validatorRegistrationTransaction->model()))->toArray();
         }
+
+        $address = $this->address ?? $this->transaction->from;
 
         return [
             'hash'                      => $this->transaction->hash,
@@ -61,7 +65,6 @@ class Transaction
             'value'                     => (string) $this->transaction->value,
             'gas_price'                 => (string) $this->transaction->gas_price,
             'gas'                       => (string) $this->transaction->gas,
-            'legacy_second_signature'   => $this->transaction->legacy_second_signature,
             'status'                    => $this->transaction->status,
             'gas_used'                  => (string) $this->transaction->gas_used,
             'gas_refunded'              => (string) $this->transaction->gas_refunded,
@@ -77,7 +80,7 @@ class Transaction
             'amountWithFee'             => $this->viewModel->amountWithFee(),
             'amountReceived'            => $this->viewModel->amountReceived(),
             'amountFiat'                => $this->viewModel->amountFiat(true),
-            'amountReceivedFiat'        => $this->viewModel->amountReceivedFiat($this->address),
+            'amountReceivedFiat'        => $this->viewModel->amountReceivedFiat($address),
 
             'fee'                       => $this->viewModel->fee(),
             'feeFiat'                   => $this->viewModel->feeFiat(true),
@@ -94,9 +97,9 @@ class Transaction
             'isContractDeployment'      => $this->viewModel->isContractDeployment(),
             'isMultiPayment'            => $this->viewModel->isMultiPayment(),
             'isSelfReceiving'           => $this->viewModel->isSelfReceiving(),
-            'isSent'                    => $this->viewModel->isSent($this->address),
-            'isSentToSelf'              => $this->viewModel->isSentToSelf($this->address),
-            'isReceived'                => $this->viewModel->isReceived($this->address),
+            'isSent'                    => $this->viewModel->isSent($address),
+            'isSentToSelf'              => $this->viewModel->isSentToSelf($address),
+            'isReceived'                => $this->viewModel->isReceived($address),
             'hasFailedStatus'           => $this->viewModel->hasFailedStatus(),
             'validatorRegistration'     => $validatorRegistration,
 

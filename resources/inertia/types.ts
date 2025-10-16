@@ -102,7 +102,6 @@ export interface ITransaction {
     gas: string;
     data: string;
     signature: string;
-    legacy_second_signature: string | null;
     status: boolean;
     gas_used: string;
     gas_refunded: string;
