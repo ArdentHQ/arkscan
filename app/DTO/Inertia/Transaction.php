@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\DTO\Inertia;
 
-use App\Models\Transaction as Model;
-use App\ViewModels\TransactionViewModel;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Facades\Wallets;
+use App\Models\Transaction as Model;
+use App\ViewModels\TransactionViewModel;
 
 class Transaction
 {
