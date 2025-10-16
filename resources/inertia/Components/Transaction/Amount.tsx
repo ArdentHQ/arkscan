@@ -17,6 +17,33 @@ export default function Amount({
 }) {
     const { network } = useConfig();
 
+    let isReceived = ! transaction.isSent;
+    let isSent = transaction.isSent;
+
+    let amount = transaction.amount;
+    let amountFiat = transaction.amountFiat;
+    let amountForItself: number | undefined = undefined;
+
+    if (isReceived || transaction.isSentToSelf) {
+        amount = transaction.amountReceived;
+        amountFiat = transaction.amountReceivedFiat;
+    } else {
+        amountForItself = transaction.amountForItself;
+        if (amountForItself > 0) {
+            amount = transaction.amountExcludingItself;
+        }
+    }
+
+    if (transaction.isValidatorResignation) {
+        const registration = transaction.validatorRegistration;
+        if (registration !== null) {
+            amount = registration.amount;
+        }
+
+        isReceived = true;
+        isSent = false;
+    }
+
     const feeBreakpointClass = ({
         'md-lg': 'md-lg:hidden',
         'lg': 'lg:hidden',
@@ -36,11 +63,11 @@ export default function Amount({
         })}>
             <div className="inline-block leading-4.25">
                 <AmountFiatTooltip
-                    amount={transaction.amount}
-                    amountForItself={transaction.amountForItself}
-                    fiat={transaction.fiat}
-                    isSent={transaction.isSent}
-                    isReceived={transaction.isReceived}
+                    amount={amount}
+                    amountForItself={amountForItself}
+                    fiat={amountFiat}
+                    isSent={isSent}
+                    isReceived={isReceived}
                     transaction={transaction}
                 />
 
@@ -55,9 +82,10 @@ export default function Amount({
                 <Fee
                     transaction={transaction}
                     className={classNames({
-                        'hidden text-xs md:block text-theme-secondary-700 dark:text-theme-dark-200': true,
+                        'hidden text-xs md:block': true,
                         [feeBreakpointClass]: true,
                     })}
+                    withoutStyling
                 />
             )}
         </div>

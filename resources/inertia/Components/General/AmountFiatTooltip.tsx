@@ -1,10 +1,43 @@
 import { useConfig } from "@/Providers/Config/ConfigContext";
-import { ITransaction, IWallet } from "@/types";
+import { ITransaction } from "@/types";
 import { currency, networkCurrency } from "@/utils/number-formatter";
 import Tippy from "@tippyjs/react";
 import HintSmallIcon from "@ui/icons/hint-small.svg?react";
 import { useTranslation } from "react-i18next";
 import AmountSmall from "./AmountSmall";
+
+function AmountOutput({
+    transaction,
+    isSent,
+    isReceived,
+    isSentToSelf,
+    amount,
+}: {
+    transaction?: ITransaction;
+    isSent: boolean;
+    isReceived: boolean;
+    isSentToSelf: boolean;
+    amount: string | number;
+}) {
+    return (
+        <span>
+            <span>{isSent && !isSentToSelf ? '-' : isReceived ? '+' : ''}&nbsp;</span>
+
+            {typeof amount === 'number' ? (
+                transaction ? (
+                    <AmountSmall
+                        amount={amount}
+                        hideTooltip
+                    />
+                ) : (
+                    <span>{networkCurrency(amount)}</span>
+                )
+            ) : (
+                <span>{amount}</span>
+            )}
+        </span>
+    );
+}
 
 export default function AmountFiatTooltip({
     transaction,
@@ -12,15 +45,16 @@ export default function AmountFiatTooltip({
     isReceived = false,
     amount,
     amountForItself,
+    fiat,
     className = 'text-sm',
     withoutStyling = false,
 }: {
     transaction?: ITransaction;
     isSent?: boolean;
     isReceived?: boolean;
-    fiat?: string;
     amount: string | number;
     amountForItself?: number;
+    fiat?: string | number;
     className?: string;
     withoutStyling?: boolean;
 }) {
@@ -50,7 +84,8 @@ export default function AmountFiatTooltip({
 
         if (transaction && transaction.isSentToSelf) {
             classes.push(
-                'fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200 encapsulated-badge'
+                'fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent',
+                'dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200 encapsulated-badge',
             );
 
             sent = false;
@@ -62,7 +97,9 @@ export default function AmountFiatTooltip({
             }
 
             if (isReceived) {
-                classes.push('fiat-tooltip-received text-theme-success-700 bg-theme-success-100 border-theme-success-100 dark:bg-transparent dark:border-theme-success-700 dark:text-theme-success-500');
+                classes.push('fiat-tooltip-received text-theme-success-700 bg-theme-success-100 border-theme-success-100',
+                    'dark:bg-transparent dark:border-theme-success-700 dark:text-theme-success-500',
+                );
             }
         }
     }
@@ -79,22 +116,27 @@ export default function AmountFiatTooltip({
                 </Tippy>
             )}
 
-            <span>
-                <span>{sent && !isSentToSelf ? '-' : isReceived ? '+' : ''}&nbsp;</span>
+            {fiat && (
+                <Tippy content={fiat}>
+                    <AmountOutput
+                        transaction={transaction}
+                        isSent={isSent}
+                        isReceived={isReceived}
+                        isSentToSelf={isSentToSelf}
+                        amount={amount}
+                    />
+                </Tippy>
+            )}
 
-                {typeof amount === 'number' ? (
-                    transaction ? (
-                        <AmountSmall
-                            amount={amount}
-                            hideTooltip
-                        />
-                    ) : (
-                        <span>{networkCurrency(amount)}</span>
-                    )
-                ) : (
-                    <span>{amount}</span>
-                )}
-            </span>
+            {!fiat && (
+                <AmountOutput
+                    transaction={transaction}
+                    isSent={isSent}
+                    isReceived={isReceived}
+                    isSentToSelf={isSentToSelf}
+                    amount={amount}
+                />
+            )}
         </span>
     );
 }

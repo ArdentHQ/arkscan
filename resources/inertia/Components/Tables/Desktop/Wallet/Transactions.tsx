@@ -12,6 +12,7 @@ import { useConfig } from "@/Providers/Config/ConfigContext";
 import Addressing from "@/Components/Transaction/Addressing";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import FilterIcon from "@ui/icons/filter.svg?react";
+import TableHeader from "../TableHeader";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -20,7 +21,10 @@ export function Row({ row }: { row: ITransaction }) {
                 <ID transaction={row} />
             </TableCell>
 
-            <TableCell>
+            <TableCell
+                breakpoint="xl"
+                responsive
+            >
                 <Age transaction={row} />
             </TableCell>
 
@@ -35,11 +39,18 @@ export function Row({ row }: { row: ITransaction }) {
                 />
             </TableCell>
 
-            <TableCell className="text-right">
+            <TableCell
+                className="text-right"
+                lastOn="md-lg"
+            >
                 <Amount transaction={row} />
             </TableCell>
 
-            <TableCell className="text-right">
+            <TableCell
+                className="text-right"
+                breakpoint="md-lg"
+                responsive
+            >
                 <Fee transaction={row} />
             </TableCell>
         </tr>
@@ -66,29 +77,39 @@ export function TransactionsTable({
             mobile={mobile}
             headerActions={<HeaderActions />}
             columns={<>
-                <th sorting-id="header-order">
+                <TableHeader>
                     {t('tables.transactions.id')}
-                </th>
+                </TableHeader>
 
-                <th>
+                <TableHeader
+                    breakpoint="xl"
+                    responsive
+                >
                     {t('tables.transactions.age')}
-                </th>
+                </TableHeader>
 
-                <th>
+                <TableHeader>
                     {t('tables.transactions.method')}
-                </th>
+                </TableHeader>
 
-                <th>
+                <TableHeader>
                     {t('tables.transactions.addressing')}
-                </th>
+                </TableHeader>
 
-                <th className="text-right">
+                <TableHeader
+                    className="text-right last-until-md-lg"
+                    last-on="md-lg"
+                >
                     {t('tables.transactions.amount', { currency: network!.currency })}
-                </th>
+                </TableHeader>
 
-                <th className="text-right">
+                <TableHeader
+                    className="text-right"
+                    responsive
+                    breakpoint="md-lg"
+                >
                     {t('tables.transactions.fee', { currency: network!.currency })}
-                </th>
+                </TableHeader>
             </>}
         />
     );

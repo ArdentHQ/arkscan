@@ -20,7 +20,7 @@ export default function Address({ wallet, truncate = false, className = '' }: {
                 >
                     {!!name ? name : (<>
                         {truncate === true && (
-                            <TruncateMiddle length={5}>
+                            <TruncateMiddle>
                                 {wallet.address}
                             </TruncateMiddle>
                         )}

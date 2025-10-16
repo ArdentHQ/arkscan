@@ -1,4 +1,5 @@
 import classNames from "@/utils/class-names";
+import { useTranslation } from "react-i18next";
 
 export default function TableCell({
     responsive = false,
@@ -6,7 +7,7 @@ export default function TableCell({
     firstOn,
     lastOn,
     className = '',
-    colspan,
+    name,
     children,
 
     ...props
@@ -14,28 +15,25 @@ export default function TableCell({
     responsive?: boolean;
     breakpoint?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm';
     firstOn?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm';
-    lastOn?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm';
+    lastOn?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm' | 'full';
     className?: string;
-    colspan?: number;
+    name?: string;
 }>) {
+    const { t } = useTranslation();
+
     return (
-        <td
+        <th
             {...props}
             className={classNames({
-                "hoverable-cell": true,
                 "hidden lg:table-cell": responsive && ! breakpoint,
                 [`hidden ${breakpoint}:table-cell`]: responsive && !! breakpoint,
-                [`last-cell last-cell-${lastOn}`]: !! lastOn,
+                [`last-cell last-cell-${lastOn}`]: !! lastOn && lastOn !== 'full',
+                [`last-cell`]: lastOn === 'full',
                 [`first-cell first-cell-${firstOn}`]: !! firstOn,
                 [className]: true,
             })}
-            colSpan={colspan || undefined}
         >
-            <div className="table-cell-bg"></div>
-
-            <div className="table-cell-content">
-                {children}
-            </div>
-        </td>
+            {name ? t(name) : children}
+        </th>
     );
 }

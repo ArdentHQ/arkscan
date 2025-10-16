@@ -53,7 +53,7 @@ export default function Addressing({
                                 {interactedWallet!.hasUsername && interactedWallet!.username}
                                 {! interactedWallet!.hasUsername && withoutTruncate && interactedWallet!.address}
                                 {! interactedWallet!.hasUsername && ! withoutTruncate && (
-                                    <TruncateMiddle length={5}>{interactedWallet!.address}</TruncateMiddle>
+                                    <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
                                 )}
                             </span>
                         ) : (
@@ -64,7 +64,7 @@ export default function Addressing({
                                 {interactedWallet!.hasUsername && interactedWallet!.username}
                                 {! interactedWallet!.hasUsername && withoutTruncate && interactedWallet!.address}
                                 {! interactedWallet!.hasUsername && ! withoutTruncate && (
-                                    <TruncateMiddle length={5}>{interactedWallet!.address}</TruncateMiddle>
+                                    <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
                                 )}
                             </a>
                         )}

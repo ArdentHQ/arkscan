@@ -119,7 +119,12 @@ export interface ITransaction {
     amountExcludingItself: number;
     amountWithFee: number;
     amountReceived: number;
+    amountFiatWithSmallAmount: number | string;
+    amountFiat: number | string;
+    amountReceivedFiat: number | string;
+
     fee: number;
+    feeFiat: number | string;
     type: string;
 
     isTransfer: boolean;
@@ -137,10 +142,12 @@ export interface ITransaction {
     votedFor: string | null;
     sender: IWallet | null;
     recipient: IWallet | null;
+    validatorRegistration: ITransaction | null;
 
     isSent: boolean;
     isReceived: boolean;
     isSentToSelf: boolean;
+    hasFailedStatus: boolean;
 }
 
 export interface IPaginatedResponse<T> {

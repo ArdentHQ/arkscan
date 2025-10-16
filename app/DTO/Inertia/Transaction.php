@@ -42,6 +42,12 @@ class Transaction
             $recipient = (new WalletDTO($recipientWallet))->toArray();
         }
 
+        $validatorRegistration = null;
+        $validatorRegistrationTransaction = $this->viewModel->validatorRegistration();
+        if ($validatorRegistrationTransaction !== null) {
+            $validatorRegistration = (new WalletDTO($validatorRegistrationTransaction))->toArray();
+        }
+
         return [
             'hash'                      => $this->transaction->hash,
             'block_hash'                => $this->transaction->block_hash,
@@ -70,7 +76,11 @@ class Transaction
             'amountExcludingItself'     => $this->viewModel->amountExcludingItself(),
             'amountWithFee'             => $this->viewModel->amountWithFee(),
             'amountReceived'            => $this->viewModel->amountReceived(),
+            'amountFiat'                => $this->viewModel->amountFiat(true),
+            'amountReceivedFiat'        => $this->viewModel->amountReceivedFiat($this->address),
+
             'fee'                       => $this->viewModel->fee(),
+            'feeFiat'                   => $this->viewModel->feeFiat(true),
             'type'                      => $this->viewModel->typeName(),
             'isTransfer'                => $this->viewModel->isTransfer(),
             'isTokenTransfer'           => $this->viewModel->isTokenTransfer(),
@@ -87,6 +97,9 @@ class Transaction
             'isSent'                    => $this->viewModel->isSent($this->address),
             'isSentToSelf'              => $this->viewModel->isSentToSelf($this->address),
             'isReceived'                => $this->viewModel->isReceived($this->address),
+            'hasFailedStatus'           => $this->viewModel->hasFailedStatus(),
+            'validatorRegistration'     => $validatorRegistration,
+
             'votedFor'                  => $votedFor,
             'sender'                    => $sender,
             'recipient'                 => $recipient,
