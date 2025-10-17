@@ -50,6 +50,7 @@ class Wallet
             'formattedBalanceFull'        => NumberFormatter::new()->formatWithCurrencyCustom($this->viewModel->balance(), Network::currency(), null),
             'fiatValue'                   => ExchangeRate::convert($this->wallet->balance, null),
             'totalForged'                 => (string) $this->viewModel->totalForged(),
+            'voteUrl'                     => $this->viewModel->voteUrl(),
         ];
     }
 }

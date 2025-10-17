@@ -24,6 +24,7 @@ export interface IWallet {
     productivity: number;
     legacyAddress: string | null;
     vote: IWallet | null;
+    voteUrl: string;
     attributes: Record<string, any> | null;
     votes: string;
 
