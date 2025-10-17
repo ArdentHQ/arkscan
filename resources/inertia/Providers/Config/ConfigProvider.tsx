@@ -1,7 +1,7 @@
 'use client';
 
 import ConfigContext from "./ConfigContext";
-import { Currencies, IConfigArkConnect, IConfigProductivity, INetwork, ISettings } from "@/types";
+import { Currencies, IConfigArkConnect, IConfigProductivity, INetwork, ISettings, IConfigPagination } from "@/types";
 
 export default function ConfigProvider({
     arkconnect,
@@ -9,6 +9,7 @@ export default function ConfigProvider({
     network,
     productivity,
     settings,
+    pagination,
     children,
 }: {
     arkconnect: IConfigArkConnect;
@@ -16,6 +17,7 @@ export default function ConfigProvider({
     network: INetwork;
     productivity: IConfigProductivity;
     settings: ISettings;
+    pagination: IConfigPagination;
     children: React.ReactNode;
 }) {
     const value = {
@@ -24,6 +26,7 @@ export default function ConfigProvider({
         network,
         productivity,
         settings,
+        pagination,
     };
 
     return (

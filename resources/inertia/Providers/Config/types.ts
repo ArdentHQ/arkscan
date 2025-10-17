@@ -1,4 +1,4 @@
-import { Currencies, IConfigArkConnect, IConfigProductivity, INetwork, ISettings } from "@/types";
+import { Currencies, IConfigArkConnect, IConfigPagination, IConfigProductivity, INetwork, ISettings } from "@/types";
 
 export interface IConfigContextType {
     arkconnect?: IConfigArkConnect;
@@ -6,4 +6,5 @@ export interface IConfigContextType {
     network?: INetwork;
     productivity?: IConfigProductivity;
     settings?: ISettings;
+    pagination?: IConfigPagination;
 }

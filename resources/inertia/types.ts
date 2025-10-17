@@ -182,6 +182,10 @@ export interface ISettings {
     theme: string;
 }
 
+export interface IConfigPagination {
+    per_page: number;
+}
+
 export interface ICurrency {
     currency: string;
     locale: string | null;

@@ -1,4 +1,5 @@
 import Pagination from "@/Components/Tables/Pagination/Pagination";
+import { useConfig } from "@/Providers/Config/ConfigContext";
 import { IPaginatedResponse } from "@/types";
 import classNames from "@/utils/class-names";
 import React, { useRef } from "react";
@@ -82,6 +83,7 @@ export function Table({
     noResultsMessage?: React.ReactNode;
 }) {
     const tableRef = useRef<HTMLDivElement>(null);
+    const { pagination } = useConfig();
 
     return (
         <div
@@ -101,7 +103,7 @@ export function Table({
             <div className={classNames({
                 "border border-theme-secondary-300 dark:border-theme-dark-700 overflow-hidden hidden w-full md:block": true,
                 "rounded-t-xl": ! withHeader,
-                "rounded-b-xl": ! withFooter,
+                "rounded-b-xl": ! withFooter || resultCount === 0,
             })}>
                 <div className="px-6 table-container table-encapsulated encapsulated-table-header-gradient">
                     <table>
@@ -123,12 +125,16 @@ export function Table({
                             {noResultsMessage}
                         </div>
                     )}
+
+                    {!! pagination && resultCount < pagination?.per_page && (
+                        <div className="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
+                    )}
                 </div>
             </div>
 
             {mobile}
 
-            {withFooter && paginator && (
+            {withFooter && paginator && resultCount > 0 && (
                 <Pagination
                     paginator={paginator}
                     tableRef={tableRef}

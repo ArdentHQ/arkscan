@@ -1,6 +1,6 @@
 import { Head, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
-import { INetwork, ITransaction, IWallet, Currencies, ISettings, IConfigProductivity, IConfigArkConnect } from '@/types';
+import { INetwork, ITransaction, IWallet, Currencies, ISettings, IConfigProductivity, IConfigArkConnect, IConfigPagination } from '@/types';
 import { usePageMetadata } from "@/Components/General/Metadata";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
@@ -100,6 +100,7 @@ export default function Wallet({
     network,
     productivity,
     settings,
+    pagination,
     transactions,
     wallet,
 }: {
@@ -108,6 +109,7 @@ export default function Wallet({
     network: INetwork;
     productivity: IConfigProductivity;
     settings: ISettings;
+    pagination: IConfigPagination;
     transactions: IPaginatedResponse<ITransaction>;
     wallet: IWallet;
 }) {
@@ -125,6 +127,7 @@ export default function Wallet({
             productivity={productivity}
             network={network}
             settings={settings}
+            pagination={pagination}
         >
             <Overview wallet={wallet} />
 
