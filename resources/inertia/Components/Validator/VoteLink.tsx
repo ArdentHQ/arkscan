@@ -14,10 +14,9 @@ export default function VoteLink({
     unvoteText: React.ReactNode;
     buttonClass?: string;
 }) {
-    console.log({ wallet, voteText, unvoteText, buttonClass });
     const { t } = useTranslation();
 
-    if (true) {
+    if (wallet.isResigned) {
         return (
             <Tippy content={t("pages.wallet.validator.resigned_vote_tooltip")}>
                 <div>
@@ -32,4 +31,6 @@ export default function VoteLink({
             </Tippy>
         );
     }
+
+    return <></>;
 }

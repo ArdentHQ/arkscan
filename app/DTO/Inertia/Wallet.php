@@ -39,6 +39,7 @@ class Wallet
             'isValidator'   => $this->viewModel->isValidator(),
             'isLegacy'      => $this->viewModel->isLegacy(),
             'isDormant'     => $this->viewModel->isDormant(),
+            'isResigned'    => $this->viewModel->isResigned(),
             'legacyAddress' => $this->viewModel->legacyAddress(),
             'username'      => $this->viewModel->username(),
             'vote'          => $votedWallet,
