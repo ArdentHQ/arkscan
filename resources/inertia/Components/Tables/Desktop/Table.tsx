@@ -68,6 +68,7 @@ export function Table({
     rowComponent,
     mobile,
     headerActions,
+    noResultsMessage,
 }: {
     columns: React.ReactNode;
     withHeader?: boolean;
@@ -78,6 +79,7 @@ export function Table({
     rowComponent: React.ComponentType<{ row: any; key?: React.Key }>;
     mobile?: React.ReactNode;
     headerActions?: React.ReactNode;
+    noResultsMessage?: React.ReactNode;
 }) {
     const tableRef = useRef<HTMLDivElement>(null);
 
@@ -115,6 +117,12 @@ export function Table({
                             ))}
                         </tbody>
                     </table>
+
+                    {resultCount === 0 && (
+                        <div className="py-4 px-6 text-center">
+                            {noResultsMessage}
+                        </div>
+                    )}
                 </div>
             </div>
 

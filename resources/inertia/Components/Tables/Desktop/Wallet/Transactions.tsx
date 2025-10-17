@@ -76,6 +76,7 @@ export function TransactionsTable({
             resultCount={transactions.total ?? 0}
             mobile={mobile}
             headerActions={<HeaderActions />}
+            noResultsMessage={transactions.noResultsMessage}
             columns={<>
                 <TableHeader>
                     {t('tables.transactions.id')}
@@ -124,7 +125,7 @@ export default function TransactionsTableWrapper({
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
-    if (!transactions || transactions.total === 0) {
+    if (!transactions) {
         const { t } = useTranslation();
         const { network } = useConfig();
 

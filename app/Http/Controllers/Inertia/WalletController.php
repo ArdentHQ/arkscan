@@ -39,6 +39,7 @@ final class WalletController
     {
         return Inertia::render('Wallet', [
             'wallet'       => (new WalletDTO($wallet))->toArray(),
+
             'transactions' => Inertia::optional(function () use ($wallet) {
                 $paginator = $this->getTransactions($wallet);
 
@@ -46,6 +47,7 @@ final class WalletController
                     ...$paginator->toArray(),
 
                     'meta' => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getTransactionsNoResultsMessageProperty($paginator->count()),
                 ];
             }),
         ]);
@@ -62,13 +64,11 @@ final class WalletController
             return $emptyResults;
         }
 
-        $paginator = $this->getTransactionsQuery($wallet)
+        return $this->getTransactionsQuery($wallet)
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage(), page: $this->page())
             ->through(fn (Transaction $transaction) => (new TransactionDTO($transaction, $wallet->address))->toArray());
-
-        return $paginator;
     }
 
     private function page(): int
@@ -130,4 +130,22 @@ final class WalletController
 
         return $this->filters['transactions']['others'] === true;
     }
+
+    private function getTransactionsNoResultsMessageProperty(int $count): null|string
+    {
+        if (! $this->hasAddressingFilters() && ! $this->hasTransactionTypeFilters()) {
+            return trans('tables.transactions.no_results.no_filters');
+        }
+
+        if (! $this->hasAddressingFilters()) {
+            return trans('tables.transactions.no_results.no_addressing_filters');
+        }
+
+        if ($count === 0) {
+            return trans('tables.transactions.no_results.no_results');
+        }
+
+        return null;
+    }
+
 }

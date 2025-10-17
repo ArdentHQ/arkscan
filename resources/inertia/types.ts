@@ -171,6 +171,8 @@ export interface IPaginatedResponse<T> {
     prev_page_url: string | null;
     to: number;
     total: number;
+
+    noResultsMessage: string;
 }
 
 export interface ISettings {
