@@ -3,12 +3,9 @@ import Tippy from "@tippyjs/react";
 import { useTranslation } from "react-i18next";
 import classNames from "@/utils/class-names";
 import ExternalLink from "../General/ExternalLink";
-import { useState } from "react";
-import DropdownContext from "@/Providers/Dropdown/DropdownContext";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import Dropdown from "../General/Dropdown/Dropdown";
 
-// TODO: https://app.clickup.com/t/86dxwp2mj
 export default function VoteLink({
     wallet,
     voteText,
@@ -19,11 +16,12 @@ export default function VoteLink({
     unvoteText: React.ReactNode;
 }) {
     const { t } = useTranslation();
-    const [isOpen, setIsOpen] = useState(false);
 
-    // @TODO: this is temporal: (I suppose it came from arkconnect?)
-    const votingForAddress = null;
+    // TODO: add arkconnect https://app.clickup.com/t/86dxwp2mj
     const validatorAddress = wallet.address;
+    const votingForAddress = null;
+    const isConnected = false;
+    const isOnSameNetwork = false;
 
     return (
         <DropdownProvider>
@@ -68,9 +66,7 @@ export default function VoteLink({
                     })}
                     zIndex={20}
                     dropdownContentClasses="bg-white dark:bg-theme-dark-900 rounded-xl shadow-lg dark:shadow-lg-dark"
-                    // onClosed={onClosed}
                 >
-                    {/* <div className="flex overflow-y-auto flex-col h-full custom-scroll overscroll-contain"> */}
                     <div className="overflow-hidden rounded-t-xl">
                         <div className="flex py-2 px-6 text-sm font-semibold bg-theme-secondary-200 leading-4.25 dark:bg-theme-dark-950">
                             {t("general.vote_with")}
@@ -84,43 +80,58 @@ export default function VoteLink({
                                 {t("brands.arkvault")}
                             </ExternalLink>
 
-                            {/* <div
-                                            x-show="isConnected &amp;&amp; !isOnSameNetwork"
-                                            data-tippy-content="You're connected with a mainnet address. Switch to live.arkscan.io to enable this action."
-                                            style="display: none;"
-                                        >
-                                            <button
-                                                type="button"
-                                                className="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
-                                                disabled
-                                                x-on:click="performVote('0xe5a97E663158dEaF3b65bBF88897b8359Dc19F81')"
-                                            >
-                                                ARKConnect{" "}
-                                            </button>
-                                        </div>
-
-                                        <div
-                                            x-show="!isConnected"
-                                            data-tippy-content="Connect Wallet to enable this action."
-                                        >
-                                            <button
-                                                type="button"
-                                                className="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
-                                                disabled
-                                                x-on:click="performVote('0xe5a97E663158dEaF3b65bBF88897b8359Dc19F81')"
-                                            >
-                                                ARKConnect{" "}
-                                            </button>
-                                        </div>
-
+                            {isConnected && !isOnSameNetwork && (
+                                <Tippy
+                                    content={t(
+                                        "general.arkconnect.wrong_network.mainnet"
+                                    )}
+                                >
+                                    <div>
                                         <button
-                                            x-show="isOnSameNetwork"
                                             type="button"
-                                            className="flex items-center py-3 space-x-2 font-semibold leading-5 link"
-                                            style="display: none;"
+                                            className="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
+                                            disabled
+                                            onClick={() => {
+                                                // TODO https://app.clickup.com/t/86dxwp2mj
+                                                /*performVote('0xe5a97E663158dEaF3b65bBF88897b8359Dc19F81')*/
+                                            }}
                                         >
-                                            ARKConnect{" "}
-                                        </button> */}
+                                            {t("brands.arkconnect")}
+                                        </button>
+                                    </div>
+                                </Tippy>
+                            )}
+
+                            {!isConnected && (
+                                <Tippy
+                                    content={t(
+                                        "general.arkconnect.connect_wallet_tooltip"
+                                    )}
+                                >
+                                    <div>
+                                        <button
+                                            type="button"
+                                            className="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
+                                            disabled
+                                            onClick={() => {
+                                                // TODO https://app.clickup.com/t/86dxwp2mj
+                                                /*performVote('0xe5a97E663158dEaF3b65bBF88897b8359Dc19F81')*/
+                                            }}
+                                        >
+                                            {t("brands.arkconnect")}
+                                        </button>
+                                    </div>
+                                </Tippy>
+                            )}
+
+                            {isOnSameNetwork && (
+                                <button
+                                    type="button"
+                                    className="flex items-center py-3 space-x-2 font-semibold leading-5 link"
+                                >
+                                    {t("brands.arkconnect")}
+                                </button>
+                            )}
                         </div>
                     </div>
                 </Dropdown>
