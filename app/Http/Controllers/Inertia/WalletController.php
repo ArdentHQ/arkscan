@@ -46,7 +46,7 @@ final class WalletController
                 return [
                     ...$paginator->toArray(),
 
-                    'meta' => UI::getPaginationData($paginator),
+                    'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getTransactionsNoResultsMessageProperty($paginator->count()),
                 ];
             }),
@@ -147,5 +147,4 @@ final class WalletController
 
         return null;
     }
-
 }
