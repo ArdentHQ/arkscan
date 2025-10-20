@@ -1,10 +1,10 @@
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import { ITransaction } from "@/types";
 import { currency, networkCurrency } from "@/utils/number-formatter";
-import Tippy from "@tippyjs/react";
 import HintSmallIcon from "@ui/icons/hint-small.svg?react";
 import { useTranslation } from "react-i18next";
 import AmountSmall from "./AmountSmall";
+import Tooltip from "./Tooltip";
 
 function AmountOutput({
     transaction,
@@ -107,17 +107,17 @@ export default function AmountFiatTooltip({
     return (
         <span className={classes.join(' ')}>
             {amountForItself !== undefined && amountForItself > 0 && (
-                <Tippy content={t('general.fiat_excluding_self', {
+                <Tooltip content={t('general.fiat_excluding_self', {
                     'amount': currency(amountForItself, network!.currency)
                 })}>
                     <div className="flex items-center px-1.5 mr-1.5 h-full py-[4.5px] text-theme-orange-dark bg-[#F6DFB5] dim:bg-theme-failed-state-bg dark:bg-theme-failed-state-bg dark:text-theme-dark-50">
                         <HintSmallIcon className="h-3 w-3" />
                     </div>
-                </Tippy>
+                </Tooltip>
             )}
 
             {fiat && (
-                <Tippy content={fiat}>
+                <Tooltip content={fiat}>
                     <AmountOutput
                         transaction={transaction}
                         isSent={isSent}
@@ -125,7 +125,7 @@ export default function AmountFiatTooltip({
                         isSentToSelf={isSentToSelf}
                         amount={amount}
                     />
-                </Tippy>
+                </Tooltip>
             )}
 
             {!fiat && (

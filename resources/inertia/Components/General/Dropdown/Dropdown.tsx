@@ -1,9 +1,8 @@
 import EllipsisVerticalIcon from "@ui/icons/ellipsis-vertical.svg?react";
 import classNames from "@/utils/class-names";
-import Tippy from "@tippyjs/react";
 import { Placement, useFloating, autoUpdate, offset, useTransitionStyles, useInteractions, useDismiss, shift, flip } from '@floating-ui/react';
 import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
-import { useEffect } from "react";
+import Tooltip from "../Tooltip";
 
 export default function Dropdown({
     dropdownContentClasses = 'bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 rounded-xl',
@@ -110,9 +109,9 @@ export default function Dropdown({
 
     if (buttonTooltip !== undefined) {
         dropdownButton = (
-            <Tippy content={buttonTooltip}>
+            <Tooltip content={buttonTooltip}>
                 {dropdownButton}
-            </Tippy>
+            </Tooltip>
         );
     }
 

@@ -1,9 +1,9 @@
 import { DATE_TIME_FORMAT } from "@/constants";
 import { ITransaction } from "@/types";
 import classNames from "@/utils/class-names";
-import Tippy from "@tippyjs/react";
 import dayjs from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
+import Tooltip from "../General/Tooltip";
 
 dayjs.extend(dayjsRelativeTime);
 
@@ -18,13 +18,13 @@ export default function Age({
     const formattedAge = dayjs().to(transactionDate);
 
     return (
-        <Tippy content={transactionDate.format(DATE_TIME_FORMAT)}>
+        <Tooltip content={transactionDate.format(DATE_TIME_FORMAT)}>
             <span className={classNames({
                 'text-sm font-semibold leading-4.25': true,
                 [className]: true,
             })}>
                 {formattedAge}
             </span>
-        </Tippy>
+        </Tooltip>
     );
 }

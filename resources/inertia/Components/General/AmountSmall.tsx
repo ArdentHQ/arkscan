@@ -1,6 +1,6 @@
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import { currencyWithDecimals } from "@/utils/number-formatter";
-import Tippy from "@tippyjs/react";
+import Tooltip from "./Tooltip";
 
 function AmountSmallWithoutTooltip({
     amount,
@@ -34,17 +34,17 @@ function AmountSmallWithTooltip({
     return (
         <>
             {amount < smallAmount ? (
-                <Tippy content={currencyWithDecimals(amount, network!.currency, 18)}>
+                <Tooltip content={currencyWithDecimals(amount, network!.currency, 18)}>
                     <span>
                         &lt;{smallAmount} {network!.currency}
                     </span>
-                </Tippy>
+                </Tooltip>
             ) : (
-                <Tippy content={currencyWithDecimals(amount, network!.currency, 18)}>
+                <Tooltip content={currencyWithDecimals(amount, network!.currency, 18)}>
                     <span>
                         {currencyWithDecimals(amount, network!.currency, 2)}
                     </span>
-                </Tippy>
+                </Tooltip>
             )}
         </>
     )
