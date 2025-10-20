@@ -40,7 +40,8 @@ class Wallet extends Data
         #[LiteralTypeScriptType('Record<string, any>')]
         public ?array $attributes,
         public ?self $vote,
-    ) {}
+    ) {
+    }
 
     public static function fromModel(Model $wallet): self
     {

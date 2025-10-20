@@ -23,15 +23,15 @@ final class WalletController
     // TODO: implement filters - https://app.clickup.com/t/86dy1up1c
     private array $filters = [
         'transactions' => [
-            'outgoing'           => true,
-            'incoming'           => true,
-            'transfers'          => true,
-            'multipayments'      => true,
-            'votes'              => true,
-            'validator'          => true,
-            'username'           => true,
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
             'contract_deployment' => true,
-            'others'             => true,
+            'others'              => true,
         ],
     ];
 
@@ -68,7 +68,7 @@ final class WalletController
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage(), page: $this->page())
-            ->through(fn(Transaction $transaction) => (new TransactionDTO($transaction, $wallet->address))->toArray());
+            ->through(fn (Transaction $transaction) => (new TransactionDTO($transaction, $wallet->address))->toArray());
     }
 
     private function page(): int
@@ -86,10 +86,10 @@ final class WalletController
         return Transaction::query()
             ->withTypeFilter($this->filters['transactions'])
             ->with('votedFor')
-            ->where(fn($query) => $query->when($this->filters['transactions']['outgoing'], fn($query) => $query->where('sender_public_key', $wallet->public_key)))
-            ->orWhere(fn($query) => $query->when($this->filters['transactions']['incoming'], fn($query) => $query->where('to', $wallet->address)))
+            ->where(fn ($query) => $query->when($this->filters['transactions']['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
+            ->orWhere(fn ($query) => $query->when($this->filters['transactions']['incoming'], fn ($query) => $query->where('to', $wallet->address)))
             ->orWhere(function ($query) use ($wallet) {
-                $query->when($this->filters['transactions']['multipayments'], fn($query) => $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address));
+                $query->when($this->filters['transactions']['multipayments'], fn ($query) => $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address));
             });
     }
 
