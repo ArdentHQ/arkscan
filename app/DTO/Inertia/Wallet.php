@@ -13,7 +13,6 @@ use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
-
 #[TypeScript('IWallet')]
 class Wallet extends Data
 {
@@ -37,18 +36,17 @@ class Wallet extends Data
         public string $fiatValue,
         public string $totalForged,
         // TODO: Consider using another data object for the attributes
-        #[LiteralTypeScriptType("Record<string, any>")]
+        #[LiteralTypeScriptType('Record<string, any>')]
         public ?array $attributes,
-        public ?Wallet $vote,
+        public ?self $vote,
     ) {
     }
 
-
     public static function fromModel(Model $wallet): self
     {
-        $viewModel = new WalletViewModel($wallet);
+        $viewModel   = new WalletViewModel($wallet);
         $votedWallet = null;
-        
+
         $vote        = $viewModel->vote();
         if ($vote !== null) {
             $votedWallet = self::fromModel($vote->model());
@@ -73,9 +71,8 @@ class Wallet extends Data
             formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), 2),
             formattedBalanceFull: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), null),
             fiatValue: ExchangeRate::convert($wallet->balance, null),
-            totalForged: (string) $viewModel->totalForged(),            
+            totalForged: (string) $viewModel->totalForged(),
             vote: $votedWallet,
         );
-        
     }
 }

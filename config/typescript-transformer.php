@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
      * The paths where typescript-transformer will look for PHP classes
@@ -31,7 +33,7 @@ return [
         Spatie\TypeScriptTransformer\Transformers\EnumTransformer::class,
         // Spatie\TypeScriptTransformer\Transformers\SpatieEnumTransformer::class,
         Spatie\LaravelTypeScriptTransformer\Transformers\DtoTransformer::class,
-        \Spatie\LaravelData\Support\TypeScriptTransformer\DataTypeScriptTransformer::class,
+        Spatie\LaravelData\Support\TypeScriptTransformer\DataTypeScriptTransformer::class,
     ],
 
     /*
@@ -41,11 +43,11 @@ return [
      */
 
     'default_type_replacements' => [
-        DateTime::class => 'string',
-        DateTimeImmutable::class => 'string',
+        DateTime::class               => 'string',
+        DateTimeImmutable::class      => 'string',
         Carbon\CarbonInterface::class => 'string',
         Carbon\CarbonImmutable::class => 'string',
-        Carbon\Carbon::class => 'string',
+        Carbon\Carbon::class          => 'string',
     ],
 
     /*
