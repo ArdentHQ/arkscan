@@ -1,5 +1,5 @@
 import PageHeaderValuePopup from "./ValuePopup";
-import { IWallet } from "@/types";
+import { IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import ClockIcon from "@ui/icons/arrows/clock.svg?react";

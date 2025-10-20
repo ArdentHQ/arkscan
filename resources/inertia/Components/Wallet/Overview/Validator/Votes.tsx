@@ -1,4 +1,4 @@
-import { IWallet } from "@/types";
+import { IWallet } from "@/types/generated";
 import WalletOverviewItemEntry from "../ItemEntry";
 import { useTranslation } from "react-i18next";
 import { NetworkCurrency } from "@/Components/General/NetworkCurrency";

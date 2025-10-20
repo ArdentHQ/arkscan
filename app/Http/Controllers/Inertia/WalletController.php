@@ -30,7 +30,7 @@ final class WalletController
             'votes'              => true,
             'validator'          => true,
             'username'           => true,
-            'contract_deployment'=> true,
+            'contract_deployment' => true,
             'others'             => true,
         ],
     ];
@@ -38,7 +38,7 @@ final class WalletController
     public function __invoke(Wallet $wallet): Response
     {
         return Inertia::render('Wallet', [
-            'wallet'       => (new WalletDTO($wallet))->toArray(),
+            'wallet'       => WalletDTO::fromModel($wallet),
 
             'transactions' => Inertia::optional(function () use ($wallet) {
                 $paginator = $this->getTransactions($wallet);
@@ -68,7 +68,7 @@ final class WalletController
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage(), page: $this->page())
-            ->through(fn (Transaction $transaction) => (new TransactionDTO($transaction, $wallet->address))->toArray());
+            ->through(fn(Transaction $transaction) => (new TransactionDTO($transaction, $wallet->address))->toArray());
     }
 
     private function page(): int
@@ -86,10 +86,10 @@ final class WalletController
         return Transaction::query()
             ->withTypeFilter($this->filters['transactions'])
             ->with('votedFor')
-            ->where(fn ($query) => $query->when($this->filters['transactions']['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
-            ->orWhere(fn ($query) => $query->when($this->filters['transactions']['incoming'], fn ($query) => $query->where('to', $wallet->address)))
+            ->where(fn($query) => $query->when($this->filters['transactions']['outgoing'], fn($query) => $query->where('sender_public_key', $wallet->public_key)))
+            ->orWhere(fn($query) => $query->when($this->filters['transactions']['incoming'], fn($query) => $query->where('to', $wallet->address)))
             ->orWhere(function ($query) use ($wallet) {
-                $query->when($this->filters['transactions']['multipayments'], fn ($query) => $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address));
+                $query->when($this->filters['transactions']['multipayments'], fn($query) => $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address));
             });
     }
 

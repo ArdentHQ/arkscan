@@ -1,4 +1,4 @@
-import { IWallet } from "@/types";
+import { IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import DropdownPopup from "@/Components/General/Dropdown/DropdownPopup";

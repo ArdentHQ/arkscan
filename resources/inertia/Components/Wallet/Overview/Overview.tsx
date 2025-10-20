@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import PageHeaderContainer from "../../PageHeader/Container";
-import { IWallet } from "@/types";
+import { IWallet } from "@/types/generated";
 import TruncateDynamic from "../../General/TruncateDynamic";
 import Clipboard from "../../General/Clipboard";
 import PageHeaderPublicKeyAction from "../../PageHeader/Actions/PublicKey";

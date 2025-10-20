@@ -1,33 +1,50 @@
 import { Head, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
-import { INetwork, ITransaction, IWallet, Currencies, ISettings, IConfigProductivity, IConfigArkConnect, IConfigPagination } from '@/types';
+import {
+    INetwork,
+    ITransaction,
+    Currencies,
+    ISettings,
+    IConfigProductivity,
+    IConfigArkConnect,
+    IConfigPagination,
+} from "@/types";
+import { IWallet } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import TransactionsTableWrapper from "@/Components/Tables/Desktop/Wallet/Transactions";
 import ConfigProvider from "@/Providers/Config/ConfigProvider";
-import { IPaginatedResponse } from '../types';
+import { IPaginatedResponse } from "../types";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TransactionsMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Transactions";
 
-const WalletTabsWrapper = ({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) => {
+const WalletTabsWrapper = ({
+    transactions,
+}: {
+    transactions: IPaginatedResponse<ITransaction>;
+}) => {
     return (
         <TabsProvider
             defaultSelected="transactions"
             tabs={[
-                { text: 'Transactions', value: 'transactions' },
-                { text: 'Validated Blocks', value: 'blocks' },
-                { text: 'Voters', value: 'voters' },
+                { text: "Transactions", value: "transactions" },
+                { text: "Validated Blocks", value: "blocks" },
+                { text: "Voters", value: "voters" },
             ]}
         >
             <WalletTabs transactions={transactions} />
         </TabsProvider>
-    )
-}
+    );
+};
 
-const WalletTabs = ({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) => {
+const WalletTabs = ({
+    transactions,
+}: {
+    transactions: IPaginatedResponse<ITransaction>;
+}) => {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { setRefreshPage } = usePageHandler();
@@ -35,24 +52,18 @@ const WalletTabs = ({ transactions }: { transactions: IPaginatedResponse<ITransa
     const { currentTab } = useTabs();
 
     useEffect(() => {
-        router.on('success', () => {
+        router.on("success", () => {
             pollingTimerRef.current = setTimeout(pollCurrentTab, 8000);
         });
 
         const pollCurrentTab = (callback?: CallableFunction) => {
             let pollParameters: string[] = [];
-            if (currentTab === 'transactions') {
-                pollParameters = [
-                    'transactions',
-                ];
-            } else if (currentTab === 'blocks') {
-                pollParameters = [
-                    'blocks',
-                ];
-            } else if (currentTab === 'voting') {
-                pollParameters = [
-                    'votes',
-                ];
+            if (currentTab === "transactions") {
+                pollParameters = ["transactions"];
+            } else if (currentTab === "blocks") {
+                pollParameters = ["blocks"];
+            } else if (currentTab === "voting") {
+                pollParameters = ["votes"];
             }
 
             router.reload({
@@ -72,27 +83,31 @@ const WalletTabs = ({ transactions }: { transactions: IPaginatedResponse<ITransa
         });
 
         return () => {
-            if (! pollingTimerRef.current) {
+            if (!pollingTimerRef.current) {
                 return;
             }
 
             clearTimeout(pollingTimerRef.current);
-        }
+        };
     }, []);
 
     return (
         <>
-            {currentTab === 'transactions' && (
+            {currentTab === "transactions" && (
                 <>
                     <TransactionsTableWrapper
                         transactions={transactions}
-                        mobile={<TransactionsMobileTableWrapper transactions={transactions} />}
+                        mobile={
+                            <TransactionsMobileTableWrapper
+                                transactions={transactions}
+                            />
+                        }
                     />
                 </>
             )}
         </>
-    )
-}
+    );
+};
 
 export default function Wallet({
     arkconnect,
@@ -113,27 +128,32 @@ export default function Wallet({
     transactions: IPaginatedResponse<ITransaction>;
     wallet: IWallet;
 }) {
-    const metadata = usePageMetadata({ page: "wallet", detail: {
-        name: network.name,
-        address: wallet.address,
-    } });
+    const metadata = usePageMetadata({
+        page: "wallet",
+        detail: {
+            name: network.name,
+            address: wallet.address,
+        },
+    });
 
-    return (<>
-        <Head>{metadata}</Head>
+    return (
+        <>
+            <Head>{metadata}</Head>
 
-        <ConfigProvider
-            arkconnect={arkconnect}
-            currencies={currencies}
-            productivity={productivity}
-            network={network}
-            settings={settings}
-            pagination={pagination}
-        >
-            <Overview wallet={wallet} />
+            <ConfigProvider
+                arkconnect={arkconnect}
+                currencies={currencies}
+                productivity={productivity}
+                network={network}
+                settings={settings}
+                pagination={pagination}
+            >
+                <Overview wallet={wallet} />
 
-            <PageHandlerProvider>
-                <WalletTabsWrapper transactions={transactions} />
-            </PageHandlerProvider>
-        </ConfigProvider>
-    </>);
+                <PageHandlerProvider>
+                    <WalletTabsWrapper transactions={transactions} />
+                </PageHandlerProvider>
+            </ConfigProvider>
+        </>
+    );
 }

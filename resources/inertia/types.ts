@@ -1,38 +1,8 @@
+import { IWallet } from "./types/generated";
+
 export interface IBlock {
     hash: string;
     number: number;
-}
-
-export interface IWallet {
-    address: string;
-    username?: string;
-    hasUsername?: boolean;
-    hasForged?: boolean;
-    justMissed?: boolean;
-    isResigned?: boolean;
-    isPending?: boolean;
-    keepsMissing?: boolean;
-    missedCount?: number;
-    blocksSinceLastForged?: number;
-    durationSinceLastForged?: number;
-    public_key: string;
-
-    isCold: boolean;
-    isLegacy: boolean;
-    isDormant: boolean;
-    isValidator: boolean;
-    isActive: boolean;
-    productivity: number;
-    legacyAddress: string | null;
-    vote: IWallet | null;
-    attributes: Record<string, any> | null;
-    votes: string;
-
-    balance: string;
-    formattedBalanceTwoDecimals: string;
-    formattedBalanceFull: string;
-    fiatValue: number | string;
-    totalForged: string;
 }
 
 export interface IValidator {
@@ -40,7 +10,7 @@ export interface IValidator {
     lastBlock: IBlock | null;
     order: number;
     forgingAt: string | Date;
-    status: 'done' | 'next' | 'pending';
+    status: "done" | "next" | "pending";
     secondsUntilForge: number;
 }
 
