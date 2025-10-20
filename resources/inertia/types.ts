@@ -3,36 +3,6 @@ export interface IBlock {
     number: number;
 }
 
-export interface IWallet {
-    address: string;
-    username?: string;
-    hasForged?: boolean;
-    justMissed?: boolean;
-    isResigned?: boolean;
-    isPending?: boolean;
-    keepsMissing?: boolean;
-    missedCount?: number;
-    blocksSinceLastForged?: number;
-    durationSinceLastForged?: number;
-    public_key: string;
-
-    isCold: boolean;
-    isLegacy: boolean;
-    isDormant: boolean;
-    isValidator: boolean;
-    isActive: boolean;
-    productivity: number;
-    legacyAddress: string | null;
-    vote: IWallet | null;
-    attributes: Record<string, any> | null;
-    votes: string;
-
-    balance: string;
-    formattedBalanceTwoDecimals: string;
-    formattedBalanceFull: string;
-    fiatValue: number | string;
-    totalForged: string;
-}
 
 export interface IValidator {
     wallet: IWallet;

@@ -1,4 +1,4 @@
-import { IWallet } from "@/types";
+import { IWallet } from "@/types/generated";
 import WalletOverviewItemEntry from "../ItemEntry";
 import { useTranslation } from "react-i18next";
 import classNames from "@/utils/class-names";

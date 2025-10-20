@@ -2,12 +2,13 @@ export type IWallet = {
     address: string;
     balance: string;
     nonce: string;
-    public_key: string | null;
+    public_key: string;
     isActive: boolean;
     isCold: boolean;
     isValidator: boolean;
     isLegacy: boolean;
     isDormant: boolean;
+    isResigned: boolean;
     legacyAddress: string | null;
     username: string | null;
     votes: string;
