@@ -106,7 +106,7 @@ it('should make an instance for standby validators', function () {
     (new ValidatorCache())->setTotalFees([$wallet->address => 1.23 * 1e18]);
     (new ValidatorCache())->setTotalRewards([$wallet->address => 1.23 * 1e18]);
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
-    
+
     $subject = WalletDTO::fromModel($wallet);
 
     expect($subject->toArray())->toEqual([
@@ -157,7 +157,7 @@ it('should make an instance for a voting wallet', function () {
     (new ValidatorCache())->setTotalFees([$votedWallet->address => 1.23 * 1e18]);
     (new ValidatorCache())->setTotalRewards([$votedWallet->address => 1.23 * 1e18]);
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
-    
+
     $subject = WalletDTO::fromModel($wallet);
 
     expect($subject->toArray())->toEqual([
