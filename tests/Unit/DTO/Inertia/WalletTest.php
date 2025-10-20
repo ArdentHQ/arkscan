@@ -23,7 +23,7 @@ it('should make an instance for non-validators', function () {
             ],
         ]);
 
-    $subject = new WalletDTO($wallet);
+    $subject = WalletDTO::fromModel($wallet);
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
 

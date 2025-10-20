@@ -44,7 +44,7 @@ class Wallet extends Data
     }
 
 
-    public function fromModel(Model $wallet): self
+    public static function fromModel(Model $wallet): self
     {
         $viewModel = new WalletViewModel($wallet);
         $votedWallet = null;
