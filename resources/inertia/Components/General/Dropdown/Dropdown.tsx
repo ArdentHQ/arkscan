@@ -1,7 +1,7 @@
 import EllipsisVerticalIcon from "@ui/icons/ellipsis-vertical.svg?react";
 import classNames from "@/utils/class-names";
 import Tippy from "@tippyjs/react";
-import { Placement, useFloating, autoUpdate, offset, useTransitionStyles, useInteractions, useDismiss, shift } from '@floating-ui/react';
+import { Placement, useFloating, autoUpdate, offset, useTransitionStyles, useInteractions, useDismiss, shift, flip } from '@floating-ui/react';
 import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
 import { useEffect } from "react";
 
@@ -43,16 +43,27 @@ export default function Dropdown({
 }) {
     const { isOpen, setIsOpen } = useDropdown();
 
-    const {context, refs, floatingStyles, update} = useFloating({
+    const flipMiddleware = flip({
+        // Ensure we flip to the perpendicular axis if it doesn't fit
+        // on narrow viewports.
+        crossAxis: 'alignment',
+        fallbackAxisSideDirection: 'end', // or 'start'
+        padding: 8,
+    });
+    const shiftMiddleware = shift();
+
+    const middleware = [offset(8)];
+    if (placement.includes('-')) {
+        middleware.push(flipMiddleware, shiftMiddleware);
+    } else {
+        middleware.push(shiftMiddleware, flipMiddleware);
+    }
+
+    const { context, refs, floatingStyles } = useFloating({
         open: isOpen,
         placement,
         whileElementsMounted: autoUpdate,
-        middleware: [
-            offset(8),
-            shift({
-                crossAxis: false,
-            }),
-        ],
+        middleware,
         onOpenChange(nextOpen) {
             setIsOpen(nextOpen);
 
@@ -61,20 +72,6 @@ export default function Dropdown({
             }
         },
     });
-
-    useEffect(() => {
-        const onResize = () => {
-            if (isOpen) {
-                update();
-            }
-        }
-
-        window.addEventListener('resize', onResize);
-
-        return () => {
-            window.removeEventListener('resize', onResize);
-        }
-    }, [isOpen]);
 
     const dismiss = useDismiss(context);
 
