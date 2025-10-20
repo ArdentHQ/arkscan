@@ -1,4 +1,4 @@
-import { IWallet } from "@/types";
+import { IWallet } from "@/types/generated";
 
 // TODO: https://app.clickup.com/t/86dxwp2mj
 export default function VoteLink({
