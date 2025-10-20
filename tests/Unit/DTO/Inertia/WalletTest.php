@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use App\Models\Wallet;
-use App\Services\BigNumber;
-use App\Services\Addresses\Legacy;
-use App\Services\Cache\WalletCache;
-use App\Services\ArkVaultUrlBuilder;
-use App\Services\Cache\ValidatorCache;
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Models\Wallet;
+use App\Services\Addresses\Legacy;
+use App\Services\ArkVaultUrlBuilder;
+use App\Services\BigNumber;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\Cache\ValidatorCache;
+use App\Services\Cache\WalletCache;
 
 it('should make an instance for non-validators', function () {
     $this->freezeTime();
