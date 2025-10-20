@@ -47,6 +47,7 @@ it('should make an instance for non-validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
+        'isResigned'                  => false,
     ]);
 });
 
@@ -60,7 +61,7 @@ it('should make an instance for active validators', function () {
             'balance' => 100.34123 * 1e18,
         ]);
 
-    $subject = new WalletDTO($wallet);
+    $subject = WalletDTO::fromModel($wallet);
 
     (new WalletCache())->setProductivity($wallet->address, 1.23);
     (new ValidatorCache())->setTotalFees([$wallet->address => 1.23 * 1e18]);
@@ -87,6 +88,7 @@ it('should make an instance for active validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
+        'isResigned'                  => false,
     ]);
 });
 
@@ -100,7 +102,7 @@ it('should make an instance for standby validators', function () {
             'balance' => 100.34123 * 1e18,
         ]);
 
-    $subject = new WalletDTO($wallet);
+    $subject = WalletDTO::fromModel($wallet);
 
     (new WalletCache())->setProductivity($wallet->address, 1.23);
     (new ValidatorCache())->setTotalFees([$wallet->address => 1.23 * 1e18]);
@@ -127,6 +129,7 @@ it('should make an instance for standby validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
+        'isResigned'                  => true,
     ]);
 });
 
@@ -149,7 +152,7 @@ it('should make an instance for a voting wallet', function () {
             ],
         ]);
 
-    $subject = new WalletDTO($wallet);
+    $subject = WalletDTO::fromModel($wallet);
 
     (new WalletCache())->setVote($votedWallet->address, $votedWallet);
     (new WalletCache())->setProductivity($votedWallet->address, 1.23);
@@ -190,6 +193,7 @@ it('should make an instance for a voting wallet', function () {
             'formattedBalanceFull'        => '100.34123 DARK',
             'fiatValue'                   => '$200.68',
             'totalForged'                 => '2.46',
+            'isResigned'                  => false,
         ],
         'votes'                       => '0',
         'productivity'                => 0.0,
@@ -197,5 +201,6 @@ it('should make an instance for a voting wallet', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
+        'isResigned'                  => false,
     ]);
 });
