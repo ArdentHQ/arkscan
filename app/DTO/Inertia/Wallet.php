@@ -20,7 +20,7 @@ class Wallet extends Data
         public string $address,
         public string $balance,
         public string $nonce,
-        public string $public_key,
+        public ?string $public_key,
         public bool $isActive,
         public bool $isCold,
         public bool $isValidator,

@@ -2,7 +2,7 @@ export type IWallet = {
     address: string;
     balance: string;
     nonce: string;
-    public_key: string;
+    public_key: string | null;
     isActive: boolean;
     isCold: boolean;
     isValidator: boolean;
