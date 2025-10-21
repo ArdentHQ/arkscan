@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Facades;
 
+use App\DTO\Inertia\INetwork;
 use App\Services\BigNumber;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Facade;
-use App\DTO\Inertia\INetwork;
 
 /**
  * @method static string coin()
