@@ -1,5 +1,5 @@
 import { DATE_TIME_FORMAT } from "@/constants";
-import { ITransaction } from "@/types";
+import { ITransaction } from "@/types/generated";
 import classNames from "@/utils/class-names";
 import dayjs from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";

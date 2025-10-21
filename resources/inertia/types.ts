@@ -57,68 +57,6 @@ export interface INetwork {
     supply: number;
 }
 
-export interface ITransaction {
-    hash: string;
-    blockHash: string;
-    blockNumber: number;
-    transactionIndex: string;
-    timestamp: number;
-    nonce: number;
-    sender_public_key: string;
-    from: string;
-    to: string;
-    value: string;
-    gas_price: string;
-    gas: string;
-    data: string;
-    signature: string;
-    status: boolean;
-    gas_used: string;
-    gas_refunded: string;
-    deployed_contract_address: string | null;
-    logs: any[];
-    output: string;
-    decoded_error: string | null;
-    created_at: string;
-    updated_at: string;
-    multi_payment_recipients: any[] | null;
-
-    amount: number;
-    amountForItself: number;
-    amountExcludingItself: number;
-    amountWithFee: number;
-    amountReceived: number;
-    amountFiatWithSmallAmount: number | string;
-    amountFiat: number | string;
-    amountReceivedFiat: number | string;
-
-    fee: number;
-    feeFiat: number | string;
-    type: string;
-
-    isTransfer: boolean;
-    isTokenTransfer: boolean;
-    isVote: boolean;
-    isUnvote: boolean;
-    isValidatorRegistration: boolean;
-    isValidatorResignation: boolean;
-    isValidatorUpdate: boolean;
-    isUsernameRegistration: boolean;
-    isUsernameResignation: boolean;
-    isContractDeployment: boolean;
-    isMultiPayment: boolean;
-    isSelfReceiving: boolean;
-    votedFor: string | null;
-    sender: IWallet | null;
-    recipient: IWallet | null;
-    validatorRegistration: ITransaction | null;
-
-    isSent: boolean;
-    isReceived: boolean;
-    isSentToSelf: boolean;
-    hasFailedStatus: boolean;
-}
-
 export interface IPaginatedResponse<T> {
     data: T[];
     current_page: number;

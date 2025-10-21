@@ -2,20 +2,19 @@ import { Head, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 import {
     INetwork,
-    ITransaction,
     Currencies,
     ISettings,
     IConfigProductivity,
     IConfigArkConnect,
     IConfigPagination,
+    IPaginatedResponse,
 } from "@/types";
-import { IWallet } from "@/types/generated";
+import { IWallet, ITransaction } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import TransactionsTableWrapper from "@/Components/Tables/Desktop/Wallet/Transactions";
 import ConfigProvider from "@/Providers/Config/ConfigProvider";
-import { IPaginatedResponse } from "../types";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";

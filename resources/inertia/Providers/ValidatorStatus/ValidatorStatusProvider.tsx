@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import ValidatorStatusContext from "./ValidatorStatusContext";
-import { IValidator } from '../../types';
+import { IValidator } from "@/types";
 import dayjs, { Dayjs } from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import { ForgingStatus, ForgingStatusGenerated, ForgingStatusGenerating, ForgingStatusMissed, ForgingStatusPending, IValidatorStatusContextType } from "./types";

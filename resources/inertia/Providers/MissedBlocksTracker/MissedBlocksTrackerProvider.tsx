@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import MissedBlocksTrackerContext from "./MissedBlocksTrackerContext";
-import { IValidator } from '../../types';
+import { IValidator } from "@/types";
 import dayjs from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import { MissedBlocksTrackerContextType } from "./types";

@@ -7,105 +7,152 @@ namespace App\DTO\Inertia;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Facades\Wallets;
 use App\Models\Transaction as Model;
+// use App\Models\Wallet;
 use App\ViewModels\TransactionViewModel;
+use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
-class Transaction
+#[TypeScript('ITransaction')]
+class Transaction extends Data
 {
-    private TransactionViewModel $viewModel;
+    public function __construct(
+        public string $hash,
+        public string $block_hash,
+        public int $block_number,
+        public int $transaction_index,
+        public int $timestamp,
+        public int $nonce,
+        public string $sender_public_key,
+        public string $from,
+        public string $to,
+        public string $value,
+        public string $gas_price,
+        public string $gas,
+        public bool $status,
+        public string $gas_used,
+        public string $gas_refunded,
+        public ?string $deployed_contract_address,
+        public ?string $decoded_error,
+        #[LiteralTypeScriptType('string[]')]
+        public array $multi_payment_recipients,
+        public float $amount,
+        public float $amountForItself,
+        public float $amountExcludingItself,
+        public float $amountWithFee,
+        public float $amountReceived,
+        public int | string $amountFiat,
+        public int | string $amountReceivedFiat,
+        public float $fee,
+        public int | string $feeFiat,
+        public string $type,
+        public bool $isTransfer,
+        public bool $isTokenTransfer,
+        public bool $isVote,
+        public bool $isUnvote,
+        public bool $isValidatorRegistration,
+        public bool $isValidatorResignation,
+        public bool $isValidatorUpdate,
+        public bool $isUsernameRegistration,
+        public bool $isUsernameResignation,
+        public bool $isContractDeployment,
+        public bool $isMultiPayment,
+        public bool $isSelfReceiving,
+        public bool $isSent,
+        public bool $isSentToSelf,
+        public bool $isReceived,
+        public bool $hasFailedStatus,
+        public ?self $validatorRegistration,
+        public ?string $votedFor,
+        public ?WalletDTO $sender,
+        public ?WalletDTO $recipient,
+    ) {}
 
-    public function __construct(public Model $transaction, public ?string $address = null)
+    public static function fromModel(Model $transaction, ?string $address = null): self
     {
-        $this->viewModel = new TransactionViewModel($transaction);
-    }
+        $viewModel = new TransactionViewModel($transaction);
 
-    public function toArray(): array
-    {
         $votedFor = null;
-        if ($this->viewModel->isVote()) {
-            $votedFor = $this->viewModel->voted();
+        if ($viewModel->isVote()) {
+            $votedFor = $viewModel->voted();
             if ($votedFor !== null) {
                 $votedFor = $votedFor->address();
             }
         }
 
         $sender        = null;
-        $senderAddress = $this->viewModel->sender()?->address();
+        $senderAddress = $viewModel->sender()?->address();
         if ($senderAddress !== null) {
             $senderWallet = Wallets::findByAddress($senderAddress);
 
-            $sender = (new WalletDTO($senderWallet))->toArray();
+            $sender = WalletDTO::fromModel($senderWallet);
         }
 
         $recipient        = null;
-        $recipientAddress = $this->viewModel->recipient()?->address();
+        $recipientAddress = $viewModel->recipient()?->address();
         if ($recipientAddress !== null) {
             $recipientWallet = Wallets::findByAddress($recipientAddress);
 
-            $recipient = (new WalletDTO($recipientWallet))->toArray();
+            $recipient = WalletDTO::fromModel($recipientWallet);
         }
 
         $validatorRegistration            = null;
-        $validatorRegistrationTransaction = $this->viewModel->validatorRegistration();
+        $validatorRegistrationTransaction = $viewModel->validatorRegistration();
         if ($validatorRegistrationTransaction !== null) {
-            $validatorRegistration = (new self($validatorRegistrationTransaction->model()))->toArray();
+            $validatorRegistration = self::fromModel($validatorRegistrationTransaction->model());
         }
 
-        $address = $this->address ?? $this->transaction->from;
+        $address = $address ?? $transaction->from;
 
-        return [
-            'hash'                      => $this->transaction->hash,
-            'block_hash'                => $this->transaction->block_hash,
-            'block_number'              => $this->transaction->block_number,
-            'transaction_index'         => $this->transaction->transaction_index,
-            'timestamp'                 => $this->transaction->timestamp,
-            'nonce'                     => $this->transaction->nonce,
-            'sender_public_key'         => $this->transaction->sender_public_key,
-            'from'                      => $this->transaction->from,
-            'to'                        => $this->transaction->to,
-            'value'                     => (string) $this->transaction->value,
-            'gas_price'                 => (string) $this->transaction->gas_price,
-            'gas'                       => (string) $this->transaction->gas,
-            'status'                    => $this->transaction->status,
-            'gas_used'                  => (string) $this->transaction->gas_used,
-            'gas_refunded'              => (string) $this->transaction->gas_refunded,
-            'deployed_contract_address' => $this->transaction->deployed_contract_address,
-            'logs'                      => $this->transaction->logs,
-            'decoded_error'             => $this->transaction->decoded_error,
-            'multi_payment_recipients'  => $this->transaction->multi_payment_recipients,
-
-            // ViewModel Data
-            'amount'                    => $this->viewModel->amount(),
-            'amountForItself'           => $this->viewModel->amountForItself(),
-            'amountExcludingItself'     => $this->viewModel->amountExcludingItself(),
-            'amountWithFee'             => $this->viewModel->amountWithFee(),
-            'amountReceived'            => $this->viewModel->amountReceived(),
-            'amountFiat'                => $this->viewModel->amountFiat(true),
-            'amountReceivedFiat'        => $this->viewModel->amountReceivedFiat($address),
-
-            'fee'                       => $this->viewModel->fee(),
-            'feeFiat'                   => $this->viewModel->feeFiat(true),
-            'type'                      => $this->viewModel->typeName(),
-            'isTransfer'                => $this->viewModel->isTransfer(),
-            'isTokenTransfer'           => $this->viewModel->isTokenTransfer(),
-            'isVote'                    => $this->viewModel->isVote(),
-            'isUnvote'                  => $this->viewModel->isUnvote(),
-            'isValidatorRegistration'   => $this->viewModel->isValidatorRegistration(),
-            'isValidatorResignation'    => $this->viewModel->isValidatorResignation(),
-            'isValidatorUpdate'         => $this->viewModel->isValidatorUpdate(),
-            'isUsernameRegistration'    => $this->viewModel->isUsernameRegistration(),
-            'isUsernameResignation'     => $this->viewModel->isUsernameResignation(),
-            'isContractDeployment'      => $this->viewModel->isContractDeployment(),
-            'isMultiPayment'            => $this->viewModel->isMultiPayment(),
-            'isSelfReceiving'           => $this->viewModel->isSelfReceiving(),
-            'isSent'                    => $this->viewModel->isSent($address),
-            'isSentToSelf'              => $this->viewModel->isSentToSelf($address),
-            'isReceived'                => $this->viewModel->isReceived($address),
-            'hasFailedStatus'           => $this->viewModel->hasFailedStatus(),
-            'validatorRegistration'     => $validatorRegistration,
-
-            'votedFor'                  => $votedFor,
-            'sender'                    => $sender,
-            'recipient'                 => $recipient,
-        ];
+        return new self(
+            hash: $transaction->hash,
+            block_hash: $transaction->block_hash,
+            block_number: $transaction->block_number,
+            transaction_index: $transaction->transaction_index,
+            timestamp: $transaction->timestamp,
+            nonce: $transaction->nonce,
+            sender_public_key: $transaction->sender_public_key,
+            from: $transaction->from,
+            to: $transaction->to,
+            value: (string) $transaction->value,
+            gas_price: (string) $transaction->gas_price,
+            gas: (string) $transaction->gas,
+            status: $transaction->status,
+            gas_used: (string) $transaction->gas_used,
+            gas_refunded: (string) $transaction->gas_refunded,
+            deployed_contract_address: $transaction->deployed_contract_address,
+            decoded_error: $transaction->decoded_error,
+            multi_payment_recipients: $transaction->multi_payment_recipients,
+            amount: $viewModel->amount(),
+            amountForItself: $viewModel->amountForItself(),
+            amountExcludingItself: $viewModel->amountExcludingItself(),
+            amountWithFee: $viewModel->amountWithFee(),
+            amountReceived: $viewModel->amountReceived(),
+            amountFiat: $viewModel->amountFiat(true),
+            amountReceivedFiat: $viewModel->amountReceivedFiat($address),
+            fee: $viewModel->fee(),
+            feeFiat: $viewModel->feeFiat(true),
+            type: $viewModel->typeName(),
+            isTransfer: $viewModel->isTransfer(),
+            isTokenTransfer: $viewModel->isTokenTransfer(),
+            isVote: $viewModel->isVote(),
+            isUnvote: $viewModel->isUnvote(),
+            isValidatorRegistration: $viewModel->isValidatorRegistration(),
+            isValidatorResignation: $viewModel->isValidatorResignation(),
+            isValidatorUpdate: $viewModel->isValidatorUpdate(),
+            isUsernameRegistration: $viewModel->isUsernameRegistration(),
+            isUsernameResignation: $viewModel->isUsernameResignation(),
+            isContractDeployment: $viewModel->isContractDeployment(),
+            isMultiPayment: $viewModel->isMultiPayment(),
+            isSelfReceiving: $viewModel->isSelfReceiving(),
+            isSent: $viewModel->isSent($address),
+            isSentToSelf: $viewModel->isSentToSelf($address),
+            isReceived: $viewModel->isReceived($address),
+            hasFailedStatus: $viewModel->hasFailedStatus(),
+            validatorRegistration: $validatorRegistration,
+            votedFor: $votedFor,
+            sender: $sender,
+            recipient: $recipient,
+        );
     }
 }

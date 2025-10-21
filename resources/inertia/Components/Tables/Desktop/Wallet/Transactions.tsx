@@ -1,6 +1,7 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { IPaginatedResponse, ITransaction } from "@/types";
+import { IPaginatedResponse } from "@/types";
+import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Transaction/Age";
 import ID from "@/Components/Transaction/ID";

@@ -1,4 +1,4 @@
-import { ITransaction } from "@/types";
+import { ITransaction } from "@/types/generated";
 import Badge from "../General/Badge";
 import { useTranslation } from "react-i18next";
 import Tooltip from "../General/Tooltip";

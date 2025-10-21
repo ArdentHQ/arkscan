@@ -68,7 +68,7 @@ final class WalletController
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage(), page: $this->page())
-            ->through(fn(Transaction $transaction) => (new TransactionDTO($transaction, $wallet->address))->toArray());
+            ->through(fn(Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address));
     }
 
     private function page(): int

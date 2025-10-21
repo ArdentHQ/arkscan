@@ -1,4 +1,4 @@
-import { ITransaction } from "@/types";
+import { ITransaction } from "@/types/generated";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
 
 export default function Fee({

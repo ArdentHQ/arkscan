@@ -1,5 +1,5 @@
 import { useConfig } from "@/Providers/Config/ConfigContext";
-import { ITransaction } from "@/types";
+import { ITransaction } from "@/types/generated";
 import classNames from "@/utils/class-names";
 import Fee from "./Fee";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";

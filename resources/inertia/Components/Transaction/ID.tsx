@@ -1,6 +1,6 @@
 import TruncateMiddle from "../General/TruncateMiddle";
-import classNames from '../../utils/class-names';
-import { ITransaction } from "@/types";
+import classNames from "../../utils/class-names";
+import { ITransaction } from "@/types/generated";
 import CircleMinusSmallIcon from "@ui/icons/circle/minus-small.svg?react";
 import Age from "./Age";
 

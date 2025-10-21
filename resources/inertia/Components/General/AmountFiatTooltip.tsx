@@ -1,5 +1,5 @@
 import { useConfig } from "@/Providers/Config/ConfigContext";
-import { ITransaction } from "@/types";
+import { ITransaction } from "@/types/generated";
 import { currency, networkCurrency } from "@/utils/number-formatter";
 import HintSmallIcon from "@ui/icons/hint-small.svg?react";
 import { useTranslation } from "react-i18next";
