@@ -1,3 +1,29 @@
+export type IConfigArkconnect = {
+    enabled: boolean;
+    vaultUrl: string;
+};
+export type IConfigProductivity = {
+    danger: number;
+    warning: number;
+};
+export type ICurrency = {
+    currency: string;
+    locale: string | null;
+    symbol: string | null;
+};
+export type IRequestData = {
+    currencies: Record<string, ICurrency>;
+    network: Array<any>;
+    productivity: IConfigProductivity;
+    settings: ISettings;
+    arkconnect: IConfigArkconnect;
+};
+export type ISettings = {
+    currency: string;
+    priceChart: boolean;
+    feeChart: boolean;
+    theme: string;
+};
 export type IWallet = {
     address: string;
     balance: string;

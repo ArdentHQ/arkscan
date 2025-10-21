@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\DTO\Inertia\ISettings;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Str;
@@ -28,6 +29,18 @@ class Settings
         }
 
         return $defaultSettings;
+    }
+
+    public function data(): ISettings
+    {
+        $all = $this->all();
+        
+        return new ISettings(
+            currency: $all['currency'],
+            priceChart: $all['priceChart'],
+            feeChart: $all['feeChart'],
+            theme: $all['theme'],
+        );
     }
 
     public function get(string $key, mixed $default = null): mixed

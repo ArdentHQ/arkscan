@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 namespace App\Facades;
-
+use App\DTO\Inertia\ISettings;
 use App\Services\Settings as Accessor;
 use Illuminate\Support\Facades\Facade;
 
 /**
+ * @method static ISettings data()
  * @method static array all()
  * @method static string currency()
  * @method static string locale()

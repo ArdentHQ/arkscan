@@ -1,9 +1,9 @@
+import { IWallet } from "./types/generated";
+
 export interface IBlock {
     hash: string;
     number: number;
 }
-
-
 export interface IValidator {
     wallet: IWallet;
     lastBlock: IBlock | null;
@@ -55,28 +55,3 @@ export interface INetwork {
     blockReward: number;
     supply: number;
 }
-
-export interface ISettings {
-    currency: string;
-    priceChart: boolean;
-    feeChart: boolean;
-    theme: string;
-}
-
-export interface ICurrency {
-    currency: string;
-    locale: string | null;
-    symbol: string | null;
-}
-
-export interface IConfigProductivity {
-    warning: number;
-    danger: number;
-}
-
-export interface IConfigArkConnect {
-    enabled: boolean;
-    vaultUrl: string;
-}
-
-export type Currencies = Record<string, ICurrency>;
