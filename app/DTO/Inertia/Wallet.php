@@ -9,48 +9,72 @@ use App\Models\Wallet as Model;
 use App\Services\ExchangeRate;
 use App\ViewModels\WalletViewModel;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter;
+use Spatie\LaravelData\Data;
+use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
+use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
-class Wallet
+#[TypeScript('IWallet')]
+class Wallet extends Data
 {
-    private WalletViewModel $viewModel;
-
-    public function __construct(public Model $wallet)
-    {
-        $this->viewModel = new WalletViewModel($wallet);
+    public function __construct(
+        public string $address,
+        public string $balance,
+        public string $nonce,
+        public ?string $public_key,
+        public bool $isActive,
+        public bool $isCold,
+        public bool $isValidator,
+        public bool $isLegacy,
+        public bool $isDormant,
+        public bool $isResigned,
+        public ?string $legacyAddress,
+        public ?string $username,
+        public string $votes,
+        public float $productivity,
+        public string $formattedBalanceTwoDecimals,
+        public string $formattedBalanceFull,
+        public string $fiatValue,
+        public string $totalForged,
+        // TODO: Consider using another data object for the attributes
+        #[LiteralTypeScriptType('Record<string, any>')]
+        public ?array $attributes,
+        public ?self $vote,
+        public string $voteUrl,
+    ) {
     }
 
-    public function toArray(): array
+    public static function fromModel(Model $wallet): self
     {
+        $viewModel   = new WalletViewModel($wallet);
         $votedWallet = null;
-        $vote        = $this->viewModel->vote();
+
+        $vote        = $viewModel->vote();
         if ($vote !== null) {
-            $votedWallet = (new self($vote->model()))->toArray();
+            $votedWallet = self::fromModel($vote->model());
         }
 
-        return [
-            'address'       => $this->wallet->address,
-            'attributes'    => $this->wallet->attributes,
-            'balance'       => (string) $this->wallet->balance,
-            'nonce'         => (string) $this->wallet->nonce,
-            'public_key'    => $this->wallet->public_key,
-
-            'isActive'      => $this->viewModel->isActive(),
-            'isCold'        => $this->viewModel->isCold(),
-            'isValidator'   => $this->viewModel->isValidator(),
-            'isLegacy'      => $this->viewModel->isLegacy(),
-            'isDormant'     => $this->viewModel->isDormant(),
-            'isResigned'    => $this->viewModel->isResigned(),
-            'legacyAddress' => $this->viewModel->legacyAddress(),
-            'username'      => $this->viewModel->username(),
-            'vote'          => $votedWallet,
-            'votes'         => (string) $this->viewModel->votes(),
-            'productivity'  => $this->viewModel->productivity(),
-
-            'formattedBalanceTwoDecimals' => NumberFormatter::new()->formatWithCurrencyCustom($this->viewModel->balance(), Network::currency(), 2),
-            'formattedBalanceFull'        => NumberFormatter::new()->formatWithCurrencyCustom($this->viewModel->balance(), Network::currency(), null),
-            'fiatValue'                   => ExchangeRate::convert($this->wallet->balance, null),
-            'totalForged'                 => (string) $this->viewModel->totalForged(),
-            'voteUrl'                     => $this->viewModel->voteUrl(),
-        ];
+        return new self(
+            address: $wallet->address,
+            balance: (string) $wallet->balance,
+            nonce: (string) $wallet->nonce,
+            public_key: $wallet->public_key,
+            attributes: $wallet->attributes,
+            isActive: $viewModel->isActive(),
+            isCold: $viewModel->isCold(),
+            isValidator: $viewModel->isValidator(),
+            isLegacy: $viewModel->isLegacy(),
+            isDormant: $viewModel->isDormant(),
+            isResigned: $viewModel->isResigned(),
+            legacyAddress: $viewModel->legacyAddress(),
+            username: $viewModel->username(),
+            votes: (string) $viewModel->votes(),
+            productivity: $viewModel->productivity(),
+            formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), 2),
+            formattedBalanceFull: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), null),
+            fiatValue: ExchangeRate::convert($wallet->balance, null),
+            totalForged: (string) $viewModel->totalForged(),
+            vote: $votedWallet,
+            voteUrl: $viewModel->voteUrl(),
+        );
     }
 }

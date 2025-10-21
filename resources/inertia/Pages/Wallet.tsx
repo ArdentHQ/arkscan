@@ -1,5 +1,6 @@
 import { Head } from "@inertiajs/react";
-import { INetwork, IWallet, Currencies, ISettings, IConfigProductivity, IConfigArkConnect } from '@/types';
+import { INetwork, Currencies, ISettings, IConfigProductivity, IConfigArkConnect } from '@/types';
+import { IWallet } from '@/types/generated';
 import { usePageMetadata } from "@/Components/General/Metadata";
 import ConfigProvider from "@/Providers/Config/ConfigProvider";
 import Overview from "@/Components/Wallet/Overview/Overview";

@@ -32,6 +32,8 @@
         "react/promise": "^2.2",
         "savvot/random": "^0.3",
         "sentry/sentry-laravel": "^4.7",
+        "spatie/laravel-data": "^4.18",
+        "spatie/laravel-typescript-transformer": "^2.5",
         "symfony/psr-http-message-bridge": "^7.1"
     },
     "require-dev": {

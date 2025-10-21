@@ -14,7 +14,7 @@ final class WalletController
     public function __invoke(Wallet $wallet): Response
     {
         return Inertia::render('Wallet', [
-            'wallet' => (new WalletDTO($wallet))->toArray(),
+            'wallet' => WalletDTO::fromModel($wallet),
         ]);
     }
 }

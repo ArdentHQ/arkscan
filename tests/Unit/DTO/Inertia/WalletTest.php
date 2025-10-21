@@ -24,9 +24,9 @@ it('should make an instance for non-validators', function () {
             ],
         ]);
 
-    $subject = new WalletDTO($wallet);
-
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+    $subject = WalletDTO::fromModel($wallet);
 
     expect($subject->toArray())->toEqual([
         'address'                     => $wallet->address,
@@ -63,12 +63,12 @@ it('should make an instance for active validators', function () {
             'balance' => 100.34123 * 1e18,
         ]);
 
-    $subject = new WalletDTO($wallet);
-
     (new WalletCache())->setProductivity($wallet->address, 1.23);
     (new ValidatorCache())->setTotalFees([$wallet->address => 1.23 * 1e18]);
     (new ValidatorCache())->setTotalRewards([$wallet->address => 1.23 * 1e18]);
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+    $subject = WalletDTO::fromModel($wallet);
 
     expect($subject->toArray())->toEqual([
         'address'                     => $wallet->address,
@@ -105,12 +105,12 @@ it('should make an instance for standby validators', function () {
             'balance' => 100.34123 * 1e18,
         ]);
 
-    $subject = new WalletDTO($wallet);
-
     (new WalletCache())->setProductivity($wallet->address, 1.23);
     (new ValidatorCache())->setTotalFees([$wallet->address => 1.23 * 1e18]);
     (new ValidatorCache())->setTotalRewards([$wallet->address => 1.23 * 1e18]);
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+    $subject = WalletDTO::fromModel($wallet);
 
     expect($subject->toArray())->toEqual([
         'address'                     => $wallet->address,
@@ -156,13 +156,13 @@ it('should make an instance for a voting wallet', function () {
             ],
         ]);
 
-    $subject = new WalletDTO($wallet);
-
     (new WalletCache())->setVote($votedWallet->address, $votedWallet);
     (new WalletCache())->setProductivity($votedWallet->address, 1.23);
     (new ValidatorCache())->setTotalFees([$votedWallet->address => 1.23 * 1e18]);
     (new ValidatorCache())->setTotalRewards([$votedWallet->address => 1.23 * 1e18]);
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+    $subject = WalletDTO::fromModel($wallet);
 
     expect($subject->toArray())->toEqual([
         'address'                     => $wallet->address,
