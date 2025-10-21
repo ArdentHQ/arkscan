@@ -12,7 +12,6 @@ export default function Wallet({
 }: PageProps<{
     wallet: IWallet;
 }>) {
-    console.log({ network, wallet, ...props });
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {

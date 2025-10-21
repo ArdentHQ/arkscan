@@ -46,7 +46,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...IRequestData::from([
                 'currencies'   => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
-                'network'      => Network::toArray(),
+                'network'      => Network::data(),
                 'productivity' => IConfigProductivity::from(config('arkscan.productivity')),
                 'settings'     => Settings::data(),
                 'arkconnect'   => IConfigArkconnect::from([

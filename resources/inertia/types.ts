@@ -33,25 +33,3 @@ export interface IStatistics {
         };
     };
 }
-
-export interface INetwork {
-    coin: string;
-    name: string;
-    alias: string;
-    api: string;
-    explorerTitle: string;
-    legacyExplorerUrl: string;
-    currency: string;
-    currencySymbol: string;
-    confirmations: number;
-    knownWalletsUrl: string;
-    knownWallets: string[];
-    knownContracts: string[];
-    canBeExchanged: boolean;
-    nethash: string;
-    epoch: string;
-    validatorCount: number;
-    blockTime: number;
-    blockReward: number;
-    supply: number;
-}
