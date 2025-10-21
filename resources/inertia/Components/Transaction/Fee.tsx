@@ -3,7 +3,7 @@ import AmountFiatTooltip from "../General/AmountFiatTooltip";
 
 export default function Fee({
     transaction,
-    className = '',
+    className = "",
     withoutStyling = false,
 }: {
     transaction: ITransaction;

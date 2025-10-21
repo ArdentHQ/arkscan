@@ -9,14 +9,16 @@ export default function Method({ transaction }: { transaction: ITransaction }) {
     if (transaction.isVote) {
         if (transaction.votedFor) {
             return (
-                <Tooltip content={t('general.transaction.vote_validator', {validator: transaction.votedFor})}>
+                <Tooltip
+                    content={t("general.transaction.vote_validator", {
+                        validator: transaction.votedFor,
+                    })}
+                >
                     <Badge className="encapsulated-badge">Vote</Badge>
                 </Tooltip>
             );
         }
     }
 
-    return (
-        <Badge className="encapsulated-badge">{transaction.type}</Badge>
-    );
+    return <Badge className="encapsulated-badge">{transaction.type}</Badge>;
 }

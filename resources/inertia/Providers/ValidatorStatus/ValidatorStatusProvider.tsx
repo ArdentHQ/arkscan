@@ -1,11 +1,18 @@
-'use client';
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 import ValidatorStatusContext from "./ValidatorStatusContext";
 import { IValidator } from "@/types";
 import dayjs, { Dayjs } from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
-import { ForgingStatus, ForgingStatusGenerated, ForgingStatusGenerating, ForgingStatusMissed, ForgingStatusPending, IValidatorStatusContextType } from "./types";
+import {
+    ForgingStatus,
+    ForgingStatusGenerated,
+    ForgingStatusGenerating,
+    ForgingStatusMissed,
+    ForgingStatusPending,
+    IValidatorStatusContextType,
+} from "./types";
 import { useMissedBlocksTracker } from "../MissedBlocksTracker/MissedBlocksTrackerContext";
 import { MISSED_BLOCKS_SECONDS_THRESHOLD } from "@/constants";
 
@@ -33,7 +40,7 @@ export default function ValidatorStatusProvider({
 
         const updateSeconds = () => {
             const now = dayjs(new Date());
-            const secondsDifference = dateTime.diff(now, 'second');
+            const secondsDifference = dateTime.diff(now, "second");
 
             setSeconds(secondsDifference);
 
@@ -44,19 +51,19 @@ export default function ValidatorStatusProvider({
             }
 
             setOutput(now.to(dateTime));
-        }
+        };
 
         updateSeconds();
 
         tickingTimerRef.current = setInterval(updateSeconds, 100);
 
         return () => {
-            if (! tickingTimerRef.current) {
+            if (!tickingTimerRef.current) {
                 return;
             }
 
             clearInterval(tickingTimerRef.current);
-        }
+        };
     }, [forgingAt]);
 
     useEffect(() => {
@@ -72,13 +79,19 @@ export default function ValidatorStatusProvider({
             return;
         }
 
-        if (currentForger?.wallet.address !== validator.wallet.address && seconds >= 60) {
+        if (
+            currentForger?.wallet.address !== validator.wallet.address &&
+            seconds >= 60
+        ) {
             setStatus(ForgingStatusPending);
 
             return;
         }
 
-        if (currentForger?.wallet.address !== validator.wallet.address && seconds <= MISSED_BLOCKS_SECONDS_THRESHOLD - secondsOffset) {
+        if (
+            currentForger?.wallet.address !== validator.wallet.address &&
+            seconds <= MISSED_BLOCKS_SECONDS_THRESHOLD - secondsOffset
+        ) {
             setStatus(ForgingStatusMissed);
 
             return;
@@ -90,7 +103,10 @@ export default function ValidatorStatusProvider({
             return;
         }
 
-        if (status === ForgingStatusGenerating && currentForger?.wallet.address !== validator.wallet.address) {
+        if (
+            status === ForgingStatusGenerating &&
+            currentForger?.wallet.address !== validator.wallet.address
+        ) {
             setStatus(ForgingStatusMissed);
 
             return;
@@ -110,4 +126,4 @@ export default function ValidatorStatusProvider({
             {children}
         </ValidatorStatusContext.Provider>
     );
-};
+}

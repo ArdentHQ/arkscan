@@ -9,7 +9,7 @@ dayjs.extend(dayjsRelativeTime);
 
 export default function Age({
     transaction,
-    className = 'text-theme-secondary-900 dark:text-theme-dark-50',
+    className = "text-theme-secondary-900 dark:text-theme-dark-50",
 }: {
     transaction: ITransaction;
     className?: string;
@@ -19,10 +19,12 @@ export default function Age({
 
     return (
         <Tooltip content={transactionDate.format(DATE_TIME_FORMAT)}>
-            <span className={classNames({
-                'text-sm font-semibold leading-4.25': true,
-                [className]: true,
-            })}>
+            <span
+                className={classNames({
+                    "text-sm font-semibold leading-4.25": true,
+                    [className]: true,
+                })}
+            >
                 {formattedAge}
             </span>
         </Tooltip>

@@ -12,7 +12,11 @@ import { useConfig } from "@/Providers/Config/ConfigContext";
 import Fee from "@/Components/Transaction/Fee";
 import Addressing from "@/Components/Transaction/Addressing";
 
-export function TransactionsMobileTable({ transactions }: { transactions: ITransaction[] }) {
+export function TransactionsMobileTable({
+    transactions,
+}: {
+    transactions: ITransaction[];
+}) {
     const { t } = useTranslation();
     const { network } = useConfig();
 
@@ -21,13 +25,13 @@ export function TransactionsMobileTable({ transactions }: { transactions: ITrans
             {transactions.map((transaction: ITransaction, index) => (
                 <MobileTableRow
                     key={index}
-                    header={(
+                    header={
                         <>
                             <ID transaction={transaction} />
 
                             <Age transaction={transaction} />
                         </>
-                    )}
+                    }
                 >
                     <TableCell label={transaction.type}>
                         <Addressing
@@ -36,11 +40,19 @@ export function TransactionsMobileTable({ transactions }: { transactions: ITrans
                         />
                     </TableCell>
 
-                    <TableCell label={t('tables.transactions.amount', { currency: network?.currency })}>
+                    <TableCell
+                        label={t("tables.transactions.amount", {
+                            currency: network?.currency,
+                        })}
+                    >
                         <Amount transaction={transaction} />
                     </TableCell>
 
-                    <TableCell label={t('tables.transactions.fee', { currency: network?.currency })}>
+                    <TableCell
+                        label={t("tables.transactions.fee", {
+                            currency: network?.currency,
+                        })}
+                    >
                         <Fee transaction={transaction} />
                     </TableCell>
                 </MobileTableRow>
@@ -49,14 +61,15 @@ export function TransactionsMobileTable({ transactions }: { transactions: ITrans
     );
 }
 
-export default function TransactionsMobileTableWrapper({ transactions, rowCount = 10 }: {
+export default function TransactionsMobileTableWrapper({
+    transactions,
+    rowCount = 10,
+}: {
     transactions: IPaginatedResponse<ITransaction>;
     rowCount?: number;
 }) {
     if (!transactions || transactions.total === 0) {
-        return (
-            <MobileTransactionsSkeletonTable rowCount={rowCount} />
-        );
+        return <MobileTransactionsSkeletonTable rowCount={rowCount} />;
     }
 
     return (

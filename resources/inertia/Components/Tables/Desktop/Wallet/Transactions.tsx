@@ -22,10 +22,7 @@ export function Row({ row }: { row: ITransaction }) {
                 <ID transaction={row} />
             </TableCell>
 
-            <TableCell
-                breakpoint="xl"
-                responsive
-            >
+            <TableCell breakpoint="xl" responsive>
                 <Age transaction={row} />
             </TableCell>
 
@@ -34,24 +31,14 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell>
-                <Addressing
-                    transaction={row}
-                    withoutLink={row.isSentToSelf}
-                />
+                <Addressing transaction={row} withoutLink={row.isSentToSelf} />
             </TableCell>
 
-            <TableCell
-                className="text-right"
-                lastOn="md-lg"
-            >
+            <TableCell className="text-right" lastOn="md-lg">
                 <Amount transaction={row} />
             </TableCell>
 
-            <TableCell
-                className="text-right"
-                breakpoint="md-lg"
-                responsive
-            >
+            <TableCell className="text-right" breakpoint="md-lg" responsive>
                 <Fee transaction={row} />
             </TableCell>
         </tr>
@@ -78,41 +65,40 @@ export function TransactionsTable({
             mobile={mobile}
             headerActions={<HeaderActions />}
             noResultsMessage={transactions.noResultsMessage}
-            columns={<>
-                <TableHeader>
-                    {t('tables.transactions.id')}
-                </TableHeader>
+            columns={
+                <>
+                    <TableHeader>{t("tables.transactions.id")}</TableHeader>
 
-                <TableHeader
-                    breakpoint="xl"
-                    responsive
-                >
-                    {t('tables.transactions.age')}
-                </TableHeader>
+                    <TableHeader breakpoint="xl" responsive>
+                        {t("tables.transactions.age")}
+                    </TableHeader>
 
-                <TableHeader>
-                    {t('tables.transactions.method')}
-                </TableHeader>
+                    <TableHeader>{t("tables.transactions.method")}</TableHeader>
 
-                <TableHeader>
-                    {t('tables.transactions.addressing')}
-                </TableHeader>
+                    <TableHeader>
+                        {t("tables.transactions.addressing")}
+                    </TableHeader>
 
-                <TableHeader
-                    className="text-right last-until-md-lg"
-                    last-on="md-lg"
-                >
-                    {t('tables.transactions.amount', { currency: network!.currency })}
-                </TableHeader>
+                    <TableHeader
+                        className="text-right last-until-md-lg"
+                        last-on="md-lg"
+                    >
+                        {t("tables.transactions.amount", {
+                            currency: network!.currency,
+                        })}
+                    </TableHeader>
 
-                <TableHeader
-                    className="text-right"
-                    responsive
-                    breakpoint="md-lg"
-                >
-                    {t('tables.transactions.fee', { currency: network!.currency })}
-                </TableHeader>
-            </>}
+                    <TableHeader
+                        className="text-right"
+                        responsive
+                        breakpoint="md-lg"
+                    >
+                        {t("tables.transactions.fee", {
+                            currency: network!.currency,
+                        })}
+                    </TableHeader>
+                </>
+            }
         />
     );
 }
@@ -137,42 +123,44 @@ export default function TransactionsTableWrapper({
                         rowCount={rowCount}
                         columns={[
                             {
-                                name: t('tables.transactions.id'),
+                                name: t("tables.transactions.id"),
                                 type: "string",
                                 className: "w-[60px]",
                             },
                             {
-                                name: t('tables.transactions.age'),
+                                name: t("tables.transactions.age"),
                                 type: "string",
                                 className: "w-[60px]",
                             },
                             {
-                                name: t('tables.transactions.method'),
+                                name: t("tables.transactions.method"),
                                 indicatorHeight: "h-[21px]",
                                 className: "text-left",
                             },
                             {
-                                name: t('tables.transactions.addressing'),
+                                name: t("tables.transactions.addressing"),
                                 type: "address",
                                 indicatorHeight: "h-[21px]",
                                 className: "text-left",
                             },
                             {
-                                name: t('tables.transactions.amount', { currency: network!.currency }),
+                                name: t("tables.transactions.amount", {
+                                    currency: network!.currency,
+                                }),
                                 className: "text-right w-[100px]",
                             },
                             {
-                                name: t('tables.transactions.fee', { currency: network!.currency }),
+                                name: t("tables.transactions.fee", {
+                                    currency: network!.currency,
+                                }),
                                 className: "text-right w-[100px]",
                             },
                         ]}
                     />
                 </div>
 
-                {!! mobile && (
-                    <div className="px-6 md:px-10 md:hidden">
-                        {mobile}
-                    </div>
+                {!!mobile && (
+                    <div className="px-6 md:px-10 md:hidden">{mobile}</div>
                 )}
             </>
         );
@@ -180,10 +168,7 @@ export default function TransactionsTableWrapper({
 
     return (
         <div>
-            <TransactionsTable
-                transactions={transactions}
-                mobile={mobile}
-            />
+            <TransactionsTable transactions={transactions} mobile={mobile} />
         </div>
     );
 }
@@ -201,7 +186,7 @@ function HeaderActions() {
                 >
                     <UnderlineArrowDownIcon className="h-4 w-4" />
 
-                    <span>{t('actions.export')}</span>
+                    <span>{t("actions.export")}</span>
                 </button>
             </div>
 
@@ -215,7 +200,7 @@ function HeaderActions() {
                         <FilterIcon className="h-4 w-4" />
 
                         <div className="ml-2 md:hidden">
-                            {t('actions.filter')}
+                            {t("actions.filter")}
                         </div>
                     </div>
                 </button>
