@@ -7,6 +7,7 @@ namespace App\Facades;
 use App\Services\BigNumber;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Facade;
+use App\DTO\Inertia\INetwork;
 
 /**
  * @method static string coin()
@@ -33,6 +34,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static BigNumber supply()
  * @method static \ArkEcosystem\Crypto\Networks\AbstractNetwork config()
  * @method static array toArray()
+ * @method static INetwork data()
  */
 final class Network extends Facade
 {
