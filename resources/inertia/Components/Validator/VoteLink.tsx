@@ -65,7 +65,7 @@ export default function VoteLink({
                         "w-[147px]": true,
                     })}
                     zIndex={20}
-                    dropdownContentClasses="bg-white dark:bg-theme-dark-900 rounded-xl shadow-lg dark:shadow-lg-dark"
+                    dropdownContentClasses="bg-white dark:bg-theme-dark-900 dark:border dark:border-theme-dark-800 rounded-xl shadow-lg"
                 >
                     <div className="overflow-hidden rounded-t-xl">
                         <div className="flex py-2 px-6 text-sm font-semibold bg-theme-secondary-200 leading-4.25 dark:bg-theme-dark-950">
