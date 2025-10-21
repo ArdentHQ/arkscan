@@ -52,6 +52,4 @@ class INetwork extends Data
         public array $contractMethods,
     ) {
     }
-
-    
 }

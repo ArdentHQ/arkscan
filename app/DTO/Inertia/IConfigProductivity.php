@@ -13,9 +13,6 @@ class IConfigProductivity extends Data
     public function __construct(
         public float $danger,
         public float $warning,
-        
     ) {
     }
-
-    
 }

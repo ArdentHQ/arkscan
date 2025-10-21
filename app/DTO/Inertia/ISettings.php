@@ -17,6 +17,4 @@ class ISettings extends Data
         public string $theme,
     ) {
     }
-
-    
 }

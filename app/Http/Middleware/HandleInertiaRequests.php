@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use Inertia\Middleware;
+use App\DTO\Inertia\IConfigArkconnect;
+use App\DTO\Inertia\IConfigProductivity;
+use App\DTO\Inertia\ICurrency;
+use App\DTO\Inertia\IRequestData;
 use App\Facades\Network;
 use App\Facades\Settings;
 use Illuminate\Http\Request;
-use App\DTO\Inertia\ICurrency;
-use App\DTO\Inertia\IRequestData;
-use App\DTO\Inertia\IConfigArkconnect;
-use App\DTO\Inertia\IConfigProductivity;
+use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {

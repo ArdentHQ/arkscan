@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Facades;
+
 use App\DTO\Inertia\ISettings;
 use App\Services\Settings as Accessor;
 use Illuminate\Support\Facades\Facade;

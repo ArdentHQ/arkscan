@@ -34,7 +34,7 @@ class Settings
     public function data(): ISettings
     {
         $all = $this->all();
-        
+
         return new ISettings(
             currency: $all['currency'],
             priceChart: $all['priceChart'],

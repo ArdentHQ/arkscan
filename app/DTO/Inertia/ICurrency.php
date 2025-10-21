@@ -16,6 +16,4 @@ class ICurrency extends Data
         public ?string $symbol,
     ) {
     }
-
-    
 }
