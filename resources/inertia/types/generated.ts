@@ -61,6 +61,7 @@ export type IWallet = {
     isResigned: boolean;
     legacyAddress: string | null;
     username: string | null;
+    hasUsername: boolean;
     votes: string;
     productivity: number;
     formattedBalanceTwoDecimals: string;
