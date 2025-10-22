@@ -20,6 +20,24 @@ jobs:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
+            # PHP & Composer are required to load tailwind.config.js which depends on
+            # ./vendor/arkecosystem/foundation/resources/tailwind.config.js
+            # prettier-plugin-tailwindcss needs access to the tailwind config to sort class names
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: "8.3"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.composer/cache/files
+                  key: dependencies-composer-${{ hashFiles('composer.json') }}
+
+            - name: Install Composer dependencies
+              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
+
             - uses: actions/setup-node@v4
               with:
                   node-version: 22.11
