@@ -2,7 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
 import laravel from "laravel-vite-plugin";
 import { detectServerConfig } from "./vendor/arkecosystem/foundation/resources/vite.config";
-import i18n from 'laravel-react-i18n/vite';
+import i18n from './resources/js/vite/i18n/i18n';
 import svgr from "vite-plugin-svgr";
 
 export default ({ mode }) => defineConfig({
@@ -15,10 +15,10 @@ export default ({ mode }) => defineConfig({
             'resources/js/webhooks.js',
         ]),
         i18n({
-            langDirname: 'resources/lang',
-        }),
-        i18n({
-            langDirname: resolve(__dirname, '/vendor/arkecosystem/foundation/resources/lang'),
+            paths: [
+                'resources/lang',
+                'vendor/arkecosystem/foundation/resources/lang',
+            ],
         }),
         svgr(),
     ],
