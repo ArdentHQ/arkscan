@@ -60,7 +60,7 @@ export type ISettings = {
     currency: string;
     priceChart: boolean;
     feeChart: boolean;
-    theme: string;
+    theme: string | null;
 };
 export type IWallet = {
     address: string;

@@ -14,7 +14,7 @@ class ISettings extends Data
         public string $currency,
         public bool $priceChart,
         public bool $feeChart,
-        public string $theme,
+        public string | null $theme,
     ) {
     }
 }

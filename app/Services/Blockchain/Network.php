@@ -79,7 +79,7 @@ final class Network implements Contract
         return $this->config['confirmations'];
     }
 
-    public function knownWalletsUrl(): string
+    public function knownWalletsUrl(): string | null
     {
         return $this->config['knownWallets'];
     }
@@ -178,7 +178,7 @@ final class Network implements Contract
             currencySymbol: $this->currencySymbol(),
             confirmations: $this->confirmations(),
             knownWallets: $this->knownWallets(),
-            knownWalletsUrl: $this->knownWalletsUrl(),
+            knownWalletsUrl: $this->knownWalletsUrl() ?? '',
             canBeExchanged: $this->canBeExchanged(),
             epoch: $this->epoch()->toIso8601String(),
             validatorCount: $this->validatorCount(),
