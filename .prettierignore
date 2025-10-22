@@ -1,0 +1,9 @@
+node_modules
+vendor
+public/build
+storage
+.git
+dist
+build
+.env*
+*.lock

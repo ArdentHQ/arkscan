@@ -5,6 +5,8 @@ on:
         paths:
             - "**.css"
             - "**.js"
+            - "**.ts"
+            - "**.tsx"
             - "**.php"
             - "**.svg"
 
@@ -30,7 +32,7 @@ jobs:
               run: pnpm i --frozen-lockfile
 
             - name: Run prettier
-              run: pnpm prettier --write 'resources/**/*.{css,js,vue}'
+              run: pnpm prettier --write 'resources/**/*.{css,js,ts,tsx}'
 
             - uses: stefanzweifel/git-auto-commit-action@v5
               with:
