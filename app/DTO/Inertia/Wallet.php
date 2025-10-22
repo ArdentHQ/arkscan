@@ -40,7 +40,7 @@ class Wallet extends Data
         #[LiteralTypeScriptType('Record<string, any>')]
         public ?array $attributes,
         public ?self $vote,
-        public string $voteUrl,
+        public ?string $voteUrl,
     ) {
     }
 
@@ -52,6 +52,11 @@ class Wallet extends Data
         $vote        = $viewModel->vote();
         if ($vote !== null) {
             $votedWallet = self::fromModel($vote->model());
+        }
+
+        $voteUrl = null;
+        if ($viewModel->isValidator() && $wallet->public_key !== null) {
+            $voteUrl = $viewModel->voteUrl();
         }
 
         return new self(
@@ -76,7 +81,7 @@ class Wallet extends Data
             fiatValue: ExchangeRate::convert($wallet->balance, null),
             totalForged: (string) $viewModel->totalForged(),
             vote: $votedWallet,
-            voteUrl: $viewModel->voteUrl(),
+            voteUrl: $voteUrl,
         );
     }
 }
