@@ -7,6 +7,7 @@ use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
+use App\Services\ArkVaultUrlBuilder;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\ViewModels\TransactionViewModel;
@@ -129,6 +130,7 @@ it('should make an instance', function () {
             'totalForged'                 => '0',
             'hasUsername'                 => true,
             'isResigned'                  => false,
+            'voteUrl'                     => null,
         ],
         'recipient' => [
             'address'                     => $walletTo->address,
@@ -152,6 +154,7 @@ it('should make an instance', function () {
             'totalForged'                 => '0',
             'hasUsername'                 => true,
             'isResigned'                  => false,
+            'voteUrl'                     => null,
         ],
     ]);
 });
@@ -274,6 +277,7 @@ it('should make an instance for a vote transaction', function () {
             'totalForged'                 => '0',
             'hasUsername'                 => true,
             'isResigned'                  => false,
+            'voteUrl'                     => null,
         ],
         'recipient' => null,
     ]);
@@ -451,6 +455,7 @@ it('should make an instance for a validator resignation transaction', function (
                 'totalForged'                 => '0',
                 'hasUsername'                 => true,
                 'isResigned'                  => false,
+                'voteUrl'                     => null,
             ],
             'recipient' => null,
         ],
@@ -477,6 +482,7 @@ it('should make an instance for a validator resignation transaction', function (
             'totalForged'                 => '0',
             'hasUsername'                 => true,
             'isResigned'                  => false,
+            'voteUrl'                     => null,
         ],
         'recipient' => null,
     ]);
