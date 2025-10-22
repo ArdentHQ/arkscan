@@ -7,7 +7,6 @@ use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
-use App\Services\ArkVaultUrlBuilder;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\ViewModels\TransactionViewModel;
