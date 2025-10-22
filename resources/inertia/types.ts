@@ -4,7 +4,6 @@ export interface IBlock {
     hash: string;
     number: number;
 }
-
 export interface IValidator {
     wallet: IWallet;
     lastBlock: IBlock | null;
@@ -34,50 +33,3 @@ export interface IStatistics {
         };
     };
 }
-
-export interface INetwork {
-    coin: string;
-    name: string;
-    alias: string;
-    api: string;
-    explorerTitle: string;
-    legacyExplorerUrl: string;
-    currency: string;
-    currencySymbol: string;
-    confirmations: number;
-    knownWalletsUrl: string;
-    knownWallets: string[];
-    knownContracts: string[];
-    canBeExchanged: boolean;
-    nethash: string;
-    epoch: string;
-    validatorCount: number;
-    blockTime: number;
-    blockReward: number;
-    supply: number;
-}
-
-export interface ISettings {
-    currency: string;
-    priceChart: boolean;
-    feeChart: boolean;
-    theme: string;
-}
-
-export interface ICurrency {
-    currency: string;
-    locale: string | null;
-    symbol: string | null;
-}
-
-export interface IConfigProductivity {
-    warning: number;
-    danger: number;
-}
-
-export interface IConfigArkConnect {
-    enabled: boolean;
-    vaultUrl: string;
-}
-
-export type Currencies = Record<string, ICurrency>;

@@ -1,3 +1,67 @@
+export type IConfigArkconnect = {
+    enabled: boolean;
+    vaultUrl: string;
+};
+export type IConfigProductivity = {
+    danger: number;
+    warning: number;
+};
+export type ICurrency = {
+    currency: string;
+    locale: string | null;
+    symbol: string | null;
+};
+export type INetwork = {
+    coin: string;
+    name: string;
+    api: string;
+    alias: string;
+    nethash: string;
+    mainnetExplorerUrl: string;
+    testnetExplorerUrl: string;
+    legacyExplorerUrl: string;
+    currency: string;
+    currencySymbol: string;
+    confirmations: number;
+    knownWallets: Array<any>;
+    knownWalletsUrl: string;
+    canBeExchanged: boolean;
+    epoch: string;
+    validatorCount: number;
+    blockTime: number;
+    blockReward: number;
+    base58Prefix: number;
+    contractAddresses: {
+        consensus: string;
+        multipayment: string;
+        username: string;
+    };
+    contractMethods: {
+        transfer: string;
+        multipayment: string;
+        vote: string;
+        unvote: string;
+        validator_registration: string;
+        validator_resignation: string;
+        validator_update: string;
+        username_registration: string;
+        username_resignation: string;
+        contract_deployment: string;
+    };
+};
+export type IRequestData = {
+    currencies: Record<string, ICurrency>;
+    network: INetwork;
+    productivity: IConfigProductivity;
+    settings: ISettings;
+    arkconnect: IConfigArkconnect;
+};
+export type ISettings = {
+    currency: string;
+    priceChart: boolean;
+    feeChart: boolean;
+    theme: string | null;
+};
 export type IWallet = {
     address: string;
     balance: string;

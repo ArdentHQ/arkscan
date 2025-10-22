@@ -5,7 +5,7 @@ export default function WalletOverviewItem({
     titleExtra,
     children,
     maskedMessage = null,
-    className = '',
+    className = "",
 }: {
     title: string;
     titleExtra?: React.ReactNode;
@@ -14,10 +14,13 @@ export default function WalletOverviewItem({
     className?: string;
 }) {
     return (
-        <div className={classNames({
-            "flex flex-col flex-1 p-6 space-y-3 border-t-4 md:p-0 md:border-0 dark:border-black border-theme-secondary-200": true,
-            [className]: !! className,
-        })}>
+        <div
+            className={classNames({
+                "flex flex-col flex-1 p-6 space-y-3 border-t-4 md:p-0 md:border-0 dark:border-black border-theme-secondary-200":
+                    true,
+                [className]: !!className,
+            })}
+        >
             <div className="flex justify-between font-semibold dark:text-theme-dark-200">
                 {title}
 
@@ -36,5 +39,5 @@ export default function WalletOverviewItem({
                 )}
             </div>
         </div>
-    )
+    );
 }
