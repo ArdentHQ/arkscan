@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
+use App\Services\ArkVaultUrlBuilder;
 use App\Services\BigNumber;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\ValidatorCache;
@@ -47,6 +48,7 @@ it('should make an instance for non-validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
         'isResigned'                  => false,
     ]);
 });
@@ -89,6 +91,7 @@ it('should make an instance for active validators', function () {
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
         'isResigned'                  => false,
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
 });
 
@@ -130,6 +133,7 @@ it('should make an instance for standby validators', function () {
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
         'isResigned'                  => true,
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
 });
 
@@ -194,6 +198,7 @@ it('should make an instance for a voting wallet', function () {
             'fiatValue'                   => '$200.68',
             'totalForged'                 => '2.46',
             'isResigned'                  => false,
+            'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($votedWallet->public_key),
         ],
         'votes'                       => '0',
         'productivity'                => 0.0,
@@ -202,5 +207,6 @@ it('should make an instance for a voting wallet', function () {
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
         'isResigned'                  => false,
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
 });
