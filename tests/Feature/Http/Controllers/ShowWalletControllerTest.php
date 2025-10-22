@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
+use App\Models\Wallet;
 use App\Facades\Settings;
 use App\Models\Transaction;
-use App\Models\Wallet;
+use App\DTO\Inertia\ISettings;
 use App\Services\Cache\NetworkCache;
-use App\Services\Cache\ValidatorCache;
 use App\ViewModels\ViewModelFactory;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Route;
+use App\Services\Cache\ValidatorCache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\View\Compilers\BladeCompiler;
 
 it('should render the page without any errors', function () {
@@ -55,7 +56,14 @@ it('should not double up currency for crypto', function () {
         ->shouldReceive('get')
         ->andReturnNull()
         ->shouldReceive('all')
-        ->andReturn([]);
+        ->andReturn([])
+        ->shouldReceive('data')
+        ->andReturn(new ISettings(
+            currency: 'BTC',
+            priceChart: true,
+            feeChart: true,
+            theme: null,
+        ));
 
     $wallet = Wallet::factory()->create();
 
@@ -77,7 +85,14 @@ it('should show currency symbol and code for crypto', function () {
         ->shouldReceive('get')
         ->andReturnNull()
         ->shouldReceive('all')
-        ->andReturn([]);
+        ->andReturn([])
+        ->shouldReceive('data')
+        ->andReturn(new ISettings(
+            currency: 'GBP',
+            priceChart: true,
+            feeChart: true,
+            theme: null,
+        ));
 
     $wallet = Wallet::factory()->create();
 
@@ -100,7 +115,14 @@ it('should not show overview value if cannot be exchanged', function () {
         ->shouldReceive('get')
         ->andReturnNull()
         ->shouldReceive('all')
-        ->andReturn([]);
+        ->andReturn([])
+        ->shouldReceive('data')
+        ->andReturn(new ISettings(
+            currency: 'GBP',
+            priceChart: true,
+            feeChart: true,
+            theme: null,
+        ));
 
     $wallet = Wallet::factory()->create();
 
