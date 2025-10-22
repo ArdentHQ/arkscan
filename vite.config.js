@@ -17,10 +17,10 @@ export default ({ mode }) => defineConfig({
         i18n({
             langDirname: 'resources/lang',
         }),
-        svgr(),
         i18n({
-            langDirname: 'vendor/arkecosystem/foundation/resources/lang',
+            langDirname: resolve(__dirname, '/vendor/arkecosystem/foundation/resources/lang'),
         }),
+        svgr(),
     ],
     resolve: {
         alias: {
