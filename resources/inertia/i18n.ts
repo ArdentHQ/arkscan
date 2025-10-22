@@ -1,27 +1,15 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import defaultTranslations from "../lang/php_en.json";
+import uiTranslations from "../lang/ui/php_en.json";
 
 export default async function loadI18n() {
-    const files = {
-        'translation': import.meta.glob('../lang/*.json'),
-        'ui': import.meta.glob('../../vendor/arkecosystem/foundation/resources/lang/*.json'),
+    const resources: Record<string, any> = {
+        en: {
+            'translation': JSON.parse(JSON.stringify(defaultTranslations).replace(/:([A-Za-z0-9_]+)/g, "{{$1}}")),
+            'ui': JSON.parse(JSON.stringify(uiTranslations).replace(/:([A-Za-z0-9_]+)/g, "{{$1}}")),
+        },
     };
-
-    const resources: Record<string, any> = {};
-    for (const [key, pathFiles] of Object.entries(files)) {
-        for (const path in pathFiles) {
-            const match = path.match(/..\/lang\/php_(.*)\.json$/);
-            if (! match) {
-                continue;
-            }
-
-            if (! resources[match[1]]) {
-                resources[match[1]] = {};
-            }
-
-            resources[match[1]][key] = JSON.parse(JSON.stringify((await pathFiles[path]()).default).replace(/:([A-Za-z0-9_]+)/g, "{{$1}}"));
-        }
-    }
 
     i18n
         .use(initReactI18next) // passes i18n down to react-i18next
