@@ -1,8 +1,9 @@
+import { IWallet } from "./types/generated";
+
 export interface IBlock {
     hash: string;
     number: number;
 }
-
 
 export interface IValidator {
     wallet: IWallet;
