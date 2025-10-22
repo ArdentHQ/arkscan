@@ -17,7 +17,10 @@ export default ({ mode }) => defineConfig({
         i18n({
             paths: [
                 'resources/lang',
-                'vendor/arkecosystem/foundation/resources/lang',
+                {
+                    src: 'vendor/arkecosystem/foundation/resources/lang',
+                    dest: 'resources/lang/ui',
+                },
             ],
         }),
         svgr(),

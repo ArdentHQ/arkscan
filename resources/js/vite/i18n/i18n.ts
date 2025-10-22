@@ -8,8 +8,10 @@ import { convertToKeyType, saveKeyTypeToFile } from './includes/key-type';
 import parser from './includes/parser';
 import locale from './includes/locale';
 
+type LangPath = string | { src: string; dest: string };
+
 interface ConfigInterface {
-    paths: string[];
+    paths: LangPath[];
     typeDestinationPath?: string;
     typeTranslationKeys?: boolean;
 }
@@ -64,7 +66,10 @@ export default function i18n(config: ConfigInterface) {
         config() {
             const keys: string[] = [];
 
-            for (const langDirname of langPaths) {
+            for (const langPath of langPaths) {
+                const langDirname = typeof langPath === 'string' ? langPath : langPath.src;
+                const langDestDirname = typeof langPath === 'string' ? langPath : langPath.dest;
+
                 // Check language directory is exists.
                 if (!fs.existsSync(langDirname)) {
                     const msg = [
@@ -88,7 +93,7 @@ export default function i18n(config: ConfigInterface) {
                 phpLocales = locale.getPhpLocale(langDirname);
 
                 if (phpLocales.length > 0) {
-                    files.push(...parser(langDirname));
+                    files.push(...parser(langDirname, langDestDirname));
                     isPhpLocale = true;
 
                     if (config?.typeTranslationKeys) {
@@ -112,14 +117,17 @@ export default function i18n(config: ConfigInterface) {
         handleHotUpdate(ctx: any) {
             const keys: string[] = [];
 
-            for (const langDirname of langPaths) {
+            for (const langPath of langPaths) {
+                const langDirname = typeof langPath === 'string' ? langPath : langPath.src;
+                const langDestDirname = typeof langPath === 'string' ? langPath : langPath.dest;
+
                 if (config?.typeTranslationKeys) {
                     pushKeys(keys, jsonLocales, langDirname);
                 }
 
                 if (isPhpLocale) {
                     if (/lang\/.*\.php$/.test(ctx.file)) {
-                        files.push(...parser(langDirname));
+                        files.push(...parser(langDirname, langDestDirname));
                     }
 
                     if (config?.typeTranslationKeys) {
