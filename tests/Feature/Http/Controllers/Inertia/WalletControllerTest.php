@@ -60,8 +60,8 @@ it('should have transactions', function () {
         ->transfer()
         ->create([
             'sender_public_key' => $altWallet->public_key,
-            'from' => $altWallet->address,
-            'to' => $this->subject->address,
+            'from'              => $altWallet->address,
+            'to'                => $this->subject->address,
         ])
         ->fresh();
 
@@ -74,8 +74,8 @@ it('should have transactions', function () {
                 ->where('transactions.current_page', 1)
                 ->where('transactions.last_page', 1)
                 ->where('transactions.meta', [
-                    "pageName"  => "page",
-                    "urlParams" => [],
+                    'pageName'  => 'page',
+                    'urlParams' => [],
                 ])
                 ->where('transactions.data', function ($transactions) use ($sent, $received) {
                     $transactionIds = collect($transactions)->pluck('hash');

@@ -189,7 +189,7 @@ final class TransactionFactory extends Factory
     public function contractDeployment(): Factory
     {
         return $this->state(fn () => [
-            'to' => null,
+            'to'                        => null,
             'deployed_contract_address' => fn () => Wallet::factory()->create()->address,
         ]);
     }

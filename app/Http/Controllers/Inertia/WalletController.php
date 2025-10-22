@@ -97,7 +97,7 @@ final class WalletController
     }
 
     /**
-     * TODO: implement filters - https://app.clickup.com/t/86dy1up1c
+     * TODO: implement filters - https://app.clickup.com/t/86dy1up1c.
      *
      * @codeCoverageIgnore
      */
@@ -111,7 +111,7 @@ final class WalletController
     }
 
     /**
-     * TODO: implement filters - https://app.clickup.com/t/86dy1up1c
+     * TODO: implement filters - https://app.clickup.com/t/86dy1up1c.
      *
      * @codeCoverageIgnore
      */

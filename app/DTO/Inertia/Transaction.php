@@ -66,7 +66,8 @@ class Transaction extends Data
         public ?string $votedFor,
         public ?WalletDTO $sender,
         public ?WalletDTO $recipient,
-    ) {}
+    ) {
+    }
 
     public static function fromModel(Model $transaction, ?string $address = null): self
     {
@@ -80,7 +81,7 @@ class Transaction extends Data
             }
         }
 
-        $sender = null;
+        $sender        = null;
         $senderAddress = $viewModel->sender()?->address();
         if ($senderAddress !== null) {
             $senderWallet = Wallets::findByAddress($senderAddress);
