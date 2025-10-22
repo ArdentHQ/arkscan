@@ -70,6 +70,7 @@ export type IWallet = {
     totalForged: string;
     attributes: Record<string, any>;
     vote: IWallet | null;
+    voteUrl: string;
 };
 export enum SortDirection {
     ASC = "asc",

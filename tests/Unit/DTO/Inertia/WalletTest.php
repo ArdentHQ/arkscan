@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
+use App\Services\ArkVaultUrlBuilder;
 use App\Services\BigNumber;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\ValidatorCache;
@@ -47,7 +48,11 @@ it('should make an instance for non-validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
+<<<<<<< HEAD
         'hasUsername'                 => true,
+=======
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+>>>>>>> origin/refactor/migrate-wallet-page-to-inertia
         'isResigned'                  => false,
     ]);
 });
@@ -91,6 +96,7 @@ it('should make an instance for active validators', function () {
         'totalForged'                 => '2.46',
         'hasUsername'                 => false,
         'isResigned'                  => false,
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
 });
 
@@ -133,6 +139,7 @@ it('should make an instance for standby validators', function () {
         'totalForged'                 => '2.46',
         'hasUsername'                 => false,
         'isResigned'                  => true,
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
 });
 
@@ -197,7 +204,11 @@ it('should make an instance for a voting wallet', function () {
             'fiatValue'                   => '$200.68',
             'totalForged'                 => '2.46',
             'isResigned'                  => false,
+<<<<<<< HEAD
             'hasUsername'                 => false,
+=======
+            'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($votedWallet->public_key),
+>>>>>>> origin/refactor/migrate-wallet-page-to-inertia
         ],
         'votes'                       => '0',
         'productivity'                => 0.0,
@@ -207,5 +218,6 @@ it('should make an instance for a voting wallet', function () {
         'totalForged'                 => '0',
         'hasUsername'                 => true,
         'isResigned'                  => false,
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
 });

@@ -40,6 +40,7 @@ class Wallet extends Data
         #[LiteralTypeScriptType('Record<string, any>')]
         public ?array $attributes,
         public ?self $vote,
+        public string $voteUrl,
     ) {
     }
 
@@ -75,6 +76,7 @@ class Wallet extends Data
             fiatValue: ExchangeRate::convert($wallet->balance, null),
             totalForged: (string) $viewModel->totalForged(),
             vote: $votedWallet,
+            voteUrl: $viewModel->voteUrl(),
         );
     }
 }
