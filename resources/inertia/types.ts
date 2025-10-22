@@ -33,6 +33,7 @@ export interface IStatistics {
         };
     };
 }
+
 export interface IPaginatedResponse<T> {
     data: T[];
     current_page: number;
@@ -57,8 +58,4 @@ export interface IPaginatedResponse<T> {
     total: number;
 
     noResultsMessage: string;
-}
-
-export interface IConfigPagination {
-    per_page: number;
 }

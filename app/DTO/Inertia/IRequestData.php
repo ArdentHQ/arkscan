@@ -18,6 +18,7 @@ class IRequestData extends Data
         public IConfigProductivity $productivity,
         public ISettings $settings,
         public IConfigArkconnect $arkconnect,
+        public IConfigPagination $pagination,
     ) {
     }
 }

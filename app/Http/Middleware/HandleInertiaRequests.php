@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\DTO\Inertia\IConfigArkconnect;
+use App\DTO\Inertia\IConfigPagination;
 use App\DTO\Inertia\IConfigProductivity;
 use App\DTO\Inertia\ICurrency;
 use App\DTO\Inertia\IRequestData;
@@ -53,7 +54,7 @@ class HandleInertiaRequests extends Middleware
                     'vaultUrl' => config('arkscan.urls.vault_url'),
                 ]),
                 'currencies'   => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
-                'pagination'   => config('arkscan.pagination'), // TODO: move to its own DTO
+                'pagination'   => IConfigPagination::from(config('arkscan.pagination')),
             ])->toArray(),
             ...parent::share($request),
         ];

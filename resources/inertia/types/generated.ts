@@ -2,6 +2,9 @@ export type IConfigArkconnect = {
     enabled: boolean;
     vaultUrl: string;
 };
+export type IConfigPagination = {
+    per_page: number;
+};
 export type IConfigProductivity = {
     danger: number;
     warning: number;
@@ -55,6 +58,7 @@ export type IRequestData = {
     productivity: IConfigProductivity;
     settings: ISettings;
     arkconnect: IConfigArkconnect;
+    pagination: IConfigPagination;
 };
 export type ISettings = {
     currency: string;
@@ -71,7 +75,7 @@ export type ITransaction = {
     nonce: number;
     sender_public_key: string;
     from: string;
-    to: string;
+    to: string | null;
     value: string;
     gas_price: string;
     gas: string;
@@ -134,7 +138,7 @@ export type IWallet = {
     totalForged: string;
     attributes: Record<string, any>;
     vote: IWallet | null;
-    voteUrl: string;
+    voteUrl: string | null;
 };
 export enum SortDirection {
     ASC = "asc",
