@@ -49,7 +49,7 @@ it('should make an instance for non-validators', function () {
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
         'hasUsername'                 => true,
-        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+        'voteUrl'                     => null,
         'isResigned'                  => false,
     ]);
 });
@@ -212,6 +212,6 @@ it('should make an instance for a voting wallet', function () {
         'totalForged'                 => '0',
         'hasUsername'                 => true,
         'isResigned'                  => false,
-        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+        'voteUrl'                     => null,
     ]);
 });
