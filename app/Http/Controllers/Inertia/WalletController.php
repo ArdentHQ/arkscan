@@ -23,15 +23,15 @@ final class WalletController
     // TODO: implement filters - https://app.clickup.com/t/86dy1up1c
     private array $filters = [
         'transactions' => [
-            'outgoing'           => true,
-            'incoming'           => true,
-            'transfers'          => true,
-            'multipayments'      => true,
-            'votes'              => true,
-            'validator'          => true,
-            'username'           => true,
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
             'contract_deployment' => true,
-            'others'             => true,
+            'others'              => true,
         ],
     ];
 
