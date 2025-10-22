@@ -55,6 +55,8 @@ final class WalletController
 
     public function getTransactions(Wallet $wallet): AbstractPaginator
     {
+        // TODO: implement filters - https://app.clickup.com/t/86dy1up1c
+        // @codeCoverageIgnoreStart
         $emptyResults = (new LengthAwarePaginator([], 0, $this->perPage(), $this->page()));
         if (! $this->hasAddressingFilters()) {
             return $emptyResults;
@@ -63,12 +65,13 @@ final class WalletController
         if (! $this->hasTransactionTypeFilters()) {
             return $emptyResults;
         }
+        // @codeCoverageIgnoreEnd
 
         return $this->getTransactionsQuery($wallet)
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage(), page: $this->page())
-            ->through(fn(Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address));
+            ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address));
     }
 
     private function page(): int
@@ -86,13 +89,18 @@ final class WalletController
         return Transaction::query()
             ->withTypeFilter($this->filters['transactions'])
             ->with('votedFor')
-            ->where(fn($query) => $query->when($this->filters['transactions']['outgoing'], fn($query) => $query->where('sender_public_key', $wallet->public_key)))
-            ->orWhere(fn($query) => $query->when($this->filters['transactions']['incoming'], fn($query) => $query->where('to', $wallet->address)))
+            ->where(fn ($query) => $query->when($this->filters['transactions']['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
+            ->orWhere(fn ($query) => $query->when($this->filters['transactions']['incoming'], fn ($query) => $query->where('to', $wallet->address)))
             ->orWhere(function ($query) use ($wallet) {
-                $query->when($this->filters['transactions']['multipayments'], fn($query) => $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address));
+                $query->when($this->filters['transactions']['multipayments'], fn ($query) => $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address));
             });
     }
 
+    /**
+     * TODO: implement filters - https://app.clickup.com/t/86dy1up1c
+     *
+     * @codeCoverageIgnore
+     */
     private function hasAddressingFilters(): bool
     {
         if ($this->filters['transactions']['incoming'] === true) {
@@ -102,6 +110,11 @@ final class WalletController
         return $this->filters['transactions']['outgoing'] === true;
     }
 
+    /**
+     * TODO: implement filters - https://app.clickup.com/t/86dy1up1c
+     *
+     * @codeCoverageIgnore
+     */
     private function hasTransactionTypeFilters(): bool
     {
         if ($this->filters['transactions']['transfers'] === true) {
@@ -133,6 +146,8 @@ final class WalletController
 
     private function getTransactionsNoResultsMessageProperty(int $count): null|string
     {
+        // TODO: implement filters - https://app.clickup.com/t/86dy1up1c
+        // @codeCoverageIgnoreStart
         if (! $this->hasAddressingFilters() && ! $this->hasTransactionTypeFilters()) {
             return trans('tables.transactions.no_results.no_filters');
         }
@@ -140,6 +155,7 @@ final class WalletController
         if (! $this->hasAddressingFilters()) {
             return trans('tables.transactions.no_results.no_addressing_filters');
         }
+        // @codeCoverageIgnoreEnd
 
         if ($count === 0) {
             return trans('tables.transactions.no_results.no_results');

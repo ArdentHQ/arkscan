@@ -197,6 +197,7 @@ it('should make an instance for a voting wallet', function () {
             'fiatValue'                   => '$200.68',
             'totalForged'                 => '2.46',
             'isResigned'                  => false,
+            'hasUsername'                 => false,
         ],
         'votes'                       => '0',
         'productivity'                => 0.0,

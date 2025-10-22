@@ -25,7 +25,7 @@ class Transaction extends Data
         public int $nonce,
         public string $sender_public_key,
         public string $from,
-        public string $to,
+        public ?string $to,
         public string $value,
         public string $gas_price,
         public string $gas,
@@ -80,7 +80,7 @@ class Transaction extends Data
             }
         }
 
-        $sender        = null;
+        $sender = null;
         $senderAddress = $viewModel->sender()?->address();
         if ($senderAddress !== null) {
             $senderWallet = Wallets::findByAddress($senderAddress);
@@ -88,12 +88,14 @@ class Transaction extends Data
             $sender = WalletDTO::fromModel($senderWallet);
         }
 
-        $recipient        = null;
-        $recipientAddress = $viewModel->recipient()?->address();
-        if ($recipientAddress !== null) {
-            $recipientWallet = Wallets::findByAddress($recipientAddress);
+        $recipient = null;
+        if ($viewModel->isTransfer() || $viewModel->isTokenTransfer()) {
+            $recipientAddress = $viewModel->recipient()?->address();
+            if ($recipientAddress !== null) {
+                $recipientWallet = Wallets::findByAddress($recipientAddress);
 
-            $recipient = WalletDTO::fromModel($recipientWallet);
+                $recipient = WalletDTO::fromModel($recipientWallet);
+            }
         }
 
         $validatorRegistration            = null;
