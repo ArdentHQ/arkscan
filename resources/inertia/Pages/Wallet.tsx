@@ -1,14 +1,7 @@
+import { PageProps } from "@inertiajs/core";
 import { Head, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
-import {
-    INetwork,
-    Currencies,
-    ISettings,
-    IConfigProductivity,
-    IConfigArkConnect,
-    IConfigPagination,
-    IPaginatedResponse,
-} from "@/types";
+import { IPaginatedResponse } from "@/types";
 import { IWallet, ITransaction } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
@@ -109,24 +102,14 @@ const WalletTabs = ({
 };
 
 export default function Wallet({
-    arkconnect,
-    currencies,
-    network,
-    productivity,
-    settings,
-    pagination,
     transactions,
     wallet,
-}: {
-    arkconnect: IConfigArkConnect;
-    currencies: Currencies;
-    network: INetwork;
-    productivity: IConfigProductivity;
-    settings: ISettings;
-    pagination: IConfigPagination;
+    network,
+    ...props
+}: PageProps<{
     transactions: IPaginatedResponse<ITransaction>;
     wallet: IWallet;
-}) {
+}>) {
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {
@@ -139,14 +122,7 @@ export default function Wallet({
         <>
             <Head>{metadata}</Head>
 
-            <ConfigProvider
-                arkconnect={arkconnect}
-                currencies={currencies}
-                productivity={productivity}
-                network={network}
-                settings={settings}
-                pagination={pagination}
-            >
+            <ConfigProvider network={network} {...props}>
                 <Overview wallet={wallet} />
 
                 <PageHandlerProvider>

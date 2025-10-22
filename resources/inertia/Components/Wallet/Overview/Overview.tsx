@@ -18,12 +18,12 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
                 value={wallet.address}
                 className="flex items-center p-2 w-full h-auto focus-visible:ring-inset group button-secondary"
                 wrapperClass="flex-1"
-                tooltipContent={t('pages.wallet.address_copied')}
+                tooltipContent={t("pages.wallet.address_copied")}
                 withCheckmarks
                 checkmarksClass="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
             />
 
-            {! wallet.isCold &&
+            {!wallet.isCold && (
                 <>
                     <PageHeaderPublicKeyAction wallet={wallet} />
 
@@ -31,7 +31,7 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
                         <PageHeaderLegacyAddressAction wallet={wallet} />
                     )}
                 </>
-            }
+            )}
 
             <PageHeaderQRCodeModalAction wallet={wallet} />
         </>
@@ -44,7 +44,7 @@ export default function Overview({ wallet }: { wallet: IWallet }) {
     return (
         <>
             <PageHeaderContainer
-                label={t('general.address')}
+                label={t("general.address")}
                 extra={<OverviewActions wallet={wallet} />}
             >
                 <TruncateDynamic value={wallet.address} />

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\DTO\Inertia\IConfigArkconnect;
+use App\DTO\Inertia\IConfigProductivity;
+use App\DTO\Inertia\ICurrency;
+use App\DTO\Inertia\IRequestData;
 use App\Facades\Network;
 use App\Facades\Settings;
 use Illuminate\Http\Request;
@@ -40,17 +44,18 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return [
+            ...IRequestData::from([
+                'network'      => Network::data(),
+                'settings'     => Settings::data(),
+                'productivity' => IConfigProductivity::from(config('arkscan.productivity')),
+                'arkconnect'   => IConfigArkconnect::from([
+                    'enabled'  => config('arkscan.arkconnect.enabled'),
+                    'vaultUrl' => config('arkscan.urls.vault_url'),
+                ]),
+                'currencies'   => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
+                'pagination'   => config('arkscan.pagination'), // TODO: move to its own DTO
+            ])->toArray(),
             ...parent::share($request),
-
-            'currencies'   => config('currencies.currencies'),
-            'network'      => Network::toArray(),
-            'productivity' => config('arkscan.productivity'),
-            'settings'     => Settings::all(),
-            'pagination'   => config('arkscan.pagination'),
-            'arkconnect'   => [
-                'enabled'  => config('arkscan.arkconnect.enabled'),
-                'vaultUrl' => config('arkscan.urls.vault_url'),
-            ],
         ];
     }
 }
