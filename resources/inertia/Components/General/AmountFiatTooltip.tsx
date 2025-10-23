@@ -21,9 +21,7 @@ function AmountOutput({
 }) {
     return (
         <span>
-            <span>
-                {isSent && !isSentToSelf ? "-" : isReceived ? "+" : ""}&nbsp;
-            </span>
+            <span>{isSent && !isSentToSelf ? "-" : isReceived ? "+" : ""}&nbsp;</span>
 
             {typeof amount === "number" ? (
                 transaction ? (
@@ -60,13 +58,9 @@ export default function AmountFiatTooltip({
     const { t } = useTranslation();
     const { network } = useConfig();
 
-    const classes: string[] = [
-        "inline-flex items-center font-semibold",
-        className,
-    ];
+    const classes: string[] = ["inline-flex items-center font-semibold", className];
 
-    let isSentToSelf =
-        typeof amountForItself === "number" && amountForItself > 0;
+    let isSentToSelf = typeof amountForItself === "number" && amountForItself > 0;
 
     let sent = isSent;
 
@@ -120,7 +114,7 @@ export default function AmountFiatTooltip({
                         amount: currency(amountForItself, network!.currency),
                     })}
                 >
-                    <div className="flex items-center px-1.5 mr-1.5 h-full py-[4.5px] text-theme-orange-dark bg-[#F6DFB5] dim:bg-theme-failed-state-bg dark:bg-theme-failed-state-bg dark:text-theme-dark-50">
+                    <div className="mr-1.5 flex h-full items-center bg-[#F6DFB5] px-1.5 py-[4.5px] text-theme-orange-dark dim:bg-theme-failed-state-bg dark:bg-theme-failed-state-bg dark:text-theme-dark-50">
                         <HintSmallIcon className="h-3 w-3" />
                     </div>
                 </Tooltip>

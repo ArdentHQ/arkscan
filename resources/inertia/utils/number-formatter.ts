@@ -21,7 +21,7 @@ export function isFiat(currency: string): boolean {
         return false;
     }
 
-    console.log('isFiat', currencies![currency]?.locale);
+    console.log("isFiat", currencies![currency]?.locale);
 
     return currencies![currency]?.locale !== null;
 }
@@ -33,7 +33,7 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
     if (!isFiat(currency)) {
         const { currencies } = useConfig();
         const symbol = currencies![currency]?.symbol ?? currency;
-        const formatted = new Intl.NumberFormat('en-US', {
+        const formatted = new Intl.NumberFormat("en-US", {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals,
         }).format(value);
@@ -42,10 +42,10 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
     }
 
     const { currencies } = useConfig();
-    const locale = currencies![currency]?.locale ?? 'en-US';
+    const locale = currencies![currency]?.locale ?? "en-US";
 
     return new Intl.NumberFormat(locale, {
-        style: 'currency',
+        style: "currency",
         currency,
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
@@ -55,7 +55,7 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
 export function currencyWithDecimals(value: number, currency: string, decimals?: number): string {
     if (isFiat(currency)) {
         const { currencies } = useConfig();
-        const locale = currencies![currency]?.locale ?? 'en-US';
+        const locale = currencies![currency]?.locale ?? "en-US";
         const maximumFractionDigits = decimals ?? 4;
 
         // Workaround similar to the PHP version: round the numeric value to the requested
@@ -63,7 +63,7 @@ export function currencyWithDecimals(value: number, currency: string, decimals?:
         const rounded = Number(Number(value).toFixed(maximumFractionDigits));
 
         return new Intl.NumberFormat(locale, {
-            style: 'currency',
+            style: "currency",
             currency,
             minimumFractionDigits: 2,
             maximumFractionDigits,
@@ -75,7 +75,7 @@ export function currencyWithDecimals(value: number, currency: string, decimals?:
     const symbol = currencies![currency]?.symbol ?? currency;
     const usedDecimals = decimals ?? CRYPTO_DECIMALS;
 
-    const formatted = new Intl.NumberFormat('en-US', {
+    const formatted = new Intl.NumberFormat("en-US", {
         minimumFractionDigits: usedDecimals,
         maximumFractionDigits: usedDecimals,
     }).format(value);
@@ -91,7 +91,7 @@ export function networkCurrency(value: number | string, decimals = 8, withSuffix
     // to avoid unexpected rounding behaviour.
     const rounded = Number(numeric.toFixed(decimals));
 
-    const formatted = new Intl.NumberFormat('en-US', {
+    const formatted = new Intl.NumberFormat("en-US", {
         minimumFractionDigits: Math.min(2, decimals),
         maximumFractionDigits: decimals,
     }).format(rounded);
@@ -111,7 +111,7 @@ export function networkCurrency(value: number | string, decimals = 8, withSuffix
         // { defaults: { networkCurrency: 'ARK' } }
         cfg.defaults?.networkCurrency ??
         // last resort
-        'ARK';
+        "ARK";
 
     return `${formatted} ${networkCurrency}`;
 }

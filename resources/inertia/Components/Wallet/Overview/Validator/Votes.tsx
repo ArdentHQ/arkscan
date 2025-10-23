@@ -9,18 +9,15 @@ export default function WalletOverviewValidatorVotes({ wallet }: { wallet: IWall
 
     return (
         <WalletOverviewItemEntry
-            title={t('pages.wallet.validator.votes_title')}
-            hasEmptyValue={! wallet.isValidator}
-            value={(
+            title={t("pages.wallet.validator.votes_title")}
+            hasEmptyValue={!wallet.isValidator}
+            value={
                 <>
                     {wallet.isValidator && (
-                        <div className="flex space-x-1 items-center">
+                        <div className="flex items-center space-x-1">
                             <div>
                                 <Tooltip content={NetworkCurrency({ value: wallet.votes })}>
-                                    <NetworkCurrency
-                                        value={wallet.votes}
-                                        decimals={0}
-                                    />
+                                    <NetworkCurrency value={wallet.votes} decimals={0} />
                                 </Tooltip>
                             </div>
 
@@ -31,12 +28,12 @@ export default function WalletOverviewValidatorVotes({ wallet }: { wallet: IWall
                                 }}
                                 className="link"
                             >
-                                {t('general.view')}
+                                {t("general.view")}
                             </button>
                         </div>
                     )}
                 </>
-            )}
+            }
         />
     );
 }

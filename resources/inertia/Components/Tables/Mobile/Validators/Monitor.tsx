@@ -17,37 +17,29 @@ import { useTranslation } from "react-i18next";
 
 export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
     return (
-        <div className="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+        <div className="flex min-w-0 flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
             <div className="flex items-center">
                 <div className="hidden items-center pr-3 sm:flex">
                     <FavoriteIcon validator={validator} />
                 </div>
 
-                <span className="text-sm font-semibold leading-4.25 min-w-[32px] dark:text-theme-dark-200">
+                <span className="min-w-[32px] text-sm font-semibold leading-4.25 dark:text-theme-dark-200">
                     {validator.order}
                 </span>
             </div>
 
-            <div className="flex flex-1 justify-between items-center pl-3 min-w-0">
-                <div className="flex flex-1 items-center min-w-0 space-x-2">
+            <div className="flex min-w-0 flex-1 items-center justify-between pl-3">
+                <div className="flex min-w-0 flex-1 items-center space-x-2">
                     <TableCell className="min-w-0">
-                        <Address
-                            wallet={validator.wallet}
-                            truncate
-                            className="sm:hidden"
-                        />
+                        <Address wallet={validator.wallet} truncate className="sm:hidden" />
 
-                        <Address
-                            wallet={validator.wallet}
-                            truncate={16}
-                            className="hidden sm:block md:hidden"
-                        />
+                        <Address wallet={validator.wallet} truncate={16} className="hidden sm:block md:hidden" />
                     </TableCell>
 
                     <MissedWarning validator={validator} />
                 </div>
 
-                <div className="flex items-center sm:space-x-3 h-[21px]">
+                <div className="flex h-[21px] items-center sm:space-x-3">
                     <div className="flex items-center sm:hidden">
                         <Status withText={false} />
                     </div>
@@ -68,38 +60,32 @@ export function MonitorMobileTable({ validators }: { validators: IValidator[] })
     return (
         <MobileTable>
             {validators.map((validator: IValidator, index) => (
-                <ValidatorStatusProvider
-                    key={index}
-                    forgingAt={validator.forgingAt}
-                    validator={validator}
-                >
+                <ValidatorStatusProvider key={index} forgingAt={validator.forgingAt} validator={validator}>
                     <MobileTableRow
                         expandClass={classNames({
-                            'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700': ! validator.wallet?.isResigned,
+                            "space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700":
+                                !validator.wallet?.isResigned,
                         })}
                         className={classNames({
-                            'validator-monitor-favorite': isFavorite(validator.wallet.public_key),
+                            "validator-monitor-favorite": isFavorite(validator.wallet.public_key),
                         })}
                         expandable={true}
                         header={<MonitorMobileHeader validator={validator} />}
                     >
-                        <TableCell label={t('tables.validator-monitor.status')} className="sm:hidden">
+                        <TableCell label={t("tables.validator-monitor.status")} className="sm:hidden">
                             <Status className="sm:hidden" />
                         </TableCell>
 
-                        <TableCell label={t('tables.validator-monitor.time_to_forge')}>
+                        <TableCell label={t("tables.validator-monitor.time_to_forge")}>
                             <TimeToForge validator={validator} />
                         </TableCell>
 
-                        <TableCell label={t('tables.validator-monitor.block_height')}>
+                        <TableCell label={t("tables.validator-monitor.block_height")}>
                             <BlockHeight validator={validator} />
                         </TableCell>
 
-                        <div className="sm:hidden pt-4 mt-4 border-t sm:border-t-0 sm:pt-0 sm:mt-0 border-theme-secondary-300 dark:border-theme-dark-700">
-                            <FavoriteIcon
-                                validator={validator}
-                                label={t('tables.validator-monitor.favorite')}
-                            />
+                        <div className="mt-4 border-t border-theme-secondary-300 pt-4 dark:border-theme-dark-700 sm:mt-0 sm:hidden sm:border-t-0 sm:pt-0">
+                            <FavoriteIcon validator={validator} label={t("tables.validator-monitor.favorite")} />
                         </div>
                     </MobileTableRow>
                 </ValidatorStatusProvider>
@@ -118,7 +104,7 @@ export function MobileFavoritesTable({ validators }: { validators: IValidator[] 
 
     return (
         <div>
-            <div className="px-6 md:px-10 pb-3 font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+            <div className="px-6 pb-3 font-semibold text-theme-secondary-700 dark:text-theme-dark-200 md:px-10">
                 My Favorites
             </div>
 
@@ -129,19 +115,20 @@ export function MobileFavoritesTable({ validators }: { validators: IValidator[] 
     );
 }
 
-export default function MonitorMobileTableWrapper({ validators, rowCount }: {
+export default function MonitorMobileTableWrapper({
+    validators,
+    rowCount,
+}: {
     validators: IValidator[];
     rowCount: number;
 }) {
     if (!validators || validators.length === 0) {
-        return (
-            <MobileMonitorSkeletonTable rowCount={rowCount} />
-        );
+        return <MobileMonitorSkeletonTable rowCount={rowCount} />;
     }
 
     const { isFavorite } = useValidatorFavorites();
 
-    const unfavoritedValidators = (validators || []).filter((validator) => ! isFavorite(validator.wallet.public_key));
+    const unfavoritedValidators = (validators || []).filter((validator) => !isFavorite(validator.wallet.public_key));
 
     return (
         <div className="md:hidden">

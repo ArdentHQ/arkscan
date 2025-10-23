@@ -75,24 +75,15 @@ export function TransactionsTable({
 
                     <TableHeader>{t("tables.transactions.method")}</TableHeader>
 
-                    <TableHeader>
-                        {t("tables.transactions.addressing")}
-                    </TableHeader>
+                    <TableHeader>{t("tables.transactions.addressing")}</TableHeader>
 
-                    <TableHeader
-                        className="text-right last-until-md-lg"
-                        last-on="md-lg"
-                    >
+                    <TableHeader className="last-until-md-lg text-right" last-on="md-lg">
                         {t("tables.transactions.amount", {
                             currency: network!.currency,
                         })}
                     </TableHeader>
 
-                    <TableHeader
-                        className="text-right"
-                        responsive
-                        breakpoint="md-lg"
-                    >
+                    <TableHeader className="text-right" responsive breakpoint="md-lg">
                         {t("tables.transactions.fee", {
                             currency: network!.currency,
                         })}
@@ -159,9 +150,7 @@ export default function TransactionsTableWrapper({
                     />
                 </div>
 
-                {!!mobile && (
-                    <div className="px-6 md:px-10 md:hidden">{mobile}</div>
-                )}
+                {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
             </>
         );
     }
@@ -181,7 +170,7 @@ function HeaderActions() {
             <div className="flex-1">
                 <button
                     type="button"
-                    className="flex justify-center items-center py-1.5 space-x-2 w-full sm:px-4 button-secondary"
+                    className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
                     disabled
                 >
                     <UnderlineArrowDownIcon className="h-4 w-4" />
@@ -193,15 +182,13 @@ function HeaderActions() {
             <div className="flex-1">
                 <button
                     type="button"
-                    className="flex items-center focus:outline-none dropdown-button transition-default flex-1 justify-center rounded sm:flex-none button-secondary w-full py-1.5 sm:px-4 md:p-2"
+                    className="dropdown-button transition-default button-secondary flex w-full flex-1 items-center justify-center rounded py-1.5 focus:outline-none sm:flex-none sm:px-4 md:p-2"
                     disabled
                 >
-                    <div className="inline-flex items-center mx-auto whitespace-nowrap">
+                    <div className="mx-auto inline-flex items-center whitespace-nowrap">
                         <FilterIcon className="h-4 w-4" />
 
-                        <div className="ml-2 md:hidden">
-                            {t("actions.filter")}
-                        </div>
+                        <div className="ml-2 md:hidden">{t("actions.filter")}</div>
                     </div>
                 </button>
             </div>

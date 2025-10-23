@@ -1,13 +1,13 @@
-import classNames from "@/utils/class-names"
-import { InputHTMLAttributes } from "react"
+import classNames from "@/utils/class-names";
+import { InputHTMLAttributes } from "react";
 
 export default function InputField({
     ref,
     id,
     name,
-    inputClass = '',
-    inputTypeClass = 'input-text',
-    errorClass = 'input-text--error',
+    inputClass = "",
+    inputTypeClass = "input-text",
+    errorClass = "input-text--error",
     error,
 
     ...props
@@ -22,14 +22,12 @@ export default function InputField({
         <input
             ref={ref}
             className={classNames({
-                [inputClass]: !! inputClass,
-                [inputTypeClass]: !! inputTypeClass,
-                [errorClass]: !! error,
+                [inputClass]: !!inputClass,
+                [inputTypeClass]: !!inputTypeClass,
+                [errorClass]: !!error,
             })}
-
             autoCapitalize="none"
             id={id ?? name}
-
             {...props}
 
             // @unless ($noModel)
@@ -44,5 +42,5 @@ export default function InputField({
             // @endif
             // @endUnless
         />
-    )
+    );
 }

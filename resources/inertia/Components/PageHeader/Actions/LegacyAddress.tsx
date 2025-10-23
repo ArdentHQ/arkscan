@@ -12,18 +12,18 @@ export default function PageHeaderLegacyAddressAction({ wallet }: { wallet: IWal
     return (
         <PageHeaderValuePopup
             value={wallet.legacyAddress!}
-            button={<ClockIcon className="w-4 h-4" />}
-            title={t('pages.wallet.legacy-address.title')}
+            button={<ClockIcon className="h-4 w-4" />}
+            title={t("pages.wallet.legacy-address.title")}
             id="legacyAddress"
-            additionalButtons={(
+            additionalButtons={
                 <a
                     href={`${network!.legacyExplorerUrl}/addresses/${wallet.legacyAddress}`}
                     target="_blank"
-                    className="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
+                    className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset"
                 >
-                    <ArrowExternalIcon className="w-4 h-4" />
+                    <ArrowExternalIcon className="h-4 w-4" />
                 </a>
-            )}
+            }
         />
-    )
+    );
 }

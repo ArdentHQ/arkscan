@@ -16,7 +16,7 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
         <>
             <Clipboard
                 value={wallet.address}
-                className="flex items-center p-2 w-full h-auto focus-visible:ring-inset group button-secondary"
+                className="button-secondary group flex h-auto w-full items-center p-2 focus-visible:ring-inset"
                 wrapperClass="flex-1"
                 tooltipContent={t("pages.wallet.address_copied")}
                 withCheckmarks
@@ -43,15 +43,12 @@ export default function Overview({ wallet }: { wallet: IWallet }) {
 
     return (
         <>
-            <PageHeaderContainer
-                label={t("general.address")}
-                extra={<OverviewActions wallet={wallet} />}
-            >
+            <PageHeaderContainer label={t("general.address")} extra={<OverviewActions wallet={wallet} />}>
                 <TruncateDynamic value={wallet.address} />
             </PageHeaderContainer>
 
-            <div className="md:px-10 md:pb-6 md:mx-auto md:max-w-7xl">
-                <div className="flex flex-col md:space-y-3 md-lg:space-y-0 md-lg:flex-row md-lg:space-x-3">
+            <div className="md:mx-auto md:max-w-7xl md:px-10 md:pb-6">
+                <div className="flex flex-col md:space-y-3 md-lg:flex-row md-lg:space-x-3 md-lg:space-y-0">
                     <WalletOverviewWallet wallet={wallet} />
 
                     <WalletOverviewValidator wallet={wallet} />

@@ -16,21 +16,21 @@ function MobileWrapper({ tabs }: { tabs: ITab[] }) {
     return (
         <Dropdown
             dropdownClasses="px-6 w-full"
-            popupStyles={{ width: '100%', zIndex: 20 }}
+            popupStyles={{ width: "100%", zIndex: 20 }}
             zIndex="z-20"
             buttonClass="bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700 w-full"
             button={
-                <div className="flex items-center transition-default w-full">
-                    <div className="flex items-center focus:outline-none dropdown-button transition-default justify-between py-3 px-4 w-full font-semibold text-left text-theme-secondary-900 dark:text-theme-dark-50">
+                <div className="transition-default flex w-full items-center">
+                    <div className="dropdown-button transition-default flex w-full items-center justify-between px-4 py-3 text-left font-semibold text-theme-secondary-900 focus:outline-none dark:text-theme-dark-50">
                         <span>{selectedTab?.text}</span>
 
                         <span
                             className={classNames({
                                 "transition-default": true,
-                                'rotate-180': isOpen,
+                                "rotate-180": isOpen,
                             })}
                         >
-                            <ChevronDownSmallIcon className="w-3 h-3" />
+                            <ChevronDownSmallIcon className="h-3 w-3" />
                         </span>
                     </div>
                 </div>
@@ -52,19 +52,11 @@ function MobileWrapper({ tabs }: { tabs: ITab[] }) {
 export default function Wrapper({ tabs }: { tabs: ITab[] }) {
     return (
         <>
-            <div className="px-6 md:px-10 md:mx-auto md:max-w-7xl">
-                <div className="items-center justify-between inline-flex bg-theme-secondary-100 rounded-xl dark:bg-black relative z-10 hidden mb-3 md:inline-flex">
-                    <div
-                        role="tablist"
-                        className="flex"
-                    >
+            <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
+                <div className="relative z-10 mb-3 inline-flex hidden items-center justify-between rounded-xl bg-theme-secondary-100 dark:bg-black md:inline-flex">
+                    <div role="tablist" className="flex">
                         {tabs.map((tab, index: number) => (
-                            <Tab
-                                key={tab.value}
-                                text={tab.text}
-                                value={tab.value}
-                                withDivider={index > 0}
-                            />
+                            <Tab key={tab.value} text={tab.text} value={tab.value} withDivider={index > 0} />
                         ))}
                     </div>
                 </div>

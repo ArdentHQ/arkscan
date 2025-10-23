@@ -1,5 +1,5 @@
 import Tooltip from "@/Components/General/Tooltip";
-import classNames from "@/utils/class-names"
+import classNames from "@/utils/class-names";
 
 export default function InputErrorTooltip({
     inputRef,
@@ -15,9 +15,9 @@ export default function InputErrorTooltip({
             <button
                 type="button"
                 className={classNames({
-                    'px-4 input-icon focus-visible:rounded': true,
-                    'right-13': shifted,
-                    'right-0': ! shifted,
+                    "input-icon px-4 focus-visible:rounded": true,
+                    "right-13": shifted,
+                    "right-0": !shifted,
                 })}
                 onClick={() => {
                     inputRef?.current?.focus();
@@ -25,7 +25,11 @@ export default function InputErrorTooltip({
             >
                 {/* <x-ark-icon name="circle.exclamation-mark" class="text-theme-danger-500" /> */}
 
-                {shifted && <div className="w-px h-5 transform translate-x-4 bg-theme-secondary-300 dark:bg-theme-secondary-800">&nbsp;</div>}
+                {shifted && (
+                    <div className="h-5 w-px translate-x-4 transform bg-theme-secondary-300 dark:bg-theme-secondary-800">
+                        &nbsp;
+                    </div>
+                )}
             </button>
         </Tooltip>
     );

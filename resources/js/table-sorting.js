@@ -7,7 +7,7 @@ const TableSorting = (
     sortBy = "",
     sortDirection = "asc",
     secondarySortBy = null,
-    secondarySortDirection = "asc"
+    secondarySortDirection = "asc",
 ) => {
     return {
         sortBy,
@@ -46,10 +46,7 @@ const TableSorting = (
 
                     if (!this.getRef(this.sortBy)) {
                         if (this.windowEvent) {
-                            window.removeEventListener(
-                                "updateTableSorting",
-                                this.windowEvent
-                            );
+                            window.removeEventListener("updateTableSorting", this.windowEvent);
 
                             this.windowEvent = null;
                         }
@@ -58,10 +55,7 @@ const TableSorting = (
                     }
 
                     toEl.querySelectorAll("table tbody").forEach((tbody) => {
-                        Alpine.morph(
-                            tbody,
-                            this.update(tbody.cloneNode(true)).outerHTML
-                        );
+                        Alpine.morph(tbody, this.update(tbody.cloneNode(true)).outerHTML);
                     });
                 });
             }
@@ -72,9 +66,9 @@ const TableSorting = (
             if (secondarySortBy) {
                 const secondaryElement = this.getRef(secondarySortBy);
                 if (secondaryElement) {
-                    this.secondarySortIndex = Array.from(
-                        secondaryElement.parentNode.children
-                    ).indexOf(secondaryElement);
+                    this.secondarySortIndex = Array.from(secondaryElement.parentNode.children).indexOf(
+                        secondaryElement,
+                    );
                 }
             }
 
@@ -93,8 +87,7 @@ const TableSorting = (
                 this.sortAsc = !this.sortAsc;
             } else {
                 this.sortBy = header.getAttribute("sorting-id");
-                this.sortAsc =
-                    (header.dataset["initialSort"] ?? "asc") === "asc";
+                this.sortAsc = (header.dataset["initialSort"] ?? "asc") === "asc";
             }
 
             this.sort(header);
@@ -110,11 +103,7 @@ const TableSorting = (
             }
 
             this.getTableRows(table)
-                .sort(
-                    this.sortCallback(
-                        Array.from(element.parentNode.children).indexOf(element)
-                    )
-                )
+                .sort(this.sortCallback(Array.from(element.parentNode.children).indexOf(element)))
                 .forEach((tr) => {
                     table.appendChild(tr);
                 });
@@ -140,21 +129,10 @@ const TableSorting = (
 
         sortCallback(index) {
             return (row1, row2) => {
-                const sortResult = this.sortRows(
-                    row1,
-                    row2,
-                    index,
-                    this.sortAsc
-                );
+                const sortResult = this.sortRows(row1, row2, index, this.sortAsc);
 
                 if (sortResult === 0 && this.secondarySortIndex !== null) {
-                    return this.sortRows(
-                        row1,
-                        row2,
-                        this.secondarySortIndex,
-                        secondarySortDirection === "asc",
-                        false
-                    );
+                    return this.sortRows(row1, row2, this.secondarySortIndex, secondarySortDirection === "asc", false);
                 }
 
                 return sortResult;
@@ -168,7 +146,7 @@ const TableSorting = (
                 this.getCellValue(row1, index),
                 this.getCellValue(row2, index),
                 sortAscending,
-                sortByRowIndex
+                sortByRowIndex,
             );
         },
     };

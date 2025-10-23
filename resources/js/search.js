@@ -3,9 +3,7 @@ const Search = {
         return {
             ...data,
             blurHandler(event) {
-                const blurredOutside = !this.$refs.search.contains(
-                    event.relatedTarget
-                );
+                const blurredOutside = !this.$refs.search.contains(event.relatedTarget);
 
                 if (blurredOutside) {
                     this.$wire.call("clear");

@@ -20,13 +20,7 @@ window.ExportStatus = ExportStatus;
 dayjs.extend(dayjsQuarterOfYear);
 dayjs.extend(dayjsLocalizedFormat);
 
-const TransactionsExport = ({
-    address,
-    userCurrency,
-    rates,
-    network,
-    canBeExchanged,
-}) => {
+const TransactionsExport = ({ address, userCurrency, rates, network, canBeExchanged }) => {
     const csvColumns = {
         id: "TXID",
         timestamp: "Timestamp",
@@ -52,8 +46,7 @@ const TransactionsExport = ({
 
     const columnMapping = {
         id: (transaction) => transaction.hash,
-        timestamp: (transaction) =>
-            dayjs(parseInt(transaction.timestamp)).format("L LTS"),
+        timestamp: (transaction) => dayjs(parseInt(transaction.timestamp)).format("L LTS"),
         sender: (transaction) => transaction.from,
         recipient: (transaction) => transaction.to,
         amount: getTransactionAmount,
@@ -82,9 +75,7 @@ const TransactionsExport = ({
             return this.total(transaction) * this.rate(transaction);
         },
         rate: (transaction) => {
-            const date = dayjs(parseInt(transaction.timestamp)).format(
-                "YYYY-MM-DD"
-            );
+            const date = dayjs(parseInt(transaction.timestamp)).format("YYYY-MM-DD");
 
             return rates[date] ?? 0;
         },
@@ -169,10 +160,7 @@ const TransactionsExport = ({
 
                     this.downloadCsv(transactions);
                 } catch (e) {
-                    if (
-                        e instanceof FailedExportRequest &&
-                        e.partialRequestData.length > 0
-                    ) {
+                    if (e instanceof FailedExportRequest && e.partialRequestData.length > 0) {
                         this.errorMessage = e.message;
 
                         this.partialDataUri = generateCsv(
@@ -181,11 +169,10 @@ const TransactionsExport = ({
                             this.getColumnTitles(),
                             columnMapping,
                             this.delimiter,
-                            this.includeHeaderRow
+                            this.includeHeaderRow,
                         );
                     } else {
-                        this.errorMessage =
-                            "There was a problem fetching transactions.";
+                        this.errorMessage = "There was a problem fetching transactions.";
                     }
 
                     console.log(this.errorMessage, e);
@@ -195,7 +182,7 @@ const TransactionsExport = ({
 
         downloadCsv(transactions) {
             this.successMessage = `A total of ${formatNumber(
-                transactions.length
+                transactions.length,
             )} transactions have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
@@ -205,7 +192,7 @@ const TransactionsExport = ({
                 this.getColumnTitles(),
                 columnMapping,
                 this.delimiter,
-                this.includeHeaderRow
+                this.includeHeaderRow,
             );
         },
 
@@ -235,10 +222,7 @@ const TransactionsExport = ({
             }
 
             if (this.types.votes) {
-                requestData.data.push(
-                    network.contract_methods.vote,
-                    network.contract_methods.unvote
-                );
+                requestData.data.push(network.contract_methods.vote, network.contract_methods.unvote);
             }
 
             if (this.types.multipayments) {
@@ -251,7 +235,7 @@ const TransactionsExport = ({
                     network.contract_methods.validator_resignation,
                     network.contract_methods.validator_update,
                     network.contract_methods.username_registration,
-                    network.contract_methods.username_resignation
+                    network.contract_methods.username_resignation,
                 );
             }
 
@@ -269,10 +253,7 @@ const TransactionsExport = ({
             const csvColumnsNames = Object.keys(csvColumns);
             columns = Object.entries(columns)
                 .sort((a, b) => {
-                    return (
-                        csvColumnsNames.indexOf(a[0]) -
-                        csvColumnsNames.indexOf(b[0])
-                    );
+                    return csvColumnsNames.indexOf(a[0]) - csvColumnsNames.indexOf(b[0]);
                 })
                 .reduce((enabledColumns, [column, enabled]) => {
                     if (enabled) {
@@ -292,34 +273,23 @@ const TransactionsExport = ({
         },
 
         translateColumnCurrency(column) {
-            return column
-                .replace(/:userCurrency/, userCurrency)
-                .replace(/:networkCurrency/, network.currency);
+            return column.replace(/:userCurrency/, userCurrency).replace(/:networkCurrency/, network.currency);
         },
 
         canExport() {
             if (this.dateRange === "custom") {
-                const [dateFrom, dateTo] = getCustomDateRange(
-                    this.dateFrom,
-                    this.dateTo
-                );
+                const [dateFrom, dateTo] = getCustomDateRange(this.dateFrom, this.dateTo);
 
                 if (dateFrom === null || dateTo === null) {
                     return false;
                 }
             }
 
-            if (
-                Object.values(this.types).filter((enabled) => enabled)
-                    .length === 0
-            ) {
+            if (Object.values(this.types).filter((enabled) => enabled).length === 0) {
                 return false;
             }
 
-            return (
-                Object.values(this.columns).filter((enabled) => enabled)
-                    .length !== 0
-            );
+            return Object.values(this.columns).filter((enabled) => enabled).length !== 0;
         },
 
         get exportStatus() {
@@ -358,7 +328,7 @@ const TransactionsExport = ({
                     query,
                     timestamp: query["timestamp.to"] ?? queryTimestamp(dayjs()),
                 },
-                this
+                this,
             );
         },
 

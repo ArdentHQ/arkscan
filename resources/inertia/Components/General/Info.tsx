@@ -7,7 +7,7 @@ import Tooltip from "./Tooltip";
 function InfoComponent({
     tooltip,
     large = false,
-    className = '',
+    className = "",
     icon,
 }: {
     tooltip?: string;
@@ -19,58 +19,47 @@ function InfoComponent({
         <div
             aria-label={tooltip}
             className={classNames({
-                "inline-block cursor-pointer transition-default rounded-full bg-theme-primary-100 text-theme-primary-600 dark:bg-theme-secondary-800 dark:text-theme-secondary-600 hover:text-white hover:bg-theme-primary-700 dark:hover:text-theme-secondary-800 dark:hover:bg-theme-secondary-600 outline-none focus-visible:ring-2 focus-visible:ring-theme-primary-500": true,
-                'p-1.5': large,
-                'p-1': ! large,
-                [className]: !! className,
+                "transition-default inline-block cursor-pointer rounded-full bg-theme-primary-100 text-theme-primary-600 outline-none hover:bg-theme-primary-700 hover:text-white focus-visible:ring-2 focus-visible:ring-theme-primary-500 dark:bg-theme-secondary-800 dark:text-theme-secondary-600 dark:hover:bg-theme-secondary-600 dark:hover:text-theme-secondary-800": true,
+                "p-1.5": large,
+                "p-1": !large,
+                [className]: !!className,
             })}
         >
             {createElement(icon, {
-                'className': classNames({
-                    'w-3 h-3': ! large,
-                    'w-4 h-4': large,
+                className: classNames({
+                    "w-3 h-3": !large,
+                    "w-4 h-4": large,
                 }),
             })}
         </div>
-    )
+    );
 }
 
 export default function Info({
     tooltip,
-    type = 'question',
+    type = "question",
     large = false,
-    className = '',
+    className = "",
 }: {
     tooltip?: string;
-    type?: 'question' | 'info';
+    type?: "question" | "info";
     large?: boolean;
     className?: string;
 }) {
     let iconOutput = HintSmallIcon;
-    if (type === 'question') {
+    if (type === "question") {
         iconOutput = QuestionMarkSmallIcon;
     }
 
     return (
         <>
-            {!! tooltip && (
+            {!!tooltip && (
                 <Tooltip content={tooltip}>
-                    <InfoComponent
-                        tooltip={tooltip}
-                        large={large}
-                        className={className}
-                        icon={iconOutput}
-                    />
+                    <InfoComponent tooltip={tooltip} large={large} className={className} icon={iconOutput} />
                 </Tooltip>
             )}
 
-            {! tooltip && (
-                <InfoComponent
-                    large={large}
-                    className={className}
-                    icon={iconOutput}
-                />
-            )}
+            {!tooltip && <InfoComponent large={large} className={className} icon={iconOutput} />}
         </>
-    )
+    );
 }

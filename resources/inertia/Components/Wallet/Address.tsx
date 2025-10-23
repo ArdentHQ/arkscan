@@ -1,7 +1,11 @@
 import TruncateMiddle from "../General/TruncateMiddle";
-import classNames from '../../utils/class-names';
+import classNames from "../../utils/class-names";
 
-export default function Address({ wallet, truncate = false, className = '' }: {
+export default function Address({
+    wallet,
+    truncate = false,
+    className = "",
+}: {
     wallet: any;
     truncate?: boolean | number;
     className?: string;
@@ -9,30 +13,27 @@ export default function Address({ wallet, truncate = false, className = '' }: {
     const name = wallet?.attributes?.username;
 
     return (
-        <div className={classNames({
-            "min-w-0": true,
-            [className]: true,
-        })}>
+        <div
+            className={classNames({
+                "min-w-0": true,
+                [className]: true,
+            })}
+        >
             <div className="min-w-0 truncate">
-                <a
-                    className="whitespace-nowrap link"
-                    href={`/addresses/${wallet.address}`}
-                >
-                    {!!name ? name : (<>
-                        {truncate === true && (
-                            <TruncateMiddle>
-                                {wallet.address}
-                            </TruncateMiddle>
-                        )}
+                <a className="link whitespace-nowrap" href={`/addresses/${wallet.address}`}>
+                    {!!name ? (
+                        name
+                    ) : (
+                        <>
+                            {truncate === true && <TruncateMiddle>{wallet.address}</TruncateMiddle>}
 
-                        {typeof truncate === 'number' && (
-                            <TruncateMiddle length={truncate}>
-                                {wallet.address}
-                            </TruncateMiddle>
-                        )}
+                            {typeof truncate === "number" && (
+                                <TruncateMiddle length={truncate}>{wallet.address}</TruncateMiddle>
+                            )}
 
-                        {truncate === false && wallet.address}
-                    </>)}
+                            {truncate === false && wallet.address}
+                        </>
+                    )}
                 </a>
             </div>
         </div>

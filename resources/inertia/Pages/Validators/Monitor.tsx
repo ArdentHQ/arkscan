@@ -55,22 +55,13 @@ export default function Monitor({
         <>
             <Head>{metadata}</Head>
 
-            <PageHeader
-                title={t("pages.validator-monitor.title")}
-                subtitle={t("pages.validator-monitor.subtitle")}
-            />
+            <PageHeader title={t("pages.validator-monitor.title")} subtitle={t("pages.validator-monitor.subtitle")} />
 
-            <HeaderStats
-                height={height}
-                statistics={validatorData?.statistics}
-            />
+            <HeaderStats height={height} statistics={validatorData?.statistics} />
 
             <ValidatorFavoritesProvider>
                 <MissedBlocksTrackerProvider
-                    validators={[
-                        ...(validatorData?.validators ?? []),
-                        ...(validatorData?.overflowValidators ?? []),
-                    ]}
+                    validators={[...(validatorData?.validators ?? []), ...(validatorData?.overflowValidators ?? [])]}
                 >
                     <MonitorTableWrapper
                         validators={validatorData?.validators}
@@ -80,11 +71,8 @@ export default function Monitor({
 
                     <MobileDivider />
 
-                    <div className="pt-6 pb-8 md:pt-0 md:mx-auto md:max-w-7xl">
-                        <MonitorMobileTableWrapper
-                            validators={validatorData?.validators}
-                            rowCount={rowCount}
-                        />
+                    <div className="pb-8 pt-6 md:mx-auto md:max-w-7xl md:pt-0">
+                        <MonitorMobileTableWrapper validators={validatorData?.validators} rowCount={rowCount} />
                     </div>
                 </MissedBlocksTrackerProvider>
             </ValidatorFavoritesProvider>

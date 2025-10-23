@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import ValidatorFavoritesContext from "./ValidatorFavoritesContext";
@@ -11,21 +11,18 @@ export default function ValidatorFavoritesProvider({ children }: { children: Rea
     }, []);
 
     const isFavorite = (publicKey: string) => {
-        if (! favorites) {
+        if (!favorites) {
             return false;
         }
 
         return favorites.includes(publicKey);
-    }
+    };
 
     const save = (updatedFavorites: string[]) => {
         setFavorites(updatedFavorites);
 
-        localStorage.setItem(
-            "favorite-validators",
-            JSON.stringify(updatedFavorites)
-        );
-    }
+        localStorage.setItem("favorite-validators", JSON.stringify(updatedFavorites));
+    };
 
     const toggleFavorite = (publicKey: string) => {
         let isFavoriteValue = isFavorite(publicKey);
@@ -37,7 +34,7 @@ export default function ValidatorFavoritesProvider({ children }: { children: Rea
         }
 
         save(updatedFavorites);
-    }
+    };
 
     const value = {
         favorites,
@@ -45,9 +42,5 @@ export default function ValidatorFavoritesProvider({ children }: { children: Rea
         toggleFavorite,
     };
 
-    return (
-        <ValidatorFavoritesContext.Provider value={value}>
-            {children}
-        </ValidatorFavoritesContext.Provider>
-    );
-};
+    return <ValidatorFavoritesContext.Provider value={value}>{children}</ValidatorFavoritesContext.Provider>;
+}

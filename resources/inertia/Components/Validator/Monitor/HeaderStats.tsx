@@ -20,45 +20,30 @@ export function HeaderStat({
     isLoading?: boolean;
 }) {
     return (
-        <Detail
-            title={title}
-            className="flex items-center space-x-2"
-            {...props}
-        >
-            <div className={classNames({
-                "rounded-full w-3 h-3": true,
-                [color]: true,
-            })}></div>
+        <Detail title={title} className="flex items-center space-x-2" {...props}>
+            <div
+                className={classNames({
+                    "h-3 w-3 rounded-full": true,
+                    [color]: true,
+                })}
+            ></div>
 
-            {isLoading ? (
-                <LoadingText
-                    width="w-[17px]"
-                    height="h-5"
-                />
-            ) : (
-                <span>{value}</span>
-            )}
+            {isLoading ? <LoadingText width="w-[17px]" height="h-5" /> : <span>{value}</span>}
         </Detail>
     );
 }
 
-export default function HeaderStats({ height, statistics }: {
-    height: number;
-    statistics?: IStatistics;
-}) {
+export default function HeaderStats({ height, statistics }: { height: number; statistics?: IStatistics }) {
     const { t } = useTranslation();
 
     const isLoading = !statistics;
 
     return (
-        <div className="px-6 pb-6 md:px-10 md:mx-auto md:max-w-7xl">
-            <div
-                id="statistics-list"
-                className="grid grid-cols-1 gap-2 w-full sm:grid-cols-2 md:gap-3 xl:grid-cols-4"
-            >
+        <div className="px-6 pb-6 md:mx-auto md:max-w-7xl md:px-10">
+            <div id="statistics-list" className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 xl:grid-cols-4">
                 <Card className="flex items-center space-x-6">
                     <HeaderStat
-                        title={t('pages.validator-monitor.stats.forging')}
+                        title={t("pages.validator-monitor.stats.forging")}
                         value={statistics?.performances?.forging}
                         color="bg-theme-success-700 dark:bg-theme-success-500"
                         isLoading={isLoading || statistics?.performances?.forging === undefined}
@@ -66,7 +51,7 @@ export default function HeaderStats({ height, statistics }: {
                     />
 
                     <HeaderStat
-                        title={t('pages.validator-monitor.stats.missed')}
+                        title={t("pages.validator-monitor.stats.missed")}
                         value={statistics?.performances?.missed}
                         color="bg-theme-warning-700 dark:bg-theme-warning-400"
                         isLoading={isLoading || statistics?.performances?.missed === undefined}
@@ -74,7 +59,7 @@ export default function HeaderStats({ height, statistics }: {
                     />
 
                     <HeaderStat
-                        title={t('pages.validator-monitor.stats.not_forging')}
+                        title={t("pages.validator-monitor.stats.not_forging")}
                         value={statistics?.performances?.missing}
                         color="bg-theme-danger-600 dark:bg-theme-danger-400"
                         isLoading={isLoading || statistics?.performances?.missing === undefined}
@@ -84,7 +69,7 @@ export default function HeaderStats({ height, statistics }: {
 
                 <Card>
                     <Detail
-                        title={t('pages.validator-monitor.stats.current_height')}
+                        title={t("pages.validator-monitor.stats.current_height")}
                         isLoading={!height}
                         data-testid="current-height"
                     >
@@ -94,33 +79,27 @@ export default function HeaderStats({ height, statistics }: {
 
                 <Card>
                     <Detail
-                        title={t('pages.validator-monitor.stats.current_round')}
+                        title={t("pages.validator-monitor.stats.current_round")}
                         isLoading={statistics?.blockCount === undefined}
                     >
-                        {statistics?.blockCount || 'N/A'}
+                        {statistics?.blockCount || "N/A"}
                     </Detail>
                 </Card>
 
                 <Card>
-                    <Detail
-                        title={t('pages.validator-monitor.stats.next_slot')}
-                        isLoading={isLoading}
-                    >
-                        {!! statistics?.nextValidator && statistics?.nextValidator?.address ? (
-                            <a
-                                href={`/addresses/${statistics?.nextValidator?.address}`}
-                                className="link"
-                            >
-                                {statistics?.nextValidator?.attributes?.username ? (<>
-                                    {statistics?.nextValidator?.attributes?.username}
-                                </>) : (<>
-                                    <TruncateMiddle>{statistics?.nextValidator?.address}</TruncateMiddle>
-                                </>)}
+                    <Detail title={t("pages.validator-monitor.stats.next_slot")} isLoading={isLoading}>
+                        {!!statistics?.nextValidator && statistics?.nextValidator?.address ? (
+                            <a href={`/addresses/${statistics?.nextValidator?.address}`} className="link">
+                                {statistics?.nextValidator?.attributes?.username ? (
+                                    <>{statistics?.nextValidator?.attributes?.username}</>
+                                ) : (
+                                    <>
+                                        <TruncateMiddle>{statistics?.nextValidator?.address}</TruncateMiddle>
+                                    </>
+                                )}
                             </a>
                         ) : (
-                            <span className="text-theme-secondary-500 dark:text-theme-dark-700">
-                                N/A
-                            </span>
+                            <span className="text-theme-secondary-500 dark:text-theme-dark-700">N/A</span>
                         )}
                     </Detail>
                 </Card>

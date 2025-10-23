@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import TabsContext from "./TabsContext";
@@ -15,26 +15,24 @@ export default function TabsProvider({
     children: React.ReactNode;
 }) {
     const [currentTab, setCurrentTab] = useState<string>(defaultSelected);
-    const [selectedTab, setSelectedTab] = useState<ITab>(
-        tabs.find(tab => tab.value === defaultSelected) ?? tabs[0]
-    );
+    const [selectedTab, setSelectedTab] = useState<ITab>(tabs.find((tab) => tab.value === defaultSelected) ?? tabs[0]);
 
     const value: ITabsContextType = {
         currentTab,
         selectedTab,
         select: (value: string) => setCurrentTab(value),
         selectPrevious: () => {
-            const currentIndex = tabs.findIndex(tab => tab.value === currentTab);
+            const currentIndex = tabs.findIndex((tab) => tab.value === currentTab);
             const previousIndex = (currentIndex - 1 + tabs.length) % tabs.length;
             setCurrentTab(tabs[previousIndex].value);
             setSelectedTab(tabs[previousIndex]);
         },
         selectNext: () => {
-            const currentIndex = tabs.findIndex(tab => tab.value === currentTab);
+            const currentIndex = tabs.findIndex((tab) => tab.value === currentTab);
             const nextIndex = (currentIndex + 1) % tabs.length;
             setCurrentTab(tabs[nextIndex].value);
             setSelectedTab(tabs[nextIndex]);
-        }
+        },
     };
 
     return (
@@ -44,4 +42,4 @@ export default function TabsProvider({
             <div>{children}</div>
         </TabsContext.Provider>
     );
-};
+}

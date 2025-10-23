@@ -14,15 +14,12 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const showTooltip = wallet.formattedBalanceTwoDecimals !== wallet.formattedBalanceFull;
 
     return (
-        <WalletOverviewItem title={t('general.overview')}>
-            <WalletOverviewItemEntry
-                title={t('pages.wallet.name')}
-                value={wallet.username}
-            />
+        <WalletOverviewItem title={t("general.overview")}>
+            <WalletOverviewItemEntry title={t("pages.wallet.name")} value={wallet.username} />
 
             <WalletOverviewItemEntry
-                title={t('pages.wallet.balance')}
-                value={(
+                title={t("pages.wallet.balance")}
+                value={
                     <>
                         {showTooltip && (
                             <div className="sm:hidden">
@@ -32,22 +29,20 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                             </div>
                         )}
 
-                        <span className="hidden sm:inline">
-                            {wallet.formattedBalanceFull}
-                        </span>
+                        <span className="hidden sm:inline">{wallet.formattedBalanceFull}</span>
                     </>
-                )}
+                }
             />
 
             <WalletOverviewItemEntry
-                title={t('pages.wallet.value')}
+                title={t("pages.wallet.value")}
                 value={network!.canBeExchanged ? <FiatValue value={wallet.fiatValue} /> : null}
             />
 
             <WalletOverviewItemEntry
-                title={t('pages.wallet.voting_for')}
+                title={t("pages.wallet.voting_for")}
                 value={wallet.vote ? <Address wallet={wallet.vote} /> : null}
             />
         </WalletOverviewItem>
-    )
+    );
 }

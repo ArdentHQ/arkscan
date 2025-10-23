@@ -15,18 +15,21 @@ export default function DropdownItem({
     return (
         <div
             className={classNames({
-                'px-5 py-[0.875rem] my-1 font-semibold transition-default cursor-pointer leading-5 rounded-lg': true,
-                'text-theme-secondary-500 bg-theme-secondary-200 dark:bg-theme-secondary-900 dark:text-theme-dark-500': disabled,
-                'bg-theme-secondary-200 dark:bg-theme-dark-950 text-theme-primary-600 dark:text-theme-dark-50': selected && ! disabled,
-                'font-semibold border-transparent text-theme-secondary-700 dark:text-theme-dark-200 hover:text-theme-secondary-900 hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50': ! selected && ! disabled,
+                "transition-default my-1 cursor-pointer rounded-lg px-5 py-[0.875rem] font-semibold leading-5": true,
+                "bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-secondary-900 dark:text-theme-dark-500":
+                    disabled,
+                "bg-theme-secondary-200 text-theme-primary-600 dark:bg-theme-dark-950 dark:text-theme-dark-50":
+                    selected && !disabled,
+                "border-transparent font-semibold text-theme-secondary-700 hover:bg-theme-secondary-200 hover:text-theme-secondary-900 dark:text-theme-dark-200 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50":
+                    !selected && !disabled,
             })}
             onClick={onClick}
         >
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
                 <span>{children}</span>
 
                 {selected && (
-                    <DoubleCheckMarkIcon className="w-4 h-4 inline ml-2 text-theme-primary-600 dark:text-theme-dark-50" />
+                    <DoubleCheckMarkIcon className="ml-2 inline h-4 w-4 text-theme-primary-600 dark:text-theme-dark-50" />
                 )}
             </div>
         </div>

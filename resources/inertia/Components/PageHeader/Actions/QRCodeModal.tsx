@@ -12,7 +12,15 @@ import ArkConnectDisabledAction from "@/Components/General/ArkConnect/DisabledAc
 import QRCodeIcon from "@ui/icons/qr-code.svg?react";
 import Tooltip from "@/Components/General/Tooltip";
 
-function ArkVaultButton({ hasAmount, isOnSameNetwork = true, walletUri }: { hasAmount: boolean; isOnSameNetwork: boolean; walletUri: string }) {
+function ArkVaultButton({
+    hasAmount,
+    isOnSameNetwork = true,
+    walletUri,
+}: {
+    hasAmount: boolean;
+    isOnSameNetwork: boolean;
+    walletUri: string;
+}) {
     const { t } = useTranslation();
     const { arkconnect } = useConfig();
 
@@ -22,20 +30,20 @@ function ArkVaultButton({ hasAmount, isOnSameNetwork = true, walletUri }: { hasA
             <div>
                 <button
                     type="button"
-                    className="w-full button-primary"
+                    className="button-primary w-full"
                     onClick={() => {
                         // TODO: arkconnect `await performSend('{{ $this->address }}', '{{ $this->amount }}')` - https://app.clickup.com/t/86dxxbq8r
                     }}
-                    disabled={! hasAmount}
+                    disabled={!hasAmount}
                 >
-                    {t('brands.arkconnect')}
+                    {t("brands.arkconnect")}
                 </button>
             </div>
         );
 
-        if (! hasAmount) {
+        if (!hasAmount) {
             arkconnectButton = (
-                <Tooltip content={t('pages.wallet.qrcode.arkconnect_specify_amount_tooltip')}>
+                <Tooltip content={t("pages.wallet.qrcode.arkconnect_specify_amount_tooltip")}>
                     {arkconnectButton}
                 </Tooltip>
             );
@@ -45,46 +53,41 @@ function ArkVaultButton({ hasAmount, isOnSameNetwork = true, walletUri }: { hasA
     return (
         <div className="mt-2 w-full">
             {arkconnect!.enabled && (
-                <div className="flex flex-col w-full">
+                <div className="flex w-full flex-col">
                     {/* @TODO: handle arkconnect functionality - https://app.clickup.com/t/86dxxbq8r */}
-                    {!! arkconnectButton ? arkconnectButton : (
-                        <ArkConnectDisabledAction
-                            isConnected={false}
-                            isOnSameNetwork={isOnSameNetwork}
-                        >
-                            <button
-                                type="button"
-                                className="w-full button-primary"
-                                disabled
-                            >
-                                {t('brands.arkconnect')}
+                    {!!arkconnectButton ? (
+                        arkconnectButton
+                    ) : (
+                        <ArkConnectDisabledAction isConnected={false} isOnSameNetwork={isOnSameNetwork}>
+                            <button type="button" className="button-primary w-full" disabled>
+                                {t("brands.arkconnect")}
                             </button>
                         </ArkConnectDisabledAction>
                     )}
 
                     <ExternalLink
                         url={walletUri}
-                        className="mt-2 w-full button-secondary"
+                        className="button-secondary mt-2 w-full"
                         iconClass="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-500"
                     >
-                        {t('brands.arkvault')}
+                        {t("brands.arkvault")}
                     </ExternalLink>
                 </div>
             )}
 
-            {! arkconnect!.enabled && (
+            {!arkconnect!.enabled && (
                 <div>
                     <ExternalLink
                         url={walletUri}
-                        className="w-full button-primary"
+                        className="button-primary w-full"
                         iconClass="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-blue-300 w-3 h-3"
                     >
-                        {t('brands.arkvault')}
+                        {t("brands.arkvault")}
                     </ExternalLink>
                 </div>
             )}
         </div>
-    )
+    );
 }
 
 function QRCodeContent({ wallet }: { wallet: IWallet }) {
@@ -103,19 +106,19 @@ function QRCodeContent({ wallet }: { wallet: IWallet }) {
 
     return (
         <DropdownPopup
-            title={t('pages.wallet.qrcode.title')}
+            title={t("pages.wallet.qrcode.title")}
             width="w-[calc(100vw-1rem)] sm:max-w-[320px]"
             button={
-                <div className="p-2 w-full focus-visible:ring-inset button button-secondary button-icon">
-                    <QRCodeIcon className="w-4 h-4" />
+                <div className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset">
+                    <QRCodeIcon className="h-4 w-4" />
                 </div>
             }
             onClosed={() => setTimeout(() => setShowOptions(false))}
         >
             {showOptions && (
                 <>
-                    <div className="font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200">
-                        {t('pages.wallet.qrcode.description')}
+                    <div className="font-normal leading-5.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                        {t("pages.wallet.qrcode.description")}
                     </div>
 
                     <div className="py-4">
@@ -126,7 +129,7 @@ function QRCodeContent({ wallet }: { wallet: IWallet }) {
                             maxLength={17}
                             className="font-normal"
                             inputClass="qr-code-amount"
-                            label={t('pages.wallet.qrcode.currency_amount', { currency: network!.currency })}
+                            label={t("pages.wallet.qrcode.currency_amount", { currency: network!.currency })}
                             value={amount}
                             onChange={(e) => setAmount(e.target.value ? parseFloat(e.target.value) : undefined)}
                             onWheel={(e) => {
@@ -136,7 +139,7 @@ function QRCodeContent({ wallet }: { wallet: IWallet }) {
 
                                 if (hasFocus) {
                                     setTimeout(() => {
-                                        (e.target as HTMLInputElement).focus()
+                                        (e.target as HTMLInputElement).focus();
                                     }, 0);
                                 }
                             }}
@@ -147,43 +150,35 @@ function QRCodeContent({ wallet }: { wallet: IWallet }) {
             )}
 
             <div className="flex justify-center">
-                <div className="inline-block p-2 bg-white rounded-lg border sm:block border-theme-secondary-300 dark:border-theme-dark-300">
-                    <QRCode
-                        value={walletUri}
-                        size={224}
-                    />
+                <div className="inline-block rounded-lg border border-theme-secondary-300 bg-white p-2 dark:border-theme-dark-300 sm:block">
+                    <QRCode value={walletUri} size={224} />
                 </div>
             </div>
 
-            {! showOptions && <button
-                className="mt-3 w-full button-secondary"
-                onClick={() => setShowOptions(true)}
-            >
-                {t('pages.wallet.qrcode.specify_amount')}
-            </button>}
+            {!showOptions && (
+                <button className="button-secondary mt-3 w-full" onClick={() => setShowOptions(true)}>
+                    {t("pages.wallet.qrcode.specify_amount")}
+                </button>
+            )}
 
             {showOptions && (
-                <div className="mt-4 font-normal text-theme-secondary-700 leading-5.25 dark:text-theme-dark-200">
-                    {t('pages.wallet.qrcode.automatic_notice')}
+                <div className="mt-4 font-normal leading-5.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    {t("pages.wallet.qrcode.automatic_notice")}
                 </div>
             )}
 
-            <div className="flex items-center mt-3 space-x-3 w-full">
-                <div className="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
+            <div className="mt-3 flex w-full items-center space-x-3">
+                <div className="h-1px flex-1 border-t border-theme-secondary-300 dark:border-theme-dark-700"></div>
 
                 <div className="font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
-                    {t('pages.wallet.qrcode.or_send_with')}
+                    {t("pages.wallet.qrcode.or_send_with")}
                 </div>
 
-                <div className="flex-1 border-t h-1px border-theme-secondary-300 dark:border-theme-dark-700"></div>
+                <div className="h-1px flex-1 border-t border-theme-secondary-300 dark:border-theme-dark-700"></div>
             </div>
 
             {/* @TODO: handle arkconnect functionality - https://app.clickup.com/t/86dxxbq8r */}
-            <ArkVaultButton
-                hasAmount={false}
-                isOnSameNetwork={true}
-                walletUri={walletUri}
-            />
+            <ArkVaultButton hasAmount={false} isOnSameNetwork={true} walletUri={walletUri} />
         </DropdownPopup>
     );
 }
@@ -193,5 +188,5 @@ export default function PageHeaderQRCodeModalAction({ wallet }: { wallet: IWalle
         <DropdownProvider>
             <QRCodeContent wallet={wallet} />
         </DropdownProvider>
-    )
+    );
 }

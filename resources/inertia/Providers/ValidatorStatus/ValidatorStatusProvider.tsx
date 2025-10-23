@@ -79,10 +79,7 @@ export default function ValidatorStatusProvider({
             return;
         }
 
-        if (
-            currentForger?.wallet.address !== validator.wallet.address &&
-            seconds >= 60
-        ) {
+        if (currentForger?.wallet.address !== validator.wallet.address && seconds >= 60) {
             setStatus(ForgingStatusPending);
 
             return;
@@ -103,10 +100,7 @@ export default function ValidatorStatusProvider({
             return;
         }
 
-        if (
-            status === ForgingStatusGenerating &&
-            currentForger?.wallet.address !== validator.wallet.address
-        ) {
+        if (status === ForgingStatusGenerating && currentForger?.wallet.address !== validator.wallet.address) {
             setStatus(ForgingStatusMissed);
 
             return;
@@ -121,9 +115,5 @@ export default function ValidatorStatusProvider({
         seconds,
     };
 
-    return (
-        <ValidatorStatusContext.Provider value={value}>
-            {children}
-        </ValidatorStatusContext.Provider>
-    );
+    return <ValidatorStatusContext.Provider value={value}>{children}</ValidatorStatusContext.Provider>;
 }

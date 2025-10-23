@@ -1,10 +1,10 @@
 // https://github.com/EugeneMeles/laravel-react-i18n/blob/master/src/plugin/parser.ts
 
-import fs from 'fs';
-import path from 'path';
-import { fromString } from 'php-array-reader';
+import fs from "fs";
+import path from "path";
+import { fromString } from "php-array-reader";
 
-import { dirnameSanitize } from './helper';
+import { dirnameSanitize } from "./helper";
 
 /**
  *
@@ -12,7 +12,11 @@ import { dirnameSanitize } from './helper';
  *
  * @param dirname
  */
-export default function parser(dirname: string, destDirname: string, destFilename?: string | null): { path: string; basename: string }[] {
+export default function parser(
+    dirname: string,
+    destDirname: string,
+    destFilename?: string | null,
+): { path: string; basename: string }[] {
     const sanitizedDirname = dirnameSanitize(dirname);
     const sanitizedDestDirname = dirnameSanitize(destDirname);
 
@@ -31,7 +35,7 @@ export default function parser(dirname: string, destDirname: string, destFilenam
         })
         .filter(({ trans }) => Object.keys(trans).length > 0)
         .map(({ locale, trans }) => {
-            const basename = !! destFilename ? `php_${destFilename}_${locale}.json` : `php_${locale}.json`;
+            const basename = !!destFilename ? `php_${destFilename}_${locale}.json` : `php_${locale}.json`;
 
             fs.mkdirSync(sanitizedDestDirname, { recursive: true });
             fs.writeFileSync(path.join(sanitizedDestDirname, basename), JSON.stringify(trans));
@@ -47,17 +51,17 @@ export default function parser(dirname: string, destDirname: string, destFilenam
  * @param keys
  */
 function convertToDottedKey(
-  source: Record<string, unknown>,
-  target: Record<string, string> = {},
-  keys: string[] = []
+    source: Record<string, unknown>,
+    target: Record<string, string> = {},
+    keys: string[] = [],
 ): Record<string, string> {
     Object.entries(source).forEach(([key, value]) => {
         const newPrefix = [...keys, key];
 
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        if (typeof value === "object" && value !== null && !Array.isArray(value)) {
             convertToDottedKey(value as Record<string, unknown>, target, newPrefix);
         } else {
-            target[newPrefix.join('.')] = value as string;
+            target[newPrefix.join(".")] = value as string;
         }
     });
 
@@ -72,17 +76,17 @@ function getObjectTranslation(dirname: string): Record<string, unknown> {
     const translations: Record<string, unknown> = {};
 
     fs.readdirSync(dirname).forEach((basename) => {
-        if (basename.endsWith('.php') === false) {
+        if (basename.endsWith(".php") === false) {
             return;
         }
 
         const absoluteFile = path.join(dirname, basename);
-        const key = basename.replace(/\.\w+$/, '');
+        const key = basename.replace(/\.\w+$/, "");
 
         if (fs.statSync(absoluteFile).isDirectory()) {
             translations[key] = getObjectTranslation(absoluteFile);
         } else {
-            const fileContent = fs.readFileSync(absoluteFile, 'utf-8');
+            const fileContent = fs.readFileSync(absoluteFile, "utf-8");
 
             translations[key] = fromString(fileContent);
         }

@@ -16,8 +16,7 @@ export default function WalletOverviewItem({
     return (
         <div
             className={classNames({
-                "flex flex-col flex-1 p-6 space-y-3 border-t-4 md:p-0 md:border-0 dark:border-black border-theme-secondary-200":
-                    true,
+                "flex flex-1 flex-col space-y-3 border-t-4 border-theme-secondary-200 p-6 dark:border-black md:border-0 md:p-0": true,
                 [className]: !!className,
             })}
         >
@@ -27,13 +26,11 @@ export default function WalletOverviewItem({
                 {titleExtra}
             </div>
 
-            <div className="relative flex-1 md:rounded-xl md:border border-theme-secondary-300 dark:border-theme-dark-800">
-                <div className="flex relative flex-col space-y-3 md:p-6">
-                    {children}
-                </div>
+            <div className="relative flex-1 border-theme-secondary-300 dark:border-theme-dark-800 md:rounded-xl md:border">
+                <div className="relative flex flex-col space-y-3 md:p-6">{children}</div>
 
                 {maskedMessage && (
-                    <div className="flex absolute inset-0 justify-center items-center -my-2 -mx-6 text-sm font-semibold select-none md:m-0 md:rounded-xl backdrop-blur text-theme-secondary-500">
+                    <div className="absolute inset-0 -mx-6 -my-2 flex select-none items-center justify-center text-sm font-semibold text-theme-secondary-500 backdrop-blur md:m-0 md:rounded-xl">
                         {maskedMessage}
                     </div>
                 )}

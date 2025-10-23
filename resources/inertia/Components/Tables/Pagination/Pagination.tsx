@@ -14,7 +14,7 @@ import { useState } from "react";
 
 export default function Pagination({
     paginator,
-    className = '',
+    className = "",
     tableRef,
 }: {
     className?: string;
@@ -42,14 +42,14 @@ export default function Pagination({
         }
 
         if (perPage === defaultPerPage) {
-            delete sanitizedParams['per-page'];
+            delete sanitizedParams["per-page"];
         } else if (perPage !== undefined) {
-            sanitizedParams['per-page'] = perPage.toString();
+            sanitizedParams["per-page"] = perPage.toString();
         }
 
         let url = paginator.path;
         if (Object.keys(sanitizedParams).length > 0) {
-            url += '?' + new URLSearchParams(sanitizedParams).toString();
+            url += "?" + new URLSearchParams(sanitizedParams).toString();
         }
 
         router.push({
@@ -60,18 +60,21 @@ export default function Pagination({
                 refreshPage(() => {
                     setDisabled(false);
 
-                    const navbarHeight = document.querySelector('#navbar')?.clientHeight ?? 0;
+                    const navbarHeight = document.querySelector("#navbar")?.clientHeight ?? 0;
 
-                    window.scrollTo({ top: Math.max((tableRef?.current?.offsetTop ?? 0) - navbarHeight), behavior: 'smooth' });
+                    window.scrollTo({
+                        top: Math.max((tableRef?.current?.offsetTop ?? 0) - navbarHeight),
+                        behavior: "smooth",
+                    });
                 });
             },
         });
-    }
+    };
 
     return (
-        <div className="-mx-6 px-6 border-t border-theme-secondary-300 dark:border-theme-dark-700 md:border-t-0 md:border rounded-b-xl mt-4 md:mt-0 pt-4 md:pb-4 md:mx-0 flex flex-col items-center space-y-6 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center space-x-2 text-sm font-semibold sm:mr-8 dark:text-theme-dark-200">
-                <span>{t('pagination.show')}</span>
+        <div className="-mx-6 mt-4 flex flex-col items-center space-y-6 rounded-b-xl border-t border-theme-secondary-300 px-6 pt-4 dark:border-theme-dark-700 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 md:mx-0 md:mt-0 md:border md:border-t-0 md:pb-4">
+            <div className="flex items-center space-x-2 text-sm font-semibold dark:text-theme-dark-200 sm:mr-8">
+                <span>{t("pagination.show")}</span>
 
                 <PerPageDropdown
                     disabled={disabled}
@@ -79,24 +82,26 @@ export default function Pagination({
                     paginator={paginator}
                 />
 
-                <span>{t('pagination.records')}</span>
+                <span>{t("pagination.records")}</span>
             </div>
 
-            <div className={classNames({
-                "relative pagination-wrapper flex justify-between flex-col sm:flex-row w-full sm:w-auto": true,
-                [className]: true,
-            })}>
+            <div
+                className={classNames({
+                    "pagination-wrapper relative flex w-full flex-col justify-between sm:w-auto sm:flex-row": true,
+                    [className]: true,
+                })}
+            >
                 <PaginationMiddle
-                    className="flex relative mb-2 w-full sm:hidden"
+                    className="relative mb-2 flex w-full sm:hidden"
                     paginator={paginator}
                     disabled={disabled}
                     onSubmit={(page: number) => gotoPage(page)}
                 />
 
-                <div className="flex space-x-2 w-full sm:w-auto">
+                <div className="flex w-full space-x-2 sm:w-auto">
                     <PaginationArrow
                         icon={DoubleChevronLeftIcon}
-                        text={t('pagination.first')}
+                        text={t("pagination.first")}
                         disabled={disabled || paginator.current_page === 1}
                         onClick={() => gotoPage(1)}
                     />
@@ -125,12 +130,12 @@ export default function Pagination({
 
                     <PaginationArrow
                         icon={DoubleChevronRightIcon}
-                        text={t('pagination.last')}
+                        text={t("pagination.last")}
                         disabled={disabled || paginator.current_page === paginator.last_page}
                         onClick={() => gotoPage(paginator.last_page)}
                     />
                 </div>
             </div>
         </div>
-    )
-};
+    );
+}

@@ -29,13 +29,7 @@ const csvColumns = {
     rate: "Rate [:userCurrency]",
 };
 
-const BlocksExport = ({
-    address,
-    userCurrency,
-    rates,
-    network,
-    canBeExchanged,
-}) => {
+const BlocksExport = ({ address, userCurrency, rates, network, canBeExchanged }) => {
     const columnMapping = {
         id: (block) => block.hash,
         timestamp: (block) => dayjs(parseInt(block.timestamp)).format("L LTS"),
@@ -44,12 +38,7 @@ const BlocksExport = ({
         volumeFiat: function (block) {
             return this.volume(block) * this.rate(block);
         },
-        total: (block) =>
-            arktoshiToNumber(
-                parseInt(block.amount) +
-                    parseInt(block.fee) +
-                    parseInt(block.reward)
-            ),
+        total: (block) => arktoshiToNumber(parseInt(block.amount) + parseInt(block.fee) + parseInt(block.reward)),
         totalFiat: function (block) {
             return this.total(block) * this.rate(block);
         },
@@ -101,11 +90,7 @@ const BlocksExport = ({
             (async () => {
                 try {
                     const query = await this.requestData();
-                    if (
-                        query === {} ||
-                        query["height.from"] === 0 ||
-                        query["height.to"] === 0
-                    ) {
+                    if (query === {} || query["height.from"] === 0 || query["height.to"] === 0) {
                         this.hasFinishedExport = true;
 
                         return;
@@ -124,10 +109,7 @@ const BlocksExport = ({
 
                     this.downloadCsv(blocks);
                 } catch (e) {
-                    if (
-                        e instanceof FailedExportRequest &&
-                        e.partialRequestData.length > 0
-                    ) {
+                    if (e instanceof FailedExportRequest && e.partialRequestData.length > 0) {
                         this.errorMessage = e.message;
 
                         this.partialDataUri = generateCsv(
@@ -136,11 +118,10 @@ const BlocksExport = ({
                             this.getColumnTitles(),
                             columnMapping,
                             this.delimiter,
-                            this.includeHeaderRow
+                            this.includeHeaderRow,
                         );
                     } else {
-                        this.errorMessage =
-                            "There was a problem fetching blocks.";
+                        this.errorMessage = "There was a problem fetching blocks.";
                     }
 
                     console.log(this.errorMessage, e);
@@ -150,7 +131,7 @@ const BlocksExport = ({
 
         downloadCsv(blocks) {
             this.successMessage = `A total of ${formatNumber(
-                blocks.length
+                blocks.length,
             )} blocks have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
@@ -160,7 +141,7 @@ const BlocksExport = ({
                 this.getColumnTitles(),
                 columnMapping,
                 this.delimiter,
-                this.includeHeaderRow
+                this.includeHeaderRow,
             );
         },
 
@@ -198,10 +179,7 @@ const BlocksExport = ({
             const csvColumnsNames = Object.keys(csvColumns);
             columns = Object.entries(columns)
                 .sort((a, b) => {
-                    return (
-                        csvColumnsNames.indexOf(a[0]) -
-                        csvColumnsNames.indexOf(b[0])
-                    );
+                    return csvColumnsNames.indexOf(a[0]) - csvColumnsNames.indexOf(b[0]);
                 })
                 .reduce((enabledColumns, [column, enabled]) => {
                     if (enabled) {
@@ -221,27 +199,19 @@ const BlocksExport = ({
         },
 
         translateColumnCurrency(column) {
-            return column
-                .replace(/:userCurrency/, userCurrency)
-                .replace(/:networkCurrency/, network.currency);
+            return column.replace(/:userCurrency/, userCurrency).replace(/:networkCurrency/, network.currency);
         },
 
         canExport() {
             if (this.dateRange === "custom") {
-                const [dateFrom, dateTo] = getCustomDateRange(
-                    this.dateFrom,
-                    this.dateTo
-                );
+                const [dateFrom, dateTo] = getCustomDateRange(this.dateFrom, this.dateTo);
 
                 if (dateFrom === null || dateTo === null) {
                     return false;
                 }
             }
 
-            return (
-                Object.values(this.columns).filter((enabled) => enabled)
-                    .length !== 0
-            );
+            return Object.values(this.columns).filter((enabled) => enabled).length !== 0;
         },
 
         get exportStatus() {
@@ -281,7 +251,7 @@ const BlocksExport = ({
                     address,
                     height: query["height.to"],
                 },
-                this
+                this,
             );
         },
 
