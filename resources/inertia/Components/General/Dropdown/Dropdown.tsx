@@ -88,21 +88,19 @@ export default function Dropdown({
 
     const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
 
-    const { isMounted: isFloatingOpen, styles: floatingTransitionStyled } =
-        useTransitionStyles(context, {
-            duration: 250, // explicitly setting default value for reference to onClosed
-        });
+    const { isMounted: isFloatingOpen, styles: floatingTransitionStyled } = useTransitionStyles(context, {
+        duration: 250, // explicitly setting default value for reference to onClosed
+    });
 
     let dropdownButton = (
         <div>
             <button
                 ref={refs.setReference}
                 className={classNames({
-                    "flex items-center focus:outline-none dropdown-button transition-default":
-                        true,
-                    "text-theme-secondary-500 bg-theme-secondary-200 dark:text-theme-dark-500 dark:bg-theme-dark-800 dark:border-theme-dark-700":
+                    "dropdown-button transition-default flex items-center focus:outline-none": true,
+                    "bg-theme-secondary-200 text-theme-secondary-500 dark:border-theme-dark-700 dark:bg-theme-dark-800 dark:text-theme-dark-500":
                         disabled,
-                    "bg-theme-secondary-200 dark:bg-theme-dark-800 md:bg-white md:dark:text-theme-dark-600 md:dark:bg-theme-dark-900 text-theme-secondary-700 dark:text-theme-dark-200 md:hover:text-theme-secondary-900 dark:hover:bg-theme-dark-700":
+                    "bg-theme-secondary-200 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 md:bg-white md:hover:text-theme-secondary-900 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600":
                         !disabled && useDefaultButtonClasses,
                     [buttonClass]: true,
                     [buttonClassExpanded]: isOpen,
@@ -114,17 +112,13 @@ export default function Dropdown({
                 {...getReferenceProps()}
             >
                 {button !== undefined && button}
-                {button === undefined && (
-                    <EllipsisVerticalIcon className="w-5 h-5" />
-                )}
+                {button === undefined && <EllipsisVerticalIcon className="h-5 w-5" />}
             </button>
         </div>
     );
 
     if (buttonTooltip !== undefined) {
-        dropdownButton = (
-            <Tooltip content={buttonTooltip}>{dropdownButton}</Tooltip>
-        );
+        dropdownButton = <Tooltip content={buttonTooltip}>{dropdownButton}</Tooltip>;
     }
 
     return (
@@ -149,7 +143,7 @@ export default function Dropdown({
                         <div
                             className={classNames({
                                 dropdown: true,
-                                "w-screen -mx-8 md:w-auto md:mx-0": fullScreen,
+                                "-mx-8 w-screen md:mx-0 md:w-auto": fullScreen,
                                 [dropdownClasses]: true,
                             })}
                         >

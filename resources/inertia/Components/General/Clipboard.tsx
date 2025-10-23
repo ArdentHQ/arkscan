@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import '@ui/js/clipboard';
+import { useEffect, useState } from "react";
+import "@ui/js/clipboard";
 import classNames from "@/utils/class-names";
 import CopyIcon from "@ui/icons/copy.svg?react";
 import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
@@ -7,12 +7,12 @@ import Tooltip from "./Tooltip";
 
 export default function Clipboard({
     value,
-    className = 'h-10 w-12',
+    className = "h-10 w-12",
     noStyling = false,
     tooltipContent,
-    wrapperClass = '',
+    wrapperClass = "",
     withCheckmarks = false,
-    checkmarksClass = '',
+    checkmarksClass = "",
     children,
 }: {
     value?: string;
@@ -40,7 +40,7 @@ export default function Clipboard({
         }, 3000);
 
         clipboardInstance.copy(value);
-    }
+    };
 
     if (!clipboardInstance) {
         return null;
@@ -48,16 +48,13 @@ export default function Clipboard({
 
     return (
         <div className={wrapperClass}>
-            <Tooltip
-                content={tooltipContent || ''}
-                visible={showTooltip}
-            >
+            <Tooltip content={tooltipContent || ""} visible={showTooltip}>
                 <button
                     type="button"
                     className={classNames({
-                        'clipboard relative': true,
-                        'button-icon': ! noStyling,
-                        [className]: !! className,
+                        "clipboard relative": true,
+                        "button-icon": !noStyling,
+                        [className]: !!className,
                     })}
                     onClick={copyToClipboard}
                 >
@@ -65,8 +62,8 @@ export default function Clipboard({
                         <>
                             <div
                                 className={classNames({
-                                    "flex items-center transition-default": true,
-                                    'opacity-0': clipboardInstance.showCheckmarks,
+                                    "transition-default flex items-center": true,
+                                    "opacity-0": clipboardInstance.showCheckmarks,
                                 })}
                             >
                                 <CopyIcon className="h-4 w-4" />
@@ -77,8 +74,8 @@ export default function Clipboard({
                             {clipboardInstance.showCheckmarks && (
                                 <div
                                     className={classNames({
-                                        'absolute m-auto': true,
-                                        [checkmarksClass]: !! checkmarksClass,
+                                        "absolute m-auto": true,
+                                        [checkmarksClass]: !!checkmarksClass,
                                     })}
                                 >
                                     <DoubleCheckMarkIcon name="double-check-mark" className="h-4 w-4" />
@@ -87,13 +84,13 @@ export default function Clipboard({
                         </>
                     )}
 
-                    {! withCheckmarks &&
+                    {!withCheckmarks && (
                         <>
                             <CopyIcon className="h-4 w-4" />
 
                             {children}
                         </>
-                    }
+                    )}
                 </button>
             </Tooltip>
         </div>

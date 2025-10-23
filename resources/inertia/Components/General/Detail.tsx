@@ -3,10 +3,10 @@ import LoadingText from "../Loading/Text";
 
 export default function Detail({
     title,
-    titleClass = '',
+    titleClass = "",
     value = null,
     isLoading = false,
-    className = '',
+    className = "",
     children,
     ...props
 }: React.PropsWithChildren<{
@@ -17,28 +17,25 @@ export default function Detail({
     className?: string;
 }>) {
     return (
-        <div
-            className="flex flex-col space-y-2 font-semibold"
-            {...props}
-        >
-            <div className={classNames({
-                "text-sm whitespace-nowrap text-theme-secondary-700 dark:text-theme-dark-200": true,
-                [titleClass]: true,
-            })}>
+        <div className="flex flex-col space-y-2 font-semibold" {...props}>
+            <div
+                className={classNames({
+                    "whitespace-nowrap text-sm text-theme-secondary-700 dark:text-theme-dark-200": true,
+                    [titleClass]: true,
+                })}
+            >
                 {title}
             </div>
 
-            <div className={classNames({
-                "text-theme-secondary-900 dark:text-theme-dark-50 leading-5": true,
-                [className]: true,
-            })}>
+            <div
+                className={classNames({
+                    "leading-5 text-theme-secondary-900 dark:text-theme-dark-50": true,
+                    [className]: true,
+                })}
+            >
                 {isLoading && <LoadingText height="h-5" />}
-                {! isLoading && !! value && <>
-                    {value}
-                </>}
-                {! isLoading && ! value && <>
-                    {children}
-                </>}
+                {!isLoading && !!value && <>{value}</>}
+                {!isLoading && !value && <>{children}</>}
             </div>
         </div>
     );

@@ -12,11 +12,7 @@ import { useConfig } from "@/Providers/Config/ConfigContext";
 import Fee from "@/Components/Transaction/Fee";
 import Addressing from "@/Components/Transaction/Addressing";
 
-export function TransactionsMobileTable({
-    transactions,
-}: {
-    transactions: ITransaction[];
-}) {
+export function TransactionsMobileTable({ transactions }: { transactions: ITransaction[] }) {
     const { t } = useTranslation();
     const { network } = useConfig();
 
@@ -34,10 +30,7 @@ export function TransactionsMobileTable({
                     }
                 >
                     <TableCell label={transaction.type}>
-                        <Addressing
-                            transaction={transaction}
-                            withoutLink={transaction.isSentToSelf}
-                        />
+                        <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} />
                     </TableCell>
 
                     <TableCell

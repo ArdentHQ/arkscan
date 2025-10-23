@@ -13,11 +13,7 @@ import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TransactionsMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Transactions";
 
-const WalletTabsWrapper = ({
-    transactions,
-}: {
-    transactions: IPaginatedResponse<ITransaction>;
-}) => {
+const WalletTabsWrapper = ({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) => {
     return (
         <TabsProvider
             defaultSelected="transactions"
@@ -32,11 +28,7 @@ const WalletTabsWrapper = ({
     );
 };
 
-const WalletTabs = ({
-    transactions,
-}: {
-    transactions: IPaginatedResponse<ITransaction>;
-}) => {
+const WalletTabs = ({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) => {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { setRefreshPage } = usePageHandler();
@@ -89,11 +81,7 @@ const WalletTabs = ({
                 <>
                     <TransactionsTableWrapper
                         transactions={transactions}
-                        mobile={
-                            <TransactionsMobileTableWrapper
-                                transactions={transactions}
-                            />
-                        }
+                        mobile={<TransactionsMobileTableWrapper transactions={transactions} />}
                     />
                 </>
             )}

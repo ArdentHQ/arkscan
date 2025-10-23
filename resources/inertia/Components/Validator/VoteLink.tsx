@@ -27,11 +27,7 @@ export default function VoteLink({
         <DropdownProvider>
             <>
                 {wallet.isResigned && votingForAddress !== validatorAddress && (
-                    <Tippy
-                        content={t(
-                            "pages.wallet.validator.resigned_vote_tooltip"
-                        )}
-                    >
+                    <Tippy content={t("pages.wallet.validator.resigned_vote_tooltip")}>
                         <div>
                             <button
                                 type="button"
@@ -50,17 +46,10 @@ export default function VoteLink({
                         "font-semibold hover:underline": true,
                         "text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500 dim:text-theme-dim-blue-600 dim:hover:text-theme-dim-blue-700":
                             votingForAddress !== validatorAddress,
-                        "text-theme-danger-400 hover:text-theme-danger-500":
-                            votingForAddress === validatorAddress,
+                        "text-theme-danger-400 hover:text-theme-danger-500": votingForAddress === validatorAddress,
                     })}
                     useDefaultButtonClasses={false}
-                    button={
-                        <>
-                            {votingForAddress !== validatorAddress
-                                ? voteText
-                                : unvoteText}
-                        </>
-                    }
+                    button={<>{votingForAddress !== validatorAddress ? voteText : unvoteText}</>}
                     dropdownClasses={classNames({
                         "w-[147px]": true,
                     })}
@@ -68,28 +57,24 @@ export default function VoteLink({
                     dropdownContentClasses="bg-white dark:bg-theme-dark-900 dark:border dark:border-theme-dark-800 rounded-xl shadow-lg"
                 >
                     <div className="overflow-hidden rounded-t-xl">
-                        <div className="flex py-2 px-6 text-sm font-semibold bg-theme-secondary-200 leading-4.25 dark:bg-theme-dark-950">
+                        <div className="flex bg-theme-secondary-200 px-6 py-2 text-sm font-semibold leading-4.25 dark:bg-theme-dark-950">
                             {t("general.vote_with")}
                         </div>
 
-                        <div className="flex flex-col py-3 px-6">
+                        <div className="flex flex-col px-6 py-3">
                             <ExternalLink
                                 url={wallet.voteUrl}
-                                className="flex items-center py-3 space-x-2 font-semibold leading-5 link"
+                                className="link flex items-center space-x-2 py-3 font-semibold leading-5"
                             >
                                 {t("brands.arkvault")}
                             </ExternalLink>
 
                             {isConnected && !isOnSameNetwork && (
-                                <Tippy
-                                    content={t(
-                                        "general.arkconnect.wrong_network.mainnet"
-                                    )}
-                                >
+                                <Tippy content={t("general.arkconnect.wrong_network.mainnet")}>
                                     <div>
                                         <button
                                             type="button"
-                                            className="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
+                                            className="flex items-center space-x-2 py-3 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
                                             disabled
                                             onClick={() => {
                                                 // TODO https://app.clickup.com/t/86dxwp2mj
@@ -103,15 +88,11 @@ export default function VoteLink({
                             )}
 
                             {!isConnected && (
-                                <Tippy
-                                    content={t(
-                                        "general.arkconnect.connect_wallet_tooltip"
-                                    )}
-                                >
+                                <Tippy content={t("general.arkconnect.connect_wallet_tooltip")}>
                                     <div>
                                         <button
                                             type="button"
-                                            className="flex items-center py-3 space-x-2 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
+                                            className="flex items-center space-x-2 py-3 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
                                             disabled
                                             onClick={() => {
                                                 // TODO https://app.clickup.com/t/86dxwp2mj
@@ -127,7 +108,7 @@ export default function VoteLink({
                             {isOnSameNetwork && (
                                 <button
                                     type="button"
-                                    className="flex items-center py-3 space-x-2 font-semibold leading-5 link"
+                                    className="link flex items-center space-x-2 py-3 font-semibold leading-5"
                                 >
                                     {t("brands.arkconnect")}
                                 </button>

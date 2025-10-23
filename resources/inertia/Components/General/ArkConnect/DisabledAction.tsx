@@ -16,14 +16,14 @@ export default function ArkConnectDisabledAction({
 
     return (
         <>
-            {isConnected && ! isOnSameNetwork && (
+            {isConnected && !isOnSameNetwork && (
                 <Tooltip content={t(`general.arkconnect.wrong_network.${network!.alias}`)}>
                     <div>{children}</div>
                 </Tooltip>
             )}
 
-            {! isConnected && (
-                <Tooltip content={t('general.arkconnect.connect_wallet_tooltip')}>
+            {!isConnected && (
+                <Tooltip content={t("general.arkconnect.connect_wallet_tooltip")}>
                     <div>{children}</div>
                 </Tooltip>
             )}

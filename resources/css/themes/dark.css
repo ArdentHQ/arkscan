@@ -65,7 +65,7 @@
 }
 
 .dark .button-secondary:focus-visible {
-    @apply outline-none ring-theme-primary-300 ring-2;
+    @apply outline-none ring-2 ring-theme-primary-300;
 }
 
 .dark .button-secondary:hover {
@@ -73,12 +73,12 @@
 }
 
 .dark .ark-info-element > div {
-    @apply text-theme-dark-50 p-[0.3175rem];
+    @apply p-[0.3175rem] text-theme-dark-50;
     box-shadow: 0 0 1px 1px var(--theme-color-dark-600) inset;
 }
 
 .dark .ark-info-element svg {
-    @apply w-2.5 h-2.5;
+    @apply h-2.5 w-2.5;
 }
 
 .dark .ark-info-element > div:hover {

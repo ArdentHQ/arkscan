@@ -5,19 +5,19 @@ import LoadingTableCell from "../TableCell";
 
 export function MonitorMobileHeaderSkeleton() {
     return (
-        <div className="flex flex-1 min-w-0 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+        <div className="flex min-w-0 flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
             <div className="flex items-center pr-3">
                 <div className="items-center">
                     <LoadingText width="w-[17px]" />
                 </div>
             </div>
 
-            <div className="flex flex-1 justify-between items-center pl-3 min-w-0">
+            <div className="flex min-w-0 flex-1 items-center justify-between pl-3">
                 <div className="flex items-center">
                     <LoadingText />
                 </div>
 
-                <div className="flex items-center sm:space-x-3 h-[21px]">
+                <div className="flex h-[21px] items-center sm:space-x-3">
                     <div className="flex items-center sm:hidden">
                         <LoadingText width="w-3" height="h-3" />
                     </div>
@@ -33,7 +33,7 @@ export function MonitorMobileHeaderSkeleton() {
 
 export function MobileMonitorSkeletonTable({ rowCount }: { rowCount: number }) {
     const rows = [];
-    for(let i = 0; i < rowCount; i++) {
+    for (let i = 0; i < rowCount; i++) {
         rows.push(
             <MobileTableRow
                 key={i}
@@ -45,13 +45,9 @@ export function MobileMonitorSkeletonTable({ rowCount }: { rowCount: number }) {
                 <LoadingTableCell withLabel={true} />
 
                 <LoadingTableCell withLabel={true} />
-            </MobileTableRow>
+            </MobileTableRow>,
         );
     }
 
-    return (
-        <MobileTable className="md:hidden">
-            {rows}
-        </MobileTable>
-    );
+    return <MobileTable className="md:hidden">{rows}</MobileTable>;
 }

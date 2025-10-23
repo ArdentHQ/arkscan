@@ -8,10 +8,10 @@ export default function PageHeaderPublicKeyAction({ wallet }: { wallet: IWallet 
 
     return (
         <PageHeaderValuePopup
-            value={wallet.public_key ?? ''}
-            button={<KeyIcon className="w-4 h-4" />}
-            title={t('pages.wallet.public_key.title')}
+            value={wallet.public_key ?? ""}
+            button={<KeyIcon className="h-4 w-4" />}
+            title={t("pages.wallet.public_key.title")}
             id="public_key"
         />
-    )
+    );
 }

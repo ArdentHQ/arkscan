@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import DropdownContext from "./DropdownContext";
@@ -11,9 +11,5 @@ export default function DropdownProvider({ children }: { children: React.ReactNo
         setIsOpen,
     };
 
-    return (
-        <DropdownContext.Provider value={value}>
-            {children}
-        </DropdownContext.Provider>
-    );
-};
+    return <DropdownContext.Provider value={value}>{children}</DropdownContext.Provider>;
+}

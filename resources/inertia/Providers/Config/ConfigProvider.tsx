@@ -7,13 +7,6 @@ interface ConfigProviderProps extends PageProps {
     children: React.ReactNode;
 }
 
-export default function ConfigProvider({
-    children,
-    ...props
-}: ConfigProviderProps) {
-    return (
-        <ConfigContext.Provider value={props}>
-            {children}
-        </ConfigContext.Provider>
-    );
+export default function ConfigProvider({ children, ...props }: ConfigProviderProps) {
+    return <ConfigContext.Provider value={props}>{children}</ConfigContext.Provider>;
 }

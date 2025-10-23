@@ -8,9 +8,7 @@ export default function FiatValue({ value }: { value: number | string }) {
         <span>
             <span>{value}</span>
 
-            {hasSymbol(settings!.currency) && (
-                <span>{settings!.currency}</span>
-            )}
+            {hasSymbol(settings!.currency) && <span>{settings!.currency}</span>}
         </span>
     );
 }

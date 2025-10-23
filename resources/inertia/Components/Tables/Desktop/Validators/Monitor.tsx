@@ -12,7 +12,10 @@ import { IValidator } from "@/types";
 import { useTranslation } from "react-i18next";
 import MissedWarning from "@/Components/Validator/Monitor/MissedWarning";
 
-export function MonitorRow({ validator, withFavoriteBorder = true }: {
+export function MonitorRow({
+    validator,
+    withFavoriteBorder = true,
+}: {
     validator: IValidator;
     withFavoriteBorder?: boolean;
 }) {
@@ -26,16 +29,14 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
             })}
         >
             <ValidatorStatusProvider forgingAt={validator.forgingAt} validator={validator}>
-                <TableCell className="text-center w-[20px]">
+                <TableCell className="w-[20px] text-center">
                     <FavoriteIcon validator={validator} />
                 </TableCell>
 
-                <TableCell className="w-[60px]">
-                    {validator.order}
-                </TableCell>
+                <TableCell className="w-[60px]">{validator.order}</TableCell>
 
                 <TableCell className="text-left">
-                    <div className="flex items-center space-x-2 min-w-0">
+                    <div className="flex min-w-0 items-center space-x-2">
                         <div>
                             <div className="md:hidden lg:block">
                                 <Address wallet={validator.wallet} />
@@ -50,19 +51,19 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
                     </div>
                 </TableCell>
 
-                <TableCell className="table-cell text-left hidden md:table-cell md-lg:hidden w-[180px]">
+                <TableCell className="table-cell hidden w-[180px] text-left md:table-cell md-lg:hidden">
                     <Status validator={validator} withTime />
                 </TableCell>
 
-                <TableCell className="table-cell text-left md:hidden md-lg:table-cell w-[180px] xl:w-[374px]">
+                <TableCell className="table-cell w-[180px] text-left md:hidden md-lg:table-cell xl:w-[374px]">
                     <Status validator={validator} />
                 </TableCell>
 
-                <TableCell className="md:table-cell text-left whitespace-nowrap md:hidden md-lg:table-cell w-[160px]">
+                <TableCell className="w-[160px] whitespace-nowrap text-left md:table-cell md:hidden md-lg:table-cell">
                     <TimeToForge validator={validator} />
                 </TableCell>
 
-                <TableCell className="text-right w-[100px]">
+                <TableCell className="w-[100px] text-right">
                     <BlockHeight validator={validator} />
                 </TableCell>
             </ValidatorStatusProvider>
@@ -70,7 +71,10 @@ export function MonitorRow({ validator, withFavoriteBorder = true }: {
     );
 }
 
-export function MonitorTable({ validators, overflowValidators }: {
+export function MonitorTable({
+    validators,
+    overflowValidators,
+}: {
     validators: IValidator[];
     overflowValidators: IValidator[];
 }) {
@@ -93,9 +97,9 @@ export function MonitorTable({ validators, overflowValidators }: {
     });
 
     return (
-        <div className="px-6 pt-6 pb-8 md:px-10 md:pt-0 md:mx-auto md:max-w-7xl">
-            <div className="border border-theme-secondary-300 dark:border-theme-dark-700 overflow-hidden rounded-t-xl rounded-b-xl hidden w-full md:block validator-monitor">
-                <div className="px-6 table-container table-encapsulated encapsulated-table-header-gradient">
+        <div className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
+            <div className="validator-monitor hidden w-full overflow-hidden rounded-b-xl rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block">
+                <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
                     <table>
                         <thead>
                             <tr className="text-sm">
@@ -103,65 +107,60 @@ export function MonitorTable({ validators, overflowValidators }: {
                                     <span></span>
                                 </th>
 
-                                <th sorting-id="header-order">
-                                    {t('tables.validator-monitor.order')}
-                                </th>
+                                <th sorting-id="header-order">{t("tables.validator-monitor.order")}</th>
 
-                                <th className="text-left">
-                                    {t('tables.validator-monitor.validator')}
-                                </th>
+                                <th className="text-left">{t("tables.validator-monitor.validator")}</th>
 
-                                <th className="table-cell text-left hidden md:table-cell md-lg:hidden">
-                                    {t('tables.validator-monitor.status_time_to_forge')}
+                                <th className="table-cell hidden text-left md:table-cell md-lg:hidden">
+                                    {t("tables.validator-monitor.status_time_to_forge")}
                                 </th>
 
                                 <th className="table-cell text-left md:hidden md-lg:table-cell">
-                                    {t('tables.validator-monitor.status')}
+                                    {t("tables.validator-monitor.status")}
                                 </th>
 
                                 <th className="table-cell whitespace-nowrap md:hidden md-lg:table-cell">
-                                    {t('tables.validator-monitor.time_to_forge')}
+                                    {t("tables.validator-monitor.time_to_forge")}
                                 </th>
 
-                                <th className="text-right whitespace-nowrap">
-                                    {t('tables.validator-monitor.block_height')}
+                                <th className="whitespace-nowrap text-right">
+                                    {t("tables.validator-monitor.block_height")}
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
                             {sortedValidators.map((validator, index) => (
-                                <MonitorRow
-                                    key={index}
-                                    validator={validator}
-                                />
+                                <MonitorRow key={index} validator={validator} />
                             ))}
                         </tbody>
                     </table>
 
                     <div className="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
 
-                    {overflowValidators.length > 0 && (<>
-                        <table>
-                            <tbody>
-                                {overflowValidators.map((validator, index) => (
-                                    <MonitorRow
-                                        key={index}
-                                        validator={validator}
-                                        withFavoriteBorder={false}
-                                    />
-                                ))}
-                            </tbody>
-                        </table>
+                    {overflowValidators.length > 0 && (
+                        <>
+                            <table>
+                                <tbody>
+                                    {overflowValidators.map((validator, index) => (
+                                        <MonitorRow key={index} validator={validator} withFavoriteBorder={false} />
+                                    ))}
+                                </tbody>
+                            </table>
 
-                        <div className="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
-                    </>)}
+                            <div className="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
     );
 }
 
-export default function MonitorTableWrapper({ validators, overflowValidators, rowCount }: {
+export default function MonitorTableWrapper({
+    validators,
+    overflowValidators,
+    rowCount,
+}: {
     validators: IValidator[];
     overflowValidators: IValidator[];
     rowCount: number;
@@ -176,34 +175,34 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
                     indicatorHeight="h-[20px]"
                     columns={[
                         {
-                            type: 'id',
+                            type: "id",
                             className: "w-[20px]",
                         },
                         {
-                            name: t('tables.validator-monitor.order'),
+                            name: t("tables.validator-monitor.order"),
                             type: "number",
                             className: "w-[60px]",
                         },
                         {
-                            name: t('tables.validator-monitor.validator'),
+                            name: t("tables.validator-monitor.validator"),
                             className: "text-left",
                         },
                         {
-                            name: t('tables.validator-monitor.status_time_to_forge'),
+                            name: t("tables.validator-monitor.status_time_to_forge"),
                             type: "badge",
                             className: "text-left hidden md:table-cell md-lg:hidden w-[180px]",
                         },
                         {
-                            name: t('tables.validator-monitor.status'),
+                            name: t("tables.validator-monitor.status"),
                             type: "badge",
                             className: "text-left md:hidden md-lg:table-cell w-[180px] xl:w-[374px]",
                         },
                         {
-                            name: t('tables.validator-monitor.time_to_forge'),
+                            name: t("tables.validator-monitor.time_to_forge"),
                             className: "md:hidden md-lg:table-cell w-[160px]",
                         },
                         {
-                            name: t('tables.validator-monitor.block_height'),
+                            name: t("tables.validator-monitor.block_height"),
                             className: "text-right w-[100px]",
                         },
                     ]}
@@ -214,10 +213,7 @@ export default function MonitorTableWrapper({ validators, overflowValidators, ro
 
     return (
         <div className="hidden md:block">
-            <MonitorTable
-                validators={validators}
-                overflowValidators={overflowValidators}
-            />
+            <MonitorTable validators={validators} overflowValidators={overflowValidators} />
         </div>
     );
 }

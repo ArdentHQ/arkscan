@@ -7,7 +7,7 @@ const MobileSorting = (
     sortBy = "",
     sortDirection = "asc",
     secondarySortBy = null,
-    secondarySortDirection = "asc"
+    secondarySortDirection = "asc",
 ) => {
     return {
         livewireHook: null,
@@ -38,14 +38,9 @@ const MobileSorting = (
                         return;
                     }
 
-                    toEl.querySelectorAll(".table-list-mobile").forEach(
-                        (tbody) => {
-                            Alpine.morph(
-                                tbody,
-                                this.update(tbody.cloneNode(true)).outerHTML
-                            );
-                        }
-                    );
+                    toEl.querySelectorAll(".table-list-mobile").forEach((tbody) => {
+                        Alpine.morph(tbody, this.update(tbody.cloneNode(true)).outerHTML);
+                    });
                 });
             }
         },
@@ -59,9 +54,7 @@ const MobileSorting = (
         },
 
         table() {
-            return this.$el
-                .closest(`#${tableId}`)
-                .querySelector(".table-list-mobile");
+            return this.$el.closest(`#${tableId}`).querySelector(".table-list-mobile");
         },
 
         sort(table) {
@@ -96,21 +89,10 @@ const MobileSorting = (
 
         sortCallback(sortBy) {
             return (row1, row2) => {
-                const sortResult = this.sortRows(
-                    row1,
-                    row2,
-                    sortBy,
-                    sortDirection === "asc"
-                );
+                const sortResult = this.sortRows(row1, row2, sortBy, sortDirection === "asc");
 
                 if (sortResult === 0 && secondarySortBy !== null) {
-                    return this.sortRows(
-                        row1,
-                        row2,
-                        secondarySortBy,
-                        secondarySortDirection === "asc",
-                        false
-                    );
+                    return this.sortRows(row1, row2, secondarySortBy, secondarySortDirection === "asc", false);
                 }
 
                 return sortResult;
@@ -124,7 +106,7 @@ const MobileSorting = (
                 this.getValue(row1, sortBy),
                 this.getValue(row2, sortBy),
                 sortAscending,
-                sortByRowIndex
+                sortByRowIndex,
             );
         },
     };

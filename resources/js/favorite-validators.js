@@ -1,6 +1,5 @@
 function FavoriteValidators() {
-    const favorites =
-        JSON.parse(localStorage.getItem("favorite-validators")) ?? [];
+    const favorites = JSON.parse(localStorage.getItem("favorite-validators")) ?? [];
 
     return Alpine.reactive({
         favorites,
@@ -24,10 +23,7 @@ function FavoriteValidators() {
         },
 
         save() {
-            localStorage.setItem(
-                "favorite-validators",
-                JSON.stringify(this.favorites)
-            );
+            localStorage.setItem("favorite-validators", JSON.stringify(this.favorites));
         },
     });
 }

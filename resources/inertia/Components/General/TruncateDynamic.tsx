@@ -12,14 +12,14 @@ export default function TruncateDynamic({ value }: { value: string }) {
 
         const hasOverflow = (el: HTMLDivElement) => {
             return el.offsetWidth < el.scrollWidth;
-        }
+        };
 
         const truncate = () => {
             if (!ref.current) {
                 return;
             }
 
-            ref.current.innerHTML = ''
+            ref.current.innerHTML = "";
             ref.current.appendChild(document.createTextNode(value));
 
             if (!hasOverflow(ref.current)) {
@@ -31,15 +31,15 @@ export default function TruncateDynamic({ value }: { value: string }) {
 
             do {
                 const a = value.substring(0, length);
-                const b = value.substring(baseLength-length);
-                const truncated = a + '...' + b;
+                const b = value.substring(baseLength - length);
+                const truncated = a + "..." + b;
 
-                ref.current.innerHTML = ''
+                ref.current.innerHTML = "";
                 ref.current.appendChild(document.createTextNode(truncated));
 
                 length--;
-            } while(hasOverflow(ref.current) && length >= 0);
-        }
+            } while (hasOverflow(ref.current) && length >= 0);
+        };
 
         const throttledTruncate = () => {
             if (throttleTimeout !== null) {
@@ -51,23 +51,20 @@ export default function TruncateDynamic({ value }: { value: string }) {
 
                 throttleTimeout = null;
             }, 50);
-        }
+        };
 
         new ResizeObserver(throttledTruncate).observe(ref.current);
 
         window.addEventListener("resize", throttledTruncate);
 
         return () => {
-            window.removeEventListener('resize', throttledTruncate);
-        }
+            window.removeEventListener("resize", throttledTruncate);
+        };
     }, [value, ref]);
 
     return (
-        <div
-            ref={ref}
-            className="inline-flex overflow-hidden w-full max-w-full whitespace-nowrap"
-        >
+        <div ref={ref} className="inline-flex w-full max-w-full overflow-hidden whitespace-nowrap">
             {value}
         </div>
-    )
+    );
 }

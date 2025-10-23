@@ -1,7 +1,7 @@
 // https://github.com/EugeneMeles/laravel-react-i18n/blob/master/src/plugin/key-type.ts
 
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 /**
  *
@@ -9,18 +9,18 @@ import path from 'path';
  * @param basename
  */
 export function convertToKeyType(dirname: string, basename: string): string {
-  const result = fs.readFileSync(`${dirname + path.sep + basename}.json`, 'utf8');
-  const obj = Object.entries(JSON.parse(result));
+    const result = fs.readFileSync(`${dirname + path.sep + basename}.json`, "utf8");
+    const obj = Object.entries(JSON.parse(result));
 
-  let str = '';
-  obj.forEach(([key], index) => {
-    // Escaping a key
-    const escKey = key.replace(/[!@#$%^&*()+=\-[\]\\';,/{}|":<>?~_]/g, '\\$&');
+    let str = "";
+    obj.forEach(([key], index) => {
+        // Escaping a key
+        const escKey = key.replace(/[!@#$%^&*()+=\-[\]\\';,/{}|":<>?~_]/g, "\\$&");
 
-    str = obj.length === 1 || obj.length - 1 === index ? `${str}'${escKey}'` : `${str}'${escKey}'|`;
-  });
+        str = obj.length === 1 || obj.length - 1 === index ? `${str}'${escKey}'` : `${str}'${escKey}'|`;
+    });
 
-  return str;
+    return str;
 }
 
 /**
@@ -28,9 +28,9 @@ export function convertToKeyType(dirname: string, basename: string): string {
  * @param keys
  * @param dirname
  */
-export function saveKeyTypeToFile(keys: string, dirname = 'resources/js') {
-  const sanitizeDirname = dirname.replace(/[\\/]$/, '') + path.sep;
-  const data = `export type I18nKeyType = ${keys};`.replace(/[\r\n]+/g, '');
+export function saveKeyTypeToFile(keys: string, dirname = "resources/js") {
+    const sanitizeDirname = dirname.replace(/[\\/]$/, "") + path.sep;
+    const data = `export type I18nKeyType = ${keys};`.replace(/[\r\n]+/g, "");
 
-  fs.writeFileSync(`${sanitizeDirname}LaravelReactI18n.types.ts`, data);
+    fs.writeFileSync(`${sanitizeDirname}LaravelReactI18n.types.ts`, data);
 }

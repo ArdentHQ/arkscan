@@ -8,8 +8,8 @@ export default function DropdownPopup({
     children,
     button,
     onClosed,
-    dropdownClasses = 'px-4',
-    width = 'min-w-[300px]',
+    dropdownClasses = "px-4",
+    width = "min-w-[300px]",
 }: {
     title: string;
     children: React.ReactNode;
@@ -32,15 +32,13 @@ export default function DropdownPopup({
             dropdownContentClasses="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 rounded-xl shadow-lg dark:shadow-lg-dark"
             onClosed={onClosed}
         >
-            <div className="flex justify-between items-center px-6 text-lg font-semibold text-left py-[0.875rem] dark:text-theme-dark-50">
-                <div className="text-lg text-theme-secondary-900 dark:text-theme-dark-200">
-                    {title}
-                </div>
+            <div className="flex items-center justify-between px-6 py-[0.875rem] text-left text-lg font-semibold dark:text-theme-dark-50">
+                <div className="text-lg text-theme-secondary-900 dark:text-theme-dark-200">{title}</div>
 
                 <div>
                     <button
                         type="button"
-                        className="flex justify-center items-center p-0 w-6 h-6 hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-600 hover:bg-theme-primary-700"
+                        className="button button-generic flex h-6 w-6 items-center justify-center p-0 hover:bg-theme-primary-700 hover:text-white dark:text-theme-dark-600 dark:hover:text-white"
                         onClick={() => {
                             setIsOpen(false);
                         }}
@@ -50,7 +48,7 @@ export default function DropdownPopup({
                 </div>
             </div>
 
-            <div className="px-6 pb-6 border-t pt-[0.875rem] border-theme-secondary-300 dark:border-theme-dark-700">
+            <div className="border-t border-theme-secondary-300 px-6 pb-6 pt-[0.875rem] dark:border-theme-dark-700">
                 {children}
             </div>
         </Dropdown>

@@ -2,33 +2,23 @@ import { useConfig } from "@/Providers/Config/ConfigContext";
 import { currencyWithDecimals } from "@/utils/number-formatter";
 import Tooltip from "./Tooltip";
 
-function AmountSmallWithoutTooltip({
-    amount,
-    smallAmount,
-}: {
-    amount: number;
-    smallAmount: number;
-}) {
+function AmountSmallWithoutTooltip({ amount, smallAmount }: { amount: number; smallAmount: number }) {
     const { network } = useConfig();
 
     return (
         <>
             {amount < smallAmount ? (
-                <>&lt;{smallAmount} {network!.currency}</>
+                <>
+                    &lt;{smallAmount} {network!.currency}
+                </>
             ) : (
                 <>{currencyWithDecimals(amount, network!.currency, 2)}</>
             )}
         </>
-    )
+    );
 }
 
-function AmountSmallWithTooltip({
-    amount,
-    smallAmount,
-}: {
-    amount: number;
-    smallAmount: number;
-}) {
+function AmountSmallWithTooltip({ amount, smallAmount }: { amount: number; smallAmount: number }) {
     const { network } = useConfig();
 
     return (
@@ -41,13 +31,11 @@ function AmountSmallWithTooltip({
                 </Tooltip>
             ) : (
                 <Tooltip content={currencyWithDecimals(amount, network!.currency, 18)}>
-                    <span>
-                        {currencyWithDecimals(amount, network!.currency, 2)}
-                    </span>
+                    <span>{currencyWithDecimals(amount, network!.currency, 2)}</span>
                 </Tooltip>
             )}
         </>
-    )
+    );
 }
 
 export default function AmountSmall({
@@ -64,21 +52,13 @@ export default function AmountSmall({
     return (
         <>
             {amount === 0 ? (
-                <span>
-                    0 {network!.currency}
-                </span>
+                <span>0 {network!.currency}</span>
             ) : (
                 <>
                     {hideTooltip ? (
-                        <AmountSmallWithoutTooltip
-                            amount={amount}
-                            smallAmount={smallAmount}
-                        />
+                        <AmountSmallWithoutTooltip amount={amount} smallAmount={smallAmount} />
                     ) : (
-                        <AmountSmallWithTooltip
-                            amount={amount}
-                            smallAmount={smallAmount}
-                        />
+                        <AmountSmallWithTooltip amount={amount} smallAmount={smallAmount} />
                     )}
                 </>
             )}

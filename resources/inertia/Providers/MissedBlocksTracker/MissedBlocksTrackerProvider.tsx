@@ -18,28 +18,20 @@ export default function MissedBlocksTrackerProvider({
     children: React.ReactNode;
 }) {
     const tickingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const [currentForger, setCurrentForger] = useState<
-        IValidator | undefined
-    >();
-    const [consecutiveMissedBlocks, setConsecutiveMissedBlocks] =
-        useState<number>(0);
+    const [currentForger, setCurrentForger] = useState<IValidator | undefined>();
+    const [consecutiveMissedBlocks, setConsecutiveMissedBlocks] = useState<number>(0);
     const [secondsOffset, setSecondsOffset] = useState<number>(0);
 
     useEffect(() => {
         const updateCurrentForger = () => {
             const sortedValidators = [...validators];
-            sortedValidators.sort(
-                (a, b) => dayjs(a.forgingAt).unix() - dayjs(b.forgingAt).unix(),
-            );
+            sortedValidators.sort((a, b) => dayjs(a.forgingAt).unix() - dayjs(b.forgingAt).unix());
 
             const now = dayjs(new Date());
 
             const forger = sortedValidators
                 .filter((validator) => {
-                    const secondsDifference = dayjs(validator.forgingAt).diff(
-                        now,
-                        "second",
-                    );
+                    const secondsDifference = dayjs(validator.forgingAt).diff(now, "second");
                     if (secondsDifference < MISSED_BLOCKS_SECONDS_THRESHOLD) {
                         return false;
                     }
@@ -64,9 +56,7 @@ export default function MissedBlocksTrackerProvider({
                 return;
             }
 
-            const missedBlocks = sortedValidators.filter(
-                (validator) => validator.order < forger?.order,
-            );
+            const missedBlocks = sortedValidators.filter((validator) => validator.order < forger?.order);
             missedBlocks.sort((a, b) => b.order - a.order);
 
             let missedBlocksCount = 0;
@@ -76,10 +66,7 @@ export default function MissedBlocksTrackerProvider({
                     break;
                 }
 
-                const secondsDifference = dayjs(validator.forgingAt).diff(
-                    now,
-                    "second",
-                );
+                const secondsDifference = dayjs(validator.forgingAt).diff(now, "second");
                 if (secondsDifference >= MISSED_BLOCKS_SECONDS_THRESHOLD) {
                     break;
                 }
@@ -114,9 +101,5 @@ export default function MissedBlocksTrackerProvider({
         secondsOffset,
     };
 
-    return (
-        <MissedBlocksTrackerContext.Provider value={value}>
-            {children}
-        </MissedBlocksTrackerContext.Provider>
-    );
+    return <MissedBlocksTrackerContext.Provider value={value}>{children}</MissedBlocksTrackerContext.Provider>;
 }

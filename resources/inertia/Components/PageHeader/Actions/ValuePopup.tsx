@@ -39,9 +39,9 @@ export default function PageHeaderValuePopup({
 
     return (
         <div
-            className="flex-1 ml-2 w-full"
+            className="ml-2 w-full flex-1"
             onKeyDown={(e) => {
-                if (e.key === 'Escape') {
+                if (e.key === "Escape") {
                     setModalVisible(false);
                 }
             }}
@@ -50,13 +50,13 @@ export default function PageHeaderValuePopup({
                 type="button"
                 onClick={() => {
                     setModalVisible(!modalVisible);
-                    if (modalVisible && ! hasBeenOpened) {
+                    if (modalVisible && !hasBeenOpened) {
                         (window as any).sa_event(`wallet_modal_${id}_opened`);
 
                         setHasBeenOpened(true);
                     }
                 }}
-                className="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
+                className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset"
             >
                 {button}
             </button>
@@ -64,9 +64,9 @@ export default function PageHeaderValuePopup({
             {modalVisible && (
                 <div
                     ref={popupRef}
-                    className="flex absolute right-0 left-0 justify-between items-end p-6 mx-8 mt-4 space-x-4 w-auto bg-white rounded-xl border border-transparent shadow-lg md:mt-1 lg:mr-32 z-15 md-lg:left-auto dark:shadow-lg-dark dark:bg-theme-dark-900 dark:border-theme-dark-800"
+                    className="absolute left-0 right-0 z-15 mx-8 mt-4 flex w-auto items-end justify-between space-x-4 rounded-xl border border-transparent bg-white p-6 shadow-lg dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:shadow-lg-dark md:mt-1 md-lg:left-auto lg:mr-32"
                 >
-                    <div className="flex flex-col space-y-2 min-w-0 leading-tight">
+                    <div className="flex min-w-0 flex-col space-y-2 leading-tight">
                         <span className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-500">
                             {title}
                         </span>
@@ -79,9 +79,9 @@ export default function PageHeaderValuePopup({
                     <div className="flex items-center space-x-2">
                         <Clipboard
                             value={value}
-                            className="flex items-center p-2 w-full h-auto group"
+                            className="group flex h-auto w-full items-center p-2"
                             wrapperClass="flex-1"
-                            tooltipContent={t('pages.wallet.copied_public_key')}
+                            tooltipContent={t("pages.wallet.copied_public_key")}
                             withCheckmarks
                             checkmarksClass="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
                         />
@@ -90,7 +90,7 @@ export default function PageHeaderValuePopup({
 
                         <button
                             type="button"
-                            className="p-2 hover:text-white button button-generic dark:hover:text-white dark:text-theme-dark-500 hover:bg-theme-primary-700"
+                            className="button button-generic p-2 hover:bg-theme-primary-700 hover:text-white dark:text-theme-dark-500 dark:hover:text-white"
                             onClick={() => setModalVisible(false)}
                         >
                             <CrossIcon className="h-4 w-4" />
@@ -99,5 +99,5 @@ export default function PageHeaderValuePopup({
                 </div>
             )}
         </div>
-    )
+    );
 }

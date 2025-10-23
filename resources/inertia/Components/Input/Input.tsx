@@ -12,9 +12,9 @@ export default function Input({
     tooltipType,
     required = false,
     hideLabel = false,
-    className = '',
-    inputClass = '',
-    auxiliaryTitle = '',
+    className = "",
+    inputClass = "",
+    auxiliaryTitle = "",
     error,
 
     ...props
@@ -24,7 +24,7 @@ export default function Input({
     label?: string | React.ReactNode;
     tooltip?: string;
     tooltipClass?: string;
-    tooltipType?: 'info' | 'question';
+    tooltipType?: "info" | "question";
     required?: boolean;
     hideLabel?: boolean;
     className?: string;
@@ -37,7 +37,7 @@ export default function Input({
     return (
         <div className={className}>
             <div className="input-group">
-                {! hideLabel && (
+                {!hideLabel && (
                     <InputLabel
                         name={name}
                         error={error}
@@ -66,12 +66,7 @@ export default function Input({
                         {...props}
                     />
 
-                    {error && (
-                        <InputErrorTooltip
-                            inputRef={inputRef}
-                            error={error}
-                        />
-                    )}
+                    {error && <InputErrorTooltip inputRef={inputRef} error={error} />}
                 </div>
             </div>
         </div>

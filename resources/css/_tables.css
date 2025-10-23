@@ -6,7 +6,7 @@
 
 /* Table Avatar */
 td.hoverable-cell .table-avatar {
-    @apply -my-1 -mr-1 border-4 border-white dark:border-theme-dark-900 rounded-full;
+    @apply -my-1 -mr-1 rounded-full border-4 border-white dark:border-theme-dark-900;
 }
 
 tr:hover td.hoverable-cell .table-avatar {
@@ -18,93 +18,41 @@ tr:hover td.hoverable-cell .table-avatar {
 }
 
 .fiat-hint {
-    @apply -ml-1.5 -my-1 bg-theme-danger-100 hover:bg-theme-danger-200 flex items-center justify-center px-2 mr-2 transition-default;
+    @apply transition-default -my-1 -ml-1.5 mr-2 flex items-center justify-center bg-theme-danger-100 px-2 hover:bg-theme-danger-200;
 }
 
 .dark .fiat-hint {
-    @apply text-white bg-theme-danger-400 hover:bg-theme-danger-500;
+    @apply bg-theme-danger-400 text-white hover:bg-theme-danger-500;
 }
 
 .table-compact:not(.table-compact-until-lg) table .fiat-hint {
-    @apply w-5 h-5 px-0 my-0 ml-0 mr-1 rounded-full;
+    @apply my-0 ml-0 mr-1 h-5 w-5 rounded-full px-0;
 }
 
 /** Compact Table Styling **/
-.table-compact:not(.table-compact-until-lg)
-    .table-container
-    table
-    > tbody
-    .full-transaction-icon
-    svg,
-.table-compact:not(.table-compact-until-lg)
-    .table-container
-    table
-    > tbody
-    .transaction-icon,
-.table-compact:not(.table-compact-until-lg)
-    .table-container
-    table
-    > tbody
-    .vote-circle,
-.table-compact:not(.table-compact-until-lg)
-    .table-container
-    table
-    > tbody
-    .unvote-circle {
-    @apply w-5 h-5 border-0;
+.table-compact:not(.table-compact-until-lg) .table-container table > tbody .full-transaction-icon svg,
+.table-compact:not(.table-compact-until-lg) .table-container table > tbody .transaction-icon,
+.table-compact:not(.table-compact-until-lg) .table-container table > tbody .vote-circle,
+.table-compact:not(.table-compact-until-lg) .table-container table > tbody .unvote-circle {
+    @apply h-5 w-5 border-0;
 }
 
-.table-compact:not(.table-compact-until-lg)
-    .table-container
-    table
-    > tbody
-    .avatar-wrapper,
-.table-compact:not(.table-compact-until-lg)
-    .table-container
-    table
-    > tbody
-    .status-circle,
-.table-compact:not(.table-compact-until-lg)
-    .table-container
-    table
-    > tbody
-    .arrow-direction
-    svg,
-.table-compact:not(.table-compact-until-lg)
-    .table-container
-    table
-    > tbody
-    .round-status
-    svg {
-    @apply w-5 h-5;
+.table-compact:not(.table-compact-until-lg) .table-container table > tbody .avatar-wrapper,
+.table-compact:not(.table-compact-until-lg) .table-container table > tbody .status-circle,
+.table-compact:not(.table-compact-until-lg) .table-container table > tbody .arrow-direction svg,
+.table-compact:not(.table-compact-until-lg) .table-container table > tbody .round-status svg {
+    @apply h-5 w-5;
 }
 
 @screen lg {
-    .table-compact:not(.table-compact-until-lg)
-        .table-container
-        table
-        > tbody
-        .full-transaction-icon
-        svg,
-    .table-compact:not(.table-compact-until-lg)
-        .table-container
-        table
-        > tbody
-        .transaction-icon {
-        @apply w-5 h-5 border-0;
+    .table-compact:not(.table-compact-until-lg) .table-container table > tbody .full-transaction-icon svg,
+    .table-compact:not(.table-compact-until-lg) .table-container table > tbody .transaction-icon {
+        @apply h-5 w-5 border-0;
     }
 
-    .table-compact:not(.table-compact-until-lg)
-        .table-container
-        table
-        > tbody
-        .avatar-wrapper,
-    .table-compact:not(.table-compact-until-lg)
-        .table-container
-        table
-        > tbody
-        .status-circle {
-        @apply w-5 h-5 !important;
+    .table-compact:not(.table-compact-until-lg) .table-container table > tbody .avatar-wrapper,
+    .table-compact:not(.table-compact-until-lg) .table-container table > tbody .status-circle {
+        @apply h-5 w-5 !important;
     }
 }
 
@@ -122,11 +70,11 @@ body.table-compact-until-lg table .fiat-tooltip-received {
 }
 
 body.table-compact-until-lg .table-avatar > div {
-    @apply bg-white dark:bg-transparent border-white dark:border-transparent circled-icon;
+    @apply circled-icon border-white bg-white dark:border-transparent dark:bg-transparent;
 }
 
 body.table-compact-until-lg .arrow-direction {
-    @apply -mr-2 z-5 lg:z-auto flex items-center justify-center border-0 lg:border-2 rounded-full lg:w-11 lg:h-11;
+    @apply z-5 -mr-2 flex items-center justify-center rounded-full border-0 lg:z-auto lg:h-11 lg:w-11 lg:border-2;
 }
 
 .table-compact:not(.table-compact-until-lg) table .button-vote {
@@ -145,26 +93,21 @@ body.table-compact-until-lg .arrow-direction {
 }
 
 @media (max-width: 1023px) {
-    .table-container
-        table
-        > tbody
-        > tr
-        > td.hoverable-cell
-        > div.table-cell-content,
+    .table-container table > tbody > tr > td.hoverable-cell > div.table-cell-content,
     .table-container table > tbody > tr > td:not(.hoverable-cell) {
         @apply py-3;
     }
 
     .table-container table > tbody .full-transaction-icon svg,
     .table-container table > tbody .transaction-icon {
-        @apply w-5 h-5 border-0;
+        @apply h-5 w-5 border-0;
     }
 
     .table-container table > tbody .avatar-wrapper,
     .table-container table > tbody .status-circle,
     .table-container table > tbody .arrow-direction svg,
     .table-container table > tbody .round-status svg {
-        @apply w-5 h-5;
+        @apply h-5 w-5;
     }
 
     .round-status-history {
@@ -185,7 +128,7 @@ body.table-compact-until-lg .arrow-direction {
 }
 
 .table-encapsulated thead th {
-    @apply text-theme-secondary-700 dark:text-theme-dark-200 font-semibold leading-5;
+    @apply font-semibold leading-5 text-theme-secondary-700 dark:text-theme-dark-200;
 }
 
 .table-list-mobile .table-list-mobile-row {
@@ -196,43 +139,17 @@ body.table-compact-until-lg .arrow-direction {
     @apply border-dashed;
 }
 
-.table-encapsulated
-    table
-    > tbody
-    > tr:hover
-    > td.hoverable-cell
-    > div.table-cell-bg {
+.table-encapsulated table > tbody > tr:hover > td.hoverable-cell > div.table-cell-bg {
     @apply bg-theme-secondary-200 dark:bg-black !important;
 }
 
-.table-encapsulated
-    table
-    > tbody
-    > tr:hover
-    > td.hoverable-cell:first-child
-    > div.table-cell-bg::before,
-.table-encapsulated
-    table
-    > tbody
-    > tr:hover
-    > td.hoverable-cell:last-child
-    > div.table-cell-bg:before,
-.table-encapsulated
-    table
-    > tbody
-    > tr:hover
-    > td.hoverable-cell.last-cell
-    > div.table-cell-bg:before {
+.table-encapsulated table > tbody > tr:hover > td.hoverable-cell:first-child > div.table-cell-bg::before,
+.table-encapsulated table > tbody > tr:hover > td.hoverable-cell:last-child > div.table-cell-bg:before,
+.table-encapsulated table > tbody > tr:hover > td.hoverable-cell.last-cell > div.table-cell-bg:before {
     @apply bg-theme-secondary-200 dark:bg-black !important;
 }
 
-.table-encapsulated
-    table
-    > tbody
-    > tr:hover
-    > td.hoverable-cell
-    > .table-cell-content
-    .encapsulated-badge {
+.table-encapsulated table > tbody > tr:hover > td.hoverable-cell > .table-cell-content .encapsulated-badge {
     @apply bg-theme-secondary-300 dark:bg-theme-dark-700;
 }
 
@@ -255,38 +172,28 @@ body.table-compact-until-lg .arrow-direction {
 }
 
 @media (max-width: 768px) {
-    .validator-monitor-mobile
-        > div:nth-last-child(-n + 1 of .validator-monitor-favorite) {
+    .validator-monitor-mobile > div:nth-last-child(-n + 1 of .validator-monitor-favorite) {
         @apply relative mb-10;
     }
-    .validator-monitor-mobile
-        > div:nth-last-child(-n + 1 of .validator-monitor-favorite)::after {
+    .validator-monitor-mobile > div:nth-last-child(-n + 1 of .validator-monitor-favorite)::after {
         content: "";
-        @apply left-0 right-0 h-1 bg-theme-secondary-300 dark:bg-theme-dark-700 mt-6 block absolute -mx-6;
+        @apply absolute left-0 right-0 -mx-6 mt-6 block h-1 bg-theme-secondary-300 dark:bg-theme-dark-700;
     }
 
-    .validator-monitor-mobile
-        > div:not(.validator-monitor-favorite)
-        + .validator-monitor-favorite {
+    .validator-monitor-mobile > div:not(.validator-monitor-favorite) + .validator-monitor-favorite {
         @apply mb-0;
     }
-    .validator-monitor-mobile
-        > div:not(.validator-monitor-favorite)
-        + .validator-monitor-favorite::after {
+    .validator-monitor-mobile > div:not(.validator-monitor-favorite) + .validator-monitor-favorite::after {
         content: none;
     }
 }
 
 @screen md {
-    .validator-monitor
-        tbody
-        tr:nth-last-child(-n + 1 of .validator-monitor-favorite) {
-        @apply border-b-0 relative;
+    .validator-monitor tbody tr:nth-last-child(-n + 1 of .validator-monitor-favorite) {
+        @apply relative border-b-0;
     }
-    .validator-monitor
-        tbody
-        tr:nth-last-child(-n + 1 of .validator-monitor-favorite)::after {
+    .validator-monitor tbody tr:nth-last-child(-n + 1 of .validator-monitor-favorite)::after {
         content: "";
-        @apply absolute bottom-0 left-0 right-0 border-b border-theme-secondary-300 dark:border-theme-dark-700 -mx-6;
+        @apply absolute bottom-0 left-0 right-0 -mx-6 border-b border-theme-secondary-300 dark:border-theme-dark-700;
     }
 }

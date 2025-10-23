@@ -1,12 +1,12 @@
 // Based on https://github.com/EugeneMeles/laravel-react-i18n/blob/master/src/vite.ts
 
-import fs from 'fs';
+import fs from "fs";
 
-import { createLogger } from 'vite';
+import { createLogger } from "vite";
 
-import { convertToKeyType, saveKeyTypeToFile } from './includes/key-type';
-import parser from './includes/parser';
-import locale from './includes/locale';
+import { convertToKeyType, saveKeyTypeToFile } from "./includes/key-type";
+import parser from "./includes/parser";
+import locale from "./includes/locale";
 
 type LangPath = string | { src: string; dest: string };
 
@@ -20,9 +20,9 @@ interface ConfigInterface {
  *
  */
 export default function i18n(config: ConfigInterface) {
-    const langPaths = config?.paths ? config.paths : ['lang'];
+    const langPaths = config?.paths ? config.paths : ["lang"];
 
-    const logger = createLogger('info', { prefix: '[laravel-react-i18n]' });
+    const logger = createLogger("info", { prefix: "[laravel-react-i18n]" });
 
     let isPhpLocale = false;
     let files: { path: string; basename: string }[] = [];
@@ -37,7 +37,7 @@ export default function i18n(config: ConfigInterface) {
 
     function pushKeys(keys: string[], locales: string[], langDirname: string) {
         if (
-            typeof process.env.VITE_LARAVEL_REACT_I18N_LOCALE !== 'undefined' &&
+            typeof process.env.VITE_LARAVEL_REACT_I18N_LOCALE !== "undefined" &&
             locales.includes(process.env.VITE_LARAVEL_REACT_I18N_LOCALE)
         ) {
             const fileName = isPhpLocale
@@ -48,7 +48,7 @@ export default function i18n(config: ConfigInterface) {
         }
 
         if (
-            typeof process.env.VITE_LARAVEL_REACT_I18N_FALLBACK_LOCALE !== 'undefined' &&
+            typeof process.env.VITE_LARAVEL_REACT_I18N_FALLBACK_LOCALE !== "undefined" &&
             locales.includes(process.env.VITE_LARAVEL_REACT_I18N_FALLBACK_LOCALE) &&
             process.env.VITE_LARAVEL_REACT_I18N_LOCALE !== process.env.VITE_LARAVEL_REACT_I18N_FALLBACK_LOCALE
         ) {
@@ -58,23 +58,23 @@ export default function i18n(config: ConfigInterface) {
 
             keys.push(convertToKeyType(langDirname, fileName));
         }
-  }
+    }
 
-  return {
-        name: 'i18n',
-        enforce: 'post',
+    return {
+        name: "i18n",
+        enforce: "post",
         config() {
             const keys: string[] = [];
 
             for (const langPath of langPaths) {
-                const langDirname = typeof langPath === 'string' ? langPath : langPath.src;
-                const langDestDirname = typeof langPath === 'string' ? langPath : langPath.dest;
+                const langDirname = typeof langPath === "string" ? langPath : langPath.src;
+                const langDestDirname = typeof langPath === "string" ? langPath : langPath.dest;
 
                 // Check language directory is exists.
                 if (!fs.existsSync(langDirname)) {
                     const msg = [
-                        'Language directory is not exist, maybe you did not publish the language files with `php artisan lang:publish`.',
-                        'For more information please visit: https://laravel.com/docs/10.x/localization#publishing-the-language-files'
+                        "Language directory is not exist, maybe you did not publish the language files with `php artisan lang:publish`.",
+                        "For more information please visit: https://laravel.com/docs/10.x/localization#publishing-the-language-files",
                     ];
 
                     msg.map((str) => logger.error(str, { timestamp: true }));
@@ -101,15 +101,15 @@ export default function i18n(config: ConfigInterface) {
                     }
                 } else {
                     const msg = [
-                        'Language directory not contain php translations files.',
-                        'For more information please visit: https://laravel.com/docs/10.x/localization#introduction'
+                        "Language directory not contain php translations files.",
+                        "For more information please visit: https://laravel.com/docs/10.x/localization#introduction",
                     ];
 
                     msg.map((str) => logger.info(str, { timestamp: true }));
                 }
 
                 if (config?.typeTranslationKeys) {
-                    saveKeyTypeToFile(keys.join('|'), config?.typeDestinationPath);
+                    saveKeyTypeToFile(keys.join("|"), config?.typeDestinationPath);
                 }
             }
         },
@@ -118,8 +118,8 @@ export default function i18n(config: ConfigInterface) {
             const keys: string[] = [];
 
             for (const langPath of langPaths) {
-                const langDirname = typeof langPath === 'string' ? langPath : langPath.src;
-                const langDestDirname = typeof langPath === 'string' ? langPath : langPath.dest;
+                const langDirname = typeof langPath === "string" ? langPath : langPath.src;
+                const langDestDirname = typeof langPath === "string" ? langPath : langPath.dest;
 
                 if (config?.typeTranslationKeys) {
                     pushKeys(keys, jsonLocales, langDirname);
@@ -136,17 +136,17 @@ export default function i18n(config: ConfigInterface) {
                 }
 
                 if (config?.typeTranslationKeys) {
-                    saveKeyTypeToFile(keys.join('|'), config?.typeDestinationPath);
+                    saveKeyTypeToFile(keys.join("|"), config?.typeDestinationPath);
                 }
             }
         },
         configureServer() {
             if (exitHandlersBound) return;
 
-            process.on('exit', clean);
-            process.on('SIGINT', process.exit);
-            process.on('SIGTERM', process.exit);
-            process.on('SIGHUP', process.exit);
+            process.on("exit", clean);
+            process.on("SIGINT", process.exit);
+            process.on("SIGTERM", process.exit);
+            process.on("SIGHUP", process.exit);
 
             exitHandlersBound = true;
         },
