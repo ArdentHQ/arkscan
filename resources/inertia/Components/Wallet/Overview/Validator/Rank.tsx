@@ -42,7 +42,7 @@ export default function WalletOverviewValidatorRank({ wallet }: { wallet: IWalle
                         </span>
                     )}
 
-                    {rank > network!.validatorCount && (
+                    {rank > network!.validatorCount && ! wallet.isResigned && ! wallet.isDormant && (
                         <span className="text-theme-secondary-500 dark:text-theme-dark-500">
                             {t('pages.validators.standby')}
                         </span>
