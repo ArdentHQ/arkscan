@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import '@ui/js/clipboard';
 import classNames from "@/utils/class-names";
-import Tippy from "@tippyjs/react";
 import CopyIcon from "@ui/icons/copy.svg?react";
 import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
+import Tooltip from "./Tooltip";
 
 export default function Clipboard({
     value,
@@ -48,7 +48,7 @@ export default function Clipboard({
 
     return (
         <div className={wrapperClass}>
-            <Tippy
+            <Tooltip
                 content={tooltipContent || ''}
                 visible={showTooltip}
             >
@@ -95,7 +95,7 @@ export default function Clipboard({
                         </>
                     }
                 </button>
-            </Tippy>
+            </Tooltip>
         </div>
     );
 }

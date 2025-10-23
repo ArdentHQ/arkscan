@@ -29,6 +29,7 @@ class Wallet extends Data
         public bool $isResigned,
         public ?string $legacyAddress,
         public ?string $username,
+        public bool $hasUsername,
         public string $votes,
         public float $productivity,
         public string $formattedBalanceTwoDecimals,
@@ -39,7 +40,7 @@ class Wallet extends Data
         #[LiteralTypeScriptType('Record<string, any>')]
         public ?array $attributes,
         public ?self $vote,
-        public string $voteUrl,
+        public ?string $voteUrl,
     ) {
     }
 
@@ -51,6 +52,11 @@ class Wallet extends Data
         $vote        = $viewModel->vote();
         if ($vote !== null) {
             $votedWallet = self::fromModel($vote->model());
+        }
+
+        $voteUrl = null;
+        if ($viewModel->isValidator() && $wallet->public_key !== null) {
+            $voteUrl = $viewModel->voteUrl();
         }
 
         return new self(
@@ -67,6 +73,7 @@ class Wallet extends Data
             isResigned: $viewModel->isResigned(),
             legacyAddress: $viewModel->legacyAddress(),
             username: $viewModel->username(),
+            hasUsername: $viewModel->hasUsername(),
             votes: (string) $viewModel->votes(),
             productivity: $viewModel->productivity(),
             formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), 2),
@@ -74,7 +81,7 @@ class Wallet extends Data
             fiatValue: ExchangeRate::convert($wallet->balance, null),
             totalForged: (string) $viewModel->totalForged(),
             vote: $votedWallet,
-            voteUrl: $viewModel->voteUrl(),
+            voteUrl: $voteUrl,
         );
     }
 }

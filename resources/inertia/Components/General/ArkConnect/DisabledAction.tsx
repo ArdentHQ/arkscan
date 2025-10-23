@@ -1,6 +1,6 @@
 import { useConfig } from "@/Providers/Config/ConfigContext";
-import Tippy from "@tippyjs/react";
 import { useTranslation } from "react-i18next";
+import Tooltip from "../Tooltip";
 
 export default function ArkConnectDisabledAction({
     isConnected,
@@ -17,15 +17,15 @@ export default function ArkConnectDisabledAction({
     return (
         <>
             {isConnected && ! isOnSameNetwork && (
-                <Tippy content={t(`general.arkconnect.wrong_network.${network!.alias}`)}>
+                <Tooltip content={t(`general.arkconnect.wrong_network.${network!.alias}`)}>
                     <div>{children}</div>
-                </Tippy>
+                </Tooltip>
             )}
 
             {! isConnected && (
-                <Tippy content={t('general.arkconnect.connect_wallet_tooltip')}>
+                <Tooltip content={t('general.arkconnect.connect_wallet_tooltip')}>
                     <div>{children}</div>
-                </Tippy>
+                </Tooltip>
             )}
         </>
     );

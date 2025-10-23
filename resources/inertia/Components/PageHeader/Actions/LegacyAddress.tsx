@@ -17,7 +17,7 @@ export default function PageHeaderLegacyAddressAction({ wallet }: { wallet: IWal
             id="legacyAddress"
             additionalButtons={(
                 <a
-                    href={`${network.legacyExplorerUrl}/addresses/${wallet.legacyAddress}`}
+                    href={`${network!.legacyExplorerUrl}/addresses/${wallet.legacyAddress}`}
                     target="_blank"
                     className="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
                 >

@@ -1,4 +1,4 @@
-import Tippy from "@tippyjs/react";
+import Tooltip from "@/Components/General/Tooltip";
 import { useTranslation } from "react-i18next";
 
 export default function WalletOverviewItemEntry({
@@ -27,11 +27,11 @@ export default function WalletOverviewItemEntry({
             {!hasEmptyValue && !!value && (
                 <>
                     {tooltip && (
-                        <Tippy content={tooltip}>
+                        <Tooltip content={tooltip}>
                             <div className="text-theme-secondary-900 dark:text-theme-dark-50">
                                 {value}
                             </div>
-                        </Tippy>
+                        </Tooltip>
                     )}
 
                     {!tooltip && (

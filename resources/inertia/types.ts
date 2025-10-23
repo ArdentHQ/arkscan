@@ -9,7 +9,7 @@ export interface IValidator {
     lastBlock: IBlock | null;
     order: number;
     forgingAt: string | Date;
-    status: 'done' | 'next' | 'pending';
+    status: "done" | "next" | "pending";
     secondsUntilForge: number;
 }
 
@@ -32,4 +32,30 @@ export interface IStatistics {
             username?: string;
         };
     };
+}
+
+export interface IPaginatedResponse<T> {
+    data: T[];
+    current_page: number;
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: Array<{
+        url: string | null;
+        label: string;
+        active: boolean;
+    }>;
+    meta: {
+        pageName: string;
+        urlParams: Record<string, any>;
+    };
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+
+    noResultsMessage: string;
 }

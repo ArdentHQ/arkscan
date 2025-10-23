@@ -1,7 +1,7 @@
 "use client";
 
-import ConfigContext from "./ConfigContext";
 import { PageProps } from "@inertiajs/core";
+import ConfigContext from "./ConfigContext";
 
 interface ConfigProviderProps extends PageProps {
     children: React.ReactNode;

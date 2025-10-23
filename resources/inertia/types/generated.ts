@@ -2,6 +2,9 @@ export type IConfigArkconnect = {
     enabled: boolean;
     vaultUrl: string;
 };
+export type IConfigPagination = {
+    per_page: number;
+};
 export type IConfigProductivity = {
     danger: number;
     warning: number;
@@ -55,12 +58,64 @@ export type IRequestData = {
     productivity: IConfigProductivity;
     settings: ISettings;
     arkconnect: IConfigArkconnect;
+    pagination: IConfigPagination;
 };
 export type ISettings = {
     currency: string;
     priceChart: boolean;
     feeChart: boolean;
     theme: string | null;
+};
+export type ITransaction = {
+    hash: string;
+    block_hash: string;
+    block_number: number;
+    transaction_index: number;
+    timestamp: number;
+    nonce: number;
+    sender_public_key: string;
+    from: string;
+    to: string | null;
+    value: string;
+    gas_price: string;
+    gas: string;
+    status: boolean;
+    gas_used: string;
+    gas_refunded: string;
+    deployed_contract_address: string | null;
+    decoded_error: string | null;
+    multi_payment_recipients: string[];
+    amount: number;
+    amountForItself: number;
+    amountExcludingItself: number;
+    amountWithFee: number;
+    amountReceived: number;
+    amountFiat: string | number;
+    amountReceivedFiat: string | number;
+    fee: number;
+    feeFiat: string | number;
+    type: string;
+    url: string;
+    isTransfer: boolean;
+    isTokenTransfer: boolean;
+    isVote: boolean;
+    isUnvote: boolean;
+    isValidatorRegistration: boolean;
+    isValidatorResignation: boolean;
+    isValidatorUpdate: boolean;
+    isUsernameRegistration: boolean;
+    isUsernameResignation: boolean;
+    isContractDeployment: boolean;
+    isMultiPayment: boolean;
+    isSelfReceiving: boolean;
+    isSent: boolean;
+    isSentToSelf: boolean;
+    isReceived: boolean;
+    hasFailedStatus: boolean;
+    validatorRegistration: ITransaction | null;
+    votedFor: string | null;
+    sender: IWallet | null;
+    recipient: IWallet | null;
 };
 export type IWallet = {
     address: string;
@@ -75,6 +130,7 @@ export type IWallet = {
     isResigned: boolean;
     legacyAddress: string | null;
     username: string | null;
+    hasUsername: boolean;
     votes: string;
     productivity: number;
     formattedBalanceTwoDecimals: string;
@@ -83,7 +139,7 @@ export type IWallet = {
     totalForged: string;
     attributes: Record<string, any>;
     vote: IWallet | null;
-    voteUrl: string;
+    voteUrl: string | null;
 };
 export enum SortDirection {
     ASC = "asc",
