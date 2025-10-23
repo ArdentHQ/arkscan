@@ -1,5 +1,5 @@
+import Tooltip from "@/Components/General/Tooltip";
 import classNames from "@/utils/class-names"
-import Tippy from "@tippyjs/react"
 
 export default function InputErrorTooltip({
     inputRef,
@@ -11,7 +11,7 @@ export default function InputErrorTooltip({
     shifted?: boolean;
 }) {
     return (
-        <Tippy content={error}>
+        <Tooltip content={error}>
             <button
                 type="button"
                 className={classNames({
@@ -27,6 +27,6 @@ export default function InputErrorTooltip({
 
                 {shifted && <div className="w-px h-5 transform translate-x-4 bg-theme-secondary-300 dark:bg-theme-secondary-800">&nbsp;</div>}
             </button>
-        </Tippy>
+        </Tooltip>
     );
 }

@@ -48,7 +48,8 @@ it('should make an instance for non-validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
-        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+        'hasUsername'                 => true,
+        'voteUrl'                     => null,
         'isResigned'                  => false,
     ]);
 });
@@ -90,6 +91,7 @@ it('should make an instance for active validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
+        'hasUsername'                 => false,
         'isResigned'                  => false,
         'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
@@ -132,6 +134,7 @@ it('should make an instance for standby validators', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
+        'hasUsername'                 => false,
         'isResigned'                  => true,
         'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
@@ -198,6 +201,7 @@ it('should make an instance for a voting wallet', function () {
             'fiatValue'                   => '$200.68',
             'totalForged'                 => '2.46',
             'isResigned'                  => false,
+            'hasUsername'                 => false,
             'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($votedWallet->public_key),
         ],
         'votes'                       => '0',
@@ -206,7 +210,8 @@ it('should make an instance for a voting wallet', function () {
         'formattedBalanceFull'        => '100.34123 DARK',
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '0',
+        'hasUsername'                 => true,
         'isResigned'                  => false,
-        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+        'voteUrl'                     => null,
     ]);
 });

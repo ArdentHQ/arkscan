@@ -1,6 +1,5 @@
 import EllipsisVerticalIcon from "@ui/icons/ellipsis-vertical.svg?react";
 import classNames from "@/utils/class-names";
-import Tippy from "@tippyjs/react";
 import {
     Placement,
     useFloating,
@@ -10,9 +9,10 @@ import {
     useInteractions,
     useDismiss,
     shift,
+    flip,
 } from "@floating-ui/react";
 import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
-import { useEffect } from "react";
+import Tooltip from "../Tooltip";
 
 export default function Dropdown({
     dropdownContentClasses = "bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 rounded-xl",
@@ -21,6 +21,7 @@ export default function Dropdown({
     buttonClass = "bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700",
     useDefaultButtonClasses = true,
     dropdownClasses = "w-40",
+    popupStyles = {},
     zIndex = 10,
     wrapperClass = "",
     fullScreen = false,
@@ -38,6 +39,7 @@ export default function Dropdown({
     buttonClass?: string;
     dropdownClasses?: string;
     useDefaultButtonClasses?: boolean;
+    popupStyles?: React.CSSProperties;
     zIndex?: number;
     wrapperClass?: string;
     fullScreen?: boolean;
@@ -52,16 +54,27 @@ export default function Dropdown({
 }) {
     const { isOpen, setIsOpen } = useDropdown();
 
-    const { context, refs, floatingStyles, update } = useFloating({
+    const flipMiddleware = flip({
+        // Ensure we flip to the perpendicular axis if it doesn't fit
+        // on narrow viewports.
+        crossAxis: "alignment",
+        fallbackAxisSideDirection: "end", // or 'start'
+        padding: 8,
+    });
+    const shiftMiddleware = shift();
+
+    const middleware = [offset(8)];
+    if (placement.includes("-")) {
+        middleware.push(flipMiddleware, shiftMiddleware);
+    } else {
+        middleware.push(shiftMiddleware, flipMiddleware);
+    }
+
+    const { context, refs, floatingStyles } = useFloating({
         open: isOpen,
         placement,
         whileElementsMounted: autoUpdate,
-        middleware: [
-            offset(8),
-            shift({
-                crossAxis: false,
-            }),
-        ],
+        middleware,
         onOpenChange(nextOpen) {
             setIsOpen(nextOpen);
 
@@ -70,20 +83,6 @@ export default function Dropdown({
             }
         },
     });
-
-    useEffect(() => {
-        const onResize = () => {
-            if (isOpen) {
-                update();
-            }
-        };
-
-        window.addEventListener("resize", onResize);
-
-        return () => {
-            window.removeEventListener("resize", onResize);
-        };
-    }, [isOpen]);
 
     const dismiss = useDismiss(context);
 
@@ -124,7 +123,7 @@ export default function Dropdown({
 
     if (buttonTooltip !== undefined) {
         dropdownButton = (
-            <Tippy content={buttonTooltip}>{dropdownButton}</Tippy>
+            <Tooltip content={buttonTooltip}>{dropdownButton}</Tooltip>
         );
     }
 
@@ -139,7 +138,11 @@ export default function Dropdown({
             {isFloatingOpen && (
                 <div
                     ref={refs.setFloating}
-                    style={{ ...floatingStyles, zIndex: zIndex }}
+                    style={{
+                        ...floatingStyles,
+                        ...popupStyles,
+                        zIndex: zIndex,
+                    }}
                     {...getFloatingProps()}
                 >
                     <div style={floatingTransitionStyled}>

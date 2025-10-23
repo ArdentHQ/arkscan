@@ -2,10 +2,10 @@ import { IWallet } from "@/types/generated";
 import WalletOverviewItem from "./Item";
 import { useTranslation } from "react-i18next";
 import WalletOverviewItemEntry from "./ItemEntry";
-import Tippy from "@tippyjs/react";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Address from "../Address";
 import FiatValue from "@/Components/General/FiatValue";
+import Tooltip from "@/Components/General/Tooltip";
 
 export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
@@ -26,9 +26,9 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                     <>
                         {showTooltip && (
                             <div className="sm:hidden">
-                                <Tippy content={wallet.formattedBalanceFull}>
+                                <Tooltip content={wallet.formattedBalanceFull}>
                                     <span>{wallet.formattedBalanceTwoDecimals}</span>
-                                </Tippy>
+                                </Tooltip>
                             </div>
                         )}
 

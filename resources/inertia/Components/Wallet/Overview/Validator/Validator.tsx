@@ -28,7 +28,6 @@ function EmptyWalletOverviewValidator() {
     );
 }
 
-
 export default function WalletOverviewValidator({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
 
@@ -40,34 +39,37 @@ export default function WalletOverviewValidator({ wallet }: { wallet: IWallet })
         <WalletOverviewItem
             title={t('pages.wallet.validator_info')}
             titleExtra={(
-                <div>
-                    <VoteLink
-                        wallet={wallet}
-                        buttonClass="font-semibold hover:underline"
-                        voteText={
-                            <>
-                                <span className="md:hidden">
-                                    {t('actions.vote')}
-                                </span>
+                <>
+                    {! wallet.isResigned && (
+                        <div>
+                            <VoteLink
+                                wallet={wallet}
+                                voteText={
+                                    <>
+                                        <span className="md:hidden">
+                                            {t('actions.vote')}
+                                        </span>
 
-                                <span className="hidden md:inline">
-                                    {t('pages.wallet.validator.vote_for_validator')}
-                                </span>
-                            </>
-                        }
-                        unvoteText={
-                            <>
-                                <span className="md:hidden">
-                                    {t('actions.unvote')}
-                                </span>
+                                        <span className="hidden md:inline">
+                                            {t('pages.wallet.validator.vote_for_validator')}
+                                        </span>
+                                    </>
+                                }
+                                unvoteText={
+                                    <>
+                                        <span className="md:hidden">
+                                            {t('actions.unvote')}
+                                        </span>
 
-                                <span className="hidden md:inline">
-                                    {t('pages.wallet.validator.unvote_validator')}
-                                </span>
-                            </>
-                        }
-                    />
-                </div>
+                                        <span className="hidden md:inline">
+                                            {t('pages.wallet.validator.unvote_validator')}
+                                        </span>
+                                    </>
+                                }
+                            />
+                        </div>
+                    )}
+                </>
             )}
         >
             <WalletOverviewValidatorRank wallet={wallet} />

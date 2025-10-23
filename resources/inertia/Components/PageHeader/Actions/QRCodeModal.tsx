@@ -6,11 +6,11 @@ import QRCode from "react-qr-code";
 import { useState } from "react";
 import ExternalLink from "@/Components/General/ExternalLink";
 import { useConfig } from "@/Providers/Config/ConfigContext";
-import Tippy from "@tippyjs/react";
 import { URLBuilder } from "@ardenthq/arkvault-url";
 import Input from "@/Components/Input/Input";
 import ArkConnectDisabledAction from "@/Components/General/ArkConnect/DisabledAction";
 import QRCodeIcon from "@ui/icons/qr-code.svg?react";
+import Tooltip from "@/Components/General/Tooltip";
 
 function ArkVaultButton({ hasAmount, isOnSameNetwork = true, walletUri }: { hasAmount: boolean; isOnSameNetwork: boolean; walletUri: string }) {
     const { t } = useTranslation();
@@ -35,9 +35,9 @@ function ArkVaultButton({ hasAmount, isOnSameNetwork = true, walletUri }: { hasA
 
         if (! hasAmount) {
             arkconnectButton = (
-                <Tippy content={t('pages.wallet.qrcode.arkconnect_specify_amount_tooltip')}>
+                <Tooltip content={t('pages.wallet.qrcode.arkconnect_specify_amount_tooltip')}>
                     {arkconnectButton}
-                </Tippy>
+                </Tooltip>
             );
         }
     }

@@ -1,34 +1,19 @@
-'use client';
+"use client";
 
+import { PageProps } from "@inertiajs/core";
 import ConfigContext from "./ConfigContext";
-import { Currencies, IConfigArkConnect, IConfigProductivity, INetwork, ISettings } from "@/types";
+
+interface ConfigProviderProps extends PageProps {
+    children: React.ReactNode;
+}
 
 export default function ConfigProvider({
-    arkconnect,
-    currencies,
-    network,
-    productivity,
-    settings,
     children,
-}: {
-    arkconnect: IConfigArkConnect;
-    currencies: Currencies;
-    network: INetwork;
-    productivity: IConfigProductivity;
-    settings: ISettings;
-    children: React.ReactNode;
-}) {
-    const value = {
-        arkconnect,
-        currencies,
-        network,
-        productivity,
-        settings,
-    };
-
+    ...props
+}: ConfigProviderProps) {
     return (
-        <ConfigContext.Provider value={value}>
+        <ConfigContext.Provider value={props}>
             {children}
         </ConfigContext.Provider>
     );
-};
+}

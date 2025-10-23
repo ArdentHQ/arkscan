@@ -40,7 +40,7 @@ final class TransactionFactory extends Factory
             'status'                    => $this->faker->boolean,
             'gas_used'                  => 21000,
             'gas_refunded'              => $this->faker->numberBetween(1, 100),
-            'deployed_contract_address' => fn () => Wallet::factory()->create()->address,
+            'deployed_contract_address' => null,
             'logs'                      => [],
             'output'                    => null,
             'data'                      => function () {
@@ -189,7 +189,8 @@ final class TransactionFactory extends Factory
     public function contractDeployment(): Factory
     {
         return $this->state(fn () => [
-            'to' => null,
+            'to'                        => null,
+            'deployed_contract_address' => fn () => Wallet::factory()->create()->address,
         ]);
     }
 

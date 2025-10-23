@@ -3,20 +3,20 @@ import classNames from "@/utils/class-names";
 export default function TableCell({
     responsive = false,
     breakpoint = 'lg',
-    firstOn = null,
-    lastOn = null,
+    firstOn,
+    lastOn,
     className = '',
-    colspan = null,
+    colspan,
     children,
 
     ...props
 }: React.TdHTMLAttributes<HTMLTableCellElement> & React.PropsWithChildren<{
     responsive?: boolean;
     breakpoint?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm';
-    firstOn?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm' | null;
-    lastOn?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm' | null;
+    firstOn?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm';
+    lastOn?: 'xl' | 'lg' | 'md-lg' | 'md' | 'sm';
     className?: string;
-    colspan?: number | null;
+    colspan?: number;
 }>) {
     return (
         <td
@@ -32,6 +32,7 @@ export default function TableCell({
             colSpan={colspan || undefined}
         >
             <div className="table-cell-bg"></div>
+
             <div className="table-cell-content">
                 {children}
             </div>

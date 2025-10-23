@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
 import dayjs from "dayjs"
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
 import classNames from "@/utils/class-names";
 import { useValidatorStatus } from "@/Providers/ValidatorStatus/ValidatorStatusContext";
 import { ForgingStatusGenerated, ForgingStatusGenerating, ForgingStatusMissed } from "@/Providers/ValidatorStatus/types";
+import Tooltip from "@/Components/General/Tooltip";
 
 dayjs.extend(dayjsRelativeTime);
 
@@ -36,9 +35,9 @@ export default function TimeToForge({ className = 'text-theme-secondary-900 dark
             )}
 
             {! [ForgingStatusGenerated, ForgingStatusGenerating, ForgingStatusMissed].includes(status) && (
-                <Tippy content={tooltip}>
+                <Tooltip content={tooltip}>
                     <span>{output}</span>
-                </Tippy>
+                </Tooltip>
             )}
         </div>
     )
