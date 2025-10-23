@@ -95,6 +95,7 @@ export type ITransaction = {
     fee: number;
     feeFiat: string | number;
     type: string;
+    url: string;
     isTransfer: boolean;
     isTokenTransfer: boolean;
     isVote: boolean;

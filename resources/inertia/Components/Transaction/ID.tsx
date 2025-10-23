@@ -21,7 +21,7 @@ export default function ID({
                 })}
             >
                 <a
-                    href="{{ $model->url() }}"
+                    href={transaction.url}
                     className={classNames({
                         "mx-auto text-sm font-semibold whitespace-nowrap link leading-4.25":
                             true,
