@@ -1,17 +1,11 @@
 import { IBlock } from "@/types/generated";
 import Age from "../Model/Age";
 
-export default function Height({
-    block,
-    withoutLink = false,
-}: {
-    block: IBlock;
-    withoutLink?: boolean;
-}) {
+export default function Height({ block, withoutLink = false }: { block: IBlock; withoutLink?: boolean }) {
     const formattedBlockHeight = Intl.NumberFormat().format(block.number);
 
     return (
-        <div className="text-sm font-semibold flex flex-col md:space-y-1 xl:space-y-0 whitespace-nowrap leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
+        <div className="flex flex-col whitespace-nowrap text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50 md:space-y-1 xl:space-y-0">
             {withoutLink ? (
                 <span>{formattedBlockHeight}</span>
             ) : (
@@ -22,7 +16,7 @@ export default function Height({
 
             <Age
                 timestamp={block.timestamp}
-                className="hidden text-xs md:block leading-3.75 text-theme-secondary-700 md-lg:hidden dark:text-theme-dark-200"
+                className="hidden text-xs leading-3.75 text-theme-secondary-700 dark:text-theme-dark-200 md:block md-lg:hidden"
             />
         </div>
     );

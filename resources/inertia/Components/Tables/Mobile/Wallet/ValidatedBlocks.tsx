@@ -10,19 +10,12 @@ import { useConfig } from "@/Providers/Config/ConfigContext";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
 
-export function ValidatedBlocksMobileTable({
-    blocks,
-}: {
-    blocks: IPaginatedResponse<IBlock>;
-}) {
+export function ValidatedBlocksMobileTable({ blocks }: { blocks: IPaginatedResponse<IBlock> }) {
     const { t } = useTranslation();
     const { network } = useConfig();
 
     return (
-        <MobileTable
-            noResultsMessage={blocks.noResultsMessage}
-            resultCount={blocks.total ?? 0}
-        >
+        <MobileTable noResultsMessage={blocks.noResultsMessage} resultCount={blocks.total ?? 0}>
             {blocks.data.map((block: IBlock, index) => (
                 <MobileTableRow
                     key={index}
@@ -32,13 +25,11 @@ export function ValidatedBlocksMobileTable({
                                 <Height block={block} />
                             </div>
 
-                            <div className="hidden sm:flex sm:justify-start leading-4.25 sm:w-[142px]">
-                                {block.transactionCount +
-                                    " " +
-                                    t("tables.blocks.transactions")}
+                            <div className="hidden leading-4.25 sm:flex sm:w-[142px] sm:justify-start">
+                                {block.transactionCount + " " + t("tables.blocks.transactions")}
                             </div>
 
-                            <div className="sm:flex sm:flex-1 justify-end">
+                            <div className="justify-end sm:flex sm:flex-1">
                                 <Age
                                     timestamp={block.timestamp}
                                     className="text-theme-secondary-700 dark:text-theme-dark-200"
@@ -61,10 +52,7 @@ export function ValidatedBlocksMobileTable({
                             currency: network?.currency,
                         })}
                     >
-                        <Reward
-                            block={block}
-                            withoutValue={!network?.canBeExchanged}
-                        />
+                        <Reward block={block} withoutValue={!network?.canBeExchanged} />
                     </TableCell>
                 </MobileTableRow>
             ))}

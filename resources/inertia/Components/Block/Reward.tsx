@@ -22,9 +22,7 @@ export default function Reward({
             />
 
             {!withoutValue && (
-                <div className="mt-1 text-xs font-semibold xl:hidden leading-4.25">
-                    {block.rewardFiat}
-                </div>
+                <div className="mt-1 text-xs font-semibold leading-4.25 xl:hidden">{block.rewardFiat}</div>
             )}
         </>
     );

@@ -29,10 +29,7 @@ export function Row({ row }: { row: IBlock }) {
                 {row.transactionCount}
             </TableCell>
 
-            <TableCell
-                className="text-right"
-                last-on={network?.canBeExchanged ? "lg" : undefined}
-            >
+            <TableCell className="text-right" last-on={network?.canBeExchanged ? "lg" : undefined}>
                 <Reward block={row} withoutValue={!network?.canBeExchanged} />
             </TableCell>
         </tr>
@@ -69,22 +66,17 @@ export function ValidatedBlocksTable({
                         {t("tables.blocks.age")}
                     </TableHeader>
 
-                    <TableHeader className="text-right">
-                        {t("tables.blocks.transactions")}
-                    </TableHeader>
+                    <TableHeader className="text-right">{t("tables.blocks.transactions")}</TableHeader>
 
                     <TableHeader
                         className={classNames({
-                            "text-right whitespace-nowrap": true,
+                            "whitespace-nowrap text-right": true,
                             "last-until-lg": !!network?.canBeExchanged,
                         })}
                         lastOn={network?.canBeExchanged ? "lg" : undefined}
-                        tooltip={t(
-                            "pages.wallets.blocks.total_reward_tooltip",
-                            {
-                                currency: network!.currency,
-                            },
-                        )}
+                        tooltip={t("pages.wallets.blocks.total_reward_tooltip", {
+                            currency: network!.currency,
+                        })}
                     >
                         {t("tables.blocks.total_reward", {
                             currency: network!.currency,
@@ -97,12 +89,9 @@ export function ValidatedBlocksTable({
                                 className="whitespace-nowrap"
                                 breakpoint="lg"
                                 responsive
-                                tooltip={t(
-                                    "pages.wallets.blocks.value_tooltip",
-                                    {
-                                        currency: network!.currency,
-                                    },
-                                )}
+                                tooltip={t("pages.wallets.blocks.value_tooltip", {
+                                    currency: network!.currency,
+                                })}
                             >
                                 {t("tables.blocks.value", {
                                     currency: network!.currency,
@@ -167,9 +156,7 @@ export default function ValidatedBlocksTableWrapper({
                     <LoadingTable rowCount={rowCount} columns={columns} />
                 </div>
 
-                {!!mobile && (
-                    <div className="px-6 md:px-10 md:hidden">{mobile}</div>
-                )}
+                {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
             </>
         );
     }
@@ -189,7 +176,7 @@ function HeaderActions() {
             <div className="flex-1">
                 <button
                     type="button"
-                    className="flex justify-center items-center py-1.5 space-x-2 w-full sm:px-4 button-secondary"
+                    className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
                     disabled
                 >
                     <UnderlineArrowDownIcon className="h-4 w-4" />

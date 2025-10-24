@@ -5,25 +5,23 @@ import LoadingTableCell from "../TableCell";
 
 export function MobileValidatedBlocksSkeletonTable({ rowCount }: { rowCount: number }) {
     const rows = [];
-    for(let i = 0; i < rowCount; i++) {
+    for (let i = 0; i < rowCount; i++) {
         rows.push(
             <MobileTableRow
                 key={i}
-                header={<>
-                    <LoadingText />
-                    <LoadingText />
-                </>}
+                header={
+                    <>
+                        <LoadingText />
+                        <LoadingText />
+                    </>
+                }
             >
                 <LoadingTableCell withLabel={true} />
 
                 <LoadingTableCell withLabel={true} />
-            </MobileTableRow>
+            </MobileTableRow>,
         );
     }
 
-    return (
-        <MobileTable className="md:hidden">
-            {rows}
-        </MobileTable>
-    );
+    return <MobileTable className="md:hidden">{rows}</MobileTable>;
 }
