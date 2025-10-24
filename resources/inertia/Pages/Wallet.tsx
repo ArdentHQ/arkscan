@@ -116,46 +116,41 @@ export default function Wallet({
             <ConfigProvider network={network} {...props}>
                 <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
 
-                <Modal
-                    isOpen={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                    title="Export Table"
-                    footer={
-                        <div className="modal-buttons flex">
-                            <button type="button" className="button-secondary">
-                                Cancel{" "}
-                            </button>
+                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                    <Modal.Title>Export Table</Modal.Title>
 
-                            <button
-                                type="button"
-                                className="button-primary flex items-center justify-center space-x-2 sm:mb-0 sm:px-4 sm:py-1.5"
-                                disabled={false}
-                            >
+                    <Modal.Body>
+                        <p>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga,
+                            atque dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis
+                            laudantium odit ullam enim autem.m
+                        </p>
+                        <p>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga,
+                            atque dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis
+                            laudantium odit ullam enim autem.m
+                        </p>
+                        <p>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga,
+                            atque dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis
+                            laudantium odit ullam enim autem.m
+                        </p>
+                        <p>
+                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga,
+                            atque dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis
+                            laudantium odit ullam enim autem.m
+                        </p>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Modal.FooterButtons>
+                            <Modal.CancelButton>Cancel</Modal.CancelButton>
+
+                            <Modal.ActionButton>
                                 <span>Export</span>
-                            </button>
-                        </div>
-                    }
-                >
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga, atque
-                        dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis laudantium odit
-                        ullam enim autem.m
-                    </p>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga, atque
-                        dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis laudantium odit
-                        ullam enim autem.m
-                    </p>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga, atque
-                        dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis laudantium odit
-                        ullam enim autem.m
-                    </p>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga, atque
-                        dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis laudantium odit
-                        ullam enim autem.m
-                    </p>
+                            </Modal.ActionButton>
+                        </Modal.FooterButtons>
+                    </Modal.Footer>
                 </Modal>
 
                 <Overview wallet={wallet} />
