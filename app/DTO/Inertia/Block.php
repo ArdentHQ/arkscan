@@ -33,7 +33,7 @@ class Block extends Data
             timestamp: $block->timestamp,
             transactionCount: $block->transactions_count,
             totalReward: $viewModel->totalReward(),
-            totalRewardFiat: $viewModel->totalRewardFiat(true),
+            totalRewardFiat: $viewModel->totalRewardFiat(),
             rewardFiat: $viewModel->rewardFiat(),
         );
     }
