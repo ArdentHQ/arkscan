@@ -1,7 +1,7 @@
 import Modal from "@/Components/General/Modal";
 import { useTranslation } from "react-i18next";
-// arrows.underline-arrow-down
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
+
 export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const { t } = useTranslation();
 
