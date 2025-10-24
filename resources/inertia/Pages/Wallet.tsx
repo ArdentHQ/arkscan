@@ -1,6 +1,6 @@
 import { PageProps } from "@inertiajs/core";
 import { Head, router } from "@inertiajs/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { IPaginatedResponse } from "@/types";
 import { IWallet, ITransaction } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
@@ -12,7 +12,6 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TransactionsMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Transactions";
-import Modal from "@/Components/General/Modal";
 
 const WalletTabsWrapper = ({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) => {
     return (
@@ -107,52 +106,11 @@ export default function Wallet({
         },
     });
 
-    const [isModalOpen, setIsModalOpen] = useState(true);
-
     return (
         <>
             <Head>{metadata}</Head>
 
             <ConfigProvider network={network} {...props}>
-                <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
-
-                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <Modal.Title>Export Table</Modal.Title>
-
-                    <Modal.Body>
-                        <p>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga,
-                            atque dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis
-                            laudantium odit ullam enim autem.m
-                        </p>
-                        <p>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga,
-                            atque dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis
-                            laudantium odit ullam enim autem.m
-                        </p>
-                        <p>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga,
-                            atque dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis
-                            laudantium odit ullam enim autem.m
-                        </p>
-                        <p>
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga,
-                            atque dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis
-                            laudantium odit ullam enim autem.m
-                        </p>
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Modal.FooterButtons>
-                            <Modal.CancelButton>Cancel</Modal.CancelButton>
-
-                            <Modal.ActionButton>
-                                <span>Export</span>
-                            </Modal.ActionButton>
-                        </Modal.FooterButtons>
-                    </Modal.Footer>
-                </Modal>
-
                 <Overview wallet={wallet} />
 
                 <PageHandlerProvider>
