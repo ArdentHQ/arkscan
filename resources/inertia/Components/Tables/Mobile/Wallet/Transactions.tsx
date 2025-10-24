@@ -6,7 +6,7 @@ import { IPaginatedResponse } from "@/types";
 import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import ID from "@/Components/Transaction/ID";
-import Age from "@/Components/Transaction/Age";
+import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Transaction/Amount";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Fee from "@/Components/Transaction/Fee";
@@ -25,7 +25,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: ITrans
                         <>
                             <ID transaction={transaction} />
 
-                            <Age transaction={transaction} />
+                            <Age timestamp={transaction.timestamp} />
                         </>
                     }
                 >

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
+use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
+use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
@@ -50,6 +53,16 @@ final class WalletController
                     'noResultsMessage' => $this->getTransactionsNoResultsMessageProperty($paginator->count()),
                 ];
             }),
+
+            'blocks' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getBlocks($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta' => UI::getPaginationData($paginator),
+                ];
+            }),
         ]);
     }
 
@@ -72,6 +85,14 @@ final class WalletController
             ->withScope(OrderByTransactionIndexScope::class)
             ->paginate($this->perPage(), page: $this->page())
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address));
+    }
+
+    public function getBlocks(Wallet $wallet): AbstractPaginator
+    {
+        return Block::where('proposer', $wallet->address)
+            ->withScope(OrderByHeightScope::class)
+            ->paginate($this->perPage(), page: $this->page())
+            ->through(fn (Block $block) => BlockDTO::fromModel($block));
     }
 
     private function page(): int
