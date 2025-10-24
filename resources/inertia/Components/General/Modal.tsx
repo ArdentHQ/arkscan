@@ -14,11 +14,13 @@ export default function Modal({ isOpen, onClose, title, description, footer, chi
     return (
         <Dialog.Root open={isOpen} onOpenChange={onClose}>
             <Dialog.Portal>
-                <Dialog.Overlay className="bg-theme-secondary-900/75 dim:bg-theme-dark-950/50 dark:bg-theme-secondary-800/50 fixed inset-0 z-50 grid place-items-start overflow-y-auto sm:place-items-center md:px-8 md:py-10">
+                <Dialog.Overlay className="dark:bg-theme-secondary-800/50 fixed inset-0 z-50 bg-theme-secondary-900 opacity-75 dim:bg-theme-dark-950 dark:opacity-50" />
+
+                <div className="fixed inset-0 z-50 grid place-items-start overflow-y-auto sm:place-items-center md:px-8 md:py-10">
                     <Dialog.Content className="custom-scroll relative w-full max-w-2xl bg-white dark:bg-theme-dark-900 sm:m-auto sm:mx-auto sm:max-w-[448px] sm:rounded-xl sm:shadow-2xl">
                         {/* Header */}
                         {title && (
-                            <div className="flex items-center justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] dark:border-theme-dark-700 sm:pb-4 sm:pt-[0.875rem]">
+                            <div className="flex items-center justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] pt-4 dark:border-theme-dark-700 sm:pb-4 sm:pt-[0.875rem]">
                                 <Dialog.Title className="m-0 text-left text-lg font-semibold dark:text-theme-dark-50">
                                     {title}
                                 </Dialog.Title>
@@ -43,12 +45,12 @@ export default function Modal({ isOpen, onClose, title, description, footer, chi
 
                         {/* Footer */}
                         {footer && (
-                            <div className="border-t border-theme-secondary-300 px-6 py-4 dark:border-theme-dark-700">
+                            <div className="mb-4 flex flex-col-reverse border-t border-theme-secondary-300 px-6 pt-4 text-right dark:border-theme-dark-700 sm:flex-row sm:justify-end sm:space-x-3">
                                 {footer}
                             </div>
                         )}
                     </Dialog.Content>
-                </Dialog.Overlay>
+                </div>
             </Dialog.Portal>
         </Dialog.Root>
     );

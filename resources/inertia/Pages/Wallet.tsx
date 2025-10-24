@@ -116,7 +116,26 @@ export default function Wallet({
             <ConfigProvider network={network} {...props}>
                 <button onClick={() => setIsModalOpen(true)}>Open Modal</button>
 
-                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Export Table">
+                <Modal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    title="Export Table"
+                    footer={
+                        <div className="modal-buttons flex">
+                            <button type="button" className="button-secondary">
+                                Cancel{" "}
+                            </button>
+
+                            <button
+                                type="button"
+                                className="button-primary flex items-center justify-center space-x-2 sm:mb-0 sm:px-4 sm:py-1.5"
+                                disabled={false}
+                            >
+                                <span>Export</span>
+                            </button>
+                        </div>
+                    }
+                >
                     <p>
                         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Error ipsum repellat odit fuga, atque
                         dolorem unde minus quas tenetur iure? Veritatis iusto accusantium vel! Officiis laudantium odit
