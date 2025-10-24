@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import { twMerge } from "tailwind-merge";
+import { useTranslation } from "react-i18next";
 
 interface ModalContextType {
     onClose: () => void;
@@ -107,33 +108,19 @@ const ModalFooterButtons = ({ children, className, ...props }: React.HTMLAttribu
     </div>
 );
 
-interface ModalCancelButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    asChild?: boolean;
-}
+const ModalCancelButton = ({ children, className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+    const { t } = useTranslation();
 
-const ModalCancelButton = ({ children = "Cancel", asChild = false, className, ...props }: ModalCancelButtonProps) => {
     const { onClose } = useModalContext();
-
-    if (asChild) {
-        return <>{children}</>;
-    }
 
     return (
         <button type="button" onClick={onClose} className={twMerge("button button-secondary", className)} {...props}>
-            {children}
+            {children ?? t("actions.cancel")}
         </button>
     );
 };
 
-interface ModalActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    asChild?: boolean;
-}
-
-const ModalActionButton = ({ children = "Action", asChild = false, className, ...props }: ModalActionButtonProps) => {
-    if (asChild) {
-        return <>{children}</>;
-    }
-
+const ModalActionButton = ({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
         <button
             type="button"
@@ -142,9 +129,7 @@ const ModalActionButton = ({ children = "Action", asChild = false, className, ..
                 className,
             )}
             {...props}
-        >
-            {children}
-        </button>
+        />
     );
 };
 
