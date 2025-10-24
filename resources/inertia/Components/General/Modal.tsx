@@ -37,7 +37,9 @@ export default function Modal({ isOpen, onClose, title, description, footer, chi
                         {description && <Dialog.Description className="sr-only">{description}</Dialog.Description>}
 
                         {/* Content */}
-                        <div className="px-6 py-4">{children}</div>
+                        <div className="px-6 pb-4 pt-4 font-normal text-theme-secondary-700 dark:text-theme-dark-200 sm:pb-6">
+                            {children}
+                        </div>
 
                         {/* Footer */}
                         {footer && (
