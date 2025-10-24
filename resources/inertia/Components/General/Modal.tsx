@@ -1,7 +1,6 @@
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import CrossIcon from "@ui/icons/cross.svg?react";
-import classNames from "@/utils/class-names";
 import { twMerge } from "tailwind-merge";
 
 // Context for sharing modal state
@@ -20,42 +19,49 @@ const useModalContext = () => {
 };
 
 // Main Modal Component
-interface ModalProps extends React.PropsWithChildren {
+const ModalRoot = ({
+    isOpen,
+    onClose,
+    description,
+    children,
+    ...props
+}: React.ComponentProps<typeof Dialog.Root> & {
     isOpen: boolean;
     onClose: () => void;
     description?: React.ReactNode;
-}
+}) => (
+    <ModalContext.Provider value={{ onClose }}>
+        <Dialog.Root open={isOpen} onOpenChange={onClose} {...props}>
+            <Dialog.Portal>
+                <Dialog.Overlay className="dark:bg-theme-secondary-800/50 fixed inset-0 z-50 bg-theme-secondary-900 opacity-75 dim:bg-theme-dark-950 dark:opacity-50" />
 
-function ModalRoot({ isOpen, onClose, description, children }: ModalProps) {
-    return (
-        <ModalContext.Provider value={{ onClose }}>
-            <Dialog.Root open={isOpen} onOpenChange={onClose}>
-                <Dialog.Portal>
-                    <Dialog.Overlay className="dark:bg-theme-secondary-800/50 fixed inset-0 z-50 bg-theme-secondary-900 opacity-75 dim:bg-theme-dark-950 dark:opacity-50" />
-
-                    <div className="fixed inset-0 z-50 grid place-items-start overflow-y-auto sm:place-items-center md:px-8 md:py-10">
-                        <Dialog.Content className="custom-scroll relative w-full max-w-2xl bg-white dark:bg-theme-dark-900 sm:m-auto sm:mx-auto sm:max-w-[448px] sm:rounded-xl sm:shadow-2xl">
-                            {description && <Dialog.Description className="sr-only">{description}</Dialog.Description>}
-                            {children}
-                        </Dialog.Content>
-                    </div>
-                </Dialog.Portal>
-            </Dialog.Root>
-        </ModalContext.Provider>
-    );
-}
+                <div className="fixed inset-0 z-50 grid place-items-start overflow-y-auto sm:place-items-center md:px-8 md:py-10">
+                    <Dialog.Content className="custom-scroll relative w-full max-w-2xl bg-white dark:bg-theme-dark-900 sm:m-auto sm:mx-auto sm:max-w-[448px] sm:rounded-xl sm:shadow-2xl">
+                        {description && <Dialog.Description className="sr-only">{description}</Dialog.Description>}
+                        {children}
+                    </Dialog.Content>
+                </div>
+            </Dialog.Portal>
+        </Dialog.Root>
+    </ModalContext.Provider>
+);
 
 // Modal.Title
-interface ModalTitleProps {
-    children: ReactNode;
+interface ModalTitleProps extends React.HTMLAttributes<HTMLDivElement> {
     hideCloseButton?: boolean;
 }
 
-function ModalTitle({ children, hideCloseButton = false }: ModalTitleProps) {
+const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: ModalTitleProps) => {
     const { onClose } = useModalContext();
 
     return (
-        <div className="flex items-center justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] pt-4 dark:border-theme-dark-700 sm:pb-4 sm:pt-[0.875rem]">
+        <div
+            className={twMerge(
+                "flex items-center justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] pt-4 dark:border-theme-dark-700 sm:pb-4 sm:pt-[0.875rem]",
+                className,
+            )}
+            {...props}
+        >
             <Dialog.Title className="m-0 text-left text-lg font-semibold dark:text-theme-dark-50">
                 {children}
             </Dialog.Title>
@@ -71,51 +77,47 @@ function ModalTitle({ children, hideCloseButton = false }: ModalTitleProps) {
             )}
         </div>
     );
-}
+};
 
 // Modal.Body
-interface ModalBodyProps extends React.PropsWithChildren {
-    className?: string;
-}
-
-function ModalBody({ children, className = "" }: ModalBodyProps) {
-    return (
-        <div
-            className={classNames({
-                "px-6 pb-4 pt-4 font-normal text-theme-secondary-700 dark:text-theme-dark-200 sm:pb-6": true,
-                [className]: true,
-            })}
-        >
-            {children}
-        </div>
-    );
-}
+const ModalBody = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+    <div
+        className={twMerge(
+            "px-6 pb-4 pt-4 font-normal text-theme-secondary-700 dark:text-theme-dark-200 sm:pb-6",
+            className,
+        )}
+        {...props}
+    >
+        {children}
+    </div>
+);
 
 // Modal.Footer
-interface ModalFooterProps extends React.PropsWithChildren {
-    className?: string;
-}
+const ModalFooter = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+    <div
+        className={twMerge(
+            "mb-4 flex flex-col-reverse border-t border-theme-secondary-300 px-6 pt-4 dark:border-theme-dark-700 sm:flex-row sm:justify-end sm:space-x-3",
+            className,
+        )}
+        {...props}
+    >
+        {children}
+    </div>
+);
 
-function ModalFooter({ children, className = "" }: ModalFooterProps) {
-    return (
-        <div
-            className={classNames({
-                "mb-4 flex flex-col-reverse border-t border-theme-secondary-300 px-6 pt-4 dark:border-theme-dark-700 sm:flex-row sm:justify-end sm:space-x-3": true,
-                [className]: true,
-            })}
-        >
-            {children}
-        </div>
-    );
-}
+// Modal.FooterButtons
+const ModalFooterButtons = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+    <div className={twMerge("modal-buttons flex", className)} {...props}>
+        {children}
+    </div>
+);
 
 // Modal.CancelButton
 interface ModalCancelButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    children?: ReactNode;
     asChild?: boolean;
 }
 
-function ModalCancelButton({ children = "Cancel", asChild = false, ...props }: ModalCancelButtonProps) {
+const ModalCancelButton = ({ children = "Cancel", asChild = false, className, ...props }: ModalCancelButtonProps) => {
     const { onClose } = useModalContext();
 
     if (asChild) {
@@ -123,19 +125,18 @@ function ModalCancelButton({ children = "Cancel", asChild = false, ...props }: M
     }
 
     return (
-        <button type="button" onClick={onClose} className="button button-secondary" {...props}>
+        <button type="button" onClick={onClose} className={twMerge("button button-secondary", className)} {...props}>
             {children}
         </button>
     );
-}
+};
 
 // Modal.ActionButton
 interface ModalActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    children?: ReactNode;
     asChild?: boolean;
 }
 
-function ModalActionButton({ children = "Action", asChild = false, ...props }: ModalActionButtonProps) {
+const ModalActionButton = ({ children = "Action", asChild = false, className, ...props }: ModalActionButtonProps) => {
     if (asChild) {
         return <>{children}</>;
     }
@@ -143,16 +144,15 @@ function ModalActionButton({ children = "Action", asChild = false, ...props }: M
     return (
         <button
             type="button"
-            className="button button-primary flex items-center justify-center sm:mb-0 sm:px-4 sm:py-1.5"
+            className={twMerge(
+                "button button-primary flex items-center justify-center sm:mb-0 sm:px-4 sm:py-1.5",
+                className,
+            )}
             {...props}
         >
             {children}
         </button>
     );
-}
-
-const ModalFooterButtons = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
-    return <div className={twMerge("modal-buttons flex", className)} {...props} />;
 };
 
 // Compound component export
@@ -160,9 +160,9 @@ const Modal = Object.assign(ModalRoot, {
     Title: ModalTitle,
     Body: ModalBody,
     Footer: ModalFooter,
+    FooterButtons: ModalFooterButtons,
     CancelButton: ModalCancelButton,
     ActionButton: ModalActionButton,
-    FooterButtons: ModalFooterButtons,
 });
 
 export default Modal;
