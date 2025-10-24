@@ -72,7 +72,8 @@
     @apply bg-theme-dark-blue-600;
 }
 
-.dark .ark-info-element > div {
+.dark .ark-info-element > div.tooltip-content > div,
+.dark .ark-info-element > div:not(.tooltip-content) {
     @apply p-[0.3175rem] text-theme-dark-50;
     box-shadow: 0 0 1px 1px var(--theme-color-dark-600) inset;
 }
@@ -81,7 +82,8 @@
     @apply h-2.5 w-2.5;
 }
 
-.dark .ark-info-element > div:hover {
+.dark .ark-info-element > div.tooltip-content:hover > div,
+.dark .ark-info-element > div:not(.tooltip-content):hover {
     @apply bg-theme-dark-blue-600 text-theme-dark-50;
     box-shadow: unset;
 }
