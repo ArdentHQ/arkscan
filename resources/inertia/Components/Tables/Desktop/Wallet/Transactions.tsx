@@ -99,7 +99,7 @@ export default function TransactionsTableWrapper({
     mobile,
     rowCount = 20,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
