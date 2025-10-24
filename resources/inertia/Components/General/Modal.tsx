@@ -2,6 +2,7 @@ import { createContext, useContext, ReactNode } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import classNames from "@/utils/class-names";
+import { twMerge } from "tailwind-merge";
 
 // Context for sharing modal state
 interface ModalContextType {
@@ -150,9 +151,9 @@ function ModalActionButton({ children = "Action", asChild = false, ...props }: M
     );
 }
 
-function ModalFooterButtons({ children }: React.HTMLAttributes<HTMLDivElement>) {
-    return <div className="modal-buttons flex">{children}</div>;
-}
+const ModalFooterButtons = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+    return <div className={twMerge("modal-buttons flex", className)} {...props} />;
+};
 
 // Compound component export
 const Modal = Object.assign(ModalRoot, {
