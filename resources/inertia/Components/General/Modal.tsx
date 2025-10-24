@@ -3,7 +3,6 @@ import * as Dialog from "@radix-ui/react-dialog";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import { twMerge } from "tailwind-merge";
 
-// Context for sharing modal state
 interface ModalContextType {
     onClose: () => void;
 }
@@ -33,7 +32,7 @@ const ModalRoot = ({
     <ModalContext.Provider value={{ onClose }}>
         <Dialog.Root open={isOpen} onOpenChange={onClose} {...props}>
             <Dialog.Portal>
-                <Dialog.Overlay className="dark:bg-theme-secondary-800/50 fixed inset-0 z-50 bg-theme-secondary-900 opacity-75 dim:bg-theme-dark-950 dark:opacity-50" />
+                <Dialog.Overlay className="fixed inset-0 z-50 bg-theme-secondary-900 opacity-75 dim:bg-theme-dark-950 dim:opacity-50 dark:bg-theme-secondary-800 dark:opacity-50" />
 
                 <div className="fixed inset-0 z-50 grid place-items-start overflow-y-auto sm:place-items-center md:px-8 md:py-10">
                     <Dialog.Content className="custom-scroll relative w-full max-w-2xl bg-white dark:bg-theme-dark-900 sm:m-auto sm:mx-auto sm:max-w-[448px] sm:rounded-xl sm:shadow-2xl">
@@ -46,7 +45,6 @@ const ModalRoot = ({
     </ModalContext.Provider>
 );
 
-// Modal.Title
 interface ModalTitleProps extends React.HTMLAttributes<HTMLDivElement> {
     hideCloseButton?: boolean;
 }
@@ -79,7 +77,6 @@ const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: 
     );
 };
 
-// Modal.Body
 const ModalBody = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
         className={twMerge(
@@ -92,7 +89,6 @@ const ModalBody = ({ children, className, ...props }: React.HTMLAttributes<HTMLD
     </div>
 );
 
-// Modal.Footer
 const ModalFooter = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
         className={twMerge(
@@ -105,14 +101,12 @@ const ModalFooter = ({ children, className, ...props }: React.HTMLAttributes<HTM
     </div>
 );
 
-// Modal.FooterButtons
 const ModalFooterButtons = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div className={twMerge("modal-buttons flex", className)} {...props}>
         {children}
     </div>
 );
 
-// Modal.CancelButton
 interface ModalCancelButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     asChild?: boolean;
 }
@@ -131,7 +125,6 @@ const ModalCancelButton = ({ children = "Cancel", asChild = false, className, ..
     );
 };
 
-// Modal.ActionButton
 interface ModalActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     asChild?: boolean;
 }
@@ -155,7 +148,6 @@ const ModalActionButton = ({ children = "Action", asChild = false, className, ..
     );
 };
 
-// Compound component export
 const Modal = Object.assign(ModalRoot, {
     Title: ModalTitle,
     Body: ModalBody,
