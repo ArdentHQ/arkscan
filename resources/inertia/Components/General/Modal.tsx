@@ -1,5 +1,4 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import classNames from "@/utils/class-names";
 import CrossIcon from "@ui/icons/cross.svg?react";
 
 interface ModalProps extends React.PropsWithChildren {
@@ -35,7 +34,6 @@ export default function Modal({ isOpen, onClose, title, description, footer, chi
                             </div>
                         )}
 
-                        {/* Description (for accessibility) */}
                         {description && <Dialog.Description className="sr-only">{description}</Dialog.Description>}
 
                         {/* Content */}
@@ -43,7 +41,6 @@ export default function Modal({ isOpen, onClose, title, description, footer, chi
                             {children}
                         </div>
 
-                        {/* Footer */}
                         {footer && (
                             <div className="mb-4 flex flex-col-reverse border-t border-theme-secondary-300 px-6 pt-4 text-right dark:border-theme-dark-700 sm:flex-row sm:justify-end sm:space-x-3">
                                 {footer}
