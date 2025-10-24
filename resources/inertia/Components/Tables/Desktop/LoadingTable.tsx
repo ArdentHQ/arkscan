@@ -1,19 +1,24 @@
 import LoadingText from "@/Components/Loading/Text";
 import TableCell from "./TableCell";
 import classNames from "@/utils/class-names";
+import { TableHeaderTooltip } from "./TableHeader";
+
+export interface ILoadingTableColumn {
+    name?: string;
+    width?: number;
+    indicatorHeight?: string;
+    indicatorWidth?: string;
+    type?: "id" | "number" | "badge" | "string" | "address";
+    className?: string;
+    tooltip?: string;
+}
 
 export default function LoadingTable({
     columns,
     rowCount,
     indicatorHeight = "h-[17px]",
 }: {
-    columns: Array<{
-        name?: string;
-        width?: number;
-        indicatorHeight?: string;
-        type?: "id" | "number" | "badge" | "string" | "address";
-        className?: string;
-    }>;
+    columns: Array<ILoadingTableColumn>;
     rowCount: number;
     indicatorHeight?: string;
 }) {
@@ -29,10 +34,19 @@ export default function LoadingTable({
                                         key={index}
                                         className={classNames({
                                             "whitespace-nowrap": true,
+                                            "text-right": !!column?.type && ["number"].includes(column?.type),
                                             [column.className as string]: column.className !== undefined,
                                         })}
                                     >
-                                        {column.name || ""}
+                                        {!column.tooltip && (column.name || "")}
+
+                                        {!!column.tooltip && (
+                                            <div className="inline-flex items-center space-x-2">
+                                                {column.name && <span>{column.name}</span>}
+
+                                                <TableHeaderTooltip text={column.tooltip} />
+                                            </div>
+                                        )}
                                     </th>
                                 ))}
                             </tr>
@@ -46,36 +60,40 @@ export default function LoadingTable({
                                             style={{ width: column.width }}
                                             className={classNames({
                                                 "whitespace-nowrap": true,
+                                                "text-right": !!column?.type && ["number"].includes(column?.type),
                                                 [column.className as string]: column.className !== undefined,
                                             })}
                                         >
                                             {column?.type && ["number"].includes(column?.type) && (
                                                 <LoadingText
-                                                    width="w-[32px]"
+                                                    width={column.indicatorWidth || "w-[70px]"}
                                                     height={column.indicatorHeight || indicatorHeight}
                                                 />
                                             )}
+
                                             {column?.type && ["id"].includes(column?.type) && (
                                                 <LoadingText
-                                                    width="w-[20px]"
+                                                    width={column.indicatorWidth || "w-[20px]"}
                                                     height={column.indicatorHeight || indicatorHeight}
                                                 />
                                             )}
+
                                             {column?.type && ["badge"].includes(column?.type) && (
                                                 <LoadingText
-                                                    width="w-[140px]"
+                                                    width={column.indicatorWidth || "w-[140px]"}
                                                     height={column.indicatorHeight || indicatorHeight}
                                                 />
                                             )}
+
                                             {column?.type && ["address"].includes(column?.type) && (
                                                 <div className="flex space-x-2">
                                                     <LoadingText
-                                                        width="w-[39px]"
+                                                        width={column.indicatorWidth || "w-[39px]"}
                                                         height={column.indicatorHeight || indicatorHeight}
                                                     />
 
                                                     <LoadingText
-                                                        width="w-[70px]"
+                                                        width={column.indicatorWidth || "w-[70px]"}
                                                         height={column.indicatorHeight || indicatorHeight}
                                                     />
                                                 </div>
