@@ -1,5 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import classNames from "@/utils/class-names";
+import CrossIcon from "@ui/icons/cross.svg?react";
 
 interface ModalProps extends React.PropsWithChildren {
     isOpen: boolean;
@@ -17,10 +18,18 @@ export default function Modal({ isOpen, onClose, title, description, footer, chi
                     <Dialog.Content className="custom-scroll relative w-full max-w-2xl bg-white dark:bg-theme-dark-900 sm:m-auto sm:mx-auto sm:max-w-[448px] sm:rounded-xl sm:shadow-2xl">
                         {/* Header */}
                         {title && (
-                            <div className="border-b border-theme-secondary-300 px-6 py-4 dark:border-theme-dark-700">
-                                <Dialog.Title className="text-lg font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                            <div className="flex items-center justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] dark:border-theme-dark-700 sm:pb-4 sm:pt-[0.875rem]">
+                                <Dialog.Title className="m-0 text-left text-lg font-semibold dark:text-theme-dark-50">
                                     {title}
                                 </Dialog.Title>
+
+                                <button
+                                    type="button"
+                                    onClick={onClose}
+                                    className="button button-secondary m-0 h-6 w-6 rounded-none bg-transparent p-0 text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:bg-transparent dark:text-theme-dark-200 dark:shadow-none hover:dark:bg-theme-dark-blue-600 hover:dark:text-theme-dark-50 sm:rounded"
+                                >
+                                    <CrossIcon className="fill-current m-auto h-4 w-4" />
+                                </button>
                             </div>
                         )}
 
