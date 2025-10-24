@@ -68,7 +68,6 @@ export default function PaginationMiddle({
                                 setShowSearch(false);
                             }}
                             onBlur={(event) => {
-                                console.log("blur", event);
                                 const blurredOutside = !event.target.contains(event.target);
                                 if (blurredOutside) {
                                     event.target.value = "";
@@ -89,7 +88,8 @@ export default function PaginationMiddle({
                 onClick={() => setShowSearch(!showSearch)}
                 type="button"
                 className={classNames({
-                    "button-secondary group/pagination relative inline-flex w-full items-center justify-center p-0 leading-5 focus:ring-theme-primary-500 focus:dark:ring-theme-dark-blue-300": true,
+                    "button-secondary group/pagination relative inline-flex w-full items-center justify-center p-0 leading-5 focus:ring-theme-primary-500 focus:dark:ring-theme-dark-blue-300":
+                        true,
                     "opacity-0": showSearch,
                 })}
                 disabled={disabled || paginator.last_page === 1}

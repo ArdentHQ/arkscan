@@ -17,7 +17,7 @@ export default function VoteLink({
 }) {
     const { t } = useTranslation();
 
-    // TODO: add arkconnect https://app.clickup.com/t/86dy38w6m
+    // TODO: add arkconnect https://app.clickup.com/t/86dxxbq8r
     const validatorAddress = wallet.address;
     const votingForAddress = null;
     const isConnected = false;

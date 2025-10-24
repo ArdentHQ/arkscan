@@ -21,8 +21,6 @@ export function isFiat(currency: string): boolean {
         return false;
     }
 
-    console.log("isFiat", currencies![currency]?.locale);
-
     return currencies![currency]?.locale !== null;
 }
 
