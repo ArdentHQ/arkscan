@@ -47,38 +47,59 @@ const WalletTabs = ({
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { setRefreshPage } = usePageHandler();
+    const { currentTab, onTabChange } = useTabs();
 
-    const { currentTab } = useTabs();
+    const pollCurrentTab = (tab: string, callback?: CallableFunction) => {
+        let pollParameters: string[] = [];
+        if (tab === "transactions") {
+            pollParameters = ["transactions"];
+        } else if (tab === "blocks") {
+            pollParameters = ["blocks"];
+        } else if (tab === "voters") {
+            pollParameters = ["voters"];
+        }
+
+        router.reload({
+            only: pollParameters,
+            onSuccess: () => {
+                if (callback) {
+                    callback();
+                }
+            },
+        });
+    };
 
     useEffect(() => {
-        router.on("success", () => {
-            pollingTimerRef.current = setTimeout(pollCurrentTab, 8000);
-        });
+        if (!currentTab) {
+            return;
+        }
 
-        const pollCurrentTab = (callback?: CallableFunction) => {
-            let pollParameters: string[] = [];
-            if (currentTab === "transactions") {
-                pollParameters = ["transactions"];
-            } else if (currentTab === "blocks") {
-                pollParameters = ["blocks"];
-            } else if (currentTab === "voting") {
-                pollParameters = ["votes"];
+        router.on("success", () => {
+            if (pollingTimerRef.current) {
+                clearTimeout(pollingTimerRef.current);
             }
 
-            router.reload({
-                only: pollParameters,
-                onSuccess: () => {
-                    if (callback) {
-                        callback();
-                    }
-                },
-            });
-        };
+            pollingTimerRef.current = setTimeout(() => pollCurrentTab(currentTab), 8000);
+        });
 
-        pollCurrentTab();
+        if (!pollingTimerRef.current) {
+            pollingTimerRef.current = setTimeout(() => pollCurrentTab(currentTab), 8000);
+
+            pollCurrentTab(currentTab);
+        }
+
+        onTabChange((tab: ITab) => {
+            if (pollingTimerRef.current) {
+                clearTimeout(pollingTimerRef.current);
+            }
+
+            pollingTimerRef.current = setTimeout(() => pollCurrentTab(tab.value), 8000);
+
+            pollCurrentTab(tab.value);
+        });
 
         setRefreshPage((callback?: CallableFunction) => {
-            pollCurrentTab(callback);
+            pollCurrentTab(currentTab, callback);
         });
 
         return () => {
@@ -88,7 +109,7 @@ const WalletTabs = ({
 
             clearTimeout(pollingTimerRef.current);
         };
-    }, []);
+    }, [currentTab]);
 
     return (
         <>
