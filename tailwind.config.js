@@ -91,6 +91,8 @@ module.exports = {
                 "move-bg": "move-bg 15s infinite linear",
                 "move-bg-start-right":
                     "move-bg-start-right 15s infinite linear",
+                "opacity-in": "opacity-in 100ms ease-out",
+                "opacity-out": "opacity-out 75ms ease-in",
             },
 
             keyframes: {
@@ -101,6 +103,14 @@ module.exports = {
                 "move-bg-start-right": {
                     "0%": { backgroundPosition: "calc(100%)" },
                     "100%": { backgroundPosition: "calc(100% + 500px)" },
+                },
+                "opacity-in": {
+                    "0%": { opacity: "0" },
+                    "100%": { opacity: "1" },
+                },
+                "opacity-out": {
+                    "0%": { opacity: "1" },
+                    "100%": { opacity: "0" },
                 },
             },
 
