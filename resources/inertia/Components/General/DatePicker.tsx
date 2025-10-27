@@ -74,7 +74,7 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
                 className="flex h-full cursor-pointer items-center pl-2 pr-4"
                 onClick={() => inputRef.current?.click()}
             >
-                <CalendarIcon className="text-theme-primary-600 dark:text-theme-dark-300" />
+                <CalendarIcon className="fill-current h-5 w-5 text-theme-primary-600 dark:text-theme-dark-300" />
             </div>
         </div>
     );
