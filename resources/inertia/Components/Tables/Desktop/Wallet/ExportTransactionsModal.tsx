@@ -1,5 +1,6 @@
 import Modal from "@/Components/General/Modal";
 import Select from "@/Components/General/Select";
+import DatePicker from "@/Components/General/DatePicker";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
@@ -7,6 +8,8 @@ import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?re
 export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const { t } = useTranslation();
     const [dateRange, setDateRange] = useState<string>("current_month");
+    const [dateFrom, setDateFrom] = useState<Date | null>(null);
+    const [dateTo, setDateTo] = useState<Date | null>(null);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
@@ -43,6 +46,34 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
                         </Select.Content>
                     </Select>
 
+                    {dateRange === "custom" && (
+                        <div className="-mx-6 mt-4 flex space-x-3 bg-theme-primary-50 px-6 py-4 dark:bg-theme-dark-950">
+                            <div className="flex flex-1 flex-col space-y-2">
+                                <label className="dark:text-theme-dark-200">{t("general.export.date_from")}</label>
+
+                                <DatePicker
+                                    value={dateFrom}
+                                    onChange={(date) => {
+                                        setDateFrom(date);
+                                    }}
+                                    maxDate={dateTo || undefined}
+                                />
+                            </div>
+
+                            <div className="flex flex-1 flex-col space-y-2">
+                                <label className="dark:text-theme-dark-200">{t("general.export.date_to")}</label>
+
+                                <DatePicker
+                                    value={dateTo}
+                                    onChange={(date) => {
+                                        setDateTo(date);
+                                    }}
+                                    minDate={dateFrom || undefined}
+                                />
+                            </div>
+                        </div>
+                    )}
+
                     {/* <div class="px-6 -mx-6 mt-4"> 
                         <div x-show="! hasStartedExport">
                             <x-modals.export-transactions.fields />
@@ -54,8 +85,6 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
                             />
                         </div>
                     </div> */}
-
-                    <p>{t("pages.wallet.export-transactions-modal.description")}</p>
                 </div>
             </Modal.Body>
 

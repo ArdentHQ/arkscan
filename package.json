@@ -9,6 +9,7 @@
         "@babel/runtime": "^7.24.4",
         "@popperjs/core": "^2.11.8",
         "@types/node": "^20.12.7",
+        "@types/pikaday": "^1.7.10",
         "@types/react": "^19.1.9",
         "@types/react-dom": "^19.1.7",
         "@vitejs/plugin-react": "^5.0.0",
