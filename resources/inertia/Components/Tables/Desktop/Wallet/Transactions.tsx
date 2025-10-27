@@ -167,7 +167,7 @@ export default function TransactionsTableWrapper({
 function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
     const { t } = useTranslation();
 
-    const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(false);
+    const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(true);
 
     return (
         <div className="flex items-center justify-end space-x-3">

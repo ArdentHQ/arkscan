@@ -1,20 +1,48 @@
 import Modal from "@/Components/General/Modal";
+import Select from "@/Components/General/Select";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 
 export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const { t } = useTranslation();
+    const [dateRange, setDateRange] = useState("current_month");
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
             <Modal.Title>{t("pages.wallet.export-transactions-modal.title")}</Modal.Title>
 
             <Modal.Body>
-                {/* <div class="px-6 pt-4 -mx-6 mt-1 font-normal border-t text-theme-secondary-700 border-theme-secondary-300 dark:text-theme-dark-200 dark:border-theme-dark-700">
-                        
-                    </div>
+                <p className="mb-4">{t("pages.wallet.export-transactions-modal.description")}</p>
 
-                    <div class="px-6 -mx-6 mt-4">
+                <div className="space-y-4">
+                    <Select value={dateRange} onValueChange={setDateRange}>
+                        <Select.Trigger placeholder="Select date range" />
+                        <Select.Content className="w-full sm:w-100">
+                            <Select.Item value="current_month">
+                                {t("pages.wallet.export-transactions-modal.date-options.current_month")}
+                            </Select.Item>
+                            <Select.Item value="last_month">
+                                {t("pages.wallet.export-transactions-modal.date-options.last_month")}
+                            </Select.Item>
+                            <Select.Item value="last_quarter">
+                                {t("pages.wallet.export-transactions-modal.date-options.last_quarter")}
+                            </Select.Item>
+                            <Select.Item value="current_year">
+                                {t("pages.wallet.export-transactions-modal.date-options.current_year")}
+                            </Select.Item>
+                            <Select.Item value="last_year">
+                                {t("pages.wallet.export-transactions-modal.date-options.last_year")}
+                            </Select.Item>
+                            <Select.Item value="all">
+                                {t("pages.wallet.export-transactions-modal.date-options.all")}
+                            </Select.Item>
+                            <Select.Separator />
+                            <Select.Item value="custom">{t("general.custom")}</Select.Item>
+                        </Select.Content>
+                    </Select>
+
+                    {/* <div class="px-6 -mx-6 mt-4"> 
                         <div x-show="! hasStartedExport">
                             <x-modals.export-transactions.fields />
                         </div>
@@ -26,7 +54,8 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
                         </div>
                     </div> */}
 
-                <p>{t("pages.wallet.export-transactions-modal.description")}</p>
+                    <p>{t("pages.wallet.export-transactions-modal.description")}</p>
+                </div>
             </Modal.Body>
 
             <Modal.Footer>

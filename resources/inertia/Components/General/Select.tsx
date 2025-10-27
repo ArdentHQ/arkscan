@@ -54,7 +54,7 @@ const SelectContent = ({ children, className, ...props }: React.ComponentProps<t
         <SelectPrimitive.Portal>
             <SelectPrimitive.Content
                 className={twMerge(
-                    "dropdown z-50 w-full rounded-xl border border-white bg-white px-1 py-[0.125rem] shadow-lg transition-opacity dark:border-theme-dark-700 dark:bg-theme-dark-900",
+                    "z-50 overflow-hidden rounded-xl border border-white bg-white shadow-lg dark:border-theme-dark-700 dark:bg-theme-dark-900",
                     className,
                 )}
                 position="popper"
