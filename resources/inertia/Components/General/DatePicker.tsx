@@ -27,11 +27,13 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
                 onChange?.(date);
             },
             onClose: function () {
-                if (this.getDate() === null) {
-                    this.clear();
+                const component = this as unknown as Pikaday;
+
+                if (component.getDate() === null) {
+                    component.clear();
                     onChange?.(null);
                 } else {
-                    onChange?.(this.getDate());
+                    onChange?.(component.getDate());
                 }
             },
             toString: (date: Date) => {
