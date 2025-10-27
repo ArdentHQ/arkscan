@@ -1,7 +1,7 @@
 import Modal from "@/Components/General/Modal";
 import Select from "@/Components/General/Select";
 import DatePicker from "@/Components/General/DatePicker";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 
@@ -10,12 +10,13 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
     const [dateRange, setDateRange] = useState<string>("current_month");
     const [dateFrom, setDateFrom] = useState<Date | null>(null);
     const [dateTo, setDateTo] = useState<Date | null>(null);
+    const modalBodyRef = useRef<HTMLDivElement>(null);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
             <Modal.Title>{t("pages.wallet.export-transactions-modal.title")}</Modal.Title>
 
-            <Modal.Body>
+            <Modal.Body ref={modalBodyRef}>
                 <p className="mb-4">{t("pages.wallet.export-transactions-modal.description")}</p>
 
                 <div className="space-y-4">
@@ -52,6 +53,7 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
                                 <label className="dark:text-theme-dark-200">{t("general.export.date_from")}</label>
 
                                 <DatePicker
+                                    container={modalBodyRef.current}
                                     value={dateFrom}
                                     onChange={(date) => {
                                         setDateFrom(date);
@@ -64,6 +66,7 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
                                 <label className="dark:text-theme-dark-200">{t("general.export.date_to")}</label>
 
                                 <DatePicker
+                                    container={modalBodyRef.current}
                                     value={dateTo}
                                     onChange={(date) => {
                                         setDateTo(date);

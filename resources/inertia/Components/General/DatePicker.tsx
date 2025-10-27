@@ -1,16 +1,17 @@
 import { useEffect, useRef } from "react";
-import Pikaday from "pikaday";
+import Pikaday, { PikadayOptions } from "pikaday";
 import CalendarIcon from "@ui/icons/calendar-without-dots.svg?react";
 import { twMerge } from "tailwind-merge";
 
-interface DatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "value"> {
+interface DatePickerProps extends PikadayOptions {
     value?: Date | null;
     onChange?: (date: Date | null) => void;
     minDate?: Date;
     maxDate?: Date;
+    className?: string;
 }
 
-export default function DatePicker({ value, onChange, minDate, maxDate, className, ...props }: DatePickerProps) {
+export default function DatePicker({ value, onChange, minDate, maxDate, className, ...options }: DatePickerProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const pickerRef = useRef<Pikaday | null>(null);
 
@@ -40,6 +41,7 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
                     day: "2-digit",
                 });
             },
+            ...options,
         });
 
         return () => {
@@ -53,7 +55,6 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
                 "flex flex-1 items-center justify-between rounded border border-theme-secondary-400 bg-white dark:border-theme-dark-500 dark:bg-theme-dark-900",
                 className,
             )}
-            {...props}
         >
             <input
                 ref={inputRef}

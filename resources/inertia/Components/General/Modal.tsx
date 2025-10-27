@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, forwardRef } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import { twMerge } from "tailwind-merge";
@@ -78,17 +78,22 @@ const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: 
     );
 };
 
-const ModalBody = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div
-        className={twMerge(
-            "px-6 pb-4 pt-4 font-normal text-theme-secondary-700 dark:text-theme-dark-200 sm:pb-6",
-            className,
-        )}
-        {...props}
-    >
-        {children}
-    </div>
+const ModalBody = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+    ({ children, className, ...props }, ref) => (
+        <div
+            ref={ref}
+            className={twMerge(
+                "px-6 pb-4 pt-4 font-normal text-theme-secondary-700 dark:text-theme-dark-200 sm:pb-6",
+                className,
+            )}
+            {...props}
+        >
+            {children}
+        </div>
+    ),
 );
+
+ModalBody.displayName = "ModalBody";
 
 const ModalFooter = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
