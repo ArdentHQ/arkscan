@@ -32,7 +32,7 @@ const SelectTrigger = ({ children, placeholder, className, ...props }: SelectTri
     return (
         <SelectPrimitive.Trigger
             className={twMerge(
-                "transition-default flex h-11 w-full items-center justify-between rounded border border-theme-secondary-400 px-4 py-3.5 outline outline-1 outline-transparent",
+                "transition-default group flex h-11 w-full items-center justify-between rounded border border-theme-secondary-400 px-4 py-3.5 outline outline-1 outline-transparent",
                 "text-theme-secondary-900 dark:border-theme-dark-500 dark:text-theme-dark-200",
                 "hover:border-theme-primary-400 hover:outline-theme-primary-400 hover:dark:border-theme-dark-blue-600 hover:dark:outline-theme-dark-blue-600",
                 "data-[state=open]:border-theme-primary-400 data-[state=open]:outline-theme-primary-400 data-[state=open]:dark:border-theme-dark-blue-600 data-[state=open]:dark:outline-theme-dark-blue-600",
@@ -42,7 +42,7 @@ const SelectTrigger = ({ children, placeholder, className, ...props }: SelectTri
         >
             <SelectPrimitive.Value placeholder={placeholder} />
 
-            <SelectPrimitive.Icon className="transition-default data-[state=open]:rotate-180">
+            <SelectPrimitive.Icon className="transition-default group-data-[state=open]:rotate-180">
                 <ChevronDownIcon className="h-3 w-3 text-theme-secondary-700 dark:text-theme-dark-200" />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>

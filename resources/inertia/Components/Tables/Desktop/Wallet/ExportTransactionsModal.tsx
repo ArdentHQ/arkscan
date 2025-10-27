@@ -6,7 +6,7 @@ import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?re
 
 export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
     const { t } = useTranslation();
-    const [dateRange, setDateRange] = useState("current_month");
+    const [dateRange, setDateRange] = useState<string>("current_month");
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
@@ -17,7 +17,8 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
 
                 <div className="space-y-4">
                     <Select value={dateRange} onValueChange={setDateRange}>
-                        <Select.Trigger placeholder="Select date range" />
+                        <Select.Trigger />
+
                         <Select.Content className="w-full sm:w-100">
                             <Select.Item value="current_month">
                                 {t("pages.wallet.export-transactions-modal.date-options.current_month")}
