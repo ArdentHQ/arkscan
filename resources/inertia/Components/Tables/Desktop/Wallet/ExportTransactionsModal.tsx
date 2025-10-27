@@ -1,7 +1,7 @@
 import Modal from "@/Components/General/Modal";
 import Select from "@/Components/General/Select";
 import DatePicker from "@/Components/General/DatePicker";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 
@@ -10,7 +10,12 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
     const [dateRange, setDateRange] = useState<string>("current_month");
     const [dateFrom, setDateFrom] = useState<Date | null>(null);
     const [dateTo, setDateTo] = useState<Date | null>(null);
+    const [delimiter, setDelimiter] = useState<string>("comma");
     const modalBodyRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        console.log({ dateRange, dateFrom, dateTo, delimiter });
+    }, [dateRange, dateFrom, dateTo, delimiter]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
@@ -76,6 +81,41 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
                             </div>
                         </div>
                     )}
+
+                    <Select value={delimiter} onValueChange={setDelimiter}>
+                        <Select.Trigger />
+
+                        <Select.Content className="w-full sm:w-100">
+                            <Select.Item value="comma">
+                                <span>{t("pages.wallet.export-transactions-modal.delimiter-options.comma.text")}</span>
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-500"> ( </span>
+                                <span>{t("pages.wallet.export-transactions-modal.delimiter-options.comma.value")}</span>
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-500"> ) </span>
+                            </Select.Item>
+                            <Select.Item value="semicolon">
+                                <span>
+                                    {t("pages.wallet.export-transactions-modal.delimiter-options.semicolon.text")}
+                                </span>
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-500"> ( </span>
+                                <span>
+                                    {t("pages.wallet.export-transactions-modal.delimiter-options.semicolon.value")}
+                                </span>
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-500"> ) </span>
+                            </Select.Item>
+                            <Select.Item value="tab">
+                                <span>{t("pages.wallet.export-transactions-modal.delimiter-options.tab.text")}</span>
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-500"> ( </span>
+                                <span>{t("pages.wallet.export-transactions-modal.delimiter-options.tab.value")}</span>
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-500"> ) </span>
+                            </Select.Item>
+                            <Select.Item value="pipe">
+                                <span>{t("pages.wallet.export-transactions-modal.delimiter-options.pipe.text")}</span>
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-500"> ( </span>
+                                <span>{t("pages.wallet.export-transactions-modal.delimiter-options.pipe.value")}</span>
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-500"> ) </span>
+                            </Select.Item>
+                        </Select.Content>
+                    </Select>
 
                     {/* <div class="px-6 -mx-6 mt-4"> 
                         <div x-show="! hasStartedExport">
