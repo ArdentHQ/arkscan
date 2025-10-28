@@ -1,7 +1,7 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
 import { IPaginatedResponse } from "@/types";
-import { ITransaction } from "@/types/generated";
+import { ITransaction, IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Transaction/Age";
 import ID from "@/Components/Transaction/ID";
@@ -16,6 +16,9 @@ import FilterIcon from "@ui/icons/filter.svg?react";
 import TableHeader from "../TableHeader";
 import { useState } from "react";
 import ExportTransactionsModal from "./ExportTransactionsModal";
+import { useWallet } from "@/Providers/Wallet/WalletContext";
+import { usePage } from "@inertiajs/react";
+import { PageProps } from "@inertiajs/core";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -166,6 +169,14 @@ export default function TransactionsTableWrapper({
 
 function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
     const { t } = useTranslation();
+    const { network, settings } = useConfig();
+    const {
+        props: { wallet },
+    } = usePage<
+        PageProps<{
+            wallet: IWallet;
+        }>
+    >();
 
     const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(true);
 
@@ -186,6 +197,11 @@ function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
                 <ExportTransactionsModal
                     isOpen={isTransactionsExportModalOpen}
                     onClose={() => setIsTransactionsExportModalOpen(false)}
+                    address={wallet.address}
+                    network={network}
+                    userCurrency={settings?.currency || ""}
+                    rates={{}}
+                    canBeExchanged={network?.canBeExchanged || false}
                 />
             </div>
 
