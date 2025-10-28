@@ -14,14 +14,12 @@ interface MultiSelectContextType {
 
 const MultiSelectContext = createContext<MultiSelectContextType | undefined>(undefined);
 
-// Root Component
-interface MultiSelectRootProps {
+interface MultiSelectRootProps extends React.HTMLAttributes<HTMLDivElement> {
     value: string[];
     onValueChange: (values: string[]) => void;
-    children: React.ReactNode;
 }
 
-const MultiSelectRoot = ({ value, onValueChange, children }: MultiSelectRootProps) => {
+const MultiSelectRoot = ({ value, onValueChange, className, ...props }: MultiSelectRootProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -60,17 +58,13 @@ const MultiSelectRoot = ({ value, onValueChange, children }: MultiSelectRootProp
                 setIsOpen,
             }}
         >
-            <div ref={containerRef} className="relative">
-                {children}
-            </div>
+            <div ref={containerRef} className={twMerge("relative", className)} {...props} />
         </MultiSelectContext.Provider>
     );
 };
 
-// Trigger Component
 interface MultiSelectTriggerProps extends React.HTMLAttributes<HTMLButtonElement> {
     placeholder?: string;
-    children?: React.ReactNode;
 }
 
 const MultiSelectTrigger = ({ placeholder, children, className, ...props }: MultiSelectTriggerProps) => {
@@ -105,12 +99,7 @@ const MultiSelectTrigger = ({ placeholder, children, className, ...props }: Mult
     );
 };
 
-// Content Component
-interface MultiSelectContentProps extends React.HTMLAttributes<HTMLDivElement> {
-    children: React.ReactNode;
-}
-
-const MultiSelectContent = ({ children, className, ...props }: MultiSelectContentProps) => {
+const MultiSelectContent = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
     const context = useContext(MultiSelectContext);
 
     if (!context) {
@@ -136,11 +125,8 @@ const MultiSelectContent = ({ children, className, ...props }: MultiSelectConten
         </div>
     );
 };
-
-// Item Component
 interface MultiSelectItemProps extends React.HTMLAttributes<HTMLDivElement> {
     value: string;
-    children: React.ReactNode;
 }
 
 const MultiSelectItem = ({ value, children, className, ...props }: MultiSelectItemProps) => {
@@ -155,11 +141,12 @@ const MultiSelectItem = ({ value, children, className, ...props }: MultiSelectIt
     return (
         <div
             className={twMerge(
-                "transition-default my-[0.125rem] flex cursor-pointer items-center rounded-lg px-5 py-[0.875rem] font-semibold leading-5 outline-none",
+                "transition-default group my-[0.125rem] flex cursor-pointer items-center rounded-lg px-5 py-[0.875rem] font-semibold leading-5 outline-none",
                 "text-theme-secondary-700 dark:text-theme-dark-200",
-                "hover:bg-theme-secondary-200 hover:text-theme-secondary-900 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50",
+                "hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950",
                 isChecked &&
                     "bg-theme-secondary-200 text-theme-primary-600 dark:bg-theme-dark-950 dark:text-theme-dark-50",
+                !isChecked && "hover:text-theme-secondary-900 hover:dark:text-theme-dark-50",
                 className,
             )}
             onClick={() => context.onValueChange(value)}
@@ -169,7 +156,7 @@ const MultiSelectItem = ({ value, children, className, ...props }: MultiSelectIt
                 checked={isChecked}
                 onCheckedChange={() => context.onValueChange(value)}
                 onClick={(e) => e.stopPropagation()}
-                className="!h-5 !w-5"
+                className="group-hover:border-theme-primary-600 group-hover:checked:bg-theme-primary-700"
             />
 
             <span className="flex-1 px-3">{children}</span>
@@ -179,7 +166,6 @@ const MultiSelectItem = ({ value, children, className, ...props }: MultiSelectIt
     );
 };
 
-// AllItem Component
 interface MultiSelectAllItemProps extends React.HTMLAttributes<HTMLDivElement> {
     allValues: string[];
     children: React.ReactNode;
@@ -209,11 +195,12 @@ const MultiSelectAllItem = ({ allValues, children, className, ...props }: MultiS
     return (
         <div
             className={twMerge(
-                "transition-default my-[0.125rem] flex cursor-pointer items-center rounded-lg px-5 py-[0.875rem] font-semibold leading-5 outline-none",
+                "transition-default group my-[0.125rem] flex cursor-pointer items-center rounded-lg px-5 py-[0.875rem] font-semibold leading-5 outline-none",
                 "text-theme-secondary-700 dark:text-theme-dark-200",
-                "hover:bg-theme-secondary-200 hover:text-theme-secondary-900 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50",
+                "hover:bg-theme-secondary-200 hover:dark:bg-theme-dark-950",
                 allSelected &&
                     "bg-theme-secondary-200 text-theme-primary-600 dark:bg-theme-dark-950 dark:text-theme-dark-50",
+                !allSelected && "hover:text-theme-secondary-900 hover:dark:text-theme-dark-50",
                 className,
             )}
             onClick={handleToggleAll}
@@ -223,7 +210,7 @@ const MultiSelectAllItem = ({ allValues, children, className, ...props }: MultiS
                 checked={allSelected}
                 onCheckedChange={handleToggleAll}
                 onClick={(e) => e.stopPropagation()}
-                className="!h-5 !w-5"
+                className="group-hover:border-theme-primary-600 group-hover:checked:bg-theme-primary-700"
             />
 
             <span className="flex-1 px-3">{children}</span>
@@ -233,7 +220,6 @@ const MultiSelectAllItem = ({ allValues, children, className, ...props }: MultiS
     );
 };
 
-// Separator Component
 const MultiSelectSeparator = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
     return (
         <div
@@ -243,7 +229,6 @@ const MultiSelectSeparator = ({ className, ...props }: React.HTMLAttributes<HTML
     );
 };
 
-// Composed Component
 const MultiSelect = Object.assign(MultiSelectRoot, {
     Trigger: MultiSelectTrigger,
     Content: MultiSelectContent,
