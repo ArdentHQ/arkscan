@@ -12,6 +12,7 @@ import ErrorDarkImage from "@images/modals/export/error-dark.svg?react";
 import WarningImage from "@images/modals/export/warning.svg?react";
 import WarningDarkImage from "@images/modals/export/warning-dark.svg?react";
 import Alert from "@/Components/General/Alert";
+import LoaderIcon from "@/Components/General/LoaderIcon";
 
 interface ExportStatusProps {
     status: string;
@@ -149,24 +150,10 @@ export default function ExportStatus({
                 <div className="relative">
                     {status === ExportStatusEnum.PendingDownload && (
                         <div className="h-8 w-8">
-                            <svg
-                                className="h-8 w-8 animate-spin"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <circle
-                                    className="stroke-theme-primary-100 dark:stroke-theme-dark-700"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                    strokeWidth="4"
-                                    fill="none"
-                                />
-                                <path
-                                    className="fill-theme-primary-600 dark:fill-theme-dark-blue-400"
-                                    d="M12 2a10 10 0 0 1 10 10h-4a6 6 0 0 0-6-6V2z"
-                                />
-                            </svg>
+                            <LoaderIcon
+                                pathClass="fill-theme-primary-600 dark:fill-theme-dark-blue-400"
+                                circleClass="stroke-theme-primary-100 dark:stroke-theme-dark-700"
+                            />
                         </div>
                     )}
 
