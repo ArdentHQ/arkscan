@@ -77,10 +77,10 @@ export default function ExportTransactionsModal({
             <Modal.Title>{t("pages.wallet.export-transactions-modal.title")}</Modal.Title>
 
             <Modal.Body ref={modalBodyRef}>
+                <p className="mb-4">{t("pages.wallet.export-transactions-modal.description")}</p>
+
                 {!hasStartedExport ? (
                     <>
-                        <p className="mb-4">{t("pages.wallet.export-transactions-modal.description")}</p>
-
                         <div className="space-y-5">
                             <div>
                                 <Label>{t("pages.wallet.export-transactions-modal.date_range")}</Label>

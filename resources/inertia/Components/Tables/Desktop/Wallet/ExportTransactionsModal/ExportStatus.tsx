@@ -53,7 +53,7 @@ export default function ExportStatus({
     return (
         <div className="flex flex-col">
             <div className="mb-6 flex justify-center">
-                {status === ExportStatusEnum.PendingExport && (
+                {status === ExportStatusEnum.PendingDownload && (
                     <>
                         <LoadingImage className="dark:hidden" />
                         <LoadingDarkImage className="hidden dark:block" />
