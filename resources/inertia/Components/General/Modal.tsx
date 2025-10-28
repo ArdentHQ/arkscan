@@ -56,7 +56,7 @@ const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: 
     return (
         <div
             className={twMerge(
-                "flex items-center justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] pt-4 dark:border-theme-dark-700 sm:pb-4 sm:pt-[0.875rem]",
+                "flex items-center justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] pt-4 dark:border-theme-dark-700 sm:pt-[0.875rem]",
                 className,
             )}
             {...props}

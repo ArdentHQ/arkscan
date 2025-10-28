@@ -3,6 +3,7 @@ import Select from "@/Components/General/Select";
 import DatePicker from "@/Components/General/DatePicker";
 import Checkbox from "@/Components/General/Checkbox";
 import TransactionTypesSelect from "./ExportTransactionsModal/TransactionTypesSelect";
+import TransactionColumnsSelect from "./ExportTransactionsModal/TransactionColumnsSelect";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
@@ -16,11 +17,20 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
     const [delimiter, setDelimiter] = useState<string>("comma");
     const [includeHeaderRow, setIncludeHeaderRow] = useState<boolean>(true);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+    const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
     const modalBodyRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        console.log({ dateRange, dateFrom, dateTo, delimiter, includeHeaderRow, selectedTypes });
-    }, [dateRange, dateFrom, dateTo, delimiter, includeHeaderRow, selectedTypes]);
+        console.log({
+            dateRange,
+            dateFrom,
+            dateTo,
+            delimiter,
+            includeHeaderRow,
+            selectedTypes,
+            selectedColumns,
+        });
+    }, [dateRange, dateFrom, dateTo, delimiter, includeHeaderRow, selectedTypes, selectedColumns]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
@@ -29,7 +39,7 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
             <Modal.Body ref={modalBodyRef}>
                 <p className="mb-4">{t("pages.wallet.export-transactions-modal.description")}</p>
 
-                <div className="space-y-4">
+                <div className="space-y-5">
                     <div>
                         <Label>{t("pages.wallet.export-transactions-modal.date_range")}</Label>
 
@@ -160,6 +170,12 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
                         <Label>{t("pages.wallet.export-transactions-modal.types")}</Label>
 
                         <TransactionTypesSelect value={selectedTypes} onValueChange={setSelectedTypes} />
+                    </div>
+
+                    <div>
+                        <Label>{t("pages.wallet.export-transactions-modal.columns")}</Label>
+
+                        <TransactionColumnsSelect value={selectedColumns} onValueChange={setSelectedColumns} />
                     </div>
 
                     {/* <div class="px-6 -mx-6 mt-4"> 
