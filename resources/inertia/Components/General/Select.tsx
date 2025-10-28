@@ -32,9 +32,9 @@ const SelectTrigger = ({ children, placeholder, className, ...props }: SelectTri
     return (
         <SelectPrimitive.Trigger
             className={twMerge(
-                "transition-default group flex h-11 w-full items-center justify-between rounded border border-theme-secondary-400 px-4 py-3.5 outline outline-1 outline-transparent",
+                "transition-default group flex h-11 w-full items-center justify-between rounded border border-theme-secondary-400 px-4 py-3.5 outline outline-1 outline-offset-0 outline-transparent focus:outline-none",
                 "text-theme-secondary-900 dark:border-theme-dark-500 dark:text-theme-dark-200",
-                "hover:border-theme-primary-400 hover:outline-theme-primary-400 hover:dark:border-theme-dark-blue-600 hover:dark:outline-theme-dark-blue-600",
+                "hover:border-theme-primary-400 hover:outline-theme-primary-400 dark:border-theme-dark-500 hover:dark:border-theme-dark-blue-600 hover:dark:outline-theme-dark-blue-600",
                 "data-[state=open]:border-theme-primary-400 data-[state=open]:outline-theme-primary-400 data-[state=open]:dark:border-theme-dark-blue-600 data-[state=open]:dark:outline-theme-dark-blue-600",
                 className,
             )}
