@@ -245,7 +245,7 @@ return [
             'success_toast'       => '<span class="font-semibold" style="word-break: break-word;">:address.csv</span> has been saved successfully',
             'success_message'     => 'A total of :count transactions have been retrieved and are ready for download.',
             'error'               => 'There was a problem fetching transactions.',
-        
+
             'types_x_selected' => [
                 'singular' => 'Type Selected',
                 'plural'   => 'Types Selected',
