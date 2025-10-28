@@ -1,3 +1,12 @@
+export type IBlock = {
+    hash: string;
+    number: number;
+    timestamp: number;
+    transactionCount: number;
+    totalReward: number;
+    totalRewardFiat: string;
+    rewardFiat: string;
+};
 export type IConfigArkconnect = {
     enabled: boolean;
     vaultUrl: string;

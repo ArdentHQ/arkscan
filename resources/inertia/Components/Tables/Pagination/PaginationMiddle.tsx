@@ -68,7 +68,6 @@ export default function PaginationMiddle({
                                 setShowSearch(false);
                             }}
                             onBlur={(event) => {
-                                console.log("blur", event);
                                 const blurredOutside = !event.target.contains(event.target);
                                 if (blurredOutside) {
                                     event.target.value = "";

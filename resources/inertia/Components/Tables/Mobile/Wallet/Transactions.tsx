@@ -6,26 +6,26 @@ import { IPaginatedResponse } from "@/types";
 import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import ID from "@/Components/Transaction/ID";
-import Age from "@/Components/Transaction/Age";
+import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Transaction/Amount";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Fee from "@/Components/Transaction/Fee";
 import Addressing from "@/Components/Transaction/Addressing";
 
-export function TransactionsMobileTable({ transactions }: { transactions: ITransaction[] }) {
+export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
     const { t } = useTranslation();
     const { network } = useConfig();
 
     return (
-        <MobileTable className="">
-            {transactions.map((transaction: ITransaction, index) => (
+        <MobileTable noResultsMessage={transactions.noResultsMessage} resultCount={transactions.total ?? 0}>
+            {transactions.data.map((transaction: ITransaction, index) => (
                 <MobileTableRow
                     key={index}
                     header={
                         <>
                             <ID transaction={transaction} />
 
-                            <Age transaction={transaction} />
+                            <Age timestamp={transaction.timestamp} />
                         </>
                     }
                 >
@@ -58,16 +58,16 @@ export default function TransactionsMobileTableWrapper({
     transactions,
     rowCount = 10,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     rowCount?: number;
 }) {
-    if (!transactions || transactions.total === 0) {
+    if (!transactions) {
         return <MobileTransactionsSkeletonTable rowCount={rowCount} />;
     }
 
     return (
         <div className="md:hidden">
-            <TransactionsMobileTable transactions={transactions.data} />
+            <TransactionsMobileTable transactions={transactions} />
         </div>
     );
 }

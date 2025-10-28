@@ -21,7 +21,7 @@ function AmountOutput({
 }) {
     return (
         <span>
-            <span>{isSent && !isSentToSelf ? "-" : isReceived ? "+" : ""}&nbsp;</span>
+            <span>{isSent && !isSentToSelf ? "- " : isReceived ? "+ " : ""}</span>
 
             {typeof amount === "number" ? (
                 transaction ? (

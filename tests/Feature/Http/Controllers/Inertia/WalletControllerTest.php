@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -23,6 +24,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
         ->assertInertia(function (Assert $page) use ($pageCallback, $wallet, $withReload, $reloadCallback) {
             $page->where('wallet.address', $wallet->address)
                 ->missing('transactions')
+                ->missing('blocks')
                 ->component('Wallet');
 
             if (is_callable($pageCallback)) {
@@ -33,7 +35,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                 return;
             }
 
-            $page->reloadOnly('wallet,transactions', function (Assert $reload) use ($reloadCallback) {
+            $page->reloadOnly('wallet,transactions,blocks', function (Assert $reload) use ($reloadCallback) {
                 if (is_callable($reloadCallback)) {
                     $reloadCallback($reload);
                 }
@@ -81,6 +83,40 @@ it('should have transactions', function () {
                     $transactionIds = collect($transactions)->pluck('hash');
 
                     return $transactionIds->contains($sent->hash) && $transactionIds->contains($received->hash);
+                });
+        },
+    );
+});
+
+it('should have blocks', function () {
+    $block1 = Block::factory()
+        ->create([
+            'proposer' => $this->subject->address,
+        ])
+        ->fresh();
+
+    $block2 = Block::factory()
+        ->create([
+            'proposer' => $this->subject->address,
+        ])
+        ->fresh();
+
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) use ($block1, $block2) {
+            $reload->has('blocks.data', 2)
+                ->where('blocks.total', 2)
+                ->where('blocks.current_page', 1)
+                ->where('blocks.last_page', 1)
+                ->where('blocks.meta', [
+                    'pageName'  => 'page',
+                    'urlParams' => [],
+                ])
+                ->where('blocks.data', function ($blocks) use ($block1, $block2) {
+                    $transactionIds = collect($blocks)->pluck('hash');
+
+                    return $transactionIds->contains($block1->hash) && $transactionIds->contains($block2->hash);
                 });
         },
     );
