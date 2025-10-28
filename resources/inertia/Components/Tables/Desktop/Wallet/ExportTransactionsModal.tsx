@@ -1,8 +1,8 @@
 import Modal from "@/Components/General/Modal";
 import Select from "@/Components/General/Select";
-import MultiSelect from "@/Components/General/MultiSelect";
 import DatePicker from "@/Components/General/DatePicker";
 import Checkbox from "@/Components/General/Checkbox";
+import TransactionTypesSelect from "./ExportTransactionsModal/TransactionTypesSelect";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
@@ -21,24 +21,6 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
     useEffect(() => {
         console.log({ dateRange, dateFrom, dateTo, delimiter, includeHeaderRow, selectedTypes });
     }, [dateRange, dateFrom, dateTo, delimiter, includeHeaderRow, selectedTypes]);
-
-    // Helper to format selected items text
-    const getSelectedTypesText = () => {
-        const count = selectedTypes.length;
-        if (count === 0) return null;
-
-        const totalTypes = 4; // transfers, votes, multipayments, others
-        if (count === totalTypes) {
-            return `(${count}) ${t("general.all")} ${t("pages.wallet.export-transactions-modal.types_x_selected.plural")}`;
-        }
-
-        const typeLabel =
-            count === 1
-                ? t("pages.wallet.export-transactions-modal.types_x_selected.singular")
-                : t("pages.wallet.export-transactions-modal.types_x_selected.plural");
-
-        return `(${count}) ${typeLabel}`;
-    };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
@@ -177,32 +159,7 @@ export default function ExportTransactionsModal({ isOpen, onClose }: { isOpen: b
                     <div>
                         <Label>{t("pages.wallet.export-transactions-modal.types")}</Label>
 
-                        <MultiSelect value={selectedTypes} onValueChange={setSelectedTypes}>
-                            <MultiSelect.Trigger
-                                placeholder={t("pages.wallet.export-transactions-modal.types_placeholder")}
-                            >
-                                {getSelectedTypesText()}
-                            </MultiSelect.Trigger>
-
-                            <MultiSelect.Content className="w-full sm:w-100">
-                                <MultiSelect.AllItem allValues={["transfers", "votes", "multipayments", "others"]}>
-                                    {t("general.select_all")} {t("pages.wallet.export-transactions-modal.types")}
-                                </MultiSelect.AllItem>
-
-                                <MultiSelect.Item value="transfers">
-                                    {t("pages.wallet.export-transactions-modal.types-options.transfers")}
-                                </MultiSelect.Item>
-                                <MultiSelect.Item value="votes">
-                                    {t("pages.wallet.export-transactions-modal.types-options.votes")}
-                                </MultiSelect.Item>
-                                <MultiSelect.Item value="multipayments">
-                                    {t("pages.wallet.export-transactions-modal.types-options.multipayments")}
-                                </MultiSelect.Item>
-                                <MultiSelect.Item value="others">
-                                    {t("pages.wallet.export-transactions-modal.types-options.others")}
-                                </MultiSelect.Item>
-                            </MultiSelect.Content>
-                        </MultiSelect>
+                        <TransactionTypesSelect value={selectedTypes} onValueChange={setSelectedTypes} />
                     </div>
 
                     {/* <div class="px-6 -mx-6 mt-4"> 
