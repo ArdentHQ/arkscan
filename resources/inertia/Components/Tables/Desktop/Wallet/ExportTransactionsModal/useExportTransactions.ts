@@ -306,7 +306,7 @@ export default function useExportTransactions({
         try {
             const query = buildQuery();
             const timestamp = query["timestamp.to"] || Date.now();
-            
+
             if (query["timestamp.to"]) {
                 delete query["timestamp.to"];
             }
@@ -337,13 +337,11 @@ export default function useExportTransactions({
 
             setDataUri(url);
             setExportStatus(ExportStatus.Done);
-            setSuccessMessage(
-                t("pages.wallet.export-transactions-modal.success", { count: transactions.length }),
-            );
+            setSuccessMessage(t("pages.wallet.export-transactions-modal.success", { count: transactions.length }));
             setHasFinishedExport(true);
         } catch (error: unknown) {
             console.error("Export error:", error);
-            
+
             if (error instanceof FailedExportRequest) {
                 // Partial export
                 if ((error as any).transactions && (error as any).transactions.length > 0) {
@@ -369,13 +367,7 @@ export default function useExportTransactions({
             }
             setHasFinishedExport(true);
         }
-    }, [
-        buildQuery,
-        generateCsvFromTransactions,
-        network,
-        resetStatus,
-        t,
-    ]);
+    }, [buildQuery, generateCsvFromTransactions, network, resetStatus, t]);
 
     // Reset form when modal opens
     useEffect(() => {
@@ -428,4 +420,3 @@ export default function useExportTransactions({
         exportData,
     };
 }
-
