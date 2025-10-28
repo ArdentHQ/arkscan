@@ -10,6 +10,8 @@ import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import Label from "@/Components/General/Label";
+// @ts-ignore
+import { ExportStatus as ExportStatusEnum } from "@js/includes/enums";
 
 interface ExportTransactionsModalProps {
     isOpen: boolean;
@@ -273,17 +275,65 @@ export default function ExportTransactionsModal({
 
             <Modal.Footer>
                 <Modal.FooterButtons>
-                    <Modal.CancelButton onClick={onClose} />
-
                     {!hasStartedExport ? (
-                        <Modal.ActionButton className="space-x-2" disabled={!canExport()} onClick={exportData}>
-                            <UnderlineArrowDownIcon className="h-4 w-4" />
-                            <span>{t("actions.export")}</span>
-                        </Modal.ActionButton>
+                        <>
+                            <button type="button" className="button-secondary" onClick={onClose}>
+                                {t("actions.cancel")}
+                            </button>
+
+                            <Modal.ActionButton className="space-x-2" disabled={!canExport()} onClick={exportData}>
+                                <UnderlineArrowDownIcon className="h-4 w-4" />
+                                <span>{t("actions.export")}</span>
+                            </Modal.ActionButton>
+                        </>
+                    ) : exportStatus === ExportStatusEnum.Error ? (
+                        <>
+                            <button
+                                type="button"
+                                className="button-secondary"
+                                onClick={() => setHasStartedExport(false)}
+                            >
+                                {t("actions.back")}
+                            </button>
+
+                            <button
+                                type="button"
+                                className="button-primary flex items-center justify-center space-x-2"
+                                onClick={exportData}
+                            >
+                                <UnderlineArrowDownIcon className="h-4 w-4" />
+                                <span>{t("actions.retry")}</span>
+                            </button>
+                        </>
                     ) : (
-                        <button type="button" className="button-secondary" onClick={() => setHasStartedExport(false)}>
-                            {t("actions.back")}
-                        </button>
+                        <>
+                            {dataUri === null && (
+                                <button
+                                    type="button"
+                                    className="button-secondary"
+                                    onClick={() => setHasStartedExport(false)}
+                                >
+                                    {t("actions.back")}
+                                </button>
+                            )}
+
+                            {dataUri !== null && (
+                                <button type="button" className="button-secondary" onClick={onClose}>
+                                    {t("actions.close")}
+                                </button>
+                            )}
+
+                            <a
+                                href={dataUri || ""}
+                                className={dataUri ? "button-primary" : "button-primary pointer-events-none opacity-50"}
+                                download={`${address}.csv`}
+                            >
+                                <span className="flex items-center space-x-2">
+                                    <UnderlineArrowDownIcon className="h-4 w-4" />
+                                    <span>{t("actions.download")}</span>
+                                </span>
+                            </a>
+                        </>
                     )}
                 </Modal.FooterButtons>
             </Modal.Footer>

@@ -299,24 +299,18 @@ export default function useExportTransactions({
     const exportData = useCallback(async () => {
         setHasStartedExport(true);
         resetStatus();
-        setExportStatus(ExportStatus.PendingExport);
+        setExportStatus(ExportStatus.PendingDownload);
 
-        // Create abort controller
         abortControllerRef.current = new AbortController();
 
         try {
             const query = buildQuery();
-            
-            // Get the initial timestamp for pagination
-            // If we have a timestamp.to in the query, use that, otherwise use current time
             const timestamp = query["timestamp.to"] || Date.now();
             
-            // Remove timestamp.to from query because fetchAll will set it
             if (query["timestamp.to"]) {
                 delete query["timestamp.to"];
             }
 
-            // Fetch all transactions
             const transactions = await TransactionsApi.fetchAll(
                 {
                     host: network?.api || "",
@@ -330,7 +324,6 @@ export default function useExportTransactions({
                 },
             );
 
-            // Check if aborted
             if (abortControllerRef.current?.signal.aborted) {
                 setExportStatus(null);
                 return;
@@ -338,13 +331,12 @@ export default function useExportTransactions({
 
             setExportedCount(transactions.length);
 
-            // Generate CSV
             const csv = generateCsvFromTransactions(transactions);
             const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
             const url = URL.createObjectURL(blob);
 
             setDataUri(url);
-            setExportStatus(ExportStatus.PendingDownload);
+            setExportStatus(ExportStatus.Done);
             setSuccessMessage(
                 t("pages.wallet.export-transactions-modal.success", { count: transactions.length }),
             );
