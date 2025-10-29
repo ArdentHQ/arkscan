@@ -414,14 +414,7 @@ export default function useExportTransactions({
                 .filter((columnKey) => columnsForCsv[columnKey])
                 .map((columnKey) => getColumnLabel(columnKey));
 
-            return generateCsv(
-                transactions,
-                columnsForCsv,
-                columnTitles,
-                columnMapping,
-                delimiter,
-                includeHeaderRow,
-            );
+            return generateCsv(transactions, columnsForCsv, columnTitles, columnMapping, delimiter, includeHeaderRow);
         },
         [selectedColumns, csvColumnOrder, canBeExchanged, getColumnLabel, columnMapping, delimiter, includeHeaderRow],
     );
@@ -470,13 +463,9 @@ export default function useExportTransactions({
             setDataUri(csvUri);
             setSuccessMessage(
                 String(
-                    t(
-                        "pages.wallet.export-transactions-modal.success_message",
-                        "",
-                        {
-                            count: formatNumber(transactions.length) as unknown as number,
-                        },
-                    ),
+                    t("pages.wallet.export-transactions-modal.success_message", "", {
+                        count: formatNumber(transactions.length) as unknown as number,
+                    }),
                 ),
             );
             setHasFinishedExport(true);
