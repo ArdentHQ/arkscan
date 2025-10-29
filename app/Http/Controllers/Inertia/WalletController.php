@@ -63,6 +63,7 @@ final class WalletController
                     ...$paginator->toArray(),
 
                     'meta' => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getValidatedBlocksNoResultsMessageProperty($paginator->count()),
                 ];
             }),
 
@@ -73,6 +74,7 @@ final class WalletController
                     ...$paginator->toArray(),
 
                     'meta' => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getVotersNoResultsMessageProperty($paginator->count()),
                 ];
             }),
         ]);
@@ -214,6 +216,24 @@ final class WalletController
 
         if ($count === 0) {
             return trans('tables.transactions.no_results.no_results');
+        }
+
+        return null;
+    }
+
+    private function getValidatedBlocksNoResultsMessageProperty(int $count): null|string
+    {
+        if ($count === 0) {
+            return trans('tables.wallet.blocks.no_results');
+        }
+
+        return null;
+    }
+
+    private function getVotersNoResultsMessageProperty(int $count): null|string
+    {
+        if ($count === 0) {
+            return trans('tables.wallets.no_results');
         }
 
         return null;
