@@ -62,18 +62,18 @@ final class WalletController
                 return [
                     ...$paginator->toArray(),
 
-                    'meta' => UI::getPaginationData($paginator),
+                    'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getValidatedBlocksNoResultsMessageProperty($paginator->count()),
                 ];
             }),
 
-            "voters" => Inertia::optional(function () use ($wallet) {
+            'voters' => Inertia::optional(function () use ($wallet) {
                 $paginator = $this->getVoters($wallet);
 
                 return [
                     ...$paginator->toArray(),
 
-                    'meta' => UI::getPaginationData($paginator),
+                    'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getVotersNoResultsMessageProperty($paginator->count()),
                 ];
             }),
