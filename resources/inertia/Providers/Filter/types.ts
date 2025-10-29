@@ -1,4 +1,4 @@
-import { IFilters } from '@/types';
+import { IFilters } from "@/types";
 
 export interface IFilterContextType {
     selectedFilters: IFilters;
