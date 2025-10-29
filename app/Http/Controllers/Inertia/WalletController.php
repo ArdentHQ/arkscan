@@ -24,7 +24,7 @@ use Inertia\Response;
 
 final class WalletController
 {
-    const FILTERS = [
+    public const FILTERS = [
         'transactions' => [
             'outgoing'            => true,
             'incoming'            => true,
@@ -109,7 +109,7 @@ final class WalletController
     private function filter(string $key): bool
     {
         if (request()->has($key)) {
-            return request()->get($key) === "true";
+            return request()->get($key) === 'true';
         }
 
         $currentTab = request()->get('tab', 'transactions');

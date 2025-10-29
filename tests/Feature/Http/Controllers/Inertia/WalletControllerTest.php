@@ -9,7 +9,6 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use Carbon\Carbon;
 use Inertia\Testing\AssertableInertia as Assert;
-
 use function Tests\faker;
 
 beforeEach(function () {
@@ -140,33 +139,6 @@ it('should have blocks', function () {
     );
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 it('should filter by outgoing transactions', function () {
     $altWallet = Wallet::factory()->create();
 
@@ -191,15 +163,15 @@ it('should filter by outgoing transactions', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'true',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'true',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) use ($sent, $received) {
             $reload->has('transactions.data', 1)
@@ -237,15 +209,15 @@ it('should filter by incoming transactions', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'false',
-            'incoming' => 'true',
-            'transfers' => 'true',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'false',
+            'incoming'            => 'true',
+            'transfers'           => 'true',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) use ($sent, $received) {
             $reload->has('transactions.data', 1)
@@ -283,15 +255,15 @@ it('should filter by incoming and outgoing transactions', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'true',
-            'transfers' => 'true',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'true',
+            'transfers'           => 'true',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) use ($sent, $received) {
             $reload->has('transactions.data', 2)
@@ -320,15 +292,15 @@ it('should filter by multipayment transactions', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'true',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'true',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) use ($transfer, $multiPayment) {
             $reload->has('transactions.data', 1)
@@ -362,15 +334,15 @@ it('should filter by vote transactions', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'true',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'true',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) use ($transfer, $vote, $unvote) {
             $reload->has('transactions.data', 2)
@@ -408,15 +380,15 @@ it('should filter by validator transactions', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'true',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'true',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) use ($transfer, $registration, $resignation) {
             $reload->has('transactions.data', 2)
@@ -454,15 +426,15 @@ it('should filter by username transactions', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'true',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'true',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) use ($transfer, $registration, $resignation) {
             $reload->has('transactions.data', 2)
@@ -495,15 +467,15 @@ it('should filter by contract deployment transactions', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'true',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) use ($transfer, $contractDeployment) {
             $reload->has('transactions.data', 1)
@@ -535,15 +507,15 @@ it('should filter by other transactions to consensus address', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'true',
+            'others'              => 'true',
         ],
         reloadCallback: function (Assert $reload) use ($transfer, $other) {
             $reload->has('transactions.data', 1)
@@ -575,15 +547,15 @@ it('should filter by other transactions to non-consensus address', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'true',
+            'others'              => 'true',
         ],
         reloadCallback: function (Assert $reload) use ($transfer, $other) {
             $reload->has('transactions.data', 1)
@@ -615,15 +587,15 @@ it('should not filter transfers to consensus as "other"', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'true',
+            'others'              => 'true',
         ],
         reloadCallback: function (Assert $reload) use ($transfer, $other) {
             $reload->has('transactions.data', 0)
@@ -654,15 +626,15 @@ it('should show no transactions if no filters', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'false',
-            'incoming' => 'false',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'false',
+            'incoming'            => 'false',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) {
             $reload->has('transactions.data', 0)
@@ -685,15 +657,15 @@ it('should show no transactions if no addressing filter', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'false',
-            'incoming' => 'false',
-            'transfers' => 'true',
-            'multipayments' => 'true',
-            'votes' => 'true',
-            'validator' => 'true',
-            'username' => 'true',
+            'outgoing'            => 'false',
+            'incoming'            => 'false',
+            'transfers'           => 'true',
+            'multipayments'       => 'true',
+            'votes'               => 'true',
+            'validator'           => 'true',
+            'username'            => 'true',
             'contract_deployment' => 'true',
-            'others' => 'true',
+            'others'              => 'true',
         ],
         reloadCallback: function (Assert $reload) {
             $reload->has('transactions.data', 0)
@@ -716,15 +688,15 @@ it('should show no transactions if no type filter', function () {
         $this,
         wallet: $this->subject,
         queryString: [
-            'outgoing' => 'true',
-            'incoming' => 'true',
-            'transfers' => 'false',
-            'multipayments' => 'false',
-            'votes' => 'false',
-            'validator' => 'false',
-            'username' => 'false',
+            'outgoing'            => 'true',
+            'incoming'            => 'true',
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
             'contract_deployment' => 'false',
-            'others' => 'false',
+            'others'              => 'false',
         ],
         reloadCallback: function (Assert $reload) {
             $reload->has('transactions.data', 0)
