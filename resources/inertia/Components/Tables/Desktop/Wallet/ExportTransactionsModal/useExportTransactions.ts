@@ -1,20 +1,20 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import { useTranslation } from "react-i18next";
-// @ts-ignore
 import { TransactionsApi } from "@js/api/transactions";
-// @ts-ignore
 import { ExportStatus } from "@js/includes/enums";
-// @ts-ignore
 import {
     arktoshiToNumber,
     queryTimestamp,
     getDateRange,
     getCustomDateRange,
     formatNumber,
-    DateFilters,
     generateCsv,
     FailedExportRequest,
 } from "@js/includes/helpers";
+
+dayjs.extend(localizedFormat);
 
 interface UseExportTransactionsProps {
     isOpen: boolean;
@@ -48,7 +48,7 @@ interface UseExportTransactionsReturn {
     dataUri: string | null;
     partialDataUri: string | null;
     hasFinishedExport: boolean;
-    exportStatus: string | null;
+    exportStatus: string;
     errorMessage: string | null;
     successMessage: string | null;
     exportedCount: number;
@@ -60,6 +60,10 @@ interface UseExportTransactionsReturn {
     exportData: () => Promise<void>;
 }
 
+type FailedExportError = Error & {
+    partialRequestData?: any[];
+};
+
 export default function useExportTransactions({
     isOpen,
     address,
@@ -69,6 +73,18 @@ export default function useExportTransactions({
     canBeExchanged,
 }: UseExportTransactionsProps): UseExportTransactionsReturn {
     const { t } = useTranslation();
+
+    const normalizedAddress = useMemo(() => address?.toLowerCase() ?? "", [address]);
+
+    const csvColumnOrder = useMemo(() => {
+        const base: string[] = ["id", "timestamp", "sender", "recipient", "amount", "fee", "total"];
+
+        if (canBeExchanged) {
+            base.push("amountFiat", "feeFiat", "totalFiat", "rate");
+        }
+
+        return base as string[];
+    }, [canBeExchanged]);
 
     // Form state
     const [dateRange, setDateRange] = useState<string>("current_month");
@@ -84,7 +100,6 @@ export default function useExportTransactions({
     const [dataUri, setDataUri] = useState<string | null>(null);
     const [partialDataUri, setPartialDataUri] = useState<string | null>(null);
     const [hasFinishedExport, setHasFinishedExport] = useState(false);
-    const [exportStatus, setExportStatus] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [exportedCount, setExportedCount] = useState(0);
@@ -92,79 +107,189 @@ export default function useExportTransactions({
     // Abort controller for canceling ongoing requests
     const abortControllerRef = useRef<AbortController | null>(null);
 
-    // Column definitions
-    const columns = useMemo(
-        () => ({
-            id: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.id"),
-                mapValue: (transaction: any) => transaction.id,
-            },
-            timestamp: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.timestamp"),
-                mapValue: (transaction: any) => transaction.timestamp.human,
-            },
-            sender: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.sender"),
-                mapValue: (transaction: any) => transaction.sender,
-            },
-            recipient: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.recipient"),
-                mapValue: (transaction: any) => transaction.recipient,
-            },
-            amount_arktoshi: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.amount_arktoshi"),
-                mapValue: (transaction: any) => transaction.amount,
-            },
-            amount: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.amount", {
-                    networkCurrency: network?.currency || "",
-                }),
-                mapValue: (transaction: any) => arktoshiToNumber(transaction.amount),
-            },
-            amount_fiat: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.amount_fiat", {
-                    userCurrency: userCurrency || "",
-                }),
-                mapValue: (transaction: any) => {
-                    const rate = rates[userCurrency];
-                    if (!rate) return 0;
-                    return formatNumber(arktoshiToNumber(transaction.amount) * rate);
-                },
-                criteria: canBeExchanged,
-            },
-            fee_arktoshi: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.fee_arktoshi"),
-                mapValue: (transaction: any) => transaction.fee,
-            },
-            fee: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.fee", {
-                    networkCurrency: network?.currency || "",
-                }),
-                mapValue: (transaction: any) => arktoshiToNumber(transaction.fee),
-            },
-            fee_fiat: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.fee_fiat", {
-                    userCurrency: userCurrency || "",
-                }),
-                mapValue: (transaction: any) => {
-                    const rate = rates[userCurrency];
-                    if (!rate) return 0;
-                    return formatNumber(arktoshiToNumber(transaction.fee) * rate);
-                },
-                criteria: canBeExchanged,
-            },
-            type: {
-                label: t("pages.wallet.export-transactions-modal.columns-options.type"),
-                mapValue: (transaction: any) => transaction.typeGroup,
-            },
-        }),
-        [t, network, userCurrency, rates, canBeExchanged],
+    const parseTimestamp = useCallback((transaction: any) => {
+        const { timestamp } = transaction || {};
+
+        if (timestamp === undefined || timestamp === null) {
+            return dayjs(0);
+        }
+
+        if (typeof timestamp === "object") {
+            if (typeof timestamp.unix === "number") {
+                return dayjs.unix(timestamp.unix);
+            }
+
+            if (typeof timestamp.epoch === "number") {
+                return dayjs.unix(timestamp.epoch);
+            }
+
+            if (typeof timestamp.human === "string") {
+                return dayjs(timestamp.human);
+            }
+        }
+
+        const numericTimestamp = Number(timestamp);
+
+        if (!Number.isNaN(numericTimestamp)) {
+            if (`${timestamp}`.length > 10) {
+                return dayjs(numericTimestamp);
+            }
+
+            return dayjs.unix(numericTimestamp);
+        }
+
+        try {
+            return dayjs(timestamp);
+        } catch (error) {
+            return dayjs(0);
+        }
+    }, []);
+
+    const resolveNumericField = useCallback((transaction: any, keys: string[]) => {
+        for (const key of keys) {
+            const value = transaction?.[key];
+
+            if (value === undefined || value === null) {
+                continue;
+            }
+
+            if (typeof value === "number") {
+                return value;
+            }
+
+            if (typeof value === "string") {
+                const trimmed = value.trim();
+
+                if (trimmed.length === 0) {
+                    continue;
+                }
+
+                if (trimmed.startsWith("0x")) {
+                    const parsed = Number.parseInt(trimmed, 16);
+
+                    if (!Number.isNaN(parsed)) {
+                        return parsed;
+                    }
+                }
+
+                const numeric = Number(trimmed);
+
+                if (!Number.isNaN(numeric)) {
+                    return numeric;
+                }
+            }
+        }
+
+        return 0;
+    }, []);
+
+    const getTransactionAmount = useCallback(
+        (transaction: any) => {
+            const amountRaw = resolveNumericField(transaction, ["value", "amount", "amount_arktoshi"]);
+            const amount = arktoshiToNumber(amountRaw ?? 0);
+
+            if (!transaction?.from || normalizedAddress.length === 0) {
+                return amount;
+            }
+
+            return transaction.from.toLowerCase() === normalizedAddress ? -amount : amount;
+        },
+        [normalizedAddress, resolveNumericField],
     );
 
+    const getTransactionFee = useCallback(
+        (transaction: any) => {
+            const feeRaw = resolveNumericField(transaction, ["gasPrice", "gas_price", "fee"]);
+            const fee = arktoshiToNumber(feeRaw ?? 0);
+
+            if (!transaction?.from || normalizedAddress.length === 0) {
+                return fee;
+            }
+
+            return transaction.from.toLowerCase() === normalizedAddress ? -fee : 0;
+        },
+        [normalizedAddress, resolveNumericField],
+    );
+
+    const getTransactionTotal = useCallback(
+        (transaction: any) => {
+            const amount = getTransactionAmount(transaction);
+            const feeRaw = resolveNumericField(transaction, ["gasPrice", "gas_price", "fee"]);
+            const fee = arktoshiToNumber(feeRaw ?? 0);
+
+            if (!transaction?.from || normalizedAddress.length === 0) {
+                return amount;
+            }
+
+            if (transaction.from.toLowerCase() !== normalizedAddress) {
+                return amount;
+            }
+
+            return amount - fee;
+        },
+        [getTransactionAmount, normalizedAddress, resolveNumericField],
+    );
+
+    const getTransactionRate = useCallback(
+        (transaction: any) => {
+            const dateKey = parseTimestamp(transaction).format("YYYY-MM-DD");
+
+            return rates?.[dateKey] ?? 0;
+        },
+        [parseTimestamp, rates],
+    );
+
+    const columnMapping = useMemo(() => {
+        return {
+            id: (transaction: any) => transaction?.hash ?? transaction?.id ?? "",
+            timestamp: (transaction: any) => parseTimestamp(transaction).format("L LTS"),
+            sender: (transaction: any) => transaction?.from ?? transaction?.sender ?? "",
+            recipient: (transaction: any) => transaction?.to ?? transaction?.recipient ?? "",
+            amount: (transaction: any) => getTransactionAmount(transaction),
+            fee: (transaction: any) => getTransactionFee(transaction),
+            total: (transaction: any) => getTransactionTotal(transaction),
+            amountFiat: (transaction: any) => getTransactionAmount(transaction) * getTransactionRate(transaction),
+            feeFiat: (transaction: any) => getTransactionFee(transaction) * getTransactionRate(transaction),
+            totalFiat: (transaction: any) => getTransactionTotal(transaction) * getTransactionRate(transaction),
+            rate: (transaction: any) => getTransactionRate(transaction),
+        };
+    }, [getTransactionAmount, getTransactionFee, getTransactionRate, getTransactionTotal, parseTimestamp]);
+
+    const getColumnLabel = useCallback(
+        (columnKey: string) => {
+            const translationKey = `pages.wallet.export-transactions-modal.columns-options.${columnKey}`;
+
+            const fallbackMap: Record<string, string> = {
+                amount: `Value [${network?.currency ?? ""}]`,
+                amountFiat: `Value [${userCurrency ?? ""}]`,
+                fee: `Fee [${network?.currency ?? ""}]`,
+                feeFiat: `Fee [${userCurrency ?? ""}]`,
+                total: `Total [${network?.currency ?? ""}]`,
+                totalFiat: `Total [${userCurrency ?? ""}]`,
+                rate: `Rate [${userCurrency ?? ""}]`,
+            };
+
+            const translated = t(translationKey, {
+                networkCurrency: network?.currency ?? "",
+                userCurrency: userCurrency ?? "",
+            });
+
+            if (translated === translationKey && fallbackMap[columnKey]) {
+                return fallbackMap[columnKey];
+            }
+
+            return translated;
+        },
+        [network?.currency, t, userCurrency],
+    );
+
+    // Column definitions
     // Check if can export
     const canExport = useCallback(() => {
         if (dateRange === "custom") {
-            if (!dateFrom || !dateTo) {
+            const [customDateFrom, customDateTo] = getCustomDateRange(dateFrom, dateTo);
+
+            if (!customDateFrom || !customDateTo) {
                 return false;
             }
         }
@@ -183,7 +308,6 @@ export default function useExportTransactions({
         setErrorMessage(null);
         setSuccessMessage(null);
         setHasFinishedExport(false);
-        setExportStatus(null);
         setExportedCount(0);
     }, []);
 
@@ -200,116 +324,130 @@ export default function useExportTransactions({
 
     // Build the query for fetching transactions
     const buildQuery = useCallback(() => {
-        const query: any = {};
+        const query: Record<string, any> = {
+            address,
+        };
 
         if (dateRange === "custom") {
-            if (dateFrom && dateTo) {
-                const [customDateFrom, customDateTo] = getCustomDateRange(dateFrom, dateTo);
-                if (customDateFrom && customDateTo) {
-                    query["timestamp.from"] = queryTimestamp(customDateFrom);
-                    query["timestamp.to"] = queryTimestamp(customDateTo);
-                }
+            const [customDateFrom, customDateTo] = getCustomDateRange(dateFrom, dateTo);
+
+            if (customDateFrom && customDateTo) {
+                query["timestamp.from"] = queryTimestamp(customDateFrom);
+                query["timestamp.to"] = queryTimestamp(customDateTo);
             }
         } else if (dateRange !== "all") {
-            const [rangeFrom, rangeTo] = getDateRange(dateRange as DateFilters);
+            const [rangeFrom, rangeTo] = getDateRange(dateRange);
+
             if (rangeFrom && rangeTo) {
                 query["timestamp.from"] = queryTimestamp(rangeFrom);
                 query["timestamp.to"] = queryTimestamp(rangeTo);
             }
         }
 
-        query.address = address;
-
-        const dataValues: string[] = [];
+        const dataFilters: string[] = [];
+        const contractMethods = network?.contractMethods ?? network?.contract_methods ?? {};
 
         selectedTypes.forEach((type) => {
             if (type === "transfers") {
-                dataValues.push("0x");
-            } else if (type === "votes") {
-                if (network?.contractMethods?.vote) {
-                    dataValues.push(network.contractMethods.vote);
+                dataFilters.push("0x");
+            }
+
+            if (type === "votes") {
+                if (contractMethods?.vote) {
+                    dataFilters.push(contractMethods.vote);
                 }
-                if (network?.contractMethods?.unvote) {
-                    dataValues.push(network.contractMethods.unvote);
+
+                if (contractMethods?.unvote) {
+                    dataFilters.push(contractMethods.unvote);
                 }
-            } else if (type === "multipayments") {
-                if (network?.contractMethods?.multipayment) {
-                    dataValues.push(network.contractMethods.multipayment);
+            }
+
+            if (type === "multipayments") {
+                if (contractMethods?.multipayment) {
+                    dataFilters.push(contractMethods.multipayment);
                 }
-            } else if (type === "others") {
-                if (network?.contractMethods?.validator_registration) {
-                    dataValues.push(network.contractMethods.validator_registration);
-                }
-                if (network?.contractMethods?.validator_resignation) {
-                    dataValues.push(network.contractMethods.validator_resignation);
-                }
-                if (network?.contractMethods?.validator_update) {
-                    dataValues.push(network.contractMethods.validator_update);
-                }
-                if (network?.contractMethods?.username_registration) {
-                    dataValues.push(network.contractMethods.username_registration);
-                }
-                if (network?.contractMethods?.username_resignation) {
-                    dataValues.push(network.contractMethods.username_resignation);
-                }
+            }
+
+            if (type === "others") {
+                [
+                    "validator_registration",
+                    "validator_resignation",
+                    "validator_update",
+                    "username_registration",
+                    "username_resignation",
+                    "contract_deployment",
+                ].forEach((key) => {
+                    if (contractMethods?.[key]) {
+                        dataFilters.push(contractMethods[key]);
+                    }
+                });
             }
         });
 
-        if (dataValues.length > 0) {
-            query.data = dataValues.join(",");
+        if (dataFilters.length > 0) {
+            query.data = dataFilters.join(",");
         }
 
         return query;
-    }, [dateRange, dateFrom, dateTo, selectedTypes, address, network]);
+    }, [address, dateFrom, dateRange, dateTo, network?.contractMethods, network?.contract_methods, selectedTypes]);
 
     // Generate CSV from transactions
     const generateCsvFromTransactions = useCallback(
         (transactions: any[]) => {
-            const selectedColumnsObj: Record<string, boolean> = {};
-            selectedColumns.forEach((col) => {
-                selectedColumnsObj[col] = true;
-            });
+            const selectedSet = new Set(selectedColumns);
+            const columnsForCsv: Record<string, boolean> = {};
 
-            const columnTitles = selectedColumns.map((col) => {
-                const column = columns[col as keyof typeof columns];
-                return column ? column.label : "";
-            });
-
-            const columnMapping: Record<string, (transaction: any) => any> = {};
-            selectedColumns.forEach((col) => {
-                const column = columns[col as keyof typeof columns];
-                if (column) {
-                    columnMapping[col] = column.mapValue;
+            csvColumnOrder.forEach((columnKey) => {
+                if (columnKey === "total") {
+                    columnsForCsv[columnKey] = selectedSet.has("amount") && selectedSet.has("fee");
+                    return;
                 }
+
+                if (columnKey === "totalFiat") {
+                    columnsForCsv[columnKey] =
+                        canBeExchanged && selectedSet.has("amountFiat") && selectedSet.has("feeFiat");
+                    return;
+                }
+
+                if (["amountFiat", "feeFiat", "rate"].includes(columnKey)) {
+                    columnsForCsv[columnKey] = canBeExchanged && selectedSet.has(columnKey);
+                    return;
+                }
+
+                columnsForCsv[columnKey] = selectedSet.has(columnKey);
             });
+
+            const columnTitles = csvColumnOrder
+                .filter((columnKey) => columnsForCsv[columnKey])
+                .map((columnKey) => getColumnLabel(columnKey));
 
             return generateCsv(
                 transactions,
-                selectedColumnsObj,
+                columnsForCsv,
                 columnTitles,
                 columnMapping,
                 delimiter,
                 includeHeaderRow,
             );
         },
-        [selectedColumns, columns, delimiter, includeHeaderRow],
+        [selectedColumns, csvColumnOrder, canBeExchanged, getColumnLabel, columnMapping, delimiter, includeHeaderRow],
     );
 
     // Export data
     const exportData = useCallback(async () => {
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+        }
+
+        const controller = new AbortController();
+        abortControllerRef.current = controller;
+
         setHasStartedExport(true);
         resetStatus();
-        setExportStatus(ExportStatus.PendingDownload);
-
-        abortControllerRef.current = new AbortController();
 
         try {
             const query = buildQuery();
-            const timestamp = query["timestamp.to"] || Date.now();
-
-            if (query["timestamp.to"]) {
-                delete query["timestamp.to"];
-            }
+            const timestamp = query["timestamp.to"] ?? queryTimestamp(dayjs());
 
             const transactions = await TransactionsApi.fetchAll(
                 {
@@ -320,52 +458,57 @@ export default function useExportTransactions({
                     timestamp,
                 },
                 {
-                    hasAborted: () => abortControllerRef.current?.signal.aborted || false,
+                    hasAborted: () => controller.signal.aborted,
                 },
             );
 
-            if (abortControllerRef.current?.signal.aborted) {
-                setExportStatus(null);
+            if (controller.signal.aborted) {
                 return;
             }
 
             setExportedCount(transactions.length);
 
-            const csv = generateCsvFromTransactions(transactions);
-            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-            const url = URL.createObjectURL(blob);
+            if (transactions.length === 0) {
+                setHasFinishedExport(true);
+                return;
+            }
 
-            setDataUri(url);
-            setExportStatus(ExportStatus.Done);
-            setSuccessMessage(t("pages.wallet.export-transactions-modal.success", { count: transactions.length }));
+            const csvUri = generateCsvFromTransactions(transactions);
+
+            setDataUri(csvUri);
+            setSuccessMessage(
+                String(
+                    t(
+                        "pages.wallet.export-transactions-modal.success_message",
+                        "",
+                        {
+                            count: formatNumber(transactions.length) as unknown as number,
+                        },
+                    ),
+                ),
+            );
             setHasFinishedExport(true);
         } catch (error: unknown) {
             console.error("Export error:", error);
 
-            if (error instanceof FailedExportRequest) {
-                // Partial export
-                if ((error as any).transactions && (error as any).transactions.length > 0) {
-                    setExportedCount((error as any).transactions.length);
-                    const csv = generateCsvFromTransactions((error as any).transactions);
-                    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-                    const url = URL.createObjectURL(blob);
+            if (controller.signal.aborted) {
+                return;
+            }
 
-                    setPartialDataUri(url);
-                    setExportStatus(ExportStatus.Warning);
-                    setErrorMessage(
-                        t("pages.wallet.export-transactions-modal.partial_error", {
-                            count: (error as any).transactions.length,
-                        }),
-                    );
+            if (error instanceof FailedExportRequest) {
+                const failedError = error as FailedExportError;
+                const partialData = failedError.partialRequestData ?? [];
+
+                if (partialData.length > 0) {
+                    setExportedCount(partialData.length);
+                    setPartialDataUri(generateCsvFromTransactions(partialData));
+                    setErrorMessage(failedError.message);
                 } else {
-                    setExportStatus(ExportStatus.Error);
                     setErrorMessage(t("pages.wallet.export-transactions-modal.error"));
                 }
             } else {
-                setExportStatus(ExportStatus.Error);
                 setErrorMessage(t("pages.wallet.export-transactions-modal.error"));
             }
-            setHasFinishedExport(true);
         }
     }, [buildQuery, generateCsvFromTransactions, network, resetStatus, t]);
 
@@ -384,6 +527,26 @@ export default function useExportTransactions({
             }
         };
     }, []);
+
+    const exportStatus = useMemo(() => {
+        if (!hasStartedExport) {
+            return ExportStatus.PendingExport;
+        }
+
+        if (errorMessage) {
+            return ExportStatus.Error;
+        }
+
+        if (hasFinishedExport && !dataUri) {
+            return ExportStatus.Warning;
+        }
+
+        if (!dataUri) {
+            return ExportStatus.PendingDownload;
+        }
+
+        return ExportStatus.Done;
+    }, [dataUri, errorMessage, hasFinishedExport, hasStartedExport]);
 
     return {
         // Form state
