@@ -11,7 +11,6 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use Brick\Math\RoundingMode;
-
 use function Tests\faker;
 
 it('should make an instance for non-validators', function () {
@@ -153,7 +152,7 @@ it('should make an instance for a voting wallet', function () {
     $votedWallet = Wallet::factory()
         ->activeValidator()
         ->create([
-            'balance' => 100.34123 * 1e18,
+            'balance'    => 100.34123 * 1e18,
             'attributes' => [
                 'validatorVoteBalance' => 200.0 * 1e18,
                 'validatorPublicKey'   => faker()->publicKey,
