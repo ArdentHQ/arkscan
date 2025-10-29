@@ -29,7 +29,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                         </>
                     }
                 >
-                    <TableCell label={transaction.type}>
+                    <TableCell label={transaction.type} className="sm:flex-1">
                         <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} />
                     </TableCell>
 
@@ -41,13 +41,15 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                         <Amount transaction={transaction} />
                     </TableCell>
 
-                    <TableCell
-                        label={t("tables.transactions.fee", {
-                            currency: network?.currency,
-                        })}
-                    >
-                        <Fee transaction={transaction} />
-                    </TableCell>
+                    <div className="sm:flex sm:flex-1 sm:justify-end">
+                        <TableCell
+                            label={t("tables.transactions.fee", {
+                                currency: network?.currency,
+                            })}
+                        >
+                            <Fee transaction={transaction} />
+                        </TableCell>
+                    </div>
                 </MobileTableRow>
             ))}
         </MobileTable>
