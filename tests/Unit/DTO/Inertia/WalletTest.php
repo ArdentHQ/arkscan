@@ -10,6 +10,9 @@ use App\Services\BigNumber;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
+use Brick\Math\RoundingMode;
+
+use function Tests\faker;
 
 it('should make an instance for non-validators', function () {
     $this->freezeTime();
@@ -51,6 +54,7 @@ it('should make an instance for non-validators', function () {
         'hasUsername'                 => true,
         'voteUrl'                     => null,
         'isResigned'                  => false,
+        'votePercentage'              => null,
     ]);
 });
 
@@ -94,6 +98,7 @@ it('should make an instance for active validators', function () {
         'hasUsername'                 => false,
         'isResigned'                  => false,
         'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+        'votePercentage'              => null,
     ]);
 });
 
@@ -137,6 +142,7 @@ it('should make an instance for standby validators', function () {
         'hasUsername'                 => false,
         'isResigned'                  => true,
         'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+        'votePercentage'              => null,
     ]);
 });
 
@@ -148,6 +154,10 @@ it('should make an instance for a voting wallet', function () {
         ->activeValidator()
         ->create([
             'balance' => 100.34123 * 1e18,
+            'attributes' => [
+                'validatorVoteBalance' => 200.0 * 1e18,
+                'validatorPublicKey'   => faker()->publicKey,
+            ],
         ]);
 
     $wallet = Wallet::factory()
@@ -203,6 +213,7 @@ it('should make an instance for a voting wallet', function () {
             'isResigned'                  => false,
             'hasUsername'                 => false,
             'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($votedWallet->public_key),
+            'votePercentage'              => null,
         ],
         'votes'                       => '0',
         'productivity'                => 0.0,
@@ -213,5 +224,6 @@ it('should make an instance for a voting wallet', function () {
         'hasUsername'                 => true,
         'isResigned'                  => false,
         'voteUrl'                     => null,
+        'votePercentage'              => $wallet->balance->valueOf()->multipliedBy(100)->dividedBy($votedWallet->attributes['validatorVoteBalance'], 2, RoundingMode::DOWN)->toFloat(),
     ]);
 });
