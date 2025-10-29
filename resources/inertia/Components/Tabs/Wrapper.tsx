@@ -17,7 +17,7 @@ function MobileWrapper({ tabs }: { tabs: ITab[] }) {
         <Dropdown
             dropdownClasses="px-6 w-full"
             popupStyles={{ width: "100%", zIndex: 20 }}
-            zIndex="z-20"
+            zIndex={20}
             buttonClass="bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700 w-full"
             button={
                 <div className="transition-default flex w-full items-center">

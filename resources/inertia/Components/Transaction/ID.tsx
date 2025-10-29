@@ -2,7 +2,7 @@ import TruncateMiddle from "../General/TruncateMiddle";
 import classNames from "../../utils/class-names";
 import { ITransaction } from "@/types/generated";
 import CircleMinusSmallIcon from "@ui/icons/circle/minus-small.svg?react";
-import Age from "./Age";
+import Age from "../Model/Age";
 
 export default function ID({ transaction, withoutAge = false }: { transaction: ITransaction; withoutAge?: boolean }) {
     return (
@@ -32,7 +32,7 @@ export default function ID({ transaction, withoutAge = false }: { transaction: I
             </div>
 
             {!withoutAge && (
-                <Age transaction={transaction} className="hidden text-xs leading-3.75 md:block xl:hidden" />
+                <Age timestamp={transaction.timestamp} className="hidden text-xs leading-3.75 md:block xl:hidden" />
             )}
         </div>
     );

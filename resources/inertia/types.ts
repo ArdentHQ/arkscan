@@ -1,9 +1,5 @@
-import { IWallet } from "./types/generated";
+import { IBlock, IWallet } from "./types/generated";
 
-export interface IBlock {
-    hash: string;
-    number: number;
-}
 export interface IValidator {
     wallet: IWallet;
     lastBlock: IBlock | null;

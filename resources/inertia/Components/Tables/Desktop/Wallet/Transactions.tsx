@@ -3,7 +3,7 @@ import LoadingTable from "../LoadingTable";
 import { IPaginatedResponse } from "@/types";
 import { ITransaction, IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
-import Age from "@/Components/Transaction/Age";
+import Age from "@/Components/Model/Age";
 import ID from "@/Components/Transaction/ID";
 import Amount from "@/Components/Transaction/Amount";
 import Fee from "@/Components/Transaction/Fee";
@@ -28,7 +28,7 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell breakpoint="xl" responsive>
-                <Age transaction={row} />
+                <Age timestamp={row.timestamp} />
             </TableCell>
 
             <TableCell>
@@ -104,7 +104,7 @@ export default function TransactionsTableWrapper({
     mobile,
     rowCount = 20,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
