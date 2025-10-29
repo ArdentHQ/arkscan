@@ -1,6 +1,6 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { IPaginatedResponse } from "@/types";
+import { IPaginatedResponse, IFilters } from "@/types";
 import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
@@ -12,8 +12,8 @@ import Method from "@/Components/Transaction/Method";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Addressing from "@/Components/Transaction/Addressing";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
-import FilterIcon from "@ui/icons/filter.svg?react";
 import TableHeader from "../TableHeader";
+import Filter from "../../Filter";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -180,17 +180,7 @@ function HeaderActions() {
             </div>
 
             <div className="flex-1">
-                <button
-                    type="button"
-                    className="dropdown-button transition-default button-secondary flex w-full flex-1 items-center justify-center rounded py-1.5 focus:outline-none sm:flex-none sm:px-4 md:p-2"
-                    disabled
-                >
-                    <div className="mx-auto inline-flex items-center whitespace-nowrap">
-                        <FilterIcon className="h-4 w-4" />
-
-                        <div className="ml-2 md:hidden">{t("actions.filter")}</div>
-                    </div>
-                </button>
+                <Filter />
             </div>
         </div>
     );

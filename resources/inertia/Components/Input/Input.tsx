@@ -58,11 +58,6 @@ export default function Input({
                         error={error}
                         id={id ?? name}
                         inputClass={inputClass}
-                        // noModel={noModel ?? false}
-                        // model={model ?? name}
-                        // deferred={deferred ?? false}
-                        // debounce={debounce ?? null}
-
                         {...props}
                     />
 
