@@ -19,6 +19,7 @@ import ExportTransactionsModal from "./ExportTransactionsModal";
 import { useWallet } from "@/Providers/Wallet/WalletContext";
 import { usePage } from "@inertiajs/react";
 import { PageProps } from "@inertiajs/core";
+import { WalletProps } from "@/Pages/Wallet.contracts";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -171,14 +172,10 @@ function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
     const { t } = useTranslation();
     const { network, settings } = useConfig();
     const {
-        props: { wallet },
-    } = usePage<
-        PageProps<{
-            wallet: IWallet;
-        }>
-    >();
+        props: { wallet, rates },
+    } = usePage<PageProps<WalletProps>>();
 
-    const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(true);
+    const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(false);
 
     return (
         <div className="flex items-center justify-end space-x-3">
@@ -200,7 +197,7 @@ function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
                     address={wallet.address}
                     network={network}
                     userCurrency={settings?.currency || ""}
-                    rates={{}}
+                    rates={rates}
                     canBeExchanged={network?.canBeExchanged || false}
                 />
             </div>

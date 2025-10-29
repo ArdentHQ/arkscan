@@ -104,7 +104,6 @@ export default function useExportTransactions({
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [exportedCount, setExportedCount] = useState(0);
 
-    // Abort controller for canceling ongoing requests
     const abortControllerRef = useRef<AbortController | null>(null);
 
     const parseTimestamp = useCallback((transaction: any) => {
@@ -283,8 +282,6 @@ export default function useExportTransactions({
         [network?.currency, t, userCurrency],
     );
 
-    // Column definitions
-    // Check if can export
     const canExport = useCallback(() => {
         if (dateRange === "custom") {
             const [customDateFrom, customDateTo] = getCustomDateRange(dateFrom, dateTo);
@@ -301,7 +298,6 @@ export default function useExportTransactions({
         return selectedColumns.length > 0;
     }, [dateRange, dateFrom, dateTo, selectedTypes, selectedColumns]);
 
-    // Reset status
     const resetStatus = useCallback(() => {
         setDataUri(null);
         setPartialDataUri(null);
@@ -311,7 +307,6 @@ export default function useExportTransactions({
         setExportedCount(0);
     }, []);
 
-    // Reset form
     const resetForm = useCallback(() => {
         setHasStartedExport(false);
         setIncludeHeaderRow(true);
@@ -322,7 +317,6 @@ export default function useExportTransactions({
         resetStatus();
     }, [resetStatus]);
 
-    // Build the query for fetching transactions
     const buildQuery = useCallback(() => {
         const query: Record<string, any> = {
             address,
@@ -391,7 +385,6 @@ export default function useExportTransactions({
         return query;
     }, [address, dateFrom, dateRange, dateTo, network?.contractMethods, network?.contract_methods, selectedTypes]);
 
-    // Generate CSV from transactions
     const generateCsvFromTransactions = useCallback(
         (transactions: any[]) => {
             const selectedSet = new Set(selectedColumns);
@@ -433,7 +426,6 @@ export default function useExportTransactions({
         [selectedColumns, csvColumnOrder, canBeExchanged, getColumnLabel, columnMapping, delimiter, includeHeaderRow],
     );
 
-    // Export data
     const exportData = useCallback(async () => {
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();

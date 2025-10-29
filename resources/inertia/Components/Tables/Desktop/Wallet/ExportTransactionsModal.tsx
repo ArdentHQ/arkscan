@@ -59,7 +59,6 @@ export default function ExportTransactionsModal({
         exportStatus,
         errorMessage,
         successMessage,
-        exportedCount,
         // Methods
         canExport,
         exportData,
