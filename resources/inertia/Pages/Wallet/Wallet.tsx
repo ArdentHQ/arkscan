@@ -14,14 +14,18 @@ import ValidatedBlocksTableWrapper from "@/Components/Tables/Desktop/Wallet/Vali
 import ValidatedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/ValidatedBlocks";
 import { ITab } from "@/Providers/Tabs/types";
 import WalletTransactionsTab from "./tabs/Transactions";
+import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
+import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
 
 const WalletTabsWrapper = ({
     transactions,
     blocks,
+    voters,
     filters,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
+    voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
     return (
@@ -33,7 +37,7 @@ const WalletTabsWrapper = ({
                 { text: "Voters", value: "voters" },
             ]}
         >
-            <WalletTabs transactions={transactions} blocks={blocks} filters={filters} />
+            <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
         </TabsProvider>
     );
 };
@@ -41,10 +45,12 @@ const WalletTabsWrapper = ({
 const WalletTabs = ({
     transactions,
     blocks,
+    voters,
     filters,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
+    voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -128,6 +134,12 @@ const WalletTabs = ({
                     />
                 </>
             )}
+
+            {currentTab === "voters" && (
+                <>
+                    <VotersTableWrapper voters={voters} mobile={<VotersMobileTableWrapper voters={voters} />} />
+                </>
+            )}
         </>
     );
 };
@@ -135,13 +147,15 @@ const WalletTabs = ({
 export default function Wallet({
     transactions,
     blocks,
+    voters,
     wallet,
     network,
     filters,
     ...props
 }: PageProps<{
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
+    voters?: IPaginatedResponse<IWallet>;
     wallet: IWallet;
     filters: ITabbedData<IFilters>;
 }>) {
@@ -161,7 +175,7 @@ export default function Wallet({
                 <Overview wallet={wallet} />
 
                 <PageHandlerProvider>
-                    <WalletTabsWrapper transactions={transactions} blocks={blocks} filters={filters} />
+                    <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
                 </PageHandlerProvider>
             </ConfigProvider>
         </>
