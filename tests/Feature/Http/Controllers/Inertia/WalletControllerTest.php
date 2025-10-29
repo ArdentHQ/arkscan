@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\CacheValidatorsWithVoters;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
+use App\Services\Cache\NetworkCache;
+use App\Services\Cache\WalletCache;
 use Carbon\Carbon;
 use Inertia\Testing\AssertableInertia as Assert;
 use function Tests\faker;
@@ -42,6 +45,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                 ])
                 ->missing('transactions')
                 ->missing('blocks')
+                ->missing('voters')
                 ->component('Wallet/Wallet');
 
             if (is_callable($pageCallback)) {
@@ -52,7 +56,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                 return;
             }
 
-            $page->reloadOnly('wallet,transactions,blocks', function (Assert $reload) use ($reloadCallback) {
+            $page->reloadOnly('wallet,transactions,blocks,voters', function (Assert $reload) use ($reloadCallback) {
                 if (is_callable($reloadCallback)) {
                     $reloadCallback($reload);
                 }
@@ -134,6 +138,44 @@ it('should have blocks', function () {
                     $transactionIds = collect($blocks)->pluck('hash');
 
                     return $transactionIds->contains($block1->hash) && $transactionIds->contains($block2->hash);
+                });
+        },
+    );
+});
+
+it('should have voters', function () {
+    $voterWallets = Wallet::factory(4)->create([
+        'attributes' => [
+            'vote' => $this->subject->address,
+        ],
+    ]);
+
+    (new CacheValidatorsWithVoters())->handle(new WalletCache());
+
+    (new NetworkCache())->setSupply(fn () => 10 * 1e18);
+
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) use ($voterWallets) {
+            $reload->has('voters.data', 4)
+                ->where('voters.total', 4)
+                ->where('voters.current_page', 1)
+                ->where('voters.last_page', 1)
+                ->where('voters.meta', [
+                    'pageName'  => 'page',
+                    'urlParams' => [],
+                ])
+                ->where('voters.data', function ($voters) use ($voterWallets) {
+                    $voterAddresses = collect($voters)->pluck('address');
+
+                    foreach ($voterWallets as $voterWallet) {
+                        if (! $voterAddresses->contains($voterWallet->address)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
                 });
         },
     );
@@ -714,6 +756,30 @@ it('should show no results message if no transactions matching filter', function
             $reload->has('transactions.data', 0)
                 ->where('transactions.total', 0)
                 ->where('transactions.noResultsMessage', trans('tables.transactions.no_results.no_results'));
+        },
+    );
+});
+
+it('should show no results message if no blocks', function () {
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) {
+            $reload->has('blocks.data', 0)
+                ->where('blocks.total', 0)
+                ->where('blocks.noResultsMessage', trans('tables.wallet.blocks.no_results'));
+        },
+    );
+});
+
+it('should show no results message if no voters', function () {
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) {
+            $reload->has('voters.data', 0)
+                ->where('voters.total', 0)
+                ->where('voters.noResultsMessage', trans('tables.wallets.no_results'));
         },
     );
 });
