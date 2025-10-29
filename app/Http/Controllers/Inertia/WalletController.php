@@ -40,7 +40,7 @@ final class WalletController
 
     public function __invoke(Wallet $wallet): Response
     {
-        return Inertia::render('Wallet', [
+        return Inertia::render('Wallet/Wallet', [
             'wallet'       => WalletDTO::fromModel($wallet),
             'filters'      => self::FILTERS,
 
