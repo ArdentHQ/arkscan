@@ -12,7 +12,6 @@ export default function TransactionColumnsSelect({ value, onValueChange }: Trans
     const { t } = useTranslation();
     const { network, settings } = useConfig();
 
-    // All available columns
     const allColumnValues = [
         "id",
         "timestamp",
