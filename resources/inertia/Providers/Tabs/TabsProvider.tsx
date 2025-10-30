@@ -21,6 +21,7 @@ export default function TabsProvider({
 
     useEffect(() => {
         const tab = new URL(location.href).searchParams.get("tab") ?? defaultSelected;
+
         if (tab) {
             const tabEntry = tabs.find((t) => t.value === tab);
             if (!tabEntry) {
@@ -42,7 +43,12 @@ export default function TabsProvider({
         }
 
         const updatedUrl = new URL(location.href);
-        updatedUrl.searchParams.set("tab", currentTab);
+
+        if (currentTab !== defaultSelected) {
+            updatedUrl.searchParams.set("tab", currentTab);
+        } else {
+            updatedUrl.searchParams.delete("tab");
+        }
 
         router.push({
             url: updatedUrl.toString(),
