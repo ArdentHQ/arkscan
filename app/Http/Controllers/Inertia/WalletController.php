@@ -19,13 +19,13 @@ use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 
 final class WalletController
 {
-    // TODO: implement filters - https://app.clickup.com/t/86dy1up1c
-    private array $filters = [
+    public const FILTERS = [
         'transactions' => [
             'outgoing'            => true,
             'incoming'            => true,
@@ -41,8 +41,9 @@ final class WalletController
 
     public function __invoke(Wallet $wallet): Response
     {
-        return Inertia::render('Wallet', [
+        return Inertia::render('Wallet/Wallet', [
             'wallet'       => WalletDTO::fromModel($wallet),
+            'filters'      => self::FILTERS,
 
             'transactions' => Inertia::optional(function () use ($wallet) {
                 $paginator = $this->getTransactions($wallet);
@@ -71,9 +72,10 @@ final class WalletController
 
     public function getTransactions(Wallet $wallet): AbstractPaginator
     {
-        // TODO: implement filters - https://app.clickup.com/t/86dy1up1c
-        // @codeCoverageIgnoreStart
-        $emptyResults = (new LengthAwarePaginator([], 0, $this->perPage(), $this->page()));
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage(), $this->page(), [
+            'pageName' => 'page',
+        ]);
+
         if (! $this->hasAddressingFilters()) {
             return $emptyResults;
         }
@@ -81,7 +83,6 @@ final class WalletController
         if (! $this->hasTransactionTypeFilters()) {
             return $emptyResults;
         }
-        // @codeCoverageIgnoreEnd
 
         return $this->getTransactionsQuery($wallet)
             ->withScope(OrderByTimestampScope::class)
@@ -108,70 +109,85 @@ final class WalletController
         return (int) request()->get('per-page', 25);
     }
 
+    private function filter(string $key): bool
+    {
+        if (request()->has($key)) {
+            return request()->get($key) === 'true';
+        }
+
+        $currentTab = request()->get('tab', 'transactions');
+
+        return Arr::get(self::FILTERS, $currentTab.'.'.$key, false);
+    }
+
+    private function filters(): array
+    {
+        $currentTab = request()->get('tab', 'transactions');
+
+        $filters = Arr::get(self::FILTERS, $currentTab, []);
+        foreach ($filters as $key => $value) {
+            $filters[$key] = $this->filter($key);
+        }
+
+        return $filters;
+    }
+
     private function getTransactionsQuery(Wallet $wallet): Builder
     {
         return Transaction::query()
-            ->withTypeFilter($this->filters['transactions'])
+            ->withTypeFilter($this->filters())
             ->with('votedFor')
-            ->where(fn ($query) => $query->when($this->filters['transactions']['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
-            ->orWhere(fn ($query) => $query->when($this->filters['transactions']['incoming'], fn ($query) => $query->where('to', $wallet->address)))
-            ->orWhere(function ($query) use ($wallet) {
-                $query->when($this->filters['transactions']['multipayments'], fn ($query) => $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address));
+            ->where(function ($query) use ($wallet) {
+                $query->where(fn ($query) => $query->when($this->filter('outgoing'), fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
+                    ->orWhere(fn ($query) => $query->when($this->filter('incoming'), fn ($query) => $query->where('to', $wallet->address)))
+                    ->orWhere(function ($query) use ($wallet) {
+                        $query->when($this->filter('multipayments'), function ($query) use ($wallet) {
+                            $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address);
+                        });
+                    });
             });
     }
 
-    /**
-     * TODO: implement filters - https://app.clickup.com/t/86dy1up1c.
-     *
-     * @codeCoverageIgnore
-     */
     private function hasAddressingFilters(): bool
     {
-        if ($this->filters['transactions']['incoming'] === true) {
+        if ($this->filter('incoming') === true) {
             return true;
         }
 
-        return $this->filters['transactions']['outgoing'] === true;
+        return $this->filter('outgoing') === true;
     }
 
-    /**
-     * TODO: implement filters - https://app.clickup.com/t/86dy1up1c.
-     *
-     * @codeCoverageIgnore
-     */
     private function hasTransactionTypeFilters(): bool
     {
-        if ($this->filters['transactions']['transfers'] === true) {
+        if ($this->filter('transfers') === true) {
             return true;
         }
 
-        if ($this->filters['transactions']['multipayments'] === true) {
+        if ($this->filter('multipayments') === true) {
             return true;
         }
 
-        if ($this->filters['transactions']['votes'] === true) {
+        if ($this->filter('votes') === true) {
             return true;
         }
 
-        if ($this->filters['transactions']['validator'] === true) {
+        if ($this->filter('validator') === true) {
             return true;
         }
 
-        if ($this->filters['transactions']['username'] === true) {
+        if ($this->filter('username') === true) {
             return true;
         }
 
-        if ($this->filters['transactions']['contract_deployment'] === true) {
+        if ($this->filter('contract_deployment') === true) {
             return true;
         }
 
-        return $this->filters['transactions']['others'] === true;
+        return $this->filter('others') === true;
     }
 
     private function getTransactionsNoResultsMessageProperty(int $count): null|string
     {
-        // TODO: implement filters - https://app.clickup.com/t/86dy1up1c
-        // @codeCoverageIgnoreStart
         if (! $this->hasAddressingFilters() && ! $this->hasTransactionTypeFilters()) {
             return trans('tables.transactions.no_results.no_filters');
         }
@@ -179,7 +195,6 @@ final class WalletController
         if (! $this->hasAddressingFilters()) {
             return trans('tables.transactions.no_results.no_addressing_filters');
         }
-        // @codeCoverageIgnoreEnd
 
         if ($count === 0) {
             return trans('tables.transactions.no_results.no_results');

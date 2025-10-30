@@ -55,3 +55,11 @@ export interface IPaginatedResponse<T> {
 
     noResultsMessage: string;
 }
+
+export interface ITabbedData<T> {
+    [tab: string]: T;
+}
+
+export interface IFilters {
+    [key: string]: boolean;
+}

@@ -1,7 +1,7 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
+import { ITransaction } from "@/types/generated";
 import { IPaginatedResponse } from "@/types";
-import { ITransaction, IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
 import ID from "@/Components/Transaction/ID";
@@ -12,14 +12,13 @@ import Method from "@/Components/Transaction/Method";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Addressing from "@/Components/Transaction/Addressing";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
-import FilterIcon from "@ui/icons/filter.svg?react";
 import TableHeader from "../TableHeader";
 import { useState } from "react";
 import ExportTransactionsModal from "./ExportTransactionsModal";
-import { useWallet } from "@/Providers/Wallet/WalletContext";
 import { usePage } from "@inertiajs/react";
 import { PageProps } from "@inertiajs/core";
 import { WalletProps } from "@/Pages/Wallet.contracts";
+import Filter from "@/Components/Tables/Filter";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -128,6 +127,8 @@ export default function TransactionsTableWrapper({
                                 name: t("tables.transactions.age"),
                                 type: "string",
                                 className: "w-[60px]",
+                                responsive: true,
+                                breakpoint: "xl",
                             },
                             {
                                 name: t("tables.transactions.method"),
@@ -145,12 +146,15 @@ export default function TransactionsTableWrapper({
                                     currency: network!.currency,
                                 }),
                                 className: "text-right w-[100px]",
+                                lastOn: "md-lg",
                             },
                             {
                                 name: t("tables.transactions.fee", {
                                     currency: network!.currency,
                                 }),
                                 className: "text-right w-[100px]",
+                                responsive: true,
+                                breakpoint: "md-lg",
                             },
                         ]}
                     />
@@ -203,17 +207,7 @@ function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
             </div>
 
             <div className="flex-1">
-                <button
-                    type="button"
-                    className="dropdown-button transition-default button-secondary flex w-full flex-1 items-center justify-center rounded py-1.5 focus:outline-none sm:flex-none sm:px-4 md:p-2"
-                    disabled
-                >
-                    <div className="mx-auto inline-flex items-center whitespace-nowrap">
-                        <FilterIcon className="h-4 w-4" />
-
-                        <div className="ml-2 md:hidden">{t("actions.filter")}</div>
-                    </div>
-                </button>
+                <Filter />
             </div>
         </div>
     );
