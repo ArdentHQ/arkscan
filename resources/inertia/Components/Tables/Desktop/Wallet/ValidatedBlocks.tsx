@@ -124,6 +124,8 @@ export default function ValidatedBlocksTableWrapper({
             },
             {
                 name: t("tables.blocks.age"),
+                breakpoint: "md-lg",
+                responsive: true,
             },
             {
                 name: t("tables.blocks.transactions"),
@@ -137,6 +139,7 @@ export default function ValidatedBlocksTableWrapper({
                 tooltip: t("pages.wallets.blocks.total_reward_tooltip", {
                     currency: network!.currency,
                 }),
+                lastOn: network?.canBeExchanged ? "lg" : undefined,
             },
         ];
 
@@ -147,6 +150,8 @@ export default function ValidatedBlocksTableWrapper({
                 tooltip: t("pages.wallets.blocks.value_tooltip", {
                     currency: network!.currency,
                 }),
+                breakpoint: "lg",
+                responsive: true,
             });
         }
 
