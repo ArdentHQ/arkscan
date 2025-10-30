@@ -86,7 +86,7 @@ export default function ExportTransactionsModal({
                                 <Select value={dateRange} onValueChange={setDateRange}>
                                     <Select.Trigger />
 
-                                    <Select.Content className="w-full sm:w-100">
+                                    <Select.Content className="-mx-6 w-screen sm:mx-0 sm:w-100">
                                         <Select.Item value="current_month">
                                             {t("pages.wallet.export-transactions-modal.date-options.current_month")}
                                         </Select.Item>
@@ -150,7 +150,7 @@ export default function ExportTransactionsModal({
                                     <Select value={delimiter} onValueChange={setDelimiter}>
                                         <Select.Trigger />
 
-                                        <Select.Content className="w-full sm:w-100">
+                                        <Select.Content className="-mx-6 w-screen sm:mx-0 sm:w-100">
                                             <Select.Item value="comma">
                                                 <span>
                                                     {t(

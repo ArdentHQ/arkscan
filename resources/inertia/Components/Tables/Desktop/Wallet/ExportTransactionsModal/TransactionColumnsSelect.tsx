@@ -67,7 +67,7 @@ export default function TransactionColumnsSelect({ value, onValueChange }: Trans
                     {getSelectedColumnsText()}
                 </MultiSelect.Trigger>
 
-                <MultiSelect.Content className="w-full sm:w-100">
+                <MultiSelect.Content className="-mx-6 w-screen sm:mx-0 sm:w-100">
                     <MultiSelect.AllItem allValues={filteredColumns}>
                         {t("general.select_all")} {t("pages.wallet.export-transactions-modal.columns")}
                     </MultiSelect.AllItem>
