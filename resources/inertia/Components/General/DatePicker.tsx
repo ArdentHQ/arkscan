@@ -14,12 +14,15 @@ interface DatePickerProps extends PikadayOptions {
 export default function DatePicker({ value, onChange, minDate, maxDate, className, ...options }: DatePickerProps) {
     const inputRef = useRef<HTMLInputElement>(null);
     const pickerRef = useRef<Pikaday | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!inputRef.current) return;
 
         pickerRef.current = new Pikaday({
+            container: containerRef.current,
             field: inputRef.current,
+            position: "bottom",
             format: "DD/MM/YYYY",
             minDate: minDate,
             maxDate: maxDate || new Date(),
@@ -54,28 +57,32 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
     return (
         <div
             className={twMerge(
-                "flex flex-1 items-center justify-between rounded border border-theme-secondary-400 bg-white dark:border-theme-dark-500 dark:bg-theme-dark-900",
+                "flex flex-col rounded border border-theme-secondary-400 bg-white dark:border-theme-dark-500 dark:bg-theme-dark-900",
                 className,
             )}
         >
-            <input
-                ref={inputRef}
-                type="text"
-                placeholder="DD/MM/YYYY"
-                className="w-full rounded py-3 pl-4 dark:bg-theme-dark-900 dark:text-theme-dark-50 placeholder:dark:text-theme-dark-200"
-                onKeyDown={(e) => {
-                    if (e.key === "Backspace") {
-                        e.stopPropagation();
-                    }
-                }}
-            />
+            <div className="flex flex-1 items-center justify-between">
+                <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="DD/MM/YYYY"
+                    className="w-full rounded py-3 pl-4 dark:bg-theme-dark-900 dark:text-theme-dark-50 placeholder:dark:text-theme-dark-200"
+                    onKeyDown={(e) => {
+                        if (e.key === "Backspace") {
+                            e.stopPropagation();
+                        }
+                    }}
+                />
 
-            <div
-                className="flex h-full cursor-pointer items-center pl-2 pr-4"
-                onClick={() => inputRef.current?.click()}
-            >
-                <CalendarIcon className="fill-current h-5 w-5 text-theme-primary-600 dark:text-theme-dark-300" />
+                <div
+                    className="flex h-full cursor-pointer items-center pl-2 pr-4"
+                    onClick={() => inputRef.current?.click()}
+                >
+                    <CalendarIcon className="fill-current h-5 w-5 text-theme-primary-600 dark:text-theme-dark-300" />
+                </div>
             </div>
+
+            <div ref={containerRef} />
         </div>
     );
 }

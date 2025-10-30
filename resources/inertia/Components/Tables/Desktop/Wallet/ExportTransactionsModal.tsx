@@ -6,7 +6,7 @@ import TransactionTypesSelect from "./ExportTransactionsModal/TransactionTypesSe
 import TransactionColumnsSelect from "./ExportTransactionsModal/TransactionColumnsSelect";
 import ExportStatus from "./ExportTransactionsModal/ExportStatus";
 import useExportTransactions from "./ExportTransactionsModal/useExportTransactions";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import Label from "@/Components/General/Label";
@@ -33,7 +33,6 @@ export default function ExportTransactionsModal({
     canBeExchanged,
 }: ExportTransactionsModalProps) {
     const { t } = useTranslation();
-    const modalBodyRef = useRef<HTMLDivElement>(null);
 
     const {
         // Form state
@@ -75,7 +74,7 @@ export default function ExportTransactionsModal({
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
             <Modal.Title>{t("pages.wallet.export-transactions-modal.title")}</Modal.Title>
 
-            <Modal.Body ref={modalBodyRef}>
+            <Modal.Body>
                 <p className="mb-4">{t("pages.wallet.export-transactions-modal.description")}</p>
 
                 {!hasStartedExport ? (
@@ -120,7 +119,6 @@ export default function ExportTransactionsModal({
                                         </label>
 
                                         <DatePicker
-                                            container={modalBodyRef.current}
                                             value={dateFrom}
                                             onChange={(date) => {
                                                 setDateFrom(date);
@@ -135,7 +133,6 @@ export default function ExportTransactionsModal({
                                         </label>
 
                                         <DatePicker
-                                            container={modalBodyRef.current}
                                             value={dateTo}
                                             onChange={(date) => {
                                                 setDateTo(date);
