@@ -32,7 +32,8 @@ function PerPageComponent({
                     <div className="transition-default flex items-center">
                         <div
                             className={classNames({
-                                "transition-default flex items-center justify-center space-x-2 px-3 py-2 text-sm font-semibold leading-4": true,
+                                "transition-default flex items-center justify-center space-x-2 px-3 py-2 text-sm font-semibold leading-4":
+                                    true,
                                 "dark:text-theme-dark-50": disabled === false,
                                 "dark:bg-theme-dark-800": disabled === true,
                             })}
@@ -51,6 +52,7 @@ function PerPageComponent({
                     </div>
                 </div>
             }
+            testId="pagination:per-page-dropdown"
         >
             <DropdownItem onClick={() => setPerPage(10)} selected={(paginator.per_page ?? perPage) === 10}>
                 10

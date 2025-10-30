@@ -90,7 +90,7 @@ function ArkVaultButton({
     );
 }
 
-function QRCodeContent({ wallet }: { wallet: IWallet }) {
+function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string }) {
     const { t } = useTranslation();
     const [showOptions, setShowOptions] = useState(false);
     const { arkconnect, network } = useConfig();
@@ -114,6 +114,7 @@ function QRCodeContent({ wallet }: { wallet: IWallet }) {
                 </div>
             }
             onClosed={() => setTimeout(() => setShowOptions(false))}
+            testId={testId}
         >
             {showOptions && (
                 <>
@@ -183,10 +184,10 @@ function QRCodeContent({ wallet }: { wallet: IWallet }) {
     );
 }
 
-export default function PageHeaderQRCodeModalAction({ wallet }: { wallet: IWallet }) {
+export default function PageHeaderQRCodeModalAction({ wallet, testId }: { wallet: IWallet; testId?: string }) {
     return (
         <DropdownProvider>
-            <QRCodeContent wallet={wallet} />
+            <QRCodeContent wallet={wallet} testId={testId} />
         </DropdownProvider>
     );
 }
