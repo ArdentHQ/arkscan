@@ -13,7 +13,7 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import ValidatedBlocksTableWrapper from "@/Components/Tables/Desktop/Wallet/ValidatedBlocks";
 import ValidatedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/ValidatedBlocks";
 import { ITab } from "@/Providers/Tabs/types";
-import { WalletProps } from "./Wallet.contracts";
+import { WalletProps } from "@/Pages/Wallet.contracts";
 import WalletTransactionsTab from "./tabs/Transactions";
 
 const WalletTabsWrapper = ({
