@@ -156,7 +156,7 @@ const MultiSelectItem = ({ value, children, className, ...props }: MultiSelectIt
                 checked={isChecked}
                 onCheckedChange={() => context.onValueChange(value)}
                 onClick={(e) => e.stopPropagation()}
-                className="group-hover:border-theme-primary-600 group-hover:checked:bg-theme-primary-700"
+                className="checked:border-theme-primary-600 checked:bg-theme-primary-600 hover:checked:bg-theme-primary-700 group-hover:border-theme-primary-600 group-hover:checked:bg-theme-primary-700 dim:checked:border-theme-dark-blue-500 dim:checked:bg-theme-dark-blue-500 dim:hover:checked:bg-theme-dark-blue-600 dark:checked:border-theme-dark-blue-500 dark:checked:bg-theme-dark-blue-500 dark:hover:checked:bg-theme-dark-blue-600"
             />
 
             <span className="flex-1 px-3">{children}</span>
@@ -210,7 +210,7 @@ const MultiSelectAllItem = ({ allValues, children, className, ...props }: MultiS
                 checked={allSelected}
                 onCheckedChange={handleToggleAll}
                 onClick={(e) => e.stopPropagation()}
-                className="group-hover:border-theme-primary-600 group-hover:checked:bg-theme-primary-700"
+                className="checked:border-theme-primary-600 checked:bg-theme-primary-600 hover:checked:bg-theme-primary-700 group-hover:border-theme-primary-600 group-hover:checked:bg-theme-primary-700 dim:checked:border-theme-dark-blue-500 dim:checked:bg-theme-dark-blue-500 dim:hover:checked:bg-theme-dark-blue-600 dark:checked:border-theme-dark-blue-500 dark:checked:bg-theme-dark-blue-500 dark:hover:checked:bg-theme-dark-blue-600"
             />
 
             <span className="flex-1 px-3">{children}</span>
