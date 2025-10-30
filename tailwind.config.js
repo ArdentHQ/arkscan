@@ -87,6 +87,13 @@ module.exports = {
                 500: "500px",
             },
 
+            backgroundColor: {
+                ...defaultConfig.theme.extend.backgroundColor,
+                "overlay": "rgba(33, 34, 37, 0.75)", // #212225 (--theme-color-secondary-900), 0.75 opacity
+                "overlay-dark": "rgba(61, 68, 77, 0.5)", // #3d444d (--theme-color-secondary-800), 0.5 opacity
+                "overlay-dim": "rgba(16, 22, 39, 0.5)", // #101627 (--theme-dark-950 ), 0.5 opacity
+            },
+
             animation: {
                 "move-bg": "move-bg 15s infinite linear",
                 "move-bg-start-right":
