@@ -33,7 +33,7 @@ const ModalRoot = ({
     <ModalContext.Provider value={{ onClose }}>
         <Dialog.Root open={isOpen} onOpenChange={onClose} {...props}>
             <Dialog.Portal>
-                <Dialog.Overlay className="custom-scroll bg-overlay dim:bg-overlay-dim dark:bg-overlay-dark fixed inset-0 z-50 grid place-items-start overflow-y-auto sm:place-items-center md:px-8 md:py-10">
+                <Dialog.Overlay className="custom-scroll fixed inset-0 z-50 grid place-items-start overflow-y-auto bg-overlay dim:bg-overlay-dim dark:bg-overlay-dark sm:place-items-center md:px-8 md:py-10">
                     <Dialog.Content className="relative w-full max-w-2xl bg-white dark:bg-theme-dark-900 sm:m-auto sm:mx-auto sm:max-w-[448px] sm:rounded-xl sm:shadow-2xl">
                         {description && <Dialog.Description className="sr-only">{description}</Dialog.Description>}
                         {children}
