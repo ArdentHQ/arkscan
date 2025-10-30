@@ -45,26 +45,6 @@ abstract class DuskTestCase extends BaseTestCase
         );
     }
 
-    /** Grants permissions for the browser
-     *
-     * Taken from https://stackoverflow.com/a/74575917
-     */
-    protected function grantPermission(Browser $browser, $permissions)
-    {
-        try {
-            $driver = $browser->driver;
-            $devtools = new ChromeDevToolsDriver($driver);
-
-            $result = $devtools->execute('Browser.grantPermissions', [
-                "permissions" => $permissions,
-            ]);
-
-            return $result;
-        } catch (\Exception) {
-            return null;
-        }
-    }
-
     /**
      * Prepare for Dusk test execution.
      */
@@ -73,6 +53,27 @@ abstract class DuskTestCase extends BaseTestCase
     {
         if (! static::runningInSail()) {
             static::startChromeDriver(['--port=9515']);
+        }
+    }
+
+    /** Grants permissions for the browser.
+     *
+     * Taken from https://stackoverflow.com/a/74575917
+     * @param mixed $permissions
+     */
+    protected function grantPermission(Browser $browser, $permissions)
+    {
+        try {
+            $driver   = $browser->driver;
+            $devtools = new ChromeDevToolsDriver($driver);
+
+            $result = $devtools->execute('Browser.grantPermissions', [
+                'permissions' => $permissions,
+            ]);
+
+            return $result;
+        } catch (\Exception) {
+            return;
         }
     }
 

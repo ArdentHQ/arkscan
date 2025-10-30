@@ -156,18 +156,17 @@ describe('Overview', function () {
                 ->waitForText(substr($wallet->address, 0, 7))
                 ->assertSee(trans('pages.validators.'.$status));
         });
-
     })->with([
-        'active' => ['activeValidator', 'active'],
-        'standby' => ['standbyValidator', 'standby'],
-        'dormant' => ['dormantValidator', 'dormant'],
+        'active'   => ['activeValidator', 'active'],
+        'standby'  => ['standbyValidator', 'standby'],
+        'dormant'  => ['dormantValidator', 'dormant'],
         'resigned' => ['resignedValidator', 'resigned'],
     ])->with('resolutions');
 });
 
 describe('Transactions Tab', function () {
     beforeEach(function () {
-        $this->wallet = Wallet::factory()->create();
+        $this->wallet          = Wallet::factory()->create();
         $this->recipientWallet = Wallet::factory()->create();
     });
 
@@ -231,7 +230,7 @@ describe('Transactions Tab', function () {
                 'sender_public_key' => $this->wallet->public_key,
             ]);
 
-        $this->browse(function (Browser $browser) use ($resolution)  {
+        $this->browse(function (Browser $browser) use ($resolution) {
             $sortedTransactions = Transaction::where('from', $this->wallet->address)
                 ->withScope(OrderByTimestampScope::class)
                 ->withScope(OrderByTransactionIndexScope::class);
@@ -357,9 +356,9 @@ describe('Blocks Tab', function () {
 
 dataset('resolutions', [
     'desktop' => [['width' => 1280, 'height' => 1024]],
-    'lg' => [['width' => 1024, 'height' => 768]],
-    'md-lg' => [['width' => 960, 'height' => 667]],
-    'md' => [['width' => 768, 'height' => 1024]],
-    'sm' => [['width' => 640, 'height' => 960]],
-    'xs' => [['width' => 370, 'height' => 844]],
+    'lg'      => [['width' => 1024, 'height' => 768]],
+    'md-lg'   => [['width' => 960, 'height' => 667]],
+    'md'      => [['width' => 768, 'height' => 1024]],
+    'sm'      => [['width' => 640, 'height' => 960]],
+    'xs'      => [['width' => 370, 'height' => 844]],
 ]);
