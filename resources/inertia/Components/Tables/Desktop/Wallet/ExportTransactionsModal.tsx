@@ -239,7 +239,11 @@ export default function ExportTransactionsModal({
                                 </div>
 
                                 <Checkbox>
-                                    <Checkbox.Input checked={includeHeaderRow} onCheckedChange={setIncludeHeaderRow} />
+                                    <Checkbox.Input
+                                        checked={includeHeaderRow}
+                                        onCheckedChange={setIncludeHeaderRow}
+                                        className="checked:border-theme-primary-600 checked:bg-theme-primary-600 hover:checked:bg-theme-primary-700 dim:checked:border-theme-dark-blue-500 dim:checked:bg-theme-dark-blue-500 dim:hover:checked:bg-theme-dark-blue-600 dark:checked:border-theme-dark-blue-500 dark:checked:bg-theme-dark-blue-500 dark:hover:checked:bg-theme-dark-blue-600"
+                                    />
 
                                     <Checkbox.Label>
                                         {t("pages.wallet.export-transactions-modal.include_header_row")}
