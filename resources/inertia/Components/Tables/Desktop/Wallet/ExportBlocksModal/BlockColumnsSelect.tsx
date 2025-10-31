@@ -71,9 +71,7 @@ export default function BlockColumnsSelect({ value, onValueChange }: BlockColumn
         }
 
         if (count === filteredColumns.length) {
-            return `(${count}) ${t("general.all")} ${t(
-                "pages.wallet.export-blocks-modal.columns_x_selected.plural",
-            )}`;
+            return `(${count}) ${t("general.all")} ${t("pages.wallet.export-blocks-modal.columns_x_selected.plural")}`;
         }
 
         const label =

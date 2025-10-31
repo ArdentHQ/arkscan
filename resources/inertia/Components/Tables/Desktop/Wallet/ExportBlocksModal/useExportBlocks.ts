@@ -236,15 +236,7 @@ export default function useExportBlocks({
 
             return generateCsv(blocks, columnsForCsv, columnTitles, columnMapping, delimiter, includeHeaderRow);
         },
-        [
-            selectedColumns,
-            csvColumnOrder,
-            canBeExchanged,
-            getColumnLabel,
-            columnMapping,
-            delimiter,
-            includeHeaderRow,
-        ],
+        [selectedColumns, csvColumnOrder, canBeExchanged, getColumnLabel, columnMapping, delimiter, includeHeaderRow],
     );
 
     const exportData = useCallback(async () => {
