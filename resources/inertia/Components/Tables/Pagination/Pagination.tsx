@@ -100,6 +100,7 @@ export default function Pagination({
 
                 <div className="flex w-full space-x-2 sm:w-auto">
                     <PaginationArrow
+                        testId="pagination:first-page"
                         icon={DoubleChevronLeftIcon}
                         text={t("pagination.first")}
                         disabled={disabled || paginator.current_page === 1}
@@ -107,6 +108,7 @@ export default function Pagination({
                     />
 
                     <PaginationArrow
+                        testId="pagination:previous-page"
                         icon={ChevronLeftSmallIcon}
                         disabled={disabled || paginator.current_page === 1}
                         onClick={() => gotoPage(paginator.current_page - 1)}
@@ -123,12 +125,14 @@ export default function Pagination({
                     />
 
                     <PaginationArrow
+                        testId="pagination:next-page"
                         icon={ChevronRightSmallIcon}
                         disabled={disabled || paginator.current_page === paginator.last_page}
                         onClick={() => gotoPage(paginator.current_page + 1)}
                     />
 
                     <PaginationArrow
+                        testId="pagination:last-page"
                         icon={DoubleChevronRightIcon}
                         text={t("pagination.last")}
                         disabled={disabled || paginator.current_page === paginator.last_page}

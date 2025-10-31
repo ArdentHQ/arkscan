@@ -135,7 +135,7 @@ it('should make an instance for standby validators', function () {
         'fiatValue'                   => '$200.68',
         'totalForged'                 => '2.46',
         'hasUsername'                 => false,
-        'isResigned'                  => true,
+        'isResigned'                  => false,
         'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
     ]);
 });
