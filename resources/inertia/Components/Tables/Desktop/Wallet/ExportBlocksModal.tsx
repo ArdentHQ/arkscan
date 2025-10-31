@@ -19,6 +19,7 @@ interface ExportBlocksModalProps {
     userCurrency: string;
     rates: Record<string, number>;
     canBeExchanged: boolean;
+    filename?: string;
 }
 
 export default function ExportBlocksModal({
@@ -29,8 +30,10 @@ export default function ExportBlocksModal({
     userCurrency,
     rates,
     canBeExchanged,
+    filename,
 }: ExportBlocksModalProps) {
     const { t } = useTranslation();
+    const downloadName = filename || address;
 
     const {
         dateRange,
@@ -246,6 +249,7 @@ export default function ExportBlocksModal({
                         successMessage={successMessage}
                         address={address}
                         warningType={t("tables.home.blocks").toLowerCase()}
+                        downloadName={downloadName}
                     />
                 )}
             </Modal.Body>
@@ -303,7 +307,7 @@ export default function ExportBlocksModal({
                             <a
                                 href={dataUri || ""}
                                 className={dataUri ? "button-primary" : "button-primary pointer-events-none opacity-50"}
-                                download={`${address}.csv`}
+                                download={`${downloadName}.csv`}
                             >
                                 <span className="flex items-center space-x-2">
                                     <UnderlineArrowDownIcon className="h-4 w-4" />

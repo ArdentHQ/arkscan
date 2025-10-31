@@ -22,6 +22,7 @@ interface ExportStatusProps {
     successMessage: string | null;
     address: string;
     warningType?: string;
+    downloadName?: string;
 }
 
 export default function ExportStatus({
@@ -32,13 +33,16 @@ export default function ExportStatus({
     successMessage,
     address = "",
     warningType,
+    downloadName,
 }: ExportStatusProps) {
     const { t } = useTranslation();
 
     const handleDownload = (uri: string, isPartial = false) => {
+        const baseName = downloadName || address || "unknown";
+
         const link = document.createElement("a");
         link.href = uri;
-        link.download = `${(address || "unknown").substring(0, 5)}...${(address || "unknown").substring((address || "unknown").length - 5)}${isPartial ? "-partial" : ""}.csv`;
+        link.download = `${baseName}${isPartial ? "-partial" : ""}.csv`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -48,10 +52,11 @@ export default function ExportStatus({
     const canDownload =
         (status === ExportStatusEnum.Done && dataUri) || (status === ExportStatusEnum.Warning && partialDataUri);
 
+    const baseDisplayName = downloadName || address || "export";
     const addressDisplay =
-        address && address.length >= 10
-            ? `${address.substring(0, 5)}...${address.substring(address.length - 5)}.csv`
-            : "export.csv";
+        baseDisplayName.length >= 10
+            ? `${baseDisplayName.substring(0, 5)}...${baseDisplayName.substring(baseDisplayName.length - 5)}.csv`
+            : `${baseDisplayName}.csv`;
 
     return (
         <div className="flex flex-col">
