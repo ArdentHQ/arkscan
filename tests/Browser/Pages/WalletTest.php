@@ -187,7 +187,7 @@ describe('Transactions Tab', function () {
                 ->waitForText('5 results', ignoreCase: true);
 
             foreach ($transactions as $transaction) {
-                $browser->assertSee(substr($transaction->hash, 0, 7));
+                $browser->assertSee(substr($transaction->hash, 0, 5));
             }
         });
     })->with('resolutions');
@@ -215,7 +215,7 @@ describe('Transactions Tab', function () {
                 ->waitForText('Page 2 of 2');
 
             foreach ($sortedTransactions->skip(25)->take(5)->get() as $transaction) {
-                $browser->assertSee(substr($transaction->hash, 0, 7));
+                $browser->assertSee(substr($transaction->hash, 0, 5));
             }
         });
     })->with('resolutions');
@@ -246,7 +246,7 @@ describe('Transactions Tab', function () {
                 ->waitForText('Page 1 of 3');
 
             foreach ($sortedTransactions->take(10)->get() as $transaction) {
-                $browser->assertSee(substr($transaction->hash, 0, 7));
+                $browser->assertSee(substr($transaction->hash, 0, 5));
             }
         });
     })->with('resolutions');
@@ -306,7 +306,7 @@ describe('Blocks Tab', function () {
             $browser->waitForText('5 results', ignoreCase: true);
 
             foreach ($transactions as $transaction) {
-                $browser->assertSee(substr($transaction->hash, 0, 7));
+                $browser->assertSee(substr($transaction->hash, 0, 5));
             }
         });
     })->with('resolutions');
@@ -348,7 +348,7 @@ describe('Blocks Tab', function () {
             $browser->waitForText('5 results', ignoreCase: true);
 
             foreach ($transactions as $transaction) {
-                $browser->assertSee(substr($transaction->hash, 0, 7));
+                $browser->assertSee(substr($transaction->hash, 0, 5));
             }
         });
     })->with('resolutions');
