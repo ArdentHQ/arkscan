@@ -209,6 +209,7 @@ function HeaderActions({ hasForgedBlocks }: { hasForgedBlocks: boolean }) {
                     userCurrency={settings?.currency || ""}
                     rates={rates}
                     canBeExchanged={network?.canBeExchanged || false}
+                    filename={wallet.username || wallet.address}
                 />
             </div>
         </div>
