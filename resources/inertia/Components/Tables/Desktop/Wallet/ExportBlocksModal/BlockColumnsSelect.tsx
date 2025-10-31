@@ -38,29 +38,10 @@ export default function BlockColumnsSelect({ value, onValueChange }: BlockColumn
     };
 
     const columnLabel = (columnKey: string) => {
-        const translationKey = `pages.wallet.export-blocks-modal.columns-options.${columnKey}`;
-
-        const fallbackMap: Record<string, string> = {
-            volume: t("tables.blocks.volume", { currency: network?.currency ?? "" }),
-            volumeFiat: t("tables.blocks.value", { currency: settings?.currency ?? "" }),
-            total: t("tables.blocks.total_reward", { currency: network?.currency ?? "" }),
-            totalFiat: t("tables.blocks.value", { currency: settings?.currency ?? "" }),
-            rate: t("pages.wallet.export-transactions-modal.columns-options.rate", {
-                userCurrency: settings?.currency ?? "",
-            }),
-            numberOfTransactions: t("tables.blocks.transactions"),
-        };
-
-        const translated = t(translationKey, {
+        return t(`pages.wallet.export-blocks-modal.columns-options.${columnKey}`, {
             networkCurrency: network?.currency ?? "",
             userCurrency: settings?.currency ?? "",
         });
-
-        if (translated === translationKey && fallbackMap[columnKey]) {
-            return fallbackMap[columnKey];
-        }
-
-        return translated;
     };
 
     const selectedText = () => {
