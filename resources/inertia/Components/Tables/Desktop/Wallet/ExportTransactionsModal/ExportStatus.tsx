@@ -21,6 +21,7 @@ interface ExportStatusProps {
     errorMessage: string | null;
     successMessage: string | null;
     address: string;
+    warningType?: string;
 }
 
 export default function ExportStatus({
@@ -30,6 +31,7 @@ export default function ExportStatus({
     errorMessage,
     successMessage,
     address = "",
+    warningType,
 }: ExportStatusProps) {
     const { t } = useTranslation();
 
@@ -125,7 +127,9 @@ export default function ExportStatus({
                 {status === ExportStatusEnum.Warning && (
                     <Alert
                         title={t("general.warning")}
-                        message={t("general.export.warning_text", { type: "transactions" })}
+                        message={t("general.export.warning_text", {
+                            type: warningType ?? t("tables.home.transactions").toLowerCase(),
+                        })}
                         type="warning"
                     />
                 )}
