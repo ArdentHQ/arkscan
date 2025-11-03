@@ -9,6 +9,7 @@ import Age from "@/Components/Model/Age";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 
 export function ValidatedBlocksMobileTable({ blocks }: { blocks: IPaginatedResponse<IBlock> }) {
     const { t } = useTranslation();
@@ -67,7 +68,9 @@ export default function ValidatedBlocksMobileTableWrapper({
     blocks?: IPaginatedResponse<IBlock>;
     rowCount?: number;
 }) {
-    if (!blocks) {
+    const { isLoading } = usePageHandler();
+
+    if (!blocks || isLoading) {
         return <MobileValidatedBlocksSkeletonTable rowCount={rowCount} />;
     }
 

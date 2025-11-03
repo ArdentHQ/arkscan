@@ -36,7 +36,8 @@ function TableHeader({
         <div
             data-test-id="table-header"
             className={classNames({
-                "flex md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:px-6 md:dark:border-theme-dark-700": true,
+                "flex md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:px-6 md:dark:border-theme-dark-700":
+                    true,
                 "pb-4 md:pt-4": children !== undefined,
                 "pb-5 md:pt-5": children === undefined,
                 [breakpointClass]: true,
@@ -67,7 +68,6 @@ export function Table({
     columns,
     withHeader = false,
     withFooter = false,
-    resultCount = 0,
     resultSuffix,
     paginator,
     rowComponent,
@@ -78,7 +78,6 @@ export function Table({
     columns: React.ReactNode;
     withHeader?: boolean;
     withFooter?: boolean;
-    resultCount?: number;
     resultSuffix?: string;
     paginator: IPaginatedResponse<any>;
     rowComponent: React.ComponentType<{ row: any; key?: React.Key }>;
@@ -88,9 +87,16 @@ export function Table({
 }) {
     const tableRef = useRef<HTMLDivElement>(null);
     const { pagination } = useConfig();
+    const resultCount = paginator?.total ?? 0;
 
     return (
-        <div ref={tableRef} className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
+        <div
+            ref={tableRef}
+            className={classNames({
+                "px-6 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0": true,
+                "pb-8": !withFooter || resultCount === 0,
+            })}
+        >
             {withHeader && (
                 <TableHeader resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
                     {headerActions}
@@ -99,7 +105,8 @@ export function Table({
 
             <div
                 className={classNames({
-                    "hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block":
+                        true,
                     "rounded-t-xl": !withHeader,
                     "rounded-b-xl": !withFooter || resultCount === 0,
                 })}

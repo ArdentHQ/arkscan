@@ -10,7 +10,7 @@ import ChevronRightSmallIcon from "@ui/icons/arrows/chevron-right-small.svg?reac
 import DoubleChevronRightIcon from "@ui/icons/arrows/double-chevron-right.svg?react";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import PerPageDropdown from "./PerPageDropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Pagination({
     paginator,
@@ -19,17 +19,36 @@ export default function Pagination({
 }: {
     className?: string;
     paginator: IPaginatedResponse<any>;
-    tableRef: React.RefObject<HTMLDivElement | null>;
+    tableRef?: React.RefObject<HTMLDivElement | null>;
 }) {
     const { t } = useTranslation();
-    const { refreshPage } = usePageHandler();
+    const { refreshPage, setIsLoading, isLoading: disabled } = usePageHandler();
+    const [scrollTop, setScrollTop] = useState(0);
 
     const { pageName, urlParams } = paginator.meta;
 
-    const [disabled, setDisabled] = useState(false);
+    useEffect(() => {
+        if (!tableRef?.current) {
+            return;
+        }
+
+        const updateScrollTop = () => {
+            const navbarHeight = document.querySelector("#navbar")?.clientHeight ?? 0;
+
+            setScrollTop(Math.max((tableRef?.current?.offsetTop ?? 0) - navbarHeight));
+        };
+
+        updateScrollTop();
+
+        window.addEventListener("resize", updateScrollTop);
+
+        return () => {
+            window.removeEventListener("resize", updateScrollTop);
+        };
+    }, [tableRef]);
 
     const gotoPage = (pageNumber: number, perPage?: number) => {
-        setDisabled(true);
+        setIsLoading(true);
 
         const defaultPage = 1;
         const defaultPerPage = 25;
@@ -58,14 +77,14 @@ export default function Pagination({
             preserveScroll: true,
             onSuccess: () => {
                 refreshPage(() => {
-                    setDisabled(false);
+                    setIsLoading(false);
 
-                    const navbarHeight = document.querySelector("#navbar")?.clientHeight ?? 0;
-
-                    window.scrollTo({
-                        top: Math.max((tableRef?.current?.offsetTop ?? 0) - navbarHeight),
-                        behavior: "smooth",
-                    });
+                    setTimeout(() => {
+                        window.scrollTo({
+                            top: scrollTop,
+                            behavior: "smooth",
+                        });
+                    }, 0);
                 });
             },
         });

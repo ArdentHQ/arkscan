@@ -1,6 +1,6 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { IPaginatedResponse, IFilters } from "@/types";
+import { IPaginatedResponse } from "@/types";
 import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
@@ -14,6 +14,7 @@ import Addressing from "@/Components/Transaction/Addressing";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import TableHeader from "../TableHeader";
 import Filter from "../../Filter";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -61,7 +62,6 @@ export function TransactionsTable({
             withFooter
             paginator={transactions}
             rowComponent={Row}
-            resultCount={transactions.total ?? 0}
             mobile={mobile}
             headerActions={<HeaderActions />}
             noResultsMessage={transactions.noResultsMessage}
@@ -103,59 +103,59 @@ export default function TransactionsTableWrapper({
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
-    if (!transactions) {
+    const { isLoading } = usePageHandler();
+
+    if (!transactions || isLoading) {
         const { t } = useTranslation();
         const { network } = useConfig();
 
         return (
             <>
-                <div className="hidden md:block">
-                    <LoadingTable
-                        rowCount={rowCount}
-                        columns={[
-                            {
-                                name: t("tables.transactions.id"),
-                                type: "string",
-                                className: "w-[60px]",
-                            },
-                            {
-                                name: t("tables.transactions.age"),
-                                type: "string",
-                                className: "w-[60px]",
-                                responsive: true,
-                                breakpoint: "xl",
-                            },
-                            {
-                                name: t("tables.transactions.method"),
-                                indicatorHeight: "h-[21px]",
-                                className: "text-left",
-                            },
-                            {
-                                name: t("tables.transactions.addressing"),
-                                type: "address",
-                                indicatorHeight: "h-[21px]",
-                                className: "text-left",
-                            },
-                            {
-                                name: t("tables.transactions.amount", {
-                                    currency: network!.currency,
-                                }),
-                                className: "text-right w-[100px]",
-                                lastOn: "md-lg",
-                            },
-                            {
-                                name: t("tables.transactions.fee", {
-                                    currency: network!.currency,
-                                }),
-                                className: "text-right w-[100px]",
-                                responsive: true,
-                                breakpoint: "md-lg",
-                            },
-                        ]}
-                    />
-                </div>
-
-                {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
+                <LoadingTable
+                    mobile={mobile}
+                    paginator={transactions}
+                    rowCount={rowCount}
+                    columns={[
+                        {
+                            name: t("tables.transactions.id"),
+                            type: "string",
+                            className: "w-[60px]",
+                        },
+                        {
+                            name: t("tables.transactions.age"),
+                            type: "string",
+                            className: "w-[60px]",
+                            responsive: true,
+                            breakpoint: "xl",
+                        },
+                        {
+                            name: t("tables.transactions.method"),
+                            indicatorHeight: "h-[21px]",
+                            className: "text-left",
+                        },
+                        {
+                            name: t("tables.transactions.addressing"),
+                            type: "address",
+                            indicatorHeight: "h-[21px]",
+                            className: "text-left",
+                        },
+                        {
+                            name: t("tables.transactions.amount", {
+                                currency: network!.currency,
+                            }),
+                            className: "text-right w-[100px]",
+                            lastOn: "md-lg",
+                        },
+                        {
+                            name: t("tables.transactions.fee", {
+                                currency: network!.currency,
+                            }),
+                            className: "text-right w-[100px]",
+                            responsive: true,
+                            breakpoint: "md-lg",
+                        },
+                    ]}
+                />
             </>
         );
     }
