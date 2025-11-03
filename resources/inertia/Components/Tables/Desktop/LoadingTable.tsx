@@ -39,7 +39,8 @@ export function LoadingTableWrapper({
         >
             <div
                 className={classNames({
-                    "validator-monitor hidden w-full overflow-hidden rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "validator-monitor hidden w-full overflow-hidden rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block":
+                        true,
                     "rounded-b-xl": !withPagination,
                 })}
             >
@@ -150,10 +151,13 @@ export default function LoadingTable({
     columns: Array<ILoadingTableColumn>;
     rowCount: number;
     mobile?: React.ReactNode;
-    paginator: IPaginatedResponse<any>;
+    paginator?: IPaginatedResponse<any>;
     indicatorHeight?: string;
 }) {
-    const { isLoading } = usePageHandler();
+    let isLoading = false;
+    if (paginator) {
+        isLoading = usePageHandler().isLoading;
+    }
 
     return (
         <>
@@ -166,7 +170,7 @@ export default function LoadingTable({
 
             {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
 
-            {isLoading && (paginator?.total ?? 0) > 0 && (
+            {isLoading && paginator && (paginator?.total ?? 0) > 0 && (
                 <div className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
                     <Pagination paginator={paginator} />
                 </div>
