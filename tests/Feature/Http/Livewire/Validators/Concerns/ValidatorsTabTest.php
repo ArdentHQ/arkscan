@@ -137,9 +137,9 @@ it('should toggle "select all" when all filters are selected', function () {
 
 it('should filter active validators', function () {
     $active   = Wallet::factory()->activeValidator()->create();
-    $standby  = Wallet::factory()->standbyValidator(false)->create();
+    $standby  = Wallet::factory()->standbyValidator()->create();
     $dormant  = Wallet::factory()->dormantValidator()->create();
-    $resigned = Wallet::factory()->standbyValidator()->create();
+    $resigned = Wallet::factory()->resignedValidator()->create();
 
     Livewire::test(Tabs::class)
         ->call('setValidatorsReady')
@@ -154,9 +154,9 @@ it('should filter active validators', function () {
 
 it('should filter standby validators', function () {
     $active   = Wallet::factory()->activeValidator()->create();
-    $standby  = Wallet::factory()->standbyValidator(false)->create();
+    $standby  = Wallet::factory()->standbyValidator()->create();
     $dormant  = Wallet::factory()->dormantValidator()->create();
-    $resigned = Wallet::factory()->standbyValidator()->create();
+    $resigned = Wallet::factory()->resignedValidator()->create();
 
     Livewire::test(Tabs::class)
         ->call('setValidatorsReady')
@@ -172,9 +172,9 @@ it('should filter standby validators', function () {
 
 it('should filter dormant validators', function () {
     $active   = Wallet::factory()->activeValidator()->create();
-    $standby  = Wallet::factory()->standbyValidator(false)->create();
+    $standby  = Wallet::factory()->standbyValidator()->create();
     $dormant  = Wallet::factory()->dormantValidator()->create();
-    $resigned = Wallet::factory()->standbyValidator()->create();
+    $resigned = Wallet::factory()->resignedValidator()->create();
 
     Livewire::test(Tabs::class)
         ->call('setValidatorsReady')
@@ -190,9 +190,9 @@ it('should filter dormant validators', function () {
 
 it('should filter resigned validators', function () {
     $active   = Wallet::factory()->activeValidator()->create();
-    $standby  = Wallet::factory()->standbyValidator(false)->create();
+    $standby  = Wallet::factory()->standbyValidator()->create();
     $dormant  = Wallet::factory()->dormantValidator()->create();
-    $resigned = Wallet::factory()->standbyValidator()->create();
+    $resigned = Wallet::factory()->resignedValidator()->create();
 
     Livewire::test(Tabs::class)
         ->call('setValidatorsReady')

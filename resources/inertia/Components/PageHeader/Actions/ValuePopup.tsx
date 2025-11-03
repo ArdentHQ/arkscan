@@ -10,15 +10,17 @@ export default function PageHeaderValuePopup({
     title,
     id,
     additionalButtons,
+    copiedTooltip,
+    testId,
 }: {
     value: string;
     button: React.ReactNode;
     title: string;
     id: string;
     additionalButtons?: React.ReactNode;
+    copiedTooltip: string;
+    testId?: string;
 }) {
-    const { t } = useTranslation();
-
     const [modalVisible, setModalVisible] = useState(false);
     const [hasBeenOpened, setHasBeenOpened] = useState(false);
     const popupRef = useRef<HTMLDivElement>(null);
@@ -45,6 +47,7 @@ export default function PageHeaderValuePopup({
                     setModalVisible(false);
                 }
             }}
+            data-testid={testId}
         >
             <button
                 type="button"
@@ -81,9 +84,10 @@ export default function PageHeaderValuePopup({
                             value={value}
                             className="group flex h-auto w-full items-center p-2"
                             wrapperClass="flex-1"
-                            tooltipContent={t("pages.wallet.copied_public_key")}
+                            tooltipContent={copiedTooltip}
                             withCheckmarks
                             checkmarksClass="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
+                            testId={testId ? `${testId}:clipboard` : undefined}
                         />
 
                         {additionalButtons}
@@ -92,6 +96,7 @@ export default function PageHeaderValuePopup({
                             type="button"
                             className="button button-generic p-2 hover:bg-theme-primary-700 hover:text-white dark:text-theme-dark-500 dark:hover:text-white"
                             onClick={() => setModalVisible(false)}
+                            data-testid={testId ? `${testId}:close` : undefined}
                         >
                             <CrossIcon className="h-4 w-4" />
                         </button>

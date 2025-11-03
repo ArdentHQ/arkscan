@@ -47,7 +47,7 @@ export default function HeaderStats({ height, statistics }: { height: number; st
                         value={statistics?.performances?.forging}
                         color="bg-theme-success-700 dark:bg-theme-success-500"
                         isLoading={isLoading || statistics?.performances?.forging === undefined}
-                        data-testid="forging-count"
+                        data-testid="validator-monitor:forging-count"
                     />
 
                     <HeaderStat
@@ -55,7 +55,7 @@ export default function HeaderStats({ height, statistics }: { height: number; st
                         value={statistics?.performances?.missed}
                         color="bg-theme-warning-700 dark:bg-theme-warning-400"
                         isLoading={isLoading || statistics?.performances?.missed === undefined}
-                        data-testid="missed-count"
+                        data-testid="validator-monitor:missed-count"
                     />
 
                     <HeaderStat
@@ -63,7 +63,7 @@ export default function HeaderStats({ height, statistics }: { height: number; st
                         value={statistics?.performances?.missing}
                         color="bg-theme-danger-600 dark:bg-theme-danger-400"
                         isLoading={isLoading || statistics?.performances?.missing === undefined}
-                        data-testid="not-forging-count"
+                        data-testid="validator-monitor:not-forging-count"
                     />
                 </Card>
 
@@ -71,7 +71,7 @@ export default function HeaderStats({ height, statistics }: { height: number; st
                     <Detail
                         title={t("pages.validator-monitor.stats.current_height")}
                         isLoading={!height}
-                        data-testid="current-height"
+                        data-testid="validator-monitor:current-height"
                     >
                         <Number>{height}</Number>
                     </Detail>

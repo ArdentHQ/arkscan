@@ -187,6 +187,7 @@ return [
         'value'                  => 'Value',
         'copied_public_key'      => 'Public Key Copied',
         'address_copied'         => 'Address Copied',
+        'legacy_address_copied'  => 'Legacy Address Copied',
 
         'qrcode'                => [
             'title'                             => 'Send Funds',
