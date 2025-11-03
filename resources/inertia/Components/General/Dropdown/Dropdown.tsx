@@ -32,6 +32,7 @@ export default function Dropdown({
     button,
     children,
     onClosed,
+    testId,
 }: {
     dropdownContentClasses?: string;
     buttonClassExpanded?: string;
@@ -43,7 +44,6 @@ export default function Dropdown({
     zIndex?: number;
     wrapperClass?: string;
     fullScreen?: boolean;
-    dusk?: boolean;
     buttonTooltip?: string;
     closeOnClick?: boolean;
     disabled?: boolean;
@@ -51,6 +51,7 @@ export default function Dropdown({
     button?: React.ReactNode;
     children: React.ReactNode;
     onClosed?: () => void;
+    testId?: string;
 }) {
     const { isOpen, setIsOpen } = useDropdown();
 
@@ -109,6 +110,7 @@ export default function Dropdown({
                 onClick={() => setIsOpen(!isOpen)}
                 type="button"
                 disabled={disabled}
+                data-testid={testId ? `${testId}:button` : undefined}
                 {...getReferenceProps()}
             >
                 {button !== undefined && button}
@@ -126,6 +128,7 @@ export default function Dropdown({
             className={classNames({
                 [wrapperClass]: true,
             })}
+            data-testid={testId}
         >
             {dropdownButton}
 
@@ -138,6 +141,7 @@ export default function Dropdown({
                         zIndex: zIndex,
                     }}
                     {...getFloatingProps()}
+                    data-testid={testId ? `${testId}:dropdown` : undefined}
                 >
                     <div style={floatingTransitionStyled}>
                         <div

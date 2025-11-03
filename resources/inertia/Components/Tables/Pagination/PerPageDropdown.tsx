@@ -51,6 +51,7 @@ function PerPageComponent({
                     </div>
                 </div>
             }
+            testId="pagination:per-page-dropdown"
         >
             <DropdownItem onClick={() => setPerPage(10)} selected={(paginator.per_page ?? perPage) === 10}>
                 10

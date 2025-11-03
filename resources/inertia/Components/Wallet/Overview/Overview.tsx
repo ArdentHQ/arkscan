@@ -21,19 +21,20 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
                 tooltipContent={t("pages.wallet.address_copied")}
                 withCheckmarks
                 checkmarksClass="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
+                testId="wallet:copy-address"
             />
 
             {!wallet.isCold && (
                 <>
-                    <PageHeaderPublicKeyAction wallet={wallet} />
+                    <PageHeaderPublicKeyAction wallet={wallet} testId="wallet:show-public-key" />
 
                     {wallet.isLegacy && wallet.legacyAddress !== null && (
-                        <PageHeaderLegacyAddressAction wallet={wallet} />
+                        <PageHeaderLegacyAddressAction wallet={wallet} testId="wallet:show-legacy-address" />
                     )}
                 </>
             )}
 
-            <PageHeaderQRCodeModalAction wallet={wallet} />
+            <PageHeaderQRCodeModalAction wallet={wallet} testId="wallet:show-qr-code-modal" />
         </>
     );
 }
