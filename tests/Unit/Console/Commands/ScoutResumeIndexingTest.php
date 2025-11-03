@@ -6,10 +6,10 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Cache;
+use function Tests\mockTaggedCache;
 
 it('forgets the flag for pausing indexing', function ($model) {
-    Cache::shouldReceive('forget')->once()->with('scout_indexing_paused_'.$model);
+    mockTaggedCache()->shouldReceive('forget')->once()->with('scout_indexing_paused_'.$model);
 
     Artisan::call('scout:resume-indexing', [
         'model' => $model,

@@ -87,37 +87,25 @@ it('should throttle submissions', function () {
         ->set('pairs', 'BTC, USD')
         ->set('message', 'Exciting new universal exchange')
         ->call('submit')
-        ->assertNotDispatched('toastMessage', [
-            'message' => trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']),
-            'type'    => 'warning',
-        ])
+        ->assertNotDispatched('toastMessage', message: trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), type: 'warning')
         ->set('name', 'Potato Exchange')
         ->set('website', 'https://potato.exchange')
         ->set('pairs', 'BTC, USD')
         ->set('message', 'Exciting new universal exchange')
         ->call('submit')
-        ->assertNotDispatched('toastMessage', [
-            'message' => trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']),
-            'type'    => 'warning',
-        ])
+        ->assertNotDispatched('toastMessage', message: trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), type: 'warning')
         ->set('name', 'Potato Exchange')
         ->set('website', 'https://potato.exchange')
         ->set('pairs', 'BTC, USD')
         ->set('message', 'Exciting new universal exchange')
         ->call('submit')
-        ->assertNotDispatched('toastMessage', [
-            'message' => trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']),
-            'type'    => 'warning',
-        ])
+        ->assertNotDispatched('toastMessage', message: trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), type: 'warning')
         ->set('name', 'Potato Exchange')
         ->set('website', 'https://potato.exchange')
         ->set('pairs', 'BTC, USD')
         ->set('message', 'Exciting new universal exchange')
         ->call('submit')
-        ->assertDispatched('toastMessage', [
-            'message' => trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']),
-            'type'    => 'warning',
-    ]);
+        ->assertDispatched('toastMessage', message: trans('pages.exchanges.submit-modal.throttle_error', ['time' => '1 hour']), type: 'warning');
 
     Mail::assertQueued(ExchangeFormSubmitted::class, 3);
 });

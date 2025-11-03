@@ -111,6 +111,7 @@ final class RecentVotes extends TabbedTableComponent
         }
 
         return Transaction::query()
+            ->with('votedFor', 'unvotedFor')
             ->where('type', 3)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix())
             ->where(function ($query) {

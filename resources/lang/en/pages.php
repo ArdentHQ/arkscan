@@ -630,11 +630,6 @@ return [
                 'url'   => 'https://atomicwallet.io/downloads',
                 'logo'  => 'atomic',
             ],
-            'exodus' => [
-                'title' => 'Exodus',
-                'url'   => 'https://www.exodus.com/download',
-                'logo'  => 'exodus',
-            ],
             'ledger' => [
                 'title' => 'Ledger',
                 'url'   => 'https://www.ledger.com/ledger-live',

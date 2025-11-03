@@ -9,8 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
-    Exchange::truncate();
-
     $this->freezeTime();
 
     $this->travelTo(Carbon::parse('2024-05-14 12:22:49'));
