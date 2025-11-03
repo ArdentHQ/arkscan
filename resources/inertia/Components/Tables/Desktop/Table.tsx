@@ -128,7 +128,9 @@ export function Table({
 
             {mobile}
 
-            {withFooter && paginator && resultCount > 0 && <Pagination paginator={paginator} tableRef={tableRef} />}
+            {withFooter && paginator && resultCount > pagination?.per_page && (
+                <Pagination paginator={paginator} tableRef={tableRef} />
+            )}
         </div>
     );
 }
