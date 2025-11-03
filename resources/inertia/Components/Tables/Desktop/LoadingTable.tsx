@@ -39,8 +39,7 @@ export function LoadingTableWrapper({
         >
             <div
                 className={classNames({
-                    "validator-monitor hidden w-full overflow-hidden rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block":
-                        true,
+                    "validator-monitor hidden w-full overflow-hidden rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
                     "rounded-b-xl": !withPagination,
                 })}
             >
