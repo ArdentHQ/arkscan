@@ -1,7 +1,7 @@
 import LoadingText from "@/Components/Loading/Text";
 import TableCell from "./TableCell";
 import classNames from "@/utils/class-names";
-import { TableHeaderTooltip } from "./TableHeader";
+import TableHeader, { TableHeaderTooltip } from "./TableHeader";
 
 export interface ILoadingTableColumn {
     name?: string;
@@ -11,6 +11,9 @@ export interface ILoadingTableColumn {
     type?: "id" | "number" | "badge" | "string" | "address";
     className?: string;
     tooltip?: string;
+    responsive?: boolean;
+    breakpoint?: "sm" | "md" | "md-lg" | "lg" | "xl";
+    lastOn?: "sm" | "md" | "md-lg" | "lg" | "xl";
 }
 
 export default function LoadingTable({
@@ -30,13 +33,16 @@ export default function LoadingTable({
                         <thead>
                             <tr>
                                 {columns.map((column, index) => (
-                                    <th
+                                    <TableHeader
                                         key={index}
                                         className={classNames({
                                             "whitespace-nowrap": true,
                                             "text-right": !!column?.type && ["number"].includes(column?.type),
                                             [column.className as string]: column.className !== undefined,
                                         })}
+                                        lastOn={column.lastOn}
+                                        responsive={column.responsive}
+                                        breakpoint={column.breakpoint}
                                     >
                                         {!column.tooltip && (column.name || "")}
 
@@ -47,7 +53,7 @@ export default function LoadingTable({
                                                 <TableHeaderTooltip text={column.tooltip} />
                                             </div>
                                         )}
-                                    </th>
+                                    </TableHeader>
                                 ))}
                             </tr>
                         </thead>
@@ -63,6 +69,9 @@ export default function LoadingTable({
                                                 "text-right": !!column?.type && ["number"].includes(column?.type),
                                                 [column.className as string]: column.className !== undefined,
                                             })}
+                                            lastOn={column.lastOn}
+                                            responsive={column.responsive}
+                                            breakpoint={column.breakpoint}
                                         >
                                             {column?.type && ["number"].includes(column?.type) && (
                                                 <LoadingText

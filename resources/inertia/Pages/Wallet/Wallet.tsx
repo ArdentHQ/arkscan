@@ -48,7 +48,7 @@ const WalletTabs = ({
     voters,
     filters,
 }: {
-    transactions?: IPaginatedResponse<ITransaction>;
+    transactions: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
     voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;

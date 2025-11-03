@@ -7,12 +7,14 @@ export default function PaginationArrow({
     text = null,
     className = "",
     onClick,
+    testId,
 }: {
     icon: React.ComponentType<{ className?: string }>;
     disabled?: boolean;
     text?: string | null;
     className?: string;
     onClick: () => void;
+    testId: string;
 }) {
     return (
         <div
@@ -21,6 +23,7 @@ export default function PaginationArrow({
                 "cursor-not-allowed": disabled,
                 [className]: true,
             })}
+            data-testid={testId}
         >
             <button
                 type="button"

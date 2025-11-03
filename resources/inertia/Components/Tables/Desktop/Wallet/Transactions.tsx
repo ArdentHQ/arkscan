@@ -122,6 +122,8 @@ export default function TransactionsTableWrapper({
                                 name: t("tables.transactions.age"),
                                 type: "string",
                                 className: "w-[60px]",
+                                responsive: true,
+                                breakpoint: "xl",
                             },
                             {
                                 name: t("tables.transactions.method"),
@@ -139,12 +141,15 @@ export default function TransactionsTableWrapper({
                                     currency: network!.currency,
                                 }),
                                 className: "text-right w-[100px]",
+                                lastOn: "md-lg",
                             },
                             {
                                 name: t("tables.transactions.fee", {
                                     currency: network!.currency,
                                 }),
                                 className: "text-right w-[100px]",
+                                responsive: true,
+                                breakpoint: "md-lg",
                             },
                         ]}
                     />

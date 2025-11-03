@@ -29,6 +29,8 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                             </div>
                         )}
 
+                        {!showTooltip && <span className="sm:hidden">{wallet.formattedBalanceTwoDecimals}</span>}
+
                         <span className="hidden sm:inline">{wallet.formattedBalanceFull}</span>
                     </>
                 }

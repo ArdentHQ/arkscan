@@ -35,6 +35,7 @@ function MobileWrapper({ tabs }: { tabs: ITab[] }) {
                     </div>
                 </div>
             }
+            testId="tabs:dropdown"
         >
             {tabs.map((tab) => (
                 <DropdownItem

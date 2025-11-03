@@ -34,6 +34,7 @@ function TableHeader({
 
     return (
         <div
+            data-test-id="table-header"
             className={classNames({
                 "flex md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:px-6 md:dark:border-theme-dark-700": true,
                 "pb-4 md:pt-4": children !== undefined,

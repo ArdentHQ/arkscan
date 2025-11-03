@@ -3,7 +3,7 @@ import { IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import KeyIcon from "@ui/icons/key.svg?react";
 
-export default function PageHeaderPublicKeyAction({ wallet }: { wallet: IWallet }) {
+export default function PageHeaderPublicKeyAction({ wallet, testId }: { wallet: IWallet; testId?: string }) {
     const { t } = useTranslation();
 
     return (
@@ -12,6 +12,8 @@ export default function PageHeaderPublicKeyAction({ wallet }: { wallet: IWallet 
             button={<KeyIcon className="h-4 w-4" />}
             title={t("pages.wallet.public_key.title")}
             id="public_key"
+            copiedTooltip={t("pages.wallet.copied_public_key")}
+            testId={testId}
         />
     );
 }

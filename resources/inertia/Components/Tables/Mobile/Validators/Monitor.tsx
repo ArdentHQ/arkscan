@@ -36,7 +36,10 @@ export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
                         <Address wallet={validator.wallet} truncate={16} className="hidden sm:block md:hidden" />
                     </TableCell>
 
-                    <MissedWarning validator={validator} />
+                    <MissedWarning
+                        validator={validator}
+                        testId={`validator-monitor:missed-warning-${validator.wallet.address}:mobile`}
+                    />
                 </div>
 
                 <div className="flex h-[21px] items-center sm:space-x-3">

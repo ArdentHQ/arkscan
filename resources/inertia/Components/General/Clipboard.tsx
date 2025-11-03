@@ -14,6 +14,7 @@ export default function Clipboard({
     withCheckmarks = false,
     checkmarksClass = "",
     children,
+    testId,
 }: {
     value?: string;
     className?: string;
@@ -24,6 +25,7 @@ export default function Clipboard({
     withCheckmarks?: boolean;
     checkmarksClass: string;
     children?: React.ReactNode;
+    testId?: string;
 }) {
     const [clipboardInstance, setClipboardInstance] = useState<any>();
     const [showTooltip, setShowTooltip] = useState(false);
@@ -47,7 +49,7 @@ export default function Clipboard({
     }
 
     return (
-        <div className={wrapperClass}>
+        <div className={wrapperClass} data-testid={testId}>
             <Tooltip content={tooltipContent || ""} visible={showTooltip}>
                 <button
                     type="button"
