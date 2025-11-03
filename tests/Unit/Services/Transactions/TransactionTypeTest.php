@@ -41,6 +41,10 @@ it('should determine the type', function (string $type, string $expected) {
         'multi-signature',
     ],
     [
+        'blsRegistration',
+        'bls-registration',
+    ],
+    [
         'ipfs',
         'ipfs',
     ],
@@ -174,6 +178,7 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['unvote'],
     ['voteCombination'],
     ['multiSignature'],
+    ['blsRegistration'],
     ['ipfs'],
     ['delegateResignation'],
     ['multiPayment'],
@@ -202,3 +207,23 @@ it('should play through every scenario of an unknown type', function (string $ty
     ['legacyBridgechainResignation'],
     ['legacyBridgechainUpdate'],
 ]);
+
+it('should handle a non-array asset when determining votes', function () {
+    $transaction = Transaction::factory()
+        ->vote()
+        ->create(['asset' => null]);
+
+    $transactionType = new TransactionType($transaction);
+
+    expect($transactionType->isVote())->toBeFalse();
+});
+
+it('should handle no votes key in asset when determining votes', function () {
+    $transaction = Transaction::factory()
+        ->vote()
+        ->create(['asset' => []]);
+
+    $transactionType = new TransactionType($transaction);
+
+    expect($transactionType->isVote())->toBeFalse();
+});

@@ -303,6 +303,7 @@ const TransactionsExport = ({
                         TransactionType.SecondSignature,
                         TransactionType.DelegateRegistration,
                         TransactionType.MultiSignature,
+                        TransactionType.BlsRegistration,
                         TransactionType.Ipfs,
                         TransactionType.DelegateResignation,
                         TransactionType.HtlcLock,

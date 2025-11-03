@@ -54,8 +54,6 @@ it('should show the correct number of votes', function () {
 });
 
 it('should pluralize missed delegate count', function ($count, $text) {
-    ForgingStats::truncate();
-
     ForgingStats::factory($count)->create([
         'forged' => false,
     ]);

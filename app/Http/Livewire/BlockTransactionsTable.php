@@ -46,6 +46,7 @@ final class BlockTransactionsTable extends Component
         return $this->getBlock()
             ->transactions()
             ->withScope(OrderByTimestampScope::class)
+            ->with('votedFor', 'unvotedFor')
             ->limit($this->perPage * $this->getPage())
             ->get();
     }

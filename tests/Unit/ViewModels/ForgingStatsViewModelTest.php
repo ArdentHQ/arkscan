@@ -8,8 +8,6 @@ use App\ViewModels\ForgingStatsViewModel;
 use Carbon\Carbon;
 
 beforeEach(function () {
-    ForgingStats::truncate();
-
     $this->subject = new ForgingStatsViewModel(ForgingStats::factory()->create([
         'missed_height' => 54321,
         'timestamp'     => 1934,

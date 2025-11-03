@@ -16,10 +16,6 @@ use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use function Tests\faker;
 
-beforeEach(function () {
-    ForgingStats::truncate();
-});
-
 it('should render', function () {
     Livewire::test(MissedBlocks::class)
         ->assertSet('isReady', false)
@@ -925,7 +921,7 @@ it('should not sort for sqlite databases', function ($sortBy) {
     Config::set('database.default', 'sqlite');
     Config::set('database.connections.sqlite.database', ':memory:');
 
-    $this->refreshDatabase();
+    $this->artisan('migrate:fresh');
 
     $wallet2 = Wallet::factory()->activeDelegate()->create([
         'attributes' => [

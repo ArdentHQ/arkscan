@@ -97,13 +97,15 @@ final class CacheAnnualStatistics extends Command
 
             $volume = BigNumber::new($item->amount)->plus($multipaymentAmount)->__toString();
 
+            $blocks = $blocksData->get($key)?->blocks ?? 0;
+
             if (! $this->hasChanges) {
                 $existingData = $cache->getAnnualData((int) $item->year) ?? [];
                 if (Arr::get($existingData, 'transactions') !== $item->transactions) {
                     $this->hasChanges = true;
                 }
 
-                if (! $this->hasChanges && Arr::get($existingData, 'blocks') !== $blocksData->get($key)->blocks) {
+                if (! $this->hasChanges && Arr::get($existingData, 'blocks') !== $blocks) {
                     $this->hasChanges = true;
                 }
             }
@@ -113,7 +115,7 @@ final class CacheAnnualStatistics extends Command
                 (int) $item->transactions,
                 $volume,
                 $item->fees,
-                $blocksData->get($key)->blocks, // We assume to have the same amount of entries for blocks and transactions (years)
+                $blocks, // We assume to have the same amount of entries for blocks and transactions (years)
             );
         });
     }

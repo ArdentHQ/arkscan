@@ -35,4 +35,9 @@ final class Wallet extends Base
     {
         return Str::limit(hash('sha512', Str::random(8)), 66);
     }
+
+    public function blsPublicKey(): string
+    {
+        return Str::limit(hash('sha512', Str::random(8)), 96);
+    }
 }

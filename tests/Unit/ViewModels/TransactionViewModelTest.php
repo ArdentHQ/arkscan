@@ -508,6 +508,7 @@ it('should determine the transaction type', function (string $type) {
     ['ipfs'],
     ['delegateResignation'],
     ['multiPayment'],
+    ['blsRegistration'],
     ['timelock'],
     ['timelockClaim'],
     ['timelockRefund'],
@@ -557,6 +558,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
     ['unvote'],
     ['voteCombination'],
     ['delegateResignation'],
+    ['blsRegistration'],
     ['entityRegistration'],
     ['entityResignation'],
     ['entityUpdate'],
@@ -597,6 +599,7 @@ it('should determine transactions that doesnt have amount', function (string $ty
     expect($subject->hasAmount())->toBeFalse();
 })->with([
     'delegateRegistration',
+    'blsRegistration',
     'entityRegistration',
     'entityResignation',
     'entityUpdate',
@@ -1311,6 +1314,7 @@ it('should determine a non-legacy transaction', function ($transaction) {
     'vote',
     'unvote',
     'secondSignature',
+    'blsRegistration',
 ]);
 
 it('should determine a legacy transaction', function ($transaction) {
@@ -1346,3 +1350,34 @@ it('should determine a legacy transaction', function ($transaction) {
     'legacyBridgechainResignation',
     'legacyBridgechainUpdate',
 ]);
+
+it('should find a new bls public key on registration', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()->blsRegistration()->create());
+
+    expect($transaction->blsPublicKey())->not->toBe(null);
+});
+
+it('should find a new bls public key on registration update', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()->blsRegistration()->create());
+
+    expect($transaction->blsPublicKey())->not->toBe(null);
+});
+
+it('should find an old bls public key', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()->blsRegistrationUpdate()->create());
+
+    expect($transaction->oldBlsPublicKey())->not->toBe(null);
+});
+
+it('should not find an old bls public key', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()->blsRegistration()->create());
+
+    expect($transaction->oldBlsPublicKey())->toBe(null);
+});
+
+it('should not find any bls public key for a different type', function () {
+    $transaction = new TransactionViewModel(Transaction::factory()->transfer()->create());
+
+    expect($transaction->blsPublicKey())->toBe(null);
+    expect($transaction->oldBlsPublicKey())->toBe(null);
+});

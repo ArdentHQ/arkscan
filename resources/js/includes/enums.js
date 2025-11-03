@@ -10,6 +10,7 @@ export const TransactionType = {
     HtlcLock: 8,
     HtlcClaim: 9,
     HtlcRefund: 10,
+    BlsRegistration: 11,
 };
 
 export const TransactionTypeGroup = {

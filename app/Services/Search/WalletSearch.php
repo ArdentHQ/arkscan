@@ -59,6 +59,10 @@ final class WalletSearch implements Search
             $query = sprintf('"%s"', $query);
         }
 
+        if ($limit < 0) {
+            $limit = null;
+        }
+
         return (new SearchQuery())
             ->setQuery($query)
             ->setIndexUid('wallets')

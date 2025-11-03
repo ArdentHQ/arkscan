@@ -27,6 +27,13 @@ final class Round extends Model
     public $incrementing = false;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'explorer';
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
@@ -45,15 +52,5 @@ final class Round extends Model
     public function delegate(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'public_key', 'public_key');
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function getConnectionName()
-    {
-        return 'explorer';
     }
 }
