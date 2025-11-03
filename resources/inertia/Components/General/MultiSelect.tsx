@@ -97,7 +97,7 @@ const MultiSelectTrigger = ({ placeholder, children, className, ...props }: Mult
                 )}
                 {...props}
             >
-                {children || <span className="text-theme-secondary-700 dark:text-theme-dark-500">{placeholder}</span>}
+                {children || <span className="text-theme-secondary-700 dark:text-theme-dark-200">{placeholder}</span>}
 
                 <span className="transition-default group-data-[state=open]:rotate-180">
                     <ChevronDownIcon className="h-3 w-3 text-theme-secondary-700 dark:text-theme-dark-200" />
