@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:mt-6 xl:grid-cols-5 md-lg:grid-cols-4">
+<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:mt-6 xl:grid-cols-4 md-lg:grid-cols-4">
     @foreach (trans('pages.compatible-wallets.wallets') as $wallet)
         <a
             href="{{ $wallet['url'] }}"
