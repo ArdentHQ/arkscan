@@ -1,6 +1,6 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { IPaginatedResponse, IFilters } from "@/types";
+import { IPaginatedResponse } from "@/types";
 import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
@@ -112,6 +112,7 @@ export default function TransactionsTableWrapper({
                 <div className="hidden md:block">
                     <LoadingTable
                         rowCount={rowCount}
+                        header={<HeaderActions />}
                         columns={[
                             {
                                 name: t("tables.transactions.id"),
@@ -167,7 +168,7 @@ export default function TransactionsTableWrapper({
     );
 }
 
-function HeaderActions() {
+export function HeaderActions() {
     const { t } = useTranslation();
 
     return (
