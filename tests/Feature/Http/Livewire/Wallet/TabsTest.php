@@ -253,7 +253,7 @@ it('should run hooks when property is updated with syncInput', function () {
 it('should revert to transactions tab with unknown view', function () {
     $wallet = Wallet::factory()->activeValidator()->create();
 
-    $this->get('/addresses/'.$wallet->address.'?view=unknown')
+    $this->get('/addresses-old/'.$wallet->address.'?view=unknown')
         ->assertOk();
 });
 
