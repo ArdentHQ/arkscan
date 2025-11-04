@@ -382,7 +382,7 @@ describe('Voters Tab', function () {
         $this->browse(function (Browser $browser) use ($transactions, $voters, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $this->wallet)
+            $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('5 results', ignoreCase: true);
 
             if ($resolution['width'] < 768) {
@@ -440,7 +440,7 @@ describe('Voters Tab', function () {
         $this->browse(function (Browser $browser) use ($transactions, $voters, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', ['wallet' => $this->wallet, 'tab' => 'voters'])
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'tab' => 'voters'])
                 ->waitForText('10 results', ignoreCase: true);
 
             foreach ($voters as $voter) {
