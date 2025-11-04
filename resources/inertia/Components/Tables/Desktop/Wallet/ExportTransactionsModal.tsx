@@ -6,7 +6,6 @@ import TransactionTypesSelect from "./ExportTransactionsModal/TransactionTypesSe
 import TransactionColumnsSelect from "./ExportTransactionsModal/TransactionColumnsSelect";
 import ExportStatus from "./ExportTransactionsModal/ExportStatus";
 import useExportTransactions from "./ExportTransactionsModal/useExportTransactions";
-import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import Label from "@/Components/General/Label";
@@ -327,7 +326,7 @@ export default function ExportTransactionsModal({
                                 href={dataUri || ""}
                                 className={
                                     "button-primary flex items-center sm:px-4 sm:py-0 " +
-                                    (!dataUri ?? " pointer-events-none opacity-50")
+                                    (!dataUri ? " pointer-events-none opacity-50" : "")
                                 }
                                 download={`${address}.csv`}
                             >

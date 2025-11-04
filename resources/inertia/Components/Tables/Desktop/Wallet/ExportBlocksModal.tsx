@@ -306,10 +306,13 @@ export default function ExportBlocksModal({
 
                             <a
                                 href={dataUri || ""}
-                                className={dataUri ? "button-primary" : "button-primary pointer-events-none opacity-50"}
+                                className={
+                                    "button-primary flex items-center sm:px-4 sm:py-0 " +
+                                    (!dataUri ? " pointer-events-none opacity-50" : "")
+                                }
                                 download={`${downloadName}.csv`}
                             >
-                                <span className="flex items-center space-x-2">
+                                <span className="flex h-full items-center justify-center space-x-2">
                                     <UnderlineArrowDownIcon className="h-4 w-4" />
                                     <span>{t("actions.download")}</span>
                                 </span>
