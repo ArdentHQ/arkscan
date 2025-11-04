@@ -69,7 +69,7 @@ export default function TransactionsMobileTableWrapper({
         return (
             <div className="pt-6">
                 <TableHeaderWrapper resultCount={0} breakpoint="md">
-                    <HeaderActions />
+                    <HeaderActions hasTransactions={false} />
                 </TableHeaderWrapper>
 
                 <MobileTransactionsSkeletonTable rowCount={rowCount} />
