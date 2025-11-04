@@ -68,7 +68,7 @@ export function TransactionsTable({
             rowComponent={Row}
             resultCount={transactions.total ?? 0}
             mobile={mobile}
-            TransactionsheaderActions={<TransactionsHeaderActions hasTransactions={transactions.total > 0} />}
+            headerActions={<TransactionsHeaderActions hasTransactions={transactions.total > 0} />}
             noResultsMessage={transactions.noResultsMessage}
             columns={
                 <>
