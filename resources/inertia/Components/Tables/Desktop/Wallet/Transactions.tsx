@@ -1,7 +1,7 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { IPaginatedResponse } from "@/types";
 import { ITransaction } from "@/types/generated";
+import { IPaginatedResponse } from "@/types";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
 import ID from "@/Components/Transaction/ID";
@@ -13,8 +13,13 @@ import { useConfig } from "@/Providers/Config/ConfigContext";
 import Addressing from "@/Components/Transaction/Addressing";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import TableHeader from "../TableHeader";
-import Filter from "../../Filter";
+import { useState } from "react";
+import ExportTransactionsModal from "./ExportTransactionsModal";
+import { usePage } from "@inertiajs/react";
+import { PageProps } from "@inertiajs/core";
+import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+import Filter from "@/Components/Tables/Filter";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -63,7 +68,7 @@ export function TransactionsTable({
             paginator={transactions}
             rowComponent={Row}
             mobile={mobile}
-            headerActions={<HeaderActions />}
+            headerActions={<HeaderActions hasTransactions={transactions.total > 0} />}
             noResultsMessage={transactions.noResultsMessage}
             columns={
                 <>
@@ -167,8 +172,14 @@ export default function TransactionsTableWrapper({
     );
 }
 
-function HeaderActions() {
+function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
     const { t } = useTranslation();
+    const { network, settings } = useConfig();
+    const {
+        props: { wallet, rates },
+    } = usePage<PageProps<WalletProps>>();
+
+    const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(false);
 
     return (
         <div className="flex items-center justify-end space-x-3">
@@ -176,12 +187,23 @@ function HeaderActions() {
                 <button
                     type="button"
                     className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
-                    disabled
+                    disabled={!hasTransactions}
+                    onClick={() => setIsTransactionsExportModalOpen(true)}
                 >
                     <UnderlineArrowDownIcon className="h-4 w-4" />
 
                     <span>{t("actions.export")}</span>
                 </button>
+
+                <ExportTransactionsModal
+                    isOpen={isTransactionsExportModalOpen}
+                    onClose={() => setIsTransactionsExportModalOpen(false)}
+                    address={wallet.address}
+                    network={network}
+                    userCurrency={settings?.currency || ""}
+                    rates={rates}
+                    canBeExchanged={network?.canBeExchanged || false}
+                />
             </div>
 
             <div className="flex-1">

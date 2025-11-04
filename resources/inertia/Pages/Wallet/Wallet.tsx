@@ -2,7 +2,7 @@ import { PageProps } from "@inertiajs/core";
 import { Head, router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 import { IFilters, IPaginatedResponse, ITabbedData } from "@/types";
-import { IBlock, IWallet, ITransaction } from "@/types/generated";
+import { IBlock, ITransaction } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
@@ -13,6 +13,7 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import ValidatedBlocksTableWrapper from "@/Components/Tables/Desktop/Wallet/ValidatedBlocks";
 import ValidatedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/ValidatedBlocks";
 import { ITab } from "@/Providers/Tabs/types";
+import { WalletProps } from "@/Pages/Wallet.contracts";
 import WalletTransactionsTab from "./tabs/Transactions";
 
 const WalletTabsWrapper = ({
@@ -132,19 +133,7 @@ const WalletTabs = ({
     );
 };
 
-export default function Wallet({
-    transactions,
-    blocks,
-    wallet,
-    network,
-    filters,
-    ...props
-}: PageProps<{
-    transactions: IPaginatedResponse<ITransaction>;
-    blocks?: IPaginatedResponse<IBlock>;
-    wallet: IWallet;
-    filters: ITabbedData<IFilters>;
-}>) {
+export default function Wallet({ transactions, blocks, wallet, network, filters, ...props }: PageProps<WalletProps>) {
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {

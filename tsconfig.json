@@ -6,6 +6,7 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
+    "allowJs": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,7 +17,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@/*": ["./resources/inertia/*"]
+      "@/*": ["./resources/inertia/*"],
+      "@js/*": ["./resources/js/*"]
     }
   },
   "include": ["resources/js/**/*", "resources/inertia/**/*"],

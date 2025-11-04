@@ -25,7 +25,7 @@ it('should render the page without any errors', function () {
     ((new ValidatorCache())->setTotalBlocks([$wallet->address => 10 * 1e18]));
 
     $this
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertOk();
 });
 
@@ -68,7 +68,7 @@ it('should not double up currency for crypto', function () {
     $wallet = Wallet::factory()->create();
 
     $response = $this
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address)
         ->assertSee('0 BTC');
 
@@ -97,7 +97,7 @@ it('should show currency symbol and code for crypto', function () {
     $wallet = Wallet::factory()->create();
 
     $response = $this
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address)
         ->assertSeeInOrder([
             $wallet->balance->toFloat(),
@@ -127,7 +127,7 @@ it('should not show overview value if cannot be exchanged', function () {
     $wallet = Wallet::factory()->create();
 
     $this
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address)
         ->assertSeeInOrder([
             'Value',
@@ -178,7 +178,7 @@ it('should get query data from referer', function () {
 
     $this
         ->withHeaders(['Referer' => 'https://explorer.url?page=5&perPage=10'])
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address);
 });
 
@@ -192,7 +192,7 @@ it('should handle referer without a query string', function () {
 
     $this
         ->withHeaders(['Referer' => 'https://explorer.url'])
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address);
 });
 
@@ -206,7 +206,7 @@ it('should handle no referer', function () {
 
     $this
         ->withHeaders(['Referer' => ''])
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address);
 });
 
@@ -223,7 +223,7 @@ it('should not trim 0 at the end of votes or total forged', function () {
     (new ValidatorCache())->setTotalRewards([$wallet->address => 10000.00000001 * 1e18]);
 
     $this
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address)
         ->assertSeeInOrder([
             '12,340 DARK',
@@ -249,7 +249,7 @@ it('should show resigned status for validators', function () {
     (new ValidatorCache())->setTotalRewards([$wallet->address => 10000.00000001 * 1e18]);
 
     $this
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address)
         ->assertSee('Resigned')
         ->assertDontSee('Active')
@@ -265,7 +265,7 @@ it('should show dormant status for validators', function () {
     ]);
 
     $this
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address)
         ->assertSee('Dormant')
         ->assertDontSee('Active')
@@ -282,7 +282,7 @@ it('should show standby status for validators', function () {
     ]);
 
     $this
-        ->get(route('wallet', $wallet))
+        ->get(route('wallet-old', $wallet))
         ->assertSee($wallet->address)
         ->assertSee('Standby')
         ->assertDontSee('Active')
