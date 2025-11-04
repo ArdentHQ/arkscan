@@ -71,7 +71,7 @@ export default function Monitor({
 
                     <MobileDivider />
 
-                    <div className="pb-8 pt-6 md:mx-auto md:max-w-7xl md:pt-0">
+                    <div className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
                         <MonitorMobileTableWrapper validators={validatorData?.validators} rowCount={rowCount} />
                     </div>
                 </MissedBlocksTrackerProvider>
