@@ -23,7 +23,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
         $wallet = Wallet::factory()->create();
     }
 
-    return $context->get(route('wallet-inertia', ['wallet' => $wallet, ...$queryString ?? []]))
+    return $context->get(route('wallet', ['wallet' => $wallet, ...$queryString ?? []]))
         ->assertOk()
         ->assertInertia(function (Assert $page) use ($pageCallback, $wallet, $withReload, $reloadCallback) {
             $page->where('wallet.address', $wallet->address)
