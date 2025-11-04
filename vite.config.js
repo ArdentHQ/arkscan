@@ -35,9 +35,17 @@ export default ({ mode }) => defineConfig({
                 __dirname,
                 "resources/icons/"
             ),
+            "@images": resolve(
+                __dirname,
+                "resources/images/"
+            ),
             "@ui": resolve(
                 __dirname,
                 "vendor/arkecosystem/foundation/resources/assets/"
+            ),
+            "@js": resolve(
+                __dirname,
+                "resources/js/"
             ),
         },
     },

@@ -42,11 +42,11 @@ Route::get('/transactions', TransactionsController::class)->name('transactions')
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
-Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
-Route::get('/addresses/{wallet}?view=voters', ShowWalletController::class)->name('wallet.voters');
-Route::get('/addresses/{wallet}?view=blocks', ShowWalletController::class)->name('wallet.blocks');
+Route::get('/addresses/{wallet}', WalletController::class)->name('wallet');
+Route::get('/addresses/{wallet}?view=blocks', WalletController::class)->name('wallet.blocks');
+Route::get('/addresses/{wallet}?view=voters', WalletController::class)->name('wallet.voters');
 
-Route::get('/addresses-inertia/{wallet}', WalletController::class)->name('wallet-inertia');
+Route::get('/addresses-old/{wallet}', ShowWalletController::class)->name('wallet-old');
 
 Route::get('/wallets/{wallet}', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
