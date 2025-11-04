@@ -5,7 +5,7 @@ import classNames from "@/utils/class-names";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-function TableHeader({
+export function TableHeaderWrapper({
     breakpoint = "sm",
     resultCount,
     resultSuffix,
@@ -92,9 +92,9 @@ export function Table({
     return (
         <div ref={tableRef} className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
             {withHeader && (
-                <TableHeader resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
+                <TableHeaderWrapper resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
                     {headerActions}
-                </TableHeader>
+                </TableHeaderWrapper>
             )}
 
             <div

@@ -20,15 +20,13 @@ function FilterComponent({ disabled = false, withSelectAll = true }: { disabled?
             disabled={disabled}
             useDefaultButtonClasses={false}
             closeOnClick={false}
-            buttonClass="w-full"
+            buttonClass="button-secondary flex w-full flex-1 items-center justify-center rounded py-1.5 sm:flex-none sm:px-4 md:p-2"
             zIndex={30}
             button={
-                <div className="dropdown-button transition-default button-secondary flex w-full flex-1 items-center justify-center rounded py-1.5 focus:outline-none sm:flex-none sm:px-4 md:p-2">
-                    <div className="mx-auto inline-flex items-center whitespace-nowrap">
-                        <FilterIcon className="h-4 w-4" />
+                <div className="mx-auto inline-flex items-center whitespace-nowrap">
+                    <FilterIcon className="h-4 w-4" />
 
-                        <div className="ml-2 md:hidden">{t("actions.filter")}</div>
-                    </div>
+                    <div className="ml-2 md:hidden">{t("actions.filter")}</div>
                 </div>
             }
         >

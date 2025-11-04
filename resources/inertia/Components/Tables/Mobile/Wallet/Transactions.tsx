@@ -11,6 +11,8 @@ import Amount from "@/Components/Transaction/Amount";
 import { useConfig } from "@/Providers/Config/ConfigContext";
 import Fee from "@/Components/Transaction/Fee";
 import Addressing from "@/Components/Transaction/Addressing";
+import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Wallet/Transactions";
+import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 
 export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
     const { t } = useTranslation();
@@ -64,7 +66,15 @@ export default function TransactionsMobileTableWrapper({
     rowCount?: number;
 }) {
     if (!transactions) {
-        return <MobileTransactionsSkeletonTable rowCount={rowCount} />;
+        return (
+            <div className="pt-6">
+                <TableHeaderWrapper resultCount={0} breakpoint="md">
+                    <TransactionsHeaderActions hasTransactions={false} />
+                </TableHeaderWrapper>
+
+                <MobileTransactionsSkeletonTable rowCount={rowCount} />
+            </div>
+        );
     }
 
     return (
