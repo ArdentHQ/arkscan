@@ -9,6 +9,7 @@
         "@babel/runtime": "^7.24.4",
         "@popperjs/core": "^2.11.8",
         "@types/node": "^20.12.7",
+        "@types/pikaday": "^1.7.10",
         "@types/react": "^19.1.9",
         "@types/react-dom": "^19.1.7",
         "@vitejs/plugin-react": "^5.0.0",
@@ -47,14 +48,19 @@
         "@floating-ui/react": "^0.27.16",
         "@inertiajs/core": "^2.2.9",
         "@inertiajs/react": "^2.0.17",
+        "@radix-ui/react-dialog": "^1.1.15",
+        "@radix-ui/react-popover": "^1.1.15",
+        "@radix-ui/react-select": "^2.2.6",
         "@tippyjs/react": "^4.2.6",
         "axios": "^1.6.8",
         "bignumber.js": "^9.3.1",
         "decimal.js": "^10.4.3",
         "i18next": "^25.5.2",
+        "radix-ui": "^1.4.3",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
         "react-i18next": "^15.7.3",
-        "react-qr-code": "^2.0.18"
+        "react-qr-code": "^2.0.18",
+        "tailwind-merge": "^3.3.1"
     }
 }
