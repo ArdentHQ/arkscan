@@ -15,6 +15,7 @@ use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\ExchangeRate;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\AbstractPaginator;
@@ -77,6 +78,8 @@ final class WalletController
                     'noResultsMessage' => $this->getVotersNoResultsMessageProperty($paginator->count()),
                 ];
             }),
+
+            'rates' => fn () => ExchangeRate::rates()->toArray(),
         ]);
     }
 

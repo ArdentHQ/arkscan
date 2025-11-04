@@ -35,7 +35,7 @@ describe('Overview', function () {
         $this->browse(function (Browser $browser) use ($wallet, $validator, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $wallet)
+            $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7))
                 ->assertSee('joe.blogs')
                 ->assertSee('32,423 DARK')
@@ -52,7 +52,7 @@ describe('Overview', function () {
         $this->browse(function (Browser $browser) use ($wallet, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $wallet)
+            $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7));
 
             if ($resolution['width'] >= 640) {
@@ -71,7 +71,7 @@ describe('Overview', function () {
 
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $wallet)
+            $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7))
                 ->click('[data-testid="wallet:copy-address"] button')
                 ->waitForText(trans('pages.wallet.address_copied'));
@@ -88,7 +88,7 @@ describe('Overview', function () {
 
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $wallet)
+            $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7))
                 ->click('[data-testid="wallet:show-public-key"] > button')
                 ->waitForText(substr($wallet->public_key, 0, 7))
@@ -116,7 +116,7 @@ describe('Overview', function () {
 
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $wallet)
+            $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7))
                 ->click('[data-testid="wallet:show-legacy-address"] > button')
                 ->waitForText(substr($legacyAddress, 0, 7))
@@ -135,7 +135,7 @@ describe('Overview', function () {
         $this->browse(function (Browser $browser) use ($wallet, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $wallet)
+            $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7))
                 ->click('[data-testid="wallet:show-qr-code-modal:button"]')
                 ->waitForText(trans('pages.wallet.qrcode.title'))
@@ -152,7 +152,7 @@ describe('Overview', function () {
         $this->browse(function (Browser $browser) use ($wallet, $status, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $wallet)
+            $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7))
                 ->assertSee(trans('pages.validators.'.$status));
         });
@@ -183,7 +183,7 @@ describe('Transactions Tab', function () {
         $this->browse(function (Browser $browser) use ($transactions, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $this->wallet)
+            $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('5 results', ignoreCase: true);
 
             foreach ($transactions as $transaction) {
@@ -209,7 +209,7 @@ describe('Transactions Tab', function () {
 
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $this->wallet)
+            $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('30 results', ignoreCase: true)
                 ->click('[data-testid="pagination:next-page"] button')
                 ->waitForText('Page 2 of 2');
@@ -237,7 +237,7 @@ describe('Transactions Tab', function () {
 
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', ['wallet' => $this->wallet, 'page' => 2])
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'page' => 2])
                 ->waitForText('30 results', ignoreCase: true)
                 ->assertSee('Page 2 of 2')
                 ->click('[data-testid="pagination:per-page-dropdown:button"]')
@@ -278,7 +278,7 @@ describe('Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($transactions, $blocks, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', $this->wallet)
+            $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('5 results', ignoreCase: true);
 
             if ($resolution['width'] < 768) {
@@ -330,7 +330,7 @@ describe('Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($transactions, $blocks, $resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('wallet-inertia', ['wallet' => $this->wallet, 'tab' => 'blocks'])
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'tab' => 'blocks'])
                 ->waitForText('6 results', ignoreCase: true);
 
             foreach ($blocks as $block) {
