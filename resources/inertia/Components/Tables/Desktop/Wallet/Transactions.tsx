@@ -208,7 +208,7 @@ export function TransactionsHeaderActions({ hasTransactions }: { hasTransactions
             </div>
 
             <div className="flex-1">
-                <Filter />
+                <Filter withSelectAll />
             </div>
         </div>
     );
