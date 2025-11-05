@@ -9,10 +9,15 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
 use App\Services\Cache\WalletCache;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Dusk\Browser;
 
 beforeEach(function () {
     $this->withoutExceptionHandling();
+});
+
+afterEach(function () {
+    Cache::tags(['dusk'])->flush();
 });
 
 describe('Overview', function () {
@@ -250,6 +255,65 @@ describe('Transactions Tab', function () {
             }
         });
     })->with('resolutions');
+
+    it('should export transactions from the modal', function ($resolution) {
+        Transaction::factory()
+            ->transfer()
+            ->count(3)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        // @see tests/routes/dusk.php
+        Cache::tags(['dusk'])->set('dusk.transactions_response', [
+            'data' => [
+                [
+                    'hash'      => 'dusk-transaction-1',
+                    'timestamp' => [
+                        'epoch' => now()->timestamp,
+                    ],
+                    'from'  => $this->wallet->address,
+                    'to'    => $this->recipientWallet->address,
+                    'value' => '125000000',
+                    'fee'   => '1000000',
+                ],
+            ],
+            'meta' => [
+                'count' => 1,
+            ],
+        ]);
+
+        $description    = trans('pages.wallet.export-transactions-modal.description');
+        $successMessage = trans('pages.wallet.export-transactions-modal.success_message', ['count' => 1]);
+
+        $this->browse(function (Browser $browser) use ($resolution, $description, $successMessage) {
+            $downloadName     = sprintf('%s.csv', $this->wallet->address);
+            $downloadSelector = '[data-testid="wallet:transactions-export:download"]';
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('3 results', ignoreCase: true)
+                ->click('[data-testid="wallet:transactions:export-button"]')
+                ->waitForText($description)
+                ->assertDisabled('[data-testid="wallet:transactions-export:submit"]')
+                ->click('[data-testid="wallet:transactions-export:types-trigger"]')
+                ->click('[data-testid="wallet:transactions-export:type-transfers"]')
+                ->click('[data-testid="wallet:transactions-export:types-trigger"]')
+                ->click('[data-testid="wallet:transactions-export:columns-trigger"]')
+                ->click('[data-testid="wallet:transactions-export:column-id"]')
+                ->click('[data-testid="wallet:transactions-export:columns-trigger"]')
+                ->assertEnabled('[data-testid="wallet:transactions-export:submit"]')
+                ->click('[data-testid="wallet:transactions-export:submit"]')
+                ->waitForText($successMessage)
+                ->assertVisible($downloadSelector)
+                ->assertAttribute($downloadSelector, 'download', $downloadName);
+
+            expect($browser->attribute($downloadSelector, 'href'))->toStartWith('data:text/csv');
+        });
+    })->with('resolutions');
 });
 
 describe('Blocks Tab', function () {
@@ -257,6 +321,11 @@ describe('Blocks Tab', function () {
         $this->wallet = Wallet::factory()
             ->activeValidator()
             ->create();
+
+        $attributes             = $this->wallet->getAttribute('attributes') ?? [];
+        $attributes['username'] = 'dusk-validator';
+        $this->wallet->setAttribute('attributes', $attributes);
+        $this->wallet->save();
     });
 
     it('should navigate to tab and back', function ($resolution) {
@@ -350,6 +419,77 @@ describe('Blocks Tab', function () {
             foreach ($transactions as $transaction) {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
             }
+        });
+    })->with('resolutions');
+
+    it('should export blocks from the modal', function ($resolution) {
+        Transaction::factory()
+            ->transfer()
+            ->count(2)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        Block::factory()
+            ->count(2)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        // @see tests/routes/dusk.php
+        Cache::tags(['dusk'])->set('dusk.blocks_response', [
+            'data' => [
+                [
+                    'hash'               => 'dusk-block-1',
+                    'timestamp'          => (string) (now()->timestamp * 1000),
+                    'transactionsCount'  => 12,
+                    'amount'             => '6400000000',
+                    'fee'                => '50000000',
+                    'reward'             => '200000000',
+                    'number'             => 123456789,
+                ],
+            ],
+            'meta' => [
+                'count' => 1,
+            ],
+        ]);
+
+        $description    = trans('pages.wallet.export-blocks-modal.description');
+        $successMessage = 'A total of 1 blocks have been retrieved and are ready for download.';
+
+        $this->browse(function (Browser $browser) use ($resolution, $description, $successMessage) {
+            $downloadName     = 'dusk-validator.csv';
+            $downloadSelector = '[data-testid="wallet:blocks-export:download"]';
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('2 results', ignoreCase: true);
+
+            if ($resolution['width'] < 768) {
+                $browser->click('[data-testid="tabs:dropdown:button"]')
+                    ->waitForText('Validated Blocks')
+                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Validated Blocks"]');
+            } else {
+                $browser->click('button#tab-blocks');
+            }
+
+            $browser->waitForText('2 results', ignoreCase: true)
+                ->click('[data-testid="wallet:blocks:export-button"]')
+                ->waitForText($description)
+                ->assertDisabled('[data-testid="wallet:blocks-export:submit"]')
+                ->click('[data-testid="wallet:blocks-export:columns-trigger"]')
+                ->click('[data-testid="wallet:blocks-export:column-id"]')
+                ->click('[data-testid="wallet:blocks-export:columns-trigger"]')
+                ->assertEnabled('[data-testid="wallet:blocks-export:submit"]')
+                ->click('[data-testid="wallet:blocks-export:submit"]')
+                ->waitForText($successMessage)
+                ->assertVisible($downloadSelector)
+                ->assertAttribute($downloadSelector, 'download', $downloadName);
+
+            expect($browser->attribute($downloadSelector, 'href'))->toStartWith('data:text/csv');
         });
     })->with('resolutions');
 });

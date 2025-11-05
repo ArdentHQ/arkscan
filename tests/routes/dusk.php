@@ -2,33 +2,31 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/transactions', function () {
-    return response()->json([
-        'data' => [
-            [
-                'hash'      => 'dusk-transaction-1',
-                'timestamp' => [
-                    'epoch' => now()->timestamp,
-                ],
-                'from'  => '0x0000000000000000000000000000000000000000',
-                'to'    => '0x0000000000000000000000000000000000000000',
-                'value' => '125000000',
-                'fee'   => '1000000',
-            ],
-        ],
+    $default = [
+        'data' => [],
         'meta' => [
-            'count' => 2,
+            'count' => 0,
         ],
-    ]);
+    ];
+
+    $response = Cache::tags(['dusk'])->get('dusk.transactions_response', $default);
+
+    return response()->json($response);
 });
 
-// Route::get('/dusk-api/validators/{address}/blocks', function ($address) {
-//     return response()->json(config('dusk.blocks_response', [
-//         'data' => [],
-//         'meta' => [
-//             'count' => 0,
-//         ],
-//     ]));
-// });
+Route::get('/validators/{address}/blocks', function ($address) {
+    $default = [
+        'data' => [],
+        'meta' => [
+            'count' => 0,
+        ],
+    ];
+
+    $response = Cache::tags(['dusk'])->get('dusk.blocks_response', $default);
+
+    return response()->json($response);
+});
