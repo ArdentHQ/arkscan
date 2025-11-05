@@ -7,8 +7,17 @@ import { IFilters } from "@/types";
 import { useFilter } from "@/Providers/Filter/FilterContext";
 import { IFilterEntry, IFilterOptionEntry } from "@/Providers/Filter/types";
 import { CSSProperties, useEffect, useState } from "react";
+import classNames from "@/utils/class-names";
 
-function FilterComponent({ disabled = false, withSelectAll = true }: { disabled?: boolean; withSelectAll?: boolean }) {
+function FilterComponent({
+    disabled = false,
+    withSelectAll = true,
+    testId,
+}: {
+    disabled?: boolean;
+    withSelectAll?: boolean;
+    testId?: string;
+}) {
     const { t } = useTranslation();
 
     const { selectedFilters, setFilter, setSelectedFilters, initialOptions } = useFilter();
@@ -42,6 +51,7 @@ function FilterComponent({ disabled = false, withSelectAll = true }: { disabled?
     return (
         <Dropdown
             dropdownContentClasses="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 pb-0.5 rounded md:rounded-xl"
+            testId={testId}
             dropdownClasses="px-6 w-full md:px-8 table-filter md:w-[303px]"
             disabled={disabled}
             useDefaultButtonClasses={false}
@@ -161,13 +171,15 @@ function FilterOption({
 export default function Filter({
     disabled = false,
     withSelectAll = false,
+    testId,
 }: {
     disabled?: boolean;
     withSelectAll?: boolean;
+    testId?: string;
 }) {
     return (
         <DropdownProvider>
-            <FilterComponent disabled={disabled} withSelectAll={withSelectAll} />
+            <FilterComponent disabled={disabled} withSelectAll={withSelectAll} testId={testId} />
         </DropdownProvider>
     );
 }
