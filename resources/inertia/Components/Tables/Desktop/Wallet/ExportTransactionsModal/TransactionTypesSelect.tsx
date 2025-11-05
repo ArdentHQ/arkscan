@@ -54,19 +54,13 @@ export default function TransactionTypesSelect({ value, onValueChange }: Transac
                         {t("general.select_all")} {t("pages.wallet.export-transactions-modal.types")}
                     </MultiSelect.AllItem>
 
-                    <MultiSelect.Item
-                        data-testid="wallet:transactions-export:type-transfers"
-                        value="transfers"
-                    >
+                    <MultiSelect.Item data-testid="wallet:transactions-export:type-transfers" value="transfers">
                         {t("pages.wallet.export-transactions-modal.types-options.transfers")}
                     </MultiSelect.Item>
                     <MultiSelect.Item data-testid="wallet:transactions-export:type-votes" value="votes">
                         {t("pages.wallet.export-transactions-modal.types-options.votes")}
                     </MultiSelect.Item>
-                    <MultiSelect.Item
-                        data-testid="wallet:transactions-export:type-multipayments"
-                        value="multipayments"
-                    >
+                    <MultiSelect.Item data-testid="wallet:transactions-export:type-multipayments" value="multipayments">
                         {t("pages.wallet.export-transactions-modal.types-options.multipayments")}
                     </MultiSelect.Item>
                     <MultiSelect.Item data-testid="wallet:transactions-export:type-others" value="others">
