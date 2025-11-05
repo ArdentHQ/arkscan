@@ -164,7 +164,11 @@ export default function ValidatedBlocksTableWrapper({
         return (
             <>
                 <div className="hidden md:block">
-                    <LoadingTable rowCount={rowCount} header={<ValidatedBlocksHeaderActions />} columns={columns} />
+                    <LoadingTable
+                        rowCount={rowCount}
+                        header={<ValidatedBlocksHeaderActions hasForgedBlocks={false} />}
+                        columns={columns}
+                    />
                 </div>
 
                 {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
