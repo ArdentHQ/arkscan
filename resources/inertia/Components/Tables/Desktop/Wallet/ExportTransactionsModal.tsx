@@ -280,7 +280,12 @@ export default function ExportTransactionsModal({
                                 {t("actions.cancel")}
                             </button>
 
-                            <Modal.ActionButton className="space-x-2" disabled={!canExport()} onClick={exportData}>
+                            <Modal.ActionButton
+                                data-testid="wallet:transactions-export:submit"
+                                className="space-x-2"
+                                disabled={!canExport()}
+                                onClick={exportData}
+                            >
                                 <UnderlineArrowDownIcon className="h-4 w-4" />
                                 <span>{t("actions.export")}</span>
                             </Modal.ActionButton>
@@ -324,6 +329,7 @@ export default function ExportTransactionsModal({
 
                             <a
                                 href={dataUri || ""}
+                                data-testid="wallet:transactions-export:download"
                                 className={
                                     "button-primary flex items-center sm:px-4 sm:py-0 " +
                                     (!dataUri ? " pointer-events-none opacity-50" : "")
