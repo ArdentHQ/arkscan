@@ -2,6 +2,7 @@ import LoadingText from "@/Components/Loading/Text";
 import TableCell from "./TableCell";
 import classNames from "@/utils/class-names";
 import TableHeader, { TableHeaderTooltip } from "./TableHeader";
+import { TableHeaderWrapper } from "./Table";
 
 export interface ILoadingTableColumn {
     name?: string;
@@ -20,14 +21,27 @@ export default function LoadingTable({
     columns,
     rowCount,
     indicatorHeight = "h-[17px]",
+    header,
 }: {
     columns: Array<ILoadingTableColumn>;
     rowCount: number;
     indicatorHeight?: string;
+    header?: React.ReactNode;
 }) {
     return (
         <div className="hidden px-6 pb-8 pt-6 md:mx-auto md:block md:max-w-7xl md:px-10 md:pt-0">
-            <div className="validator-monitor hidden w-full overflow-hidden rounded-b-xl rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block">
+            {!!header && (
+                <TableHeaderWrapper resultCount={0} breakpoint="md">
+                    {header}
+                </TableHeaderWrapper>
+            )}
+
+            <div
+                className={classNames({
+                    "validator-monitor hidden w-full overflow-hidden rounded-b-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "rounded-t-xl": !header,
+                })}
+            >
                 <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
                     <table>
                         <thead>

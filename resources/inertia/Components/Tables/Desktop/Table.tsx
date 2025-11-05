@@ -5,7 +5,7 @@ import classNames from "@/utils/class-names";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-function TableHeader({
+export function TableHeaderWrapper({
     breakpoint = "sm",
     resultCount,
     resultSuffix,
@@ -89,19 +89,21 @@ export function Table({
     const tableRef = useRef<HTMLDivElement>(null);
     const { pagination } = useConfig();
 
+    const showFooter = withFooter && paginator && resultCount > pagination?.per_page;
+
     return (
         <div ref={tableRef} className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
             {withHeader && (
-                <TableHeader resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
+                <TableHeaderWrapper resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
                     {headerActions}
-                </TableHeader>
+                </TableHeaderWrapper>
             )}
 
             <div
                 className={classNames({
                     "hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
                     "rounded-t-xl": !withHeader,
-                    "rounded-b-xl": !withFooter || resultCount === 0,
+                    "rounded-b-xl": !showFooter,
                 })}
             >
                 <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
@@ -128,7 +130,7 @@ export function Table({
 
             {mobile}
 
-            {withFooter && paginator && resultCount > 0 && <Pagination paginator={paginator} tableRef={tableRef} />}
+            {showFooter && <Pagination paginator={paginator} tableRef={tableRef} />}
         </div>
     );
 }

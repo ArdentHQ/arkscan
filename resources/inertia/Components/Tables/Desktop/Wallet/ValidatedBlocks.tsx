@@ -60,7 +60,7 @@ export function ValidatedBlocksTable({
             rowComponent={Row}
             resultCount={blocks.total ?? 0}
             mobile={mobile}
-            headerActions={<HeaderActions hasForgedBlocks={hasForgedBlocks} />}
+            headerActions={<ValidatedBlocksHeaderActions hasForgedBlocks={hasForgedBlocks} />}
             noResultsMessage={blocks.noResultsMessage}
             columns={
                 <>
@@ -164,7 +164,7 @@ export default function ValidatedBlocksTableWrapper({
         return (
             <>
                 <div className="hidden md:block">
-                    <LoadingTable rowCount={rowCount} columns={columns} />
+                    <LoadingTable rowCount={rowCount} header={<ValidatedBlocksHeaderActions />} columns={columns} />
                 </div>
 
                 {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
@@ -179,7 +179,7 @@ export default function ValidatedBlocksTableWrapper({
     );
 }
 
-function HeaderActions({ hasForgedBlocks }: { hasForgedBlocks: boolean }) {
+export function ValidatedBlocksHeaderActions({ hasForgedBlocks }: { hasForgedBlocks: boolean }) {
     const { t } = useTranslation();
     const { network, settings } = useConfig();
     const {

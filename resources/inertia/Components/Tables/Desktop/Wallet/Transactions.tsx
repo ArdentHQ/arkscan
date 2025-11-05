@@ -68,7 +68,7 @@ export function TransactionsTable({
             rowComponent={Row}
             resultCount={transactions.total ?? 0}
             mobile={mobile}
-            headerActions={<HeaderActions hasTransactions={transactions.total > 0} />}
+            headerActions={<TransactionsHeaderActions hasTransactions={transactions.total > 0} />}
             noResultsMessage={transactions.noResultsMessage}
             columns={
                 <>
@@ -117,6 +117,7 @@ export default function TransactionsTableWrapper({
                 <div className="hidden md:block">
                     <LoadingTable
                         rowCount={rowCount}
+                        header={<TransactionsHeaderActions hasTransactions={false} />}
                         columns={[
                             {
                                 name: t("tables.transactions.id"),
@@ -172,7 +173,7 @@ export default function TransactionsTableWrapper({
     );
 }
 
-function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
+export function TransactionsHeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
     const { t } = useTranslation();
     const { network, settings } = useConfig();
     const {
