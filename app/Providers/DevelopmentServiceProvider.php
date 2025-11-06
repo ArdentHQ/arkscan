@@ -22,7 +22,7 @@ final class DevelopmentServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (App::environment(['local', 'testing']) === true) {
+        if (App::environment(['local', 'testing', 'dusk']) === true) {
             $faker = Factory::create();
             $faker->addProvider(new Wallet($faker));
             $faker->addProvider(new Transaction($faker));

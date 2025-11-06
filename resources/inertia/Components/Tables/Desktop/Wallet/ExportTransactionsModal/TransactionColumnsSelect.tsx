@@ -63,17 +63,27 @@ export default function TransactionColumnsSelect({ value, onValueChange }: Trans
     return (
         <>
             <MultiSelect value={value} onValueChange={onValueChange}>
-                <MultiSelect.Trigger placeholder={t("pages.wallet.export-transactions-modal.columns_placeholder")}>
+                <MultiSelect.Trigger
+                    data-testid="wallet:transactions-export:columns-trigger"
+                    placeholder={t("pages.wallet.export-transactions-modal.columns_placeholder")}
+                >
                     {getSelectedColumnsText()}
                 </MultiSelect.Trigger>
 
                 <MultiSelect.Content className="-mx-6 w-screen sm:mx-0 sm:w-100">
-                    <MultiSelect.AllItem allValues={filteredColumns}>
+                    <MultiSelect.AllItem
+                        data-testid="wallet:transactions-export:columns-select-all"
+                        allValues={filteredColumns}
+                    >
                         {t("general.select_all")} {t("pages.wallet.export-transactions-modal.columns")}
                     </MultiSelect.AllItem>
 
                     {filteredColumns.map((columnKey) => (
-                        <MultiSelect.Item key={columnKey} value={columnKey}>
+                        <MultiSelect.Item
+                            key={columnKey}
+                            data-testid={`wallet:transactions-export:column-${columnKey}`}
+                            value={columnKey}
+                        >
                             {getColumnLabel(columnKey)}
                         </MultiSelect.Item>
                     ))}

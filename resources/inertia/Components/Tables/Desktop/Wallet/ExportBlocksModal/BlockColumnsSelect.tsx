@@ -68,17 +68,27 @@ export default function BlockColumnsSelect({ value, onValueChange }: BlockColumn
     return (
         <>
             <MultiSelect value={value} onValueChange={onValueChange}>
-                <MultiSelect.Trigger placeholder={t("pages.wallet.export-blocks-modal.columns_placeholder")}>
+                <MultiSelect.Trigger
+                    data-testid="wallet:blocks-export:columns-trigger"
+                    placeholder={t("pages.wallet.export-blocks-modal.columns_placeholder")}
+                >
                     {selectedText()}
                 </MultiSelect.Trigger>
 
                 <MultiSelect.Content className="-mx-6 w-screen sm:mx-0 sm:w-100">
-                    <MultiSelect.AllItem allValues={filteredColumns}>
+                    <MultiSelect.AllItem
+                        data-testid="wallet:blocks-export:columns-select-all"
+                        allValues={filteredColumns}
+                    >
                         {t("general.select_all")} {t("pages.wallet.export-blocks-modal.columns")}
                     </MultiSelect.AllItem>
 
                     {filteredColumns.map((columnKey) => (
-                        <MultiSelect.Item key={columnKey} value={columnKey}>
+                        <MultiSelect.Item
+                            key={columnKey}
+                            data-testid={`wallet:blocks-export:column-${columnKey}`}
+                            value={columnKey}
+                        >
                             {columnLabel(columnKey)}
                         </MultiSelect.Item>
                     ))}

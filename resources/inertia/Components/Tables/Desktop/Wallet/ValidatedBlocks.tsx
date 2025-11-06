@@ -164,7 +164,11 @@ export default function ValidatedBlocksTableWrapper({
         return (
             <>
                 <div className="hidden md:block">
-                    <LoadingTable rowCount={rowCount} header={<ValidatedBlocksHeaderActions />} columns={columns} />
+                    <LoadingTable
+                        rowCount={rowCount}
+                        header={<ValidatedBlocksHeaderActions hasForgedBlocks={false} />}
+                        columns={columns}
+                    />
                 </div>
 
                 {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
@@ -192,6 +196,7 @@ export function ValidatedBlocksHeaderActions({ hasForgedBlocks }: { hasForgedBlo
             <div className="flex-1">
                 <button
                     type="button"
+                    data-testid="wallet:blocks:export-button"
                     className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
                     disabled={!hasForgedBlocks}
                     onClick={() => setIsBlocksExportModalOpen(true)}
