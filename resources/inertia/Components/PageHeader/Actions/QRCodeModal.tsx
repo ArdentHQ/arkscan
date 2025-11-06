@@ -11,20 +11,24 @@ import ArkConnectDisabledAction from "@/Components/General/ArkConnect/DisabledAc
 import QRCodeIcon from "@ui/icons/qr-code.svg?react";
 import Tooltip from "@/Components/General/Tooltip";
 import useConfig from "@/hooks/use-config";
+import { useArkConnect } from "@/Providers/ArkConnect/ArkConnectContext";
+import { WalletProps } from "@/Pages/Wallet.contracts";
 
 function ArkVaultButton({
-    hasAmount,
-    isOnSameNetwork = true,
+    amount,
     walletUri,
 }: {
-    hasAmount: boolean;
-    isOnSameNetwork: boolean;
+    amount: number | undefined;
+
     walletUri: string;
 }) {
     const { t } = useTranslation();
-    const { arkconnectConfig } = useConfig();
+
+    const { isOnSameNetwork, isConnected, performSend, isArkConnectEnabled } = useArkConnect();
+    const { wallet } = useConfig<WalletProps>();
 
     let arkconnectButton = null;
+
     if (isOnSameNetwork) {
         arkconnectButton = (
             <div>
@@ -32,16 +36,16 @@ function ArkVaultButton({
                     type="button"
                     className="button-primary w-full"
                     onClick={() => {
-                        // TODO: arkconnect `await performSend('{{ $this->address }}', '{{ $this->amount }}')` - https://app.clickup.com/t/86dxxbq8r
+                        void performSend(wallet.address, amount!);
                     }}
-                    disabled={!hasAmount}
+                    disabled={!amount}
                 >
                     {t("brands.arkconnect")}
                 </button>
             </div>
         );
 
-        if (!hasAmount) {
+        if (!amount) {
             arkconnectButton = (
                 <Tooltip content={t("pages.wallet.qrcode.arkconnect_specify_amount_tooltip")}>
                     {arkconnectButton}
@@ -52,13 +56,13 @@ function ArkVaultButton({
 
     return (
         <div className="mt-2 w-full">
-            {arkconnectConfig.enabled && (
+            {isArkConnectEnabled && (
                 <div className="flex w-full flex-col">
                     {/* @TODO: handle arkconnect functionality - https://app.clickup.com/t/86dxxbq8r */}
                     {!!arkconnectButton ? (
                         arkconnectButton
                     ) : (
-                        <ArkConnectDisabledAction isConnected={false} isOnSameNetwork={isOnSameNetwork}>
+                        <ArkConnectDisabledAction isConnected={isConnected} isOnSameNetwork={isOnSameNetwork ?? false}>
                             <button type="button" className="button-primary w-full" disabled>
                                 {t("brands.arkconnect")}
                             </button>
@@ -75,7 +79,7 @@ function ArkVaultButton({
                 </div>
             )}
 
-            {!arkconnectConfig.enabled && (
+            {!isArkConnectEnabled && (
                 <div>
                     <ExternalLink
                         url={walletUri}
@@ -180,7 +184,7 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
             </div>
 
             {/* @TODO: handle arkconnect functionality - https://app.clickup.com/t/86dxxbq8r */}
-            <ArkVaultButton hasAmount={false} isOnSameNetwork={true} walletUri={walletUri} />
+            <ArkVaultButton amount={amount} walletUri={walletUri} />
         </DropdownPopup>
     );
 }
