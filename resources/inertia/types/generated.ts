@@ -149,6 +149,7 @@ export type IWallet = {
     attributes: Record<string, any>;
     vote: IWallet | null;
     voteUrl: string | null;
+    votePercentage: number | null;
 };
 export enum SortDirection {
     ASC = "asc",
