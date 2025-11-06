@@ -11,6 +11,11 @@ import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?re
 import Height from "@/Components/Block/Height";
 import Age from "@/Components/Model/Age";
 import Reward from "@/Components/Block/Reward";
+import { useState } from "react";
+import { usePage } from "@inertiajs/react";
+import { PageProps } from "@inertiajs/core";
+import { WalletProps } from "@/Pages/Wallet.contracts";
+import ExportBlocksModal from "./ExportBlocksModal";
 
 export function Row({ row }: { row: IBlock }) {
     const { network } = useConfig();
@@ -45,6 +50,7 @@ export function ValidatedBlocksTable({
 }) {
     const { t } = useTranslation();
     const { network } = useConfig();
+    const hasForgedBlocks = (blocks.total ?? blocks.data?.length ?? 0) > 0;
 
     return (
         <Table
@@ -54,7 +60,7 @@ export function ValidatedBlocksTable({
             rowComponent={Row}
             resultCount={blocks.total ?? 0}
             mobile={mobile}
-            headerActions={<HeaderActions />}
+            headerActions={<ValidatedBlocksHeaderActions hasForgedBlocks={hasForgedBlocks} />}
             noResultsMessage={blocks.noResultsMessage}
             columns={
                 <>
@@ -158,7 +164,11 @@ export default function ValidatedBlocksTableWrapper({
         return (
             <>
                 <div className="hidden md:block">
-                    <LoadingTable rowCount={rowCount} columns={columns} />
+                    <LoadingTable
+                        rowCount={rowCount}
+                        header={<ValidatedBlocksHeaderActions hasForgedBlocks={false} />}
+                        columns={columns}
+                    />
                 </div>
 
                 {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
@@ -173,21 +183,39 @@ export default function ValidatedBlocksTableWrapper({
     );
 }
 
-function HeaderActions() {
+export function ValidatedBlocksHeaderActions({ hasForgedBlocks }: { hasForgedBlocks: boolean }) {
     const { t } = useTranslation();
+    const { network, settings } = useConfig();
+    const {
+        props: { wallet, rates },
+    } = usePage<PageProps<WalletProps>>();
+    const [isBlocksExportModalOpen, setIsBlocksExportModalOpen] = useState(false);
 
     return (
         <div className="flex items-center justify-end space-x-3">
             <div className="flex-1">
                 <button
                     type="button"
+                    data-testid="wallet:blocks:export-button"
                     className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
-                    disabled
+                    disabled={!hasForgedBlocks}
+                    onClick={() => setIsBlocksExportModalOpen(true)}
                 >
                     <UnderlineArrowDownIcon className="h-4 w-4" />
 
                     <span>{t("actions.export")}</span>
                 </button>
+
+                <ExportBlocksModal
+                    isOpen={isBlocksExportModalOpen}
+                    onClose={() => setIsBlocksExportModalOpen(false)}
+                    address={wallet.address}
+                    network={network}
+                    userCurrency={settings?.currency || ""}
+                    rates={rates}
+                    canBeExchanged={network?.canBeExchanged || false}
+                    filename={wallet.username || wallet.address}
+                />
             </div>
         </div>
     );
