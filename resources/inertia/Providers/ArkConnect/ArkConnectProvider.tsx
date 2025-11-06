@@ -7,12 +7,12 @@ import type {
     ArkConnectExtension,
     ArkConnectIgnoredToastType,
     ArkConnectState,
-    ArkConnectVoteTransaction,
     IArkConnectContextType,
+    SignTransactionRequest,
+    SignVoteRequest,
 } from "./types";
 import { WalletsApi } from "@js/api/wallets";
 import type { IWallet } from "@/types/generated";
-import { is } from "date-fns/locale";
 
 declare global {
     interface Window {
@@ -56,12 +56,16 @@ export default function ArkConnectProvider({
     children: React.ReactNode;
     configuration: ArkConnectConfiguration;
 }) {
-    const [state, setState] = useState<ArkConnectState>(INITIAL_STATE);
+    const [state, setState] = useState<ArkConnectState>(() => ({
+        ...INITIAL_STATE,
+        network: configuration.network,
+        arkconnectConfig: configuration.arkconnectConfig ?? null,
+    }));
 
     const stateRef = useRef(state);
     const voteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const extensionListenersRef = useRef<Array<() => void>>([]);
-    const configurationRef = useRef<ArkConnectConfiguration | null>(null);
+    const configurationRef = useRef<ArkConnectConfiguration | null>(configuration);
 
     const getExtension = useCallback(() => {
         if (typeof window === "undefined") {
@@ -413,6 +417,20 @@ export default function ArkConnectProvider({
 
     const configure = useCallback(
         (configuration: ArkConnectConfiguration) => {
+            const currentConfig = configurationRef.current;
+            const hasSameNetwork =
+                currentConfig?.network?.alias === configuration.network?.alias &&
+                currentConfig?.network?.api === configuration.network?.api;
+            const hasSameArkConnectConfig =
+                currentConfig?.arkconnectConfig?.enabled === configuration.arkconnectConfig?.enabled &&
+                currentConfig?.arkconnectConfig?.vaultUrl === configuration.arkconnectConfig?.vaultUrl;
+
+            if (hasSameNetwork && hasSameArkConnectConfig) {
+                configurationRef.current = configuration;
+
+                return;
+            }
+
             configurationRef.current = configuration;
 
             setState((previous) => ({
@@ -510,46 +528,46 @@ export default function ArkConnectProvider({
                 return;
             }
 
-            const votingForAddress = stateRef.current.votingFor?.address ?? null;
+            const votes: string[] = [];
+            const unvotes: string[] = [];
+            const currentVotingFor = stateRef.current.votingFor?.address ?? null;
 
-            const voteData: Record<string, ArkConnectVoteTransaction> = {};
+            if (address !== currentVotingFor) {
+                votes.push(address);
 
-            if (address !== votingForAddress) {
-                if (votingForAddress) {
-                    voteData.unvote = {
-                        amount: 0,
-                        [delegateAddressKey]: votingForAddress,
-                    };
+                if (currentVotingFor) {
+                    unvotes.push(currentVotingFor);
                 }
-
-                voteData.vote = {
-                    amount: 0,
-                    [delegateAddressKey]: address,
-                };
-            } else {
-                voteData.unvote = {
-                    amount: 0,
-                    [delegateAddressKey]: address,
-                };
+            } else if (currentVotingFor) {
+                unvotes.push(currentVotingFor);
             }
 
+            if (votes.length === 0 && unvotes.length === 0) {
+                return;
+            }
+
+            const voteRequest: SignVoteRequest = {
+                votes,
+                unvotes,
+            };
+
             try {
-                await extension.signVote(voteData);
+                await extension.signVote(voteRequest);
 
                 if (voteTimerRef.current) {
                     clearTimeout(voteTimerRef.current);
                 }
 
                 let attempts = 0;
-                const initialVotingForAddress = votingForAddress;
+                const initialVotingForAddress = currentVotingFor;
 
                 const updateLoop = async () => {
                     attempts++;
 
                     await updateVote(stateRef.current.address);
 
-                    const currentVotingFor = stateRef.current.votingFor?.address ?? null;
-                    if (attempts > MAX_VOTE_CHECK_ATTEMPTS || currentVotingFor !== initialVotingForAddress) {
+                    const updatedVotingFor = stateRef.current.votingFor?.address ?? null;
+                    if (attempts > MAX_VOTE_CHECK_ATTEMPTS || updatedVotingFor !== initialVotingForAddress) {
                         if (voteTimerRef.current) {
                             clearTimeout(voteTimerRef.current);
                             voteTimerRef.current = null;
@@ -566,7 +584,7 @@ export default function ArkConnectProvider({
                 // noop
             }
         },
-        [delegateAddressKey, getExtension, updateVote],
+        [getExtension, updateVote],
     );
 
     const performSend = useCallback(
@@ -576,18 +594,19 @@ export default function ArkConnectProvider({
                 return;
             }
 
-            const parsedAmount = typeof amount === "string" ? parseFloat(amount) : amount;
-            if (Number.isNaN(parsedAmount)) {
+            const value = typeof amount === "number" ? amount.toString() : amount;
+            if (!value || Number.isNaN(Number(value))) {
                 throw new Error(`There was a problem determining Transaction Amount "${amount}"`);
             }
 
+            const transactionRequest: SignTransactionRequest = {
+                to: address,
+                value,
+            };
+
             try {
-                await extension.signTransaction({
-                    value: parsedAmount.toString(),
-                    to: address,
-                });
-            } catch (error) {
-                console.error("signTransaction error", error);
+                await extension.signTransaction(transactionRequest);
+            } catch {
                 // noop
             }
         },
@@ -712,10 +731,7 @@ export default function ArkConnectProvider({
         configure(configuration);
     }, [configuration, configure]);
 
-    const isArkConnectEnabled = useMemo(
-        () => Boolean(configuration.arkconnectConfig?.enabled),
-        [configuration.arkconnectConfig],
-    );
+    const isArkConnectEnabled = useMemo(() => Boolean(state.arkconnectConfig?.enabled), [state.arkconnectConfig]);
 
     const contextValue = useMemo<IArkConnectContextType>(
         () => ({
@@ -726,6 +742,7 @@ export default function ArkConnectProvider({
             showValidatorOnStandbyMessage,
             isSupported,
             delegateAddressKey,
+            configure,
             refresh,
             connect,
             disconnect,
@@ -755,6 +772,7 @@ export default function ArkConnectProvider({
             state,
             votingForAddress,
             isArkConnectEnabled,
+            configure,
         ],
     );
 
