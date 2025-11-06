@@ -4,22 +4,82 @@ export type ArkConnectIgnoredToastType = "network" | "resigned" | "standby";
 
 export type ArkConnectEvent = "addressChanged" | "connected" | "disconnected" | "lockToggled";
 
-export interface ArkConnectVoteTransaction {
-    amount: number;
-    delegateAddress?: string;
-    address?: string;
-}
-
-export interface ArkConnectVotePayload {
-    vote?: ArkConnectVoteTransaction;
-    unvote?: ArkConnectVoteTransaction;
-}
-
-export interface ArkConnectTransferPayload {
+export interface SignTransactionRequest {
     value: string;
     gasPrice?: string;
     gasLimit?: string;
     to: string;
+}
+
+export interface SignTransactionResponse {
+    id: string;
+    sender: string;
+    receiver: string;
+    exchangeCurrency: string;
+    amount: number;
+    convertedAmount: number;
+    fee: number;
+    convertedFee: number;
+    total: number;
+    convertedTotal: number;
+}
+
+export interface SignVoteRequest {
+    votes: string[];
+    unvotes: string[];
+    gasPrice?: string;
+    gasLimit?: string;
+}
+
+export interface SignVoteResponse {
+    id: string;
+    sender: string;
+    voteAddress?: string;
+    voteName?: string;
+    votePublicKey?: string;
+    unvoteAddress?: string;
+    unvoteName?: string;
+    unvotePublicKey?: string;
+    exchangeCurrency: string;
+    fee: number;
+    convertedFee: number;
+}
+
+export enum NetworkType {
+    DEVNET = "Devnet",
+    MAINNET = "Mainnet",
+}
+
+export enum ExtensionSupportedEvent {
+    AddressChanged = "addressChanged",
+    Disconnected = "disconnected",
+    Connected = "connected",
+    LockToggled = "lockToggled",
+}
+
+export interface AddressChangedEventData {
+    type: ExtensionSupportedEvent.AddressChanged;
+    data: {
+        wallet: {
+            address: string;
+            coin: string;
+            network: NetworkType;
+        };
+    };
+}
+
+interface EventResponse {
+    [ExtensionSupportedEvent.AddressChanged]: AddressChangedEventData;
+    [ExtensionSupportedEvent.LockToggled]: LockToggledEventData;
+    [ExtensionSupportedEvent.Connected]: never;
+    [ExtensionSupportedEvent.Disconnected]: never;
+}
+
+export interface LockToggledEventData {
+    type: ExtensionSupportedEvent.AddressChanged;
+    data: {
+        isLocked: boolean;
+    };
 }
 
 export interface ArkConnectExtension {
@@ -28,11 +88,11 @@ export interface ArkConnectExtension {
     isConnected: () => Promise<boolean>;
     getAddress: () => Promise<string>;
     getNetwork: () => Promise<string>;
-    signVote: (payload: ArkConnectVotePayload) => Promise<void>;
-    signTransaction: (payload: ArkConnectTransferPayload) => Promise<void>;
-    on: (event: ArkConnectEvent, callback: (payload: any) => void) => void;
+    signTransaction: (transactionRequest: SignTransactionRequest) => Promise<SignTransactionResponse>;
+    signVote: (voteRequest: SignVoteRequest) => Promise<SignVoteResponse>;
+    on: <T extends ExtensionSupportedEvent>(eventName: T, callback: (data: EventResponse[T]) => void) => void;
     off?: (event: ArkConnectEvent, callback: (payload: any) => void) => void;
-    version?: () => string | Promise<string> | undefined;
+    version?: () => string;
 }
 
 export interface ArkConnectConfiguration {
@@ -68,6 +128,7 @@ export interface ArkConnectComputedState {
 }
 
 export interface ArkConnectActions {
+    configure: (configuration: ArkConnectConfiguration) => void;
     refresh: () => Promise<void>;
     connect: () => Promise<void>;
     disconnect: () => Promise<void>;
