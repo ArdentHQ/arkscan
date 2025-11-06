@@ -58,7 +58,6 @@ function ArkVaultButton({
         <div className="mt-2 w-full">
             {isArkConnectEnabled && (
                 <div className="flex w-full flex-col">
-                    {/* @TODO: handle arkconnect functionality - https://app.clickup.com/t/86dxxbq8r */}
                     {!!arkconnectButton ? (
                         arkconnectButton
                     ) : (
@@ -183,7 +182,6 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
                 <div className="h-1px flex-1 border-t border-theme-secondary-300 dark:border-theme-dark-700"></div>
             </div>
 
-            {/* @TODO: handle arkconnect functionality - https://app.clickup.com/t/86dxxbq8r */}
             <ArkVaultButton amount={amount} walletUri={walletUri} />
         </DropdownPopup>
     );
