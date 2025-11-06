@@ -583,10 +583,11 @@ export default function ArkConnectProvider({
 
             try {
                 await extension.signTransaction({
-                    amount: parsedAmount,
-                    receiverAddress: address,
+                    value: parsedAmount.toString(),
+                    to: address,
                 });
-            } catch {
+            } catch (error) {
+                console.error("signTransaction error", error);
                 // noop
             }
         },
