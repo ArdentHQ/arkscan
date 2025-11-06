@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
-import { useConfig } from "@/Providers/Config/ConfigContext";
 import MultiSelect from "@/Components/General/MultiSelect";
 import MultiSelectTags from "@/Components/General/MultiSelectTags";
+import useConfig from "@/hooks/use-config";
 
 interface TransactionColumnsSelectProps {
     value: string[];

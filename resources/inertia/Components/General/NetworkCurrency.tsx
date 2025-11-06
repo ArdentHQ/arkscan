@@ -1,4 +1,4 @@
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import Currency from "./Currency";
 
 export function NetworkCurrency({ value, decimals = 8 }: { value: string; decimals?: number }) {

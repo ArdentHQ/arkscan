@@ -1,4 +1,4 @@
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import { ITransaction } from "@/types/generated";
 import classNames from "@/utils/class-names";
 import Fee from "./Fee";
