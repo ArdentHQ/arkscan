@@ -16,8 +16,10 @@ export interface ArkConnectVotePayload {
 }
 
 export interface ArkConnectTransferPayload {
-    amount: number;
-    receiverAddress: string;
+    value: string;
+    gasPrice?: string;
+    gasLimit?: string;
+    to: string;
 }
 
 export interface ArkConnectExtension {
