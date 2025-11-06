@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
                 'network'      => Network::data(),
                 'settings'     => Settings::data(),
                 'productivity' => IConfigProductivity::from(config('arkscan.productivity')),
-                'arkconnect'   => IConfigArkconnect::from([
+                'arkconnectConfig'   => IConfigArkconnect::from([
                     'enabled'  => config('arkscan.arkconnect.enabled'),
                     'vaultUrl' => config('arkscan.urls.vault_url'),
                 ]),

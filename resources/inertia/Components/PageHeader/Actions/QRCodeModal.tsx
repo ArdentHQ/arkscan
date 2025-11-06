@@ -22,7 +22,7 @@ function ArkVaultButton({
     walletUri: string;
 }) {
     const { t } = useTranslation();
-    const { arkconnect } = useConfig();
+    const { arkconnectConfig } = useConfig();
 
     let arkconnectButton = null;
     if (isOnSameNetwork) {
@@ -52,7 +52,7 @@ function ArkVaultButton({
 
     return (
         <div className="mt-2 w-full">
-            {arkconnect!.enabled && (
+            {arkconnectConfig.enabled && (
                 <div className="flex w-full flex-col">
                     {/* @TODO: handle arkconnect functionality - https://app.clickup.com/t/86dxxbq8r */}
                     {!!arkconnectButton ? (
@@ -75,7 +75,7 @@ function ArkVaultButton({
                 </div>
             )}
 
-            {!arkconnect!.enabled && (
+            {!arkconnectConfig.enabled && (
                 <div>
                     <ExternalLink
                         url={walletUri}
@@ -93,10 +93,10 @@ function ArkVaultButton({
 function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string }) {
     const { t } = useTranslation();
     const [showOptions, setShowOptions] = useState(false);
-    const { arkconnect, network } = useConfig();
+    const { arkconnectConfig, network } = useConfig();
     const [amount, setAmount] = useState<number | undefined>(undefined);
 
-    const urlBuilder = new URLBuilder(arkconnect!.vaultUrl);
+    const urlBuilder = new URLBuilder(arkconnectConfig.vaultUrl);
     urlBuilder.setNethash(network!.nethash);
     urlBuilder.setCoin(network!.coin);
 
