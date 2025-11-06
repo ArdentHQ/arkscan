@@ -15,14 +15,19 @@ import ValidatedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Wallet
 import { ITab } from "@/Providers/Tabs/types";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import WalletTransactionsTab from "./tabs/Transactions";
+import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
+import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
+import { IWallet } from "../../types/generated";
 
 const WalletTabsWrapper = ({
     transactions,
     blocks,
+    voters,
     filters,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
+    voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
     return (
@@ -34,7 +39,7 @@ const WalletTabsWrapper = ({
                 { text: "Voters", value: "voters" },
             ]}
         >
-            <WalletTabs transactions={transactions} blocks={blocks} filters={filters} />
+            <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
         </TabsProvider>
     );
 };
@@ -42,10 +47,12 @@ const WalletTabsWrapper = ({
 const WalletTabs = ({
     transactions,
     blocks,
+    voters,
     filters,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
+    voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -129,11 +136,25 @@ const WalletTabs = ({
                     />
                 </>
             )}
+
+            {currentTab === "voters" && (
+                <>
+                    <VotersTableWrapper voters={voters} mobile={<VotersMobileTableWrapper voters={voters} />} />
+                </>
+            )}
         </>
     );
 };
 
-export default function Wallet({ transactions, blocks, wallet, network, filters, ...props }: PageProps<WalletProps>) {
+export default function Wallet({
+    transactions,
+    blocks,
+    wallet,
+    voters,
+    network,
+    filters,
+    ...props
+}: PageProps<WalletProps>) {
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {
@@ -150,7 +171,7 @@ export default function Wallet({ transactions, blocks, wallet, network, filters,
                 <Overview wallet={wallet} />
 
                 <PageHandlerProvider>
-                    <WalletTabsWrapper transactions={transactions} blocks={blocks} filters={filters} />
+                    <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
                 </PageHandlerProvider>
             </ConfigProvider>
         </>

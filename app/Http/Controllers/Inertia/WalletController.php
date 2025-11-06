@@ -9,6 +9,7 @@ use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
+use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
@@ -62,7 +63,19 @@ final class WalletController
                 return [
                     ...$paginator->toArray(),
 
-                    'meta' => UI::getPaginationData($paginator),
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getValidatedBlocksNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+
+            'voters' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getVoters($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getVotersNoResultsMessageProperty($paginator->count()),
                 ];
             }),
 
@@ -97,6 +110,14 @@ final class WalletController
             ->withScope(OrderByHeightScope::class)
             ->paginate($this->perPage(), page: $this->page())
             ->through(fn (Block $block) => BlockDTO::fromModel($block));
+    }
+
+    public function getVoters(Wallet $wallet): AbstractPaginator
+    {
+        return Wallet::where('attributes->vote', $wallet->address)
+            ->withScope(OrderByBalanceScope::class)
+            ->paginate($this->perPage(), page: $this->page())
+            ->through(fn (Wallet $voter) => WalletDTO::fromModel($voter));
     }
 
     private function page(): int
@@ -198,6 +219,24 @@ final class WalletController
 
         if ($count === 0) {
             return trans('tables.transactions.no_results.no_results');
+        }
+
+        return null;
+    }
+
+    private function getValidatedBlocksNoResultsMessageProperty(int $count): null|string
+    {
+        if ($count === 0) {
+            return trans('tables.wallet.blocks.no_results');
+        }
+
+        return null;
+    }
+
+    private function getVotersNoResultsMessageProperty(int $count): null|string
+    {
+        if ($count === 0) {
+            return trans('tables.wallets.no_results');
         }
 
         return null;

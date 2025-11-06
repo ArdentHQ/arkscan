@@ -131,6 +131,7 @@ it('should make an instance', function () {
             'hasUsername'                 => true,
             'isResigned'                  => false,
             'voteUrl'                     => null,
+            'votePercentage'              => null,
         ],
         'recipient' => [
             'address'                     => $walletTo->address,
@@ -155,6 +156,7 @@ it('should make an instance', function () {
             'hasUsername'                 => true,
             'isResigned'                  => false,
             'voteUrl'                     => null,
+            'votePercentage'              => null,
         ],
     ]);
 });
@@ -279,6 +281,7 @@ it('should make an instance for a vote transaction', function () {
             'hasUsername'                 => true,
             'isResigned'                  => false,
             'voteUrl'                     => null,
+            'votePercentage'              => null,
         ],
         'recipient' => null,
     ]);
@@ -459,6 +462,7 @@ it('should make an instance for a validator resignation transaction', function (
                 'hasUsername'                 => true,
                 'isResigned'                  => false,
                 'voteUrl'                     => null,
+                'votePercentage'              => null,
             ],
             'recipient' => null,
         ],
@@ -486,6 +490,7 @@ it('should make an instance for a validator resignation transaction', function (
             'hasUsername'                 => true,
             'isResigned'                  => false,
             'voteUrl'                     => null,
+            'votePercentage'              => null,
         ],
         'recipient' => null,
     ]);

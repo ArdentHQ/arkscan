@@ -494,6 +494,120 @@ describe('Blocks Tab', function () {
     })->with('resolutions');
 });
 
+describe('Voters Tab', function () {
+    beforeEach(function () {
+        $this->wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+    });
+
+    it('should navigate to tab and back', function ($resolution) {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $voters = Wallet::factory()
+            ->count(10)
+            ->create([
+                'attributes' => [
+                    'vote' => $this->wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $voters, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('5 results', ignoreCase: true);
+
+            if ($resolution['width'] < 768) {
+                $browser->click('[data-testid="tabs:dropdown:button"]')
+                    ->waitForText('Voters')
+                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Voters"]');
+            } else {
+                $browser->click('button#tab-voters');
+            }
+
+            $browser->waitForText('10 results', ignoreCase: true);
+
+            foreach ($voters as $voter) {
+                if ($resolution['width'] <= 640) {
+                    $browser->assertSee(substr($voter->address, 0, 5).'…'.substr($voter->address, -5));
+                } else {
+                    $browser->assertSee(substr($voter->address, 0, 7));
+                }
+            }
+
+            if ($resolution['width'] < 768) {
+                $browser->click('[data-testid="tabs:dropdown:button"]')
+                    ->waitForText('Transactions')
+                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Transactions"]');
+            } else {
+                $browser->click('button#tab-transactions');
+            }
+
+            $browser->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should show tab on page load from query string', function ($resolution) {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $voters = Wallet::factory()
+            ->count(10)
+            ->create([
+                'attributes' => [
+                    'vote' => $this->wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $voters, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'tab' => 'voters'])
+                ->waitForText('10 results', ignoreCase: true);
+
+            foreach ($voters as $voter) {
+                if ($resolution['width'] <= 640) {
+                    $browser->assertSee(substr($voter->address, 0, 5).'…'.substr($voter->address, -5));
+                } else {
+                    $browser->assertSee(substr($voter->address, 0, 7));
+                }
+            }
+
+            if ($resolution['width'] < 768) {
+                $browser->click('[data-testid="tabs:dropdown:button"]')
+                    ->waitForText('Transactions')
+                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Transactions"]');
+            } else {
+                $browser->click('button#tab-transactions');
+            }
+
+            $browser->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+});
+
 dataset('resolutions', [
     'desktop' => [['width' => 1280, 'height' => 1024]],
     'lg'      => [['width' => 1024, 'height' => 768]],

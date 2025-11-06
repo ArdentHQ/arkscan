@@ -41,6 +41,7 @@ class Wallet extends Data
         public ?array $attributes,
         public ?self $vote,
         public ?string $voteUrl,
+        public ?float $votePercentage,
     ) {
     }
 
@@ -82,6 +83,7 @@ class Wallet extends Data
             totalForged: (string) $viewModel->totalForged(),
             vote: $votedWallet,
             voteUrl: $voteUrl,
+            votePercentage: $viewModel->votePercentage(),
         );
     }
 }
