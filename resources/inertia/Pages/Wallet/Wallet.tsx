@@ -33,6 +33,29 @@ const WalletTabsWrapper = ({
     return (
         <TabsProvider
             defaultSelected="transactions"
+            queryStringDefaults={{
+                transactions: {
+                    page: 1,
+                    "per-page": 25,
+                    outgoing: true,
+                    incoming: true,
+                    transfers: true,
+                    multipayments: true,
+                    votes: true,
+                    validator: true,
+                    username: true,
+                    contract_deployment: true,
+                    others: true,
+                },
+                blocks: {
+                    page: 1,
+                    "per-page": 25,
+                },
+                voters: {
+                    page: 1,
+                    "per-page": 25,
+                },
+            }}
             tabs={[
                 { text: "Transactions", value: "transactions" },
                 { text: "Validated Blocks", value: "blocks" },
@@ -99,14 +122,16 @@ const WalletTabs = ({
             pollCurrentTab(currentTab);
         }
 
-        onTabChange((tab: ITab) => {
+        onTabChange((tab: ITab, isFirstLoad: boolean) => {
             if (pollingTimerRef.current) {
                 clearTimeout(pollingTimerRef.current);
             }
 
             pollingTimerRef.current = setTimeout(() => pollCurrentTab(tab.value), 8000);
 
-            pollCurrentTab(tab.value);
+            if (isFirstLoad) {
+                pollCurrentTab(tab.value);
+            }
         });
 
         setRefreshPage((callback?: CallableFunction) => {
