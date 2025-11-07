@@ -2,7 +2,7 @@ import { IWallet } from "@/types/generated";
 import WalletOverviewItemEntry from "../ItemEntry";
 import { useTranslation } from "react-i18next";
 import classNames from "@/utils/class-names";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import percentage from "@/utils/percentage";
 
 export default function WalletOverviewValidatorProductivity({ wallet }: { wallet: IWallet }) {

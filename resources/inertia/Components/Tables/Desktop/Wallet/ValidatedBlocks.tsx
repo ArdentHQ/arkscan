@@ -4,7 +4,6 @@ import { IPaginatedResponse } from "@/types";
 import { IBlock } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
-import { useConfig } from "@/Providers/Config/ConfigContext";
 import TableHeader from "../TableHeader";
 import classNames from "@/utils/class-names";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
@@ -12,10 +11,9 @@ import Height from "@/Components/Block/Height";
 import Age from "@/Components/Model/Age";
 import Reward from "@/Components/Block/Reward";
 import { useState } from "react";
-import { usePage } from "@inertiajs/react";
-import { PageProps } from "@inertiajs/core";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import ExportBlocksModal from "./ExportBlocksModal";
+import useConfig from "@/hooks/use-config";
 
 export function Row({ row }: { row: IBlock }) {
     const { network } = useConfig();
@@ -185,10 +183,7 @@ export default function ValidatedBlocksTableWrapper({
 
 export function ValidatedBlocksHeaderActions({ hasForgedBlocks }: { hasForgedBlocks: boolean }) {
     const { t } = useTranslation();
-    const { network, settings } = useConfig();
-    const {
-        props: { wallet, rates },
-    } = usePage<PageProps<WalletProps>>();
+    const { wallet, rates, network, settings } = useConfig<WalletProps>();
     const [isBlocksExportModalOpen, setIsBlocksExportModalOpen] = useState(false);
 
     return (

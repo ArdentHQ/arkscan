@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import ID from "@/Components/Transaction/ID";
 import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Transaction/Amount";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import Fee from "@/Components/Transaction/Fee";
 import Addressing from "@/Components/Transaction/Addressing";
 import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Wallet/Transactions";

@@ -5,12 +5,12 @@ import DropdownPopup from "@/Components/General/Dropdown/DropdownPopup";
 import QRCode from "react-qr-code";
 import { useState } from "react";
 import ExternalLink from "@/Components/General/ExternalLink";
-import { useConfig } from "@/Providers/Config/ConfigContext";
 import { URLBuilder } from "@ardenthq/arkvault-url";
 import Input from "@/Components/Input/Input";
 import ArkConnectDisabledAction from "@/Components/General/ArkConnect/DisabledAction";
 import QRCodeIcon from "@ui/icons/qr-code.svg?react";
 import Tooltip from "@/Components/General/Tooltip";
+import useConfig from "@/hooks/use-config";
 
 function ArkVaultButton({
     hasAmount,

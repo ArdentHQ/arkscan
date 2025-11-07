@@ -1,10 +1,10 @@
-import { useConfig } from "@/Providers/Config/ConfigContext";
 import { ITransaction } from "@/types/generated";
 import { currency, networkCurrency } from "@/utils/number-formatter";
 import HintSmallIcon from "@ui/icons/hint-small.svg?react";
 import { useTranslation } from "react-i18next";
 import AmountSmall from "./AmountSmall";
 import Tooltip from "./Tooltip";
+import useConfig from "@/hooks/use-config";
 
 function AmountOutput({
     transaction,
