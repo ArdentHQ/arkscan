@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import WebhooksContext, { IWebhooksContext, WebhookHandler } from "./WebhooksContext";
 
 declare global {
@@ -20,10 +20,13 @@ type ListenerRegistry = Record<string, Record<string, Set<WebhookHandler>>>;
 export default function WebhooksProvider({
     children,
     broadcasting,
+    currency,
 }: {
     children: React.ReactNode;
     broadcasting: string;
+    currency: string;
 }) {
+    const [currentCurrency, setCurrentCurrency] = useState(currency);
     const listenersRef = useRef<ListenerRegistry>({});
 
     const getEcho = useCallback(() => {
@@ -95,6 +98,26 @@ export default function WebhooksProvider({
         },
         [getEcho, remove],
     );
+
+    const reloadPriceTicker = useCallback(() => {
+        // reload price ticker
+        console.log("reload price ticker");
+    }, []);
+
+    useEffect(() => {
+        listen(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
+
+        window.Livewire.on("currencyChanged", (currency: string) => {
+            remove(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
+            listen(`currency-update.${currency}`, "CurrencyUpdate", reloadPriceTicker);
+
+            setCurrentCurrency(currency);
+        });
+
+        return () => {
+            remove(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
+        };
+    }, [currentCurrency]);
 
     const value = useMemo<IWebhooksContext>(
         () => ({

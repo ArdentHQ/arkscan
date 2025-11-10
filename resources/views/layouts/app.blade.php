@@ -39,6 +39,7 @@
                 </span>
             </x-ark-footer>
 
+            {{-- TOOD: Remove in favor of inertia listener once fully migrated to Inertia --}}
             <x-webhooks.currency-update :currency="Settings::currency()" />
 
             @if (config('arkscan.arkconnect.enabled'))
