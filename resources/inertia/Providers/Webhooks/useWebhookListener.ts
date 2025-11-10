@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import useWebhooks from "./useWebhooks";
 import { WebhookHandler } from "./WebhooksContext";
 
-export default function useWebhookListener(channel: string | null, event: string | null, handler: WebhookHandler) {
+export default function useWebhookListener(channel: string, event: string, handler: WebhookHandler) {
     const { listen, enabled } = useWebhooks();
     
     useEffect(() => {
-        if (!channel || !event || !enabled) {
+        if (!enabled) {
             return;
         }
 
