@@ -68,6 +68,7 @@ export type IRequestData = {
     settings: ISettings;
     arkconnectConfig: IConfigArkconnect;
     pagination: IConfigPagination;
+    broadcasting: string;
 };
 export type ISettings = {
     currency: string;
