@@ -355,6 +355,7 @@ return [
                 'id'                   => 'Block ID',
                 'timestamp'            => 'Block Date',
                 'numberOfTransactions' => 'Transactions',
+                'volume'               => 'Volume [:networkCurrency]',
                 'total'                => 'Total Rewards [:networkCurrency]',
                 'totalFiat'            => 'Total Rewards [:userCurrency]',
                 'rate'                 => 'Rate [:userCurrency]',

@@ -4,7 +4,6 @@ import { IPaginatedResponse } from "@/types";
 import { IBlock } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
-import { useConfig } from "@/Providers/Config/ConfigContext";
 import TableHeader from "../TableHeader";
 import classNames from "@/utils/class-names";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
@@ -12,6 +11,10 @@ import Height from "@/Components/Block/Height";
 import Age from "@/Components/Model/Age";
 import Reward from "@/Components/Block/Reward";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+import { useState } from "react";
+import { WalletProps } from "@/Pages/Wallet.contracts";
+import ExportBlocksModal from "./ExportBlocksModal";
+import useConfig from "@/hooks/use-config";
 
 export function Row({ row }: { row: IBlock }) {
     const { network } = useConfig();
@@ -46,6 +49,7 @@ export function ValidatedBlocksTable({
 }) {
     const { t } = useTranslation();
     const { network } = useConfig();
+    const hasForgedBlocks = (blocks.total ?? blocks.data?.length ?? 0) > 0;
 
     return (
         <Table
@@ -54,7 +58,7 @@ export function ValidatedBlocksTable({
             paginator={blocks}
             rowComponent={Row}
             mobile={mobile}
-            headerActions={<HeaderActions />}
+            headerActions={<ValidatedBlocksHeaderActions hasForgedBlocks={hasForgedBlocks} />}
             noResultsMessage={blocks.noResultsMessage}
             columns={
                 <>
@@ -159,7 +163,13 @@ export default function ValidatedBlocksTableWrapper({
 
         return (
             <>
-                <LoadingTable mobile={mobile} paginator={blocks} rowCount={rowCount} columns={columns} />
+                <LoadingTable
+                    mobile={mobile}
+                    paginator={blocks}
+                    rowCount={rowCount}
+                    header={<ValidatedBlocksHeaderActions hasForgedBlocks={false} />}
+                    columns={columns}
+                />
             </>
         );
     }
@@ -171,21 +181,36 @@ export default function ValidatedBlocksTableWrapper({
     );
 }
 
-function HeaderActions() {
+export function ValidatedBlocksHeaderActions({ hasForgedBlocks }: { hasForgedBlocks: boolean }) {
     const { t } = useTranslation();
+    const { wallet, rates, network, settings } = useConfig<WalletProps>();
+    const [isBlocksExportModalOpen, setIsBlocksExportModalOpen] = useState(false);
 
     return (
         <div className="flex items-center justify-end space-x-3">
             <div className="flex-1">
                 <button
                     type="button"
+                    data-testid="wallet:blocks:export-button"
                     className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
-                    disabled
+                    disabled={!hasForgedBlocks}
+                    onClick={() => setIsBlocksExportModalOpen(true)}
                 >
                     <UnderlineArrowDownIcon className="h-4 w-4" />
 
                     <span>{t("actions.export")}</span>
                 </button>
+
+                <ExportBlocksModal
+                    isOpen={isBlocksExportModalOpen}
+                    onClose={() => setIsBlocksExportModalOpen(false)}
+                    address={wallet.address}
+                    network={network}
+                    userCurrency={settings?.currency || ""}
+                    rates={rates}
+                    canBeExchanged={network?.canBeExchanged || false}
+                    filename={wallet.username || wallet.address}
+                />
             </div>
         </div>
     );

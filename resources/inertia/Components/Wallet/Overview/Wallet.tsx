@@ -2,7 +2,7 @@ import { IWallet } from "@/types/generated";
 import WalletOverviewItem from "./Item";
 import { useTranslation } from "react-i18next";
 import WalletOverviewItemEntry from "./ItemEntry";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import Address from "../Address";
 import FiatValue from "@/Components/General/FiatValue";
 import Tooltip from "@/Components/General/Tooltip";

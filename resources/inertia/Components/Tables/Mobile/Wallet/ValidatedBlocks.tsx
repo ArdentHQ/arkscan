@@ -1,15 +1,17 @@
-import MobileTable from "../Table";
-import MobileTableRow from "../Row";
-import TableCell from "../TableCell";
-import { MobileValidatedBlocksSkeletonTable } from "../Skeleton/Wallet/ValidatedBlocks";
+import MobileTable from "@/Components/Tables/Mobile/Table";
+import MobileTableRow from "@/Components/Tables/Mobile/Row";
+import TableCell from "@/Components/Tables/Mobile/TableCell";
+import { MobileValidatedBlocksSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Wallet/ValidatedBlocks";
 import { IPaginatedResponse } from "@/types";
 import { IBlock } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+import { ValidatedBlocksHeaderActions } from "@/Components/Tables/Desktop/Wallet/ValidatedBlocks";
+import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 
 export function ValidatedBlocksMobileTable({ blocks }: { blocks: IPaginatedResponse<IBlock> }) {
     const { t } = useTranslation();
@@ -71,7 +73,14 @@ export default function ValidatedBlocksMobileTableWrapper({
     const { isLoading } = usePageHandler();
 
     if (!blocks || isLoading) {
-        return <MobileValidatedBlocksSkeletonTable rowCount={rowCount} />;
+        return (
+            <div className="pt-6">
+                <TableHeaderWrapper resultCount={0} breakpoint="md">
+                    <ValidatedBlocksHeaderActions hasForgedBlocks={false} />
+                </TableHeaderWrapper>
+                <MobileValidatedBlocksSkeletonTable rowCount={rowCount} />
+            </div>
+        );
     }
 
     return (

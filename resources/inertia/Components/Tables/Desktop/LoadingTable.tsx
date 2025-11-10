@@ -5,6 +5,7 @@ import TableHeader, { TableHeaderTooltip } from "./TableHeader";
 import { IPaginatedResponse } from "@/types";
 import Pagination from "../Pagination/Pagination";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+import { TableHeaderWrapper } from "./Table";
 
 export interface ILoadingTableColumn {
     name?: string;
@@ -24,11 +25,13 @@ export function LoadingTableWrapper({
     rowCount,
     indicatorHeight = "h-[17px]",
     withPagination = false,
+    header,
 }: {
     columns: Array<ILoadingTableColumn>;
     rowCount: number;
     indicatorHeight?: string;
     withPagination?: boolean;
+    header?: React.ReactNode;
 }) {
     return (
         <div
@@ -37,9 +40,17 @@ export function LoadingTableWrapper({
                 "pb-8": !withPagination,
             })}
         >
+            {!!header && (
+                <TableHeaderWrapper resultCount={0} breakpoint="md">
+                    {header}
+                </TableHeaderWrapper>
+            )}
+
             <div
                 className={classNames({
-                    "validator-monitor hidden w-full overflow-hidden rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "validator-monitor hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block":
+                        true,
+                    "rounded-t-xl": !header,
                     "rounded-b-xl": !withPagination,
                 })}
             >
@@ -146,12 +157,14 @@ export default function LoadingTable({
     mobile,
     paginator,
     indicatorHeight = "h-[17px]",
+    header,
 }: {
     columns: Array<ILoadingTableColumn>;
     rowCount: number;
     mobile?: React.ReactNode;
     paginator?: IPaginatedResponse<any>;
     indicatorHeight?: string;
+    header?: React.ReactNode;
 }) {
     let isLoading = false;
     if (paginator) {
@@ -165,6 +178,7 @@ export default function LoadingTable({
                 rowCount={rowCount}
                 columns={columns}
                 indicatorHeight={indicatorHeight}
+                header={header}
             />
 
             {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}

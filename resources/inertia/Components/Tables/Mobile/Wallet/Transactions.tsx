@@ -8,10 +8,12 @@ import { useTranslation } from "react-i18next";
 import ID from "@/Components/Transaction/ID";
 import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Transaction/Amount";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import Fee from "@/Components/Transaction/Fee";
 import Addressing from "@/Components/Transaction/Addressing";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Wallet/Transactions";
+import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 
 export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
     const { t } = useTranslation();
@@ -67,7 +69,15 @@ export default function TransactionsMobileTableWrapper({
     const { isLoading } = usePageHandler();
 
     if (!transactions || isLoading) {
-        return <MobileTransactionsSkeletonTable rowCount={rowCount} />;
+        return (
+            <div className="pt-6">
+                <TableHeaderWrapper resultCount={0} breakpoint="md">
+                    <TransactionsHeaderActions hasTransactions={false} />
+                </TableHeaderWrapper>
+
+                <MobileTransactionsSkeletonTable rowCount={rowCount} />
+            </div>
+        );
     }
 
     return (

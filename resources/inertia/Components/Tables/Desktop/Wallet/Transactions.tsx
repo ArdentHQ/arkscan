@@ -9,17 +9,15 @@ import Amount from "@/Components/Transaction/Amount";
 import Fee from "@/Components/Transaction/Fee";
 import { Table } from "../Table";
 import Method from "@/Components/Transaction/Method";
-import { useConfig } from "@/Providers/Config/ConfigContext";
 import Addressing from "@/Components/Transaction/Addressing";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import TableHeader from "../TableHeader";
 import { useState } from "react";
 import ExportTransactionsModal from "./ExportTransactionsModal";
-import { usePage } from "@inertiajs/react";
-import { PageProps } from "@inertiajs/core";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
+import useConfig from "@/hooks/use-config";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -68,7 +66,7 @@ export function TransactionsTable({
             paginator={transactions}
             rowComponent={Row}
             mobile={mobile}
-            headerActions={<HeaderActions hasTransactions={transactions.total > 0} />}
+            headerActions={<TransactionsHeaderActions hasTransactions={transactions.total > 0} />}
             noResultsMessage={transactions.noResultsMessage}
             columns={
                 <>
@@ -120,6 +118,7 @@ export default function TransactionsTableWrapper({
                     mobile={mobile}
                     paginator={transactions}
                     rowCount={rowCount}
+                    header={<TransactionsHeaderActions hasTransactions={false} />}
                     columns={[
                         {
                             name: t("tables.transactions.id"),
@@ -172,12 +171,9 @@ export default function TransactionsTableWrapper({
     );
 }
 
-function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
+export function TransactionsHeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
     const { t } = useTranslation();
-    const { network, settings } = useConfig();
-    const {
-        props: { wallet, rates },
-    } = usePage<PageProps<WalletProps>>();
+    const { wallet, rates, network, settings } = useConfig<WalletProps>();
 
     const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(false);
 
@@ -186,6 +182,7 @@ function HeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
             <div className="flex-1">
                 <button
                     type="button"
+                    data-testid="wallet:transactions:export-button"
                     className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
                     disabled={!hasTransactions}
                     onClick={() => setIsTransactionsExportModalOpen(true)}

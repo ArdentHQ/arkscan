@@ -1,11 +1,11 @@
 import Pagination from "@/Components/Tables/Pagination/Pagination";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import { IPaginatedResponse } from "@/types";
 import classNames from "@/utils/class-names";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
-function TableHeader({
+export function TableHeaderWrapper({
     breakpoint = "sm",
     resultCount,
     resultSuffix,
@@ -88,6 +88,8 @@ export function Table({
     const { pagination } = useConfig();
     const resultCount = paginator?.total ?? 0;
 
+    const showFooter = withFooter && paginator && resultCount > pagination?.per_page;
+
     return (
         <div
             ref={tableRef}
@@ -97,16 +99,16 @@ export function Table({
             })}
         >
             {withHeader && (
-                <TableHeader resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
+                <TableHeaderWrapper resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
                     {headerActions}
-                </TableHeader>
+                </TableHeaderWrapper>
             )}
 
             <div
                 className={classNames({
                     "hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
                     "rounded-t-xl": !withHeader,
-                    "rounded-b-xl": !withFooter || resultCount === 0,
+                    "rounded-b-xl": !showFooter,
                 })}
             >
                 <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
@@ -133,7 +135,7 @@ export function Table({
 
             {mobile}
 
-            {withFooter && paginator && resultCount > 0 && <Pagination paginator={paginator} tableRef={tableRef} />}
+            {showFooter && <Pagination paginator={paginator} tableRef={tableRef} />}
         </div>
     );
 }

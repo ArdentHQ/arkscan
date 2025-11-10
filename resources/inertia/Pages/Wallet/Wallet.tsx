@@ -6,7 +6,6 @@ import { IBlock, ITransaction } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
-import ConfigProvider from "@/Providers/Config/ConfigProvider";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
@@ -15,14 +14,19 @@ import ValidatedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Wallet
 import { ITab } from "@/Providers/Tabs/types";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import WalletTransactionsTab from "./tabs/Transactions";
+import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
+import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
+import { IWallet } from "../../types/generated";
 
 const WalletTabsWrapper = ({
     transactions,
     blocks,
+    voters,
     filters,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
+    voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
     return (
@@ -34,7 +38,7 @@ const WalletTabsWrapper = ({
                 { text: "Voters", value: "voters" },
             ]}
         >
-            <WalletTabs transactions={transactions} blocks={blocks} filters={filters} />
+            <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
         </TabsProvider>
     );
 };
@@ -42,10 +46,12 @@ const WalletTabsWrapper = ({
 const WalletTabs = ({
     transactions,
     blocks,
+    voters,
     filters,
 }: {
-    transactions: IPaginatedResponse<ITransaction>;
+    transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
+    voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -129,11 +135,17 @@ const WalletTabs = ({
                     />
                 </>
             )}
+
+            {currentTab === "voters" && (
+                <>
+                    <VotersTableWrapper voters={voters} mobile={<VotersMobileTableWrapper voters={voters} />} />
+                </>
+            )}
         </>
     );
 };
 
-export default function Wallet({ transactions, blocks, wallet, network, filters, ...props }: PageProps<WalletProps>) {
+export default function Wallet({ transactions, blocks, wallet, voters, network, filters }: PageProps<WalletProps>) {
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {
@@ -146,13 +158,11 @@ export default function Wallet({ transactions, blocks, wallet, network, filters,
         <>
             <Head>{metadata}</Head>
 
-            <ConfigProvider network={network} {...props}>
-                <Overview wallet={wallet} />
+            <Overview wallet={wallet} />
 
-                <PageHandlerProvider>
-                    <WalletTabsWrapper transactions={transactions} blocks={blocks} filters={filters} />
-                </PageHandlerProvider>
-            </ConfigProvider>
+            <PageHandlerProvider>
+                <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
+            </PageHandlerProvider>
         </>
     );
 }
