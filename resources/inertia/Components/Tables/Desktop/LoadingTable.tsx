@@ -184,7 +184,7 @@ export default function LoadingTable({
             {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
 
             {isLoading && paginator && (paginator?.total ?? 0) > 0 && (
-                <div className="px-6 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
+                <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
                     <Pagination paginator={paginator} />
                 </div>
             )}
