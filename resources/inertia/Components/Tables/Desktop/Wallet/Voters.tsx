@@ -7,6 +7,8 @@ import { Table } from "../Table";
 import useConfig from "@/hooks/use-config";
 import TableHeader from "../TableHeader";
 import Address from "@/Components/Wallet/Address";
+import useWebhookListener from "@/Providers/Webhooks/useWebhookListener";
+import { WalletProps } from "@/Pages/Wallet.contracts";
 
 export function Row({ row }: { row: IWallet }) {
     return (
@@ -67,6 +69,14 @@ export default function VotersTableWrapper({
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
+    const { wallet } = useConfig<WalletProps>();
+
+    const reloadVoters = () => {
+        window.Livewire.emit("reloadVoters");
+    };
+
+    useWebhookListener(`wallet-vote.${wallet.public_key}`, "WalletVote", reloadVoters);
+
     if (!voters) {
         const { t } = useTranslation();
         const { network } = useConfig();
