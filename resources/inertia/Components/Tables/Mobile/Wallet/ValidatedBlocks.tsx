@@ -6,7 +6,7 @@ import { IPaginatedResponse } from "@/types";
 import { IBlock } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
 import { ValidatedBlocksHeaderActions } from "@/Components/Tables/Desktop/Wallet/ValidatedBlocks";

@@ -1,4 +1,4 @@
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import { useTranslation } from "react-i18next";
 import Tooltip from "../Tooltip";
 

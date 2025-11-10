@@ -1,7 +1,7 @@
 import { IWallet } from "@/types/generated";
 import WalletOverviewItemEntry from "../ItemEntry";
 import { useTranslation } from "react-i18next";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import Info from "@/Components/General/Info";
 
 export default function WalletOverviewValidatorRank({ wallet }: { wallet: IWallet }) {

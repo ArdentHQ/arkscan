@@ -5,7 +5,7 @@ import { MobileVotersSkeletonTable } from "../Skeleton/Wallet/Voters";
 import { IPaginatedResponse } from "@/types";
 import { IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import Address from "@/Components/Wallet/Address";
 
 export function VotersMobileTable({ voters }: { voters: IPaginatedResponse<IWallet> }) {
