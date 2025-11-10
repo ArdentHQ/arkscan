@@ -50,7 +50,7 @@ function FilterComponent({
 
     return (
         <Dropdown
-            dropdownContentClasses="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 pb-0.5 rounded md:rounded-xl"
+            dropdownContentClasses="shadow-lg bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 pb-0.5 rounded md:rounded-xl"
             testId={testId}
             dropdownClasses="px-6 w-full md:px-8 table-filter md:w-[303px]"
             disabled={disabled}
