@@ -9,3 +9,9 @@ declare module "@inertiajs/core" {
         errors: ValidationErrors;
     }
 }
+
+declare global {
+    interface Window {
+        Livewire: any;
+    }
+}

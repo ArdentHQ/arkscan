@@ -23,7 +23,7 @@ createInertiaApp({
             arkconnectConfig: props.initialPage.props.arkconnectConfig as IConfigArkconnect,
         };
         root.render(
-            <WebhooksProvider broadcasting={props.initialPage.props.broadcasting}>
+            <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
                 <ArkConnectProvider configuration={configuration}>
                     <App {...props} />
                 </ArkConnectProvider>

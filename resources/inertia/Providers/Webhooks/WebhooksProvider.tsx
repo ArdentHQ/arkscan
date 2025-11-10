@@ -24,7 +24,6 @@ export default function WebhooksProvider({
     children: React.ReactNode;
     broadcasting: string;
 }) {
-    console.log("broadcasting", broadcasting);
     const listenersRef = useRef<ListenerRegistry>({});
 
     const getEcho = useCallback(() => {
