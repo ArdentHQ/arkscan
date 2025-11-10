@@ -209,7 +209,7 @@ export function TransactionsHeaderActions({ hasTransactions }: { hasTransactions
             </div>
 
             <div className="flex-1">
-                <Filter />
+                <Filter testId="wallet:transactions:filter" withSelectAll />
             </div>
         </div>
     );

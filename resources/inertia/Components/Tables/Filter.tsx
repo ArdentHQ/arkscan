@@ -8,7 +8,15 @@ import { IFilters } from "@/types";
 import { useFilter } from "@/Providers/Filter/FilterContext";
 import { IFilterEntry, IFilterOptionEntry } from "@/Providers/Filter/types";
 
-function FilterComponent({ disabled = false, withSelectAll = true }: { disabled?: boolean; withSelectAll?: boolean }) {
+function FilterComponent({
+    disabled = false,
+    withSelectAll = true,
+    testId,
+}: {
+    disabled?: boolean;
+    withSelectAll?: boolean;
+    testId?: string;
+}) {
     const { t } = useTranslation();
 
     const { selectedFilters, setFilter, setSelectedFilters, initialOptions } = useFilter();
@@ -29,6 +37,7 @@ function FilterComponent({ disabled = false, withSelectAll = true }: { disabled?
                     <div className="ml-2 md:hidden">{t("actions.filter")}</div>
                 </div>
             }
+            testId={testId}
         >
             {withSelectAll && (
                 <SelectAllOption selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
@@ -129,13 +138,15 @@ function FilterOption({
 export default function Filter({
     disabled = false,
     withSelectAll = false,
+    testId,
 }: {
     disabled?: boolean;
     withSelectAll?: boolean;
+    testId?: string;
 }) {
     return (
         <DropdownProvider>
-            <FilterComponent disabled={disabled} withSelectAll={withSelectAll} />
+            <FilterComponent disabled={disabled} withSelectAll={withSelectAll} testId={testId} />
         </DropdownProvider>
     );
 }

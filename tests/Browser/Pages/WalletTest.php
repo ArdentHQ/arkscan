@@ -191,7 +191,7 @@ describe('Overview', function () {
         $this->browse(function (Browser $browser) {
             $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('52 result', ignoreCase: true)
-                ->click('[data-testid="transactions:filter:button"]')
+                ->click('[data-testid="wallet:transactions:filter:button"]')
                 ->waitForText('Select All');
 
             $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]'))[0]->click();
@@ -395,7 +395,7 @@ describe('Transactions Tab', function () {
         $this->browse(function (Browser $browser) {
             $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('1 result', ignoreCase: true)
-                ->click('[data-testid="transactions:filter:button"]')
+                ->click('[data-testid="wallet:transactions:filter:button"]')
                 ->waitForText('Select All');
 
             $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Transfers"]'))[0]->click();
