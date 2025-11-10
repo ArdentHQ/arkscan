@@ -4,7 +4,7 @@ import { WebhookHandler } from "./WebhooksContext";
 
 export default function useWebhookListener(channel: string, event: string, handler: WebhookHandler) {
     const { listen, enabled } = useWebhooks();
-    
+
     useEffect(() => {
         if (!enabled) {
             return;
