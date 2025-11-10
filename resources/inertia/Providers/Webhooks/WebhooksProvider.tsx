@@ -1,20 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import WebhooksContext, { IWebhooksContext, WebhookHandler } from "./WebhooksContext";
 
-declare global {
-    interface Window {
-        Echo?: {
-            channel: (channel: string) => {
-                listen: (event: string, callback: WebhookHandler) => void;
-                stopListening: (event: string, callback: WebhookHandler) => void;
-                subscribe?: () => void;
-                unsubscribe?: () => void;
-            };
-            leave: (channel: string) => void;
-        };
-    }
-}
-
 type ListenerRegistry = Record<string, Record<string, Set<WebhookHandler>>>;
 
 export default function WebhooksProvider({
@@ -100,8 +86,7 @@ export default function WebhooksProvider({
     );
 
     const reloadPriceTicker = useCallback(() => {
-        // reload price ticker
-        console.log("reload price ticker");
+        window.Livewire.emit("reloadPriceTicker");
     }, []);
 
     useEffect(() => {

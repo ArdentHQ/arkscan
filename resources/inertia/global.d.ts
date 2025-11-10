@@ -12,6 +12,19 @@ declare module "@inertiajs/core" {
 
 declare global {
     interface Window {
-        Livewire: any;
+        Livewire: {
+            emit: (event: string) => void;
+            on: (event: string, callback: (...args: any[]) => void) => void;
+        };
+
+        Echo?: {
+            channel: (channel: string) => {
+                listen: (event: string, callback: WebhookHandler) => void;
+                stopListening: (event: string, callback: WebhookHandler) => void;
+                subscribe?: () => void;
+                unsubscribe?: () => void;
+            };
+            leave: (channel: string) => void;
+        };
     }
 }
