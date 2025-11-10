@@ -190,7 +190,8 @@ describe('Overview', function () {
             ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->visitRoute('wallet', $this->wallet)
+            $browser->resize(1280, 800)
+                ->visitRoute('wallet', $this->wallet)
                 ->waitForText('52 result', ignoreCase: true)
                 ->click('[data-testid="wallet:transactions:filter:button"]')
                 ->waitForText('Select All');
@@ -208,23 +209,32 @@ describe('Overview', function () {
                 ->click('[data-testid="pagination:next-page"] button')
                 ->pause(100)
                 ->waitForText('Page 3 of 3')
-                ->assertQueryStringHas('page', '3')
-                ->click('button#tab-blocks')
+                ->assertQueryStringHas('page', '3');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('button#tab-blocks')
                 ->waitForText('30 results', ignoreCase: true)
                 ->assertQueryStringMissing('page')
                 ->assertQueryStringMissing('per-page')
                 ->assertQueryStringMissing('multipayments')
                 ->assertQueryStringMissing('votes')
-                ->assertQueryStringMissing('validator')
-                ->click('[data-testid="pagination:next-page"] button')
+                ->assertQueryStringMissing('validator');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('[data-testid="pagination:next-page"] button')
                 ->pause(100)
                 ->waitForText('Page 2 of 2')
                 ->assertQueryStringMissing('multipayments')
                 ->assertQueryStringMissing('votes')
                 ->assertQueryStringMissing('validator')
                 ->assertQueryStringMissing('per-page')
-                ->assertQueryStringHas('page', '2')
-                ->click('button#tab-transactions')
+                ->assertQueryStringHas('page', '2');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('button#tab-transactions')
                 ->pause(100)
                 ->waitForText('52 results', ignoreCase: true)
                 ->assertSee('Page 3 of 3')
@@ -394,7 +404,8 @@ describe('Transactions Tab', function () {
             ]);
 
         $this->browse(function (Browser $browser) {
-            $browser->visitRoute('wallet', $this->wallet)
+            $browser->resize(1280, 800)
+                ->visitRoute('wallet', $this->wallet)
                 ->waitForText('1 result', ignoreCase: true)
                 ->click('[data-testid="wallet:transactions:filter:button"]')
                 ->waitForText('Select All');
