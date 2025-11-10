@@ -4,7 +4,7 @@ import { IPaginatedResponse } from "@/types";
 import { IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import TableHeader from "../TableHeader";
 import Address from "@/Components/Wallet/Address";
 

@@ -9,16 +9,14 @@ import Amount from "@/Components/Transaction/Amount";
 import Fee from "@/Components/Transaction/Fee";
 import { Table } from "../Table";
 import Method from "@/Components/Transaction/Method";
-import { useConfig } from "@/Providers/Config/ConfigContext";
 import Addressing from "@/Components/Transaction/Addressing";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import TableHeader from "../TableHeader";
 import { useState } from "react";
 import ExportTransactionsModal from "./ExportTransactionsModal";
-import { usePage } from "@inertiajs/react";
-import { PageProps } from "@inertiajs/core";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import Filter from "@/Components/Tables/Filter";
+import useConfig from "@/hooks/use-config";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -175,10 +173,7 @@ export default function TransactionsTableWrapper({
 
 export function TransactionsHeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
     const { t } = useTranslation();
-    const { network, settings } = useConfig();
-    const {
-        props: { wallet, rates },
-    } = usePage<PageProps<WalletProps>>();
+    const { wallet, rates, network, settings } = useConfig<WalletProps>();
 
     const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(false);
 

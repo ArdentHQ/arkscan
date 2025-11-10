@@ -1,5 +1,5 @@
 import Pagination from "@/Components/Tables/Pagination/Pagination";
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import { IPaginatedResponse } from "@/types";
 import classNames from "@/utils/class-names";
 import React, { useRef } from "react";

@@ -1,4 +1,4 @@
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 
 export const CRYPTO_DECIMALS = 8;
 

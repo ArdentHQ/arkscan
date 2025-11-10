@@ -1,6 +1,6 @@
-import { useConfig } from "@/Providers/Config/ConfigContext";
 import { currencyWithDecimals } from "@/utils/number-formatter";
 import Tooltip from "./Tooltip";
+import useConfig from "@/hooks/use-config";
 
 function AmountSmallWithoutTooltip({ amount, smallAmount }: { amount: number; smallAmount: number }) {
     const { network } = useConfig();

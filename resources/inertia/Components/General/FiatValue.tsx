@@ -1,4 +1,4 @@
-import { useConfig } from "@/Providers/Config/ConfigContext";
+import useConfig from "@/hooks/use-config";
 import { hasSymbol } from "@/utils/number-formatter";
 
 export default function FiatValue({ value }: { value: number | string }) {

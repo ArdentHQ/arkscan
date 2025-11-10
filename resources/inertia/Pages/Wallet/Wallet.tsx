@@ -6,7 +6,6 @@ import { IBlock, ITransaction } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
-import ConfigProvider from "@/Providers/Config/ConfigProvider";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
@@ -171,15 +170,7 @@ const WalletTabs = ({
     );
 };
 
-export default function Wallet({
-    transactions,
-    blocks,
-    wallet,
-    voters,
-    network,
-    filters,
-    ...props
-}: PageProps<WalletProps>) {
+export default function Wallet({ transactions, blocks, wallet, voters, network, filters }: PageProps<WalletProps>) {
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {
@@ -192,13 +183,11 @@ export default function Wallet({
         <>
             <Head>{metadata}</Head>
 
-            <ConfigProvider network={network} {...props}>
-                <Overview wallet={wallet} />
+            <Overview wallet={wallet} />
 
-                <PageHandlerProvider>
-                    <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
-                </PageHandlerProvider>
-            </ConfigProvider>
+            <PageHandlerProvider>
+                <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
+            </PageHandlerProvider>
         </>
     );
 }
