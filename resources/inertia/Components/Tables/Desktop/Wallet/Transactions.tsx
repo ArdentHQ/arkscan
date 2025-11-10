@@ -17,6 +17,7 @@ import ExportTransactionsModal from "./ExportTransactionsModal";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import Filter from "@/Components/Tables/Filter";
 import useConfig from "@/hooks/use-config";
+import useWebhookListener from "@/Providers/Webhooks/useWebhookListener";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -106,6 +107,16 @@ export default function TransactionsTableWrapper({
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
+    const { wallet } = useConfig<WalletProps>();
+
+    const reloadTransactions = () => {
+        window.Livewire.emit("reloadTransactions");
+    };
+
+    useWebhookListener(`transactions.${wallet.address}`, "NewTransaction", reloadTransactions);
+
+    useWebhookListener(`transactions.${wallet.public_key}`, "NewTransaction", reloadTransactions);
+
     if (!transactions) {
         const { t } = useTranslation();
         const { network } = useConfig();
