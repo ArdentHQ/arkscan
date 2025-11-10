@@ -3,6 +3,7 @@ import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import loadI18n from "../inertia/i18n";
 import ArkConnectProvider from "@/Providers/ArkConnect/ArkConnectProvider";
+import WebhooksProvider from "@/Providers/Webhooks/WebhooksProvider";
 import { IConfigArkconnect, INetwork } from "@/types/generated";
 import { ArkConnectConfiguration } from "@/Providers/ArkConnect/types";
 
@@ -22,9 +23,11 @@ createInertiaApp({
             arkconnectConfig: props.initialPage.props.arkconnectConfig as IConfigArkconnect,
         };
         root.render(
-            <ArkConnectProvider configuration={configuration}>
-                <App {...props} />
-            </ArkConnectProvider>,
+            <WebhooksProvider broadcasting={props.initialPage.props.broadcasting}>
+                <ArkConnectProvider configuration={configuration}>
+                    <App {...props} />
+                </ArkConnectProvider>
+            </WebhooksProvider>,
         );
     },
     progress: {
