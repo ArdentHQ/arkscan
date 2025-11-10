@@ -70,7 +70,7 @@ export default function AmountSmall({
     return (
         <>
             {amount === 0 ? (
-                <span>0 {network!.currency}</span>
+                <span>0{!hideCurrency ? " " + network!.currency : ""}</span>
             ) : (
                 <>
                     {hideTooltip ? (
