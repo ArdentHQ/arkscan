@@ -9,11 +9,13 @@ export default function Amount({
     withoutFee = false,
     withNetworkCurrency = false,
     breakpoint = "md-lg",
+    hideCurrency,
 }: {
     transaction: ITransaction;
     withoutFee?: boolean;
     withNetworkCurrency?: boolean;
     breakpoint?: "md-lg" | "lg" | "xl";
+    hideCurrency?: boolean;
 }) {
     const { network } = useConfig();
 
@@ -75,6 +77,7 @@ export default function Amount({
                     isSent={isSent}
                     isReceived={isReceived}
                     transaction={transaction}
+                    hideCurrency={hideCurrency}
                 />
 
                 {withNetworkCurrency && (

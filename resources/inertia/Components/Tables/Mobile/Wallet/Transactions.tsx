@@ -11,6 +11,7 @@ import Amount from "@/Components/Transaction/Amount";
 import useConfig from "@/hooks/use-config";
 import Fee from "@/Components/Transaction/Fee";
 import Addressing from "@/Components/Transaction/Addressing";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Wallet/Transactions";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 
@@ -40,7 +41,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                             currency: network?.currency,
                         })}
                     >
-                        <Amount transaction={transaction} />
+                        <Amount transaction={transaction} hideCurrency={true} />
                     </TableCell>
 
                     <div className="sm:flex sm:flex-1 sm:justify-end">
@@ -65,7 +66,9 @@ export default function TransactionsMobileTableWrapper({
     transactions?: IPaginatedResponse<ITransaction>;
     rowCount?: number;
 }) {
-    if (!transactions) {
+    const { isLoading } = usePageHandler();
+
+    if (!transactions || isLoading) {
         return (
             <div className="pt-6">
                 <TableHeaderWrapper resultCount={0} breakpoint="md">

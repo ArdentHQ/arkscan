@@ -9,6 +9,7 @@ import Age from "@/Components/Model/Age";
 import useConfig from "@/hooks/use-config";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { ValidatedBlocksHeaderActions } from "@/Components/Tables/Desktop/Wallet/ValidatedBlocks";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 
@@ -69,13 +70,15 @@ export default function ValidatedBlocksMobileTableWrapper({
     blocks?: IPaginatedResponse<IBlock>;
     rowCount?: number;
 }) {
-    if (!blocks) {
+    const { isLoading } = usePageHandler();
+
+    if (!blocks || isLoading) {
         return (
             <div className="pt-6">
                 <TableHeaderWrapper resultCount={0} breakpoint="md">
-                    <ValidatedBlocksHeaderActions />
+                    <ValidatedBlocksHeaderActions hasForgedBlocks={false} />
                 </TableHeaderWrapper>
-                <MobileValidatedBlocksSkeletonTable rowCount={rowCount} />;
+                <MobileValidatedBlocksSkeletonTable rowCount={rowCount} />
             </div>
         );
     }

@@ -394,6 +394,37 @@ describe('Transactions Tab', function () {
         });
     })->with('resolutions');
 
+    it('should open the filter', function ($resolution) {
+        Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('[data-testid="wallet:transactions:filter:button"]')
+                ->waitForText('Select All');
+
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Select All"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Outgoing"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Incoming"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Transfers"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Votes"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Validator"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Username"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Contract Deployment"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Others"]')))->toHaveCount(1);
+        });
+    })->with('resolutions');
+
     it('should track querystring for filters', function () {
         Transaction::factory()
             ->transfer()

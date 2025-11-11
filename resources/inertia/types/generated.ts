@@ -66,7 +66,7 @@ export type IRequestData = {
     network: INetwork;
     productivity: IConfigProductivity;
     settings: ISettings;
-    arkconnect: IConfigArkconnect;
+    arkconnectConfig: IConfigArkconnect;
     pagination: IConfigPagination;
 };
 export type ISettings = {

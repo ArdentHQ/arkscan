@@ -15,7 +15,7 @@ import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
 import Tooltip from "../Tooltip";
 
 export default function Dropdown({
-    dropdownContentClasses = "bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 rounded-xl",
+    dropdownContentClasses = "shadow-lg bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 rounded-xl",
     buttonClassExpanded = "text-theme-primary-500",
     buttonClassClosed = "",
     buttonClass = "bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700",
