@@ -12,12 +12,14 @@ function AmountOutput({
     isReceived,
     isSentToSelf,
     amount,
+    hideCurrency = false,
 }: {
     transaction?: ITransaction;
     isSent: boolean;
     isReceived: boolean;
     isSentToSelf: boolean;
     amount: string | number;
+    hideCurrency?: boolean;
 }) {
     return (
         <span>
@@ -25,7 +27,7 @@ function AmountOutput({
 
             {typeof amount === "number" ? (
                 transaction ? (
-                    <AmountSmall amount={amount} hideTooltip />
+                    <AmountSmall amount={amount} hideTooltip hideCurrency={hideCurrency} />
                 ) : (
                     <span>{networkCurrency(amount)}</span>
                 )
@@ -45,6 +47,7 @@ export default function AmountFiatTooltip({
     fiat,
     className = "text-sm",
     withoutStyling = false,
+    hideCurrency = false,
 }: {
     transaction?: ITransaction;
     isSent?: boolean;
@@ -54,6 +57,7 @@ export default function AmountFiatTooltip({
     fiat?: string | number;
     className?: string;
     withoutStyling?: boolean;
+    hideCurrency?: boolean;
 }) {
     const { t } = useTranslation();
     const { network } = useConfig();
@@ -128,6 +132,7 @@ export default function AmountFiatTooltip({
                         isReceived={isReceived}
                         isSentToSelf={isSentToSelf}
                         amount={amount}
+                        hideCurrency={hideCurrency}
                     />
                 </Tooltip>
             )}
@@ -139,6 +144,7 @@ export default function AmountFiatTooltip({
                     isReceived={isReceived}
                     isSentToSelf={isSentToSelf}
                     amount={amount}
+                    hideCurrency={hideCurrency}
                 />
             )}
         </span>
