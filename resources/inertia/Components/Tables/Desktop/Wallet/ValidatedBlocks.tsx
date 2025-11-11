@@ -10,6 +10,7 @@ import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?re
 import Height from "@/Components/Block/Height";
 import Age from "@/Components/Model/Age";
 import Reward from "@/Components/Block/Reward";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { useState } from "react";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import ExportBlocksModal from "./ExportBlocksModal";
@@ -56,7 +57,6 @@ export function ValidatedBlocksTable({
             withFooter
             paginator={blocks}
             rowComponent={Row}
-            resultCount={blocks.total ?? 0}
             mobile={mobile}
             headerActions={<ValidatedBlocksHeaderActions hasForgedBlocks={hasForgedBlocks} />}
             noResultsMessage={blocks.noResultsMessage}
@@ -118,7 +118,9 @@ export default function ValidatedBlocksTableWrapper({
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
-    if (!blocks) {
+    const { isLoading } = usePageHandler();
+
+    if (!blocks || isLoading) {
         const { t } = useTranslation();
         const { network } = useConfig();
 
@@ -161,15 +163,13 @@ export default function ValidatedBlocksTableWrapper({
 
         return (
             <>
-                <div className="hidden md:block">
-                    <LoadingTable
-                        rowCount={rowCount}
-                        header={<ValidatedBlocksHeaderActions hasForgedBlocks={false} />}
-                        columns={columns}
-                    />
-                </div>
-
-                {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
+                <LoadingTable
+                    mobile={mobile}
+                    paginator={blocks}
+                    rowCount={rowCount}
+                    header={<ValidatedBlocksHeaderActions hasForgedBlocks={false} />}
+                    columns={columns}
+                />
             </>
         );
     }
