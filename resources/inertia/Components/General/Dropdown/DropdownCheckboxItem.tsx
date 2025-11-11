@@ -1,6 +1,5 @@
 import Checkbox from "@/Components/Input/Checkbox";
 import classNames from "@/utils/class-names";
-import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
 
 export default function DropdownCheckboxItem({
     id,
@@ -9,6 +8,7 @@ export default function DropdownCheckboxItem({
     children,
     onClick,
     disabled = false,
+    className = "",
 }: {
     id: string;
     name: string;
@@ -16,6 +16,7 @@ export default function DropdownCheckboxItem({
     children: React.ReactNode;
     onClick: (checked: boolean) => void;
     disabled?: boolean;
+    className?: string;
 }) {
     return (
         <Checkbox
@@ -27,6 +28,7 @@ export default function DropdownCheckboxItem({
                     checked === true,
                 "text-theme-secondary-700 hover:bg-theme-secondary-200 hover:text-theme-secondary-900 dark:text-theme-dark-200 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50":
                     checked === false,
+                [className]: !!className,
             })}
             labelClasses={classNames({
                 "w-full text-base block cursor-pointer py-[0.875rem] whitespace-nowrap": true,
