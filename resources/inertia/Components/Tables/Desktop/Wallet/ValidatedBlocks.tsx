@@ -126,11 +126,10 @@ export default function ValidatedBlocksTableWrapper({
     });
 
     const { isLoading } = usePageHandler();
+    const { t } = useTranslation();
+    const { network } = useConfig();
 
     if (!blocks || isLoading) {
-        const { t } = useTranslation();
-        const { network } = useConfig();
-
         const columns: ILoadingTableColumn[] = [
             {
                 name: t("tables.blocks.height"),

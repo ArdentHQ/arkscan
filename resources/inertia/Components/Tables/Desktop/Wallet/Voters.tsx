@@ -76,11 +76,10 @@ export default function VotersTableWrapper({
     };
 
     useWebhookListener(`wallet-vote.${wallet.public_key}`, "WalletVote", reloadVoters);
+    const { t } = useTranslation();
+    const { network } = useConfig();
 
     if (!voters) {
-        const { t } = useTranslation();
-        const { network } = useConfig();
-
         const columns: ILoadingTableColumn[] = [
             {
                 name: t("general.wallet.address"),
