@@ -117,7 +117,6 @@ export default function TransactionsTableWrapper({
 
     useWebhookListener(`transactions.${wallet.public_key}`, "NewTransaction", reloadTransactions);
 
-    if (!transactions) {
     const { isLoading } = usePageHandler();
 
     if (!transactions || isLoading) {

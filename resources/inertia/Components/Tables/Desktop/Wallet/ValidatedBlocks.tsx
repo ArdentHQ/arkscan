@@ -125,7 +125,6 @@ export default function ValidatedBlocksTableWrapper({
         window.Livewire.emit("reloadBlocks");
     });
 
-    if (!blocks) {
     const { isLoading } = usePageHandler();
 
     if (!blocks || isLoading) {
