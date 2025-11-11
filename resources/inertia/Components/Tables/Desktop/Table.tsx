@@ -67,7 +67,6 @@ export function Table({
     columns,
     withHeader = false,
     withFooter = false,
-    resultCount = 0,
     resultSuffix,
     paginator,
     rowComponent,
@@ -78,7 +77,6 @@ export function Table({
     columns: React.ReactNode;
     withHeader?: boolean;
     withFooter?: boolean;
-    resultCount?: number;
     resultSuffix?: string;
     paginator: IPaginatedResponse<any>;
     rowComponent: React.ComponentType<{ row: any; key?: React.Key }>;
@@ -88,11 +86,18 @@ export function Table({
 }) {
     const tableRef = useRef<HTMLDivElement>(null);
     const { pagination } = useConfig();
+    const resultCount = paginator?.total ?? 0;
 
     const showFooter = withFooter && paginator && resultCount > pagination?.per_page;
 
     return (
-        <div ref={tableRef} className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
+        <div
+            ref={tableRef}
+            className={classNames({
+                "px-6 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0": true,
+                "pb-8": !withFooter || resultCount === 0,
+            })}
+        >
             {withHeader && (
                 <TableHeaderWrapper resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
                     {headerActions}
