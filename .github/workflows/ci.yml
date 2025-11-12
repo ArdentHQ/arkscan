@@ -53,35 +53,35 @@ jobs:
             - name: Run PHPStan
               run: composer analyse
 
-    format:
-        runs-on: ubuntu-latest
+    # format:
+    #     runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  ref: ${{ github.head_ref }}
-                  token: ${{ secrets.GH_TOKEN }}
+    #     steps:
+    #         - uses: actions/checkout@v4
+    #           with:
+    #               ref: ${{ github.head_ref }}
+    #               token: ${{ secrets.GH_TOKEN }}
 
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: "8.4"
-                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov, gmp
-                  coverage: pcov
+    #         - name: Setup PHP
+    #           uses: shivammathur/setup-php@v2
+    #           with:
+    #               php-version: "8.4"
+    #               extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov, gmp
+    #               coverage: pcov
 
-            - name: Install
-              run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
+    #         - name: Install
+    #           run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-            - name: Run php-cs-fixer
-              run: composer format
+    #         - name: Run php-cs-fixer
+    #           run: composer format
 
-            - uses: stefanzweifel/git-auto-commit-action@v5
-              with:
-                  commit_message: "style: resolve style guide violations"
-                  branch: ${{ github.head_ref }}
+    #         - uses: stefanzweifel/git-auto-commit-action@v5
+    #           with:
+    #               commit_message: "style: resolve style guide violations"
+    #               branch: ${{ github.head_ref }}
 
     unit:
-        needs: [conflicts, analyse, format]
+        needs: [conflicts, analyse]
 
         runs-on: ubuntu-latest
 
