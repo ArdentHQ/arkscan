@@ -1,4 +1,4 @@
-<div wire:init="setIsReady" class="mt-4 sm:mt-2">
+<div wire:init="setIsReady" class="mt-6 sm:mt-2">
     <x-general.page-section.container
         :title="trans('pages.transaction.recipients_list')"
         wrapper-class="flex flex-col flex-1 whitespace-nowrap"
