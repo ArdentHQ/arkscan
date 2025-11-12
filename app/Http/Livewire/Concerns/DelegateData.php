@@ -70,7 +70,7 @@ trait DelegateData
                 (new WalletCache())->setLastBlock($delegate, [
                     'id'                   => $block->id,
                     'height'               => $block->height->toNumber(),
-                    'timestamp'            => $block->timestamp,
+                    'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
                     'generator_public_key' => $block->generator_public_key,
                 ]);
             }

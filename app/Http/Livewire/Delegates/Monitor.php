@@ -105,18 +105,12 @@ final class Monitor extends Component
      */
     public function getOverflowDelegatesProperty(): array
     {
-        // dump(collect($this->delegates)->map(fn ($d) => $d->publicKey())->toArray());
-
         $missedCount = collect($this->delegates)
             ->filter(fn ($delegate) => $delegate->justMissed())
             ->count();
 
         /** @var ?Slot $lastSlot */
-        $lastSlot   = collect($this->delegates)->last();
-        $lastStatus = $lastSlot?->status() ?? 'pending';
-
-        // dump('missedCount', $missedCount);
-
+        $lastSlot = collect($this->delegates)->last();
         if ($lastSlot === null) {
             return [];
         }
@@ -135,15 +129,8 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->first();
 
-        // dump('lastRoundBlock', $lastRoundBlock?->height);
-
-        // collect($this->delegates)
-        //     ->each(fn (Slot $delegate, $index) => dump($index.': '.$delegate->status().': '.$delegate->order().'-'.$delegate->publicKey().'-'.($delegate?->lastBlock()['height'] ?? null)));
-
         // $lastRoundBlock = null;
         if ($lastRoundBlock === null) {
-            // dump('yo');
-
             $lastSuccessfulForger = collect($this->delegates)
                 ->filter(fn (Slot $delegate) => $delegate->hasForged())
                 ->last();
@@ -160,12 +147,18 @@ final class Monitor extends Component
                 ->first();
         }
 
+        // @TODO: cover this line as part of the dusk tests update - https://app.clickup.com/t/86dxjarym
+        // @codeCoverageIgnoreStart
+        if ($lastRoundBlock === null) {
+            return [];
+        }
+        // @codeCoverageIgnoreEnd
+
         $overflowBlocks = Block::where('height', '>', $lastRoundBlock->height)
             ->orderBy('height', 'asc')
             ->get();
 
-        // dump('lastStatus', $lastStatus);
-        // dump('overflowBlocks', $overflowBlocks->count(), $lastRoundBlock->height, $heightRange);
+        $lastStatus = $lastSlot->status();
 
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
             return $this->getOverflowSlots(
@@ -177,17 +170,25 @@ final class Monitor extends Component
             );
         }
 
-        $lastTimestamp = $lastRoundBlock->timestamp;
-        if ($overflowBlocks->isNotEmpty() && $overflowBlocks->last() !== null) {
-            $lastTimestamp = Timestamp::fromGenesis($overflowBlocks->last()['timestamp'])->unix();
-        }
-
         $overflowBlockCount = $overflowBlocks->groupBy('generator_public_key')
             ->map(function ($blocks) {
                 return count($blocks);
             });
 
-        $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock->timestamp;
+        $hasReachedFinalSlot = $lastRoundBlock->number === $heightRange[1];
+        if ($overflowBlocks->isNotEmpty()) {
+            $hasReachedFinalSlot = $overflowBlocks->last()['number'] === $heightRange[1];
+        }
+
+        $lastTimestamp = Timestamp::fromGenesis($lastRoundBlock->timestamp)->unix();
+        $overflowSlots = $this->getOverflowSlots(
+            $missedCount,
+            $lastStatus,
+            $lastBlock,
+            $lastTimestamp,
+            overflowBlockCount: $overflowBlockCount,
+            hasReachedFinalSlot: $hasReachedFinalSlot,
+        );
 
         $additional         = null;
         $previousAdditional = null;
@@ -201,8 +202,8 @@ final class Monitor extends Component
                 $lastStatus,
                 $lastBlock,
                 $lastTimestamp,
-                overflowBlockCount: $overflowBlockCount,
-                hasReachedFinalSlot: $hasReachedFinalSlot,
+                $overflowBlockCount,
+                $hasReachedFinalSlot,
             );
 
             $additional = 0;
@@ -230,8 +231,8 @@ final class Monitor extends Component
             $lastStatus,
             $lastBlock,
             $lastTimestamp,
-            overflowBlockCount: $overflowBlockCount,
-            hasReachedFinalSlot: $hasReachedFinalSlot,
+            $overflowBlockCount,
+            $hasReachedFinalSlot,
         );
     }
 
@@ -253,6 +254,8 @@ final class Monitor extends Component
             $overflowBlockCount = new Collection();
         }
 
+        $justMissedCount = 0;
+        $missedSeconds   = 0;
         $overflowSlots   = [];
         foreach (collect($this->delegates)->take($missedCount) as $delegate) {
             if ($overflowBlockCount->isEmpty()) {
@@ -261,6 +264,7 @@ final class Monitor extends Component
                 $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
             } else {
                 $secondsUntilForge = Network::blockTime();
+                $secondsUntilForge += $missedSeconds;
 
                 $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
             }
@@ -278,6 +282,14 @@ final class Monitor extends Component
                 status: $status,
                 roundBlockCount: $overflowBlockCount,
             );
+
+            if ($slot->justMissed()) {
+                $justMissedCount++;
+                $missedSeconds = $justMissedCount * self::MISSED_INCREMENT_SECONDS;
+            } else {
+                $justMissedCount = 0;
+                $missedSeconds   = 0;
+            }
 
             if ($delegate->publicKey() === $lastBlock->generator_public_key) {
                 $hasReachedFinalSlot = true;
