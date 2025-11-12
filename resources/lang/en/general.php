@@ -136,6 +136,7 @@ return [
             'legacy-business-update'              => 'Legacy Business Update',
             'ipfs'                                => 'IPFS',
             'multi-payment'                       => 'Multipayment',
+            'bls-registration'                    => 'BLS Registration',
             'module-entity-registration'          => 'Module Registration',
             'module-entity-resignation'           => 'Module Resignation',
             'module-entity-update'                => 'Module Update',

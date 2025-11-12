@@ -62,6 +62,10 @@ trait InteractsWithTypeData
             return false;
         }
 
+        if ($this->isBlsRegistration()) {
+            return false;
+        }
+
         return true;
     }
 

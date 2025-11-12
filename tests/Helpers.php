@@ -20,6 +20,7 @@ use Faker\Generator;
 use FurqanSiddiqui\BIP39\BIP39;
 use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -465,4 +466,20 @@ function getRoundDelegates(bool $withBlock = true, ?int $roundNumber = null): Su
     }
 
     return $delegates;
+}
+
+function mockTaggedCache($withTags = false)
+{
+    $taggedCache = Cache::tags('tags');
+
+    $mockedCache = Cache::shouldReceive('driver')
+        ->andReturn($taggedCache);
+
+    if ($withTags) {
+        $mockedCache
+            ->shouldReceive('tags')
+            ->andReturn($taggedCache);
+    }
+
+    return $mockedCache;
 }

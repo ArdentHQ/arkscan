@@ -17,10 +17,6 @@ use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use function Tests\faker;
 
-beforeEach(function () {
-    ForgingStats::truncate();
-});
-
 it('should render', function () {
     Livewire::test(Delegates::class)
         ->assertSet('isReady', false)
@@ -118,11 +114,9 @@ it('should filter active delegates', function () {
 
     Livewire::test(Delegates::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'active'   => true,
-            'standby'  => false,
-            'resigned' => false,
-        ])
+        ->set('filter.active', true)
+        ->set('filter.standby', false)
+        ->set('filter.resigned', false)
         ->assertSee($active->address)
         ->assertDontSee($standby->address)
         ->assertDontSee($resigned->address);
@@ -135,11 +129,9 @@ it('should filter standby delegates', function () {
 
     Livewire::test(Delegates::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'active'   => false,
-            'standby'  => true,
-            'resigned' => false,
-        ])
+        ->set('filter.active', false)
+        ->set('filter.standby', true)
+        ->set('filter.resigned', false)
         ->assertSee($standby->address)
         ->assertDontSee($active->address)
         ->assertDontSee($resigned->address);
@@ -152,11 +144,9 @@ it('should filter resigned delegates', function () {
 
     Livewire::test(Delegates::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'active'   => false,
-            'standby'  => false,
-            'resigned' => true,
-        ])
+        ->set('filter.active', false)
+        ->set('filter.standby', false)
+        ->set('filter.resigned', true)
         ->assertSee($resigned->address)
         ->assertDontSee($active->address)
         ->assertDontSee($standby->address);
@@ -165,11 +155,9 @@ it('should filter resigned delegates', function () {
 it('should show correct message when no filters are selected', function () {
     Livewire::test(Delegates::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'active'   => false,
-            'standby'  => false,
-            'resigned' => false,
-        ])
+        ->set('filter.active', false)
+        ->set('filter.standby', false)
+        ->set('filter.resigned', false)
         ->assertSee(trans('tables.delegates.no_results.no_filters'));
 });
 

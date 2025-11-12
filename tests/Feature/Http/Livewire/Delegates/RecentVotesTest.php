@@ -80,36 +80,28 @@ it('should show no results message if no votes', function () {
 it('should toggle all filters when "select all" is selected', function () {
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
-        ->assertSet('filter', [
-            'vote'      => true,
-            'unvote'    => true,
-            'vote-swap' => true,
-        ])
+        ->set('filter.vote', true)
+        ->set('filter.unvote', true)
+        ->set('filter.vote-swap', true)
         ->assertSet('selectAllFilters', true)
         ->set('filter.vote', true)
         ->assertSet('selectAllFilters', true)
         ->set('selectAllFilters', false)
-        ->assertSet('filter', [
-            'vote'      => false,
-            'unvote'    => false,
-            'vote-swap' => false,
-        ])
+        ->set('filter.vote', false)
+        ->set('filter.unvote', false)
+        ->set('filter.vote-swap', false)
         ->set('selectAllFilters', true)
-        ->assertSet('filter', [
-            'vote'      => true,
-            'unvote'    => true,
-            'vote-swap' => true,
-        ]);
+        ->set('filter.vote', true)
+        ->set('filter.unvote', true)
+        ->set('filter.vote-swap', true);
 });
 
 it('should toggle "select all" when all filters are selected', function () {
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
-        ->assertSet('filter', [
-            'vote'      => true,
-            'unvote'    => true,
-            'vote-swap' => true,
-        ])
+        ->set('filter.vote', true)
+        ->set('filter.unvote', true)
+        ->set('filter.vote-swap', true)
         ->assertSet('selectAllFilters', true)
         ->set('filter.vote', false)
         ->assertSet('selectAllFilters', false)
@@ -148,11 +140,9 @@ it('should filter vote transactions', function () {
 
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'vote'      => true,
-            'unvote'    => false,
-            'vote-swap' => false,
-        ])
+        ->set('filter.vote', true)
+        ->set('filter.unvote', false)
+        ->set('filter.vote-swap', false)
         ->assertSee($vote->id)
         ->assertDontSee($unvote->id)
         ->assertDontSee($voteSwap->id);
@@ -189,11 +179,9 @@ it('should filter unvote transactions', function () {
 
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'vote'      => false,
-            'unvote'    => true,
-            'vote-swap' => false,
-        ])
+        ->set('filter.vote', false)
+        ->set('filter.unvote', true)
+        ->set('filter.vote-swap', false)
         ->assertSee($unvote->id)
         ->assertDontSee($vote->id)
         ->assertDontSee($voteSwap->id);
@@ -230,11 +218,9 @@ it('should filter vote swap transactions', function () {
 
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'vote'      => false,
-            'unvote'    => false,
-            'vote-swap' => true,
-        ])
+        ->set('filter.vote', false)
+        ->set('filter.unvote', false)
+        ->set('filter.vote-swap', true)
         ->assertSee($voteSwap->id)
         ->assertDontSee($vote->id)
         ->assertDontSee($unvote->id);
@@ -243,11 +229,9 @@ it('should filter vote swap transactions', function () {
 it('should show correct message when no filters are selected', function () {
     Livewire::test(RecentVotes::class)
         ->call('setIsReady')
-        ->set('filter', [
-            'vote'      => false,
-            'unvote'    => false,
-            'vote-swap' => false,
-        ])
+        ->set('filter.vote', false)
+        ->set('filter.unvote', false)
+        ->set('filter.vote-swap', false)
         ->assertSee(trans('tables.recent-votes.no_results.no_filters'));
 });
 

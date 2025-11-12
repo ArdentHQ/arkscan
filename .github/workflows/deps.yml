@@ -17,8 +17,8 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.2"
-                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite
+                  php-version: "8.3"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, gmp
                   coverage: none
 
             - name: Update PHP dependencies
@@ -29,11 +29,11 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 22.11
 
-            - uses: pnpm/action-setup@v3
+            - uses: pnpm/action-setup@v4
               with:
-                  version: 9
+                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -65,8 +65,8 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.2"
-                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite
+                  php-version: "8.3"
+                  extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, gmp
                   coverage: none
 
             - name: Install PHP dependencies
@@ -77,11 +77,11 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 20
+                  node-version: 22.11
 
-            - uses: pnpm/action-setup@v3
+            - uses: pnpm/action-setup@v4
               with:
-                  version: 9
+                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile

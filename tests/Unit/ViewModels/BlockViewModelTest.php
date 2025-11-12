@@ -118,14 +118,12 @@ it('should get the fee', function () {
 
 it('should get the reward', function () {
     expect($this->subject->reward())->toBeFloat();
-
-    assertMatchesSnapshot($this->subject->reward());
+    expect($this->subject->reward())->toBe(2.0);
 });
 
 it('should get the total reward', function () {
     expect($this->subject->totalReward())->toBeFloat();
-
-    assertMatchesSnapshot($this->subject->totalReward());
+    expect($this->subject->totalReward())->toBe(50.0);
 });
 
 it('should get the fee as fiat', function () {

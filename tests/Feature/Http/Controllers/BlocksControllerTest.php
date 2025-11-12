@@ -7,8 +7,6 @@ use App\Models\ForgingStats;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 
-beforeEach(fn () => ForgingStats::truncate());
-
 it('should render the page without any errors', function () {
     Block::factory()->create([
         'timestamp'    => Timestamp::fromUnix(Carbon::parse('2021-04-14 13:02:04')->unix())->unix(),
