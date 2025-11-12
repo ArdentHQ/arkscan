@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Contracts\RoundRepository as ContractsRoundRepository;
 use App\Enums\DelegateForgingStatus;
 use App\Facades\Network;
 use App\Facades\Rounds;
@@ -10,26 +9,20 @@ use App\Http\Livewire\Delegates\Monitor;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
-use App\Repositories\RoundRepository;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
-use App\Services\Timestamp;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use function Tests\createBlock;
-use function Tests\createFullRound;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
-use function Tests\getDelegateForgingPosition;
-use function Tests\getDelegateWallets;
-use function Tests\getHighestDelegateForgingPosition;
 use function Tests\getRoundDelegates;
 
 function createPartialTestRounds(
