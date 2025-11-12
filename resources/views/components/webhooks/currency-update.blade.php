@@ -6,9 +6,6 @@
             currentCurrency: '{{ $currency }}',
 
             init() {
-                {{-- TODO: Remove this whole file once we have fully migrated to Inertia --}}
-                if (!window.Webhook) return;
-                
                 Webhook.listen('currency-update.{{ $currency }}', 'CurrencyUpdate', 'reloadPriceTicker');
 
                 Livewire.on('currencyChanged', (currency) => {
