@@ -383,9 +383,9 @@ function createPartialRound(
 
             $blockCount++;
 
-            // if ($blockCount === Network::delegateCount()) {
-            //     $round++;
-            // }
+            if ($blockCount === Network::delegateCount()) {
+                $round++;
+            }
 
             $slotCount++;
         }
@@ -393,10 +393,27 @@ function createPartialRound(
 
     $height += $blockCount;
 
-    $round++;
-
     if ($requiredIndex && ($requiredIndex === Network::delegateCount() - 1 || ($blocks !== null && $requiredIndex >= $blocks))) {
         Artisan::call('cache:clear');
+
+        while ($blockCount < Network::delegateCount()) {
+            foreach ($delegates as $delegate) {
+                if (count($missedPublicKeys) > 0 && in_array($delegate['publicKey'], $missedPublicKeys, true)) {
+                    $context->travel(8)->seconds();
+                    $slotCount++;
+
+                    continue;
+                }
+
+                createBlock($height + $blockCount, $delegate['publicKey'], $context);
+
+                if ($blockCount === Network::delegateCount()) {
+                    $round++;
+
+                    break 2;
+                }
+            }
+        }
 
         return createPartialRound($round, $height, $blocks, $context, $missedPublicKeys, $requiredPublicKeys, $cachePerformance, $slots);
     }

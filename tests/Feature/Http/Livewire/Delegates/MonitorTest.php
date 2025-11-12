@@ -792,7 +792,7 @@ describe('Monitor', function () {
             array_fill(0, Network::delegateCount(), true),
         ], $this);
 
-        createPartialRound($round, $height, null, $this, [
+        [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
             $delegates->get(40)->public_key,
         ], [
             $delegates->get(40)->public_key,
@@ -842,12 +842,12 @@ describe('Monitor', function () {
 
         expect(Carbon::now()->format('Y-m-d H:i:s'))->toBe($expected);
     })->with([
-        1 => [1, '2024-02-01 14:00:08'],
-        2 => [2, '2024-02-01 14:00:18'],
-        3 => [3, '2024-02-01 14:00:30'],
-        4 => [4, '2024-02-01 14:00:44'],
-        5 => [5, '2024-02-01 14:02:00'], // doubles up because we hit the batch of missing delegates on the second passthrough
-        6 => [6, '2024-02-01 14:02:36'],
+        1 => [1, '2024-02-01 14:00:16'],
+        2 => [2, '2024-02-01 14:00:24'],
+        3 => [3, '2024-02-01 14:00:32'],
+        4 => [4, '2024-02-01 14:00:40'],
+        5 => [5, '2024-02-01 14:00:56'], // doubles up because we hit the batch of missing delegates on the second passthrough
+        6 => [6, '2024-02-01 14:01:04'],
     ]);
 });
 
