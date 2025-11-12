@@ -173,6 +173,8 @@ describe('Overview', function () {
         $wallet = Wallet::factory()->create();
 
         $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->resize(1280, 800);
+
             $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7));
 
@@ -202,6 +204,8 @@ describe('Overview', function () {
         $legacyAddress = Legacy::generateAddressFromPublicKey($wallet->public_key);
 
         $this->browse(function (Browser $browser) use ($wallet, $legacyAddress) {
+            $browser->resize(1280, 800);
+
             $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7));
 
@@ -224,6 +228,8 @@ describe('Overview', function () {
         $wallet = Wallet::factory()->create();
 
         $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->resize(1280, 800);
+
             $browser->visitRoute('wallet', $wallet)
                 ->waitForText(substr($wallet->address, 0, 7));
 
@@ -403,6 +409,8 @@ describe('Transactions Tab', function () {
         $description = trans('pages.wallet.export-transactions-modal.description');
 
         $this->browse(function (Browser $browser) use ($description) {
+            $browser->resize(1280, 800);
+
             $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('3 results', ignoreCase: true);
 
@@ -649,6 +657,8 @@ describe('Blocks Tab', function () {
         $description = trans('pages.wallet.export-blocks-modal.description');
 
         $this->browse(function (Browser $browser) use ($description) {
+            $browser->resize(1280, 800);
+
             $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('2 results', ignoreCase: true)
                 ->click('button#tab-blocks')
