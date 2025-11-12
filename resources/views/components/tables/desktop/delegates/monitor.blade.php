@@ -39,7 +39,7 @@
 
                 <x-tables.headers.desktop.status
                     name="tables.delegate-monitor.status_time_to_forge"
-                    class="md-lg:hidden w-[180px]"
+                    class="w-[180px] md-lg:hidden"
                     breakpoint="md"
                     responsive
                 />

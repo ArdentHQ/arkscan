@@ -31,8 +31,7 @@
             <x-tables.rows.desktop.encapsulated.address
                 :model="$delegate->wallet()"
                 without-clipboard
-                :delegate-name-class="Arr::toCssClasses([
-                    'md-lg:w-auto',
+                :delegate-name-class="Arr::toCssClasses(['md-lg:w-auto',
                     'md:w-[200px]' => ! $delegate->keepsMissing(),
                 ])"
             />
@@ -50,7 +49,7 @@
     </x-ark-tables.cell>
 
     <x-ark-tables.cell
-        class="md-lg:hidden w-[180px]"
+        class="w-[180px] md-lg:hidden"
         breakpoint="md"
         responsive
     >
