@@ -28,35 +28,32 @@
                     hide-sorting
                 />
 
-                <x-tables.headers.desktop.address
-                    name="tables.delegate-monitor.delegate"
-                    width="190"
-                />
+                <x-tables.headers.desktop.address name="tables.delegate-monitor.delegate" />
 
                 <x-tables.headers.desktop.status
                     name="tables.delegate-monitor.status"
                     breakpoint="md-lg"
                     responsive
-                    class="w-[374px]"
+                    class="w-[180px] xl:w-[374px]"
                 />
 
                 <x-tables.headers.desktop.status
                     name="tables.delegate-monitor.status_time_to_forge"
-                    class="md-lg:hidden"
+                    class="md-lg:hidden w-[180px]"
                     breakpoint="md"
                     responsive
                 />
 
                 <x-tables.headers.desktop.text
                     name="tables.delegate-monitor.time_to_forge"
-                    class="whitespace-nowrap"
+                    class="whitespace-nowrap w-[160px]"
                     breakpoint="md-lg"
                     responsive
                 />
 
                 <x-tables.headers.desktop.number
                     name="tables.delegate-monitor.block_height"
-                    class="whitespace-nowrap"
+                    class="whitespace-nowrap w-[100px]"
                 />
             </tr>
         </thead>

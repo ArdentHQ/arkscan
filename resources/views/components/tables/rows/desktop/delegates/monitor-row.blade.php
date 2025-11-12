@@ -26,7 +26,7 @@
         </span>
     </x-ark-tables.cell>
 
-    <x-ark-tables.cell width="190">
+    <x-ark-tables.cell>
         <div class="flex items-center space-x-2">
             <x-tables.rows.desktop.encapsulated.address
                 :model="$delegate->wallet()"
@@ -44,13 +44,13 @@
     <x-ark-tables.cell
         breakpoint="md-lg"
         responsive
-        class="w-[374px]"
+        class="w-[180px] xl:w-[374px]"
     >
         <x-tables.rows.desktop.encapsulated.delegates.monitor.forging-status :model="$delegate" />
     </x-ark-tables.cell>
 
     <x-ark-tables.cell
-        class="md-lg:hidden"
+        class="md-lg:hidden w-[180px]"
         breakpoint="md"
         responsive
     >
@@ -63,11 +63,12 @@
     <x-ark-tables.cell
         breakpoint="md-lg"
         responsive
+        class="w-[160px]"
     >
         <x-tables.rows.desktop.encapsulated.delegates.monitor.time-to-forge :model="$delegate" />
     </x-ark-tables.cell>
 
-    <x-ark-tables.cell class="text-right">
+    <x-ark-tables.cell class="text-right w-[100px]">
         <x-tables.rows.desktop.encapsulated.delegates.monitor.block-height :model="$delegate" />
     </x-ark-tables.cell>
 </x-ark-tables.row>
