@@ -1,7 +1,6 @@
 import Clipboard from "@/Components/General/Clipboard";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import CrossIcon from "@ui/icons/cross.svg?react";
 
 export default function PageHeaderValuePopup({
@@ -22,12 +21,18 @@ export default function PageHeaderValuePopup({
     testId?: string;
 }) {
     const [modalVisible, setModalVisible] = useState(false);
-    const [hasBeenOpened, setHasBeenOpened] = useState(false);
     const popupRef = useRef<HTMLDivElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    const hasTrackedOpen = useRef(false);
 
     useEffect(() => {
         function onOutsideClick(event: MouseEvent) {
-            if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
+            if (
+                popupRef.current &&
+                !popupRef.current.contains(event.target as Node) &&
+                !buttonRef.current?.contains(event.target as Node)
+            ) {
                 setModalVisible(false);
             }
         }
@@ -50,13 +55,15 @@ export default function PageHeaderValuePopup({
             data-testid={testId}
         >
             <button
+                ref={buttonRef}
                 type="button"
                 onClick={() => {
-                    setModalVisible(!modalVisible);
-                    if (modalVisible && !hasBeenOpened) {
-                        (window as any).sa_event(`wallet_modal_${id}_opened`);
+                    const isVisible = !modalVisible;
+                    setModalVisible(isVisible);
+                    if (isVisible && !hasTrackedOpen.current) {
+                        window.sa_event(`wallet_modal_${id}_opened`);
 
-                        setHasBeenOpened(true);
+                        hasTrackedOpen.current = true;
                     }
                 }}
                 className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset"
