@@ -1,6 +1,7 @@
 <div
     x-data="{
         showOptions: false,
+        hasBeenOpened: false,
         preventAmountScroll: (e) => {
             const hasFocus = document.activeElement === e.target;
             e.target.blur();
@@ -22,6 +23,12 @@
         dropdown-background="bg-white border border-transparent dark:shadow-lg-dark dark:bg-theme-dark-900 dark:border-theme-dark-800"
         :close-on-click="false"
         on-close="() => showOptions = false"
+        on-open="() => {
+            if (! hasBeenOpened) {
+                hasBeenOpened = true;
+                sa_event('qr_code_opened');
+            }
+        }"
         button-wrapper-class=""
         button-class="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
     >
