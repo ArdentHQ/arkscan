@@ -21,7 +21,7 @@ final class CacheDelegateResignationIds extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache all transaction IDs for delegate resignations.';
 
