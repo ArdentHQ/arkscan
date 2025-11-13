@@ -22,7 +22,7 @@ final class SetupWebhook extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Setup ARK webhook';
 
