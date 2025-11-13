@@ -15,15 +15,15 @@ export default function WebhooksProvider({
     const enabled = broadcasting === "reverb";
     const [currentCurrency, setCurrentCurrency] = useState(currency);
     const listenersRef = useRef<ListenerRegistry>({});
-    
+
     const getEcho = () => {
         return window.Echo!;
-    }
+    };
 
     const remove = useCallback<IWebhooksContext["remove"]>(
         (channel, event, handler) => {
             const echo = getEcho();
-            
+
             const channelListeners = listenersRef.current[channel];
             if (!channelListeners) {
                 return;
@@ -34,7 +34,6 @@ export default function WebhooksProvider({
                 return;
             }
 
-            
             echo.channel(channel).stopListening(event, handler);
             eventListeners.delete(handler);
 
@@ -57,6 +56,7 @@ export default function WebhooksProvider({
             }
 
             const echo = getEcho();
+
             if (!listenersRef.current[channel]) {
                 listenersRef.current[channel] = {};
             }
@@ -87,12 +87,15 @@ export default function WebhooksProvider({
     useEffect(() => {
         listen(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
 
-        window.Livewire.on("currencyChanged", (currency: string) => {
-            remove(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
-            listen(`currency-update.${currency}`, "CurrencyUpdate", reloadPriceTicker);
+        // @TODO: see for alternatives for handling this the the currency Livewire component
+        // is removed https://app.clickup.com/t/86d ye0rvv
+        // @see `resources/views/components/webhooks/currency-update.blade.php`
+        // window.Livewire.on("currencyChanged", (currency: string) => {
+        //     remove(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
+        //     listen(`currency-update.${currency}`, "CurrencyUpdate", reloadPriceTicker);
 
-            setCurrentCurrency(currency);
-        });
+        //     setCurrentCurrency(currency);
+        // });
 
         return () => {
             remove(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
