@@ -107,11 +107,10 @@ export default function TransactionsTableWrapper({
     rowCount?: number;
 }) {
     const { isLoading } = usePageHandler();
+    const { t } = useTranslation();
+    const { network } = useSharedData();
 
     if (!transactions || isLoading) {
-        const { t } = useTranslation();
-        const { network } = useSharedData();
-
         return (
             <>
                 <LoadingTable

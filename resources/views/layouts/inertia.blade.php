@@ -42,8 +42,6 @@
                 </span>
             </x-ark-footer>
 
-            <x-webhooks.currency-update :currency="Settings::currency()" />
-
             @if (config('arkscan.arkconnect.enabled'))
                 <x-arkconnect.validator-toasts />
             @endif

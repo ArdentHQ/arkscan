@@ -67,10 +67,10 @@ export default function VotersTableWrapper({
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
-    if (!voters) {
-        const { t } = useTranslation();
-        const { network } = useSharedData();
+    const { t } = useTranslation();
+    const { network } = useSharedData();
 
+    if (!voters) {
         const columns: ILoadingTableColumn[] = [
             {
                 name: t("general.wallet.address"),
