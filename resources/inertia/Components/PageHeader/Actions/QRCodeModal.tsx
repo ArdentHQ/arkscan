@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import DropdownPopup from "@/Components/General/Dropdown/DropdownPopup";
 import QRCode from "react-qr-code";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ExternalLink from "@/Components/General/ExternalLink";
 import { URLBuilder } from "@ardenthq/arkvault-url";
 import Input from "@/Components/Input/Input";
@@ -107,10 +107,12 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
         amount: amount !== undefined && amount > 0 ? amount : undefined,
     });
 
+    const hasTrackedOpen = useRef(false);
+
     return (
         <DropdownPopup
             title={t("pages.wallet.qrcode.title")}
-            width="w-[calc(100vw-1rem)] sm:max-w-[320px]"
+            width="w-[calc(100vw)] sm:max-w-[320px]"
             zIndex={30}
             button={
                 <div className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset">
@@ -118,6 +120,13 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
                 </div>
             }
             onClosed={() => setTimeout(() => setShowOptions(false))}
+            onOpened={() => {
+                if (!hasTrackedOpen.current) {
+                    window.sa_event("qr_code_opened");
+
+                    hasTrackedOpen.current = true;
+                }
+            }}
             testId={testId}
         >
             {showOptions && (

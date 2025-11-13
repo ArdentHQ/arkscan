@@ -32,6 +32,7 @@ export default function Dropdown({
     button,
     children,
     onClosed,
+    onOpened,
     testId,
 }: {
     dropdownContentClasses?: string;
@@ -51,6 +52,7 @@ export default function Dropdown({
     button?: React.ReactNode;
     children: React.ReactNode;
     onClosed?: () => void;
+    onOpened?: () => void;
     testId?: string;
 }) {
     const { isOpen, setIsOpen } = useDropdown();
@@ -79,18 +81,31 @@ export default function Dropdown({
         onOpenChange(nextOpen) {
             setIsOpen(nextOpen);
 
+            if (nextOpen && onOpened !== undefined) {
+                setTimeout(() => onOpened(), 250);
+            }
+
             if (!nextOpen && onClosed !== undefined) {
                 setTimeout(() => onClosed(), 250);
             }
         },
     });
 
+    const triggerOpenClosed = (isDropdownOpen: boolean) => {
+        setIsOpen(isDropdownOpen);
+        if (isDropdownOpen && onOpened !== undefined) {
+            onOpened();
+        }
+
+        return;
+    };
+
     const dismiss = useDismiss(context);
 
     const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
 
     const { isMounted: isFloatingOpen, styles: floatingTransitionStyled } = useTransitionStyles(context, {
-        duration: 250, // explicitly setting default value for reference to onClosed
+        duration: 250, // explicitly setting default value for reference to open/closed events
     });
 
     let dropdownButton = (
@@ -107,7 +122,7 @@ export default function Dropdown({
                     [buttonClassExpanded]: isOpen,
                     [buttonClassClosed]: !isOpen,
                 })}
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => triggerOpenClosed(!isOpen)}
                 type="button"
                 disabled={disabled}
                 data-testid={testId ? `${testId}:button` : undefined}
@@ -155,7 +170,7 @@ export default function Dropdown({
                                 className={dropdownContentClasses}
                                 onClick={() => {
                                     if (closeOnClick) {
-                                        setIsOpen(false);
+                                        triggerOpenClosed(false);
                                     }
                                 }}
                             >

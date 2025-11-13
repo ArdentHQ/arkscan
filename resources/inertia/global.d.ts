@@ -26,5 +26,7 @@ declare global {
             };
             leave: (channel: string) => void;
         };
+
+        sa_event: (event: string, callback?: () => void) => void;
     }
 }

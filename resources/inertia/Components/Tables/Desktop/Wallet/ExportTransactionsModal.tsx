@@ -11,6 +11,7 @@ import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?re
 import Label from "@/Components/General/Label";
 // @ts-ignore
 import { ExportStatus as ExportStatusEnum } from "@js/includes/enums";
+import { useEffect, useRef } from "react";
 
 interface ExportTransactionsModalProps {
     isOpen: boolean;
@@ -68,6 +69,16 @@ export default function ExportTransactionsModal({
         rates,
         canBeExchanged,
     });
+
+    const hasTrackedOpen = useRef(false);
+
+    useEffect(() => {
+        if (isOpen && !hasTrackedOpen.current) {
+            window.sa_event("wallet_modal_export_transactions_opened");
+
+            hasTrackedOpen.current = true;
+        }
+    }, [isOpen]);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
