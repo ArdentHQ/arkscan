@@ -168,6 +168,86 @@ describe('Overview', function () {
         'dormant'  => ['dormantValidator', 'dormant'],
         'resigned' => ['resignedValidator', 'resigned'],
     ])->with('resolutions');
+
+    it('should track public key modal simpleanalytics event once when opened', function () {
+        $wallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:show-public-key"] > button')
+                ->waitForText(substr($wallet->public_key, 0, 7))
+                ->click('button[data-testid="wallet:show-public-key:close"]')
+                ->assertDontSee(substr($wallet->public_key, 0, 7))
+                ->click('[data-testid="wallet:show-public-key"] > button')
+                ->waitForText(substr($wallet->public_key, 0, 7));
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['wallet_modal_public_key_opened']);
+        });
+    });
+
+    it('should track legacy address modal simpleanalytics event once when opened', function () {
+        $wallet = Wallet::factory()
+            ->create([
+                'attributes' => [
+                    'isLegacy' => true,
+                ],
+            ]);
+
+        $legacyAddress = Legacy::generateAddressFromPublicKey($wallet->public_key);
+
+        $this->browse(function (Browser $browser) use ($wallet, $legacyAddress) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:show-legacy-address"] > button')
+                ->waitForText(substr($legacyAddress, 0, 7))
+                ->click('button[data-testid="wallet:show-legacy-address:close"]')
+                ->assertDontSee(substr($legacyAddress, 0, 7))
+                ->click('[data-testid="wallet:show-legacy-address"] > button')
+                ->waitForText(substr($legacyAddress, 0, 7));
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['wallet_modal_legacy_address_opened']);
+        });
+    });
+
+    it('should track qr code modal simpleanalytics event once when opened', function () {
+        $wallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:show-qr-code-modal:button"]')
+                ->waitForText(trans('pages.wallet.qrcode.title'))
+                ->click('button[data-testid="wallet:show-qr-code-modal:close"]')
+                ->pause(250)
+                ->assertDontSee(trans('pages.wallet.qrcode.title'))
+                ->click('[data-testid="wallet:show-qr-code-modal:button"]')
+                ->waitForText(trans('pages.wallet.qrcode.title'));
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['qr_code_opened']);
+        });
+    });
 });
 
 describe('Transactions Tab', function () {
@@ -315,6 +395,39 @@ describe('Transactions Tab', function () {
             expect($browser->attribute($downloadSelector, 'href'))->toStartWith('data:text/csv');
         });
     })->with('resolutions');
+
+    it('should track export modal simpleanalytics event once when opened', function () {
+        Transaction::factory()
+            ->transfer()
+            ->count(3)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $description = trans('pages.wallet.export-transactions-modal.description');
+
+        $this->browse(function (Browser $browser) use ($description) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('3 results', ignoreCase: true);
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:transactions:export-button"]')
+                ->waitForText($description)
+                ->clickAtXPath('//button[.//text()="Cancel"]')
+                ->assertDontSee($description)
+                ->click('[data-testid="wallet:transactions:export-button"]')
+                ->waitForText($description);
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['wallet_modal_export_transactions_opened']);
+        });
+    });
 
     it('should open the filter', function ($resolution) {
         Transaction::factory()
@@ -465,7 +578,7 @@ describe('Blocks Tab', function () {
             ]);
 
         Block::factory()
-            ->count(2)
+            ->count(3)
             ->create([
                 'proposer' => $this->wallet->address,
             ]);
@@ -508,7 +621,7 @@ describe('Blocks Tab', function () {
                 $browser->click('button#tab-blocks');
             }
 
-            $browser->waitForText('2 results', ignoreCase: true)
+            $browser->waitForText('3 results', ignoreCase: true)
                 ->click('[data-testid="wallet:blocks:export-button"]')
                 ->waitForText($description)
                 ->assertDisabled('[data-testid="wallet:blocks-export:submit"]')
@@ -524,6 +637,47 @@ describe('Blocks Tab', function () {
             expect($browser->attribute($downloadSelector, 'href'))->toStartWith('data:text/csv');
         });
     })->with('resolutions');
+
+    it('should track export modal simpleanalytics event once when opened', function () {
+        Transaction::factory()
+            ->transfer()
+            ->count(2)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        Block::factory()
+            ->count(3)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        $description = trans('pages.wallet.export-blocks-modal.description');
+
+        $this->browse(function (Browser $browser) use ($description) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('2 results', ignoreCase: true)
+                ->click('button#tab-blocks')
+                ->waitForText('3 results', ignoreCase: true);
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:blocks:export-button"]')
+                ->waitForText($description)
+                ->clickAtXPath('//button[.//text()="Cancel"]')
+                ->assertDontSee($description)
+                ->click('[data-testid="wallet:blocks:export-button"]')
+                ->waitForText($description);
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['wallet_modal_export_blocks_opened']);
+        });
+    });
 });
 
 describe('Voters Tab', function () {

@@ -14,7 +14,7 @@ export default function PageHeaderLegacyAddressAction({ wallet, testId }: { wall
             value={wallet.legacyAddress!}
             button={<ClockIcon className="h-4 w-4" />}
             title={t("pages.wallet.legacy-address.title")}
-            id="legacyAddress"
+            id="legacy_address"
             copiedTooltip={t("pages.wallet.legacy_address_copied")}
             testId={testId}
             additionalButtons={
