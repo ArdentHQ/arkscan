@@ -2,7 +2,7 @@
 
 <x-tables.encapsulated-table
     wire:key="{{ Helpers::generateId('transaction-recipients') }}"
-    class="hidden w-full md:block"
+    class="hidden w-full sm:block"
     :paginator="$recipients"
     sticky
 >
