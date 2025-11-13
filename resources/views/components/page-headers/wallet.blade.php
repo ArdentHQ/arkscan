@@ -24,9 +24,6 @@
             </x-page-headers.wallet.actions.public-key>
         @endunless
 
-        <livewire:wallet-qr-code
-            :address="$wallet->address()"
-            class="flex-1"
-        />
+        <x-wallet.qr-code-modal :address="$wallet->address()" />
     </x-slot>
 </x-page-headers.container>
