@@ -19,6 +19,7 @@ import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
 import { IWallet } from "../../types/generated";
 import useWebhookListener from "@/Providers/Webhooks/useWebhookListener";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
+import useConfig from "@/hooks/use-config";
 
 const WalletTabsWrapper = ({
     transactions,
@@ -58,6 +59,9 @@ const WalletTabs = ({
 }) => {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    const { listen } = useWebhooks();
+    const { wallet } = useConfig<WalletProps>();
+
     const { setRefreshPage } = usePageHandler();
     const { currentTab, onTabChange } = useTabs();
     
@@ -81,6 +85,31 @@ const WalletTabs = ({
             },
         });
     };
+
+    const reloadTransactions = () => {
+        router.reload({
+            only: ["transactions"],
+        });
+    };
+
+    useEffect(() => {
+        if (currentTab !== "transactions") {
+            return;
+        }
+
+        console.log(`listening to transactions.${wallet.address}`);
+
+        return listen(`transactions.${wallet.address}`, "NewTransaction", reloadTransactions);
+    }, [wallet.address, currentTab]);
+    
+    useEffect(() => {
+        if (currentTab !== "transactions") {
+            return;
+        }
+
+        return listen(`transactions.${wallet.public_key}`, "NewTransaction", reloadTransactions);
+    }, [wallet.public_key, currentTab]);
+
 
     useEffect(() => {
         if (!currentTab) {
@@ -149,7 +178,7 @@ const WalletTabs = ({
 };
 
 export default function Wallet({ transactions, blocks, wallet, voters, network, filters }: PageProps<WalletProps>) {
-    const { listen } = useWebhooks();
+    
     
     const metadata = usePageMetadata({
         page: "wallet",
@@ -159,15 +188,7 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
         },
     });
 
-    const reloadTransactions = () => {
-        router.reload({
-            only: ["transactions"],
-        });
-    };
-
-    useEffect(() => listen(`transactions.${wallet.address}`, "NewTransaction", reloadTransactions), [wallet.address]);
-    
-    useEffect(() => listen(`transactions.${wallet.public_key}`, "NewTransaction", reloadTransactions), [wallet.public_key]);
+   
 
     
     return (
@@ -175,8 +196,6 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
             <Head>{metadata}</Head>
 
             <Overview wallet={wallet} />
-
-            {/* <button onClick={reloadTransactions}>Reload Transactions</button> */}
 
             <PageHandlerProvider>
                 <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
