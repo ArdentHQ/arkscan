@@ -17,6 +17,8 @@ import WalletTransactionsTab from "./tabs/Transactions";
 import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
 import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
 import { IWallet } from "../../types/generated";
+import useWebhookListener from "@/Providers/Webhooks/useWebhookListener";
+import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 
 const WalletTabsWrapper = ({
     transactions,
@@ -58,6 +60,7 @@ const WalletTabs = ({
 
     const { setRefreshPage } = usePageHandler();
     const { currentTab, onTabChange } = useTabs();
+    
 
     const pollCurrentTab = (tab: string, callback?: CallableFunction) => {
         let pollParameters: string[] = [];
@@ -146,6 +149,8 @@ const WalletTabs = ({
 };
 
 export default function Wallet({ transactions, blocks, wallet, voters, network, filters }: PageProps<WalletProps>) {
+    const { listen } = useWebhooks();
+    
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {
@@ -154,11 +159,24 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
         },
     });
 
+    const reloadTransactions = () => {
+        router.reload({
+            only: ["transactions"],
+        });
+    };
+
+    useEffect(() => listen(`transactions.${wallet.address}`, "NewTransaction", reloadTransactions), [wallet.address]);
+    
+    useEffect(() => listen(`transactions.${wallet.public_key}`, "NewTransaction", reloadTransactions), [wallet.public_key]);
+
+    
     return (
         <>
             <Head>{metadata}</Head>
 
             <Overview wallet={wallet} />
+
+            {/* <button onClick={reloadTransactions}>Reload Transactions</button> */}
 
             <PageHandlerProvider>
                 <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
