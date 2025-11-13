@@ -19,7 +19,6 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
 import useConfig from "@/hooks/use-config";
 
-
 export function Row({ row }: { row: ITransaction }) {
     return (
         <tr className="text-sm font-semibold">
@@ -107,7 +106,6 @@ export default function TransactionsTableWrapper({
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
-    
     const { isLoading } = usePageHandler();
     const { t } = useTranslation();
     const { network } = useConfig();
