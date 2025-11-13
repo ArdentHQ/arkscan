@@ -64,7 +64,6 @@ const WalletTabs = ({
 
     const { setRefreshPage } = usePageHandler();
     const { currentTab, onTabChange } = useTabs();
-    
 
     const pollCurrentTab = (tab: string, callback?: CallableFunction) => {
         let pollParameters: string[] = [];
@@ -199,8 +198,6 @@ const WalletTabs = ({
 };
 
 export default function Wallet({ transactions, blocks, wallet, voters, network, filters }: PageProps<WalletProps>) {
-    
-    
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {
@@ -209,9 +206,6 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
         },
     });
 
-   
-
-    
     return (
         <>
             <Head>{metadata}</Head>

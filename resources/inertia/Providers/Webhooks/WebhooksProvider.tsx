@@ -15,15 +15,15 @@ export default function WebhooksProvider({
     const enabled = broadcasting === "reverb";
     const [currentCurrency, setCurrentCurrency] = useState(currency);
     const listenersRef = useRef<ListenerRegistry>({});
-    
+
     const getEcho = () => {
         return window.Echo!;
-    }
+    };
 
     const remove = useCallback<IWebhooksContext["remove"]>(
         (channel, event, handler) => {
             const echo = getEcho();
-            
+
             const channelListeners = listenersRef.current[channel];
             if (!channelListeners) {
                 return;
@@ -34,7 +34,6 @@ export default function WebhooksProvider({
                 return;
             }
 
-            
             echo.channel(channel).stopListening(event, handler);
             eventListeners.delete(handler);
 
