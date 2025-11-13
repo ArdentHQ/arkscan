@@ -12,24 +12,18 @@ export default function WebhooksProvider({
     broadcasting: string;
     currency: string;
 }) {
+    const enabled = broadcasting === "reverb";
     const [currentCurrency, setCurrentCurrency] = useState(currency);
     const listenersRef = useRef<ListenerRegistry>({});
-
-    const getEcho = useCallback(() => {
-        if (typeof window === "undefined") {
-            return null;
-        }
-
-        return window.Echo ?? null;
-    }, []);
+    
+    const getEcho = () => {
+        return window.Echo!;
+    }
 
     const remove = useCallback<IWebhooksContext["remove"]>(
         (channel, event, handler) => {
             const echo = getEcho();
-            if (!echo) {
-                return;
-            }
-
+            
             const channelListeners = listenersRef.current[channel];
             if (!channelListeners) {
                 return;
@@ -40,6 +34,7 @@ export default function WebhooksProvider({
                 return;
             }
 
+            
             echo.channel(channel).stopListening(event, handler);
             eventListeners.delete(handler);
 
@@ -57,11 +52,11 @@ export default function WebhooksProvider({
 
     const listen = useCallback<IWebhooksContext["listen"]>(
         (channel, event, handler) => {
-            const echo = getEcho();
-            if (!echo) {
-                return () => undefined;
+            if (!enabled) {
+                return (): void => undefined;
             }
 
+            const echo = getEcho();
             if (!listenersRef.current[channel]) {
                 listenersRef.current[channel] = {};
             }
@@ -108,7 +103,7 @@ export default function WebhooksProvider({
         () => ({
             listen,
             remove,
-            enabled: broadcasting === "reverb",
+            enabled,
         }),
         [listen, remove],
     );

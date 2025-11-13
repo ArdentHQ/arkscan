@@ -97,11 +97,9 @@ const WalletTabs = ({
             return;
         }
 
-        console.log(`listening to transactions.${wallet.address}`);
-
         return listen(`transactions.${wallet.address}`, "NewTransaction", reloadTransactions);
     }, [wallet.address, currentTab]);
-    
+
     useEffect(() => {
         if (currentTab !== "transactions") {
             return;
@@ -110,6 +108,29 @@ const WalletTabs = ({
         return listen(`transactions.${wallet.public_key}`, "NewTransaction", reloadTransactions);
     }, [wallet.public_key, currentTab]);
 
+    useEffect(() => {
+        if (currentTab !== "blocks") {
+            return;
+        }
+
+        return listen(`blocks.${wallet.public_key}`, "NewBlock", () => {
+            router.reload({
+                only: ["blocks"],
+            });
+        });
+    }, [wallet.public_key, currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "voters") {
+            return;
+        }
+
+        return listen(`wallet-vote.${wallet.public_key}`, "WalletVote", () => {
+            router.reload({
+                only: ["voters"],
+            });
+        });
+    }, [wallet.public_key, currentTab]);
 
     useEffect(() => {
         if (!currentTab) {

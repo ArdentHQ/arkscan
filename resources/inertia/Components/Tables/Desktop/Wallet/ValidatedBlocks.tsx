@@ -15,7 +15,6 @@ import { useState } from "react";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import ExportBlocksModal from "./ExportBlocksModal";
 import useConfig from "@/hooks/use-config";
-import useWebhookListener from "@/Providers/Webhooks/useWebhookListener";
 
 export function Row({ row }: { row: IBlock }) {
     const { network } = useConfig();
@@ -119,12 +118,6 @@ export default function ValidatedBlocksTableWrapper({
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {
-    const { wallet } = useConfig<WalletProps>();
-
-    useWebhookListener(`blocks.${wallet.public_key}`, "NewBlock", () => {
-        window.Livewire.emit("reloadBlocks");
-    });
-
     const { isLoading } = usePageHandler();
     const { t } = useTranslation();
     const { network } = useConfig();
