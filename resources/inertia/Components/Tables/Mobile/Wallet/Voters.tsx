@@ -5,12 +5,12 @@ import { MobileVotersSkeletonTable } from "../Skeleton/Wallet/Voters";
 import { IPaginatedResponse } from "@/types";
 import { IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import Address from "@/Components/Wallet/Address";
 
 export function VotersMobileTable({ voters }: { voters: IPaginatedResponse<IWallet> }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <MobileTable noResultsMessage={voters.noResultsMessage} resultCount={voters.total ?? 0}>

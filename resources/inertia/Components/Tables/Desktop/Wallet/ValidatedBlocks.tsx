@@ -14,10 +14,10 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { useState } from "react";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import ExportBlocksModal from "./ExportBlocksModal";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 
 export function Row({ row }: { row: IBlock }) {
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <tr className="text-sm font-semibold">
@@ -48,7 +48,7 @@ export function ValidatedBlocksTable({
     mobile?: React.ReactNode;
 }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
     const hasForgedBlocks = (blocks.total ?? blocks.data?.length ?? 0) > 0;
 
     return (
@@ -122,7 +122,7 @@ export default function ValidatedBlocksTableWrapper({
 
     if (!blocks || isLoading) {
         const { t } = useTranslation();
-        const { network } = useConfig();
+        const { network } = useSharedData();
 
         const columns: ILoadingTableColumn[] = [
             {
@@ -183,7 +183,7 @@ export default function ValidatedBlocksTableWrapper({
 
 export function ValidatedBlocksHeaderActions({ hasForgedBlocks }: { hasForgedBlocks: boolean }) {
     const { t } = useTranslation();
-    const { wallet, rates, network, settings } = useConfig<WalletProps>();
+    const { wallet, rates, network, settings } = useSharedData<WalletProps>();
     const [isBlocksExportModalOpen, setIsBlocksExportModalOpen] = useState(false);
 
     return (

@@ -10,7 +10,7 @@ import Input from "@/Components/Input/Input";
 import ArkConnectDisabledAction from "@/Components/General/ArkConnect/DisabledAction";
 import QRCodeIcon from "@ui/icons/qr-code.svg?react";
 import Tooltip from "@/Components/General/Tooltip";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import { useArkConnect } from "@/Providers/ArkConnect/ArkConnectContext";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 
@@ -25,7 +25,7 @@ function ArkVaultButton({
     const { t } = useTranslation();
 
     const { isOnSameNetwork, isConnected, performSend, isArkConnectEnabled } = useArkConnect();
-    const { wallet } = useConfig<WalletProps>();
+    const { wallet } = useSharedData<WalletProps>();
 
     let arkconnectButton = null;
 
@@ -96,7 +96,7 @@ function ArkVaultButton({
 function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string }) {
     const { t } = useTranslation();
     const [showOptions, setShowOptions] = useState(false);
-    const { arkconnectConfig, network } = useConfig();
+    const { arkconnectConfig, network } = useSharedData();
     const [amount, setAmount] = useState<number | undefined>(undefined);
 
     const urlBuilder = new URLBuilder(arkconnectConfig.vaultUrl);

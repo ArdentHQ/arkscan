@@ -1,4 +1,4 @@
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import { useTranslation } from "react-i18next";
 import Tooltip from "../Tooltip";
 
@@ -12,7 +12,7 @@ export default function ArkConnectDisabledAction({
     children: React.ReactNode;
 }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <>

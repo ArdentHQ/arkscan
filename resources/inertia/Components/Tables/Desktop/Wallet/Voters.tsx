@@ -4,7 +4,7 @@ import { IPaginatedResponse } from "@/types";
 import { IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import TableHeader from "../TableHeader";
 import Address from "@/Components/Wallet/Address";
 
@@ -28,7 +28,7 @@ export function Row({ row }: { row: IWallet }) {
 
 export function VotersTable({ voters, mobile }: { voters: IPaginatedResponse<IWallet>; mobile?: React.ReactNode }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <Table
@@ -69,7 +69,7 @@ export default function VotersTableWrapper({
 }) {
     if (!voters) {
         const { t } = useTranslation();
-        const { network } = useConfig();
+        const { network } = useSharedData();
 
         const columns: ILoadingTableColumn[] = [
             {

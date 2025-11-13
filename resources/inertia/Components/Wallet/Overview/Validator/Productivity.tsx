@@ -2,12 +2,12 @@ import { IWallet } from "@/types/generated";
 import WalletOverviewItemEntry from "../ItemEntry";
 import { useTranslation } from "react-i18next";
 import classNames from "@/utils/class-names";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import percentage from "@/utils/percentage";
 
 export default function WalletOverviewValidatorProductivity({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
-    const { productivity } = useConfig();
+    const { productivity } = useSharedData();
 
     const walletProductivity = wallet.isActive ? wallet.productivity : 0;
     const isLow = wallet.isActive && walletProductivity < productivity!.danger;

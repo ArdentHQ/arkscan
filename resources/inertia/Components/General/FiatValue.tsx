@@ -1,8 +1,8 @@
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import { hasSymbol } from "@/utils/number-formatter";
 
 export default function FiatValue({ value }: { value: number | string }) {
-    const { settings } = useConfig();
+    const { settings } = useSharedData();
 
     return (
         <span>
