@@ -7,6 +7,7 @@ export default function DropdownPopup({
     title,
     children,
     button,
+    onOpened,
     onClosed,
     dropdownClasses = "px-4",
     width = "min-w-[300px]",
@@ -16,6 +17,7 @@ export default function DropdownPopup({
     title: string;
     children: React.ReactNode;
     button: React.ReactNode;
+    onOpened?: () => void;
     onClosed?: () => void;
     dropdownClasses?: string;
     width?: string;
@@ -34,6 +36,7 @@ export default function DropdownPopup({
                 [width]: true,
             })}
             dropdownContentClasses="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 rounded-xl shadow-lg dark:shadow-lg-dark"
+            onOpened={onOpened}
             onClosed={onClosed}
             zIndex={zIndex}
             testId={testId}
@@ -48,6 +51,7 @@ export default function DropdownPopup({
                         onClick={() => {
                             setIsOpen(false);
                         }}
+                        data-testid={testId ? `${testId}:close` : undefined}
                     >
                         <CrossIcon className="h-3 w-3" />
                     </button>

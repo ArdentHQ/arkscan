@@ -9,3 +9,9 @@ declare module "@inertiajs/core" {
         errors: ValidationErrors;
     }
 }
+
+declare global {
+    interface Window {
+        sa_event: (event: string, callback?: () => void) => void;
+    }
+}
