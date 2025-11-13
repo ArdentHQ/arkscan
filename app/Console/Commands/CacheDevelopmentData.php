@@ -19,7 +19,7 @@ final class CacheDevelopmentData extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Executes all caching commands. DO NOT USE THIS IN PRODUCTION!';
 

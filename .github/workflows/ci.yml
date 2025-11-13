@@ -31,7 +31,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov, gmp
                   coverage: pcov
 
@@ -65,7 +65,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov, gmp
                   coverage: pcov
 
@@ -87,7 +87,7 @@ jobs:
 
         services:
             postgres:
-                image: postgres:12
+                image: postgres:18
                 env:
                     POSTGRES_DB: arkscan_test_db
                     POSTGRES_USER: arkscan_test_db
@@ -105,7 +105,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov, gmp
                   coverage: pcov
 

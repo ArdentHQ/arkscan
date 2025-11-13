@@ -19,7 +19,7 @@ final class PopulateHistoricVolume extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Populate historic volume values for currencies.';
 
