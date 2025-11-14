@@ -19,8 +19,7 @@ class IRequestData extends Data
         public ISettings $settings,
         public IConfigArkconnect $arkconnectConfig,
         public IConfigPagination $pagination,
-        public string $broadcasting,
-        public string $currency,
+        public string $broadcasting,        
     ) {
     }
 }

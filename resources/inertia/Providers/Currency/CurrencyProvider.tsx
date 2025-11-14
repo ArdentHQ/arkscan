@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import WebhooksContext from "./CurrencyContext";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
+import { router } from "@inertiajs/react";
 
 export default function CurrencyProvider({ children, currency }: { children: React.ReactNode; currency: string }) {
     const [currentCurrency, setCurrentCurrency] = useState(currency);
@@ -8,8 +9,14 @@ export default function CurrencyProvider({ children, currency }: { children: Rea
     const { listen } = useWebhooks();
 
     const reloadPriceTicker = useCallback(() => {
-        // window.Livewire.emit("reloadPriceTicker");
+        router.reload({
+            only: ["currency"],
+        });
     }, []);
+
+    router.on("success", (event) => {
+        setCurrentCurrency(event.detail.page.props.currency as string);
+    });
 
     useEffect(() => {
         return listen(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
