@@ -45,7 +45,6 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        
         return [
             ...IRequestData::from([
                 'network'            => Network::data(),
@@ -55,12 +54,12 @@ class HandleInertiaRequests extends Middleware
                     'enabled'  => config('arkscan.arkconnect.enabled'),
                     'vaultUrl' => config('arkscan.urls.vault_url'),
                 ]),
-                'currencies'   => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
-                'pagination'   => IConfigPagination::from(config('arkscan.pagination')),
-                'broadcasting' => config('broadcasting.default'),
-                'currency'     => fn () => Settings::currency(),
+                'currencies'           => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
+                'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
+                'broadcasting'         => config('broadcasting.default'),
+                'currency'             => fn () => Settings::currency(),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
-                'isPriceAvailable' => fn () => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
+                'isPriceAvailable'     => fn () => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
             ])->toArray(),
             ...parent::share($request),
         ];
