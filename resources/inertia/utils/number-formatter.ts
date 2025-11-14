@@ -16,7 +16,7 @@ export function hasSymbol(currency: string): boolean {
 
 export function isFiat(currency: string): boolean {
     const { currencies } = useConfig();
-    
+
     if (currencies![currency.toLowerCase()] === undefined) {
         return false;
     }
