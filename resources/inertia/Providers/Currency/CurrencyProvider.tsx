@@ -2,9 +2,16 @@ import { useEffect, useState } from "react";
 import WebhooksContext from "./CurrencyContext";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 import { router } from "@inertiajs/react";
+import { IPriceTickerData } from "@/types/generated";
 
-export default function CurrencyProvider({ children, currency }: { children: React.ReactNode; currency: string }) {
-    const [currentCurrency, setCurrentCurrency] = useState(currency);
+export default function CurrencyProvider({
+    children,
+    tickerData,
+}: {
+    children: React.ReactNode;
+    tickerData: IPriceTickerData;
+}) {
+    const [currentTickerData, setCurrentTickerData] = useState(tickerData);
     const [isUpdatingCurrency, setIsUpdatingCurrency] = useState(false);
 
     const { listen } = useWebhooks();
@@ -12,7 +19,7 @@ export default function CurrencyProvider({ children, currency }: { children: Rea
     const reloadPriceTicker = () => {
         setIsUpdatingCurrency(true);
         router.reload({
-            only: ["currency"],
+            only: ["priceTickerData"],
             showProgress: false,
             onFinish: () => {
                 setIsUpdatingCurrency(false);
@@ -21,12 +28,12 @@ export default function CurrencyProvider({ children, currency }: { children: Rea
     };
 
     router.on("success", (event) => {
-        setCurrentCurrency(event.detail.page.props.currency as string);
+        setCurrentTickerData(event.detail.page.props.priceTickerData as IPriceTickerData);
     });
 
     useEffect(() => {
-        return listen(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
-    }, [currentCurrency]);
+        return listen(`currency-update.${currentTickerData.currency}`, "CurrencyUpdate", reloadPriceTicker);
+    }, [currentTickerData.currency]);
 
     const updateCurrency = (newCurrency: string): Promise<void> => {
         setIsUpdatingCurrency(true);
@@ -35,7 +42,7 @@ export default function CurrencyProvider({ children, currency }: { children: Rea
                 "/currency/update",
                 { currency: newCurrency },
                 {
-                    only: ["currency"],
+                    only: ["priceTickerData"],
                     showProgress: false,
                     onSuccess: () => {
                         resolve();
@@ -54,9 +61,11 @@ export default function CurrencyProvider({ children, currency }: { children: Rea
     return (
         <WebhooksContext.Provider
             value={{
-                currency: currentCurrency,
+                currency: currentTickerData.currency,
                 updateCurrency,
                 isUpdatingCurrency,
+                isPriceAvailable: currentTickerData.isPriceAvailable,
+                priceExchangeRate: currentTickerData.priceExchangeRate,
             }}
         >
             {children}

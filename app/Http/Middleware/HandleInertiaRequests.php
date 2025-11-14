@@ -9,6 +9,7 @@ use App\DTO\Inertia\IConfigPagination;
 use App\DTO\Inertia\IConfigProductivity;
 use App\DTO\Inertia\ICurrency;
 use App\DTO\Inertia\IRequestData;
+use App\DTO\Inertia\IPriceTickerData;
 use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
@@ -59,10 +60,12 @@ class HandleInertiaRequests extends Middleware
                 'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
                 'broadcasting'         => config('broadcasting.default'),
                 'networkName'          => fn () => config('arkscan.network'),
-                'currency'             => fn () => Settings::currency(),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
-                'isPriceAvailable'     => fn () => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
-                'priceExchangeRate'    => fn () => ExchangeRate::currentRate(),
+                'priceTickerData'      => fn () => IPriceTickerData::from([
+                    'currency' => Settings::currency(),
+                    'isPriceAvailable' => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
+                    'priceExchangeRate' => random_int(1, 1000000), // ExchangeRate::currentRate(),
+                ]),
             ])->toArray(),
             ...parent::share($request),
         ];

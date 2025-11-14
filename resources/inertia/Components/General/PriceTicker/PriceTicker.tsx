@@ -8,25 +8,31 @@ import Dropdown from "@/Components/General/Dropdown/Dropdown";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
 import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
+import { usePoll } from "@inertiajs/react";
 
 export default function PriceTicker() {
-    const { isDownForMaintenance, network, isPriceAvailable, priceExchangeRate, networkName, currencies } = useConfig();
+    const { isDownForMaintenance, network, networkName, currencies, broadcasting } = useConfig();
+
+    const { currency, updateCurrency, isUpdatingCurrency, isPriceAvailable, priceExchangeRate } = useCurrency();
 
     const isDisabled = useMemo(() => {
         return isDownForMaintenance || !network.canBeExchanged || networkName !== "production" || !isPriceAvailable;
     }, [isDownForMaintenance, network.canBeExchanged, isPriceAvailable, networkName]);
 
-    const { currency, updateCurrency, isUpdatingCurrency } = useCurrency();
-
     const { t } = useTranslation();
 
+    usePoll(
+        30 * 1000,
+        {
+            only: ["priceTickerData"],
+        },
+        {
+            autoStart: !isDisabled && broadcasting !== "reverb",
+        },
+    );
+
     return (
-        <div
-            // @if (! $isDisabled && config('broadcasting.default') !== 'reverb')
-            //     wire:poll.visible.30s
-            // @endif
-            className={classNames("w-full md:w-auto", { "opacity-50": isUpdatingCurrency })}
-        >
+        <div className={classNames("w-full md:w-auto", { "opacity-50": isUpdatingCurrency })}>
             <div
                 className={classNames(
                     "flex items-center justify-between rounded border-theme-secondary-300 dark:border-transparent md:border md:bg-theme-secondary-200 md:dark:bg-theme-dark-700",

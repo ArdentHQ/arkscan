@@ -5,7 +5,7 @@ import loadI18n from "../inertia/i18n";
 import ArkConnectProvider from "@/Providers/ArkConnect/ArkConnectProvider";
 import WebhooksProvider from "@/Providers/Webhooks/WebhooksProvider";
 import CurrencyProvider from "@/Providers/Currency/CurrencyProvider";
-import { IConfigArkconnect, INetwork } from "@/types/generated";
+import { IConfigArkconnect, INetwork, IPriceTickerData } from "@/types/generated";
 import { ArkConnectConfiguration } from "@/Providers/ArkConnect/types";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
@@ -26,7 +26,7 @@ createInertiaApp({
 
         root.render(
             <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
-                <CurrencyProvider currency={props.initialPage.props.currency as string}>
+                <CurrencyProvider tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}>
                     <ArkConnectProvider configuration={configuration}>
                         <App {...props} />
                     </ArkConnectProvider>
