@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        
         return [
             ...IRequestData::from([
                 'network'            => Network::data(),
@@ -56,8 +57,8 @@ class HandleInertiaRequests extends Middleware
                 'currencies'   => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
                 'pagination'   => IConfigPagination::from(config('arkscan.pagination')),
                 'broadcasting' => config('broadcasting.default'),
+                'currency'     => fn () => Settings::currency(),
             ])->toArray(),
-            'currency'     => fn () => Settings::currency(),
             ...parent::share($request),
         ];
     }
