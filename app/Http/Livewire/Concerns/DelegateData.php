@@ -76,33 +76,6 @@ trait DelegateData
             }
 
             return true;
-
-            // foreach ($delegates as $delegate) {
-            //     $block = $blocks->firstWhere('generator_public_key', $delegate);
-
-            //     // The delegate hasn't forged in some rounds.
-            //     if (is_null($block)) {
-            //         $block = Block::query()
-            //             ->where('generator_public_key', $delegate)
-            //             ->orderBy('height', 'desc')
-            //             ->limit(1)
-            //             ->first();
-            //     }
-
-            //     // The delegate has never forged.
-            //     if (is_null($block)) {
-            //         continue;
-            //     }
-
-            //     (new WalletCache())->setLastBlock($delegate, [
-            //         'id'                   => $block->id,
-            //         'height'               => $block->height->toNumber(),
-            //         'timestamp'            => Timestamp::fromGenesis($block->timestamp)->unix(),
-            //         'generator_public_key' => $block->generator_public_key,
-            //     ]);
-            // }
-
-            // return true;
         });
     }
 
