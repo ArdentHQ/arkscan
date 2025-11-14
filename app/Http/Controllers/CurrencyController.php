@@ -23,8 +23,6 @@ final class CurrencyController
 
         if ($originalCurrency !== $newCurrency) {
             $this->saveSetting('currency', $newCurrency);
-
-            // $this->dispatch('currencyChanged', $newCurrency);
         }
 
         return redirect()->back();

@@ -26,16 +26,6 @@ export default function CurrencyProvider({ children, currency }: { children: Rea
 
     useEffect(() => {
         return listen(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
-
-        // @TODO: see for alternatives for handling this the the currency Livewire component
-        // is removed https://app.clickup.com/t/86d ye0rvv
-        // @see `resources/views/components/webhooks/currency-update.blade.php`
-        // window.Livewire.on("currencyChanged", (currency: string) => {
-        //     remove(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
-        //     listen(`currency-update.${currency}`, "CurrencyUpdate", reloadPriceTicker);
-
-        //     setCurrentCurrency(currency);
-        // });
     }, [currentCurrency]);
 
     const updateCurrency = (newCurrency: string): Promise<void> => {
