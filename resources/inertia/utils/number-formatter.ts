@@ -16,12 +16,12 @@ export function hasSymbol(currency: string): boolean {
 
 export function isFiat(currency: string): boolean {
     const { currencies } = useConfig();
-
-    if (currencies![currency] === undefined) {
+    
+    if (currencies![currency.toLowerCase()] === undefined) {
         return false;
     }
 
-    return currencies![currency]?.locale !== null;
+    return currencies![currency.toLowerCase()]?.locale !== null;
 }
 
 export function currency(value: number, currency: string, showSmallAmounts = false): string {

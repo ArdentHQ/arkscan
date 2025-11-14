@@ -2,6 +2,8 @@ import useConfig from "@/hooks/use-config";
 import { useMemo } from "react";
 import classNames from "@/utils/class-names";
 import { useTranslation } from "react-i18next";
+import { currencyWithDecimals } from "@/utils/number-formatter";
+import useCurrency from "@/Providers/Currency/useCurrency";
 
 export default function PriceTicker() {
     const { isDownForMaintenance, network, isPriceAvailable } = useConfig();
@@ -9,6 +11,8 @@ export default function PriceTicker() {
     const isDisabled = useMemo(() => {
         return isDownForMaintenance || !network.canBeExchanged || network.name !== "production" || !isPriceAvailable;
     }, [isDownForMaintenance, network.canBeExchanged, isPriceAvailable]);
+
+    const { currency } = useCurrency();
 
     const { t } = useTranslation();
     // $navigation = [
@@ -39,7 +43,10 @@ export default function PriceTicker() {
     //     $navigation[3]['children'][] = ['route' => 'contact', 'label' => trans('menus.support')];
     // }
 
+    // TODO: handle this
     const busy = false;
+
+    const price = 1.00000325;
 
     return (
         <div
@@ -63,13 +70,11 @@ export default function PriceTicker() {
                 )}
             >
                 <div className="transition-default font-semibold md:py-1.5 md:pl-3 md:pr-2 md:text-sm">
-                    <span>{t("general.navbar.price")}:</span>
+                    <span>{t("general.navbar.price")}:&nbsp;</span>
                     {isDisabled ? (
                         t("general.na")
                     ) : (
-                        <div className="inline-flex items-center">
-                            {/* ExplorerNumberFormatter::currency($price, Settings::currency()) */}
-                        </div>
+                        <div className="inline-flex items-center">{currencyWithDecimals(price, currency)}</div>
                     )}
                 </div>
 
