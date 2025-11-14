@@ -8,8 +8,8 @@ use App\DTO\Inertia\IConfigArkconnect;
 use App\DTO\Inertia\IConfigPagination;
 use App\DTO\Inertia\IConfigProductivity;
 use App\DTO\Inertia\ICurrency;
-use App\DTO\Inertia\IRequestData;
 use App\DTO\Inertia\IPriceTickerData;
+use App\DTO\Inertia\IRequestData;
 use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
@@ -62,8 +62,8 @@ class HandleInertiaRequests extends Middleware
                 'networkName'          => fn () => config('arkscan.network'),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
                 'priceTickerData'      => fn () => IPriceTickerData::from([
-                    'currency' => Settings::currency(),
-                    'isPriceAvailable' => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
+                    'currency'          => Settings::currency(),
+                    'isPriceAvailable'  => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
                     'priceExchangeRate' => ExchangeRate::currentRate(),
                 ]),
             ])->toArray(),
