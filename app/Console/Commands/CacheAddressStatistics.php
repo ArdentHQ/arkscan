@@ -8,7 +8,6 @@ use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
 use App\Events\Statistics\AddressHoldings;
 use App\Events\Statistics\UniqueAddresses;
 use App\Facades\Network;
-use App\Models\Scopes\HasMultiPaymentRecipientScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Aggregates\HoldingsAggregate;
