@@ -64,7 +64,7 @@ class HandleInertiaRequests extends Middleware
                 'priceTickerData'      => fn () => IPriceTickerData::from([
                     'currency' => Settings::currency(),
                     'isPriceAvailable' => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
-                    'priceExchangeRate' => random_int(1, 1000000), // ExchangeRate::currentRate(),
+                    'priceExchangeRate' => ExchangeRate::currentRate(),
                 ]),
             ])->toArray(),
             ...parent::share($request),
