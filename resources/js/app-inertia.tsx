@@ -23,6 +23,7 @@ createInertiaApp({
             network: props.initialPage.props.network as INetwork,
             arkconnectConfig: props.initialPage.props.arkconnectConfig as IConfigArkconnect,
         };
+
         root.render(
             <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
                 <CurrencyProvider currency={props.initialPage.props.currency as string}>

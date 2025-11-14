@@ -17,9 +17,9 @@ import WalletTransactionsTab from "./tabs/Transactions";
 import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
 import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
 import { IWallet } from "../../types/generated";
-import useWebhookListener from "@/Providers/Webhooks/useWebhookListener";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 import useConfig from "@/hooks/use-config";
+import Navbar from "@/Components/General/Navbar/Navbar";
 
 const WalletTabsWrapper = ({
     transactions,
@@ -209,6 +209,8 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
     return (
         <>
             <Head>{metadata}</Head>
+            {/* @TODO: move this to a layout */}
+            <Navbar />
 
             <Overview wallet={wallet} />
 

@@ -1,4 +1,4 @@
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import LoadingText from "../Loading/Text";
 
 export default function Detail({

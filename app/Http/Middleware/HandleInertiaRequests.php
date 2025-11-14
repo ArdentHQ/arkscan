@@ -11,6 +11,7 @@ use App\DTO\Inertia\ICurrency;
 use App\DTO\Inertia\IRequestData;
 use App\Facades\Network;
 use App\Facades\Settings;
+use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -58,6 +59,8 @@ class HandleInertiaRequests extends Middleware
                 'pagination'   => IConfigPagination::from(config('arkscan.pagination')),
                 'broadcasting' => config('broadcasting.default'),
                 'currency'     => fn () => Settings::currency(),
+                'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
+                'isPriceAvailable' => fn () => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
             ])->toArray(),
             ...parent::share($request),
         ];

@@ -70,6 +70,8 @@ export type IRequestData = {
     pagination: IConfigPagination;
     broadcasting: string;
     currency: string;
+    isDownForMaintenance: boolean;
+    isPriceAvailable: boolean;
 };
 export type ISettings = {
     currency: string;
