@@ -95,6 +95,8 @@ final class CacheAddressStatistics extends Command
     private function cacheMostTransactions(StatisticsCache $cache): void
     {
         /** @var array{address?: string, tx_count?: int} $mostTransactions */
+        // Ignore next line as the `joinSubLateral` works as intended since it is a macro method.
+        // @phpstan-ignore-next-line
         $mostTransactions = (array) DB::connection('explorer')
             ->query()
             ->select([
