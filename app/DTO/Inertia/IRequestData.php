@@ -22,11 +22,15 @@ class IRequestData extends Data
         public IConfigPagination $pagination,
         public string $broadcasting,
         #[LiteralTypeScriptType('string')]
+        public Closure $networkName,
+        #[LiteralTypeScriptType('string')]
         public Closure $currency,
         #[LiteralTypeScriptType('boolean')]
         public Closure $isDownForMaintenance,
         #[LiteralTypeScriptType('boolean')]
         public Closure $isPriceAvailable,
+        #[LiteralTypeScriptType('number | null')]
+        public Closure $priceExchangeRate,
     ) {
     }
 }

@@ -13,6 +13,7 @@ use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
 use Illuminate\Http\Request;
+use App\Services\ExchangeRate;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -58,9 +59,11 @@ class HandleInertiaRequests extends Middleware
                 'currencies'   => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
                 'pagination'   => IConfigPagination::from(config('arkscan.pagination')),
                 'broadcasting' => config('broadcasting.default'),
+                'networkName' => fn () => config('arkscan.network'),
                 'currency'     => fn () => Settings::currency(),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
                 'isPriceAvailable' => fn () => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
+                'priceExchangeRate' => fn () => ExchangeRate::currentRate(),
             ])->toArray(),
             ...parent::share($request),
         ];

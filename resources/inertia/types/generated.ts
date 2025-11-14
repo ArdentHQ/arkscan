@@ -69,9 +69,11 @@ export type IRequestData = {
     arkconnectConfig: IConfigArkconnect;
     pagination: IConfigPagination;
     broadcasting: string;
+    networkName: string;
     currency: string;
     isDownForMaintenance: boolean;
     isPriceAvailable: boolean;
+    priceExchangeRate: number | null;
 };
 export type ISettings = {
     currency: string;

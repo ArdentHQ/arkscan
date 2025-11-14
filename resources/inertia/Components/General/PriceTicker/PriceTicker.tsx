@@ -6,15 +6,16 @@ import { currencyWithDecimals } from "@/utils/number-formatter";
 import useCurrency from "@/Providers/Currency/useCurrency";
 
 export default function PriceTicker() {
-    const { isDownForMaintenance, network, isPriceAvailable } = useConfig();
+    const { isDownForMaintenance, network, isPriceAvailable, priceExchangeRate, networkName } = useConfig();
 
     const isDisabled = useMemo(() => {
-        return isDownForMaintenance || !network.canBeExchanged || network.name !== "production" || !isPriceAvailable;
-    }, [isDownForMaintenance, network.canBeExchanged, isPriceAvailable]);
+        return isDownForMaintenance || !network.canBeExchanged || networkName !== "production" || !isPriceAvailable;
+    }, [isDownForMaintenance, network.canBeExchanged, isPriceAvailable, networkName]);
 
     const { currency } = useCurrency();
 
     const { t } = useTranslation();
+
     // $navigation = [
     //     ['route' => 'home', 'label' => trans('menus.home')],
     //     ['label' => trans('menus.blockchain'), 'children' => [
@@ -46,8 +47,6 @@ export default function PriceTicker() {
     // TODO: handle this
     const busy = false;
 
-    const price = 1.00000325;
-
     return (
         <div
             // @if (! $isDisabled && config('broadcasting.default') !== 'reverb')
@@ -74,7 +73,9 @@ export default function PriceTicker() {
                     {isDisabled ? (
                         t("general.na")
                     ) : (
-                        <div className="inline-flex items-center">{currencyWithDecimals(price, currency)}</div>
+                        <div className="inline-flex items-center">
+                            {currencyWithDecimals(priceExchangeRate ?? 0, currency)}
+                        </div>
                     )}
                 </div>
 
