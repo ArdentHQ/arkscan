@@ -258,7 +258,7 @@ describe('Monitor', function () {
         $orderDelegatesMethod->setAccessible(true);
 
         // Get delegate order so we can forge in the correct order
-        $originalOrder     = ForgingInfoCalculator::calculate((new Slots())->getTime(), 1);
+        $originalOrder     = ForgingInfoCalculator::calculateOriginalOrder((new Slots())->getTime(), 1);
         $activeDelegates   = $activeDelegatesMethod->invokeArgs(null, [$wallets]);
         $shuffledDelegates = $shuffleDelegatesMethod->invokeArgs(null, [$activeDelegates, 1]);
         $delegatesInOrder  = collect($orderDelegatesMethod->invokeArgs(null, [
@@ -782,16 +782,19 @@ describe('Monitor', function () {
         $this->freezeTime();
 
         [$delegates, $round, $height] = createRealisticRound([
-            array_fill(0, Network::delegateCount(), true),
+            array_fill(0, 51, true),
+            [
+                ...array_fill(0, 4, true),
+                false,
+                ...array_fill(0, 46, true),
+            ]
         ], $this);
 
         [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
-            $delegates->get(40)->public_key,
+            $delegates->get(4)->public_key,
         ], [
-            $delegates->get(40)->public_key,
+            $delegates->get(4)->public_key,
         ], true, Network::delegateCount() - 4);
-
-        expect($height)->toBe((3 * Network::delegateCount()) - 4 + 1);
 
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady')
@@ -799,22 +802,19 @@ describe('Monitor', function () {
 
         $instance = $component->instance();
 
+        /** @var Slot[] */
+        $overflowDelegates = $instance->getOverflowDelegatesProperty();
+
         $delegatesProperty = new ReflectionProperty($instance, 'delegates');
         $delegatesProperty->setAccessible(true);
 
         $slots = collect($delegatesProperty->getValue($instance))->groupBy(fn ($delegate) => $delegate->status());
 
-        // expect($slots['done'])->toHaveCount(Network::delegateCount() - 4);
-        // expect($slots['pending'])->toHaveCount(3);
-        // expect($slots['next'])->toHaveCount(1);
+        expect($slots['done'])->toHaveCount(47);
+        expect($slots['pending'])->toHaveCount(3);
+        expect($slots['next'])->toHaveCount(1);
 
-        /** @var Slot[] */
-        $overflowDelegates = $instance->getOverflowDelegatesProperty();
-
-        $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds(Network::blockTime() * Network::delegateCount());
-
-        // expect($overflowDelegates)->toHaveCount(1);
-        // expect($overflowDelegates[0]->forgingAt()->format('Y-m-d H:i:s'))->toBe($overflowForgeTime->format('Y-m-d H:i:s'));
+        expect($overflowDelegates)->toHaveCount(1);
         expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
             'pending',
         ]);
@@ -835,12 +835,12 @@ describe('Monitor', function () {
 
         expect(Carbon::now()->format('Y-m-d H:i:s'))->toBe($expected);
     })->with([
-        1 => [1, '2024-02-01 14:00:16'],
-        2 => [2, '2024-02-01 14:00:24'],
-        3 => [3, '2024-02-01 14:00:32'],
-        4 => [4, '2024-02-01 14:00:40'],
-        5 => [5, '2024-02-01 14:00:56'], // doubles up because we hit the batch of missing delegates on the second passthrough
-        6 => [6, '2024-02-01 14:01:04'],
+        1 => [1, '2024-02-01 14:00:08'],
+        2 => [2, '2024-02-01 14:00:16'],
+        3 => [3, '2024-02-01 14:00:24'],
+        4 => [4, '2024-02-01 14:00:32'],
+        5 => [5, '2024-02-01 14:01:20'],
+        6 => [6, '2024-02-01 14:01:36'],
     ]);
 });
 
@@ -976,11 +976,6 @@ describe('Data Boxes', function () {
     it('should determine if delegates just missed based on their round history', function () {
         [$delegates, $round, $height] = createRealisticRound([
             array_fill(0, 51, true),
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
             [
                 ...array_fill(0, 4, true),
                 false,
@@ -1169,11 +1164,6 @@ describe('Data Boxes', function () {
 
         [0 => $delegates] = createRealisticRound([
             array_fill(0, 51, true),
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
             [
                 ...array_fill(0, 4, true),
                 false,

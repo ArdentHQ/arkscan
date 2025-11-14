@@ -19,7 +19,14 @@ final class DelegateTracker
         $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
         $height    = $lastBlock->height->toNumber();
 
-        // $height = Block::withScope(OrderByHeightScope::class)->first()?->height->toNumber() ?? $startHeight;
+        // Act
+        $forgingInfo = ForgingInfoCalculator::calculateCurrentOrder($startHeight, $height);
+
+        // Map Next Forgers...
+        $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.
+
+        // Note: static order will be found by shifting the index based on the forging data from above
+        $delegateCount = Network::delegateCount();
 
         // Arrange Delegates
         $activeDelegates = self::getActiveDelegates($delegates);
@@ -27,30 +34,14 @@ final class DelegateTracker
         // TODO: calculate this once for a given round, then cache it as it won't change until next round
         $activeDelegates = self::shuffleDelegates($activeDelegates, $startHeight);
 
-        // Act
-        $forgingInfo = ForgingInfoCalculator::calculateCurrentOrder($startHeight, $height);
-
-        // // Determine Next Forgers...
-        // $nextForgers = [];
-        // for ($i = 0; $i < $maxDelegates; $i++) {
-        //     $delegate = $activeDelegates[($forgingInfo['currentForger'] + $i) % $maxDelegates];
-
-        //     if ($delegate) {
-        //         $nextForgers[] = $delegate;
-        //     }
-        // }
-
-        // Map Next Forgers...
-        $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.
-
         // Get the original forging info to determine the actual first
         $originalOrder = ForgingInfoCalculator::calculateOriginalOrder(
             Block::where('height', $startHeight)->first()?->timestamp,
             $startHeight
         );
 
-        // Note: static order will be found by shifting the index based on the forging data from above
-        $delegateCount    = Network::delegateCount();
+        // // Note: static order will be found by shifting the index based on the forging data from above
+        // $delegateCount    = Network::delegateCount();
         $delegatesOrdered = self::orderDelegates(
             $activeDelegates,
             $originalOrder['currentForger'],
@@ -60,13 +51,13 @@ final class DelegateTracker
         $slotOffset = static::slotOffset($startHeight, $delegatesOrdered);
 
         return collect($delegatesOrdered)
-            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $originalOrder, $delegateCount, $slotOffset) {
-                return static::determineSlot($publicKey, $index, $forgingIndex, $forgingInfo, $delegateCount, $originalOrder, $slotOffset);
+            ->map(function ($publicKey, $index) use (&$forgingIndex, $forgingInfo, $delegateCount, $slotOffset) {
+                return static::determineSlot($publicKey, $index, $forgingIndex, $forgingInfo, $delegateCount, $slotOffset);
             })
             ->toArray();
     }
 
-    private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $delegateCount, $originalOrder, $slotOffset): array
+    private static function determineSlot($publicKey, $index, &$forgingIndex, $forgingInfo, $delegateCount, $slotOffset): array
     {
         // Determine forging order based on the original offset
         $difference       = $forgingInfo['currentForger'] + $slotOffset;
@@ -114,6 +105,19 @@ final class DelegateTracker
      */
     private static function slotOffset(int $roundHeight, array $delegates): int
     {
+        // $roundDelegates = DB::connection('explorer')
+        //     ->table('blocks')
+        //     ->select('generator_public_key')
+        //     ->where('height', '>=', $roundHeight)
+        //     ->orderBy('height', 'asc')
+        //     ->get();
+
+        // if ($roundDelegates->isEmpty()) {
+        //     return 0;
+        // }
+
+        // $lastForgerPublicKey = $roundDelegates->last()->generator_public_key;
+
         $lastForger = DB::connection('explorer')
             ->table('blocks')
             ->select('generator_public_key', 'timestamp')
@@ -137,8 +141,22 @@ final class DelegateTracker
             ->get()
             ->pluck('count', 'generator_public_key');
 
+        $lastForgerPublicKey = $lastForger->generator_public_key;
+
+        // $roundBlockCount = $roundDelegates->reduce(function ($carry, $item) {
+        //     $count = 1;
+        //     if ($carry->has($item->generator_public_key)) {
+        //         $count = $carry[$item->generator_public_key] + 1;
+        //     }
+
+        //     $carry->put($item->generator_public_key, $count);
+
+        //     return $carry;
+        // }, collect());
+
         $offset = 0;
         foreach ($delegates as $publicKey) {
+            // $publicKey = $delegate['public_key'];
             $hadBlock = false;
             if ($roundBlockCount->has($publicKey)) {
                 $count = $roundBlockCount->get($publicKey) - 1;
@@ -151,7 +169,7 @@ final class DelegateTracker
                 $hadBlock = true;
             }
 
-            if ($publicKey === $lastForger->generator_public_key) {
+            if ($publicKey === $lastForgerPublicKey) {
                 break;
             }
 
@@ -163,10 +181,10 @@ final class DelegateTracker
         }
 
         if ($roundBlockCount->count() > 0) {
-            $offset = Network::delegateCount() - $roundBlockCount->sum();
+            $offset = Network::delegateCount() - $roundBlockCount->sum() + 1;
         }
 
-        return $offset;
+        return $offset + 1;
     }
 
     private static function getActiveDelegates(Collection $delegates): array

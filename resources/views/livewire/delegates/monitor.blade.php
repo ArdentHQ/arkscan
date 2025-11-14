@@ -2,7 +2,7 @@
     wire:init="monitorIsReady"
     @if (config('broadcasting.default') !== 'reverb')
         @if ($this->isReady && $this->hasDelegates)
-            wire:poll.4s="pollData"
+            wire:poll.1s="pollData"
         @elseif ($this->isReady)
             wire:poll.8s="pollData"
         @endif
