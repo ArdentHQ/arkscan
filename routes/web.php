@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\BlocksController;
+use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\ExchangesController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Inertia\ValidatorMonitorController;
+use App\Http\Controllers\Inertia\WalletController;
+use App\Http\Controllers\ShowBlockController;
+use App\Http\Controllers\ShowTransactionController;
+use App\Http\Controllers\ShowWalletController;
+use App\Http\Controllers\SupportController;
+use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\WebhooksController;
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
-use App\Models\Wallet;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
-use App\Http\Controllers\HomeController;
-use App\Http\Middleware\VerifyCsrfToken;
-use App\Http\Controllers\BlocksController;
-use App\Http\Controllers\SupportController;
-use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\WebhooksController;
-use App\Http\Controllers\ExchangesController;
-use App\Http\Controllers\ShowBlockController;
-use App\Http\Controllers\ShowWalletController;
-use App\Http\Controllers\TransactionsController;
-use App\Http\Controllers\Inertia\WalletController;
-use App\Http\Controllers\ShowTransactionController;
-use App\Http\Controllers\Inertia\ValidatorMonitorController;
 
 /*
 |--------------------------------------------------------------------------

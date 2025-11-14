@@ -12,8 +12,8 @@ use App\DTO\Inertia\IRequestData;
 use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
-use Illuminate\Http\Request;
 use App\Services\ExchangeRate;
+use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -46,7 +46,6 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        
         return [
             ...IRequestData::from([
                 'network'            => Network::data(),
@@ -56,14 +55,14 @@ class HandleInertiaRequests extends Middleware
                     'enabled'  => config('arkscan.arkconnect.enabled'),
                     'vaultUrl' => config('arkscan.urls.vault_url'),
                 ]),
-                'currencies'   => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
-                'pagination'   => IConfigPagination::from(config('arkscan.pagination')),
-                'broadcasting' => config('broadcasting.default'),
-                'networkName' => fn () => config('arkscan.network'),
-                'currency'     => fn () => Settings::currency(),
+                'currencies'           => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
+                'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
+                'broadcasting'         => config('broadcasting.default'),
+                'networkName'          => fn () => config('arkscan.network'),
+                'currency'             => fn () => Settings::currency(),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
-                'isPriceAvailable' => fn () => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
-                'priceExchangeRate' => fn () => ExchangeRate::currentRate(),
+                'isPriceAvailable'     => fn () => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
+                'priceExchangeRate'    => fn () => ExchangeRate::currentRate(),
             ])->toArray(),
             ...parent::share($request),
         ];
