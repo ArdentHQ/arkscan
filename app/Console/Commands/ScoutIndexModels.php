@@ -25,7 +25,7 @@ final class ScoutIndexModels extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Update recently created laravel scout models';
 

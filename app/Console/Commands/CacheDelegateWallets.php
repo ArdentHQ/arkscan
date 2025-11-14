@@ -21,7 +21,7 @@ final class CacheDelegateWallets extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache all delegates by their public key to avoid expensive database queries.';
 
