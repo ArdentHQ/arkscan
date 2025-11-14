@@ -787,7 +787,7 @@ describe('Monitor', function () {
                 ...array_fill(0, 4, true),
                 false,
                 ...array_fill(0, 46, true),
-            ]
+            ],
         ], $this);
 
         [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
