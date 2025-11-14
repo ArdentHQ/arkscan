@@ -8,6 +8,7 @@ use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
 use App\Events\Statistics\AddressHoldings;
 use App\Events\Statistics\UniqueAddresses;
 use App\Facades\Network;
+use App\Models\Scopes\HasMultiPaymentRecipientScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Aggregates\HoldingsAggregate;
@@ -97,11 +98,17 @@ final class CacheAddressStatistics extends Command
         $mostTransactions = (array) DB::connection('explorer')
             ->query()
             ->select([
-                DB::raw('count(transactions.hash) as tx_count'),
+                DB::raw('COUNT(transaction_counts.hash) as tx_count'),
                 DB::raw('wallets.address'),
             ])
-            ->from('transactions')
-            ->join('wallets', 'transactions.sender_public_key', '=', 'wallets.public_key')
+            ->from('wallets')
+            ->joinSubLateral(function ($query) {
+                $query->selectRaw('transactions.hash')
+                    ->from('transactions')
+                    ->whereColumn('transactions.sender_public_key', 'wallets.public_key')
+                    ->orWhereColumn('transactions.to', 'wallets.address')
+                    ->orWhereRaw('wallets.address::citext = ANY(multi_payment_recipients)');
+            }, 'transaction_counts', DB::raw('true'), '=', DB::raw('true'), 'left outer')
             ->groupBy('wallets.address')
             ->orderBy('tx_count', 'desc')
             ->limit(1)
