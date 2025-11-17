@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Dropdown from "@/Components/General/Dropdown/Dropdown";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
@@ -6,8 +7,73 @@ import SunIcon from "@ui/icons/sun.svg?react";
 import MoonStarsIcon from "@ui/icons/moon-stars.svg?react";
 import useSettings from "@/Providers/Settings/useSettings";
 
+const applyTheme = (theme: string) => {
+    if (theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+        document.documentElement.classList.remove("light");
+        document.documentElement.classList.remove("dim");
+    } else if (theme === "dim") {
+        document.documentElement.classList.add("dim");
+        document.documentElement.classList.add("dark");
+        document.documentElement.classList.remove("light");
+    } else {
+        document.documentElement.classList.remove("dark");
+        document.documentElement.classList.remove("dim");
+        document.documentElement.classList.add("light");
+    }
+
+    if (!("theme" in localStorage)) {
+        console.log("setting theme", theme);
+        localStorage.setItem("theme", theme);
+    }
+
+    document.documentElement.dispatchEvent(
+        new CustomEvent("theme-changed", {
+            detail: { theme },
+            bubbles: true,
+        }),
+    );
+};
+
 export default function ThemeManager() {
     const { theme, updateTheme } = useSettings();
+
+    useEffect(() => {
+        applyTheme(theme);
+    }, [theme]);
+
+    useEffect(() => {
+        const setOSThemeMode = () => {
+            localStorage.removeItem("theme");
+            const osTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            updateTheme(osTheme);
+        };
+
+        const setThemeMode = (e: any) => {
+            const theme = Array.isArray(e.detail) ? e.detail[0].theme : e.detail.theme;
+            localStorage.setItem("theme", theme);
+            updateTheme(theme);
+        };
+
+        const toggleThemeMode = () => {
+            const next = theme === "light" ? "dark" : theme === "dark" ? "dim" : "light";
+            updateTheme(next);
+        };
+
+        document.addEventListener("setOSThemeMode", setOSThemeMode);
+        document.addEventListener("setThemeMode", setThemeMode);
+        document.addEventListener("toggleThemeMode", toggleThemeMode);
+
+        // Helper to get current theme
+        (window as any).getThemeMode = () => theme;
+
+        return () => {
+            document.removeEventListener("setOSThemeMode", setOSThemeMode);
+            document.removeEventListener("setThemeMode", setThemeMode);
+            document.removeEventListener("toggleThemeMode", toggleThemeMode);
+            delete (window as any).getThemeMode;
+        };
+    }, [theme, updateTheme]);
 
     return (
         <DropdownProvider>

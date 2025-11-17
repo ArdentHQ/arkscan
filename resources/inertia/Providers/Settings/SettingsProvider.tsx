@@ -15,7 +15,12 @@ export default function SettingsProvider({
 }) {
     const [currentTickerData, setCurrentTickerData] = useState(tickerData);
     const [isUpdatingCurrency, setIsUpdatingCurrency] = useState(false);
-    const [currentTheme, setCurrentTheme] = useState(theme);
+    const [currentTheme, setCurrentTheme] = useState(() => {
+        if (theme === "auto" || !theme) {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+        return theme;
+    });
 
     const { listen } = useWebhooks();
 
@@ -64,8 +69,19 @@ export default function SettingsProvider({
     };
 
     const updateTheme = (newTheme: string): Promise<void> => {
-        // The theme can be updated immediately because there is no polling necessary.
-        setCurrentTheme(newTheme);
+        const resolvedTheme =
+            newTheme === "auto"
+                ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light"
+                : newTheme;
+        setCurrentTheme(resolvedTheme);
+
+        if (newTheme === "auto") {
+            localStorage.removeItem("theme");
+        } else {
+            localStorage.setItem("theme", newTheme);
+        }
 
         return new Promise((resolve, reject) => {
             router.post(
@@ -79,11 +95,7 @@ export default function SettingsProvider({
                     },
                     onError: (error) => {
                         setCurrentTheme(currentTheme);
-
                         reject(error);
-                    },
-                    onFinish: () => {
-                        setIsUpdatingTheme(false);
                     },
                 },
             );
