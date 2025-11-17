@@ -77,6 +77,7 @@ export type IRequestData = {
     networkName: string;
     isDownForMaintenance: boolean;
     priceTickerData: IPriceTickerData;
+    theme: string;
 };
 export type ISettings = {
     currency: string;

@@ -6,6 +6,9 @@ export interface ISettingsContext {
     isUpdatingCurrency: boolean;
     isPriceAvailable: boolean;
     priceExchangeRate: number | null;
+    theme: string;
+    updateTheme: (newTheme: string) => Promise<void>;
+    isUpdatingTheme: boolean;
 }
 
 const SettingsContext = createContext<ISettingsContext | null>(null);

@@ -27,6 +27,8 @@ class IRequestData extends Data
         public Closure $isDownForMaintenance,
         #[LiteralTypeScriptType('IPriceTickerData')]
         public Closure $priceTickerData,
+        #[LiteralTypeScriptType('string')]
+        public Closure $theme,
     ) {
     }
 }

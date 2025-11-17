@@ -26,7 +26,10 @@ createInertiaApp({
 
         root.render(
             <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
-                <SettingsProvider tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}>
+                <SettingsProvider
+                    tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}
+                    theme={props.initialPage.props.theme as string}
+                >
                     <ArkConnectProvider configuration={configuration}>
                         <App {...props} />
                     </ArkConnectProvider>

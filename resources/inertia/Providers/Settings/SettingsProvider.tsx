@@ -7,12 +7,16 @@ import { IPriceTickerData } from "@/types/generated";
 export default function SettingsProvider({
     children,
     tickerData,
+    theme,
 }: {
     children: React.ReactNode;
     tickerData: IPriceTickerData;
+    theme: string;
 }) {
     const [currentTickerData, setCurrentTickerData] = useState(tickerData);
     const [isUpdatingCurrency, setIsUpdatingCurrency] = useState(false);
+    const [currentTheme, setCurrentTheme] = useState(theme);
+    const [isUpdatingTheme, setIsUpdatingTheme] = useState(false);
 
     const { listen } = useWebhooks();
 
@@ -29,6 +33,8 @@ export default function SettingsProvider({
 
     router.on("success", (event) => {
         setCurrentTickerData(event.detail.page.props.priceTickerData as IPriceTickerData);
+
+        setCurrentTheme(event.detail.page.props.theme as string);
     });
 
     useEffect(() => {
@@ -58,6 +64,35 @@ export default function SettingsProvider({
         });
     };
 
+    const updateTheme = (newTheme: string): Promise<void> => {
+        setIsUpdatingTheme(true);
+
+        // The theme can be updated immediately because there is no polling necessary.
+        setCurrentTheme(newTheme);
+
+        return new Promise((resolve, reject) => {
+            router.post(
+                "/theme/update",
+                { theme: newTheme },
+                {
+                    only: ["theme"],
+                    showProgress: false,
+                    onSuccess: () => {
+                        resolve();
+                    },
+                    onError: (error) => {
+                        setCurrentTheme(currentTheme);
+
+                        reject(error);
+                    },
+                    onFinish: () => {
+                        setIsUpdatingTheme(false);
+                    },
+                },
+            );
+        });
+    };
+
     return (
         <SettingsContext.Provider
             value={{
@@ -66,6 +101,9 @@ export default function SettingsProvider({
                 isUpdatingCurrency,
                 isPriceAvailable: currentTickerData.isPriceAvailable,
                 priceExchangeRate: currentTickerData.priceExchangeRate,
+                theme: currentTheme,
+                updateTheme,
+                isUpdatingTheme,
             }}
         >
             {children}
