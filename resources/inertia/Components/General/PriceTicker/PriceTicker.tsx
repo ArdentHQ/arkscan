@@ -50,7 +50,7 @@ export default function PriceTicker() {
                         t("general.na")
                     ) : (
                         <div className="inline-flex items-center">
-                            {currencyWithDecimals(priceExchangeRate ?? 0, currency, 2)}
+                            {currencyWithDecimals(priceExchangeRate ?? 0, currency)}
                         </div>
                     )}
                 </div>

@@ -61,18 +61,24 @@ export function currencyWithDecimals(value: number, currency: string, decimals?:
         const rounded = Number(Number(value).toFixed(maximumFractionDigits));
 
         if (hideCurrency) {
-            return new Intl.NumberFormat("en-US", {
+            let formatted = new Intl.NumberFormat("en-US", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits,
             }).format(rounded);
+            // Strip trailing zeros and decimal point if no fractional part remains
+            formatted = stripTrailingZeros(formatted);
+            return formatted;
         }
 
-        return new Intl.NumberFormat(locale, {
+        let formatted = new Intl.NumberFormat(locale, {
             style: "currency",
             currency,
             minimumFractionDigits: 2,
             maximumFractionDigits,
         }).format(rounded);
+        // Strip trailing zeros and decimal point if no fractional part remains
+        formatted = stripTrailingZeros(formatted);
+        return formatted;
     }
 
     // Non-fiat (crypto) use the provided decimals or fall back to CRYPTO_DECIMALS.
@@ -80,12 +86,29 @@ export function currencyWithDecimals(value: number, currency: string, decimals?:
     const symbol = currencies![currency]?.symbol ?? currency;
     const usedDecimals = decimals ?? CRYPTO_DECIMALS;
 
-    const formatted = new Intl.NumberFormat("en-US", {
+    let formatted = new Intl.NumberFormat("en-US", {
         minimumFractionDigits: usedDecimals,
         maximumFractionDigits: usedDecimals,
     }).format(value);
+    // Strip trailing zeros and decimal point if no fractional part remains
+    formatted = stripTrailingZeros(formatted);
 
     return hideCurrency ? formatted : `${formatted} ${symbol}`;
+}
+
+// Helper function to strip trailing zeros after formatting
+function stripTrailingZeros(str: string): string {
+    // Split into integer and fractional parts
+    const parts = str.split('.');
+    if (parts.length < 2) return str; // No decimal, return as is
+
+    // Remove trailing zeros from fractional part
+    let fractional = parts[1].replace(/0+$/, '');
+    // If fractional is empty, remove the decimal point too
+    if (fractional === '') {
+        return parts[0];
+    }
+    return `${parts[0]}.${fractional}`;
 }
 
 export function networkCurrency(value: number | string, decimals = 8, withSuffix = false): string {
