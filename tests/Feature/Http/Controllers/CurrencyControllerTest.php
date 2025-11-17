@@ -13,8 +13,8 @@ it('should not update settings cookie when currency is the same', function () {
     $initialCookie = json_encode($initialSettings);
 
     $this
-        ->post(route('currency.update'), ['currency' => 'USD'])
         ->withCookie('settings', $initialCookie)
+        ->post(route('currency.update'), ['currency' => 'USD'])
         ->assertRedirect()
         ->assertCookie('settings', $initialCookie);
 });
@@ -27,8 +27,8 @@ it('should update settings cookie with uppercase currency when different', funct
     $expectedCookie = json_encode($expectedSettings);
 
     $this
-        ->post(route('currency.update'), ['currency' => $newCurrency])
         ->withCookie('settings', $initialCookie)
+        ->post(route('currency.update'), ['currency' => $newCurrency])
         ->assertRedirect()
         ->assertCookie('settings', $expectedCookie);
 });
