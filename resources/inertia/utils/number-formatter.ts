@@ -46,7 +46,13 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
     }).format(value);
 }
 
-export function currencyWithDecimals(value: number, currency: string, decimals?: number, showSmallAmounts = false, hideCurrency = false): string {
+export function currencyWithDecimals(
+    value: number,
+    currency: string,
+    decimals?: number,
+    showSmallAmounts = false,
+    hideCurrency = false,
+): string {
     const isSmallAmount = value < 1;
     let effectiveDecimals: number;
 
@@ -95,13 +101,13 @@ export function currencyWithDecimals(value: number, currency: string, decimals?:
 // Helper function to strip trailing zeros after formatting (used for crypto)
 function stripTrailingZeros(str: string): string {
     // Split into integer and fractional parts
-    const parts = str.split('.');
+    const parts = str.split(".");
     if (parts.length < 2) return str; // No decimal, return as is
 
     // Remove trailing zeros from fractional part
-    let fractional = parts[1].replace(/0+$/, '');
+    let fractional = parts[1].replace(/0+$/, "");
     // If fractional is empty, remove the decimal point too
-    if (fractional === '') {
+    if (fractional === "") {
         return parts[0];
     }
     return `${parts[0]}.${fractional}`;
