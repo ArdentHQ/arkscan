@@ -7,7 +7,7 @@ import MoonStarsIcon from "@ui/icons/moon-stars.svg?react";
 import useSettings from "@/Providers/Settings/useSettings";
 
 export default function ThemeManager() {
-    const { theme, updateTheme, isUpdatingTheme } = useSettings();
+    const { theme, updateTheme } = useSettings();
 
     return (
         <DropdownProvider>
