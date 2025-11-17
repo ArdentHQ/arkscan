@@ -32,10 +32,8 @@
             button-class="rounded-r rounded-l md:bg-white md:rounded-l-none bg-theme-secondary-200 text-theme-secondary-700 dim:hover:bg-theme-dark-700 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600 md:hover:text-theme-secondary-900 dark:bg-theme-dark-800 dark:hover:bg-theme-secondary-800 dark:text-theme-dark-200 hover:bg-theme-secondary-200"
             dropdown-class="right-0 min-w-[160px]"
             scroll-class=""
+            dropdown-padding="py-[0.125rem]"
             :disabled="$isDisabled"
-            dropdown-background="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 py-[0.125rem]"
-            dropdown-padding=""
-            content-class=""
         >
             <x-slot
                 name="button"
@@ -89,16 +87,6 @@
                                 </span>
                             @endif
                         </div>
-
-                        @if ($currency['currency'] === $to)
-                            <span>
-                                <x-ark-icon
-                                    name="double-check-mark"
-                                    size="sm"
-                                    class="text-theme-primary-600 dark:text-theme-dark-50"
-                                />
-                            </span>
-                        @endif
                     </x-general.dropdown.list-item>
                 @endforeach
             </div>

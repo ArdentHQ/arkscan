@@ -1,7 +1,7 @@
 @props([
     'button',
     'withoutDropdownIcon' => false,
-    'dropdownBackground' => 'bg-white dark:bg-theme-dark-700',
+    'dropdownBackground' => null,
     'dropdownPadding' => null,
 ])
 
