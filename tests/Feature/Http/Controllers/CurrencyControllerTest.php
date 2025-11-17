@@ -9,21 +9,21 @@ it('should redirect back when updating currency', function () {
 });
 
 it('should not update settings cookie when currency is the same', function () {
-    $initialSettings = ['currency' => 'USD'];
+    $initialSettings = ['currency' => 'USD', 'priceChart' => true, 'feeChart' => true, 'theme' => null];
     $initialCookie   = json_encode($initialSettings);
 
     $this
         ->withCookie('settings', $initialCookie)
         ->post(route('currency.update'), ['currency' => 'USD'])
         ->assertRedirect()
-        ->assertCookie('settings', $initialCookie);
+        ->assertCookieMissing('settings');
 });
 
 it('should update settings cookie with uppercase currency when different', function () {
-    $initialSettings  = ['currency' => 'USD'];
+    $initialSettings  = ['currency' => 'USD', 'priceChart' => true, 'feeChart' => true, 'theme' => null];
     $initialCookie    = json_encode($initialSettings);
     $newCurrency      = 'eur';
-    $expectedSettings = ['currency' => 'EUR'];
+    $expectedSettings = ['currency' => 'EUR', 'priceChart' => true, 'feeChart' => true, 'theme' => null];
     $expectedCookie   = json_encode($expectedSettings);
 
     $this
