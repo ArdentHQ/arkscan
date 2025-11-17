@@ -8,7 +8,6 @@ use App\Facades\Settings;
 use App\Http\Livewire\Concerns\HandlesSettings;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 final class ThemeController
 {
@@ -19,7 +18,7 @@ final class ThemeController
         $newTheme = $request->input('theme');
 
         $originalTheme = Settings::theme();
-        
+
         if ($originalTheme !== $newTheme) {
             $this->saveSetting('theme', $newTheme);
         }

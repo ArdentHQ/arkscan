@@ -22,7 +22,7 @@ it('should not update settings cookie when theme is the same', function () {
 it('should update settings cookie with uppercase theme when different', function () {
     $initialSettings  = ['currency' => 'USD', 'priceChart' => true, 'feeChart' => true, 'theme' => 'light'];
     $initialCookie    = json_encode($initialSettings);
-    $newTheme      = 'dark';
+    $newTheme         = 'dark';
     $expectedSettings = ['currency' => 'USD', 'priceChart' => true, 'feeChart' => true, 'theme' => 'dark'];
     $expectedCookie   = json_encode($expectedSettings);
 
