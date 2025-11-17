@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import WebhooksContext from "./CurrencyContext";
+import SettingsContext from "./SettingsContext";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 import { router } from "@inertiajs/react";
 import { IPriceTickerData } from "@/types/generated";
 
-export default function CurrencyProvider({
+export default function SettingsProvider({
     children,
     tickerData,
 }: {
@@ -59,7 +59,7 @@ export default function CurrencyProvider({
     };
 
     return (
-        <WebhooksContext.Provider
+        <SettingsContext.Provider
             value={{
                 currency: currentTickerData.currency,
                 updateCurrency,
@@ -69,6 +69,6 @@ export default function CurrencyProvider({
             }}
         >
             {children}
-        </WebhooksContext.Provider>
+        </SettingsContext.Provider>
     );
 }

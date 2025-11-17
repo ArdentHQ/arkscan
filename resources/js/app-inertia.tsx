@@ -4,7 +4,7 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import loadI18n from "../inertia/i18n";
 import ArkConnectProvider from "@/Providers/ArkConnect/ArkConnectProvider";
 import WebhooksProvider from "@/Providers/Webhooks/WebhooksProvider";
-import CurrencyProvider from "@/Providers/Currency/CurrencyProvider";
+import SettingsProvider from "@/Providers/Settings/SettingsProvider";
 import { IConfigArkconnect, INetwork, IPriceTickerData } from "@/types/generated";
 import { ArkConnectConfiguration } from "@/Providers/ArkConnect/types";
 
@@ -26,11 +26,11 @@ createInertiaApp({
 
         root.render(
             <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
-                <CurrencyProvider tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}>
+                <SettingsProvider tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}>
                     <ArkConnectProvider configuration={configuration}>
                         <App {...props} />
                     </ArkConnectProvider>
-                </CurrencyProvider>
+                </SettingsProvider>
             </WebhooksProvider>,
         );
     },
