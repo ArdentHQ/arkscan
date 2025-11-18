@@ -1,5 +1,5 @@
 import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
-import ThemeManager from "@/Components/General/ThemeManager/ThemeManager";
+import ThemeDropdown from "@/Components/General/ThemeDropdown/ThemeDropdown";
 
 export default function NavbarTop() {
     return (
@@ -16,7 +16,7 @@ export default function NavbarTop() {
 
             {/* <x-navbar.network-dropdown /> */}
 
-                    <ThemeManager />
+                    <ThemeDropdown />
 
                     {/* <div
                 x-data="ThemeManager()"
