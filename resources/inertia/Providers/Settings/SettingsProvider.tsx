@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SettingsContext from "./SettingsContext";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 import { router } from "@inertiajs/react";
@@ -15,12 +15,16 @@ export default function SettingsProvider({
 }) {
     const [currentTickerData, setCurrentTickerData] = useState(tickerData);
     const [isUpdatingCurrency, setIsUpdatingCurrency] = useState(false);
-    const [currentTheme, setCurrentTheme] = useState(() => {
-        if (theme === "auto" || !theme) {
+
+    const [currentTheme, setCurrentTheme] = useState(theme);
+
+    const resolvedTheme = useMemo(() => {
+        if (currentTheme === "auto" || !currentTheme) {
             return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         }
-        return theme;
-    });
+
+        return currentTheme;
+    }, [currentTheme]);
 
     const { listen } = useWebhooks();
 
@@ -69,18 +73,23 @@ export default function SettingsProvider({
     };
 
     const updateTheme = (newTheme: string): Promise<void> => {
-        const resolvedTheme =
-            newTheme === "auto"
-                ? window.matchMedia("(prefers-color-scheme: dark)").matches
-                    ? "dark"
-                    : "light"
-                : newTheme;
-        setCurrentTheme(resolvedTheme);
+        if (newTheme === currentTheme) {
+            return Promise.resolve();
+        }
 
-        if (newTheme === "auto") {
-            localStorage.removeItem("theme");
+        setCurrentTheme(newTheme);
+
+        if (newTheme === "dark") {
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
+            document.documentElement.classList.remove("dim");
+        } else if (newTheme === "dim") {
+            document.documentElement.classList.add("dim");
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
         } else {
-            localStorage.setItem("theme", newTheme);
+            document.documentElement.classList.remove("dark");
+            document.documentElement.classList.remove("dim");
         }
 
         return new Promise((resolve, reject) => {
@@ -110,7 +119,7 @@ export default function SettingsProvider({
                 isUpdatingCurrency,
                 isPriceAvailable: currentTickerData.isPriceAvailable,
                 priceExchangeRate: currentTickerData.priceExchangeRate,
-                theme: currentTheme,
+                theme: resolvedTheme,
                 updateTheme,
             }}
         >
