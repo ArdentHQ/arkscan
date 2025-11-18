@@ -79,19 +79,6 @@ export default function SettingsProvider({
 
         setCurrentTheme(newTheme);
 
-        if (newTheme === "dark") {
-            document.documentElement.classList.add("dark");
-            document.documentElement.classList.remove("light");
-            document.documentElement.classList.remove("dim");
-        } else if (newTheme === "dim") {
-            document.documentElement.classList.add("dim");
-            document.documentElement.classList.add("dark");
-            document.documentElement.classList.remove("light");
-        } else {
-            document.documentElement.classList.remove("dark");
-            document.documentElement.classList.remove("dim");
-        }
-
         return new Promise((resolve, reject) => {
             router.post(
                 "/theme/update",
@@ -110,6 +97,21 @@ export default function SettingsProvider({
             );
         });
     };
+
+    useEffect(() => {
+        if (currentTheme === "dark") {
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
+            document.documentElement.classList.remove("dim");
+        } else if (currentTheme === "dim") {
+            document.documentElement.classList.add("dim");
+            document.documentElement.classList.add("dark");
+            document.documentElement.classList.remove("light");
+        } else {
+            document.documentElement.classList.remove("dark");
+            document.documentElement.classList.remove("dim");
+        }
+    }, [currentTheme]);
 
     return (
         <SettingsContext.Provider
