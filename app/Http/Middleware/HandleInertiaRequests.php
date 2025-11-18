@@ -61,6 +61,7 @@ class HandleInertiaRequests extends Middleware
                 'broadcasting'         => config('broadcasting.default'),
                 'networkName'          => fn () => config('arkscan.network'),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
+                'isProduction'         => fn () => config('arkscan.network') === 'production',
                 'priceTickerData'      => fn () => IPriceTickerData::from([
                     'currency'          => Settings::currency(),
                     'isPriceAvailable'  => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),

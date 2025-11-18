@@ -76,6 +76,7 @@ export type IRequestData = {
     broadcasting: string;
     networkName: string;
     isDownForMaintenance: boolean;
+    isProduction: boolean;
     priceTickerData: IPriceTickerData;
     theme: string;
 };

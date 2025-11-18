@@ -25,6 +25,8 @@ class IRequestData extends Data
         public Closure $networkName,
         #[LiteralTypeScriptType('boolean')]
         public Closure $isDownForMaintenance,
+        #[LiteralTypeScriptType('boolean')]
+        public Closure $isProduction,
         #[LiteralTypeScriptType('IPriceTickerData')]
         public Closure $priceTickerData,
         #[LiteralTypeScriptType('string')]
