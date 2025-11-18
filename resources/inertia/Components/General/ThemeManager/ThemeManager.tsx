@@ -19,12 +19,9 @@ export default function ThemeManager() {
                 buttonClass="
 flex items-center justify-center p-2 h-8 w-8 text-sm font-semibold rounded transition-default
 dropdown-button focus:outline-none space-x-1.5
-bg-theme-secondary-200 hover:bg-theme-secondary-200
-md:px-3 md:bg-white md:border md:border-theme-secondary-300 md:hover:text-theme-secondary-700
-md:dark:bg-theme-dark-900 md:dark:border-theme-dark-700
-dark:bg-theme-dark-800 dark:hover:bg-theme-dark-700 dark:text-theme-dark-200
+px-3 bg-white border border-theme-secondary-300 hover:text-theme-secondary-700
+dark:bg-theme-dark-900 dark:border-theme-dark-700 dark:text-theme-dark-200
 dim:bg-theme-dark-900 dim:hover:bg-theme-dark-700
-text-theme-secondary-700
 "
                 button={() => (
                     <div className="dim:text-theme-dark-300">
