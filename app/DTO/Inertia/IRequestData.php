@@ -31,6 +31,10 @@ class IRequestData extends Data
         public Closure $priceTickerData,
         #[LiteralTypeScriptType('string')]
         public Closure $theme,
+        #[LiteralTypeScriptType('string')]
+        public Closure $mainnetExplorerUrl,
+        #[LiteralTypeScriptType('string')]
+        public Closure $testnetExplorerUrl,
     ) {
     }
 }

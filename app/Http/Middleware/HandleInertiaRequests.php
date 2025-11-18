@@ -68,6 +68,8 @@ class HandleInertiaRequests extends Middleware
                     'priceExchangeRate' => ExchangeRate::currentRate(),
                 ]),
                 'theme'                => fn () => Settings::theme(),
+                'mainnetExplorerUrl'   => fn () => Network::mainnetExplorerUrl(),
+                'testnetExplorerUrl'   => fn () => Network::testnetExplorerUrl(),
             ])->toArray(),
             ...parent::share($request),
         ];
