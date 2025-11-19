@@ -33,6 +33,7 @@ export default function NavbarSearch() {
                             <button
                                 type="button"
                                 className="button-secondary -my-px bg-transparent p-2 text-theme-secondary-700 dark:bg-theme-dark-900 dark:text-theme-dark-200 dark:shadow-none"
+                                onClick={() => setQuery("")}
                             >
                                 <CrossIcon className="h-3 w-3" />
                             </button>
