@@ -2,8 +2,12 @@ import { useTranslation } from "react-i18next";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import SquareReturnArrowIcon from "@ui/icons/square-return-arrow.svg?react";
+import { useState } from "react";
+
 export default function NavbarSearch() {
     const { t } = useTranslation();
+
+    const [query, setQuery] = useState("");
 
     return (
         <div className="w-full">
@@ -14,6 +18,8 @@ export default function NavbarSearch() {
                     </span>
 
                     <input
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
                         type="text"
                         id="search"
                         name="search"
@@ -22,16 +28,19 @@ export default function NavbarSearch() {
                         className="block w-full appearance-none rounded border-0 bg-transparent px-2 py-[7px] text-sm leading-4 text-theme-secondary-900 outline-none placeholder:text-theme-secondary-700 dark:text-theme-dark-50"
                     />
 
-                    <div className="mr-4 flex items-center space-x-4">
-                        <button
-                            type="button"
-                            className="button-secondary -my-px bg-transparent p-2 text-theme-secondary-700 dark:bg-theme-dark-900 dark:text-theme-dark-200 dark:shadow-none"
-                        >
-                            <CrossIcon className="h-3 w-3" />
-                        </button>
+                    {query && (
+                        <div className="mr-4 flex items-center space-x-4">
+                            <button
+                                type="button"
+                                className="button-secondary -my-px bg-transparent p-2 text-theme-secondary-700 dark:bg-theme-dark-900 dark:text-theme-dark-200 dark:shadow-none"
+                            >
+                                <CrossIcon className="h-3 w-3" />
+                            </button>
 
-                        <SquareReturnArrowIcon className="hidden h-4 w-4 dark:text-theme-dark-200 sm:block" />
-                    </div>
+                            {/* TODO: handle enter key press */}
+                            <SquareReturnArrowIcon className="hidden h-4 w-4 dark:text-theme-dark-200 sm:block" />
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
