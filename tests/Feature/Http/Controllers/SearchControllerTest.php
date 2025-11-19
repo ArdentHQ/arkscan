@@ -27,6 +27,8 @@ it('returns wallet results matching the query', function () {
         ]);
 
     expect($response->json('results.0.identifier'))->toBe($wallet->address);
+    expect($response->json('results.0.type'))->toBe('wallet');
+    expect($response->json('results.0.data.address'))->toBe($wallet->address);
 });
 
 it('redirects to the first result when available', function () {
