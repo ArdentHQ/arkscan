@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Dropdown from "@/Components/General/Dropdown/Dropdown";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
