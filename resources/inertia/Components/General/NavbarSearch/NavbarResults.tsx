@@ -2,6 +2,7 @@ import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import useConfig from "@/hooks/use-config";
 import type {
     INavbarSearchBlockResultData,
+    INavbarSearchMemoryWallet,
     INavbarSearchTransactionResultData,
     INavbarSearchWalletResultData,
 } from "@/types/generated";
@@ -27,9 +28,10 @@ interface NavbarResultsProps {
     results: SearchResult[];
     hasResults: boolean;
     isLoading: boolean;
+    onBlur: () => void;
 }
 
-export default function NavbarResults({ query, results, hasResults, isLoading }: NavbarResultsProps) {
+export default function NavbarResults({ query, results, hasResults, isLoading, onBlur }: NavbarResultsProps) {
     const { t } = useTranslation();
 
     const open = query.length > 0;
@@ -69,7 +71,9 @@ export default function NavbarResults({ query, results, hasResults, isLoading }:
                                     "pt-1": index > 0,
                                 })}
                             >
-                                <ResultLink result={result}>{renderResult(result)}</ResultLink>
+                                <ResultLink result={result} onBlur={onBlur}>
+                                    {renderResult(result)}
+                                </ResultLink>
                             </div>
                         ))}
                 </div>
@@ -78,14 +82,22 @@ export default function NavbarResults({ query, results, hasResults, isLoading }:
     );
 }
 
-function ResultLink({ result, children }: { result: SearchResult; children: React.ReactNode }) {
+function ResultLink({
+    result,
+    children,
+    onBlur,
+}: {
+    result: SearchResult;
+    children: React.ReactNode;
+    onBlur: () => void;
+}) {
     const href = result.url ?? "#";
 
     return (
         <a
             href={href}
             className="group/result transition-default -mx-3 block min-w-0 cursor-pointer rounded-[10px] p-3 hover:bg-theme-secondary-200 dark:hover:bg-black"
-            // @TODO: See what the blurHandler does and add it if necessary
+            onBlur={onBlur}
         >
             {children}
         </a>

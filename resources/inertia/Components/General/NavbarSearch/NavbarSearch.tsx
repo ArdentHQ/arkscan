@@ -3,7 +3,7 @@ import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react
 import CrossIcon from "@ui/icons/cross.svg?react";
 import SquareReturnArrowIcon from "@ui/icons/square-return-arrow.svg?react";
 import NavbarResults, { SearchResult } from "./NavbarResults";
-import { useEffect, useState, type KeyboardEvent } from "react";
+import { useEffect, useState, type KeyboardEvent, useRef } from "react";
 
 export default function NavbarSearch() {
     const { t } = useTranslation();
@@ -11,11 +11,20 @@ export default function NavbarSearch() {
     const [results, setResults] = useState<SearchResult[]>([]);
     const [hasResults, setHasResults] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const searchRef = useRef<HTMLDivElement>(null);
 
     const clear = () => {
         setQuery("");
         setResults([]);
         setHasResults(false);
+    };
+
+    const blurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
+        const blurredOutside = !searchRef.current?.contains(event.relatedTarget);
+
+        if (blurredOutside) {
+            clear();
+        }
     };
 
     useEffect(() => {
@@ -89,7 +98,7 @@ export default function NavbarSearch() {
     };
 
     return (
-        <div className="relative w-full">
+        <div className="relative w-full" ref={searchRef}>
             <div className="transition-default group w-[340px] rounded-md border border-transparent bg-theme-secondary-200 focus-within:border-theme-primary-600 focus-within:bg-white hover:bg-white dark:bg-theme-dark-900 focus-within:dark:border-theme-primary-600 md:w-full md-lg:w-[340px] hover:[&:not(:focus-within)]:border-theme-primary-600 hover:[&:not(:focus-within)]:dark:border-theme-dark-700">
                 <div className="relative flex items-center rounded border border-transparent pl-1 focus-within:border-theme-primary-600 dark:border-theme-dark-700 focus-within:dark:border-theme-primary-600 hover:[&:not(:focus-within)]:border-theme-primary-600 group-hover:[&:not(:focus-within)]:dark:border-theme-dark-700">
                     <span className="ml-3 text-theme-secondary-500 dark:text-theme-dark-500">
@@ -106,6 +115,7 @@ export default function NavbarSearch() {
                         autoComplete="off"
                         placeholder={t("general.navbar.search_placeholder")}
                         className="block w-full appearance-none rounded border-0 bg-transparent px-2 py-[7px] text-sm leading-4 text-theme-secondary-900 outline-none placeholder:text-theme-secondary-700 dark:text-theme-dark-50"
+                        onBlur={blurHandler}
                     />
 
                     {query && (
@@ -132,7 +142,13 @@ export default function NavbarSearch() {
                 </div>
             </div>
 
-            <NavbarResults query={query} results={results} hasResults={hasResults} isLoading={isLoading} />
+            <NavbarResults
+                query={query}
+                results={results}
+                hasResults={hasResults}
+                isLoading={isLoading}
+                onBlur={blurHandler}
+            />
         </div>
     );
 }
