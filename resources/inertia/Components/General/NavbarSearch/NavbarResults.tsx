@@ -112,6 +112,8 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
 
     return (
         <>
+            <>{/* TODO: add  mobile view */}</>
+
             <div className="hidden flex-col space-y-2 md:flex">
                 <div className="isolate flex items-center space-x-2 overflow-auto">
                     <div className="text-theme-secondary-900 dark:text-theme-dark-50">
@@ -146,30 +148,42 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
 function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResultData> }) {
     const { t } = useTranslation();
 
-    const validator = result.data.validator;
-    const validatorLabel = validator?.username ?? validator?.address ?? t("general.search.generated_by");
+    const { validator, hash, transactionCount } = result.data;
 
     return (
-        <div className="flex flex-col space-y-1 text-xs font-semibold">
-            <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-                <span>{t("general.search.block")}</span>
-                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                    {result.data.hash ? <TruncateMiddle length={24}>{result.data.hash}</TruncateMiddle> : "-"}
-                </span>
-            </div>
+        <>
+            <>{/* TODO: add  mobile view */}</>
 
-            <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-                <span>{t("general.search.generated_by")}</span>
-                <span className="truncate text-theme-secondary-900 dark:text-theme-dark-50">{validatorLabel}</span>
-            </div>
+            <div className="hidden flex-col space-y-2 md:flex">
+                <div className="flex items-center space-x-2">
+                    <div className="text-theme-secondary-900 dark:text-theme-dark-50">{t("general.search.block")}</div>
 
-            <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-                <span>{t("general.search.transactions")}</span>
-                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                    {result.data.transactionCount ?? 0}
-                </span>
+                    <div className="link min-w-0 hover:text-theme-primary-600 group-hover/result:no-underline">
+                        <TruncateMiddle length={20}>{hash}</TruncateMiddle>
+                    </div>
+                </div>
+
+                <div className="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+                    <div className="isolate flex items-center space-x-2 text-xs">
+                        <div className="text-theme-secondary-700 dark:text-theme-dark-200">
+                            {t("general.search.generated_by")}
+                        </div>
+
+                        <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                            <TruncateMiddle length={10}>{validator?.address}</TruncateMiddle>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center space-x-1 text-xs">
+                        <div className="text-theme-secondary-700 dark:text-theme-dark-200">
+                            {t("general.search.transactions")}
+                        </div>
+
+                        <div className="text-theme-secondary-900 dark:text-theme-dark-50">{transactionCount ?? 0}</div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
