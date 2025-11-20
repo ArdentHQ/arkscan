@@ -122,7 +122,7 @@ export default function NavbarSearch() {
                             <button
                                 type="button"
                                 onClick={goToFirstResult}
-                                className="hidden sm:block text-theme-secondary-700 dark:text-theme-dark-200"
+                                className="hidden text-theme-secondary-700 dark:text-theme-dark-200 sm:block"
                                 aria-label={t("actions.submit")}
                             >
                                 <SquareReturnArrowIcon className="h-4 w-4" />
