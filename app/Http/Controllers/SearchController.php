@@ -29,7 +29,9 @@ final class SearchController
         $results = $this->results();
 
         return response()->json([
-            'results'    => $results->map(fn (ViewModel $result) => $this->serializeResult($result)),
+            'results'    => $results
+            ->map(fn (ViewModel $result) => $this->serializeResult($result))
+            ->toArray(),
             'hasResults' => $results->isNotEmpty(),
         ]);
     }
@@ -47,15 +49,15 @@ final class SearchController
         return $redirectResponse;
     }
 
-    /**
-     * @param WalletViewModel|BlockViewModel|TransactionViewModel $result
-     */
     private function serializeResult(ViewModel $result): array
     {
+        /**
+         * @var WalletViewModel|BlockViewModel|TransactionViewModel $result
+         */
         return [
             'type'       => $this->determineType($result),
-            'url'        =>  $result->url(),
-            'identifier' =>  $result->id() ?? $result->hash(),
+            'url'        => $result->url(),
+            'identifier' => method_exists($result, 'id') ? $result->id() : (method_exists($result, 'hash') ? $result->hash() : null),
             'data'       => $this->toArray($result),
         ];
     }
@@ -66,6 +68,7 @@ final class SearchController
             $result instanceof WalletViewModel      => 'wallet',
             $result instanceof BlockViewModel       => 'block',
             $result instanceof TransactionViewModel => 'transaction',
+            default                                 => throw new \Exception('Invalid result type: '.get_class($result)),
         };
     }
 
