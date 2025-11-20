@@ -32,7 +32,12 @@ final class NavbarSearchTransactionResultData extends Data
         if ($transaction->isVote() && $votedValidator = $transaction->voted())  {
             $votedValidatorLabel = $votedValidator->username() ?? $votedValidator->address();
         }
-        
+
+        $voteSubject = null;
+        if ($transaction->isVote() || $transaction->isUnvote()) {
+            $voteSubject = $transaction->isUnvote() ? $transaction->unvoted() : $transaction->voted();
+        }
+
         return new self(
             hash: $transaction->hash(),
             amountWithFee: $transaction->amountWithFee(),

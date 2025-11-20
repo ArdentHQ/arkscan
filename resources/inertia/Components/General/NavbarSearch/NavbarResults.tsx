@@ -2,7 +2,6 @@ import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import useConfig from "@/hooks/use-config";
 import type {
     INavbarSearchBlockResultData,
-    INavbarSearchMemoryWallet,
     INavbarSearchTransactionResultData,
     INavbarSearchWalletResultData,
 } from "@/types/generated";
@@ -245,35 +244,29 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                     <div className="isolate flex items-center space-x-2 text-xs">
                         <TransactionResultBadge>{t("general.search.from")}</TransactionResultBadge>
 
-                        {/* @if ($transaction->isVote() || $transaction->isUnvote())
-                            <x-general.identity
-                                :model="$transaction->isUnvote() ? $transaction->unvoted() : $transaction->voted()"
-                                without-link
-                                className="text-theme-secondary-900 dark:text-theme-dark-50"
-                            />
-                        @else
-                            <x-general.identity
-                                :model="$transaction->sender()"
-                                without-link
-                                className="text-theme-secondary-900 dark:text-theme-dark-50"
-                            />
-                        @endif */}
+                        {result.data.isVote || result.data.isUnvote ? (
+                            <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                <TruncateMiddle length={10}>{result.data.votedValidatorLabel}</TruncateMiddle>
+                            </div>
+                        ) : (
+                            <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                <TruncateMiddle length={10}>{result.data.sender?.address}</TruncateMiddle>
+                            </div>
+                        )}
                     </div>
 
                     <div className="isolate flex items-center space-x-2 text-xs">
                         <TransactionResultBadge>{t("general.search.to")}</TransactionResultBadge>
 
-                        {/* @if ($transaction->isTransfer() || $transaction->isTokenTransfer())
-                            <x-general.identity
-                                :model="$transaction->recipient()"
-                                without-link
-                                className="text-theme-secondary-900 dark:text-theme-dark-50"
-                            />
-                        @else
+                        {result.data.isTransfer || result.data.isTokenTransfer ? (
+                            <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                <TruncateMiddle length={10}>{result.data.recipient?.address}</TruncateMiddle>
+                            </div>
+                        ) : (
                             <span className="text-theme-secondary-900 dark:text-theme-dark-50">
                                 {t("general.search.contract")}
                             </span>
-                        @endif */}
+                        )}
                     </div>
 
                     <div className="flex items-center space-x-2 text-xs md:flex-1 md:justify-end md:space-x-0">
@@ -287,61 +280,6 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                     </div>
                 </div>
             </div>
-
-            {/* // <div className="flex flex-col space-y-1 text-xs font-semibold">
-            //     <div className="flex items-center space-x-3">
-            //         <span className="rounded bg-theme-secondary-200 px-2 py-0.5 text-theme-secondary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50">
-            //             {typeLabel}
-            //         </span>
-            //         <span className="min-w-0 truncate text-theme-secondary-900 dark:text-theme-dark-50">
-            //             {result.data.hash ? <TruncateMiddle length={22}>{result.data.hash}</TruncateMiddle> : "-"}
-            //         </span>
-            //     </div>
-
-            //     <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-            //         <span>{t("general.search.from")}</span>
-            //         <span className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
-            //             {formatWalletLabel(result.data.sender)}
-            //         </span>
-            //     </div>
-
-            //     <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-            //         <span>{t("general.search.to")}</span>
-            //         <span className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
-            //             {formatRecipientLabel(result.data.recipient, t)}
-            //         </span>
-            //     </div>
-
-            //     <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-            //         <span>{t("general.search.amount")}</span>
-            //         <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-            //             {currencyWithDecimals(result.data.amountWithFee ?? 0, network!.currency, 2, true, true)}
-            //         </span>
-            //     </div>
-            </div> */}
         </>
     );
-}
-
-function formatWalletLabel(wallet?: INavbarSearchMemoryWallet | null): string {
-    if (!wallet) {
-        return "-";
-    }
-
-    return wallet.username ?? wallet.address ?? "-";
-}
-
-function formatRecipientLabel(
-    wallet: INavbarSearchMemoryWallet | null | undefined,
-    t: ReturnType<typeof useTranslation>["t"],
-): string {
-    if (!wallet) {
-        return "-";
-    }
-
-    if (wallet.isContract) {
-        return t("general.search.contract");
-    }
-
-    return wallet.username ?? wallet.address ?? "-";
 }
