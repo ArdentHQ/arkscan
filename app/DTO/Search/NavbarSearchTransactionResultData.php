@@ -28,14 +28,9 @@ final class NavbarSearchTransactionResultData extends Data
     public static function fromViewModel(TransactionViewModel $transaction): self
     {
         $votedValidatorLabel = null;
-        
-        if ($transaction->isVote() && $votedValidator = $transaction->voted())  {
-            $votedValidatorLabel = $votedValidator->username() ?? $votedValidator->address();
-        }
 
-        $voteSubject = null;
-        if ($transaction->isVote() || $transaction->isUnvote()) {
-            $voteSubject = $transaction->isUnvote() ? $transaction->unvoted() : $transaction->voted();
+        if ($transaction->isVote() && $votedValidator = $transaction->voted()) {
+            $votedValidatorLabel = $votedValidator->username() ?? $votedValidator->address();
         }
 
         return new self(
