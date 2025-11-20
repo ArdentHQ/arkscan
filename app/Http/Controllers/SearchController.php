@@ -54,8 +54,8 @@ final class SearchController
     {
         return [
             'type'       => $this->determineType($result),
-            'url'        =>  $result->url(),
-            'identifier' =>  $result->id() ?? $result->hash(),
+            'url'        => $result->url(),
+            'identifier' => $result->id() ?? $result->hash(),
             'data'       => $this->toArray($result),
         ];
     }
