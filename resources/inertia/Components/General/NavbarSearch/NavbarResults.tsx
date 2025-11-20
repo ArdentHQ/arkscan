@@ -80,7 +80,8 @@ function ResultLink({ result, children }: { result: SearchResult; children: Reac
     return (
         <a
             href={href}
-            className="block -mx-3 min-w-0 cursor-pointer rounded-[10px] px-3 py-2 transition-default hover:bg-theme-secondary-200 dark:hover:bg-black"
+            className="group/result transition-default -mx-3 block min-w-0 cursor-pointer rounded-[10px] p-3 hover:bg-theme-secondary-200 dark:hover:bg-black"
+            // @TODO: See what the blurHandler does and add it if necessary
         >
             {children}
         </a>
@@ -89,15 +90,15 @@ function ResultLink({ result, children }: { result: SearchResult; children: Reac
 
 function renderResult(result: SearchResult) {
     if (result.type === "wallet") {
-        return <WalletResult result={result as SearchResult<WalletResultData>} />;
+        return <WalletResult result={result as SearchResult<INavbarSearchWalletResultData>} />;
     }
 
     if (result.type === "block") {
-        return <BlockResult result={result as SearchResult<BlockResultData>} />;
+        return <BlockResult result={result as SearchResult<INavbarSearchBlockResultData>} />;
     }
 
     if (result.type === "transaction") {
-        return <TransactionResult result={result as SearchResult<TransactionResultData>} />;
+        return <TransactionResult result={result as SearchResult<INavbarSearchTransactionResultData>} />;
     }
 
     return <GenericResult result={result} />;
@@ -110,19 +111,29 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
     const name = result.data.username ?? result.data.address ?? "";
 
     return (
-        <div className="flex flex-col space-y-1 text-xs font-semibold">
-            <div className="flex flex-col truncate text-theme-secondary-900 dark:text-theme-dark-50">
-                <span className="text-sm">{name}</span>
-                <span className="truncate text-theme-secondary-700 dark:text-theme-dark-200">{result.data.address}</span>
-            </div>
+        <>
+            <div className="hidden flex-col space-y-2 md:flex">
+                <div className="isolate flex items-center space-x-2 overflow-auto">
+                    <div className="text-theme-secondary-900 dark:text-theme-dark-50">
+                        {t("general.search.address")}
+                    </div>
 
-            <div className="text-theme-secondary-700 dark:text-theme-dark-200">
-                {t("general.search.balance_currency", { currency: network!.currency })}{" "}
-                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                    {currencyWithDecimals(result.data.balance ?? 0, network!.currency, 2, true, true)}
-                </span>
+                    <div className="link font-semibold hover:text-theme-primary-600 group-hover/result:no-underline">
+                        {name}
+                    </div>
+                </div>
+
+                <div className="flex items-center space-x-1 text-xs">
+                    <div className="text-theme-secondary-700 dark:text-theme-dark-200">
+                        {t("general.search.balance")}
+                    </div>
+
+                    <div className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
+                        {currencyWithDecimals(result.data.balance ?? 0, network!.currency)}
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
@@ -148,7 +159,9 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
 
             <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
                 <span>{t("general.search.transactions")}</span>
-                <span className="text-theme-secondary-900 dark:text-theme-dark-50">{result.data.transactionCount ?? 0}</span>
+                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                    {result.data.transactionCount ?? 0}
+                </span>
             </div>
         </div>
     );
