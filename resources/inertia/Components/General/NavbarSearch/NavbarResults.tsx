@@ -108,7 +108,7 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
     const { t } = useTranslation();
     const { network } = useConfig();
 
-    const name = result.data.username ?? result.data.address ?? "";
+    const hasUsername = result.data.username !== null;
 
     return (
         <>
@@ -119,8 +119,14 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
                     </div>
 
                     <div className="link font-semibold hover:text-theme-primary-600 group-hover/result:no-underline">
-                        {name}
+                        {hasUsername ? result.data.username : result.data.address}
                     </div>
+
+                    {hasUsername && (
+                        <div className="ml-1 truncate text-theme-secondary-700 dark:text-theme-dark-200">
+                            {result.data.address}
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex items-center space-x-1 text-xs">
