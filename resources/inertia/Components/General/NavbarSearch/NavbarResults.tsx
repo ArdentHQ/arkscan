@@ -63,10 +63,15 @@ export default function NavbarResults({ query, results, hasResults, isLoading }:
                     )}
 
                     {!isLoading &&
-                        results.map((result) => (
-                            <ResultLink key={`${result.type}-${result.identifier ?? result.url}`} result={result}>
-                                {renderResult(result)}
-                            </ResultLink>
+                        results.map((result, index) => (
+                            <div
+                                key={`${result.type}-${result.identifier ?? result.url}`}
+                                className={classNames("select-none", {
+                                    "pt-1": index > 0,
+                                })}
+                            >
+                                <ResultLink result={result}>{renderResult(result)}</ResultLink>
+                            </div>
                         ))}
                 </div>
             )}
