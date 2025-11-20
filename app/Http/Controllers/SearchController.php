@@ -47,12 +47,15 @@ final class SearchController
         return $redirectResponse;
     }
 
+    /**
+     * @param WalletViewModel|BlockViewModel|TransactionViewModel $result
+     */
     private function serializeResult(ViewModel $result): array
     {
         return [
             'type'       => $this->determineType($result),
-            'url'        => method_exists($result, 'url') ? $result->url() : null,
-            'identifier' => method_exists($result, 'id') ? $result->id() : (method_exists($result, 'hash') ? $result->hash() : null),
+            'url'        =>  $result->url(),
+            'identifier' =>  $result->id() ?? $result->hash(),
             'data'       => $this->toArray($result),
         ];
     }
@@ -63,7 +66,6 @@ final class SearchController
             $result instanceof WalletViewModel      => 'wallet',
             $result instanceof BlockViewModel       => 'block',
             $result instanceof TransactionViewModel => 'transaction',
-            default                                 => class_basename($result->model()),
         };
     }
 
