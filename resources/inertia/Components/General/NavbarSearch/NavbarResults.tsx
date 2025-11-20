@@ -190,6 +190,19 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
     );
 }
 
+const TransactionResultBadge = ({ className, children }: { className?: string; children: React.ReactNode }) => {
+    return (
+        <div
+            className={classNames(
+                "encapsulated-badge shrink-0 rounded border border-transparent bg-theme-secondary-200 px-[3px] py-[2px] text-center text-xs font-semibold leading-3.75 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200",
+                className,
+            )}
+        >
+            {children}
+        </div>
+    );
+};
+
 function TransactionResult({ result }: { result: SearchResult<INavbarSearchTransactionResultData> }) {
     const { t } = useTranslation();
     const { network } = useConfig();
@@ -202,7 +215,7 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
 
             <div className="hidden flex-col space-y-2 md:flex">
                 <div className="flex items-center space-x-2">
-                    <div className="encapsulated-badge min-w-[92px] shrink-0 rounded border border-transparent bg-theme-secondary-200 px-[3px] py-[2px] text-center text-xs font-semibold leading-3.75 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200">
+                    <TransactionResultBadge className="min-w-[92px]">
                         <Tooltip
                             disabled={!votedValidatorLabel}
                             content={
@@ -221,10 +234,56 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                         >
                             <span>{result.data.typeName}</span>
                         </Tooltip>
-                    </div>
+                    </TransactionResultBadge>
 
                     <div className="link min-w-0 flex-1 hover:text-theme-primary-600 group-hover/result:no-underline">
                         <TruncateMiddle length={20}>{result.data.hash}</TruncateMiddle>
+                    </div>
+                </div>
+
+                <div className="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+                    <div className="isolate flex items-center space-x-2 text-xs">
+                        <TransactionResultBadge>{t("general.search.from")}</TransactionResultBadge>
+
+                        {/* @if ($transaction->isVote() || $transaction->isUnvote())
+                            <x-general.identity
+                                :model="$transaction->isUnvote() ? $transaction->unvoted() : $transaction->voted()"
+                                without-link
+                                className="text-theme-secondary-900 dark:text-theme-dark-50"
+                            />
+                        @else
+                            <x-general.identity
+                                :model="$transaction->sender()"
+                                without-link
+                                className="text-theme-secondary-900 dark:text-theme-dark-50"
+                            />
+                        @endif */}
+                    </div>
+
+                    <div className="isolate flex items-center space-x-2 text-xs">
+                        <TransactionResultBadge>{t("general.search.to")}</TransactionResultBadge>
+
+                        {/* @if ($transaction->isTransfer() || $transaction->isTokenTransfer())
+                            <x-general.identity
+                                :model="$transaction->recipient()"
+                                without-link
+                                className="text-theme-secondary-900 dark:text-theme-dark-50"
+                            />
+                        @else
+                            <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                {t("general.search.contract")}
+                            </span>
+                        @endif */}
+                    </div>
+
+                    <div className="flex items-center space-x-2 text-xs md:flex-1 md:justify-end md:space-x-0">
+                        <div className="text-theme-secondary-500 dark:text-theme-dark-200 md:hidden">
+                            {t("general.search.amount")}
+                        </div>
+
+                        <div className="text-theme-secondary-900 dark:text-theme-dark-50">
+                            {currencyWithDecimals(result.data.amountWithFee ?? 0, network!.currency)}
+                        </div>
                     </div>
                 </div>
             </div>
