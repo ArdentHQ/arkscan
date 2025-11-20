@@ -9,6 +9,7 @@ import type {
 import { currencyWithDecimals } from "@/utils/number-formatter";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import Tooltip from "@/Components/General/Tooltip";
 
 type SearchResultData =
     | INavbarSearchWalletResultData
@@ -38,7 +39,7 @@ export default function NavbarResults({ query, results, hasResults, isLoading }:
     return (
         <div
             className={classNames(
-                "absolute right-0 top-9 z-10 mt-2 origin-top-right rounded-xl border border-transparent bg-white py-1 shadow-lg transition-all duration-150 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200",
+                "search-dropdown absolute right-0 top-9 z-10 mt-2 origin-top-right rounded-xl border border-transparent bg-white py-1 shadow-lg transition-all duration-150 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200",
                 {
                     "pointer-events-auto scale-100 opacity-100": open,
                     "pointer-events-none scale-95 opacity-0": !open,
@@ -193,50 +194,73 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
     const { t } = useTranslation();
     const { network } = useConfig();
 
-    const typeLabel = (() => {
-        if (result.data.isVote) {
-            return t("general.search.vote");
-        }
-
-        if (result.data.isUnvote) {
-            return t("general.search.unvote");
-        }
-
-        return t("general.search.transaction");
-    })();
+    const votedValidatorLabel = result.data.votedValidatorLabel;
 
     return (
-        <div className="flex flex-col space-y-1 text-xs font-semibold">
-            <div className="flex items-center space-x-3">
-                <span className="rounded bg-theme-secondary-200 px-2 py-0.5 text-theme-secondary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50">
-                    {typeLabel}
-                </span>
-                <span className="min-w-0 truncate text-theme-secondary-900 dark:text-theme-dark-50">
-                    {result.data.hash ? <TruncateMiddle length={22}>{result.data.hash}</TruncateMiddle> : "-"}
-                </span>
+        <>
+            <>{/* TODO: add  mobile view */}</>
+
+            <div className="hidden flex-col space-y-2 md:flex">
+                <div className="flex items-center space-x-2">
+                    <div className="encapsulated-badge min-w-[92px] shrink-0 rounded border border-transparent bg-theme-secondary-200 px-[3px] py-[2px] text-center text-xs font-semibold leading-3.75 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200">
+                        <Tooltip
+                            disabled={!votedValidatorLabel}
+                            content={
+                                <div
+                                    dangerouslySetInnerHTML={
+                                        votedValidatorLabel
+                                            ? {
+                                                  __html: t("general.transaction.vote_validator", {
+                                                      validator: votedValidatorLabel,
+                                                  }),
+                                              }
+                                            : undefined
+                                    }
+                                />
+                            }
+                        >
+                            <span>{result.data.typeName}</span>
+                        </Tooltip>
+                    </div>
+
+                    <div className="link min-w-0 flex-1 hover:text-theme-primary-600 group-hover/result:no-underline">
+                        <TruncateMiddle length={20}>{result.data.hash}</TruncateMiddle>
+                    </div>
+                </div>
             </div>
 
-            <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-                <span>{t("general.search.from")}</span>
-                <span className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
-                    {formatWalletLabel(result.data.sender)}
-                </span>
-            </div>
+            {/* // <div className="flex flex-col space-y-1 text-xs font-semibold">
+            //     <div className="flex items-center space-x-3">
+            //         <span className="rounded bg-theme-secondary-200 px-2 py-0.5 text-theme-secondary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50">
+            //             {typeLabel}
+            //         </span>
+            //         <span className="min-w-0 truncate text-theme-secondary-900 dark:text-theme-dark-50">
+            //             {result.data.hash ? <TruncateMiddle length={22}>{result.data.hash}</TruncateMiddle> : "-"}
+            //         </span>
+            //     </div>
 
-            <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-                <span>{t("general.search.to")}</span>
-                <span className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
-                    {formatRecipientLabel(result.data.recipient, t)}
-                </span>
-            </div>
+            //     <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
+            //         <span>{t("general.search.from")}</span>
+            //         <span className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
+            //             {formatWalletLabel(result.data.sender)}
+            //         </span>
+            //     </div>
 
-            <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-                <span>{t("general.search.amount")}</span>
-                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                    {currencyWithDecimals(result.data.amountWithFee ?? 0, network!.currency, 2, true, true)}
-                </span>
-            </div>
-        </div>
+            //     <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
+            //         <span>{t("general.search.to")}</span>
+            //         <span className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
+            //             {formatRecipientLabel(result.data.recipient, t)}
+            //         </span>
+            //     </div>
+
+            //     <div className="flex items-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
+            //         <span>{t("general.search.amount")}</span>
+            //         <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+            //             {currencyWithDecimals(result.data.amountWithFee ?? 0, network!.currency, 2, true, true)}
+            //         </span>
+            //     </div>
+            </div> */}
+        </>
     );
 }
 

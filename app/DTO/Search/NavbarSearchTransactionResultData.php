@@ -20,11 +20,19 @@ final class NavbarSearchTransactionResultData extends Data
         public bool $isTokenTransfer,
         public ?NavbarSearchMemoryWalletData $sender,
         public ?NavbarSearchMemoryWalletData $recipient,
+        public string $typeName,
+        public ?string $votedValidatorLabel,
     ) {
     }
 
     public static function fromViewModel(TransactionViewModel $transaction): self
     {
+        $votedValidatorLabel = null;
+        
+        if ($transaction->isVote() && $votedValidator = $transaction->voted())  {
+            $votedValidatorLabel = $votedValidator->username() ?? $votedValidator->address();
+        }
+        
         return new self(
             hash: $transaction->hash(),
             amountWithFee: $transaction->amountWithFee(),
@@ -34,6 +42,8 @@ final class NavbarSearchTransactionResultData extends Data
             isTokenTransfer: $transaction->isTokenTransfer(),
             sender: NavbarSearchMemoryWalletData::fromMemoryWallet($transaction->sender()),
             recipient: NavbarSearchMemoryWalletData::fromMemoryWallet($transaction->recipient()),
+            typeName: $transaction->typeName(),
+            votedValidatorLabel: $votedValidatorLabel,
         );
     }
 }

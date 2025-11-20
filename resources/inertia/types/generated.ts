@@ -42,6 +42,8 @@ export type INavbarSearchTransactionResultData = {
     isTokenTransfer: boolean;
     sender: INavbarSearchMemoryWallet | null;
     recipient: INavbarSearchMemoryWallet | null;
+    typeName: string;
+    votedValidatorLabel: string | null;
 };
 export type INavbarSearchWalletResultData = {
     address: string;
