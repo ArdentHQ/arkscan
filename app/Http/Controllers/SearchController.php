@@ -84,6 +84,6 @@ final class SearchController
             return NavbarSearchTransactionResultData::fromViewModel($result)->toArray();
         }
 
-        throw new \Exception('Invalid result type: ' . get_class($result));
+        throw new \Exception('Invalid result type: '.get_class($result));
     }
 }
