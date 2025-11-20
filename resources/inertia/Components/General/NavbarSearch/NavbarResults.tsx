@@ -13,8 +13,7 @@ import { useTranslation } from "react-i18next";
 type SearchResultData =
     | INavbarSearchWalletResultData
     | INavbarSearchBlockResultData
-    | INavbarSearchTransactionResultData
-    | Record<string, any>;
+    | INavbarSearchTransactionResultData;
 
 export type SearchResult<TData = SearchResultData> = {
     type: string;
@@ -105,8 +104,6 @@ function renderResult(result: SearchResult) {
     if (result.type === "transaction") {
         return <TransactionResult result={result as SearchResult<INavbarSearchTransactionResultData>} />;
     }
-
-    return <GenericResult result={result} />;
 }
 
 function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResultData> }) {
@@ -239,15 +236,6 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                     {currencyWithDecimals(result.data.amountWithFee ?? 0, network!.currency, 2, true, true)}
                 </span>
             </div>
-        </div>
-    );
-}
-
-function GenericResult({ result }: { result: SearchResult }) {
-    return (
-        <div className="flex flex-col space-y-1 text-xs font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
-            <span className="text-theme-secondary-900 dark:text-theme-dark-50">{result.type}</span>
-            <span className="truncate">{result.identifier}</span>
         </div>
     );
 }
