@@ -74,6 +74,8 @@ it('returns block results including validator wallet metadata', function () {
         ->first(fn ($result) => $result['type'] === 'block');
 
     expect($blockResult)->not->toBeNull();
+    expect($blockResult['type'])->toBe('block');
+    expect($blockResult['identifier'])->toBe($block->hash);
     expect($blockResult['data']['hash'])->toBe($block->hash);
     expect($blockResult['data']['transactionCount'])->toBe(12);
     expect($blockResult['data']['validator']['address'])->toBe($validator->address);
@@ -113,6 +115,8 @@ it('returns transaction results including vote metadata', function () {
         ->first(fn ($result) => $result['type'] === 'transaction');
 
     expect($transactionResult)->not->toBeNull();
+    expect($transactionResult['type'])->toBe('transaction');
+    expect($transactionResult['identifier'])->toBe($transaction->hash);
     expect($transactionResult['data']['hash'])->toBe($transaction->hash);
     expect($transactionResult['data']['isVote'])->toBeTrue();
     expect($transactionResult['data']['isTransfer'])->toBeFalse();
