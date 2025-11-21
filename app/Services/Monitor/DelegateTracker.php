@@ -157,7 +157,7 @@ final class DelegateTracker
         $forgedCount = $roundBlockCount->sum();
 
         $counter = 0;
-        $offset = 0;
+        $offset  = 0;
         foreach ($delegates as $publicKey) {
             // $publicKey = $delegate['public_key'];
             $hadBlock = false;
