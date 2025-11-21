@@ -31,7 +31,7 @@ final class Monitor extends Component
     use DelegateData;
     use HandlesMonitorDataBoxes;
 
-    public const MISSED_INCREMENT_SECONDS = 2;
+    public const MISSED_INCREMENT_SECONDS = 8;
 
     /** @var mixed */
     protected $listeners = [
@@ -129,23 +129,23 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->first();
 
-        // $lastRoundBlock = null;
-        if ($lastRoundBlock === null) {
-            $lastSuccessfulForger = collect($this->delegates)
-                ->filter(fn (Slot $delegate) => $delegate->hasForged())
-                ->last();
+        // // // $lastRoundBlock = null;
+        // // if ($lastRoundBlock === null) {
+        //     $lastSuccessfulForger = collect($this->delegates)
+        //         ->filter(fn (Slot $delegate) => $delegate->hasForged())
+        //         ->last();
 
-            if ($lastSuccessfulForger === null) {
-                return [];
-            }
+        //     if ($lastSuccessfulForger === null) {
+        //         return [];
+        //     }
 
-            /** @var Block $lastRoundBlock */
-            $lastRoundBlock = Block::query()
-                ->where('generator_public_key', $lastSuccessfulForger->publicKey())
-                ->where('height', '>=', $heightRange[0])
-                ->orderBy('height', 'desc')
-                ->first();
-        }
+        //     /** @var Block $lastRoundBlock */
+        //     $lastRoundBlock = Block::query()
+        //         ->where('generator_public_key', $lastSuccessfulForger->publicKey())
+        //         ->where('height', '>=', $heightRange[0])
+        //         ->orderBy('height', 'desc')
+        //         ->first();
+        // // }
 
         // @TODO: cover this line as part of the dusk tests update - https://app.clickup.com/t/86dxjarym
         // @codeCoverageIgnoreStart
@@ -174,6 +174,13 @@ final class Monitor extends Component
             ->map(function ($blocks) {
                 return count($blocks);
             });
+
+        /** @var ?Block $lastRoundBlock */
+        $lastRoundBlock = Block::query()
+            // ->where('generator_public_key', $lastSlot->publicKey())
+            ->where('height', '>=', $heightRange[0])
+            ->orderBy('height', 'desc')
+            ->first();
 
         $hasReachedFinalSlot = $lastRoundBlock->number === $heightRange[1];
         if ($overflowBlocks->isNotEmpty()) {

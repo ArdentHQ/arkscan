@@ -12,6 +12,7 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
 use App\Services\Timestamp;
 use ArkEcosystem\Crypto\Identities\PublicKey;
@@ -227,7 +228,10 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
         ->activeDelegate()
         ->create();
 
-    foreach ($delegateWallets as $delegate) {
+    foreach ($delegateWallets as $index => $delegate) {
+        $delegate->balance = ($index + 1) * 1e8;
+        $delegate->save();
+
         createRoundEntry($round, $delegate->public_key);
 
         $cache->setDelegate($delegate->public_key, $delegate);
@@ -408,21 +412,36 @@ function createPartialRound(
 function getRoundDelegates(bool $withBlock = true, ?int $roundNumber = null): SupportCollection
 {
     $round     = $roundNumber;
-    $delegates = collect();
+    $delegates = null;
+    if ($round !== null) {
+        $delegates = Rounds::allByRound($round);
+    }
+
+    if (! $round || $delegates->count() === 0) {
+        $round = Round::query()
+            ->orderBy('round')
+            ->orderBy('round', 'desc')
+            ->first();
+
+        $delegates = Rounds::allByRound($round->round);
+    }
 
     if ($delegates->count() === 0) {
-        $delegates = getDelegateWallets();
+        $delegates = Wallet::all()->pluck('public_key');
     }
 
     expect($delegates->count())->toBe(Network::delegateCount());
 
-    $round       = $round ?: Rounds::current();
     $heightRange = Monitor::heightRangeByRound($round);
 
-    $delegates = $delegates->map(fn ($delegate) => [
-        'publicKey' => $delegate->public_key,
-        'status'    => 'initial',
-    ]);
+    try {
+        $delegates = new SupportCollection(DelegateTracker::execute($delegates, $heightRange[0]));
+    } catch (\Throwable $e) {
+        $delegates = $delegates->map(fn ($delegate) => [
+            'publicKey' => $delegate->public_key,
+            'status'    => 'initial',
+        ]);
+    }
 
     if ($withBlock) {
         $blocks = Block::whereBetween('height', $heightRange)->get()->keyBy('generator_public_key');

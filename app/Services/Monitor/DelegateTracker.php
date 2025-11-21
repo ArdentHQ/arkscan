@@ -154,6 +154,9 @@ final class DelegateTracker
         //     return $carry;
         // }, collect());
 
+        $forgedCount = $roundBlockCount->sum();
+
+        $counter = 0;
         $offset = 0;
         foreach ($delegates as $publicKey) {
             // $publicKey = $delegate['public_key'];
@@ -161,7 +164,7 @@ final class DelegateTracker
             if ($roundBlockCount->has($publicKey)) {
                 $count = $roundBlockCount->get($publicKey) - 1;
                 if ($count <= 0) {
-                    $roundBlockCount = $roundBlockCount->except($publicKey);
+                    $roundBlockCount->forget($publicKey);
                 } else {
                     $roundBlockCount->put($publicKey, $count);
                 }
@@ -169,12 +172,14 @@ final class DelegateTracker
                 $hadBlock = true;
             }
 
-            if ($publicKey === $lastForgerPublicKey) {
-                break;
-            }
+            $counter++;
 
             if ($hadBlock) {
                 continue;
+            }
+
+            if ($counter > $forgedCount) {
+                return $offset;
             }
 
             $offset++;
