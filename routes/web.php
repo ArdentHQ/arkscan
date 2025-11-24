@@ -12,6 +12,7 @@ use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -85,3 +86,6 @@ Route::post('/webhooks', WebhooksController::class)
 
 Route::post('/currency/update', [CurrencyController::class, 'update'])
     ->name('currency.update');
+
+Route::post('/theme/update', [ThemeController::class, 'update'])
+    ->name('theme.update');

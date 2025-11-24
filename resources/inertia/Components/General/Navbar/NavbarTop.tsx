@@ -1,4 +1,5 @@
 import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
+import ThemeDropdown from "@/Components/General/ThemeDropdown/ThemeDropdown";
 
 export default function NavbarTop() {
     return (
@@ -11,18 +12,20 @@ export default function NavbarTop() {
                 </div>
 
                 <div className="flex items-center space-x-3 md:w-full md-lg:w-auto">
-                    {/* <livewire:navbar.search />
+                    {/* <livewire:navbar.search /> *}
 
-            <x-navbar.network-dropdown />
+            {/* <x-navbar.network-dropdown /> */}
 
-            <div
+                    <ThemeDropdown />
+
+                    {/* <div
                 x-data="ThemeManager()"
                 @theme-changed.window="theme = $event.detail.theme"
             >
                 <x-navbar.theme-dropdown />
-            </div>
+            </div> */}
 
-            @if (config('arkscan.arkconnect.enabled', false))
+                    {/* @if (config('arkscan.arkconnect.enabled', false))
                 <x-navbar.arkconnect />
             @endif */}
                 </div>

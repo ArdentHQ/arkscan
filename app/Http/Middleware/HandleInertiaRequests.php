@@ -66,6 +66,7 @@ class HandleInertiaRequests extends Middleware
                     'isPriceAvailable'  => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
                     'priceExchangeRate' => ExchangeRate::currentRate(),
                 ]),
+                'theme'                => fn () => Settings::theme(),
             ])->toArray(),
             ...parent::share($request),
         ];
