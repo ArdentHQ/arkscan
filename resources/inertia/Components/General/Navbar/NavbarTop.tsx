@@ -2,11 +2,11 @@ import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
 import ThemeDropdown from "@/Components/General/ThemeDropdown/ThemeDropdown";
 import NetworkDropdown from "@/Components/General/NetworkDropdown/NetworkDropdown";
 import NavbarSearch from "@/Components/General/NavbarSearch/NavbarSearch";
-import useConfig from "@/hooks/use-config";
 import NavbarArkConnect from "@/Components/General/NavbarArkConnect/NavbarArkConnect";
+import useShareData from "@/hooks/use-shared-data";
 
 export default function NavbarTop() {
-    const { arkconnectConfig } = useConfig();
+    const { arkconnectConfig } = useShareData();
 
     return (
         <div className="relative z-40 hidden bg-white dark:bg-theme-dark-900 md:flex md:flex-col">

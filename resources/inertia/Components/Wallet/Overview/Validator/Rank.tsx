@@ -1,12 +1,12 @@
 import { IWallet } from "@/types/generated";
 import WalletOverviewItemEntry from "../ItemEntry";
 import { useTranslation } from "react-i18next";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import Info from "@/Components/General/Info";
 
 export default function WalletOverviewValidatorRank({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     const rank = wallet.attributes?.validatorRank;
 

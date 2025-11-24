@@ -6,7 +6,7 @@ import ExternalLink from "../General/ExternalLink";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import Dropdown from "../General/Dropdown/Dropdown";
 import { useArkConnect } from "@/Providers/ArkConnect/ArkConnectContext";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 
 export default function VoteLink({
     wallet,
@@ -18,7 +18,7 @@ export default function VoteLink({
     unvoteText: React.ReactNode;
 }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
     const { hasExtension, isConnected, isOnSameNetwork, performVote, votingForAddress, isArkConnectEnabled } =
         useArkConnect();
 

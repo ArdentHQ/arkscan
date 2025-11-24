@@ -6,7 +6,7 @@ import { IPaginatedResponse } from "@/types";
 import { IBlock } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
@@ -15,7 +15,7 @@ import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 
 export function ValidatedBlocksMobileTable({ blocks }: { blocks: IPaginatedResponse<IBlock> }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <MobileTable noResultsMessage={blocks.noResultsMessage} resultCount={blocks.total ?? 0}>
