@@ -4,7 +4,7 @@ import HintSmallIcon from "@ui/icons/hint-small.svg?react";
 import { useTranslation } from "react-i18next";
 import AmountSmall from "./AmountSmall";
 import Tooltip from "./Tooltip";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 
 function AmountOutput({
     transaction,
@@ -60,7 +60,7 @@ export default function AmountFiatTooltip({
     hideCurrency?: boolean;
 }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     const classes: string[] = ["inline-flex items-center font-semibold", className];
 

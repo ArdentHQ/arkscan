@@ -17,7 +17,7 @@ import ExportTransactionsModal from "./ExportTransactionsModal";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -57,7 +57,7 @@ export function TransactionsTable({
     mobile?: React.ReactNode;
 }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <Table
@@ -108,7 +108,7 @@ export default function TransactionsTableWrapper({
 }) {
     const { isLoading } = usePageHandler();
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     if (!transactions || isLoading) {
         return (
@@ -172,7 +172,7 @@ export default function TransactionsTableWrapper({
 
 export function TransactionsHeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
     const { t } = useTranslation();
-    const { wallet, rates, network, settings } = useConfig<WalletProps>();
+    const { wallet, rates, network, settings } = useSharedData<WalletProps>();
 
     const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(false);
 
