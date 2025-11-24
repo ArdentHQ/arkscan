@@ -1,8 +1,7 @@
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
-import useConfig from "@/hooks/use-config";
+import useShareData from "@/hooks/use-shared-data";
 import type {
     INavbarSearchBlockResultData,
-    INavbarSearchMemoryWallet,
     INavbarSearchTransactionResultData,
     INavbarSearchWalletResultData,
 } from "@/types/generated";
@@ -120,7 +119,7 @@ function renderResult(result: SearchResult) {
 
 function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResultData> }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useShareData();
 
     const hasUsername = result.data.username !== null;
 
@@ -216,7 +215,7 @@ const TransactionResultBadge = ({ className, children }: { className?: string; c
 
 function TransactionResult({ result }: { result: SearchResult<INavbarSearchTransactionResultData> }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useShareData();
 
     const votedValidatorLabel = result.data.votedValidatorLabel;
 

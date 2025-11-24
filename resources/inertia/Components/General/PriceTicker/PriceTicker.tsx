@@ -1,4 +1,4 @@
-import useConfig from "@/hooks/use-config";
+import useShareData from "@/hooks/use-shared-data";
 import { useMemo } from "react";
 import classNames from "@/utils/class-names";
 import { useTranslation } from "react-i18next";
@@ -11,7 +11,7 @@ import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
 import { usePoll } from "@inertiajs/react";
 
 export default function PriceTicker() {
-    const { isDownForMaintenance, network, networkName, currencies, broadcasting } = useConfig();
+    const { isDownForMaintenance, network, networkName, currencies, broadcasting } = useShareData();
 
     const { currency, updateCurrency, isUpdatingCurrency, isPriceAvailable, priceExchangeRate } = useSettings();
 

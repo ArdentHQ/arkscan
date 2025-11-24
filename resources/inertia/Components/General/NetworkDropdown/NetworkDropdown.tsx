@@ -1,13 +1,13 @@
 import Dropdown from "@/Components/General/Dropdown/Dropdown";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
-import useConfig from "@/hooks/use-config";
+import useShareData from "@/hooks/use-shared-data";
 import { useTranslation } from "react-i18next";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
 import classNames from "classnames";
 
 export default function NetworkDropdown() {
-    const { isProduction, mainnetExplorerUrl, testnetExplorerUrl } = useConfig();
+    const { isProduction, mainnetExplorerUrl, testnetExplorerUrl } = useShareData();
     const { t } = useTranslation();
 
     return (
