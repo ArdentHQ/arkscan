@@ -1,15 +1,4 @@
-export default function classNames(
-    classes: Record<string, boolean | CallableFunction>,
-    data: Record<string, any> = {},
-): string {
-    return Object.entries(classes)
-        .filter(([_, value]) => value)
-        .map(([key, value]) => {
-            if (typeof value === "function") {
-                return value(data);
-            }
+// TODO: remove this file
+import cn from "classnames";
 
-            return key;
-        })
-        .join(" ");
-}
+export default cn;

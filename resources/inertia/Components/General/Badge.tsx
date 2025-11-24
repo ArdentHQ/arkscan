@@ -1,4 +1,4 @@
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 
 export default function Badge({
     colors = "border-transparent bg-theme-secondary-200 dark:border-theme-dark-700 dark:text-theme-dark-200",

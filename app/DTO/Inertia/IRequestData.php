@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Inertia;
 
+use Closure;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -20,7 +21,12 @@ class IRequestData extends Data
         public IConfigArkconnect $arkconnectConfig,
         public IConfigPagination $pagination,
         public string $broadcasting,
-        public string $currency,
+        #[LiteralTypeScriptType('string')]
+        public Closure $networkName,
+        #[LiteralTypeScriptType('boolean')]
+        public Closure $isDownForMaintenance,
+        #[LiteralTypeScriptType('IPriceTickerData')]
+        public Closure $priceTickerData,
     ) {
     }
 }

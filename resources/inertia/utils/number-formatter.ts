@@ -1,12 +1,8 @@
 import useConfig from "@/hooks/use-config";
 
-export const CRYPTO_DECIMALS = 8;
-
-export const CRYPTO_DECIMALS_SMALL = 8;
-
-export const FIAT_DECIMALS = 2;
-
-export const FIAT_DECIMALS_SMALL = 4;
+const FIAT_DECIMALS = 2;
+const FIAT_DECIMALS_SMALL = 4;
+const CRYPTO_DECIMALS = 8;
 
 export function hasSymbol(currency: string): boolean {
     const { currencies } = useConfig();
@@ -17,11 +13,11 @@ export function hasSymbol(currency: string): boolean {
 export function isFiat(currency: string): boolean {
     const { currencies } = useConfig();
 
-    if (currencies![currency] === undefined) {
+    if (currencies![currency.toLowerCase()] === undefined) {
         return false;
     }
 
-    return currencies![currency]?.locale !== null;
+    return currencies![currency.toLowerCase()]?.locale !== null;
 }
 
 export function currency(value: number, currency: string, showSmallAmounts = false): string {
@@ -50,42 +46,71 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
     }).format(value);
 }
 
-export function currencyWithDecimals(value: number, currency: string, decimals?: number, hideCurrency = false): string {
+export function currencyWithDecimals(
+    value: number,
+    currency: string,
+    decimals?: number,
+    showSmallAmounts = false,
+    hideCurrency = false,
+): string {
+    const isSmallAmount = value < 1;
+    let effectiveDecimals: number;
+
     if (isFiat(currency)) {
         const { currencies } = useConfig();
         const locale = currencies![currency]?.locale ?? "en-US";
-        const maximumFractionDigits = decimals ?? 4;
 
-        // Workaround similar to the PHP version: round the numeric value to the requested
-        // number of decimals before formatting to avoid unexpected rounding behaviour.
-        const rounded = Number(Number(value).toFixed(maximumFractionDigits));
+        // Dynamically choose decimals for fiat: FIAT_DECIMALS_SMALL for small amounts if showSmallAmounts, else FIAT_DECIMALS; override if decimals provided
+        effectiveDecimals = decimals ?? (showSmallAmounts && isSmallAmount ? FIAT_DECIMALS_SMALL : FIAT_DECIMALS);
+
+        // Round the value to avoid unexpected rounding in Intl.NumberFormat
+        const rounded = Number(Number(value).toFixed(effectiveDecimals));
 
         if (hideCurrency) {
-            return new Intl.NumberFormat("en-US", {
+            const formatted = new Intl.NumberFormat("en-US", {
                 minimumFractionDigits: 2,
-                maximumFractionDigits,
+                maximumFractionDigits: effectiveDecimals,
             }).format(rounded);
+            return formatted;
         }
 
-        return new Intl.NumberFormat(locale, {
+        const formatted = new Intl.NumberFormat(locale, {
             style: "currency",
             currency,
             minimumFractionDigits: 2,
-            maximumFractionDigits,
+            maximumFractionDigits: effectiveDecimals,
         }).format(rounded);
+        return formatted;
     }
 
-    // Non-fiat (crypto) use the provided decimals or fall back to CRYPTO_DECIMALS.
+    // Non-fiat (crypto): use CRYPTO_DECIMALS, override if provided; strip trailing zeros
     const { currencies } = useConfig();
     const symbol = currencies![currency]?.symbol ?? currency;
-    const usedDecimals = decimals ?? CRYPTO_DECIMALS;
+    effectiveDecimals = decimals ?? CRYPTO_DECIMALS;
 
-    const formatted = new Intl.NumberFormat("en-US", {
-        minimumFractionDigits: usedDecimals,
-        maximumFractionDigits: usedDecimals,
+    let formatted = new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: effectiveDecimals,
+        maximumFractionDigits: effectiveDecimals,
     }).format(value);
+    // Strip trailing zeros and decimal point if no fractional part remains (for crypto only)
+    formatted = stripTrailingZeros(formatted);
 
     return hideCurrency ? formatted : `${formatted} ${symbol}`;
+}
+
+// Helper function to strip trailing zeros after formatting (used for crypto)
+function stripTrailingZeros(str: string): string {
+    // Split into integer and fractional parts
+    const parts = str.split(".");
+    if (parts.length < 2) return str; // No decimal, return as is
+
+    // Remove trailing zeros from fractional part
+    let fractional = parts[1].replace(/0+$/, "");
+    // If fractional is empty, remove the decimal point too
+    if (fractional === "") {
+        return parts[0];
+    }
+    return `${parts[0]}.${fractional}`;
 }
 
 export function networkCurrency(value: number | string, decimals = 8, withSuffix = false): string {

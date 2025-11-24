@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import WebhooksContext, { IWebhooksContext, WebhookHandler } from "./WebhooksContext";
 
 type ListenerRegistry = Record<string, Record<string, Set<WebhookHandler>>>;
@@ -6,14 +6,11 @@ type ListenerRegistry = Record<string, Record<string, Set<WebhookHandler>>>;
 export default function WebhooksProvider({
     children,
     broadcasting,
-    currency,
 }: {
     children: React.ReactNode;
     broadcasting: string;
-    currency: string;
 }) {
     const enabled = broadcasting === "reverb";
-    const [currentCurrency, setCurrentCurrency] = useState(currency);
     const listenersRef = useRef<ListenerRegistry>({});
 
     const getEcho = () => {
@@ -79,28 +76,6 @@ export default function WebhooksProvider({
         },
         [getEcho, remove],
     );
-
-    const reloadPriceTicker = useCallback(() => {
-        window.Livewire.emit("reloadPriceTicker");
-    }, []);
-
-    useEffect(() => {
-        listen(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
-
-        // @TODO: see for alternatives for handling this the the currency Livewire component
-        // is removed https://app.clickup.com/t/86d ye0rvv
-        // @see `resources/views/components/webhooks/currency-update.blade.php`
-        // window.Livewire.on("currencyChanged", (currency: string) => {
-        //     remove(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
-        //     listen(`currency-update.${currency}`, "CurrencyUpdate", reloadPriceTicker);
-
-        //     setCurrentCurrency(currency);
-        // });
-
-        return () => {
-            remove(`currency-update.${currentCurrency}`, "CurrencyUpdate", reloadPriceTicker);
-        };
-    }, [currentCurrency]);
 
     const value = useMemo<IWebhooksContext>(
         () => ({

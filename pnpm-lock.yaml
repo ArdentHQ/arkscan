@@ -41,6 +41,9 @@ importers:
       bignumber.js:
         specifier: ^9.3.1
         version: 9.3.1
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       decimal.js:
         specifier: ^10.4.3
         version: 10.4.3
@@ -1515,6 +1518,9 @@ packages:
   chokidar@3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
     engines: {node: '>= 8.10.0'}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   cliui@6.0.0:
     resolution: {integrity: sha512-t6wbgtoCXvAzst7QgXxJYqPt0usEfbgQdftEPbLL/cvv6HPE5VgvqCuAIDR0NgU52ds6rFwqrgakNLrHEjCbrQ==}
@@ -3897,6 +3903,8 @@ snapshots:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
+
+  classnames@2.5.1: {}
 
   cliui@6.0.0:
     dependencies:
