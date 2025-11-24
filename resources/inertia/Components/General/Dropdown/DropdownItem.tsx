@@ -20,7 +20,7 @@ export default function DropdownItem({
     return (
         <Comp
             className={classNames({
-                "transition-default my-1 cursor-pointer rounded-lg px-5 py-[0.875rem] font-semibold leading-5": true,
+                "transition-default my-1 cursor-pointer whitespace-nowrap rounded-lg px-5 py-[0.875rem] font-semibold leading-5": true,
                 "bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-secondary-900 dark:text-theme-dark-500":
                     disabled,
                 "bg-theme-secondary-200 text-theme-primary-600 dark:bg-theme-dark-950 dark:text-theme-dark-50":
