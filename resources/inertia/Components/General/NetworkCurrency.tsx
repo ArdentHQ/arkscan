@@ -1,8 +1,8 @@
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import Currency from "./Currency";
 
 export function NetworkCurrency({ value, decimals = 8 }: { value: string; decimals?: number }) {
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return Currency({
         currency: network!.currency,

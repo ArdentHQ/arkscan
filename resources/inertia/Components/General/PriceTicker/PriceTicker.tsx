@@ -66,7 +66,8 @@ export default function PriceTicker() {
                                 className={classNames(
                                     "transition-default group flex items-center justify-center space-x-2 py-2 pr-3 text-sm font-semibold leading-4",
                                     {
-                                        "cursor-not-allowed": isDisabled,
+                                        "cursor-not-allowed bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-dark-700 dark:text-theme-dark-500":
+                                            isDisabled,
                                         "hover:text-theme-secondary-900 dark:text-theme-dark-50 hover:dark:text-theme-dark-50 md:dark:text-theme-dark-50":
                                             !isDisabled,
                                     },
