@@ -125,6 +125,7 @@ export interface ArkConnectComputedState {
     delegateAddressKey: "delegateAddress" | "address";
     isSupported: boolean;
     isArkConnectEnabled: boolean;
+    addressUrl: string;
 }
 
 export interface ArkConnectActions {
