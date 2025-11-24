@@ -7,7 +7,7 @@ import InstallDimIcon from "@images/modals/arkconnect/install-dim.svg?react";
 import ArkConnectIcon from "@icons/wallets/arkconnect.svg?react";
 
 export default function InstallWalletModal() {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     const onClose = () => {
         setIsOpen(false);
@@ -51,6 +51,14 @@ export default function InstallWalletModal() {
                     </Modal.FooterButtons>
                 </Modal.Footer>
             </Modal>
+
+            <button
+                type="button"
+                className="button-secondary w-full whitespace-nowrap px-4 py-1.5 md:w-auto"
+                onClick={() => setIsOpen(true)}
+            >
+                {t("general.navbar.connect_wallet")}
+            </button>
         </>
     );
 }
