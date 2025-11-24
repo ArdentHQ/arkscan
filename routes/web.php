@@ -8,6 +8,7 @@ use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\WalletController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
@@ -89,3 +90,9 @@ Route::post('/currency/update', [CurrencyController::class, 'update'])
 
 Route::post('/theme/update', [ThemeController::class, 'update'])
     ->name('theme.update');
+
+Route::get('/navbar/search', [SearchController::class, 'index'])
+    ->name('navbar-search.index');
+
+Route::post('/navbar/search/redirect', [SearchController::class, 'redirect'])
+    ->name('navbar-search.redirect');
