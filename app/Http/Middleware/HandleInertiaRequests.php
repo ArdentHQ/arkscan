@@ -61,12 +61,15 @@ class HandleInertiaRequests extends Middleware
                 'broadcasting'         => config('broadcasting.default'),
                 'networkName'          => fn () => config('arkscan.network'),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
+                'isProduction'         => fn () => config('arkscan.network') === 'production',
                 'priceTickerData'      => fn () => IPriceTickerData::from([
                     'currency'          => Settings::currency(),
                     'isPriceAvailable'  => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
                     'priceExchangeRate' => ExchangeRate::currentRate(),
                 ]),
                 'theme'                => fn () => Settings::theme(),
+                'mainnetExplorerUrl'   => fn () => Network::mainnetExplorerUrl(),
+                'testnetExplorerUrl'   => fn () => Network::testnetExplorerUrl(),
             ])->toArray(),
             ...parent::share($request),
         ];

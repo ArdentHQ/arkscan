@@ -1,5 +1,6 @@
 import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
 import ThemeDropdown from "@/Components/General/ThemeDropdown/ThemeDropdown";
+import NetworkDropdown from "@/Components/General/NetworkDropdown/NetworkDropdown";
 
 export default function NavbarTop() {
     return (
@@ -12,9 +13,9 @@ export default function NavbarTop() {
                 </div>
 
                 <div className="flex items-center space-x-3 md:w-full md-lg:w-auto">
-                    {/* <livewire:navbar.search /> *}
+                    {/* <livewire:navbar.search /> */}
 
-            {/* <x-navbar.network-dropdown /> */}
+                    <NetworkDropdown />
 
                     <ThemeDropdown />
 
