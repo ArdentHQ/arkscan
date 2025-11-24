@@ -3,7 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import { twMerge } from "tailwind-merge";
 import { useTranslation } from "react-i18next";
-
+import { Slot } from "@radix-ui/react-slot";
 interface ModalContextType {
     onClose: () => void;
 }
@@ -54,7 +54,7 @@ const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: 
     return (
         <div
             className={twMerge(
-                "flex items-center justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] pt-4 dark:border-theme-dark-700 sm:pt-[0.875rem]",
+                "flex items-start justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] pt-4 dark:border-theme-dark-700 sm:pt-[0.875rem]",
                 className,
             )}
             {...props}
@@ -67,7 +67,7 @@ const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: 
                 <button
                     type="button"
                     onClick={onClose}
-                    className="button button-secondary m-0 h-6 w-6 rounded-none bg-transparent p-0 text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:bg-transparent dark:text-theme-dark-200 dark:shadow-none hover:dark:bg-theme-dark-blue-600 hover:dark:text-theme-dark-50 sm:rounded"
+                    className="button button-secondary m-0 h-6 w-6 shrink-0 rounded-none bg-transparent p-0 text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:bg-transparent dark:text-theme-dark-200 dark:shadow-none hover:dark:bg-theme-dark-blue-600 hover:dark:text-theme-dark-50 sm:rounded"
                 >
                     <CrossIcon className="fill-current m-auto h-4 w-4" />
                 </button>
@@ -123,9 +123,15 @@ const ModalCancelButton = ({ children, className, ...props }: React.ButtonHTMLAt
     );
 };
 
-const ModalActionButton = ({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+const ModalActionButton = ({
+    className,
+    asChild,
+    ...props
+}: React.HTMLAttributes<HTMLElement> & { asChild?: boolean }) => {
+    const Comp = asChild ? Slot : "button";
+
     return (
-        <button
+        <Comp
             type="button"
             className={twMerge(
                 "button button-primary flex items-center justify-center sm:mb-0 sm:px-4 sm:py-1.5",
