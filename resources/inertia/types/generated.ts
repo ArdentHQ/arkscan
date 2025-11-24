@@ -61,6 +61,11 @@ export type INetwork = {
         contract_deployment: string;
     };
 };
+export type IPriceTickerData = {
+    currency: string;
+    isPriceAvailable: boolean;
+    priceExchangeRate: number | null;
+};
 export type IRequestData = {
     currencies: Record<string, ICurrency>;
     network: INetwork;
@@ -69,7 +74,9 @@ export type IRequestData = {
     arkconnectConfig: IConfigArkconnect;
     pagination: IConfigPagination;
     broadcasting: string;
-    currency: string;
+    networkName: string;
+    isDownForMaintenance: boolean;
+    priceTickerData: IPriceTickerData;
 };
 export type ISettings = {
     currency: string;

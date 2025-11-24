@@ -8,9 +8,12 @@ use App\DTO\Inertia\IConfigArkconnect;
 use App\DTO\Inertia\IConfigPagination;
 use App\DTO\Inertia\IConfigProductivity;
 use App\DTO\Inertia\ICurrency;
+use App\DTO\Inertia\IPriceTickerData;
 use App\DTO\Inertia\IRequestData;
 use App\Facades\Network;
 use App\Facades\Settings;
+use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\ExchangeRate;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -53,10 +56,16 @@ class HandleInertiaRequests extends Middleware
                     'enabled'  => config('arkscan.arkconnect.enabled'),
                     'vaultUrl' => config('arkscan.urls.vault_url'),
                 ]),
-                'currencies'   => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
-                'pagination'   => IConfigPagination::from(config('arkscan.pagination')),
-                'broadcasting' => config('broadcasting.default'),
-                'currency'     => Settings::currency(),
+                'currencies'           => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
+                'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
+                'broadcasting'         => config('broadcasting.default'),
+                'networkName'          => fn () => config('arkscan.network'),
+                'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
+                'priceTickerData'      => fn () => IPriceTickerData::from([
+                    'currency'          => Settings::currency(),
+                    'isPriceAvailable'  => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
+                    'priceExchangeRate' => ExchangeRate::currentRate(),
+                ]),
             ])->toArray(),
             ...parent::share($request),
         ];

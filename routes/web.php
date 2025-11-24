@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BlocksController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
@@ -81,3 +82,6 @@ Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 Route::post('/webhooks', WebhooksController::class)
     ->withoutMiddleware([VerifyCsrfToken::class])
     ->name('webhooks');
+
+Route::post('/currency/update', [CurrencyController::class, 'update'])
+    ->name('currency.update');
