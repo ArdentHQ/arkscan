@@ -1,17 +1,17 @@
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 
 const FIAT_DECIMALS = 2;
 const FIAT_DECIMALS_SMALL = 4;
 const CRYPTO_DECIMALS = 8;
 
 export function hasSymbol(currency: string): boolean {
-    const { currencies } = useConfig();
+    const { currencies } = useSharedData();
 
     return currencies![currency]?.symbol !== null;
 }
 
 export function isFiat(currency: string): boolean {
-    const { currencies } = useConfig();
+    const { currencies } = useSharedData();
 
     if (currencies![currency.toLowerCase()] === undefined) {
         return false;
@@ -25,7 +25,7 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
     const decimals = decimalsFor(currency, showSmallAmounts && isSmallAmount);
 
     if (!isFiat(currency)) {
-        const { currencies } = useConfig();
+        const { currencies } = useSharedData();
         const symbol = currencies![currency]?.symbol ?? currency;
         const formatted = new Intl.NumberFormat("en-US", {
             minimumFractionDigits: decimals,
@@ -35,7 +35,7 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
         return `${symbol} ${formatted}`;
     }
 
-    const { currencies } = useConfig();
+    const { currencies } = useSharedData();
     const locale = currencies![currency]?.locale ?? "en-US";
 
     return new Intl.NumberFormat(locale, {
@@ -57,7 +57,7 @@ export function currencyWithDecimals(
     let effectiveDecimals: number;
 
     if (isFiat(currency)) {
-        const { currencies } = useConfig();
+        const { currencies } = useSharedData();
         const locale = currencies![currency]?.locale ?? "en-US";
 
         // Dynamically choose decimals for fiat: FIAT_DECIMALS_SMALL for small amounts if showSmallAmounts, else FIAT_DECIMALS; override if decimals provided
@@ -83,8 +83,8 @@ export function currencyWithDecimals(
         return formatted;
     }
 
-    // Non-fiat (crypto): use CRYPTO_DECIMALS, override if provided; strip trailing zeros
-    const { currencies } = useConfig();
+    // Non-fiat (crypto) use the provided decimals or fall back to CRYPTO_DECIMALS.
+    const { currencies } = useSharedData();
     const symbol = currencies![currency]?.symbol ?? currency;
     effectiveDecimals = decimals ?? CRYPTO_DECIMALS;
 
@@ -131,7 +131,7 @@ export function networkCurrency(value: number | string, decimals = 8, withSuffix
     }
 
     // Try common config keys for the network currency, fall back to a sensible default.
-    const cfg = useConfig();
+    const cfg = useSharedData();
     const networkCurrency =
         // common possible shapes:
         // { network: { currency: 'ARK' } }

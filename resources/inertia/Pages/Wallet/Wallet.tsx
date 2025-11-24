@@ -18,7 +18,7 @@ import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
 import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
 import { IWallet } from "../../types/generated";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import Navbar from "@/Components/General/Navbar/Navbar";
 
 const WalletTabsWrapper = ({
@@ -60,7 +60,7 @@ const WalletTabs = ({
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { listen } = useWebhooks();
-    const { wallet } = useConfig<WalletProps>();
+    const { wallet } = useSharedData<WalletProps>();
 
     const { setRefreshPage } = usePageHandler();
     const { currentTab, onTabChange } = useTabs();
