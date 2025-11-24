@@ -2,14 +2,14 @@ import { IWallet } from "@/types/generated";
 import WalletOverviewItem from "./Item";
 import { useTranslation } from "react-i18next";
 import WalletOverviewItemEntry from "./ItemEntry";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import Address from "../Address";
 import FiatValue from "@/Components/General/FiatValue";
 import Tooltip from "@/Components/General/Tooltip";
 
 export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     const showTooltip = wallet.formattedBalanceTwoDecimals !== wallet.formattedBalanceFull;
 
