@@ -11,6 +11,7 @@ import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
 import CopyIcon from "@ui/icons/copy.svg?react";
 import ArrowRightBracketIcon from "@ui/icons/arrows/arrow-right-bracket.svg?react";
 import InstallWalletModal from "./InstallWalletModal";
+import UnsupportedWalletModal from "./UnsupportedWalletModal";
 
 export default function NavbarArkConnect() {
     const { t } = useTranslation();
@@ -51,10 +52,9 @@ export default function NavbarArkConnect() {
                 </button>
             )}
 
-            <InstallWalletModal />
+            {!hasExtension && isSupported && <InstallWalletModal />}
 
-            {/* <x-arkconnect.modal.install-wallet />
-    <x-arkconnect.modal.unsupported-browser /> */}
+            {!isSupported && <UnsupportedWalletModal />}
 
             {isConnected && (
                 <div className="flex w-full min-w-0 items-center justify-between space-x-2 md:hidden">

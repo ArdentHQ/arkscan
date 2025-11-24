@@ -1,14 +1,15 @@
 import { twMerge } from "tailwind-merge";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import CircleInfoIcon from "@ui/icons/circle/info.svg?react";
 import CircleCheckMarkIcon from "@ui/icons/circle/check-mark.svg?react";
 import CircleExclamationMarkIcon from "@ui/icons/circle/exclamation-mark.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
+import { useTranslation } from "react-i18next";
 
 type AlertType = "info" | "success" | "error" | "warning";
 
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-    title: string;
+    title?: string;
     message?: string;
     type?: AlertType;
     dismissible?: boolean;
@@ -39,15 +40,19 @@ export default function Alert({
     ...props
 }: AlertProps) {
     const [show, setShow] = useState(true);
-
+    const { t } = useTranslation();
     if (!show) return null;
+
+    const renderTitle = useCallback(() => {
+        return title || t(`status.${type}`, { ns: "ui" });
+    }, [title, type, t]);
 
     return (
         <div className={twMerge("alert-wrapper", alertClasses[type], className)} {...props}>
             <div className="alert-content-wrapper">
                 <h2 className="alert-title">
                     {alertIcons[type]}
-                    <span>{title}</span>
+                    <span>{renderTitle()}</span>
                     {dismissible && (
                         <button
                             type="button"
