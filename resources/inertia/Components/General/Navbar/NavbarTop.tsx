@@ -2,8 +2,12 @@ import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
 import ThemeDropdown from "@/Components/General/ThemeDropdown/ThemeDropdown";
 import NetworkDropdown from "@/Components/General/NetworkDropdown/NetworkDropdown";
 import NavbarSearch from "@/Components/General/NavbarSearch/NavbarSearch";
+import useConfig from "@/hooks/use-config";
+import NavbarArkConnect from "@/Components/General/NavbarArkConnect/NavbarArkConnect";
 
 export default function NavbarTop() {
+    const { arkconnectConfig } = useConfig();
+
     return (
         <div className="relative z-40 hidden bg-white dark:bg-theme-dark-900 md:flex md:flex-col">
             <div className="content-container flex w-full items-center justify-between py-3">
@@ -20,16 +24,7 @@ export default function NavbarTop() {
 
                     <ThemeDropdown />
 
-                    {/* <div
-                x-data="ThemeManager()"
-                @theme-changed.window="theme = $event.detail.theme"
-            >
-                <x-navbar.theme-dropdown />
-            </div> */}
-
-                    {/* @if (config('arkscan.arkconnect.enabled', false))
-                <x-navbar.arkconnect />
-            @endif */}
+                    {arkconnectConfig.enabled && <NavbarArkConnect />}
                 </div>
             </div>
 
