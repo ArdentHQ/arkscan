@@ -1,5 +1,5 @@
 import Checkbox from "@/Components/Input/Checkbox";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 
 export default function DropdownCheckboxItem({
     id,

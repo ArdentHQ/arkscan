@@ -1,7 +1,7 @@
 import { IWallet } from "@/types/generated";
 import Tippy from "@tippyjs/react";
 import { useTranslation } from "react-i18next";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import ExternalLink from "../General/ExternalLink";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import Dropdown from "../General/Dropdown/Dropdown";

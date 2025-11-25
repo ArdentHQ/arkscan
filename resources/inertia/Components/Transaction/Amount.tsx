@@ -1,6 +1,6 @@
 import useSharedData from "@/hooks/use-shared-data";
 import { ITransaction } from "@/types/generated";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import Fee from "./Fee";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
 

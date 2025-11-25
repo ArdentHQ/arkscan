@@ -1,5 +1,5 @@
 import EllipsisVerticalIcon from "@ui/icons/ellipsis-vertical.svg?react";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import {
     Placement,
     useFloating,

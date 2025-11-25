@@ -1,7 +1,7 @@
 import Pagination from "@/Components/Tables/Pagination/Pagination";
 import useSharedData from "@/hooks/use-shared-data";
 import { IPaginatedResponse } from "@/types";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 

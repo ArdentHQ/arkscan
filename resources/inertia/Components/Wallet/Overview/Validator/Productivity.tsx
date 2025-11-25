@@ -1,7 +1,7 @@
 import { IWallet } from "@/types/generated";
 import WalletOverviewItemEntry from "../ItemEntry";
 import { useTranslation } from "react-i18next";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import useSharedData from "@/hooks/use-shared-data";
 import percentage from "@/utils/percentage";
 

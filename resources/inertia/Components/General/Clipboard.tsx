@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "@ui/js/clipboard";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import CopyIcon from "@ui/icons/copy.svg?react";
 import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
 import Tooltip from "./Tooltip";

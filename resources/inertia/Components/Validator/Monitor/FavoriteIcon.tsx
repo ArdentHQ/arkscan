@@ -1,4 +1,4 @@
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 
 // @ts-ignore
 import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorFavoritesContext";

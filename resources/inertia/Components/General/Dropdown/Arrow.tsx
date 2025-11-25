@@ -1,4 +1,4 @@
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
 
 export default function DropdownArrow({

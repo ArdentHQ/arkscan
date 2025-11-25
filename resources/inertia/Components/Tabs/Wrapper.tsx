@@ -6,7 +6,7 @@ import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import MobileDivider from "../General/MobileDivider";
 
 function MobileWrapper({ tabs }: { tabs: ITab[] }) {

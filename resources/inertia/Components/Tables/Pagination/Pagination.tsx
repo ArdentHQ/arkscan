@@ -1,5 +1,5 @@
 import { IPaginatedResponse } from "@/types";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { router } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import PaginationMiddle from "./PaginationMiddle";

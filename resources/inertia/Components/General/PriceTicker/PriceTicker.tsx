@@ -1,6 +1,6 @@
 import useShareData from "@/hooks/use-shared-data";
 import { useMemo } from "react";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { currencyWithDecimals } from "@/utils/number-formatter";
 import useSettings from "@/Providers/Settings/useSettings";

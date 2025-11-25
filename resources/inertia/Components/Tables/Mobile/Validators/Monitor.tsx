@@ -3,7 +3,7 @@ import TimeToForge from "@/Components/Validator/Monitor/TimeToForge";
 import Address from "@/Components/Wallet/Address";
 import FavoriteIcon from "@/Components/Validator/Monitor/FavoriteIcon";
 import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorFavoritesContext";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import MobileTable from "../Table";
 import MobileTableRow from "../Row";
 import MissedWarning from "@/Components/Validator/Monitor/MissedWarning";

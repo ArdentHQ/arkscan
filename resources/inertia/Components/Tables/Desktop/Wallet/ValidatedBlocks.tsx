@@ -5,7 +5,7 @@ import { IBlock } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
 import TableHeader from "../TableHeader";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import Height from "@/Components/Block/Height";
 import Age from "@/Components/Model/Age";

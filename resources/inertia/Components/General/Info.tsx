@@ -1,6 +1,6 @@
 import HintSmallIcon from "@ui/icons/hint-small.svg?react";
 import QuestionMarkSmallIcon from "@ui/icons/question-mark-small.svg?react";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { createElement } from "react";
 import Tooltip from "./Tooltip";
 

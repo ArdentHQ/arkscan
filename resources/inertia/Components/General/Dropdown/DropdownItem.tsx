@@ -1,5 +1,5 @@
 import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { Slot } from "@radix-ui/react-slot";
 
 export default function DropdownItem({
