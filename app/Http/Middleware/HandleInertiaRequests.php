@@ -56,6 +56,7 @@ class HandleInertiaRequests extends Middleware
                     'enabled'  => config('arkscan.arkconnect.enabled'),
                     'vaultUrl' => config('arkscan.urls.vault_url'),
                 ]),
+                'currentRoute'         => $request->route()->getName(),
                 'supportEnabled'       => fn () => config('arkscan.support.enabled'),
                 'currencies'           => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
                 'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
@@ -73,6 +74,7 @@ class HandleInertiaRequests extends Middleware
                 'testnetExplorerUrl'   => fn () => Network::testnetExplorerUrl(),
                 'navbarTag'            => fn () => config('arkscan.navbar.tag'),
                 'navbarName'           => fn () => config('app.navbar_name'),
+                
             ])->toArray(),
             ...parent::share($request),
         ];

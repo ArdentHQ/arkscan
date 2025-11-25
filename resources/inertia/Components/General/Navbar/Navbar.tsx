@@ -46,6 +46,8 @@ export default function Navbar() {
         ];
     }, [t, canBeExchanged, supportEnabled]);
 
+    console.log(navigation);
+
     return (
         <div id="navbar" className="z-30 pb-13 sm:pb-16 md:sticky md:top-0 md:pb-0">
             <NavbarTop />

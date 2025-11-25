@@ -3,6 +3,7 @@ import { IBlock, IWallet } from "./types/generated";
 export type NavigationItem = {
     label: string;
     route?: string;
+    url?: string;
     children?: NavigationItem[];
 };
 
