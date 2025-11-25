@@ -1,6 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 import { IRequestData } from "./types/generated";
+import { route as routeFn } from 'ziggy-js';
 
 type ValidationErrors = Record<string, string>;
 
@@ -11,6 +12,8 @@ declare module "@inertiajs/core" {
 }
 
 declare global {
+    var route: typeof routeFn;
+
     interface Window {
         Livewire: {
             emit: (event: string) => void;
