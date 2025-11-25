@@ -23,7 +23,7 @@ final class CacheVolume extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache exchange volume for the active network currency';
 

@@ -23,7 +23,7 @@ final class PopulateHistoricPrices extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Populate historic prices for currencies.';
 

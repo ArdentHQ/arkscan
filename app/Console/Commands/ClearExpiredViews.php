@@ -23,7 +23,7 @@ final class ClearExpiredViews extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Removes old compiled views files';
 
