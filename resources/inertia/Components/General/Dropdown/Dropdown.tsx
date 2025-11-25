@@ -1,5 +1,5 @@
 import EllipsisVerticalIcon from "@ui/icons/ellipsis-vertical.svg?react";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import {
     Placement,
     useFloating,
@@ -49,7 +49,7 @@ export default function Dropdown({
     closeOnClick?: boolean;
     disabled?: boolean;
     placement?: Placement;
-    button?: React.ReactNode;
+    button?: React.ReactNode | ((props: { isOpen: boolean }) => React.ReactNode);
     children: React.ReactNode;
     onClosed?: () => void;
     onOpened?: () => void;
@@ -128,7 +128,7 @@ export default function Dropdown({
                 data-testid={testId ? `${testId}:button` : undefined}
                 {...getReferenceProps()}
             >
-                {button !== undefined && button}
+                {button !== undefined && typeof button === "function" ? button({ isOpen }) : button}
                 {button === undefined && <EllipsisVerticalIcon className="h-5 w-5" />}
             </button>
         </div>

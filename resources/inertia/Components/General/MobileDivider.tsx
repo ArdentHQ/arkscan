@@ -1,4 +1,4 @@
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 
 export default function MobileDivider({
     color = "bg-theme-secondary-200 dark:bg-theme-dark-950 text-theme-secondary-200 dark:text-theme-dark-950",

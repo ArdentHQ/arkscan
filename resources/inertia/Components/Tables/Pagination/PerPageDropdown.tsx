@@ -3,7 +3,7 @@ import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
 import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import { IPaginatedResponse } from "@/types";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { useEffect, useState } from "react";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
 

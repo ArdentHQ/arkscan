@@ -1,4 +1,4 @@
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { InputHTMLAttributes } from "react";
 
 export default function InputField({

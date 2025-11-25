@@ -1,7 +1,7 @@
 import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
 import Dropdown from "./Dropdown";
 import CrossIcon from "@ui/icons/cross.svg?react";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 
 export default function DropdownPopup({
     title,

@@ -1,6 +1,6 @@
 import LoadingText from "@/Components/Loading/Text";
 import TableCell from "./TableCell";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import TableHeader, { TableHeaderTooltip } from "./TableHeader";
 import { IPaginatedResponse } from "@/types";
 import Pagination from "../Pagination/Pagination";

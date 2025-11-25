@@ -5,7 +5,7 @@ import { IBlock } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
 import TableHeader from "../TableHeader";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import Height from "@/Components/Block/Height";
 import Age from "@/Components/Model/Age";
@@ -14,10 +14,10 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { useState } from "react";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import ExportBlocksModal from "./ExportBlocksModal";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 
 export function Row({ row }: { row: IBlock }) {
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <tr className="text-sm font-semibold">
@@ -48,7 +48,7 @@ export function ValidatedBlocksTable({
     mobile?: React.ReactNode;
 }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
     const hasForgedBlocks = (blocks.total ?? blocks.data?.length ?? 0) > 0;
 
     return (
@@ -119,11 +119,10 @@ export default function ValidatedBlocksTableWrapper({
     rowCount?: number;
 }) {
     const { isLoading } = usePageHandler();
+    const { t } = useTranslation();
+    const { network } = useSharedData();
 
     if (!blocks || isLoading) {
-        const { t } = useTranslation();
-        const { network } = useConfig();
-
         const columns: ILoadingTableColumn[] = [
             {
                 name: t("tables.blocks.height"),
@@ -183,7 +182,7 @@ export default function ValidatedBlocksTableWrapper({
 
 export function ValidatedBlocksHeaderActions({ hasForgedBlocks }: { hasForgedBlocks: boolean }) {
     const { t } = useTranslation();
-    const { wallet, rates, network, settings } = useConfig<WalletProps>();
+    const { wallet, rates, network, settings } = useSharedData<WalletProps>();
     const [isBlocksExportModalOpen, setIsBlocksExportModalOpen] = useState(false);
 
     return (

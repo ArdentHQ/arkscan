@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import MultiSelect from "@/Components/General/MultiSelect";
 import MultiSelectTags from "@/Components/General/MultiSelectTags";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 
 interface TransactionColumnsSelectProps {
     value: string[];
@@ -10,7 +10,7 @@ interface TransactionColumnsSelectProps {
 
 export default function TransactionColumnsSelect({ value, onValueChange }: TransactionColumnsSelectProps) {
     const { t } = useTranslation();
-    const { network, settings } = useConfig();
+    const { network, settings } = useSharedData();
 
     const allColumnValues = [
         "id",

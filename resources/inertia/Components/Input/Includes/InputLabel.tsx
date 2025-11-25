@@ -1,5 +1,5 @@
 import Info from "@/Components/General/Info";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
 export default function InputLabel({

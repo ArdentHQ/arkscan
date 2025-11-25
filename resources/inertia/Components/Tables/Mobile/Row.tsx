@@ -1,5 +1,5 @@
 import DropdownArrow from "@/Components/General/Dropdown/Arrow";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { useState } from "react";
 
 export default function MobileTableRow({

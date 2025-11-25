@@ -4,7 +4,7 @@ import Number from "@/Components/General/Number";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import LoadingText from "@/Components/Loading/Text";
 import { IStatistics } from "@/types";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 
 export function HeaderStat({

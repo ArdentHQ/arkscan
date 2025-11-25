@@ -1,6 +1,6 @@
 import { currencyWithDecimals } from "@/utils/number-formatter";
 import Tooltip from "./Tooltip";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 
 function AmountSmallWithoutTooltip({
     amount,
@@ -11,7 +11,7 @@ function AmountSmallWithoutTooltip({
     smallAmount: number;
     hideCurrency?: boolean;
 }) {
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <>
@@ -35,7 +35,7 @@ function AmountSmallWithTooltip({
     smallAmount: number;
     hideCurrency?: boolean;
 }) {
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <>
@@ -65,7 +65,7 @@ export default function AmountSmall({
     hideTooltip?: boolean;
     hideCurrency?: boolean;
 }) {
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <>

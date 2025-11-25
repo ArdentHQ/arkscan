@@ -16,8 +16,6 @@
     </x-ark-pages-includes-layout-head-inertia>
 
     <x-ark-pages-includes-layout-body class="table-compact">
-        <x-navbar.navbar />
-
         <x-slot name="content">
             @inertia('inertia-body')
         </x-slot>
@@ -41,8 +39,6 @@
                     </a>
                 </span>
             </x-ark-footer>
-
-            <x-webhooks.currency-update :currency="Settings::currency()" />
 
             @if (config('arkscan.arkconnect.enabled'))
                 <x-arkconnect.validator-toasts />

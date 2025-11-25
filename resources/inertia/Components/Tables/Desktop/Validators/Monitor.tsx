@@ -4,7 +4,7 @@ import Address from "@/Components/Wallet/Address";
 import TableCell from "../TableCell";
 import FavoriteIcon from "@/Components/Validator/Monitor/FavoriteIcon";
 import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorFavoritesContext";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import LoadingTable from "../LoadingTable";
 import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import ValidatorStatusProvider from "@/Providers/ValidatorStatus/ValidatorStatusProvider";
