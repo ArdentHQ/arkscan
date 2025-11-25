@@ -3,6 +3,7 @@ import NavbarDesktop from "./NavbarDesktop";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useShareData from "@/hooks/use-shared-data";
+import { Navigation } from "@/types";
 
 export default function Navbar() {
     const {
@@ -12,7 +13,7 @@ export default function Navbar() {
 
     const { t } = useTranslation();
 
-    const navigation = useMemo(() => {
+    const navigation = useMemo<Navigation>(() => {
         return [
             { route: "home", label: t("menus.home") },
             {
@@ -45,15 +46,11 @@ export default function Navbar() {
         ];
     }, [t, canBeExchanged, supportEnabled]);
 
-    {
-        route("sgds");
-    }
-
     return (
         <div id="navbar" className="z-30 pb-13 sm:pb-16 md:sticky md:top-0 md:pb-0">
             <NavbarTop />
 
-            <NavbarDesktop />
+            <NavbarDesktop navigation={navigation} />
 
             {/* @TODO: add mobile navigation (https://app.clickup.com/t/86dyeejm5) */}
         </div>
