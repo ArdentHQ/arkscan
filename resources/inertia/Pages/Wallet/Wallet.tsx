@@ -209,7 +209,8 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
     return (
         <>
             <Head>{metadata}</Head>
-            {/* @TODO: move this to a layout */}
+
+            {/* @TODO: move this to a layout (https://app.clickup.com/t/86dyjh6nw) */}
             <Navbar />
 
             <Overview wallet={wallet} />
