@@ -35,6 +35,8 @@ class IRequestData extends Data
         public Closure $mainnetExplorerUrl,
         #[LiteralTypeScriptType('string')]
         public Closure $testnetExplorerUrl,
+        #[LiteralTypeScriptType('boolean')]
+        public Closure $supportEnabled,
     ) {
     }
 }
