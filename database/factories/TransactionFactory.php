@@ -100,8 +100,9 @@ final class TransactionFactory extends Factory
 
         return $this->withPayload($payload)
             ->state(fn () => [
-                'value'            => (string) $totalAmount,
-                'to'               => Network::knownContract('multipayment'),
+                'value'                    => (string) $totalAmount,
+                'to'                       => Network::knownContract('multipayment'),
+                'multi_payment_recipients' => $recipients,
             ]);
     }
 
