@@ -111,6 +111,8 @@ export type IRequestData = {
     mainnetExplorerUrl: string;
     testnetExplorerUrl: string;
     supportEnabled: boolean;
+    navbarTag: string | null;
+    navbarName: string | null;
 };
 export type ISettings = {
     currency: string;

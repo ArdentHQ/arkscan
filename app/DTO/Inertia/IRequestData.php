@@ -37,6 +37,10 @@ class IRequestData extends Data
         public Closure $testnetExplorerUrl,
         #[LiteralTypeScriptType('boolean')]
         public Closure $supportEnabled,
+        #[LiteralTypeScriptType('string|null')]
+        public Closure $navbarTag,
+        #[LiteralTypeScriptType('string|null')]
+        public Closure $navbarName,
     ) {
     }
 }

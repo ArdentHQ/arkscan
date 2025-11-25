@@ -71,6 +71,8 @@ class HandleInertiaRequests extends Middleware
                 'theme'                => fn () => Settings::theme(),
                 'mainnetExplorerUrl'   => fn () => Network::mainnetExplorerUrl(),
                 'testnetExplorerUrl'   => fn () => Network::testnetExplorerUrl(),
+                'navbarTag'            => fn () => config('arkscan.navbar.tag'),
+                'navbarName'           => fn () => config('app.navbar_name'),
             ])->toArray(),
             ...parent::share($request),
         ];

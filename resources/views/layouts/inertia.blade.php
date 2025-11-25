@@ -17,6 +17,8 @@
     </x-ark-pages-includes-layout-head-inertia>
 
     <x-ark-pages-includes-layout-body class="table-compact">
+        <x-navbar.navbar />
+        
         <x-slot name="content">
             @inertia('inertia-body')
         </x-slot>
