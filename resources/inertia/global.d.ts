@@ -1,7 +1,7 @@
 /// <reference types="vite-plugin-svgr/client" />
 
 import { IRequestData } from "./types/generated";
-import { route as routeFn } from 'ziggy-js';
+import { route as routeFn } from "ziggy-js";
 
 type ValidationErrors = Record<string, string>;
 
