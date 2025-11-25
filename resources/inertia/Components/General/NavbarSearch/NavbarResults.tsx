@@ -125,7 +125,7 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
 
     return (
         <>
-            <>{/* TODO: add  mobile view */}</>
+            <>{/* TODO: add  mobile view (https://app.clickup.com/t/86dygw9uw) */}</>
 
             <div className="hidden flex-col space-y-2 md:flex">
                 <div className="isolate flex items-center space-x-2 overflow-auto">
@@ -165,7 +165,7 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
 
     return (
         <>
-            <>{/* TODO: add  mobile view */}</>
+            <>{/* TODO: add  mobile view (https://app.clickup.com/t/86dygw9uw) */}</>
 
             <div className="hidden flex-col space-y-2 md:flex">
                 <div className="flex items-center space-x-2">
@@ -221,7 +221,7 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
 
     return (
         <>
-            <>{/* TODO: add  mobile view */}</>
+            <>{/* TODO: add  mobile view (https://app.clickup.com/t/86dygw9uw) */}</>
 
             <div className="hidden flex-col space-y-2 md:flex">
                 <div className="flex items-center space-x-2">
