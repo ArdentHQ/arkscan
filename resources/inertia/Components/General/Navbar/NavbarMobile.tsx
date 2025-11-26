@@ -324,7 +324,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
 
                                 */}
 
-                                        <SettingsItem title="{{ trans('general.select_network') }}" className="pt-3">
+                                        <SettingsItem title={t("general.select_network")} className="pt-3">
                                             <NetworkDropdown />
                                         </SettingsItem>
 
