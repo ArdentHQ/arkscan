@@ -12,6 +12,7 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Monitor\Actions\ShuffleDelegates;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
 use App\Services\Timestamp;
@@ -246,13 +247,24 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
         ->activeDelegate()
         ->create();
 
+    $hasHitHeight = false;
     foreach ($delegateWallets as $index => $delegate) {
         $delegate->balance = ($index + 1) * 1e8;
         $delegate->save();
 
-        createRoundEntry($round, $delegate->public_key);
+        // if ($height === Network::delegateCount() + 1) {
+        //     $round++;
+        //     $hasHitHeight = true;
+        //     // break;
+        // }
 
         $cache->setDelegate($delegate->public_key, $delegate);
+
+        if ($hasHitHeight) {
+            continue;
+        }
+
+        createRoundEntry($round, $delegate->public_key);
 
         createBlock($height, $delegate->public_key, $context);
 
@@ -303,12 +315,12 @@ function createFullRound(&$round, &$height, $delegateWallets, $context, $didForg
 
             $blockCount++;
 
-            if (($height + $blockCount - 1) % Network::delegateCount() === 0) {
-                dump(['Completed round' => $round]);
-                $round++;
+            // if (($height + $blockCount - 1) % Network::delegateCount() === 0) {
+            //     dump(['Completed round' => $round]);
+            //     $round++;
 
-                break;
-            }
+            //     break;
+            // }
 
             if ($blockCount === Network::delegateCount()) {
                 break;
@@ -317,7 +329,7 @@ function createFullRound(&$round, &$height, $delegateWallets, $context, $didForg
     }
 
     $height += $blockCount;
-    // $round++;
+    $round++;
 }
 
 function createPartialRound(
@@ -398,15 +410,15 @@ function createPartialRound(
 
             $blockCount++;
 
-            // if ($blockCount === Network::delegateCount()) {
-            //     $round++;
-            // }
-
-            if (($height + $blockCount - 1) % Network::delegateCount() === 0) {
+            if ($blockCount === Network::delegateCount()) {
                 $round++;
-
-                break;
             }
+
+            // if (($height + $blockCount - 1) % Network::delegateCount() === 0) {
+            //     $round++;
+
+            //     break;
+            // }
 
             $slotCount++;
         }

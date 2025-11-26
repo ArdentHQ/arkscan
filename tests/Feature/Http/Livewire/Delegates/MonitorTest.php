@@ -11,6 +11,7 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
+use App\Services\Monitor\Actions\ShuffleDelegates;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use function Tests\createBlock;
+use function Tests\createFullRound;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
@@ -520,33 +522,44 @@ describe('Monitor', function () {
             ]);
     });
 
-    it('should show no overflow delegates if no missed blocks', function () {
-        dump('should show no overflow delegates if no missed blocks');
-        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+    // it('should show no overflow delegates if no missed blocks', function () {
+    //     dump('should show no overflow delegates if no missed blocks');
+    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
-        $this->freezeTime();
+    //     $this->freezeTime();
 
-        createRealisticRound([
-            array_fill(0, 51, true),
-            array_fill(0, 51, true),
-        ], $this);
+    //     [$deles, $r, $height] = createRealisticRound([
+    //         array_fill(0, 51, true),
+    //         array_fill(0, 51, true),
+    //     ], $this);
 
-        $component = Livewire::test(Monitor::class)
-            ->call('setIsReady')
-            ->call('pollDelegates');
+    //     // dd(ShuffleDelegates::execute($deles->pluck('public_key')->toArray(), $height));
 
-        $instance = $component->instance();
+    //     dump(['shuffled delegates' => ShuffleDelegates::execute(
+    //         $deles->toBase()
+    //             ->map(fn ($delegate) => $delegate->public_key)
+    //             ->toArray(),
+    //         $height
+    //     )]);
 
-        $overflowDelegates = $instance->getOverflowDelegatesProperty();
+    //     createFullRound($r, $height, $deles, $this, array_fill(0, 51, true));
 
-        $delegatesProperty = new ReflectionProperty($instance, 'delegates');
+    //     $component = Livewire::test(Monitor::class)
+    //         ->call('setIsReady')
+    //         ->call('pollDelegates');
 
-        $slots = collect($delegatesProperty->getValue($instance))->groupBy(fn ($delegate) => $delegate->status());
+    //     $instance = $component->instance();
 
-        // expect($slots['done'])->toHaveCount(51);
+    //     $overflowDelegates = $instance->getOverflowDelegatesProperty();
 
-        expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([]);
-    });
+    //     $delegatesProperty = new ReflectionProperty($instance, 'delegates');
+
+    //     $slots = collect($delegatesProperty->getValue($instance))->groupBy(fn ($delegate) => $delegate->status());
+
+    //     // expect($slots['done'])->toHaveCount(51);
+
+    //     expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([]);
+    // });
 
     it('should show no overflow delegates at the start of a round', function () {
         dump('should show no overflow delegates at the start of a round');

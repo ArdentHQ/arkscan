@@ -178,7 +178,6 @@ final class Monitor extends Component
 
         /** @var ?Block $lastRoundBlock */
         $lastRoundBlock = Block::query()
-            // ->where('generator_public_key', $lastSlot->publicKey())
             ->where('height', '>=', $heightRange[0])
             ->orderBy('height', 'desc')
             ->first();
@@ -190,46 +189,22 @@ final class Monitor extends Component
 
         $lastTimestamp = Timestamp::fromGenesis($lastRoundBlock->timestamp)->unix();
 
-        $additional         = null;
-        $previousAdditional = null;
-        while ($additional === null || $additional > 0) {
-            if ($additional === null) {
-                $additional = 0;
+        $overflowSlots = $this->getOverflowSlots(
+            $missedCount,
+            $lastStatus,
+            $lastBlock,
+            $lastTimestamp,
+            $overflowBlockCount,
+            $hasReachedFinalSlot,
+        );
+
+        $additional = 0;
+        foreach ($overflowSlots as $slot) {
+            if (! $slot->justMissed()) {
+                continue;
             }
 
-            if ($additional < 0) {
-                $additional = 0;
-            }
-
-            $overflowSlots = $this->getOverflowSlots(
-                $missedCount + $additional,
-                $lastStatus,
-                $lastBlock,
-                $lastTimestamp,
-                $overflowBlockCount,
-                $hasReachedFinalSlot,
-            );
-
-            $additional = 0;
-            foreach ($overflowSlots as $slot) {
-                if (! $slot->justMissed()) {
-                    continue;
-                }
-
-                $additional++;
-            }
-
-            $additional -= $missedCount;
-
-            if ($additional === $previousAdditional) {
-                break;
-            }
-
-            $previousAdditional = $additional;
-        }
-
-        if ($additional < 0) {
-            $additional = 0;
+            $additional++;
         }
 
         if ($additional === 0) {
