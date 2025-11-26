@@ -129,8 +129,6 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->first();
 
-        dump(['lastRoundBlock' => $lastRoundBlock?->height]);
-
         if ($lastRoundBlock === null) {
             $lastSuccessfulForger = collect($this->delegates)
                 ->filter(fn (Slot $delegate) => $delegate->hasForged())
