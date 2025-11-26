@@ -128,8 +128,6 @@ final class DelegateTracker
             ->get()
             ->pluck('count', 'generator_public_key');
 
-        $lastForgerPublicKey = $lastForger->generator_public_key;
-
         $forgedCount = $roundBlockCount->sum();
 
         $counter = 0;

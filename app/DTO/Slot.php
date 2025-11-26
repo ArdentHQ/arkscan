@@ -50,11 +50,6 @@ final class Slot
         return $this->forgingAt;
     }
 
-    public function secondsUntilForge(): int
-    {
-        return $this->secondsUntilForge;
-    }
-
     public function lastBlock(): array
     {
         return $this->lastBlock;
@@ -100,16 +95,6 @@ final class Slot
     public function missedCount(): int
     {
         return (new WalletCache())->getMissedBlocks($this->publicKey);
-    }
-
-    /**
-     * Get how many blocks the forger has forged in the current round.
-     *
-     * @return int
-     */
-    public function currentRoundBlocks(): int
-    {
-        return $this->currentRoundBlocks;
     }
 
     public function isDone(): bool
