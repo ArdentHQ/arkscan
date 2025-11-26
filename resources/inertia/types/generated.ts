@@ -113,7 +113,7 @@ export type IRequestData = {
     supportEnabled: boolean;
     navbarTag: string | null;
     navbarName: string | null;
-    currentRoute: string;
+    currentRoute: string | null;
 };
 export type ISettings = {
     currency: string;

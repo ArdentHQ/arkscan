@@ -41,7 +41,7 @@ class IRequestData extends Data
         public Closure $navbarTag,
         #[LiteralTypeScriptType('string|null')]
         public Closure $navbarName,
-        #[LiteralTypeScriptType('string')]
+        #[LiteralTypeScriptType('string|null')]
         public string $currentRoute,
     ) {
     }

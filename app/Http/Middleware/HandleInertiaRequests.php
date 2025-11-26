@@ -56,7 +56,7 @@ class HandleInertiaRequests extends Middleware
                     'enabled'  => config('arkscan.arkconnect.enabled'),
                     'vaultUrl' => config('arkscan.urls.vault_url'),
                 ]),
-                'currentRoute'         => $request->route()->getName(),
+                'currentRoute'         => $request->route()?->getName(),
                 'supportEnabled'       => fn () => config('arkscan.support.enabled'),
                 'currencies'           => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
                 'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
