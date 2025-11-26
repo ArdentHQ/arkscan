@@ -764,7 +764,7 @@ describe('Monitor', function () {
         // dump(['created block at height' => $height, 'by' => $orderedDelegates->get(0)['publicKey']]);
 
         createBlock($height + 1, $delegates->get(1)['publicKey'], $this);
-        dump(['created block at height' => $height+1, 'by' => $delegates->get(1)['publicKey']]);
+        dump(['created block at height' => $height + 1, 'by' => $delegates->get(1)['publicKey']]);
         // createBlock($height + 1, $orderedDelegates->get(1)['publicKey'], $this);
         // dump(['created block at height' => $height+1, 'by' => $orderedDelegates->get(1)['publicKey']]);
 
@@ -884,7 +884,7 @@ describe('Monitor', function () {
         expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->forgingAt()->format('Y-m-d H:i:s'))->toArray())->toBe([
             $overflowForgeTime->format('Y-m-d H:i:s'),
             $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
-            $overflowForgeTime->addSeconds(Network::blockTime()*2)->format('Y-m-d H:i:s'),
+            $overflowForgeTime->addSeconds(Network::blockTime() * 2)->format('Y-m-d H:i:s'),
             $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
             $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
         ]);

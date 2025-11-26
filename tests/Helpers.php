@@ -12,7 +12,6 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\Actions\ShuffleDelegates;
 use App\Services\Monitor\DelegateTracker;
 use App\Services\Monitor\Monitor;
 use App\Services\Timestamp;
@@ -233,9 +232,9 @@ function createRealisticRound(array $performances, $context, bool $cachePerforma
         $genesisWallet = Wallet::factory()
             ->standbyDelegate()
             ->create([
-                'address' => 'genesis',
+                'address'    => 'genesis',
                 'public_key' => 'genesis',
-                'balance' => 0,
+                'balance'    => 0,
             ]);
 
         createBlock(1, $genesisWallet->public_key, $context);
@@ -406,7 +405,7 @@ function createPartialRound(
             }
 
             createBlock($height + $blockCount, $delegate['publicKey'], $context);
-            dump(['Created block' => ($height + $blockCount) . ' by ' . $delegate['publicKey']]);
+            dump(['Created block' => ($height + $blockCount).' by '.$delegate['publicKey']]);
 
             $blockCount++;
 
