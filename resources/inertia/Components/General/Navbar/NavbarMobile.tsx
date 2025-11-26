@@ -149,7 +149,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                 >
                     <div className="content-container relative flex h-[3.25rem] w-full justify-between sm:h-16">
                         <div className="flex flex-shrink-0 items-center">
-                            <a className="flex items-center" href="{{ route('home') }}">
+                            <a className="flex items-center" href={route("home")}>
                                 <NavbarLogo />
                             </a>
                         </div>
