@@ -83,7 +83,12 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                         <div className="flex justify-end">
                             <div className="flex justify-end">
                                 <div className="flex items-center space-x-1">
-                                    <NavbarMobileButton disabled={isDownForMaintenance}>
+                                    <NavbarMobileButton
+                                        disabled={isDownForMaintenance}
+                                        onClick={() => {
+                                            console.log("search");
+                                        }}
+                                    >
                                         <MagnifyingGlassSmallIcon className="h-4 w-4" />
 
                                         <span className="sr-only">{t("actions.search")}</span>
@@ -134,13 +139,14 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                         </div>
                     </div>
 
-                    {/* 
-            
-            <div
-                x-show="open"
-                x-transition.opacity
-                x-cloak
-            >
+                    <div
+                        aria-hidden={!open}
+                        className={classNames("transition-all duration-200 ease-in-out", {
+                            "pointer-events-none max-h-0 overflow-hidden opacity-0": !open,
+                            "max-h-screen opacity-100": open,
+                        })}
+                    >
+                        {/* 
                 <div className="border-t-2 shadow-xl border-theme-secondary-200 dim:border-theme-dark-700 dark:border-theme-dark-800">
                     <div className="pt-2 bg-white rounded-b-lg dark:bg-theme-dark-700">
                         @foreach ($navigation as $navItem)
@@ -223,8 +229,8 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                         @endif
                     </div>
                 </div>
-            </div>
-            */}
+                        */}
+                    </div>
                 </nav>
             </div>
         </header>
