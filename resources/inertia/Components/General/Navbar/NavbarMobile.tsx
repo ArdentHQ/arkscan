@@ -11,6 +11,7 @@ import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react"
 import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
 import NetworkDropdown from "@/Components/General/NetworkDropdown/NetworkDropdown";
 import NavbarMobileThemeToggle from "./NavbarMobileThemeToggle";
+import NavbarArkConnect from "../NavbarArkConnect/NavbarArkConnect";
 
 const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
@@ -123,7 +124,8 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-    const { isDownForMaintenance } = useShareData();
+    const { isDownForMaintenance, arkconnectConfig } = useShareData();
+
     return (
         <header className="flex flex-col md:hidden">
             <div
@@ -317,15 +319,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                     </div>
                                 </div>
 
-                                {/* 
-                      
-
-                        
-
-                        @if (config('arkscan.arkconnect.enabled', false))
-                            <x-navbar.arkconnect />
-                        @endif
-                        */}
+                                {arkconnectConfig.enabled && <NavbarArkConnect />}
                             </div>
                         </div>
                     </div>
