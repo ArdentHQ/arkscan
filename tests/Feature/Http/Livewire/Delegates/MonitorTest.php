@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 use App\Enums\DelegateForgingStatus;
 use App\Facades\Network;
-use App\Facades\Rounds;
 use App\Http\Livewire\Delegates\Monitor;
 use App\Models\Block;
 use App\Models\Round;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
-use App\Services\Monitor\Actions\ShuffleDelegates;
-use App\Services\Monitor\DelegateTracker;
-use App\Services\Monitor\ForgingInfoCalculator;
 use App\Services\Monitor\Slots;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
@@ -21,31 +17,10 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 use function Tests\createBlock;
-use function Tests\createFullRound;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
 use function Tests\getRoundDelegates;
-
-function createPartialTestRounds(
-    int &$round,
-    int &$height,
-    string $requiredPublicKey,
-    array $didForge,
-    $context,
-    ?string $missedPublicKey = null,
-    ?int $blocks = 49,
-    ?int $slots = null,
-): void {
-    getRoundDelegates(false, $round - 1);
-
-    $missedPublicKeys = [];
-    if ($missedPublicKey !== null) {
-        $missedPublicKeys = [$missedPublicKey];
-    }
-
-    createPartialRound($round, $height, $blocks, $context, $missedPublicKeys, [$requiredPublicKey], true, $slots);
-}
 
 describe('Monitor', function () {
     beforeEach(function () {
@@ -927,7 +902,6 @@ describe('Monitor', function () {
         // make sure the correct amount of slots were process (either forged or missed)
         expect(now()->format('Y-m-d H:i:s'))->toBe(Carbon::parse('2024-02-01 14:00:00')->addSeconds(Network::blockTime() * (Network::delegateCount()))->format('Y-m-d H:i:s'));
 
-        /** @var Slot[] */
         $overflowDelegates = $instance->getOverflowDelegatesProperty();
 
         $delegatesProperty = new ReflectionProperty($instance, 'delegates');
@@ -1275,10 +1249,6 @@ describe('Data Boxes', function () {
 
         // $publicKey = $delegates->get(4)->public_key;
 
-        // createPartialTestRounds($round, $height, $publicKey, [
-        //     array_fill(0, 51, true),
-        // ], $this, $publicKey, 50, 51);
-
         $orderedDelegates = getRoundDelegates(false, $round - 1);
 
         [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
@@ -1358,14 +1328,11 @@ describe('Data Boxes', function () {
             ],
         ], $this);
 
-        $publicKey = $delegates->get(4)->public_key;
-        createPartialTestRounds($round, $height, $publicKey, [
-            [
-                ...array_fill(0, 4, true),
-                false,
-                ...array_fill(0, 46, true),
-            ],
-        ], $this, $publicKey, 51);
+        createPartialRound($round, $height, Network::delegateCount(), $this, [
+            $delegates->get(4)->public_key,
+        ], [
+            $delegates->get(4)->public_key,
+        ], true);
 
         expect((new WalletViewModel($delegates->get(4)))->performance())->toBe([false, false]);
 
