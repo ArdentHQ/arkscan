@@ -19,7 +19,7 @@ final class BuildForgingStats extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Build forging stats into forging_stats database.';
 

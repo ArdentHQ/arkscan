@@ -29,7 +29,7 @@ final class CacheMarketDataStatistics extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache expensive market data statistics';
 

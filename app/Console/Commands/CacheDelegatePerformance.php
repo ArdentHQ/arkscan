@@ -24,7 +24,7 @@ final class CacheDelegatePerformance extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache the past performance for each active delegate in the current round.';
 
