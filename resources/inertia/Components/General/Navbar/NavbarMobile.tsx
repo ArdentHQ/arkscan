@@ -120,7 +120,7 @@ const SettingsItem = ({
     );
 };
 
-export default function NavbarDesktop({ navigation }: { navigation: Navigation }) {
+export default function NavbarMobile({ navigation }: { navigation: Navigation }) {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -210,27 +210,6 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                             <MenuShowIcon className="h-5 w-5" />
                                         </span>
                                     </NavbarMobileButton>
-                                    {/* <x-navbar.mobile.button
-                                @click="Livewire.dispatch('openSearchModal')"
-                                dusk="navigation-search-modal-trigger"
-                                :disabled="app()->isDownForMaintenance()"
-                            >
-                                <x-ark-icon name="magnifying-glass-small" />
-
-                                <span className="sr-only">
-                                    @lang('actions.search')
-                                </span>
-                            </x-navbar.mobile.button>
-
-                            <x-navbar.mobile.button @click="toggle">
-                                <span :className="{'hidden': open, 'inline-flex': !open }">
-                                    <x-ark-icon name="menu" />
-                                </span>
-
-                                <span :className="{'hidden': !open, 'inline-flex': open }" x-cloak>
-                                    <x-ark-icon name="menu-show" />
-                                </span>
-                            </x-navbar.mobile.button> */}
                                 </div>
                             </div>
                         </div>
@@ -305,7 +284,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
 
                                 <div className="bg-theme-secondary-100 py-5 dark:bg-black">
                                     <div className="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
-                                        <SettingsItem title={t("general.select_network")} className="pt-3">
+                                        <SettingsItem title={t("general.select_network")}>
                                             <NavbarMobileThemeToggle />
                                         </SettingsItem>
 
