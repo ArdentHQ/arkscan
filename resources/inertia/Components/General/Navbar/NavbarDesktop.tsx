@@ -52,8 +52,8 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                     <div className="flex justify-end">
                         <div className="flex flex-1 items-center justify-end sm:items-stretch sm:justify-between">
                             <div className="-mx-4 hidden h-[3.25rem] items-center sm:h-16 md:flex">
-                                {navigation.map((navItem) => (
-                                    <>
+                                {navigation.map((navItem, index) => (
+                                    <div key={index} className="relative h-full">
                                         {navItem.children ? (
                                             <DropdownProvider>
                                                 <Dropdown
@@ -86,9 +86,10 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                         </>
                                                     )}
                                                 >
-                                                    {navItem.children.map((child) => (
-                                                        <DropdownItem asChild key={child.label}>
+                                                    {navItem.children.map((child, index) => (
+                                                        <DropdownItem asChild key={index}>
                                                             <a
+                                                                key={child.url ?? route(child.route!)}
                                                                 href={child.url ?? route(child.route!)}
                                                                 target={child.url ? "_blank" : "_self"}
                                                             >
@@ -101,7 +102,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                         ) : (
                                             <NavbarItem routeName={navItem.route!} label={navItem.label} />
                                         )}
-                                    </>
+                                    </div>
                                 ))}
                             </div>
                         </div>
