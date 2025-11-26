@@ -10,6 +10,7 @@ import useShareData from "@/hooks/use-shared-data";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
 import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
 import NetworkDropdown from "@/Components/General/NetworkDropdown/NetworkDropdown";
+import NavbarMobileThemeToggle from "./NavbarMobileThemeToggle";
 
 const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
@@ -302,27 +303,9 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
 
                                 <div className="bg-theme-secondary-100 py-5 dark:bg-black">
                                     <div className="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
-                                        {/* <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
-                                    <livewire:navbar.mobile-dark-mode-toggle
-                                        setting="theme"
-                                        :options="[
-                                            [
-                                                'icon' => 'sun',
-                                                'value' => 'light',
-                                            ],
-                                            [
-                                                'icon' => 'moon',
-                                                'value' => 'dark',
-                                            ],
-                                            [
-                                                'icon' => 'moon-stars',
-                                                'value' => 'dim',
-                                            ],
-                                        ]"
-                                    />
-                                </x-navbar.mobile.setting-item>
-
-                                */}
+                                        <SettingsItem title={t("general.select_network")} className="pt-3">
+                                            <NavbarMobileThemeToggle />
+                                        </SettingsItem>
 
                                         <SettingsItem title={t("general.select_network")} className="pt-3">
                                             <NetworkDropdown />
