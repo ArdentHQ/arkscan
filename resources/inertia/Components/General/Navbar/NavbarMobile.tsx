@@ -130,32 +130,11 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
         <header className="flex flex-col md:hidden">
             <div
                 className="fixed z-20 w-full md:relative"
-                // x-data="Navbar.dropdown({
-                //     theme: window.getThemeMode(),
-                //     open: false,
-                //     showSettings: false,
-
-                //     lockBody() {
-                //         return ! this.isIOSSafari() && window.innerWidth <= this.lockBodyBreakpoint;
-                //     },
-
-                //     isIOSSafari() {
-                //         if (! /(Macintosh)|(Mac OS)|(iPad)|(iPod)|(iPhone)/.test(window.navigator.userAgent)) {
-                //             return false;
-                //         }
-
-                //         if (! /(Safari)/.test(window.navigator.userAgent)) {
-                //             return false;
-                //         }
-
-                //         if (! /(AppleWebKit)/.test(window.navigator.userAgent)) {
-                //             return false;
-                //         }
-
-                //         return ('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0);
-                //     },
-                // })"
-                // @theme-changed.window="theme = $event.detail.theme"
+                // @TODO: How is the logic of `lockBody` and `isIOSSafari`
+                // relevant that you can find in the file
+                // `resources/views/components/navbar/mobile.blade.php`?
+                // there is also a `@theme-changed.window="theme = $event.detail.theme"
+                // https://app.clickup.com/t/86dyk997a
             >
                 {openDropdown !== null ||
                     (open && (
@@ -183,7 +162,8 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                                     <NavbarMobileButton
                                         disabled={isDownForMaintenance}
                                         onClick={() => {
-                                            console.log("search");
+                                            // TODO: Implement search modal for mobile
+                                            // https://app.clickup.com/t/86dygw9uw
                                         }}
                                     >
                                         <MagnifyingGlassSmallIcon className="h-5 w-5" />
