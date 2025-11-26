@@ -89,7 +89,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                             console.log("search");
                                         }}
                                     >
-                                        <MagnifyingGlassSmallIcon className="h-4 w-4" />
+                                        <MagnifyingGlassSmallIcon className="h-5 w-5" />
 
                                         <span className="sr-only">{t("actions.search")}</span>
                                     </NavbarMobileButton>
@@ -101,7 +101,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                 "inline-flex": !open,
                                             })}
                                         >
-                                            <MenuIcon className="h-4 w-4" />
+                                            <MenuIcon className="h-5 w-5" />
                                         </span>
 
                                         <span
@@ -110,7 +110,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                 "inline-flex": open,
                                             })}
                                         >
-                                            <MenuShowIcon className="h-4 w-4" />
+                                            <MenuShowIcon className="h-5 w-5" />
                                         </span>
                                     </NavbarMobileButton>
                                     {/* <x-navbar.mobile.button
@@ -189,7 +189,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                             @endif
                         @endforeach
 
-                        <div className="py-4 dark:bg-black bg-theme-secondary-100">
+                        <div className="py-5 dark:bg-black bg-theme-secondary-100">
                             <div className="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
                                 <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
                                     <livewire:navbar.mobile-dark-mode-toggle
