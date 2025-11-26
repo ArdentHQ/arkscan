@@ -140,7 +140,7 @@ final class Monitor extends Component
                 return [];
             }
 
-            /** @var Block $lastRoundBlock */
+            /** @var ?Block $lastRoundBlock */
             $lastRoundBlock = Block::query()
                 ->where('generator_public_key', $lastSuccessfulForger->publicKey())
                 ->where('height', '>=', $heightRange[0])
@@ -176,15 +176,15 @@ final class Monitor extends Component
                 return count($blocks);
             });
 
-        /** @var ?Block $lastRoundBlock */
+        /** @var Block $lastRoundBlock */
         $lastRoundBlock = Block::query()
             ->where('height', '>=', $heightRange[0])
             ->orderBy('height', 'desc')
             ->first();
 
-        $hasReachedFinalSlot = $lastRoundBlock->number === $heightRange[1];
+        $hasReachedFinalSlot = $lastRoundBlock->height === $heightRange[1];
         if ($overflowBlocks->isNotEmpty()) {
-            $hasReachedFinalSlot = $overflowBlocks->last()['number'] === $heightRange[1];
+            $hasReachedFinalSlot = $overflowBlocks->last()['height'] === $heightRange[1];
         }
 
         $lastTimestamp = Timestamp::fromGenesis($lastRoundBlock->timestamp)->unix();
