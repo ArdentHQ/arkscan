@@ -8,6 +8,7 @@ import MenuShowIcon from "@ui/icons/menu-show.svg?react";
 import { useState } from "react";
 import useShareData from "@/hooks/use-shared-data";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
+import PriceTicker from "../PriceTicker/PriceTicker";
 const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
         <button
@@ -148,10 +149,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                         ></div>
                     ))}
 
-                <nav
-                    className="relative z-30 border-b border-theme-secondary-300 bg-white dark:border-theme-dark-800 dark:bg-theme-dark-900"
-                    // @click.outside="open = false"
-                >
+                <nav className="relative z-30 border-b border-theme-secondary-300 bg-white dark:border-theme-dark-800 dark:bg-theme-dark-900">
                     <div className="content-container relative flex h-[3.25rem] w-full justify-between sm:h-16">
                         <div className="flex flex-shrink-0 items-center">
                             <a className="flex items-center" href={route("home")}>
@@ -285,50 +283,9 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                     </div>
                                 ))}
 
-                                {/* 
-                        @foreach ($navigation as $navItem)
-                            @if (Arr::exists($navItem, 'children'))
-                                <div className="relative h-full dark:bg-theme-dark-700">
-                                    <a
-                                        href="#"
-                                        className="inline-flex relative justify-between items-center py-3 px-6 w-full h-full font-semibold leading-5 focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-dark-50 hover:text-theme-secondary-800"
-                                        @click="openDropdown = openDropdown === '{{ $navItem['label'] }}' ? null : '{{ $navItem['label'] }}'"
-                                    >
-                                        <span :className="{ 'text-theme-secondary-700 dark:text-theme-dark-50': openDropdown === '{{ $navItem['label'] }}' }">{{ $navItem['label'] }}</span>
-                                        <span className="ml-2 text-theme-secondary-700 dark:text-theme-dark-50" :className="{ 'rotate-180': openDropdown === '{{ $navItem['label'] }}' }">
-                                            <x-ark-icon name="arrows.chevron-down-small" size="xs" />
-                                        </span>
-                                    </a>
-
-                                    <div
-                                        x-show="openDropdown === '{{ $navItem['label'] }}'"
-                                        className="bg-white dark:bg-theme-dark-700"
-                                        x-cloak
-                                    >
-                                        <div className="flex flex-col pt-2 pb-2 w-full">
-                                            @foreach ($navItem['children'] as $menuItem)
-                                                <x-navbar.mobile.list-item
-                                                    :route="$menuItem['route'] ?? null"
-                                                    :params="$menuItem['params'] ?? null"
-                                                    :label="$menuItem['label']"
-                                                    :url="$menuItem['url'] ?? null"
-                                                />
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                            @else
-                                <x-navbar.mobile.item
-                                    :route="$navItem['route']"
-                                    :params="$navItem['params'] ?? null"
-                                    :label="$navItem['label']"
-                                />
-                            @endif
-                        @endforeach
-
-                        <div className="py-5 dark:bg-black bg-theme-secondary-100">
-                            <div className="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
-                                <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
+                                <div className="bg-theme-secondary-100 py-5 dark:bg-black">
+                                    <div className="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
+                                        {/* <x-navbar.mobile.setting-item title="{{ trans('general.select_theme') }}">
                                     <livewire:navbar.mobile-dark-mode-toggle
                                         setting="theme"
                                         :options="[
@@ -353,13 +310,18 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                     className="pt-3"
                                 >
                                     <x-navbar.network-dropdown />
-                                </x-navbar.mobile.setting-item>
+                                </x-navbar.mobile.setting-item> */}
 
-                                <div className="flex pt-3 font-semibold dark:text-theme-dark-500">
-                                    <livewire:navbar.price-ticker />
+                                        <div className="flex pt-3 font-semibold dark:text-theme-dark-500">
+                                            <PriceTicker />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+
+                                {/* 
+                      
+
+                        
 
                         @if (config('arkscan.arkconnect.enabled', false))
                             <x-navbar.arkconnect />
