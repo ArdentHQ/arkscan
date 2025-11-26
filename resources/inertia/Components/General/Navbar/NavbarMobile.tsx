@@ -8,7 +8,9 @@ import MenuShowIcon from "@ui/icons/menu-show.svg?react";
 import { useState } from "react";
 import useShareData from "@/hooks/use-shared-data";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
-import PriceTicker from "../PriceTicker/PriceTicker";
+import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
+import NetworkDropdown from "@/Components/General/NetworkDropdown/NetworkDropdown";
+
 const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
         <button
@@ -98,6 +100,21 @@ const NavbarMobileListItem = ({
                 <span>{children}</span>
             </span>
         </a>
+    );
+};
+
+const SettingsItem = ({
+    title,
+    className,
+    children,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement> & { title: string }) => {
+    return (
+        <div className={classNames("flex items-center justify-between", className)} {...props}>
+            <div className="font-semibold dark:text-theme-dark-200">{title}</div>
+
+            <div>{children}</div>
+        </div>
     );
 };
 
@@ -305,12 +322,11 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                     />
                                 </x-navbar.mobile.setting-item>
 
-                                <x-navbar.mobile.setting-item
-                                    title="{{ trans('general.select_network') }}"
-                                    className="pt-3"
-                                >
-                                    <x-navbar.network-dropdown />
-                                </x-navbar.mobile.setting-item> */}
+                                */}
+
+                                        <SettingsItem title="{{ trans('general.select_network') }}" className="pt-3">
+                                            <NetworkDropdown />
+                                        </SettingsItem>
 
                                         <div className="flex pt-3 font-semibold dark:text-theme-dark-500">
                                             <PriceTicker />
