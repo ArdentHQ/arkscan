@@ -136,12 +136,17 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                 // })"
                 // @theme-changed.window="theme = $event.detail.theme"
             >
-                {/* <div
-            x-show="openDropdown !== null || open"
-            className="overflow-y-auto fixed inset-0 z-30 md:relative"
-            // @click="openDropdown = null; open = false;"
-            x-cloak
-        ></div> */}
+                {openDropdown !== null ||
+                    (open && (
+                        <div
+                            className="fixed inset-0 z-30 overflow-y-auto md:relative"
+                            onClick={() => {
+                                setOpenDropdown(null);
+
+                                setOpen(false);
+                            }}
+                        ></div>
+                    ))}
 
                 <nav
                     className="relative z-30 border-b border-theme-secondary-300 bg-white dark:border-theme-dark-800 dark:bg-theme-dark-900"
