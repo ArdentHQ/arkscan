@@ -105,19 +105,6 @@ final class DelegateTracker
      */
     private static function slotOffset(int $roundHeight, array $delegates): int
     {
-        // $roundDelegates = DB::connection('explorer')
-        //     ->table('blocks')
-        //     ->select('generator_public_key')
-        //     ->where('height', '>=', $roundHeight)
-        //     ->orderBy('height', 'asc')
-        //     ->get();
-
-        // if ($roundDelegates->isEmpty()) {
-        //     return 0;
-        // }
-
-        // $lastForgerPublicKey = $roundDelegates->last()->generator_public_key;
-
         $lastForger = DB::connection('explorer')
             ->table('blocks')
             ->select('generator_public_key', 'timestamp')
@@ -142,17 +129,6 @@ final class DelegateTracker
             ->pluck('count', 'generator_public_key');
 
         $lastForgerPublicKey = $lastForger->generator_public_key;
-
-        // $roundBlockCount = $roundDelegates->reduce(function ($carry, $item) {
-        //     $count = 1;
-        //     if ($carry->has($item->generator_public_key)) {
-        //         $count = $carry[$item->generator_public_key] + 1;
-        //     }
-
-        //     $carry->put($item->generator_public_key, $count);
-
-        //     return $carry;
-        // }, collect());
 
         $forgedCount = $roundBlockCount->sum();
 

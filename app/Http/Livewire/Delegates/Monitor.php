@@ -129,23 +129,24 @@ final class Monitor extends Component
             ->orderBy('height', 'desc')
             ->first();
 
-        // // // $lastRoundBlock = null;
-        // // if ($lastRoundBlock === null) {
-        //     $lastSuccessfulForger = collect($this->delegates)
-        //         ->filter(fn (Slot $delegate) => $delegate->hasForged())
-        //         ->last();
+        dump(['lastRoundBlock' => $lastRoundBlock?->height]);
 
-        //     if ($lastSuccessfulForger === null) {
-        //         return [];
-        //     }
+        if ($lastRoundBlock === null) {
+            $lastSuccessfulForger = collect($this->delegates)
+                ->filter(fn (Slot $delegate) => $delegate->hasForged())
+                ->last();
 
-        //     /** @var Block $lastRoundBlock */
-        //     $lastRoundBlock = Block::query()
-        //         ->where('generator_public_key', $lastSuccessfulForger->publicKey())
-        //         ->where('height', '>=', $heightRange[0])
-        //         ->orderBy('height', 'desc')
-        //         ->first();
-        // // }
+            if ($lastSuccessfulForger === null) {
+                return [];
+            }
+
+            /** @var Block $lastRoundBlock */
+            $lastRoundBlock = Block::query()
+                ->where('generator_public_key', $lastSuccessfulForger->publicKey())
+                ->where('height', '>=', $heightRange[0])
+                ->orderBy('height', 'desc')
+                ->first();
+        }
 
         // @TODO: cover this line as part of the dusk tests update - https://app.clickup.com/t/86dxjarym
         // @codeCoverageIgnoreStart
@@ -188,19 +189,15 @@ final class Monitor extends Component
         }
 
         $lastTimestamp = Timestamp::fromGenesis($lastRoundBlock->timestamp)->unix();
-        $overflowSlots = $this->getOverflowSlots(
-            $missedCount,
-            $lastStatus,
-            $lastBlock,
-            $lastTimestamp,
-            overflowBlockCount: $overflowBlockCount,
-            hasReachedFinalSlot: $hasReachedFinalSlot,
-        );
 
         $additional         = null;
         $previousAdditional = null;
         while ($additional === null || $additional > 0) {
             if ($additional === null) {
+                $additional = 0;
+            }
+
+            if ($additional < 0) {
                 $additional = 0;
             }
 
@@ -222,11 +219,17 @@ final class Monitor extends Component
                 $additional++;
             }
 
+            $additional -= $missedCount;
+
             if ($additional === $previousAdditional) {
                 break;
             }
 
             $previousAdditional = $additional;
+        }
+
+        if ($additional < 0) {
+            $additional = 0;
         }
 
         if ($additional === 0) {
