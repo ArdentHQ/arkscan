@@ -374,7 +374,26 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
 
     return (
         <>
-            <>{/* TODO: add  mobile view (https://app.clickup.com/t/86dygw9uw) */}</>
+            <MobileResult
+                header={
+                    <div className="link min-w-0 hover:text-theme-primary-600 group-hover/result:no-underline">
+                        <TruncateMiddle>{hash}</TruncateMiddle>
+                    </div>
+                }
+                children={
+                    <div className="flex flex-col space-y-4">
+                        <MobileResultDetail title={t("general.search.generated_by")}>
+                            <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                <TruncateMiddle length={10}>{validator?.address}</TruncateMiddle>
+                            </div>
+                        </MobileResultDetail>
+
+                        <MobileResultDetail title={t("general.search.transactions")}>
+                            {transactionCount ?? 0}
+                        </MobileResultDetail>
+                    </div>
+                }
+            />
 
             <div className="hidden flex-col space-y-2 md:flex">
                 <div className="flex items-center space-x-2">
