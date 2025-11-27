@@ -19,7 +19,7 @@ export default function NavbarSearch() {
         setHasResults(false);
     };
 
-    const blurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
+    const blurHandler = (event: React.FocusEvent<HTMLElement>) => {
         const blurredOutside = !searchRef.current?.contains(event.relatedTarget);
 
         if (blurredOutside) {

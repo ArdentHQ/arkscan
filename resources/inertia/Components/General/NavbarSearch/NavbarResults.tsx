@@ -27,7 +27,7 @@ interface NavbarResultsProps {
     results: SearchResult[];
     hasResults: boolean;
     isLoading: boolean;
-    onBlur: () => void;
+    onBlur: (event: React.FocusEvent<HTMLElement>) => void;
 }
 
 export default function NavbarResults({ query, results, hasResults, isLoading, onBlur }: NavbarResultsProps) {
@@ -88,7 +88,7 @@ function ResultLink({
 }: {
     result: SearchResult;
     children: React.ReactNode;
-    onBlur: () => void;
+    onBlur: (event: React.FocusEvent<HTMLElement>) => void;
 }) {
     const href = result.url ?? "#";
 
