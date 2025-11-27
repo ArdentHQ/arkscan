@@ -272,6 +272,31 @@ function renderResult(result: SearchResult) {
     }
 }
 
+function MobileResult({ header, children }: { header: React.ReactNode; children: React.ReactNode }) {
+    return (
+        <div className="rounded border border-theme-secondary-300 text-sm dark:border-theme-dark-700 md:hidden">
+            <div className="flex items-center justify-between rounded-t bg-theme-secondary-100 px-4 py-3 dark:bg-theme-dark-950">
+                {header}
+            </div>
+            <div className="flex flex-col space-y-4 px-4 pb-4 pt-3 sm:flex-1 sm:flex-row sm:justify-between sm:space-y-0">
+                {children}
+            </div>
+        </div>
+    );
+}
+
+function MobileResultDetail({ title, children }: { title: React.ReactNode; children: React.ReactNode }) {
+    return (
+        <div className="flex flex-col space-y-2 font-semibold">
+            <div className="whitespace-nowrap text-xs leading-3.75 text-theme-secondary-700 dark:text-theme-dark-200">
+                {title}
+            </div>
+
+            <div className="text-xs leading-3.75 text-theme-secondary-900 dark:text-theme-dark-50">{children}</div>
+        </div>
+    );
+}
+
 function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResultData> }) {
     const { t } = useTranslation();
     const { network } = useShareData();
@@ -280,7 +305,30 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
 
     return (
         <>
-            <>{/* TODO: add  mobile view (https://app.clickup.com/t/86dygw9uw) */}</>
+            <MobileResult
+                header={
+                    <>
+                        <div className="link font-semibold hover:text-theme-primary-600 group-hover/result:no-underline">
+                            {hasUsername ? result.data.username : result.data.address}
+                        </div>
+
+                        {hasUsername && (
+                            <div className="ml-1 truncate text-theme-secondary-700 dark:text-theme-dark-200">
+                                {result.data.address}
+                            </div>
+                        )}
+                    </>
+                }
+                children={
+                    <MobileResultDetail title={t("general.search.balance_currency", { currency: network!.currency })}>
+                        {currencyWithDecimals({
+                            value: result.data.balance ?? 0,
+                            currency: network!.currency,
+                            hideCurrency: true,
+                        })}
+                    </MobileResultDetail>
+                }
+            />
 
             <div className="hidden flex-col space-y-2 md:flex">
                 <div className="isolate flex items-center space-x-2 overflow-auto">
@@ -305,7 +353,7 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
                     </div>
 
                     <div className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
-                        {currencyWithDecimals(result.data.balance ?? 0, network!.currency)}
+                        {currencyWithDecimals({ value: result.data.balance ?? 0, currency: network!.currency })}
                     </div>
                 </div>
             </div>
@@ -428,7 +476,10 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                         </div>
 
                         <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                            {currencyWithDecimals(result.data.amountWithFee ?? 0, network!.currency)}
+                            {currencyWithDecimals({
+                                value: result.data.amountWithFee ?? 0,
+                                currency: network!.currency,
+                            })}
                         </div>
                     </div>
                 </div>
