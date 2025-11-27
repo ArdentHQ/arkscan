@@ -2,10 +2,7 @@
     $isProduction = config('arkscan.network') === 'production';
 @endphp
 
-<x-navbar.dropdown
-    dropdown-background="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 py-[0.125rem]"
-    dropdown-padding=""
->
+<x-navbar.dropdown>
     <x-slot name="button">
         <span>
             @if ($isProduction)
@@ -22,16 +19,6 @@
         class="inline-flex justify-between items-center"
     >
         <span>@lang('general.navbar.mainnet')</span>
-
-        @if ($isProduction)
-            <span>
-                <x-ark-icon
-                    name="double-check-mark"
-                    size="sm"
-                    class="text-theme-primary-600 dark:text-theme-dark-50"
-                />
-            </span>
-        @endif
     </x-general.dropdown.list-item>
 
     <x-general.dropdown.list-item
@@ -40,15 +27,5 @@
         class="inline-flex justify-between items-center"
     >
         <span>@lang('general.navbar.testnet')</span>
-
-        @if (! $isProduction)
-            <span>
-                <x-ark-icon
-                    name="double-check-mark"
-                    size="sm"
-                    class="text-theme-primary-600 dark:text-theme-dark-50"
-                />
-            </span>
-        @endif
     </x-general.dropdown.list-item>
 </x-navbar.dropdown>
