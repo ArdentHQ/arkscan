@@ -9,11 +9,14 @@ interface INavbarContext {
     hasResults: boolean;
     isLoading: boolean;
     clear: () => void;
+    searchModalOpen: boolean;
+    setSearchModalOpen: (open: boolean) => void;
 }
 
 const NavbarContext = createContext<INavbarContext | null>(null);
 
 export function NavbarProvider({ children }: { children: React.ReactNode }) {
+    const [searchModalOpen, setSearchModalOpen] = useState(false);
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<SearchResult[]>([]);
     const [hasResults, setHasResults] = useState(false);
@@ -23,6 +26,7 @@ export function NavbarProvider({ children }: { children: React.ReactNode }) {
         setQuery("");
         setResults([]);
         setHasResults(false);
+        setSearchModalOpen(false);
     };
 
     useEffect(() => {
@@ -82,6 +86,8 @@ export function NavbarProvider({ children }: { children: React.ReactNode }) {
                 results,
                 hasResults,
                 isLoading,
+                searchModalOpen,
+                setSearchModalOpen,
             }}
         >
             {children}

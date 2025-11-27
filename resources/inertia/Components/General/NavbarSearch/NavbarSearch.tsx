@@ -9,7 +9,7 @@ import { useNavbar } from "@/Components/General/Navbar/NavbarContext";
 export default function NavbarSearch() {
     const { t } = useTranslation();
 
-    const { query, setQuery, results, hasResults, isLoading, clear } = useNavbar();
+    const { query, setQuery, results, clear } = useNavbar();
 
     const searchRef = useRef<HTMLDivElement>(null);
 
@@ -88,13 +88,7 @@ export default function NavbarSearch() {
                 </div>
             </div>
 
-            <NavbarResults
-                query={query}
-                results={results}
-                hasResults={hasResults}
-                isLoading={isLoading}
-                onBlur={blurHandler}
-            />
+            <NavbarResults onBlur={blurHandler} />
         </div>
     );
 }

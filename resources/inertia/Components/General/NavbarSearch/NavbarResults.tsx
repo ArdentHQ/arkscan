@@ -9,6 +9,7 @@ import { currencyWithDecimals } from "@/utils/number-formatter";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import Tooltip from "@/Components/General/Tooltip";
+import { useNavbar } from "../Navbar/NavbarContext";
 
 type SearchResultData =
     | INavbarSearchWalletResultData
@@ -23,17 +24,16 @@ export type SearchResult<TData = SearchResultData> = {
 };
 
 interface NavbarResultsProps {
-    query: string;
-    results: SearchResult[];
-    hasResults: boolean;
-    isLoading: boolean;
     onBlur: (event: React.FocusEvent<HTMLElement>) => void;
 }
 
-export default function NavbarResults({ query, results, hasResults, isLoading, onBlur }: NavbarResultsProps) {
+export default function NavbarResults({ onBlur }: NavbarResultsProps) {
     const { t } = useTranslation();
 
-    const open = query.length > 0;
+    const { query, results, hasResults, isLoading, searchModalOpen } = useNavbar();
+
+    const open = query.length > 0 || searchModalOpen;
+
     const hasVisibleResults = hasResults && results.length > 0;
 
     return (
