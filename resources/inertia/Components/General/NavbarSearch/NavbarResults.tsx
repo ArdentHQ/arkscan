@@ -457,7 +457,83 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                 }
                 children={
                     <div className="flex flex-col space-y-4">
-                        {/* <x-search.results.mobile.transaction-type :transaction="$transaction" /> */}
+                        <div className="flex flex-col space-y-2">
+                            <div className="text-xs leading-3.75 dark:text-theme-dark-200">
+                                <Tooltip
+                                    disabled={!votedValidatorLabel}
+                                    content={
+                                        <div
+                                            dangerouslySetInnerHTML={
+                                                votedValidatorLabel
+                                                    ? {
+                                                          __html: t("general.transaction.vote_validator", {
+                                                              validator: votedValidatorLabel,
+                                                          }),
+                                                      }
+                                                    : undefined
+                                            }
+                                        />
+                                    }
+                                >
+                                    <span>{result.data.typeName}</span>
+                                </Tooltip>
+                            </div>
+                            {result.data.isTransfer || result.data.isTokenTransfer ? (
+                                <div className="flex flex-col space-y-2">
+                                    <div className="flex items-center space-x-2 text-xs">
+                                        <TransactionResultBadge>{t("general.search.from")}</TransactionResultBadge>
+
+                                        <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                            <TruncateMiddle length={10}>{result.data.sender?.address}</TruncateMiddle>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center space-x-2 text-xs">
+                                        <TransactionResultBadge>{t("general.search.to")}</TransactionResultBadge>
+
+                                        <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                            <TruncateMiddle length={10}>
+                                                {result.data.recipient?.address}
+                                            </TruncateMiddle>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : result.data.isVote || result.data.isUnvote ? (
+                                <div className="flex flex-col space-y-2">
+                                    <div className="flex items-center space-x-2 text-xs">
+                                        <TransactionResultBadge>{t("general.search.from")}</TransactionResultBadge>
+
+                                        <TruncateMiddle length={10}>{result.data.votedValidatorLabel}</TruncateMiddle>
+                                    </div>
+
+                                    <div className="flex items-center space-x-2 text-xs">
+                                        <TransactionResultBadge>{t("general.search.to")}</TransactionResultBadge>
+
+                                        <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                            {t("general.search.contract")}
+                                        </span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col space-y-2">
+                                    <div className="flex items-center space-x-2 text-xs">
+                                        <TransactionResultBadge>{t("general.search.from")}</TransactionResultBadge>
+
+                                        <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                            <TruncateMiddle length={10}>{result.data.sender?.address}</TruncateMiddle>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center space-x-2 text-xs">
+                                        <TransactionResultBadge>{t("general.search.to")}</TransactionResultBadge>
+
+                                        <div className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                            {t("general.search.contract")}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
 
                         <MobileResultDetail title={t("general.search.value_currency", { currency: network!.currency })}>
                             {currencyWithDecimals({
