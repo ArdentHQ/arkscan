@@ -84,7 +84,7 @@ export default function NavbarResults({ onBlur }: NavbarResultsProps) {
     );
 }
 
-const SearchInput = () => {
+const SearchInput = ({ onEnter }: { onEnter: () => void }) => {
     const { t } = useTranslation();
     const { query, setQuery } = useNavbar();
     const searchInputRef = useRef<HTMLInputElement>(null);
@@ -139,7 +139,11 @@ const SearchInput = () => {
                     ref={searchInputRef}
                     type="text"
                     className="block h-full w-full overflow-ellipsis py-2 text-theme-secondary-900 dim:text-theme-dark-50 dark:bg-theme-dark-900 dark:text-theme-dark-200"
-                    // wire:keydown.enter="goToFirstResult"
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            onEnter();
+                        }
+                    }}
                     placeholder={t("general.navbar.search_placeholder")}
                     value={localValue}
                     onChange={handleChange}
@@ -166,6 +170,17 @@ export function NavbarResultsMobile() {
 
     const handleBlur = () => {
         clear();
+    };
+
+    const goToFirstResult = () => {
+        if (results.length === 0) {
+            return;
+        }
+
+        const firstResult = results[0];
+        if (firstResult?.url) {
+            window.location.assign(firstResult.url);
+        }
     };
 
     if (!searchModalOpen) {
@@ -206,7 +221,7 @@ export function NavbarResultsMobile() {
             ></div>
 
             <div className="relative mx-4 my-6 flex flex-col rounded-xl border border-transparent bg-white p-6 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200 sm:m-8">
-                <SearchInput />
+                <SearchInput onEnter={goToFirstResult} />
 
                 <div className="flex flex-col space-y-1 divide-y divide-dashed divide-theme-secondary-300 whitespace-nowrap text-sm font-semibold dark:divide-theme-dark-800">
                     {hasResults && (
@@ -216,13 +231,6 @@ export function NavbarResultsMobile() {
                                     <ResultLink result={result} onBlur={handleBlur}>
                                         {renderResult(result)}
                                     </ResultLink>
-                                    {/* @if (is_a($result->model(), \App\Models\Wallet::class))
-                                    <x-search.results.wallet :wallet="$result" truncate :truncate-length="14" />
-                                @elseif (is_a($result->model(), \App\Models\Block::class))
-                                    <x-search.results.block :block="$result" />
-                                @elseif (is_a($result->model(), \App\Models\Transaction::class))
-                                    <x-search.results.transaction :transaction="$result" />
-                                @endif */}
                                 </div>
                             ))}
                         </>
