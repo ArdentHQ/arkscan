@@ -189,24 +189,6 @@ export function NavbarResultsMobile() {
 
     return (
         <div
-            // x-ref="modal"
-            // x-data="Modal.livewire({
-            //     query: @entangle('query').live,
-            //     searching: false,
-            //     initSearch() {
-            //         this.$nextTick(() => {
-            //             this.focusSearchInput();
-            //         });
-            //     },
-            //     getScrollable() {
-            //         const { searchResults } = this.$refs;
-            //         return searchResults;
-            //     },
-            //     focusSearchInput(){
-            //         const { input } = this.$refs;
-            //         input.focus();
-            //     },
-            // }, { disableFocusTrap: true })"
             className="custom-scroll container fixed inset-0 z-50 mx-auto flex h-screen w-full flex-col overflow-auto outline-none md:hidden"
             tabIndex={0}
             onKeyDown={(e) => {
