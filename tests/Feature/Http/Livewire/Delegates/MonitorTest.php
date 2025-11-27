@@ -201,7 +201,7 @@ describe('Monitor', function () {
         // Force round time
         $this->travelTo(new Carbon('2021-01-01 00:04:00'));
 
-        $round = 1;
+        $round  = 1;
         $height = 2;
 
         $genesisWallet = Wallet::factory()
@@ -746,7 +746,6 @@ describe('Monitor', function () {
 
         $orderedDelegates = getRoundDelegates(false, $round - 1);
 
-
         [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
             $orderedDelegates->get(4)['publicKey'],
             $orderedDelegates->get(5)['publicKey'],
@@ -776,7 +775,6 @@ describe('Monitor', function () {
             'pending',
             'pending',
         ]);
-
 
         // $delegates = getRoundDelegates(false, $round);
 
@@ -854,7 +852,6 @@ describe('Monitor', function () {
             $orderedDelegates->get(6)['publicKey'],
             $orderedDelegates->get(7)['publicKey'],
         ], true, Network::delegateCount());
-
 
         $expectedNow = Carbon::parse('2024-02-01 14:00:00')->addSeconds(Network::blockTime() * Network::delegateCount());
 
