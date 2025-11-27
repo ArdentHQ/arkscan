@@ -449,7 +449,25 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
 
     return (
         <>
-            <>{/* TODO: add  mobile view (https://app.clickup.com/t/86dygw9uw) */}</>
+            <MobileResult
+                header={
+                    <div className="link min-w-0 hover:text-theme-primary-600 group-hover/result:no-underline">
+                        <TruncateMiddle>{result.data.hash}</TruncateMiddle>
+                    </div>
+                }
+                children={
+                    <div className="flex flex-col space-y-4">
+                        {/* <x-search.results.mobile.transaction-type :transaction="$transaction" /> */}
+
+                        <MobileResultDetail title={t("general.search.value_currency", { currency: network!.currency })}>
+                            {currencyWithDecimals({
+                                value: result.data.amountWithFee ?? 0,
+                                currency: network!.currency,
+                            })}
+                        </MobileResultDetail>
+                    </div>
+                }
+            />
 
             <div className="hidden flex-col space-y-2 md:flex">
                 <div className="flex items-center space-x-2">
