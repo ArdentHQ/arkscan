@@ -2,22 +2,16 @@ import { useTranslation } from "react-i18next";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import SquareReturnArrowIcon from "@ui/icons/square-return-arrow.svg?react";
-import NavbarResults, { SearchResult } from "./NavbarResults";
-import { useEffect, useState, type KeyboardEvent, useRef } from "react";
+import NavbarResults from "./NavbarResults";
+import { type KeyboardEvent, useRef } from "react";
+import { useNavbar } from "@/Components/General/Navbar/NavbarContext";
 
 export default function NavbarSearch() {
     const { t } = useTranslation();
-    const [query, setQuery] = useState("");
-    const [results, setResults] = useState<SearchResult[]>([]);
-    const [hasResults, setHasResults] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const searchRef = useRef<HTMLDivElement>(null);
 
-    const clear = () => {
-        setQuery("");
-        setResults([]);
-        setHasResults(false);
-    };
+    const { query, setQuery, results, hasResults, isLoading, clear } = useNavbar();
+
+    const searchRef = useRef<HTMLDivElement>(null);
 
     const blurHandler = (event: React.FocusEvent<HTMLElement>) => {
         const blurredOutside = !searchRef.current?.contains(event.relatedTarget);
@@ -26,54 +20,6 @@ export default function NavbarSearch() {
             clear();
         }
     };
-
-    useEffect(() => {
-        if (!query) {
-            setResults([]);
-            setHasResults(false);
-            setIsLoading(false);
-
-            return;
-        }
-
-        const controller = new AbortController();
-        setIsLoading(true);
-        setResults([]);
-        setHasResults(false);
-
-        const timeoutId = window.setTimeout(async () => {
-            try {
-                const response = await fetch(`/navbar/search?query=${encodeURIComponent(query)}`, {
-                    signal: controller.signal,
-                    headers: {
-                        Accept: "application/json",
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error("Unable to fetch search results");
-                }
-
-                const data = await response.json();
-                setResults(data.results ?? []);
-                setHasResults(Boolean(data.hasResults));
-            } catch (error) {
-                if (!controller.signal.aborted) {
-                    setResults([]);
-                    setHasResults(false);
-                }
-            } finally {
-                if (!controller.signal.aborted) {
-                    setIsLoading(false);
-                }
-            }
-        }, 200);
-
-        return () => {
-            controller.abort();
-            window.clearTimeout(timeoutId);
-        };
-    }, [query]);
 
     const goToFirstResult = () => {
         if (results.length === 0) {
