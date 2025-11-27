@@ -86,7 +86,7 @@ export default function NavbarResults({ onBlur }: NavbarResultsProps) {
 
 const SearchInput = () => {
     const { t } = useTranslation();
-    const { query, setQuery, clear } = useNavbar();
+    const { query, setQuery } = useNavbar();
     const searchInputRef = useRef<HTMLInputElement>(null);
     const [localValue, setLocalValue] = useState(query);
     const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -162,7 +162,11 @@ const SearchInput = () => {
 export function NavbarResultsMobile() {
     const { t } = useTranslation();
 
-    const { query, results, hasResults, isLoading, searchModalOpen, clear } = useNavbar();
+    const { query, results, hasResults, searchModalOpen, clear } = useNavbar();
+
+    const handleBlur = () => {
+        clear();
+    };
 
     if (!searchModalOpen) {
         return <></>;
@@ -209,7 +213,9 @@ export function NavbarResultsMobile() {
                         <>
                             {results.map((result) => (
                                 <div key={result.identifier} className="pt-1">
-                                    {renderResult(result)}
+                                    <ResultLink result={result} onBlur={handleBlur}>
+                                        {renderResult(result)}
+                                    </ResultLink>
                                     {/* @if (is_a($result->model(), \App\Models\Wallet::class))
                                     <x-search.results.wallet :wallet="$result" truncate :truncate-length="14" />
                                 @elseif (is_a($result->model(), \App\Models\Block::class))
