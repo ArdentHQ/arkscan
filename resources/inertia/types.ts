@@ -1,5 +1,14 @@
 import { IBlock, IWallet } from "./types/generated";
 
+export type NavigationItem = {
+    label: string;
+    route?: string;
+    url?: string;
+    children?: NavigationItem[];
+};
+
+export type Navigation = NavigationItem[];
+
 export interface IValidator {
     wallet: IWallet;
     lastBlock: IBlock | null;

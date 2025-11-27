@@ -110,6 +110,10 @@ export type IRequestData = {
     theme: string;
     mainnetExplorerUrl: string;
     testnetExplorerUrl: string;
+    supportEnabled: boolean;
+    navbarTag: string | null;
+    navbarName: string | null;
+    currentRoute: string | null;
 };
 export type ISettings = {
     currency: string;

@@ -109,29 +109,27 @@ export default function Dropdown({
     });
 
     let dropdownButton = (
-        <div>
-            <button
-                ref={refs.setReference}
-                className={classNames({
-                    "dropdown-button transition-default flex items-center focus:outline-none": true,
-                    "bg-theme-secondary-200 text-theme-secondary-500 dark:border-theme-dark-700 dark:bg-theme-dark-800 dark:text-theme-dark-500":
-                        disabled,
-                    "bg-theme-secondary-200 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 md:bg-white md:hover:text-theme-secondary-900 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600":
-                        !disabled && useDefaultButtonClasses,
-                    [buttonClass]: true,
-                    [buttonClassExpanded]: isOpen,
-                    [buttonClassClosed]: !isOpen,
-                })}
-                onClick={() => triggerOpenClosed(!isOpen)}
-                type="button"
-                disabled={disabled}
-                data-testid={testId ? `${testId}:button` : undefined}
-                {...getReferenceProps()}
-            >
-                {button !== undefined && typeof button === "function" ? button({ isOpen }) : button}
-                {button === undefined && <EllipsisVerticalIcon className="h-5 w-5" />}
-            </button>
-        </div>
+        <button
+            ref={refs.setReference}
+            className={classNames({
+                "dropdown-button transition-default flex items-center focus:outline-none": true,
+                "bg-theme-secondary-200 text-theme-secondary-500 dark:border-theme-dark-700 dark:bg-theme-dark-800 dark:text-theme-dark-500":
+                    disabled,
+                "bg-theme-secondary-200 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 md:bg-white md:hover:text-theme-secondary-900 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600":
+                    !disabled && useDefaultButtonClasses,
+                [buttonClass]: true,
+                [buttonClassExpanded]: isOpen,
+                [buttonClassClosed]: !isOpen,
+            })}
+            onClick={() => triggerOpenClosed(!isOpen)}
+            type="button"
+            disabled={disabled}
+            data-testid={testId ? `${testId}:button` : undefined}
+            {...getReferenceProps()}
+        >
+            {button !== undefined && typeof button === "function" ? button({ isOpen }) : button}
+            {button === undefined && <EllipsisVerticalIcon className="h-5 w-5" />}
+        </button>
     );
 
     if (buttonTooltip !== undefined) {

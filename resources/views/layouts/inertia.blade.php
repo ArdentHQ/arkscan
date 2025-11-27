@@ -13,6 +13,7 @@
     >
         @vite('resources/js/app-inertia.tsx')
         @inertiaHead
+        @routes
     </x-ark-pages-includes-layout-head-inertia>
 
     <x-ark-pages-includes-layout-body class="table-compact">
