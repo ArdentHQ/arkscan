@@ -41,7 +41,6 @@ final class DelegateTracker
         );
 
         // // Note: static order will be found by shifting the index based on the forging data from above
-        // $delegateCount    = Network::delegateCount();
         $delegatesOrdered = self::orderDelegates(
             $activeDelegates,
             $originalOrder['currentForger'],
@@ -86,7 +85,6 @@ final class DelegateTracker
             ];
         }
 
-        // TODO: we need to handle missed blocks by moving "done" states back to pending when needed
         return [
             'publicKey' => $publicKey,
             'status'    => 'done',
@@ -105,18 +103,6 @@ final class DelegateTracker
      */
     private static function slotOffset(int $roundHeight, array $delegates): int
     {
-        $lastForger = DB::connection('explorer')
-            ->table('blocks')
-            ->select('generator_public_key', 'timestamp')
-            ->where('height', '>=', $roundHeight)
-            ->orderBy('height', 'desc')
-            ->limit(1)
-            ->first();
-
-        if ($lastForger === null) {
-            return 0;
-        }
-
         $roundBlockCount = DB::connection('explorer')
             ->table('blocks')
             ->select([
@@ -133,7 +119,6 @@ final class DelegateTracker
         $counter = 0;
         $offset  = 0;
         foreach ($delegates as $publicKey) {
-            // $publicKey = $delegate['public_key'];
             $hadBlock = false;
             if ($roundBlockCount->has($publicKey)) {
                 $count = $roundBlockCount->get($publicKey) - 1;
