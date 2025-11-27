@@ -10,6 +10,9 @@ import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import Tooltip from "@/Components/General/Tooltip";
 import { useNavbar } from "../Navbar/NavbarContext";
+import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
+import CrossIcon from "@ui/icons/cross.svg?react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 type SearchResultData =
     | INavbarSearchWalletResultData
@@ -77,6 +80,162 @@ export default function NavbarResults({ onBlur }: NavbarResultsProps) {
                         ))}
                 </div>
             )}
+        </div>
+    );
+}
+
+const SearchInput = forwardRef<HTMLInputElement>((_, ref) => {
+    const { t } = useTranslation();
+    const { query, setQuery } = useNavbar();
+
+    const [localValue, setLocalValue] = useState(query);
+    const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        setLocalValue(query);
+    }, [query]);
+
+    useEffect(() => {
+        return () => {
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        setLocalValue(value);
+
+        if (debounceTimeoutRef.current) {
+            clearTimeout(debounceTimeoutRef.current);
+        }
+
+        debounceTimeoutRef.current = setTimeout(() => {
+            setQuery(value);
+        }, 500);
+    };
+
+    return (
+        <div className="group relative flex h-8 flex-shrink-0 items-center overflow-hidden rounded border-2 border-theme-secondary-300 focus-within:border-theme-primary-600 hover:border-theme-primary-600 dark:border-theme-dark-800 focus-within:dark:border-theme-primary-600 group-hover:dark:border-theme-primary-600">
+            <div className="flex items-center pl-4 pr-2">
+                <MagnifyingGlassSmallIcon className="h-4 w-4 text-theme-secondary-500 dim:text-theme-dark-200 dark:text-theme-dark-600" />
+            </div>
+
+            <div className="h-full flex-1 leading-none">
+                <input
+                    ref={ref}
+                    type="text"
+                    className="block h-full w-full overflow-ellipsis py-2 text-theme-secondary-900 dim:text-theme-dark-50 dark:bg-theme-dark-900 dark:text-theme-dark-200"
+                    // wire:keydown.enter="goToFirstResult"
+                    placeholder={t("general.navbar.search_placeholder")}
+                    value={localValue}
+                    onChange={handleChange}
+                />
+            </div>
+
+            {query && (
+                <button
+                    type="button"
+                    // @click="function () {
+                    //     $wire.clear();
+                    //     $refs.input.focus();
+                    // }"
+                    className="button-secondary -my-px bg-transparent pr-4 text-theme-secondary-700 dim:bg-transparent dim:text-theme-dark-50 dim:shadow-none dark:bg-theme-dark-900 dark:text-theme-dark-600"
+                    // // x-cloak
+                >
+                    <CrossIcon className="h-3 w-3" />
+                </button>
+            )}
+        </div>
+    );
+});
+
+export function NavbarResultsMobile() {
+    const { t } = useTranslation();
+
+    const { query, results, hasResults, isLoading, searchModalOpen, clear } = useNavbar();
+
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (searchInputRef.current) {
+            searchInputRef.current.focus();
+        }
+    }, [searchModalOpen]);
+
+    if (!searchModalOpen) {
+        return <></>;
+    }
+
+    return (
+        <div
+            // x-ref="modal"
+            // x-data="Modal.livewire({
+            //     query: @entangle('query').live,
+            //     searching: false,
+            //     initSearch() {
+            //         this.$nextTick(() => {
+            //             this.focusSearchInput();
+            //         });
+            //     },
+            //     getScrollable() {
+            //         const { searchResults } = this.$refs;
+            //         return searchResults;
+            //     },
+            //     focusSearchInput(){
+            //         const { input } = this.$refs;
+            //         input.focus();
+            //     },
+            // }, { disableFocusTrap: true })"
+            className="custom-scroll container fixed inset-0 z-50 mx-auto flex h-screen w-full flex-col overflow-auto outline-none md:hidden"
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                    clear();
+                }
+            }}
+            // x-init="
+            //     init();
+            //     initSearch();
+            // "
+        >
+            <div
+                onClick={clear}
+                className="fixed inset-0 bg-theme-secondary-900 opacity-70 dark:bg-theme-dark-800 dark:opacity-80"
+            ></div>
+
+            <div className="relative mx-4 my-6 flex flex-col rounded-xl border border-transparent bg-white p-6 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200 sm:m-8">
+                <SearchInput ref={searchInputRef} />
+
+                <div className="flex flex-col space-y-1 divide-y divide-dashed divide-theme-secondary-300 whitespace-nowrap text-sm font-semibold dark:divide-theme-dark-800">
+                    {hasResults && (
+                        <>
+                            {results.map((result) => (
+                                <div key={result.identifier} className="pt-1">
+                                    {renderResult(result)}
+                                    {/* @if (is_a($result->model(), \App\Models\Wallet::class))
+                                    <x-search.results.wallet :wallet="$result" truncate :truncate-length="14" />
+                                @elseif (is_a($result->model(), \App\Models\Block::class))
+                                    <x-search.results.block :block="$result" />
+                                @elseif (is_a($result->model(), \App\Models\Transaction::class))
+                                    <x-search.results.transaction :transaction="$result" />
+                                @endif */}
+                                </div>
+                            ))}
+                        </>
+                    )}
+                    {!hasResults && (
+                        <div className="mt-4 whitespace-normal text-center text-theme-secondary-900 dark:text-theme-dark-50">
+                            <p>
+                                {query.length > 0
+                                    ? t("general.search.no_results")
+                                    : t("general.search.results_will_show_up")}
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }
@@ -199,19 +358,6 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
         </>
     );
 }
-
-const TransactionResultBadge = ({ className, children }: { className?: string; children: React.ReactNode }) => {
-    return (
-        <div
-            className={classNames(
-                "encapsulated-badge shrink-0 rounded border border-transparent bg-theme-secondary-200 px-[3px] py-[2px] text-center text-xs font-semibold leading-3.75 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200",
-                className,
-            )}
-        >
-            {children}
-        </div>
-    );
-};
 
 function TransactionResult({ result }: { result: SearchResult<INavbarSearchTransactionResultData> }) {
     const { t } = useTranslation();

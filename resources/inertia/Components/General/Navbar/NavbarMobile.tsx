@@ -12,6 +12,8 @@ import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
 import NetworkDropdown from "@/Components/General/NetworkDropdown/NetworkDropdown";
 import NavbarMobileThemeToggle from "./NavbarMobileThemeToggle";
 import NavbarArkConnect from "../NavbarArkConnect/NavbarArkConnect";
+import { useNavbar } from "./NavbarContext";
+import { NavbarResultsMobile } from "@/Components/General/NavbarSearch/NavbarResults";
 
 const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
@@ -125,6 +127,7 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
     const [open, setOpen] = useState(false);
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const { isDownForMaintenance, arkconnectConfig } = useShareData();
+    const { setSearchModalOpen } = useNavbar();
 
     return (
         <header className="flex flex-col md:hidden">
@@ -162,8 +165,7 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                                     <NavbarMobileButton
                                         disabled={isDownForMaintenance}
                                         onClick={() => {
-                                            // TODO: Implement search modal for mobile
-                                            // https://app.clickup.com/t/86dygw9uw
+                                            setSearchModalOpen(true);
                                         }}
                                     >
                                         <MagnifyingGlassSmallIcon className="h-5 w-5" />
@@ -284,6 +286,8 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                     </div>
                 </nav>
             </div>
+
+            <NavbarResultsMobile />
         </header>
     );
 }
