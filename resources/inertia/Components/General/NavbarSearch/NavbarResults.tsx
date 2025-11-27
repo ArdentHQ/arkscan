@@ -403,6 +403,19 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
     );
 }
 
+const TransactionResultBadge = ({ className, children }: { className?: string; children: React.ReactNode }) => {
+    return (
+        <div
+            className={classNames(
+                "encapsulated-badge shrink-0 rounded border border-transparent bg-theme-secondary-200 px-[3px] py-[2px] text-center text-xs font-semibold leading-3.75 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200",
+                className,
+            )}
+        >
+            {children}
+        </div>
+    );
+};
+
 function TransactionResult({ result }: { result: SearchResult<INavbarSearchTransactionResultData> }) {
     const { t } = useTranslation();
     const { network } = useShareData();
