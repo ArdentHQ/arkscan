@@ -12,7 +12,7 @@ import Tooltip from "@/Components/General/Tooltip";
 import { useNavbar } from "../Navbar/NavbarContext";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type SearchResultData =
     | INavbarSearchWalletResultData
@@ -150,12 +150,7 @@ const SearchInput = () => {
                 <button
                     type="button"
                     onClick={handleClear}
-                    // @click="function () {
-                    //     $wire.clear();
-                    //     $refs.input.focus();
-                    // }"
                     className="button-secondary -my-px bg-transparent pr-4 text-theme-secondary-700 dim:bg-transparent dim:text-theme-dark-50 dim:shadow-none dark:bg-theme-dark-900 dark:text-theme-dark-600"
-                    // // x-cloak
                 >
                     <CrossIcon className="h-3 w-3" />
                 </button>
@@ -200,10 +195,6 @@ export function NavbarResultsMobile() {
                     clear();
                 }
             }}
-            // x-init="
-            //     init();
-            //     initSearch();
-            // "
         >
             <div
                 onClick={clear}
