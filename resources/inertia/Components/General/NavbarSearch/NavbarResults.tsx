@@ -84,10 +84,10 @@ export default function NavbarResults({ onBlur }: NavbarResultsProps) {
     );
 }
 
-const SearchInput = forwardRef<HTMLInputElement>((_, ref) => {
+const SearchInput = () => {
     const { t } = useTranslation();
-    const { query, setQuery } = useNavbar();
-
+    const { query, setQuery, clear } = useNavbar();
+    const searchInputRef = useRef<HTMLInputElement>(null);
     const [localValue, setLocalValue] = useState(query);
     const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -116,6 +116,18 @@ const SearchInput = forwardRef<HTMLInputElement>((_, ref) => {
         }, 500);
     };
 
+    const handleClear = () => {
+        setLocalValue("");
+        setQuery("");
+        searchInputRef.current?.focus();
+    };
+
+    useEffect(() => {
+        if (searchInputRef.current) {
+            searchInputRef.current.focus();
+        }
+    }, []);
+
     return (
         <div className="group relative flex h-8 flex-shrink-0 items-center overflow-hidden rounded border-2 border-theme-secondary-300 focus-within:border-theme-primary-600 hover:border-theme-primary-600 dark:border-theme-dark-800 focus-within:dark:border-theme-primary-600 group-hover:dark:border-theme-primary-600">
             <div className="flex items-center pl-4 pr-2">
@@ -124,7 +136,7 @@ const SearchInput = forwardRef<HTMLInputElement>((_, ref) => {
 
             <div className="h-full flex-1 leading-none">
                 <input
-                    ref={ref}
+                    ref={searchInputRef}
                     type="text"
                     className="block h-full w-full overflow-ellipsis py-2 text-theme-secondary-900 dim:text-theme-dark-50 dark:bg-theme-dark-900 dark:text-theme-dark-200"
                     // wire:keydown.enter="goToFirstResult"
@@ -137,6 +149,7 @@ const SearchInput = forwardRef<HTMLInputElement>((_, ref) => {
             {query && (
                 <button
                     type="button"
+                    onClick={handleClear}
                     // @click="function () {
                     //     $wire.clear();
                     //     $refs.input.focus();
@@ -149,20 +162,12 @@ const SearchInput = forwardRef<HTMLInputElement>((_, ref) => {
             )}
         </div>
     );
-});
+};
 
 export function NavbarResultsMobile() {
     const { t } = useTranslation();
 
     const { query, results, hasResults, isLoading, searchModalOpen, clear } = useNavbar();
-
-    const searchInputRef = useRef<HTMLInputElement>(null);
-
-    useEffect(() => {
-        if (searchInputRef.current) {
-            searchInputRef.current.focus();
-        }
-    }, [searchModalOpen]);
 
     if (!searchModalOpen) {
         return <></>;
@@ -206,7 +211,7 @@ export function NavbarResultsMobile() {
             ></div>
 
             <div className="relative mx-4 my-6 flex flex-col rounded-xl border border-transparent bg-white p-6 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200 sm:m-8">
-                <SearchInput ref={searchInputRef} />
+                <SearchInput />
 
                 <div className="flex flex-col space-y-1 divide-y divide-dashed divide-theme-secondary-300 whitespace-nowrap text-sm font-semibold dark:divide-theme-dark-800">
                     {hasResults && (
