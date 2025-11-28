@@ -19,7 +19,7 @@ final class GenerateVoteReport extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Generate Vote Report file.';
 

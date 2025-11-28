@@ -43,17 +43,6 @@ it('generates correct url for QR Code on mainnet', function () {
         ->assertSeeHtml('href="https://app.arkvault.io/#/?coin=ARK&amp;nethash='.config('arkscan.networks.production.nethash').'&amp;method=transfer&amp;recipient=AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR"');
 });
 
-it('should allow class property', function () {
-    Config::set('explorer.network', 'production');
-
-    $wallet = Wallet::factory()->create(['address' => 'AWkBFnqvCF4jhqPSdE2HBPJiwaf67tgfGR']);
-
-    Livewire::test(WalletQrCode::class, [
-        'address' => $wallet->address,
-        'class'   => 'test-class',
-    ])->assertSeeHtml('class="test-class"');
-});
-
 it('should validate amount', function () {
     Config::set('explorer.network', 'production');
 

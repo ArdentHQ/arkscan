@@ -4,28 +4,28 @@
 ])
 
 <div
-    x-data="{ publicKeyModalVisible: false }"
+    x-data="{
+        publicKeyModalVisible: false,
+        hasBeenOpened: false,
+    }"
     class="flex-1 ml-2 w-full"
     @keydown.document.escape="publicKeyModalVisible = false"
     {{ $attributes }}
 >
-    @if ($button)
-        <button
-            type="button"
-            @click="publicKeyModalVisible = !publicKeyModalVisible"
-            {{ $button->attributes }}
-        >
-            {{ $button }}
-        </button>
-    @else
-        <button
-            type="button"
-            @click="publicKeyModalVisible = !publicKeyModalVisible"
-            class="text-theme-secondary-600 hover:text-theme-secondary-400"
-        >
-            <x-ark-icon name="key" />
-        </button>
-    @endif
+    <button
+        type="button"
+        @click="() => {
+            publicKeyModalVisible = !publicKeyModalVisible;
+
+            if (publicKeyModalVisible && ! hasBeenOpened) {
+                sa_event('wallet_modal_public_key_opened');
+                hasBeenOpened = true;
+            }
+        }"
+        class="p-2 w-full focus-visible:ring-inset button button-secondary button-icon"
+    >
+        <x-ark-icon name="key" size="sm" />
+    </button>
 
     <div
         x-show="publicKeyModalVisible"
