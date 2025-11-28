@@ -31,8 +31,6 @@ final class Monitor extends Component
     use DelegateData;
     use HandlesMonitorDataBoxes;
 
-    public const MISSED_INCREMENT_SECONDS = 8;
-
     /** @var mixed */
     protected $listeners = [
         'monitorIsReady',
@@ -231,20 +229,10 @@ final class Monitor extends Component
             $overflowBlockCount = new Collection();
         }
 
-        $justMissedCount = 0;
-        $missedSeconds   = 0;
         $overflowSlots   = [];
         foreach (collect($this->delegates)->take($missedCount) as $delegate) {
-            if ($overflowBlockCount->isEmpty()) {
-                $secondsUntilForge = Network::blockTime();
-
-                $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
-            } else {
-                $secondsUntilForge = Network::blockTime();
-                $secondsUntilForge += $missedSeconds;
-
-                $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
-            }
+            $secondsUntilForge = Network::blockTime();
+            $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
 
             $status = 'pending';
             if (! $hasReachedFinalSlot) {
@@ -259,14 +247,6 @@ final class Monitor extends Component
                 status: $status,
                 roundBlockCount: $overflowBlockCount,
             );
-
-            if ($slot->justMissed()) {
-                $justMissedCount++;
-                $missedSeconds = $justMissedCount * self::MISSED_INCREMENT_SECONDS;
-            } else {
-                $justMissedCount = 0;
-                $missedSeconds   = 0;
-            }
 
             if ($delegate->publicKey() === $lastBlock->generator_public_key) {
                 $hasReachedFinalSlot = true;

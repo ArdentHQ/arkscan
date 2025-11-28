@@ -871,7 +871,7 @@ describe('Monitor', function () {
         expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->forgingAt()->format('Y-m-d H:i:s'))->toArray())->toBe([
             $overflowForgeTime->format('Y-m-d H:i:s'),
             $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
-            $overflowForgeTime->addSeconds(Network::blockTime() * 2)->format('Y-m-d H:i:s'),
+            $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
             $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
             $overflowForgeTime->addSeconds(Network::blockTime())->format('Y-m-d H:i:s'),
         ]);
