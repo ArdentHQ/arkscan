@@ -29,10 +29,6 @@ use function Tests\getRoundDelegates;
 use function Tests\mockTaggedCache;
 
 describe('Monitor', function () {
-    beforeEach(function () {
-        $this->activeDelegates = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
-    });
-
     function createRoundWithDelegates(): void
     {
         Wallet::factory(51)->create()->each(function ($wallet) {
@@ -198,6 +194,8 @@ describe('Monitor', function () {
     });
 
     it('should correctly show the block is missed in the correct order', function () {
+        $delegateFixtures = require dirname(dirname(dirname(dirname(__DIR__)))).'/fixtures/forgers.php';
+
         // Force round time
         $this->travelTo(new Carbon('2021-01-01 00:04:00'));
 
@@ -212,7 +210,7 @@ describe('Monitor', function () {
         createBlock(1, $genesisWallet->public_key, $this);
 
         // Create wallets for each delegate
-        $this->activeDelegates->each(function ($delegate) use ($round, &$height) {
+        $delegateFixtures->each(function ($delegate) use ($round, &$height) {
             $wallet = Wallet::factory()->create(['public_key' => $delegate->public_key]);
 
             Round::factory()->create([
@@ -231,7 +229,7 @@ describe('Monitor', function () {
 
         $round++;
 
-        $this->activeDelegates->each(function ($delegate) use ($round) {
+        $delegateFixtures->each(function ($delegate) use ($round) {
             $wallet = Wallet::factory()->create(['public_key' => $delegate->public_key]);
 
             Round::factory()->create([
@@ -595,9 +593,6 @@ describe('Monitor', function () {
             ],
         ], $this);
 
-        // expect(Block::count())->toBe(3 * Network::delegateCount());
-        // expect(now()->format('Y-m-d H:i:s'))->toBe(Carbon::parse('2024-02-01 14:00:00')->addSeconds(Network::blockTime() * 5)->format('Y-m-d H:i:s'));
-
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady')
             ->call('pollDelegates');
@@ -672,8 +667,6 @@ describe('Monitor', function () {
             $orderedDelegates->get(7)['publicKey'],
             $orderedDelegates->get(8)['publicKey'],
         ], true, Network::delegateCount());
-
-        // dump($round, $height);
 
         $component = Livewire::test(Monitor::class)
             ->call('setIsReady')
@@ -777,18 +770,8 @@ describe('Monitor', function () {
             'pending',
         ]);
 
-
-        // $delegates = getRoundDelegates(false, $round);
-
         createBlock($height, $delegates->get(0)['publicKey'], $this);
-        dump(['created block at height' => $height, 'by' => $delegates->get(0)['publicKey']]);
-        // createBlock($height, $orderedDelegates->get(0)['publicKey'], $this);
-        // dump(['created block at height' => $height, 'by' => $orderedDelegates->get(0)['publicKey']]);
-
         createBlock($height + 1, $delegates->get(1)['publicKey'], $this);
-        dump(['created block at height' => $height + 1, 'by' => $delegates->get(1)['publicKey']]);
-        // createBlock($height + 1, $orderedDelegates->get(1)['publicKey'], $this);
-        // dump(['created block at height' => $height+1, 'by' => $orderedDelegates->get(1)['publicKey']]);
 
         $instance = $component->instance();
 
@@ -800,9 +783,6 @@ describe('Monitor', function () {
 
         expect($slots['done'])->toHaveCount(51);
 
-        // dump($overflowDelegates);
-
-        // expect($overflowDelegates)->toHaveCount(5);
         expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->status())->toArray())->toBe([
             'done',
             'done',
@@ -817,16 +797,10 @@ describe('Monitor', function () {
 
         $this->freezeTime();
 
-        // dump('BRUH');
-
         [$delegates, $round, $height] = createRealisticRound([
             array_fill(0, Network::delegateCount(), true),
         ], $this);
 
-        $postFullRoundHeight = $height;
-
-        // expect($round)->toBe(3);
-        // expect(Block::count())->toBe(102);
         expect(now()->format('Y-m-d H:i:s'))->toBe('2024-02-01 14:00:00');
 
         $component = Livewire::test(Monitor::class)
@@ -855,10 +829,8 @@ describe('Monitor', function () {
             $orderedDelegates->get(7)['publicKey'],
         ], true, Network::delegateCount());
 
-
         $expectedNow = Carbon::parse('2024-02-01 14:00:00')->addSeconds(Network::blockTime() * Network::delegateCount());
 
-        // expect(Block::count())->toBe(102 + Network::delegateCount() - 4);
         expect(now()->format('Y-m-d H:i:s'))->toBe($expectedNow->format('Y-m-d H:i:s'));
 
         $instance = $component->call('pollData')->instance();
@@ -866,10 +838,6 @@ describe('Monitor', function () {
         $overflowDelegates = $instance->getOverflowDelegatesProperty();
 
         $overflowForgeTime = $expectedNow->copy()->addSeconds(Network::blockTime());
-
-        // dd(['BLOCKS' => Block::where('height', '>=', $postFullRoundHeight)->orderBy('height', 'asc')->get()->map(fn ($b) => ['height' => (string) $b->height, 'generator_public_key' => $b->generator_public_key.'-'.(string) $b->height])->pluck('height', 'generator_public_key')->toArray()]);
-
-        // dd('BRO');
 
         expect(collect($overflowDelegates)->map(fn ($delegate) => $delegate->forgingAt()->format('Y-m-d H:i:s'))->toArray())->toBe([
             $overflowForgeTime->format('Y-m-d H:i:s'),
@@ -886,8 +854,6 @@ describe('Monitor', function () {
 
         // Overflow slot 3
         createBlock($height + 1, $overflowDelegates[2]->publicKey(), $this);
-
-        // expect(Block::count())->toBe(102 + Network::delegateCount() - 2);
 
         $instance = $component->call('pollData')->instance();
 
@@ -1278,8 +1244,6 @@ describe('Data Boxes', function () {
             array_fill(0, 51, true),
             array_fill(0, 51, true),
         ], $this);
-
-        // $publicKey = $delegates->get(4)->public_key;
 
         $orderedDelegates = getRoundDelegates(false, $round - 1);
 
