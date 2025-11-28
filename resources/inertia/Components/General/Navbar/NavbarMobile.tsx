@@ -1,3 +1,4 @@
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { Navigation } from "@/types";
 import NavbarLogo from "./NavbarLogo";
 import classNames from "classnames";
@@ -5,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import MenuIcon from "@ui/icons/menu.svg?react";
 import MenuShowIcon from "@ui/icons/menu-show.svg?react";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useShareData from "@/hooks/use-shared-data";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
 import PriceTicker from "@/Components/General/PriceTicker/PriceTicker";
@@ -14,6 +15,7 @@ import NavbarMobileThemeToggle from "./NavbarMobileThemeToggle";
 import NavbarArkConnect from "../NavbarArkConnect/NavbarArkConnect";
 import { useNavbar } from "./NavbarContext";
 import { NavbarResultsMobile } from "@/Components/General/NavbarSearch/NavbarResults";
+import { isIosSafari } from "@/utils/is-ios-safari";
 
 const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
@@ -128,6 +130,20 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
     const { isDownForMaintenance, arkconnectConfig } = useShareData();
     const { setSearchModalOpen } = useNavbar();
+    const navbarRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const shouldLockBody = !isIosSafari() && window.innerWidth <= 640;
+
+        if (open) {
+            if (shouldLockBody) {
+                console.log("disableBodyScroll", navbarRef.current);
+                disableBodyScroll(navbarRef.current);
+            }
+        } else {
+            enableBodyScroll(navbarRef.current);
+        }
+    }, [open]);
 
     return (
         <header className="flex flex-col md:hidden">
@@ -151,7 +167,10 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                         ></div>
                     ))}
 
-                <nav className="relative z-30 border-b border-theme-secondary-300 bg-white dark:border-theme-dark-800 dark:bg-theme-dark-900">
+                <nav
+                    ref={navbarRef}
+                    className="relative z-30 border-b border-theme-secondary-300 bg-white dark:border-theme-dark-800 dark:bg-theme-dark-900"
+                >
                     <div className="content-container relative flex h-[3.25rem] w-full justify-between sm:h-16">
                         <div className="flex flex-shrink-0 items-center">
                             <a className="flex items-center" href={route("home")}>

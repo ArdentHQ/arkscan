@@ -168,6 +168,8 @@ export function NavbarResultsMobile() {
 
     const { query, results, hasResults, searchModalOpen, clear } = useNavbar();
 
+    const searchResultsRef = useRef<HTMLDivElement>(null);
+
     const handleBlur = () => {
         clear();
     };
@@ -182,6 +184,14 @@ export function NavbarResultsMobile() {
             window.location.assign(firstResult.url);
         }
     };
+
+    useEffect(() => {
+        if (!searchModalOpen) {
+            return;
+        }
+
+        searchResultsRef.current?.focus();
+    }, [searchModalOpen, searchResultsRef.current]);
 
     if (!searchModalOpen) {
         return <></>;
@@ -205,7 +215,10 @@ export function NavbarResultsMobile() {
             <div className="relative mx-4 my-6 flex flex-col rounded-xl border border-transparent bg-white p-6 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200 sm:m-8">
                 <SearchInput onEnter={goToFirstResult} />
 
-                <div className="flex flex-col space-y-1 divide-y divide-dashed divide-theme-secondary-300 whitespace-nowrap text-sm font-semibold dark:divide-theme-dark-800">
+                <div
+                    ref={searchResultsRef}
+                    className="flex flex-col space-y-1 divide-y divide-dashed divide-theme-secondary-300 whitespace-nowrap text-sm font-semibold dark:divide-theme-dark-800"
+                >
                     {hasResults && (
                         <>
                             {results.map((result) => (
