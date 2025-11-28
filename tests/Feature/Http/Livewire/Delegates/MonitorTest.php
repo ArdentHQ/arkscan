@@ -199,7 +199,7 @@ describe('Monitor', function () {
         // Force round time
         $this->travelTo(new Carbon('2021-01-01 00:04:00'));
 
-        $round = 1;
+        $round  = 1;
         $height = 2;
 
         $genesisWallet = Wallet::factory()
@@ -738,7 +738,6 @@ describe('Monitor', function () {
         ], $this);
 
         $orderedDelegates = getRoundDelegates(false, $round - 1);
-
 
         [$delegates, $round, $height] = createPartialRound($round, $height, null, $this, [
             $orderedDelegates->get(4)['publicKey'],
