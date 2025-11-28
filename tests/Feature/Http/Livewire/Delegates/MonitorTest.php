@@ -303,7 +303,6 @@ describe('Monitor', function () {
         $this->travel(14 * 8)->seconds();
 
         // Forge block with 20th delegate
-        // forgeBlock($delegatesInOrder->get(20), $height);
         createBlock($height, $delegatesInOrder->get(8), $this);
         $height++;
 
@@ -926,30 +925,6 @@ describe('Monitor', function () {
             'next',
         ]);
     });
-
-    // it('should extend forge time when missed before overflow (testing Helper)', function (int $count, string $expected) {
-    //     dump('should extend forge time when missed before overflow (testing Helper)');
-    //     $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
-
-    //     $this->freezeTime();
-
-    //     createRealisticRound([
-    //         [
-    //             ...array_fill(0, 4, true),
-    //             ...array_fill(0, $count, false),
-    //             ...array_fill(0, 49 - $count, true),
-    //         ],
-    //     ], $this);
-
-    //     expect(Carbon::now()->format('Y-m-d H:i:s'))->toBe($expected);
-    // })->with([
-    //     1 => [1, '2024-02-01 14:00:08'],
-    //     2 => [2, '2024-02-01 14:00:16'],
-    //     3 => [3, '2024-02-01 14:00:24'],
-    //     4 => [4, '2024-02-01 14:00:32'],
-    //     5 => [5, '2024-02-01 14:01:20'],
-    //     6 => [6, '2024-02-01 14:01:36'],
-    // ]);
 });
 
 describe('Data Boxes', function () {
