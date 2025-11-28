@@ -174,12 +174,6 @@ final class Monitor extends Component
                 return count($blocks);
             });
 
-        /** @var Block $lastRoundBlock */
-        $lastRoundBlock = Block::query()
-            ->where('height', '>=', $heightRange[0])
-            ->orderBy('height', 'desc')
-            ->first();
-
         $hasReachedFinalSlot = $lastRoundBlock->height === $heightRange[1];
         if ($overflowBlocks->isNotEmpty()) {
             $hasReachedFinalSlot = $overflowBlocks->last()['height'] === $heightRange[1];
