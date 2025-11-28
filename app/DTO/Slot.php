@@ -23,7 +23,8 @@ final class Slot
         private array $lastBlock,
         private string $status,
         private Collection $roundBlockCount,
-        private int $roundNumber
+        private int $roundNumber,
+        private int $secondsUntilForge,
     ) {
         $this->currentRoundBlocks = $this->roundBlockCount
             ->get($this->publicKey, 0);
@@ -127,6 +128,45 @@ final class Slot
         }
 
         return false;
+    }
+
+    /**
+     * Clone the slot with the given overridden properties.
+     *
+     * @param string|null $publicKey
+     * @param int|null $order
+     * @param WalletViewModel|null $wallet
+     * @param Carbon|null $forgingAt
+     * @param array|null $lastBlock
+     * @param string|null $status
+     * @param Collection|null $roundBlockCount
+     * @param int|null $roundNumber
+     * @param int|null $secondsUntilForge
+     *
+     * @return Slot
+     */
+    public function clone(
+        ?string $publicKey = null,
+        ?int $order = null,
+        ?WalletViewModel $wallet = null,
+        ?Carbon $forgingAt = null,
+        ?array $lastBlock = null,
+        ?string $status = null,
+        ?Collection $roundBlockCount = null,
+        ?int $roundNumber = null,
+        ?int $secondsUntilForge = null,
+    ): self {
+        return new self(
+            publicKey: $publicKey ?? $this->publicKey,
+            order: $order ?? $this->order,
+            wallet: $wallet ?? $this->wallet,
+            forgingAt: $forgingAt ?? $this->forgingAt,
+            lastBlock: $lastBlock ?? $this->lastBlock,
+            status: $status ?? $this->status,
+            roundBlockCount: $roundBlockCount ?? $this->roundBlockCount,
+            roundNumber: $roundNumber ?? $this->roundNumber,
+            secondsUntilForge: $secondsUntilForge ?? $this->secondsUntilForge,
+        );
     }
 
     private function getLastHeight(): int
