@@ -733,6 +733,10 @@ export default function ArkConnectProvider({
 
     const isArkConnectEnabled = useMemo(() => Boolean(state.arkconnectConfig?.enabled), [state.arkconnectConfig]);
 
+    const addressUrl = useMemo(() => {
+        return `/addresses/${state.address}`;
+    }, [state.address]);
+
     const contextValue = useMemo<IArkConnectContextType>(
         () => ({
             ...state,
@@ -753,6 +757,7 @@ export default function ArkConnectProvider({
             ignoreResignedAddress,
             ignoreStandbyAddress,
             isArkConnectEnabled,
+            addressUrl,
         }),
         [
             connect,

@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import ID from "@/Components/Transaction/ID";
 import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Transaction/Amount";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import Fee from "@/Components/Transaction/Fee";
 import Addressing from "@/Components/Transaction/Addressing";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
@@ -17,7 +17,7 @@ import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 
 export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
     const { t } = useTranslation();
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     return (
         <MobileTable noResultsMessage={transactions.noResultsMessage} resultCount={transactions.total ?? 0}>

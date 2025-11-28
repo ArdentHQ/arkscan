@@ -3,14 +3,14 @@ import { useTranslation } from "react-i18next";
 import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import DropdownPopup from "@/Components/General/Dropdown/DropdownPopup";
 import QRCode from "react-qr-code";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ExternalLink from "@/Components/General/ExternalLink";
 import { URLBuilder } from "@ardenthq/arkvault-url";
 import Input from "@/Components/Input/Input";
 import ArkConnectDisabledAction from "@/Components/General/ArkConnect/DisabledAction";
 import QRCodeIcon from "@ui/icons/qr-code.svg?react";
 import Tooltip from "@/Components/General/Tooltip";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import { useArkConnect } from "@/Providers/ArkConnect/ArkConnectContext";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 
@@ -25,7 +25,7 @@ function ArkVaultButton({
     const { t } = useTranslation();
 
     const { isOnSameNetwork, isConnected, performSend, isArkConnectEnabled } = useArkConnect();
-    const { wallet } = useConfig<WalletProps>();
+    const { wallet } = useSharedData<WalletProps>();
 
     let arkconnectButton = null;
 
@@ -96,7 +96,7 @@ function ArkVaultButton({
 function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string }) {
     const { t } = useTranslation();
     const [showOptions, setShowOptions] = useState(false);
-    const { arkconnectConfig, network } = useConfig();
+    const { arkconnectConfig, network } = useSharedData();
     const [amount, setAmount] = useState<number | undefined>(undefined);
 
     const urlBuilder = new URLBuilder(arkconnectConfig.vaultUrl);
@@ -107,10 +107,12 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
         amount: amount !== undefined && amount > 0 ? amount : undefined,
     });
 
+    const hasTrackedOpen = useRef(false);
+
     return (
         <DropdownPopup
             title={t("pages.wallet.qrcode.title")}
-            width="w-[calc(100vw-1rem)] sm:max-w-[320px]"
+            width="w-[calc(100vw)] sm:max-w-[320px]"
             zIndex={30}
             button={
                 <div className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset">
@@ -118,6 +120,13 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
                 </div>
             }
             onClosed={() => setTimeout(() => setShowOptions(false))}
+            onOpened={() => {
+                if (!hasTrackedOpen.current) {
+                    window.sa_event("qr_code_opened");
+
+                    hasTrackedOpen.current = true;
+                }
+            }}
             testId={testId}
         >
             {showOptions && (

@@ -3,7 +3,9 @@ import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import loadI18n from "../inertia/i18n";
 import ArkConnectProvider from "@/Providers/ArkConnect/ArkConnectProvider";
-import { IConfigArkconnect, INetwork } from "@/types/generated";
+import WebhooksProvider from "@/Providers/Webhooks/WebhooksProvider";
+import SettingsProvider from "@/Providers/Settings/SettingsProvider";
+import { IConfigArkconnect, INetwork, IPriceTickerData } from "@/types/generated";
 import { ArkConnectConfiguration } from "@/Providers/ArkConnect/types";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
@@ -21,10 +23,18 @@ createInertiaApp({
             network: props.initialPage.props.network as INetwork,
             arkconnectConfig: props.initialPage.props.arkconnectConfig as IConfigArkconnect,
         };
+
         root.render(
-            <ArkConnectProvider configuration={configuration}>
-                <App {...props} />
-            </ArkConnectProvider>,
+            <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
+                <SettingsProvider
+                    tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}
+                    theme={props.initialPage.props.theme as string}
+                >
+                    <ArkConnectProvider configuration={configuration}>
+                        <App {...props} />
+                    </ArkConnectProvider>
+                </SettingsProvider>
+            </WebhooksProvider>,
         );
     },
     progress: {

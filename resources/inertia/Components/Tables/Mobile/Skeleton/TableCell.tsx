@@ -1,5 +1,5 @@
 import LoadingText from "@/Components/Loading/Text";
-import classNames from "../../../../utils/class-names";
+import classNames from "classnames";
 
 export default function LoadingTableCell({
     withLabel = false,

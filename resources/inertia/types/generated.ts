@@ -23,6 +23,35 @@ export type ICurrency = {
     locale: string | null;
     symbol: string | null;
 };
+export type INavbarSearchBlockResultData = {
+    hash: string;
+    transactionCount: number;
+    validator: INavbarSearchMemoryWallet | null;
+};
+export type INavbarSearchMemoryWallet = {
+    address: string | null;
+    username: string | null;
+    isContract: boolean;
+};
+export type INavbarSearchTransactionResultData = {
+    hash: string;
+    amountWithFee: number;
+    isVote: boolean;
+    isUnvote: boolean;
+    isTransfer: boolean;
+    isTokenTransfer: boolean;
+    sender: INavbarSearchMemoryWallet | null;
+    recipient: INavbarSearchMemoryWallet | null;
+    typeName: string;
+    votedValidatorLabel: string | null;
+};
+export type INavbarSearchWalletResultData = {
+    address: string;
+    username: string | null;
+    hasUsername: boolean;
+    isKnown: boolean;
+    balance: number;
+};
 export type INetwork = {
     coin: string;
     name: string;
@@ -61,6 +90,11 @@ export type INetwork = {
         contract_deployment: string;
     };
 };
+export type IPriceTickerData = {
+    currency: string;
+    isPriceAvailable: boolean;
+    priceExchangeRate: number | null;
+};
 export type IRequestData = {
     currencies: Record<string, ICurrency>;
     network: INetwork;
@@ -68,6 +102,18 @@ export type IRequestData = {
     settings: ISettings;
     arkconnectConfig: IConfigArkconnect;
     pagination: IConfigPagination;
+    broadcasting: string;
+    networkName: string;
+    isDownForMaintenance: boolean;
+    isProduction: boolean;
+    priceTickerData: IPriceTickerData;
+    theme: string;
+    mainnetExplorerUrl: string;
+    testnetExplorerUrl: string;
+    supportEnabled: boolean;
+    navbarTag: string | null;
+    navbarName: string | null;
+    currentRoute: string | null;
 };
 export type ISettings = {
     currency: string;

@@ -1,7 +1,7 @@
 import Pagination from "@/Components/Tables/Pagination/Pagination";
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import { IPaginatedResponse } from "@/types";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -85,7 +85,7 @@ export function Table({
     noResultsMessage?: React.ReactNode;
 }) {
     const tableRef = useRef<HTMLDivElement>(null);
-    const { pagination } = useConfig();
+    const { pagination } = useSharedData();
     const resultCount = paginator?.total ?? 0;
 
     const showFooter = withFooter && paginator && resultCount > pagination?.per_page;

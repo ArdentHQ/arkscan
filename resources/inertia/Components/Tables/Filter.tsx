@@ -7,7 +7,6 @@ import { IFilters } from "@/types";
 import { useFilter } from "@/Providers/Filter/FilterContext";
 import { IFilterEntry, IFilterOptionEntry } from "@/Providers/Filter/types";
 import { CSSProperties, useEffect, useState } from "react";
-import classNames from "@/utils/class-names";
 
 function FilterComponent({
     disabled = false,

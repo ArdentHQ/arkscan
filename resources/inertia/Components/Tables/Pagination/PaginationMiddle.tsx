@@ -1,5 +1,5 @@
 import { IPaginatedResponse } from "@/types";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CrossIcon from "@ui/icons/cross.svg?react";

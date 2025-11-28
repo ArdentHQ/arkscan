@@ -13,11 +13,10 @@
     >
         @vite('resources/js/app-inertia.tsx')
         @inertiaHead
+        @routes
     </x-ark-pages-includes-layout-head-inertia>
 
     <x-ark-pages-includes-layout-body class="table-compact">
-        <x-navbar.navbar />
-
         <x-slot name="content">
             @inertia('inertia-body')
         </x-slot>
@@ -42,13 +41,14 @@
                 </span>
             </x-ark-footer>
 
-            <x-webhooks.currency-update :currency="Settings::currency()" />
-
             @if (config('arkscan.arkconnect.enabled'))
                 <x-arkconnect.validator-toasts />
             @endif
 
             <livewire:search-modal />
+
+            <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+            <script async src="https://scripts.simpleanalyticscdn.com/auto-events.js"></script>
         </x-slot>
     </x-ark-pages-includes-layout-body>
 </html>

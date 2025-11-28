@@ -1,5 +1,5 @@
 import { ITransaction, IWallet } from "@/types/generated";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import TruncateMiddle from "../General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
 

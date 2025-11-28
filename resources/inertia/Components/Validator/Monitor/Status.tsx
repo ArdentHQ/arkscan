@@ -1,5 +1,5 @@
 import Badge from "@/Components/General/Badge";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import TimeToForge from "./TimeToForge";
 import { useValidatorStatus } from "@/Providers/ValidatorStatus/ValidatorStatusContext";
 import { ForgingStatusGenerated, ForgingStatusMissed, ForgingStatusPending } from "@/Providers/ValidatorStatus/types";

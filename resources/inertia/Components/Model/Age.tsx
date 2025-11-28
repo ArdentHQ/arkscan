@@ -1,5 +1,5 @@
 import { DATE_TIME_FORMAT } from "@/constants";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import dayjs from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import Tooltip from "../General/Tooltip";

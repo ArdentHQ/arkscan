@@ -3,14 +3,17 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BlocksController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\WalletController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -81,3 +84,15 @@ Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 Route::post('/webhooks', WebhooksController::class)
     ->withoutMiddleware([VerifyCsrfToken::class])
     ->name('webhooks');
+
+Route::post('/currency/update', [CurrencyController::class, 'update'])
+    ->name('currency.update');
+
+Route::post('/theme/update', [ThemeController::class, 'update'])
+    ->name('theme.update');
+
+Route::get('/navbar/search', [SearchController::class, 'index'])
+    ->name('navbar-search.index');
+
+Route::post('/navbar/search/redirect', [SearchController::class, 'redirect'])
+    ->name('navbar-search.redirect');

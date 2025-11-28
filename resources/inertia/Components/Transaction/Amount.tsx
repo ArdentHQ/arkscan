@@ -1,6 +1,6 @@
-import useConfig from "@/hooks/use-config";
+import useSharedData from "@/hooks/use-shared-data";
 import { ITransaction } from "@/types/generated";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import Fee from "./Fee";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
 
@@ -17,7 +17,7 @@ export default function Amount({
     breakpoint?: "md-lg" | "lg" | "xl";
     hideCurrency?: boolean;
 }) {
-    const { network } = useConfig();
+    const { network } = useSharedData();
 
     let isReceived = !transaction.isSent;
     let isSent = transaction.isSent;

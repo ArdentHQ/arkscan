@@ -1,5 +1,5 @@
 import EllipsisVerticalIcon from "@ui/icons/ellipsis-vertical.svg?react";
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 import {
     Placement,
     useFloating,
@@ -32,6 +32,7 @@ export default function Dropdown({
     button,
     children,
     onClosed,
+    onOpened,
     testId,
 }: {
     dropdownContentClasses?: string;
@@ -48,9 +49,10 @@ export default function Dropdown({
     closeOnClick?: boolean;
     disabled?: boolean;
     placement?: Placement;
-    button?: React.ReactNode;
+    button?: React.ReactNode | ((props: { isOpen: boolean }) => React.ReactNode);
     children: React.ReactNode;
     onClosed?: () => void;
+    onOpened?: () => void;
     testId?: string;
 }) {
     const { isOpen, setIsOpen } = useDropdown();
@@ -79,44 +81,55 @@ export default function Dropdown({
         onOpenChange(nextOpen) {
             setIsOpen(nextOpen);
 
+            if (nextOpen && onOpened !== undefined) {
+                setTimeout(() => onOpened(), 250);
+            }
+
             if (!nextOpen && onClosed !== undefined) {
                 setTimeout(() => onClosed(), 250);
             }
         },
     });
 
+    const triggerOpenClosed = (isDropdownOpen: boolean) => {
+        setIsOpen(isDropdownOpen);
+        if (isDropdownOpen && onOpened !== undefined) {
+            onOpened();
+        }
+
+        return;
+    };
+
     const dismiss = useDismiss(context);
 
     const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
 
     const { isMounted: isFloatingOpen, styles: floatingTransitionStyled } = useTransitionStyles(context, {
-        duration: 250, // explicitly setting default value for reference to onClosed
+        duration: 250, // explicitly setting default value for reference to open/closed events
     });
 
     let dropdownButton = (
-        <div>
-            <button
-                ref={refs.setReference}
-                className={classNames({
-                    "dropdown-button transition-default flex items-center focus:outline-none": true,
-                    "bg-theme-secondary-200 text-theme-secondary-500 dark:border-theme-dark-700 dark:bg-theme-dark-800 dark:text-theme-dark-500":
-                        disabled,
-                    "bg-theme-secondary-200 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 md:bg-white md:hover:text-theme-secondary-900 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600":
-                        !disabled && useDefaultButtonClasses,
-                    [buttonClass]: true,
-                    [buttonClassExpanded]: isOpen,
-                    [buttonClassClosed]: !isOpen,
-                })}
-                onClick={() => setIsOpen(!isOpen)}
-                type="button"
-                disabled={disabled}
-                data-testid={testId ? `${testId}:button` : undefined}
-                {...getReferenceProps()}
-            >
-                {button !== undefined && button}
-                {button === undefined && <EllipsisVerticalIcon className="h-5 w-5" />}
-            </button>
-        </div>
+        <button
+            ref={refs.setReference}
+            className={classNames({
+                "dropdown-button transition-default flex items-center focus:outline-none": true,
+                "bg-theme-secondary-200 text-theme-secondary-500 dark:border-theme-dark-700 dark:bg-theme-dark-800 dark:text-theme-dark-500":
+                    disabled,
+                "bg-theme-secondary-200 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 md:bg-white md:hover:text-theme-secondary-900 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600":
+                    !disabled && useDefaultButtonClasses,
+                [buttonClass]: true,
+                [buttonClassExpanded]: isOpen,
+                [buttonClassClosed]: !isOpen,
+            })}
+            onClick={() => triggerOpenClosed(!isOpen)}
+            type="button"
+            disabled={disabled}
+            data-testid={testId ? `${testId}:button` : undefined}
+            {...getReferenceProps()}
+        >
+            {button !== undefined && typeof button === "function" ? button({ isOpen }) : button}
+            {button === undefined && <EllipsisVerticalIcon className="h-5 w-5" />}
+        </button>
     );
 
     if (buttonTooltip !== undefined) {
@@ -155,7 +168,7 @@ export default function Dropdown({
                                 className={dropdownContentClasses}
                                 onClick={() => {
                                     if (closeOnClick) {
-                                        setIsOpen(false);
+                                        triggerOpenClosed(false);
                                     }
                                 }}
                             >

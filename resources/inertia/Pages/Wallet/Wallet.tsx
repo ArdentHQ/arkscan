@@ -17,6 +17,9 @@ import WalletTransactionsTab from "./tabs/Transactions";
 import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
 import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
 import { IWallet } from "../../types/generated";
+import useWebhooks from "@/Providers/Webhooks/useWebhooks";
+import useSharedData from "@/hooks/use-shared-data";
+import Navbar from "@/Components/General/Navbar/Navbar";
 
 const WalletTabsWrapper = ({
     transactions,
@@ -79,6 +82,9 @@ const WalletTabs = ({
 }) => {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+    const { listen } = useWebhooks();
+    const { wallet } = useSharedData<WalletProps>();
+
     const { setRefreshPage } = usePageHandler();
     const { currentTab, onTabChange } = useTabs();
 
@@ -101,6 +107,52 @@ const WalletTabs = ({
             },
         });
     };
+
+    const reloadTransactions = () => {
+        router.reload({
+            only: ["transactions"],
+        });
+    };
+
+    useEffect(() => {
+        if (currentTab !== "transactions") {
+            return;
+        }
+
+        return listen(`transactions.${wallet.address}`, "NewTransaction", reloadTransactions);
+    }, [wallet.address, currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "transactions") {
+            return;
+        }
+
+        return listen(`transactions.${wallet.public_key}`, "NewTransaction", reloadTransactions);
+    }, [wallet.public_key, currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "blocks") {
+            return;
+        }
+
+        return listen(`blocks.${wallet.public_key}`, "NewBlock", () => {
+            router.reload({
+                only: ["blocks"],
+            });
+        });
+    }, [wallet.public_key, currentTab]);
+
+    useEffect(() => {
+        if (currentTab !== "voters") {
+            return;
+        }
+
+        return listen(`wallet-vote.${wallet.public_key}`, "WalletVote", () => {
+            router.reload({
+                only: ["voters"],
+            });
+        });
+    }, [wallet.public_key, currentTab]);
 
     useEffect(() => {
         if (!currentTab) {
@@ -182,6 +234,9 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
     return (
         <>
             <Head>{metadata}</Head>
+
+            {/* @TODO: move this to a layout (https://app.clickup.com/t/86dyjh6nw) */}
+            <Navbar />
 
             <Overview wallet={wallet} />
 
