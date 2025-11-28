@@ -11,6 +11,7 @@ import MissedBlocksTrackerProvider from "@/Providers/MissedBlocksTracker/MissedB
 import { useTranslation } from "react-i18next";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import { PageProps } from "@inertiajs/core";
+import Layout from "@/Layout";
 
 export default function Monitor({
     validatorData,
@@ -55,27 +56,35 @@ export default function Monitor({
         <>
             <Head>{metadata}</Head>
 
-            <PageHeader title={t("pages.validator-monitor.title")} subtitle={t("pages.validator-monitor.subtitle")} />
+            <Layout>
+                <PageHeader
+                    title={t("pages.validator-monitor.title")}
+                    subtitle={t("pages.validator-monitor.subtitle")}
+                />
 
-            <HeaderStats height={height} statistics={validatorData?.statistics} />
+                <HeaderStats height={height} statistics={validatorData?.statistics} />
 
-            <ValidatorFavoritesProvider>
-                <MissedBlocksTrackerProvider
-                    validators={[...(validatorData?.validators ?? []), ...(validatorData?.overflowValidators ?? [])]}
-                >
-                    <MonitorTableWrapper
-                        validators={validatorData?.validators}
-                        overflowValidators={validatorData?.overflowValidators}
-                        rowCount={rowCount}
-                    />
+                <ValidatorFavoritesProvider>
+                    <MissedBlocksTrackerProvider
+                        validators={[
+                            ...(validatorData?.validators ?? []),
+                            ...(validatorData?.overflowValidators ?? []),
+                        ]}
+                    >
+                        <MonitorTableWrapper
+                            validators={validatorData?.validators}
+                            overflowValidators={validatorData?.overflowValidators}
+                            rowCount={rowCount}
+                        />
 
-                    <MobileDivider />
+                        <MobileDivider />
 
-                    <div className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
-                        <MonitorMobileTableWrapper validators={validatorData?.validators} rowCount={rowCount} />
-                    </div>
-                </MissedBlocksTrackerProvider>
-            </ValidatorFavoritesProvider>
+                        <div className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
+                            <MonitorMobileTableWrapper validators={validatorData?.validators} rowCount={rowCount} />
+                        </div>
+                    </MissedBlocksTrackerProvider>
+                </ValidatorFavoritesProvider>
+            </Layout>
         </>
     );
 }
