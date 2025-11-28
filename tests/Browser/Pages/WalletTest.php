@@ -169,6 +169,83 @@ describe('Overview', function () {
         'resigned' => ['resignedValidator', 'resigned'],
     ])->with('resolutions');
 
+    it('should track querystring between tabs', function () {
+        $this->wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->count(52)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        Block::factory()
+            ->count(30)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->resize(1280, 800)
+                ->visitRoute('wallet', $this->wallet)
+                ->waitForText('52 result', ignoreCase: true)
+                ->click('[data-testid="wallet:transactions:filter:button"]')
+                ->waitForText('Select All');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]'))[0]->click();
+            $browser->waitForQueryString('multipayments', 'false')->pause(100);
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Votes"]'))[0]->click();
+            $browser->waitForQueryString('votes', 'false')->pause(100);
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Validator"]'))[0]->click();
+            $browser->waitForQueryString('validator', 'false')->pause(100);
+
+            $browser->click('[data-testid="pagination:next-page"] button')
+                ->pause(100)
+                ->waitForText('Page 2 of 3')
+                ->click('[data-testid="pagination:next-page"] button')
+                ->pause(100)
+                ->waitForText('Page 3 of 3')
+                ->assertQueryStringHas('page', '3');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('button#tab-blocks')
+                ->waitForText('30 results', ignoreCase: true)
+                ->assertQueryStringMissing('page')
+                ->assertQueryStringMissing('per-page')
+                ->assertQueryStringMissing('multipayments')
+                ->assertQueryStringMissing('votes')
+                ->assertQueryStringMissing('validator');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('[data-testid="pagination:next-page"] button')
+                ->pause(100)
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringMissing('multipayments')
+                ->assertQueryStringMissing('votes')
+                ->assertQueryStringMissing('validator')
+                ->assertQueryStringMissing('per-page')
+                ->assertQueryStringHas('page', '2');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('button#tab-transactions')
+                ->pause(100)
+                ->waitForText('52 results', ignoreCase: true)
+                ->assertSee('Page 3 of 3')
+                ->assertQueryStringHas('multipayments', 'false')
+                ->assertQueryStringHas('votes', 'false')
+                ->assertQueryStringHas('validator', 'false')
+                ->assertQueryStringHas('page', '3')
+                ->assertQueryStringMissing('per-page');
+        });
+    });
+
     it('should track public key modal simpleanalytics event once when opened', function () {
         $wallet = Wallet::factory()->create();
 
@@ -298,7 +375,8 @@ describe('Transactions Tab', function () {
             $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('30 results', ignoreCase: true)
                 ->click('[data-testid="pagination:next-page"] button')
-                ->waitForText('Page 2 of 2');
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringHas('page', '2');
 
             foreach ($sortedTransactions->skip(25)->take(5)->get() as $transaction) {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
@@ -444,7 +522,7 @@ describe('Transactions Tab', function () {
 
             $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('5 results', ignoreCase: true)
-                ->click('[data-testid="transactions:filter:button"]')
+                ->click('[data-testid="wallet:transactions:filter:button"]')
                 ->waitForText('Select All');
 
             expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Select All"]')))->toHaveCount(1);
@@ -459,6 +537,52 @@ describe('Transactions Tab', function () {
             expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Others"]')))->toHaveCount(1);
         });
     })->with('resolutions');
+
+    it('should track querystring for filters', function () {
+        Transaction::factory()
+            ->transfer()
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->resize(1280, 800)
+                ->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->click('[data-testid="wallet:transactions:filter:button"]')
+                ->waitForText('Select All');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Transfers"]'))[0]->click();
+
+            $browser->waitForQueryString('transfers', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]'))[0]->click();
+
+            $browser->waitForQueryString('multipayments', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Votes"]'))[0]->click();
+
+            $browser->waitForQueryString('votes', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Validator"]'))[0]->click();
+
+            $browser->waitForQueryString('validator', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Username"]'))[0]->click();
+
+            $browser->waitForQueryString('username', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Contract Deployment"]'))[0]->click();
+
+            $browser->waitForQueryString('contract_deployment', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Others"]'))[0]->click();
+
+            $browser->waitForQueryString('others', 'false');
+        });
+    });
 });
 
 describe('Blocks Tab', function () {
