@@ -232,7 +232,7 @@ final class Monitor extends Component
         $overflowSlots   = [];
         foreach (collect($this->delegates)->take($missedCount) as $delegate) {
             $secondsUntilForge = Network::blockTime();
-            $forgingAt = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
+            $forgingAt         = Carbon::createFromTimestamp($lastTimestamp)->addSeconds($secondsUntilForge);
 
             $status = 'pending';
             if (! $hasReachedFinalSlot) {
