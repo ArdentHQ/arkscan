@@ -16,11 +16,11 @@ export default function NetworkDropdown() {
                 useDefaultButtonClasses={false}
                 buttonClass={classNames(
                     "dropdown-button",
-                    "flex items-center justify-center h-8 px-3 p-2 space-x-1.5",
+                    "flex items-center justify-center h-8 p-2 space-x-1.5",
                     "text-sm font-semibold",
-                    "rounded border border-theme-secondary-300",
-                    "bg-white text-theme-secondary-700 hover:bg-theme-secondary-200 hover:text-theme-secondary-900",
-                    "dark:bg-theme-dark-900 dark:border-theme-dark-700 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700",
+                    "rounded md:border md:border-theme-secondary-300",
+                    "bg-theme-secondary-200 text-theme-secondary-700 text-theme-primary-500 hover:bg-theme-secondary-200 md:bg-white md:hover:text-theme-secondary-900",
+                    "dark:bg-theme-dark-800 dark:text-theme-dark-50 dark:hover:bg-theme-dark-700 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-200 md:dark:border-theme-dark-700",
                     "dim:bg-theme-dark-900 dim:hover:bg-theme-dark-700",
                     "transition-default focus:outline-none",
                 )}

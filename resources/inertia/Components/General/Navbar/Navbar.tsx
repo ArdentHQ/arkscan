@@ -1,5 +1,6 @@
 import NavbarTop from "./NavbarTop";
 import NavbarDesktop from "./NavbarDesktop";
+import NavbarMobile from "./NavbarMobile";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useShareData from "@/hooks/use-shared-data";
@@ -46,15 +47,12 @@ export default function Navbar() {
         ];
     }, [t, canBeExchanged, supportEnabled]);
 
-    console.log(navigation);
-
     return (
         <div id="navbar" className="z-30 pb-13 sm:pb-16 md:sticky md:top-0 md:pb-0">
             <NavbarTop />
 
             <NavbarDesktop navigation={navigation} />
-
-            {/* @TODO: add mobile navigation (https://app.clickup.com/t/86dyeejm5) */}
+            <NavbarMobile navigation={navigation} />
         </div>
     );
 }
