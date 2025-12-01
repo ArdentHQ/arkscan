@@ -105,10 +105,6 @@ final class ValidatorTracker
             ->orderBy('number', 'asc')
             ->get();
 
-        if ($roundValidators->isEmpty()) {
-            return 0;
-        }
-
         $lastForgerAddress = $roundValidators->last()->proposer;
 
         $roundBlockCount = $roundValidators->reduce(function ($carry, $item) {
