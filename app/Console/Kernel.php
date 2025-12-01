@@ -104,7 +104,7 @@ final class Kernel extends ConsoleKernel
             $schedule->command(CachePrices::class)
                 ->everyFiveMinutes()
                 ->withoutOverlapping();
-                
+
             $schedule->command(FetchExchangesDetails::class)->everyMinute();
         }
 
@@ -113,10 +113,6 @@ final class Kernel extends ConsoleKernel
         }
 
         if (config('broadcasting.default') !== 'reverb') {
-            $schedule->command(CachePrices::class)
-                ->everyFiveMinutes()
-                ->withoutOverlapping();
-
             $schedule->command(CacheBlocks::class)
                 ->everyFiveMinutes()
                 ->withoutOverlapping();
