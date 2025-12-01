@@ -23,7 +23,7 @@ final class CacheBlocks implements ShouldQueue
 
     /**
      * CacheBlocks is scheduled every five minutes, so Horizon does not need to retry failures.
-     * 
+     *
      * @var int
      */
     public $tries = 1;

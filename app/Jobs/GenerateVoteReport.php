@@ -21,7 +21,7 @@ final class GenerateVoteReport implements ShouldQueue
 
     /**
      * The command dispatches this job every five minutes, so we only attempt it once per schedule tick.
-     * 
+     *
      * @var int
      */
     public $tries = 1;

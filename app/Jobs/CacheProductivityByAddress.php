@@ -22,7 +22,7 @@ final class CacheProductivityByAddress implements ShouldQueue
 
     /**
      * Productivity gets recalculated by the scheduler every minute, so retrying just duplicates the work.
-     * 
+     *
      * @var int
      */
     public $tries = 1;

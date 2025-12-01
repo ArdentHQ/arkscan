@@ -58,7 +58,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheVolume::class)->hourly();
 
-        $schedule->command(CacheValidatorWallets::class)->everyMinute()->withoutOverlapping();;
+        $schedule->command(CacheValidatorWallets::class)->everyMinute()->withoutOverlapping();
 
         $schedule->command(CacheValidatorVoterCounts::class)->everyTenMinutes()->withoutOverlapping();
 

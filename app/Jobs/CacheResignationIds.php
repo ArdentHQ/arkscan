@@ -25,7 +25,7 @@ final class CacheResignationIds implements ShouldQueue
 
     /**
      * Fail fast because the scheduler dispatches this job every five minutes anyway.
-     * 
+     *
      * @var int
      */
     public $tries = 1;
