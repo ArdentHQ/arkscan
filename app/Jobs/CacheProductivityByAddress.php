@@ -20,6 +20,11 @@ final class CacheProductivityByAddress implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /**
+     * Productivity gets recalculated by the scheduler every minute, so retrying just duplicates the work.
+     */
+    public $tries = 1;
+
     public function __construct(public string $address)
     {
     }

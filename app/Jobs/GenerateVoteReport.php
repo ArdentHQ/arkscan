@@ -19,6 +19,11 @@ final class GenerateVoteReport implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /**
+     * The command dispatches this job every five minutes, so we only attempt it once per schedule tick.
+     */
+    public $tries = 1;
+
     public function handle(): void
     {
         (new Process(['bash', resource_path('scripts/vote-report.sh'), Network::api()]))

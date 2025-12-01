@@ -23,6 +23,11 @@ final class CacheResignationIds implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /**
+     * Fail fast because the scheduler dispatches this job every five minutes anyway.
+     */
+    public $tries = 1;
+
     public function handle(WalletCache $walletCache, CommandsCache $commandsCache): void
     {
         $currencyLastUpdated = $commandsCache->getResignationIdsLastUpdated();
