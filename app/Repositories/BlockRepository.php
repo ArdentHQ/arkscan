@@ -30,7 +30,10 @@ final class BlockRepository implements Contract
 
     public function last(): Block
     {
-        return Block::withScope(OrderByHeightScope::class)
-            ->first();
+        /** @var Block $block */
+        $block = Block::withScope(OrderByHeightScope::class)
+            ->firstOrFail();
+
+        return $block;
     }
 }
