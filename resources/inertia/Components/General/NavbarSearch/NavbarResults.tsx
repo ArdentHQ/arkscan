@@ -13,6 +13,7 @@ import { useNavbar } from "../Navbar/NavbarContext";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import { useEffect, useRef, useState } from "react";
+import TruncateDynamic from "../TruncateDynamic";
 
 type SearchResultData =
     | INavbarSearchWalletResultData
@@ -317,13 +318,15 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
             <MobileResult
                 header={
                     <>
-                        <div className="link font-semibold hover:text-theme-primary-600 group-hover/result:no-underline">
-                            {hasUsername ? result.data.username : result.data.address}
+                        <div className={classNames("link font-semibold hover:text-theme-primary-600 group-hover/result:no-underline", {
+                            "overflow-auto": !hasUsername,
+                        })}>
+                            {result.data.username ? result.data.username : <TruncateDynamic value={result.data.address ?? ""} />}
                         </div>
 
                         {hasUsername && (
-                            <div className="ml-1 truncate text-theme-secondary-700 dark:text-theme-dark-200">
-                                {result.data.address}
+                            <div className="ml-1 text-theme-secondary-700 dark:text-theme-dark-200 overflow-auto flex-1">
+                                <TruncateDynamic value={result.data.address ?? ""} />                            
                             </div>
                         )}
                     </>
@@ -380,7 +383,7 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
             <MobileResult
                 header={
                     <div className="link min-w-0 hover:text-theme-primary-600 group-hover/result:no-underline">
-                        <TruncateMiddle>{hash}</TruncateMiddle>
+                        <TruncateDynamic value={hash ?? ""} />                                            
                     </div>
                 }
                 children={
@@ -454,8 +457,8 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
         <>
             <MobileResult
                 header={
-                    <div className="link min-w-0 hover:text-theme-primary-600 group-hover/result:no-underline">
-                        <TruncateMiddle>{result.data.hash}</TruncateMiddle>
+                    <div className="link min-w-0 hover:text-theme-primary-600 group-hover/result:no-underline overflow-auto">
+                        <TruncateDynamic value={result.data.hash ?? ""} />                    
                     </div>
                 }
                 children={
