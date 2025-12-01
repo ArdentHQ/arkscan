@@ -93,7 +93,6 @@ final class CacheAddressStatistics extends Command
 
     private function cacheMostTransactions(StatisticsCache $cache): void
     {
-        
         $mostActive = DB::connection('explorer')->query()
             ->fromSub(function ($query) {
                 $query->select('from as address')
@@ -124,8 +123,8 @@ final class CacheAddressStatistics extends Command
             ->groupBy('address')
             ->orderByDesc('tx_count')
             ->limit(1)
-            ->first();  
-    
+            ->first();
+
         /** @var object{address?: string, tx_count?: int} $mostActive */
         if ($mostActive?->address !== null) {
             $newValue = [
