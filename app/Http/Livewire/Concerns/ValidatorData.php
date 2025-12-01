@@ -9,7 +9,6 @@ use App\Facades\Blocks;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
-use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Wallet;
 use App\Services\Cache\RequestScopedCache;
 use App\Services\Cache\WalletCache;

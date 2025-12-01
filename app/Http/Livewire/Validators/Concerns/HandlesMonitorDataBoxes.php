@@ -9,7 +9,6 @@ use App\DTO\Slot;
 use App\Enums\ValidatorForgingStatus;
 use App\Facades\Network;
 use App\Facades\Rounds;
-use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\MonitorCache;
 use App\Services\Cache\WalletCache;

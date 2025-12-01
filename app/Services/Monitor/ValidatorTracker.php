@@ -13,7 +13,7 @@ final class ValidatorTracker
 {
     public static function executeWithCache(array $validators, int $startHeight, ?Block $lastBlock = null): array
     {
-        $cacheKey = 'validator_tracker:' . md5(implode(',', $validators) . ':' . $startHeight. ':' . ($lastBlock?->number->__toString() ?? '0'));
+        $cacheKey = 'validator_tracker:'.md5(implode(',', $validators).':'.$startHeight.':'.($lastBlock?->number->__toString() ?? '0'));
 
         return RequestScopedCache::remember($cacheKey, function () use ($validators, $startHeight, $lastBlock) {
             return static::execute($validators, $startHeight, $lastBlock);
