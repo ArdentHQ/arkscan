@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Contracts\BlockRepository as Contract;
 use App\Models\Block;
+use App\Models\Scopes\OrderByHeightScope;
 
 final class BlockRepository implements Contract
 {
@@ -25,5 +26,11 @@ final class BlockRepository implements Contract
             ->where('hash', $identifier)
             ->orWhere('number', (int) $identifier)
             ->firstOrFail();
+    }
+
+    public function last(): Block
+    {
+        return Block::withScope(OrderByHeightScope::class)
+            ->first();
     }
 }

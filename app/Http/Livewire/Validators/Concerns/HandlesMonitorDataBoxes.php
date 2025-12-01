@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Validators\Concerns;
 
+use App\Actions\CacheNetworkHeight;
 use App\DTO\Slot;
 use App\Enums\ValidatorForgingStatus;
 use App\Facades\Network;
@@ -72,7 +73,7 @@ trait HandlesMonitorDataBoxes
     {
         return (new MonitorCache())->setBlockCount(function (): string {
             return trans('pages.validators.statistics.blocks_generated', [
-                'forged' => Network::validatorCount() - (Monitor::heightRangeByRound(Rounds::current())[1] - Block::max('number')),
+                'forged' => Network::validatorCount() - (Monitor::heightRangeByRound(Rounds::current())[1] - CacheNetworkHeight::execute()),
                 'total'  => Network::validatorCount(),
             ]);
         });
