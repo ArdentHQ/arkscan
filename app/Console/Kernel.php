@@ -101,6 +101,10 @@ final class Kernel extends ConsoleKernel
         $schedule->command(LoadExchanges::class)->daily();
 
         if (Network::canBeExchanged()) {
+            $schedule->command(CachePrices::class)
+                ->everyFiveMinutes()
+                ->withoutOverlapping();
+                
             $schedule->command(FetchExchangesDetails::class)->everyMinute();
         }
 
