@@ -95,50 +95,39 @@ final class CacheAddressStatistics extends Command
     private function cacheMostTransactions(StatisticsCache $cache): void
     {
         /** @var stdClass|null $mostActive */
-        $mostActive = DB::connection('explorer')->query()
-            ->fromSub(function ($query) {
-                $query->select('from as address')
-                      ->from('transactions')
+        $mostActive = DB::connection('explorer')->selectOne("
+            SELECT address, COUNT(*) AS tx_count
+            FROM (
+                SELECT DISTINCT t.hash, w.address
+                FROM transactions t
+                JOIN wallets w ON t.sender_public_key = w.public_key
 
-                ->unionAll(
-                    Transaction::select('to as address')
-                               ->whereNotNull('to')
-                )
+                UNION
 
-                ->unionAll(
-                    Transaction::selectRaw('unnest(multi_payment_recipients) as address')
-                               ->whereNotNull('multi_payment_recipients')
-                )
+                SELECT DISTINCT t.hash, t.\"to\"
+                FROM transactions t
+                WHERE t.\"to\" IS NOT NULL AND t.\"to\" != ''
 
-                ->unionAll(
-                    Transaction::select('wallets.address')
-                               ->join('wallets', 'transactions.sender_public_key', '=', 'wallets.public_key')
-                               ->whereColumn('transactions.from', '!=', 'wallets.address')
-                               ->orWhereNull('transactions.from')
-                );
-            }, 'activity')
+                UNION
 
-            ->select('address')
-            ->selectRaw('COUNT(*) as tx_count')
-            ->whereNotNull('address')
-            ->where('address', '!=', '')
-            ->groupBy('address')
-            ->orderByDesc('tx_count')
-            ->limit(1)
-            ->first();
+                SELECT DISTINCT t.hash, u.addr
+                FROM transactions t
+                CROSS JOIN LATERAL unnest(t.multi_payment_recipients) u(addr)
+                WHERE t.multi_payment_recipients IS NOT NULL
+            ) s
+            WHERE address IS NOT NULL AND address != ''
+            GROUP BY address
+            ORDER BY tx_count DESC
+            LIMIT 1
+        ");
 
         if ($mostActive !== null && isset($mostActive->address)) {
-            $txCount = property_exists($mostActive, 'tx_count')
-                ? (int) $mostActive->tx_count
-                : 0;
-
             $newValue = [
                 'address' => $mostActive->address,
-                'value'   => $txCount,
+                'value'   => (int) $mostActive->tx_count,
             ];
 
-            $current = $cache->getMostTransactions() ?? [];
-            if ($current !== $newValue) {
+            if ($cache->getMostTransactions() !== $newValue) {
                 $this->hasChanges = true;
             }
 

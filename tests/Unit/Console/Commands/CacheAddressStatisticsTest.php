@@ -466,6 +466,7 @@ it('should cache wallet with most transactions', function () {
         ->count(3)
         ->create([
             'sender_public_key' => $walletWithMostTransactions->public_key,
+            'from'              => $walletWithMostTransactions->address,
         ]);
 
     Transaction::factory()
@@ -488,7 +489,9 @@ it('should cache wallet with most transactions', function () {
             [BigNumber::new(10 * 1e18)],
         )
         ->count(5)
-        ->create();
+        ->create([
+            'to' => null,
+        ]);
 
     $this->artisan('explorer:cache-address-statistics');
 
