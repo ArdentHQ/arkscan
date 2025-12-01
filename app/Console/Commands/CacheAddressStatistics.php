@@ -93,42 +93,50 @@ final class CacheAddressStatistics extends Command
 
     private function cacheMostTransactions(StatisticsCache $cache): void
     {
-        /** @var array{address?: string, tx_count?: int} $mostTransactions */
-        // Ignore next line as the `joinSubLateral` works as intended since it is a macro method.
-        // @phpstan-ignore-next-line
-        $mostTransactions = (array) DB::connection('explorer')
-            ->query()
-            ->select([
-                DB::raw('COUNT(transaction_counts.hash) as tx_count'),
-                DB::raw('wallets.address'),
-            ])
-            ->from('wallets')
-            ->joinSubLateral(function ($query) {
-                $query->selectRaw('transactions.hash')
-                    ->from('transactions')
-                    ->whereColumn('transactions.sender_public_key', 'wallets.public_key')
-                    ->orWhereColumn('transactions.to', 'wallets.address')
-                    ->orWhereRaw('wallets.address::citext = ANY(multi_payment_recipients)');
-            }, 'transaction_counts', DB::raw('true'), '=', DB::raw('true'), 'left outer')
-            ->groupBy('wallets.address')
-            ->orderBy('tx_count', 'desc')
+        $mostActive = DB::connection('explorer')->query()
+            ->fromSub(function ($query) {
+                $query->select('from as address')
+                      ->from('transactions')
+
+                ->unionAll(
+                    Transaction::select('to as address')
+                               ->whereNotNull('to')
+                )
+
+                ->unionAll(
+                    Transaction::selectRaw('unnest(multi_payment_recipients) as address')
+                               ->whereNotNull('multi_payment_recipients')
+                )
+
+                ->unionAll(
+                    Transaction::select('wallets.address')
+                               ->join('wallets', 'transactions.sender_public_key', '=', 'wallets.public_key')
+                               ->whereColumn('transactions.from', '!=', 'wallets.address')
+                               ->orWhereNull('transactions.from')
+                );
+            }, 'activity')
+
+            ->select('address')
+            ->selectRaw('COUNT(*) as tx_count')
+            ->whereNotNull('address')
+            ->where('address', '!=', '')
+            ->groupBy('address')
+            ->orderByDesc('tx_count')
             ->limit(1)
             ->first();
 
-        if (count($mostTransactions) > 0) {
-            if (! $this->hasChanges) {
-                $currentValue = $cache->getMostTransactions() ?? [];
-                if (Arr::get($currentValue, 'address') !== $mostTransactions['address']) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($currentValue, 'value') !== $mostTransactions['tx_count']) {
-                    $this->hasChanges = true;
-                }
+        if ($mostActive) {
+            $newValue = [
+                'address' => $mostActive->address,
+                'value'   => (int) $mostActive->tx_count,
+            ];
+
+            $current = $cache->getMostTransactions() ?? [];
+            if ($current !== $newValue) {
+                $this->hasChanges = true;
             }
 
-            $cache->setMostTransactions([
-                'address' => $mostTransactions['address'],
-                'value'   => $mostTransactions['tx_count'],
-            ]);
+            $cache->setMostTransactions($newValue);
         }
     }
 
