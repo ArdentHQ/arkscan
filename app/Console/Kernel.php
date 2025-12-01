@@ -54,37 +54,35 @@ final class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(CachePrices::class)->everyMinute();
-
         $schedule->command(CacheCurrenciesData::class)->everyMinute()->withoutOverlapping();
 
         $schedule->command(CacheVolume::class)->hourly();
 
-        $schedule->command(CacheValidatorWallets::class)->everyMinute();
+        $schedule->command(CacheValidatorWallets::class)->everyMinute()->withoutOverlapping();;
 
-        $schedule->command(CacheValidatorVoterCounts::class)->everyTenMinutes();
+        $schedule->command(CacheValidatorVoterCounts::class)->everyTenMinutes()->withoutOverlapping();
 
-        $schedule->command(CacheValidatorAggregates::class)->everyMinute();
+        $schedule->command(CacheValidatorAggregates::class)->everyMinute()->withoutOverlapping();
 
         $schedule->command(CacheFees::class)->everyFiveMinutes();
 
         $schedule->command(CacheGasTrackerData::class)->everyFiveMinutes();
 
-        $schedule->command(CacheKnownWallets::class)->everyMinute();
+        $schedule->command(CacheKnownWallets::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(CacheValidatorsWithVoters::class)->everyMinute();
+        $schedule->command(CacheValidatorsWithVoters::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(CacheValidatorResignationIds::class)->everyMinute();
+        $schedule->command(CacheValidatorResignationIds::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(CacheNetworkAggregates::class)->everyMinute();
+        $schedule->command(CacheNetworkAggregates::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(BuildForgingStats::class)->everyMinute();
+        $schedule->command(BuildForgingStats::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(CacheContractAddresses::class)->everyMinute();
+        $schedule->command(CacheContractAddresses::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(CacheValidatorPerformance::class)->everyMinute();
+        $schedule->command(CacheValidatorPerformance::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(CacheValidatorProductivity::class)->everyMinute();
+        $schedule->command(CacheValidatorProductivity::class)->everyMinute()->withoutOverlapping();
 
         $schedule->command(CacheTransactions::class)->everyFiveMinutes();
 
@@ -111,7 +109,13 @@ final class Kernel extends ConsoleKernel
         }
 
         if (config('broadcasting.default') !== 'reverb') {
-            $schedule->command(CacheBlocks::class)->everyFiveMinutes();
+            $schedule->command(CachePrices::class)
+                ->everyFiveMinutes()
+                ->withoutOverlapping();
+
+            $schedule->command(CacheBlocks::class)
+                ->everyFiveMinutes()
+                ->withoutOverlapping();
         }
     }
 
