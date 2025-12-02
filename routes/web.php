@@ -15,6 +15,7 @@ use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -35,7 +36,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/validators', 'app.validators')->name('validators');
+Route::get('/validators', ValidatorsController::class)->name('validators');
 // @TODO: remove this once new validators page is fully functional
 // https://app.clickup.com/t/86dynrr0w
 Route::view('/validators-old', 'app.validators')->name('validators-old');
