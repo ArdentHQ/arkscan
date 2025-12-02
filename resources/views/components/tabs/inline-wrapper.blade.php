@@ -14,12 +14,12 @@
         },
     }"
     x-init="checkOverflow();"
-    class="-mx-6 sm:mx-0 relative"
+    class="relative -mx-6 sm:mx-0"
     x-resize="checkOverflow()"
 >
     <div x-show="showOverflowIndicators" x-cloak>
-        <div class="absolute h-12 left-0 top-0 w-12 h-full bg-gradient-to-r from-theme-secondary-200 dark:from-theme-dark-950 to-theme-secondary-200/0 dark:to-theme-dark-950/0 pointer-events-none z-20"></div>
-        <div class="absolute h-12 right-0 top-0 w-12 h-full bg-gradient-to-l from-theme-secondary-200 dark:from-theme-dark-950 to-theme-secondary-200/0 dark:to-theme-dark-950/0 pointer-events-none z-20"></div>
+        <div class="absolute top-0 left-0 z-20 w-12 h-12 h-full bg-gradient-to-r pointer-events-none from-theme-secondary-200 to-theme-secondary-200/0 dark:from-theme-dark-950 dark:to-theme-dark-950/0"></div>
+        <div class="absolute top-0 right-0 z-20 w-12 h-12 h-full bg-gradient-to-l pointer-events-none from-theme-secondary-200 to-theme-secondary-200/0 dark:from-theme-dark-950 dark:to-theme-dark-950/0"></div>
     </div>
 
     <div

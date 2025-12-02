@@ -12,7 +12,7 @@
                 });
             },
         }"
-        class="sm:mb-3 sm:inline-flex"
+        class="sm:inline-flex sm:mb-3"
         :default-selected="$default"
         on-selected="function (value) {
             this.tab = value;

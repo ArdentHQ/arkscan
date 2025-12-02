@@ -5,7 +5,7 @@
 
 <button
     type="button"
-    class="flex relative items-center cursor-pointer transition-default text-theme-secondary-700 dark:text-theme-dark-200 hover:text-theme-secondary-900 dark:hover:text-theme-secondary-200 group/tab"
+    class="flex relative items-center cursor-pointer transition-default text-theme-secondary-700 group/tab dark:text-theme-dark-200 dark:hover:text-theme-secondary-200 hover:text-theme-secondary-900"
     @click="select('{{ $name }}')"
     @keydown.enter="select('{{ $name }}')"
     @keydown.space.prevent="select('{{ $name }}')"
