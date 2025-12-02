@@ -22,25 +22,26 @@ import useSharedData from "@/hooks/use-shared-data";
 import Navbar from "@/Components/General/Navbar/Navbar";
 
 const WalletTabsWrapper = ({
+    wallet,
     transactions,
     blocks,
     voters,
     filters,
 }: {
+    wallet: IWallet;
     transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
     voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
+    const tabs = [{ text: "Transactions", value: "transactions" }];
+    if (wallet.isValidator) {
+        tabs.push({ text: "Validated Blocks", value: "blocks" });
+        tabs.push({ text: "Voters", value: "voters" });
+    }
+
     return (
-        <TabsProvider
-            defaultSelected="transactions"
-            tabs={[
-                { text: "Transactions", value: "transactions" },
-                { text: "Validated Blocks", value: "blocks" },
-                { text: "Voters", value: "voters" },
-            ]}
-        >
+        <TabsProvider defaultSelected="transactions" tabs={tabs}>
             <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
         </TabsProvider>
     );
@@ -216,7 +217,13 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
             <Overview wallet={wallet} />
 
             <PageHandlerProvider>
-                <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
+                <WalletTabsWrapper
+                    wallet={wallet}
+                    transactions={transactions}
+                    blocks={blocks}
+                    voters={voters}
+                    filters={filters}
+                />
             </PageHandlerProvider>
         </>
     );

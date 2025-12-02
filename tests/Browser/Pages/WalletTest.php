@@ -473,6 +473,18 @@ describe('Blocks Tab', function () {
         $this->wallet->save();
     });
 
+    it('should not be visible if not a validator', function ($resolution) {
+        $nonValidatorWallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($nonValidatorWallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $nonValidatorWallet)
+                ->waitForText(substr($nonValidatorWallet->address, 0, 7))
+                ->assertMissing('button#tab-blocks');
+        });
+    })->with('resolutions');
+
     it('should navigate to tab and back', function ($resolution) {
         $transactions = Transaction::factory()
             ->transfer()
@@ -686,6 +698,18 @@ describe('Voters Tab', function () {
             ->activeValidator()
             ->create();
     });
+
+    it('should not be visible if not a validator', function ($resolution) {
+        $nonValidatorWallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($nonValidatorWallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $nonValidatorWallet)
+                ->waitForText(substr($nonValidatorWallet->address, 0, 7))
+                ->assertMissing('button#tab-voters');
+        });
+    })->with('resolutions');
 
     it('should navigate to tab and back', function ($resolution) {
         $transactions = Transaction::factory()
