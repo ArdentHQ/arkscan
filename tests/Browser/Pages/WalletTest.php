@@ -493,31 +493,16 @@ describe('Blocks Tab', function () {
             $browser->resize($resolution['width'], $resolution['height']);
 
             $browser->visitRoute('wallet', $this->wallet)
-                ->waitForText('5 results', ignoreCase: true);
-
-            if ($resolution['width'] < 768) {
-                $browser->click('[data-testid="tabs:dropdown:button"]')
-                    ->waitForText('Validated Blocks')
-                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Validated Blocks"]');
-            } else {
-                $browser->click('button#tab-blocks');
-            }
-
-            $browser->waitForText('6 results', ignoreCase: true);
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('button#tab-blocks')
+                ->waitForText('6 results', ignoreCase: true);
 
             foreach ($blocks as $block) {
                 $browser->assertSee(number_format($block->number->toNumber()));
             }
 
-            if ($resolution['width'] < 768) {
-                $browser->click('[data-testid="tabs:dropdown:button"]')
-                    ->waitForText('Transactions')
-                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Transactions"]');
-            } else {
-                $browser->click('button#tab-transactions');
-            }
-
-            $browser->waitForText('5 results', ignoreCase: true);
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
 
             foreach ($transactions as $transaction) {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
@@ -551,15 +536,8 @@ describe('Blocks Tab', function () {
                 $browser->assertSee(number_format($block->number->toNumber()));
             }
 
-            if ($resolution['width'] < 768) {
-                $browser->click('[data-testid="tabs:dropdown:button"]')
-                    ->waitForText('Transactions')
-                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Transactions"]');
-            } else {
-                $browser->click('button#tab-transactions');
-            }
-
-            $browser->waitForText('5 results', ignoreCase: true);
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
 
             foreach ($transactions as $transaction) {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
@@ -611,17 +589,9 @@ describe('Blocks Tab', function () {
             $browser->resize($resolution['width'], $resolution['height']);
 
             $browser->visitRoute('wallet', $this->wallet)
-                ->waitForText('2 results', ignoreCase: true);
-
-            if ($resolution['width'] < 768) {
-                $browser->click('[data-testid="tabs:dropdown:button"]')
-                    ->waitForText('Validated Blocks')
-                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Validated Blocks"]');
-            } else {
-                $browser->click('button#tab-blocks');
-            }
-
-            $browser->waitForText('3 results', ignoreCase: true)
+                ->waitForText('2 results', ignoreCase: true)
+                ->click('button#tab-blocks')
+                ->waitForText('3 results', ignoreCase: true)
                 ->click('[data-testid="wallet:blocks:export-button"]')
                 ->waitForText($description)
                 ->assertDisabled('[data-testid="wallet:blocks-export:submit"]')
@@ -709,17 +679,9 @@ describe('Voters Tab', function () {
             $browser->resize($resolution['width'], $resolution['height']);
 
             $browser->visitRoute('wallet', $this->wallet)
-                ->waitForText('5 results', ignoreCase: true);
-
-            if ($resolution['width'] < 768) {
-                $browser->click('[data-testid="tabs:dropdown:button"]')
-                    ->waitForText('Voters')
-                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Voters"]');
-            } else {
-                $browser->click('button#tab-voters');
-            }
-
-            $browser->waitForText('10 results', ignoreCase: true);
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('button#tab-voters')
+                ->waitForText('10 results', ignoreCase: true);
 
             foreach ($voters as $voter) {
                 if ($resolution['width'] <= 640) {
@@ -729,15 +691,8 @@ describe('Voters Tab', function () {
                 }
             }
 
-            if ($resolution['width'] < 768) {
-                $browser->click('[data-testid="tabs:dropdown:button"]')
-                    ->waitForText('Transactions')
-                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Transactions"]');
-            } else {
-                $browser->click('button#tab-transactions');
-            }
-
-            $browser->waitForText('5 results', ignoreCase: true);
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
 
             foreach ($transactions as $transaction) {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
@@ -777,15 +732,8 @@ describe('Voters Tab', function () {
                 }
             }
 
-            if ($resolution['width'] < 768) {
-                $browser->click('[data-testid="tabs:dropdown:button"]')
-                    ->waitForText('Transactions')
-                    ->clickAtXPath('//div[@data-testid="tabs:dropdown:dropdown"]//span[.//text()="Transactions"]');
-            } else {
-                $browser->click('button#tab-transactions');
-            }
-
-            $browser->waitForText('5 results', ignoreCase: true);
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
 
             foreach ($transactions as $transaction) {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
