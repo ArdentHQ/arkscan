@@ -75,7 +75,7 @@ export default function ValidatedBlocksMobileTableWrapper({
     if (!blocks || isLoading) {
         return (
             <div className="pt-6">
-                <TableHeaderWrapper resultCount={0} breakpoint="md">
+                <TableHeaderWrapper resultCount={0}>
                     <ValidatedBlocksHeaderActions hasForgedBlocks={false} />
                 </TableHeaderWrapper>
                 <MobileValidatedBlocksSkeletonTable rowCount={rowCount} />

@@ -42,7 +42,7 @@ export default function VotersMobileTableWrapper({
     if (!voters) {
         return (
             <div>
-                <TableHeaderWrapper resultCount={0} breakpoint="md" />
+                <TableHeaderWrapper resultCount={0} />
 
                 <MobileVotersSkeletonTable rowCount={rowCount} />
             </div>

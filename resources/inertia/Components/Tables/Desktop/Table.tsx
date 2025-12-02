@@ -6,12 +6,12 @@ import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 export function TableHeaderWrapper({
-    breakpoint = "sm",
+    breakpoint = "md",
     resultCount,
     resultSuffix,
     children,
 }: {
-    breakpoint: "sm" | "md" | "none";
+    breakpoint?: "sm" | "md" | "none";
     resultCount: number;
     resultSuffix?: string;
     children?: React.ReactNode;
@@ -99,7 +99,7 @@ export function Table({
             })}
         >
             {withHeader && (
-                <TableHeaderWrapper resultCount={resultCount} resultSuffix={resultSuffix} breakpoint="md">
+                <TableHeaderWrapper resultCount={resultCount} resultSuffix={resultSuffix}>
                     {headerActions}
                 </TableHeaderWrapper>
             )}
