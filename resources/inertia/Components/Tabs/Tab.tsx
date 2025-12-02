@@ -41,8 +41,7 @@ export default function Tab({ text, value }: ITab) {
         >
             <span
                 className={classNames({
-                    "transition-default block h-full w-full whitespace-nowrap rounded px-3 py-1.5 font-semibold sm:rounded-lg":
-                        true,
+                    "transition-default block h-full w-full whitespace-nowrap rounded px-3 py-1.5 font-semibold sm:rounded-lg": true,
                     "group-hover/tab:bg-theme-secondary-300 group-hover/tab:text-theme-secondary-900 dark:text-theme-dark-200 dark:group-hover/tab:bg-theme-dark-900 dark:group-hover/tab:text-theme-dark-50":
                         currentTab !== value,
                     "bg-white text-theme-secondary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50":
