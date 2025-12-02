@@ -5,7 +5,7 @@
 
 <button
     type="button"
-    class="flex relative items-center pr-6 space-x-6 cursor-pointer first:pl-4 last:pr-4 transition-default dark:hover:text-theme-secondary-200 hover:text-theme-secondary-900"
+    class="flex relative items-center cursor-pointer transition-default text-theme-secondary-700 dark:text-theme-dark-200 hover:text-theme-secondary-900 dark:hover:text-theme-secondary-200 group/tab"
     @click="select('{{ $name }}')"
     @keydown.enter="select('{{ $name }}')"
     @keydown.space.prevent="select('{{ $name }}')"
@@ -19,16 +19,11 @@
     :aria-selected="selected === '{{ $name }}'"
     {{ $attributes }}
 >
-    @unless ($first)
-        <div class="w-px h-5 bg-theme-secondary-300 dark:bg-theme-dark-800"></div>
-    @endunless
-
     <span
-        class="block pt-4 pb-3 w-full h-full font-semibold whitespace-nowrap border-b-2"
+        class="block py-1.5 px-3 w-full h-full font-semibold whitespace-nowrap rounded sm:rounded-lg transition-default"
         :class="{
-            'border-transparent dark:text-theme-dark-200 ': selected !== '{{ $name }}',
-            'text-theme-secondary-900 border-theme-primary-600 dark:text-theme-dark-50 dim:border-theme-dark-blue-600': selected === '{{ $name }}',
+            'dark:text-theme-dark-200 group-hover/tab:text-theme-secondary-900 dark:group-hover/tab:text-theme-dark-50 group-hover/tab:bg-theme-secondary-300 dark:group-hover/tab:bg-theme-dark-900': selected !== '{{ $name }}',
+            'text-theme-secondary-900 dark:text-theme-dark-50 bg-white dark:bg-theme-dark-800': selected === '{{ $name }}',
         }"
     >{{ $slot }}</span>
 </button>
-
