@@ -36,6 +36,10 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/validators', 'app.validators')->name('validators');
+// @TODO: remove this once new validators page is fully functional
+// https://app.clickup.com/t/86dynrr0w
+Route::view('/validators-old', 'app.validators')->name('validators-old');
+
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
