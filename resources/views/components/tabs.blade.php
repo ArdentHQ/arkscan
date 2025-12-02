@@ -4,7 +4,7 @@
 ])
 
 <div x-cloak>
-    <x-tabs.inline-wrapper
+    <x-tabs.wrapper
         x-data="{
             init: function () {
                 this.$watch('tab', () => {
@@ -19,9 +19,9 @@
         }"
     >
         @foreach ($options as $name => $text)
-            <x-tabs.inline-tab :name="$name">
+            <x-tabs.tab :name="$name">
                 <span>{{ $text }}</span>
-            </x-tabs.inline-tab>
+            </x-tabs.tab>
         @endforeach
-    </x-tabs.inline-wrapper>
+    </x-tabs.wrapper>
 </div>

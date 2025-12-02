@@ -21,7 +21,7 @@
 
     {{--desktop: buttons group--}}
     <div class="hidden relative z-0 lg:inline-flex">
-        <x-tabs.inline-wrapper
+        <x-tabs.wrapper
             class="px-2"
             model="period"
             on-selected="function (value) {
@@ -29,10 +29,10 @@
             }"
         >
             @foreach($options as $val => $label)
-                <x-tabs.inline-tab :name="$val">
+                <x-tabs.tab :name="$val">
                     {{ $label }}
-                </x-tabs.inline-tab>
+                </x-tabs.tab>
             @endforeach
-        </x-tabs.inline-wrapper>
+        </x-tabs.wrapper>
     </div>
 </div>
