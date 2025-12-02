@@ -19,10 +19,7 @@
         }"
     >
         @foreach ($options as $name => $text)
-            <x-tabs.inline-tab
-                :name="$name"
-                :first="$loop->first"
-            >
+            <x-tabs.inline-tab :name="$name">
                 <span>{{ $text }}</span>
             </x-tabs.inline-tab>
         @endforeach

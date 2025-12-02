@@ -1,7 +1,4 @@
-@props([
-    'name',
-    'first' => false,
-])
+@props(['name'])
 
 <button
     type="button"
