@@ -2,6 +2,7 @@
     'xData' => '{}',
     'onSelected' => null,
     'defaultSelected' => '',
+    'model' => null,
 ])
 
 <div
@@ -31,7 +32,11 @@
                 'items-center justify-between inline-flex bg-theme-secondary-200 rounded-xl dark:bg-theme-dark-950 relative z-10 sm:p-1',
             ])}}
             x-data="Tabs(
-                '{{ $defaultSelected }}',
+                @if ($model)
+                    @entangle($model),
+                @else
+                    '{{ $defaultSelected }}',
+                @endif
                 {{ $xData }}
                 @if($onSelected)
                 , {{ $onSelected }}
