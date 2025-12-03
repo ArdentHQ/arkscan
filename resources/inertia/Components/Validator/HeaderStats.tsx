@@ -1,15 +1,13 @@
 import Card from "@/Components/General/Card";
 import Detail from "@/Components/General/Detail";
 import Number from "@/Components/General/Number";
-import TruncateMiddle from "@/Components/General/TruncateMiddle";
-import LoadingText from "@/Components/Loading/Text";
-import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import Badge from "../General/Badge";
 import Currency from "../General/Currency";
-import { currency } from "../../utils/number-formatter";
 import useShareData from "@/hooks/use-shared-data";
 import HeaderItem from "../PageHeader/HeaderItem";
+import ExternalLink from "../General/ExternalLink";
+import { IStatistics } from "@/Pages/Validators.contracts";
 
 // Import validator header background images
 import headerBg from "@images/validators/header-bg.svg";
@@ -18,8 +16,6 @@ import headerBgDark from "@images/validators/header-bg-dark.svg";
 import headerBgMobileDark from "@images/validators/header-bg-mobile-dark.svg";
 import headerBgDim from "@images/validators/header-bg-dim.svg";
 import headerBgMobileDim from "@images/validators/header-bg-mobile-dim.svg";
-import ExternalLink from "../General/ExternalLink";
-import { IStatistics } from "@/Pages/Validators.contracts";
 
 function ExploreHeaderStat() {
     const { t } = useTranslation();
