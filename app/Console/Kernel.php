@@ -109,7 +109,7 @@ final class Kernel extends ConsoleKernel
         }
 
         if (config('arkscan.scout.run_jobs', false) === true) {
-            $schedule->command(ScoutIndexModels::class)->everyMinute();
+            $schedule->command(ScoutIndexModels::class)->everyMinute()->withoutOverlapping();
         }
 
         if (config('broadcasting.default') !== 'reverb') {
