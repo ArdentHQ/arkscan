@@ -25,5 +25,19 @@ class DuskServiceProvider extends ServiceProvider
 
             return $this;
         });
+
+        Browser::macro('waitForQueryString', function ($queryStringKey, $expectedValue = null, $seconds = null) {
+            $message = $this->formatTimeOutMessage('Waited %s seconds for querystring property', $queryStringKey);
+
+            return $this->waitUsing($seconds, 100, function () use ($queryStringKey, $expectedValue) {
+                try {
+                    $this->assertQueryStringHas($queryStringKey, $expectedValue);
+                } catch (\Throwable $e) {
+                    return false;
+                }
+
+                return true;
+            }, $message);
+        });
     }
 }

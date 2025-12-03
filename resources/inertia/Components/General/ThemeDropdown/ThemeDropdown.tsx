@@ -25,6 +25,7 @@ export default function ThemeDropdown() {
                     "dark:bg-theme-dark-900 dark:border-theme-dark-700 dark:text-theme-dark-200",
                     "dim:bg-theme-dark-900 dim:hover:bg-theme-dark-700",
                     "transition-default focus:outline-none",
+                    "dim:hover:bg-theme-dark-700 hover:text-theme-secondary-900 dark:hover:bg-theme-dark-700 hover:bg-theme-secondary-200",
                 )}
                 button={() => (
                     <div className="dim:text-theme-dark-300">

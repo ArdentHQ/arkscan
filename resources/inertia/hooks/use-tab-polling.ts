@@ -29,14 +29,16 @@ export function useTabPolling(pollCurrentTab: (tab: string, callback?: CallableF
             pollCurrentTab(currentTab);
         }
 
-        onTabChange((tab: ITab) => {
+        onTabChange((tab: ITab, isFirstLoad: boolean) => {
             if (pollingTimerRef.current) {
                 clearTimeout(pollingTimerRef.current);
             }
 
             pollingTimerRef.current = setTimeout(() => pollCurrentTab(tab.value), 8000);
 
-            pollCurrentTab(tab.value);
+            if (isFirstLoad) {
+                pollCurrentTab(tab.value);
+            }
         });
 
         setRefreshPage((callback?: CallableFunction) => {

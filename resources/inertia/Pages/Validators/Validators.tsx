@@ -6,10 +6,7 @@ import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
-import { ITab } from "@/Providers/Tabs/types";
-import { useEffect, useRef } from "react";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
-import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 
 const ValidatorsTabsWrapper = () => {
