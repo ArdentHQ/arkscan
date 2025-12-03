@@ -7,6 +7,7 @@ import { IWallet } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
 import Address from "@/Components/Wallet/Address";
+import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 
 export function VotersMobileTable({ voters }: { voters: IPaginatedResponse<IWallet> }) {
     const { t } = useTranslation();
@@ -39,7 +40,13 @@ export default function VotersMobileTableWrapper({
     rowCount?: number;
 }) {
     if (!voters) {
-        return <MobileVotersSkeletonTable rowCount={rowCount} />;
+        return (
+            <div>
+                <TableHeaderWrapper resultCount={0} />
+
+                <MobileVotersSkeletonTable rowCount={rowCount} />
+            </div>
+        );
     }
 
     return (

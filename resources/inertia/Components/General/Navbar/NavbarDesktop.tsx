@@ -59,11 +59,20 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                 <Dropdown
                                                     wrapperClass="relative h-full"
                                                     useDefaultButtonClasses={false}
-                                                    buttonClass="inline-flex relative justify-center items-center px-1 pt-px mr-6 h-full font-semibold leading-5 border-b-2 border-transparent transition duration-150 ease-in-out focus:ring-inset focus:outline-none text-theme-secondary-700 dark:text-theme-dark-200 hover:text-theme-secondary-800 hover:dark:text-theme-dark-50"
+                                                    buttonClass="inline-flex h-full"
                                                     dropdownClasses="w-auto"
                                                     placement="bottom-start"
                                                     button={({ isOpen }) => (
-                                                        <>
+                                                        <div
+                                                            className={classNames(
+                                                                "relative mr-6 inline-flex h-full items-center justify-center border-b-2 border-transparent px-1 pt-px font-semibold leading-5 text-theme-secondary-700 transition duration-150 ease-in-out hover:border-theme-primary-300 focus:outline-none focus:ring-inset dark:text-theme-dark-200 hover:dark:text-theme-dark-50",
+                                                                {
+                                                                    "!border-theme-primary-600": isOpen,
+                                                                    "hover:border-theme-primary-300 dark:hover:border-theme-secondary-600":
+                                                                        !isOpen,
+                                                                },
+                                                            )}
+                                                        >
                                                             <span
                                                                 className={classNames({
                                                                     "text-theme-secondary-700 dark:text-theme-dark-50":
@@ -83,7 +92,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                             >
                                                                 <ChevronDownSmallIcon className="h-3 w-3" />
                                                             </span>
-                                                        </>
+                                                        </div>
                                                     )}
                                                 >
                                                     {navItem.children.map((child, index) => (

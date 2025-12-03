@@ -2,22 +2,79 @@
 
 import { useEffect, useState } from "react";
 import TabsContext from "./TabsContext";
-import { ITab, ITabsContextType } from "./types";
+import { ITab, ITabsContextType, ITabsQueryString, TabChangedMethod } from "./types";
 import Wrapper from "@/Components/Tabs/Wrapper";
 import { router } from "@inertiajs/react";
 
 export default function TabsProvider({
     defaultSelected,
+    queryStringDefaults,
     tabs,
     children,
 }: {
     defaultSelected: string;
+    queryStringDefaults: ITabsQueryString;
     tabs: ITab[];
     children: React.ReactNode;
 }) {
     const [currentTab, setCurrentTab] = useState<string>();
     const [selectedTab, setSelectedTab] = useState<ITab>();
-    const [onChange, setOnChange] = useState<((newTab: ITab) => void) | null>(null);
+    const [onChange, setOnChange] = useState<TabChangedMethod | null>(null);
+    const [queryStringValues, setQueryStringValues] = useState<ITabsQueryString>(queryStringDefaults);
+    const [tabLoaded, setTabLoaded] = useState<Record<string, boolean>>({});
+
+    const changeTab = (newTab: string) => {
+        if (currentTab) {
+            const updatedQueryStringValues = { ...queryStringValues[currentTab] };
+
+            const currentUrl = new URL(location.href);
+            Object.entries(queryStringDefaults[currentTab]).forEach(([param, value]) => {
+                updatedQueryStringValues[param] = (currentUrl.searchParams.get(param) ?? value).toString();
+            });
+
+            setQueryStringValues({
+                ...queryStringValues,
+                [currentTab]: updatedQueryStringValues,
+            });
+        }
+
+        setCurrentTab(newTab);
+    };
+
+    const changeTabUrl = (newTab: string) => {
+        const updatedUrl = new URL(location.href);
+        updatedUrl.search = "";
+
+        if (newTab !== defaultSelected) {
+            updatedUrl.searchParams.set("tab", newTab);
+        }
+
+        Object.entries(queryStringValues[newTab]).forEach(([param, value]) => {
+            const defaultValue = String(queryStringDefaults[newTab][param]);
+
+            if (String(value) !== defaultValue) {
+                updatedUrl.searchParams.set(param, String(value));
+            }
+        });
+
+        router.push({
+            url: updatedUrl.toString(),
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                const tabObject = tabs.find((tab) => tab.value === newTab) ?? tabs[0];
+                setSelectedTab(tabObject);
+
+                if (onChange) {
+                    onChange(tabObject, tabLoaded[newTab] !== true);
+
+                    if (tabLoaded[newTab] !== true) {
+                        setTabLoaded({ ...tabLoaded, [newTab]: true });
+                    }
+                }
+            },
+        });
+    };
 
     useEffect(() => {
         const tab = new URL(location.href).searchParams.get("tab") ?? defaultSelected;
@@ -30,10 +87,7 @@ export default function TabsProvider({
 
             setCurrentTab(tab);
             setSelectedTab(tabs.find((t) => t.value === tab) ?? tabs[0]);
-
-            if (onChange) {
-                onChange(tabEntry);
-            }
+            setTabLoaded({ ...tabLoaded, [tab]: true });
         }
     }, []);
 
@@ -42,48 +96,26 @@ export default function TabsProvider({
             return;
         }
 
-        const updatedUrl = new URL(location.href);
-
-        if (currentTab !== defaultSelected) {
-            updatedUrl.searchParams.set("tab", currentTab);
-        } else {
-            updatedUrl.searchParams.delete("tab");
-        }
-
-        router.push({
-            url: updatedUrl.toString(),
-            preserveState: true,
-            preserveScroll: true,
-            onSuccess: () => {
-                const newTab = tabs.find((tab) => tab.value === currentTab) ?? tabs[0];
-                setSelectedTab(newTab);
-
-                if (onChange) {
-                    onChange(newTab);
-                }
-            },
-        });
+        changeTabUrl(currentTab);
     }, [currentTab]);
 
     const value: ITabsContextType = {
         currentTab,
         selectedTab,
         select: (value: string) => {
-            setCurrentTab(value);
+            changeTab(value);
         },
         selectPrevious: () => {
             const currentIndex = tabs.findIndex((tab) => tab.value === currentTab);
             const previousIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-            setCurrentTab(tabs[previousIndex].value);
-            setSelectedTab(tabs[previousIndex]);
+            changeTab(tabs[previousIndex].value);
         },
         selectNext: () => {
             const currentIndex = tabs.findIndex((tab) => tab.value === currentTab);
             const nextIndex = (currentIndex + 1) % tabs.length;
-            setCurrentTab(tabs[nextIndex].value);
-            setSelectedTab(tabs[nextIndex]);
+            changeTab(tabs[nextIndex].value);
         },
-        onTabChange: (callback: CallableFunction) => {
+        onTabChange: (callback: TabChangedMethod) => {
             setOnChange(() => callback);
         },
     };
