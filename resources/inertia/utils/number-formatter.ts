@@ -46,13 +46,19 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
     }).format(value);
 }
 
-export function currencyWithDecimals(
-    value: number,
-    currency: string,
-    decimals?: number,
+export function currencyWithDecimals({
+    value,
+    currency,
+    decimals,
     showSmallAmounts = false,
     hideCurrency = false,
-): string {
+}: {
+    value: number;
+    currency: string;
+    decimals?: number;
+    showSmallAmounts?: boolean;
+    hideCurrency?: boolean;
+}): string {
     const isSmallAmount = value < 1;
     let effectiveDecimals: number;
 

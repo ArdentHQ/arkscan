@@ -20,7 +20,7 @@ function AmountSmallWithoutTooltip({
                     &lt;{smallAmount} {hideCurrency ? "" : network!.currency}
                 </>
             ) : (
-                <>{currencyWithDecimals(amount, network!.currency, 2, hideCurrency)}</>
+                <>{currencyWithDecimals({ value: amount, currency: network!.currency, decimals: 2, hideCurrency })}</>
             )}
         </>
     );
@@ -40,14 +40,35 @@ function AmountSmallWithTooltip({
     return (
         <>
             {amount < smallAmount ? (
-                <Tooltip content={currencyWithDecimals(amount, network!.currency, 18, hideCurrency)}>
+                <Tooltip
+                    content={currencyWithDecimals({
+                        value: amount,
+                        currency: network!.currency,
+                        decimals: 18,
+                        hideCurrency,
+                    })}
+                >
                     <span>
                         &lt;{smallAmount} {hideCurrency ? "" : network!.currency}
                     </span>
                 </Tooltip>
             ) : (
-                <Tooltip content={currencyWithDecimals(amount, network!.currency, 18, hideCurrency)}>
-                    <span>{currencyWithDecimals(amount, network!.currency, 2, hideCurrency)}</span>
+                <Tooltip
+                    content={currencyWithDecimals({
+                        value: amount,
+                        currency: network!.currency,
+                        decimals: 18,
+                        hideCurrency,
+                    })}
+                >
+                    <span>
+                        {currencyWithDecimals({
+                            value: amount,
+                            currency: network!.currency,
+                            decimals: 2,
+                            hideCurrency,
+                        })}
+                    </span>
                 </Tooltip>
             )}
         </>
