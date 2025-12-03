@@ -76,27 +76,17 @@ export default function VotersTableWrapper({
                 name: t("general.wallet.address"),
             },
             {
-                name: t("tables.wallets.balance_currency"),
+                name: t("tables.wallets.balance_currency", {
+                    currency: network!.currency,
+                }),
                 type: "number",
             },
             {
-                name: t("general.wallet.percentage", {
-                    currency: network!.currency,
-                }),
+                name: t("general.wallet.percentage"),
                 type: "number",
                 tooltip: t("pages.wallets.percentage_tooltip"),
             },
         ];
-
-        if (network?.canBeExchanged) {
-            columns.push({
-                name: t("general.wallet.percentage", { currency: network!.currency }),
-                type: "number",
-                tooltip: t("pages.wallets.voters.value_tooltip", {
-                    currency: network!.currency,
-                }),
-            });
-        }
 
         return (
             <>
