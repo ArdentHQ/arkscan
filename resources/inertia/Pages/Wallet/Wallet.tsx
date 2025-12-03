@@ -242,8 +242,6 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
             <Layout>
                 <Overview wallet={wallet} />
 
-                <Overview wallet={wallet} />
-
                 <PageHandlerProvider>
                     <WalletTabsWrapper
                         wallet={wallet}
