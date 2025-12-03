@@ -24,21 +24,6 @@ export interface IValidatorData {
     validators: IValidator[];
 }
 
-export interface IStatistics {
-    performances?: {
-        forging?: string | number;
-        missed?: string | number;
-        missing?: string | number;
-    };
-    blockCount?: number;
-    nextValidator?: {
-        address?: string;
-        attributes?: {
-            username?: string;
-        };
-    };
-}
-
 export interface IPaginatedResponse<T> {
     data: T[];
     current_page: number;

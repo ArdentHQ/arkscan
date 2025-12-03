@@ -3,9 +3,23 @@ import Detail from "@/Components/General/Detail";
 import Number from "@/Components/General/Number";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import LoadingText from "@/Components/Loading/Text";
-import { IStatistics } from "@/types";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+
+interface IStatistics {
+    performances?: {
+        forging?: string | number;
+        missed?: string | number;
+        missing?: string | number;
+    };
+    blockCount?: number;
+    nextValidator?: {
+        address?: string;
+        attributes?: {
+            username?: string;
+        };
+    };
+}
 
 export function HeaderStat({
     title,
