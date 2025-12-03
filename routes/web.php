@@ -7,6 +7,7 @@ use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
+use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController;
@@ -35,7 +36,11 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/validators', 'app.validators')->name('validators');
+Route::get('/validators', ValidatorsController::class)->name('validators');
+// @TODO: remove this once new validators page is fully functional
+// https://app.clickup.com/t/86dynrr0w
+Route::view('/validators-old', 'app.validators')->name('validators-old');
+
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
