@@ -1,12 +1,10 @@
 import { PageProps } from "@inertiajs/core";
 import { Head, router } from "@inertiajs/react";
-import { useEffect, useRef } from "react";
 import { IFilters, IPaginatedResponse, ITabbedData } from "@/types";
 import { IBlock, ITransaction } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
-import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import ValidatedBlocksTableWrapper from "@/Components/Tables/Desktop/Wallet/ValidatedBlocks";
@@ -17,9 +15,11 @@ import WalletTransactionsTab from "./tabs/Transactions";
 import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
 import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
 import { IWallet } from "@/types/generated";
+import Layout from "@/Layout";
+import { useTabPolling } from "@/hooks/use-tab-polling";
+import { use, useEffect } from "react";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 import useSharedData from "@/hooks/use-shared-data";
-import Layout from "@/Layout";
 
 const WalletTabsWrapper = ({
     wallet,
@@ -84,15 +84,12 @@ const WalletTabs = ({
     voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
-    const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
     const { listen } = useWebhooks();
     const { wallet } = useSharedData<WalletProps>();
 
-    const { setRefreshPage } = usePageHandler();
-    const { currentTab, onTabChange } = useTabs();
+    const { currentTab } = useTabs();
 
-    const pollCurrentTab = (tab: string, callback?: CallableFunction) => {
+    useTabPolling((tab: string, callback?: CallableFunction) => {
         let pollParameters: string[] = [];
         if (tab === "transactions") {
             pollParameters = ["transactions"];
@@ -110,7 +107,7 @@ const WalletTabs = ({
                 }
             },
         });
-    };
+    });
 
     const reloadTransactions = () => {
         router.reload({
@@ -157,50 +154,6 @@ const WalletTabs = ({
             });
         });
     }, [wallet.public_key, currentTab]);
-
-    useEffect(() => {
-        if (!currentTab) {
-            return;
-        }
-
-        router.on("success", () => {
-            if (pollingTimerRef.current) {
-                clearTimeout(pollingTimerRef.current);
-            }
-
-            pollingTimerRef.current = setTimeout(() => pollCurrentTab(currentTab), 8000);
-        });
-
-        if (!pollingTimerRef.current) {
-            pollingTimerRef.current = setTimeout(() => pollCurrentTab(currentTab), 8000);
-
-            pollCurrentTab(currentTab);
-        }
-
-        onTabChange((tab: ITab, isFirstLoad: boolean) => {
-            if (pollingTimerRef.current) {
-                clearTimeout(pollingTimerRef.current);
-            }
-
-            pollingTimerRef.current = setTimeout(() => pollCurrentTab(tab.value), 8000);
-
-            if (isFirstLoad) {
-                pollCurrentTab(tab.value);
-            }
-        });
-
-        setRefreshPage((callback?: CallableFunction) => {
-            pollCurrentTab(currentTab, callback);
-        });
-
-        return () => {
-            if (!pollingTimerRef.current) {
-                return;
-            }
-
-            clearTimeout(pollingTimerRef.current);
-        };
-    }, [currentTab]);
 
     return (
         <>
