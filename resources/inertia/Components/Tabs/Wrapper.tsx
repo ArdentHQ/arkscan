@@ -1,77 +1,61 @@
 import { ITab } from "@/Providers/Tabs/types";
 import Tab from "./Tab";
-import Dropdown from "../General/Dropdown/Dropdown";
-import DropdownItem from "../General/Dropdown/DropdownItem";
-import { useTabs } from "@/Providers/Tabs/TabsContext";
-import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
-import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
-import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
-import classNames from "classnames";
-import MobileDivider from "../General/MobileDivider";
-
-function MobileWrapper({ tabs }: { tabs: ITab[] }) {
-    const { selectedTab, select } = useTabs();
-    const { isOpen } = useDropdown();
-
-    return (
-        <Dropdown
-            dropdownClasses="px-6 w-full"
-            popupStyles={{ width: "100%", zIndex: 20 }}
-            zIndex={20}
-            buttonClass="bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700 w-full"
-            button={
-                <div className="transition-default flex w-full items-center">
-                    <div className="dropdown-button transition-default flex w-full items-center justify-between px-4 py-3 text-left font-semibold text-theme-secondary-900 focus:outline-none dark:text-theme-dark-50">
-                        <span>{selectedTab?.text}</span>
-
-                        <span
-                            className={classNames({
-                                "transition-default": true,
-                                "rotate-180": isOpen,
-                            })}
-                        >
-                            <ChevronDownSmallIcon className="h-3 w-3" />
-                        </span>
-                    </div>
-                </div>
-            }
-            testId="tabs:dropdown"
-        >
-            {tabs.map((tab) => (
-                <DropdownItem
-                    key={tab.value}
-                    onClick={() => select(tab.value)}
-                    selected={selectedTab?.value === tab.value}
-                >
-                    {tab.text}
-                </DropdownItem>
-            ))}
-        </Dropdown>
-    );
-}
+import { useEffect, useRef, useState } from "react";
 
 export default function Wrapper({ tabs }: { tabs: ITab[] }) {
+    const [showOverflowIndicators, setShowOverflowIndicators] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function checkOverflow() {
+            const container = containerRef.current;
+
+            if (container) {
+                setShowOverflowIndicators(container.scrollWidth > container.clientWidth);
+            }
+        }
+
+        checkOverflow();
+
+        window.addEventListener("resize", checkOverflow);
+
+        return () => {
+            window.removeEventListener("resize", checkOverflow);
+        };
+    }, []);
+
     return (
-        <>
-            <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
-                <div className="relative z-10 mb-3 inline-flex hidden items-center justify-between rounded-xl bg-theme-secondary-100 dark:bg-black md:inline-flex">
-                    <div role="tablist" className="flex">
-                        {tabs.map((tab, index: number) => (
-                            <Tab key={tab.value} text={tab.text} value={tab.value} withDivider={index > 0} />
+        <div
+            x-data="{
+                showOverflowIndicators: false,
+                checkOverflow: function () {
+                    const container = this.$refs.container;
+
+                    this.showOverflowIndicators = container.scrollWidth > container.clientWidth;
+                },
+            }"
+            className="relative px-0 sm:mb-3 sm:px-6 md:mx-auto md:max-w-7xl md:px-10"
+            x-resize="checkOverflow()"
+        >
+            {showOverflowIndicators && (
+                <>
+                    <div className="to-theme-secondary-200/0 dark:to-theme-dark-950/0 pointer-events-none absolute left-0 top-0 z-20 h-12 h-full w-12 bg-gradient-to-r from-theme-secondary-200 dark:from-theme-dark-950"></div>
+                    <div className="to-theme-secondary-200/0 dark:to-theme-dark-950/0 pointer-events-none absolute right-0 top-0 z-20 h-12 h-full w-12 bg-gradient-to-l from-theme-secondary-200 dark:from-theme-dark-950"></div>
+                </>
+            )}
+
+            <div
+                ref={containerRef}
+                className="no-scrollbar mb-4 w-screen overflow-scroll bg-theme-secondary-200 px-6 py-2 dark:bg-theme-dark-950 sm:mb-0 sm:w-auto sm:!bg-transparent sm:px-0 sm:py-0"
+            >
+                <div className="relative z-10 inline-flex items-center justify-between rounded-xl bg-theme-secondary-200 dark:bg-theme-dark-950 sm:p-1">
+                    <div role="tablist" className="flex space-x-1 !px-0 pr-6 sm:pr-0">
+                        {tabs.map((tab) => (
+                            <Tab key={tab.value} text={tab.text} value={tab.value} />
                         ))}
                     </div>
                 </div>
             </div>
-
-            <div className="md:hidden">
-                <MobileDivider className="mb-6" />
-
-                <div className="px-6">
-                    <DropdownProvider>
-                        <MobileWrapper tabs={tabs} />
-                    </DropdownProvider>
-                </div>
-            </div>
-        </>
+        </div>
     );
 }

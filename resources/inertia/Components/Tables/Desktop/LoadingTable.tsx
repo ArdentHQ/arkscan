@@ -40,11 +40,7 @@ export function LoadingTableWrapper({
                 "pb-8": !withPagination,
             })}
         >
-            {!!header && (
-                <TableHeaderWrapper resultCount={0} breakpoint="md">
-                    {header}
-                </TableHeaderWrapper>
-            )}
+            {!!header && <TableHeaderWrapper resultCount={0}>{header}</TableHeaderWrapper>}
 
             <div
                 className={classNames({
