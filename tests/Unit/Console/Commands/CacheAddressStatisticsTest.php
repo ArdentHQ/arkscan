@@ -489,9 +489,7 @@ it('should cache wallet with most transactions', function () {
             [BigNumber::new(10 * 1e18)],
         )
         ->count(5)
-        ->create([
-            'to' => null,
-        ]);
+        ->create();
 
     $this->artisan('explorer:cache-address-statistics');
 
