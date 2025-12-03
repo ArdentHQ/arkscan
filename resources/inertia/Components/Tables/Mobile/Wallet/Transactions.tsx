@@ -70,7 +70,7 @@ export default function TransactionsMobileTableWrapper({
 
     if (!transactions || isLoading) {
         return (
-            <div className="pt-6">
+            <div>
                 <TableHeaderWrapper resultCount={0}>
                     <TransactionsHeaderActions hasTransactions={false} />
                 </TableHeaderWrapper>
