@@ -4,8 +4,8 @@
     'buttonWrapperClass' => 'w-full',
     'dropdownWrapperClass' => null,
     'dropdownClass' => null,
-    'dropdownPadding' => 'py-2',
-    'dropdownBackground' => 'bg-white dark:bg-theme-dark-700',
+    'dropdownPadding' => 'px-1 py-[0.125rem]',
+    'dropdownBackground' => 'bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700',
     'width' => 'min-w-40',
     'scrollClass' => null,
     'disabled' => false,
@@ -20,7 +20,7 @@
     'disabledButtonClass' => 'text-theme-secondary-500 dark:text-theme-dark-500 bg-theme-secondary-200 dark:bg-theme-dark-700',
     'activeButtonClass' => 'bg-theme-secondary-200 dark:bg-theme-dark-800 md:bg-white md:dark:text-theme-dark-600 md:hover:text-theme-secondary-900 md:hover:bg-theme-secondary-200 md:dark:bg-theme-dark-900 dark:hover:bg-theme-secondary-800 text-theme-secondary-700 dark:text-theme-dark-200',
     'dropdownProperty' => 'dropdownOpen',
-    'contentClass' => null,
+    'contentClass' => "",
 ])
 
 <div
