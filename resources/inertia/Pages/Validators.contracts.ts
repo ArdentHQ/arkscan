@@ -1,4 +1,4 @@
-import { IValidator } from '../types';
+import { IValidator } from "../types";
 
 export interface IValidatorData {
     statistics: IMonitorStatistics;
