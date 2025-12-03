@@ -71,7 +71,7 @@ export default function TransactionsMobileTableWrapper({
     if (!transactions || isLoading) {
         return (
             <div>
-                <TableHeaderWrapper resultCount={0} breakpoint="md">
+                <TableHeaderWrapper resultCount={0}>
                     <TransactionsHeaderActions hasTransactions={false} />
                 </TableHeaderWrapper>
 
