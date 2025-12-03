@@ -9,11 +9,11 @@ import { currencyWithDecimals } from "@/utils/number-formatter";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import Tooltip from "@/Components/General/Tooltip";
-import { useNavbar } from "../Navbar/NavbarContext";
+import { useNavbar } from "@/Components/General/Navbar/NavbarContext";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import { useEffect, useRef, useState } from "react";
-import TruncateDynamic from "../TruncateDynamic";
+import TruncateDynamic from "@/Components/General/TruncateDynamic";
 
 type SearchResultData =
     | INavbarSearchWalletResultData

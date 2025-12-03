@@ -16,10 +16,10 @@ import { WalletProps } from "@/Pages/Wallet.contracts";
 import WalletTransactionsTab from "./tabs/Transactions";
 import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
 import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
-import { IWallet } from "../../types/generated";
+import { IWallet } from "@/types/generated";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 import useSharedData from "@/hooks/use-shared-data";
-import Navbar from "@/Components/General/Navbar/Navbar";
+import Layout from "@/Layout";
 
 const WalletTabsWrapper = ({
     wallet,
@@ -239,20 +239,19 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
         <>
             <Head>{metadata}</Head>
 
-            {/* @TODO: move this to a layout (https://app.clickup.com/t/86dyjh6nw) */}
-            <Navbar />
+            <Layout>
+                <Overview wallet={wallet} />
 
-            <Overview wallet={wallet} />
-
-            <PageHandlerProvider>
-                <WalletTabsWrapper
-                    wallet={wallet}
-                    transactions={transactions}
-                    blocks={blocks}
-                    voters={voters}
-                    filters={filters}
-                />
-            </PageHandlerProvider>
+                <PageHandlerProvider>
+                    <WalletTabsWrapper
+                        wallet={wallet}
+                        transactions={transactions}
+                        blocks={blocks}
+                        voters={voters}
+                        filters={filters}
+                    />
+                </PageHandlerProvider>
+            </Layout>
         </>
     );
 }
