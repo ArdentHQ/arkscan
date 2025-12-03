@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useShareData from "@/hooks/use-shared-data";
 import { Navigation } from "@/types";
+import { NavbarProvider } from "./NavbarContext";
 
 export default function Navbar() {
     const {
@@ -48,11 +49,12 @@ export default function Navbar() {
     }, [t, canBeExchanged, supportEnabled]);
 
     return (
-        <div id="navbar" className="z-30 pb-13 sm:pb-16 md:sticky md:top-0 md:pb-0">
-            <NavbarTop />
-
-            <NavbarDesktop navigation={navigation} />
-            <NavbarMobile navigation={navigation} />
-        </div>
+        <NavbarProvider>
+            <div id="navbar" className="z-30 pb-13 sm:pb-16 md:sticky md:top-0 md:pb-0">
+                <NavbarTop />
+                <NavbarDesktop navigation={navigation} />
+                <NavbarMobile navigation={navigation} />
+            </div>
+        </NavbarProvider>
     );
 }

@@ -11,7 +11,7 @@ import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import ValidatedBlocksTableWrapper from "@/Components/Tables/Desktop/Wallet/ValidatedBlocks";
 import ValidatedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/ValidatedBlocks";
-import { ITab } from "@/Providers/Tabs/types";
+import { ITab, ITabsQueryString } from "@/Providers/Tabs/types";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import WalletTransactionsTab from "./tabs/Transactions";
 import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
@@ -35,13 +35,39 @@ const WalletTabsWrapper = ({
     filters: ITabbedData<IFilters>;
 }) => {
     const tabs = [{ text: "Transactions", value: "transactions" }];
+    const queryStringDefaults: ITabsQueryString = {
+        transactions: {
+            page: 1,
+            "per-page": 25,
+            outgoing: true,
+            incoming: true,
+            transfers: true,
+            multipayments: true,
+            votes: true,
+            validator: true,
+            username: true,
+            contract_deployment: true,
+            others: true,
+        },
+    };
+
     if (wallet.isValidator) {
         tabs.push({ text: "Validated Blocks", value: "blocks" });
         tabs.push({ text: "Voters", value: "voters" });
+
+        queryStringDefaults["blocks"] = {
+            page: 1,
+            "per-page": 25,
+        };
+
+        queryStringDefaults["voters"] = {
+            page: 1,
+            "per-page": 25,
+        };
     }
 
     return (
-        <TabsProvider defaultSelected="transactions" tabs={tabs}>
+        <TabsProvider defaultSelected="transactions" queryStringDefaults={queryStringDefaults} tabs={tabs}>
             <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
         </TabsProvider>
     );
@@ -151,14 +177,16 @@ const WalletTabs = ({
             pollCurrentTab(currentTab);
         }
 
-        onTabChange((tab: ITab) => {
+        onTabChange((tab: ITab, isFirstLoad: boolean) => {
             if (pollingTimerRef.current) {
                 clearTimeout(pollingTimerRef.current);
             }
 
             pollingTimerRef.current = setTimeout(() => pollCurrentTab(tab.value), 8000);
 
-            pollCurrentTab(tab.value);
+            if (isFirstLoad) {
+                pollCurrentTab(tab.value);
+            }
         });
 
         setRefreshPage((callback?: CallableFunction) => {

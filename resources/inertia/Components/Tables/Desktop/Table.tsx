@@ -94,7 +94,7 @@ export function Table({
         <div
             ref={tableRef}
             className={classNames({
-                "px-6 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0": true,
+                "px-6 md:mx-auto md:max-w-7xl md:px-10": true,
                 "pb-8": !withFooter || resultCount === 0,
             })}
         >
