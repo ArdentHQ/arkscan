@@ -5,21 +5,7 @@ import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import LoadingText from "@/Components/Loading/Text";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-
-interface IStatistics {
-    performances?: {
-        forging?: string | number;
-        missed?: string | number;
-        missing?: string | number;
-    };
-    blockCount?: number;
-    nextValidator?: {
-        address?: string;
-        attributes?: {
-            username?: string;
-        };
-    };
-}
+import { IMonitorStatistics } from "@/Pages/Validators.contracts";
 
 export function HeaderStat({
     title,
@@ -47,7 +33,7 @@ export function HeaderStat({
     );
 }
 
-export default function HeaderStats({ height, statistics }: { height: number; statistics?: IStatistics }) {
+export default function HeaderStats({ height, statistics }: { height: number; statistics?: IMonitorStatistics }) {
     const { t } = useTranslation();
 
     const isLoading = !statistics;

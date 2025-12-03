@@ -7,7 +7,7 @@ import Currency from "../General/Currency";
 import useShareData from "@/hooks/use-shared-data";
 import HeaderItem from "../PageHeader/HeaderItem";
 import ExternalLink from "../General/ExternalLink";
-import { IStatistics } from "@/Pages/Validators.contracts";
+import { IValidatorsStatistics } from "@/Pages/Validators.contracts";
 
 // Import validator header background images
 import headerBg from "@images/validators/header-bg.svg";
@@ -53,7 +53,6 @@ function ExploreHeaderStat() {
                 </div>
 
                 <div className="w-full sm:w-auto">
-                    {/* TODO: fix icon offset */}
                     <ExternalLink
                         className="button-primary !flex items-center justify-center space-x-2 px-4 py-1.5"
                         url={t("urls.docs.validator")}
@@ -68,7 +67,7 @@ function ExploreHeaderStat() {
     );
 }
 
-export default function HeaderStats({ statistics }: { statistics: IStatistics }) {
+export default function HeaderStats({ statistics }: { statistics: IValidatorsStatistics }) {
     const { t } = useTranslation();
     const { network } = useShareData();
 

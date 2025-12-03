@@ -18,12 +18,6 @@ export interface IValidator {
     secondsUntilForge: number;
 }
 
-export interface IValidatorData {
-    statistics: any;
-    overflowValidators: IValidator[];
-    validators: IValidator[];
-}
-
 export interface IPaginatedResponse<T> {
     data: T[];
     current_page: number;
