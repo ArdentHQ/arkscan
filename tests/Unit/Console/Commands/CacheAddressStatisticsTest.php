@@ -466,7 +466,6 @@ it('should cache wallet with most transactions', function () {
         ->count(3)
         ->create([
             'sender_public_key' => $walletWithMostTransactions->public_key,
-            'from'              => $walletWithMostTransactions->address,
         ]);
 
     Transaction::factory()
