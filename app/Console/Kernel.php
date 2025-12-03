@@ -54,10 +54,6 @@ final class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(CacheCurrenciesData::class)->everyMinute()->withoutOverlapping();
-
-        $schedule->command(CacheVolume::class)->hourly();
-
         $schedule->command(CacheValidatorWallets::class)->everyMinute()->withoutOverlapping();
 
         $schedule->command(CacheValidatorVoterCounts::class)->everyTenMinutes()->withoutOverlapping();
@@ -90,8 +86,6 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheValidatorStatistics::class)->everyFiveMinutes();
 
-        $schedule->command(CacheMarketDataStatistics::class)->everyFiveMinutes();
-
         $schedule->command(CacheAnnualStatistics::class)->everyFiveMinutes();
 
         $schedule->command(GenerateVoteReport::class)->everyFiveMinutes();
@@ -106,6 +100,12 @@ final class Kernel extends ConsoleKernel
                 ->withoutOverlapping();
 
             $schedule->command(FetchExchangesDetails::class)->everyMinute();
+
+            $schedule->command(CacheCurrenciesData::class)->everyMinute()->withoutOverlapping();
+
+            $schedule->command(CacheMarketDataStatistics::class)->everyFiveMinutes();
+
+            $schedule->command(CacheVolume::class)->hourly();
         }
 
         if (config('arkscan.scout.run_jobs', false) === true) {
