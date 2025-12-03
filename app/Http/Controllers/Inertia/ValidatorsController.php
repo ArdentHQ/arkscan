@@ -27,7 +27,7 @@ final class ValidatorsController
                 'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
                 'missedBlocks'     => $missedBlockCount,
                 'validatorsMissed' => $validatorsMissed,
-            ]
+            ],
         ]);
     }
 
