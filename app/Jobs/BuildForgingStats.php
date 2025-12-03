@@ -23,12 +23,12 @@ final class BuildForgingStats implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public const DEFAULT_RANGE_SECONDS = 24 * 60 * 60 * 30; // 30 days
+
     /**
      * @var int
      */
     public $tries = 1;
-
-    public const DEFAULT_RANGE_SECONDS = 24 * 60 * 60 * 30; // 30 days
 
     public function __construct(public int $height, public float $numberOfDays)
     {
