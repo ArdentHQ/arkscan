@@ -9,8 +9,7 @@ export default function Card({
     return (
         <div
             className={classNames({
-                "rounded px-4 py-3 ring-1 ring-inset ring-theme-secondary-300 dark:ring-theme-dark-700 md:rounded-xl md:px-6 md:py-4":
-                    true,
+                "rounded px-4 py-3 ring-1 ring-inset ring-theme-secondary-300 dark:ring-theme-dark-700 md:rounded-xl md:px-6 md:py-4": true,
                 [className]: true,
             })}
         >
