@@ -73,7 +73,7 @@ final class ValidatorsController
         //     $sortDirection = SortDirection::DESC;
         // }
         $missedBlocksSortKey = 'height';
-        $sortDirection = SortDirection::DESC;
+        $sortDirection       = SortDirection::DESC;
 
         return ForgingStats::query()
             ->with('validator')
