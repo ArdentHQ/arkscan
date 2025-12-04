@@ -97,7 +97,7 @@ export function MonitorTable({
     });
 
     return (
-        <div className="px-6 pb-8 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
+        <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
             <div className="validator-monitor hidden w-full overflow-hidden rounded-b-xl rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block">
                 <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
                     <table>

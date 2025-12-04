@@ -1,7 +1,7 @@
-import MobileTable from "../../Table";
 import MobileTableRow from "../../Row";
 import LoadingText from "@/Components/Loading/Text";
 import LoadingTableCell from "../TableCell";
+import LoadingTable from "../Table";
 
 export function MobileTransactionsSkeletonTable({ rowCount }: { rowCount: number }) {
     const rows = [];
@@ -23,5 +23,5 @@ export function MobileTransactionsSkeletonTable({ rowCount }: { rowCount: number
         );
     }
 
-    return <MobileTable className="md:hidden">{rows}</MobileTable>;
+    return <LoadingTable>{rows}</LoadingTable>;
 }

@@ -5,7 +5,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <>
             <Navbar />
 
-            {children}
+            <div className="py-8">{children}</div>
         </>
     );
 };

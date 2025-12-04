@@ -34,17 +34,13 @@ export function LoadingTableWrapper({
     header?: React.ReactNode;
 }) {
     return (
-        <div
-            className={classNames({
-                "hidden px-6 pt-6 md:mx-auto md:block md:max-w-7xl md:px-10 md:pt-0": true,
-                "pb-8": !withPagination,
-            })}
-        >
+        <div className="hidden px-6 pt-6 md:mx-auto md:block md:max-w-7xl md:px-10 md:pt-0">
             {!!header && <TableHeaderWrapper resultCount={0}>{header}</TableHeaderWrapper>}
 
             <div
                 className={classNames({
-                    "validator-monitor hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "validator-monitor hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block":
+                        true,
                     "rounded-t-xl": !header,
                     "rounded-b-xl": !withPagination,
                 })}
