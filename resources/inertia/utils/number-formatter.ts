@@ -42,7 +42,7 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
 export function formatWithCurrencyCustom(
     value: number | string,
     currency: string,
-    decimals: number | null = null
+    decimals: number | null = null,
 ): string {
     let result = Number(value).toLocaleString("en-US");
 
