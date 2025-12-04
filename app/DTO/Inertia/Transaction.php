@@ -131,7 +131,7 @@ class Transaction extends Data
             amountForItself: $viewModel->amountForItself(),
             amountExcludingItself: $viewModel->amountExcludingItself(),
             amountWithFee: $viewModel->amountWithFee(),
-            amountReceived: $viewModel->amountReceived(),
+            amountReceived: $viewModel->amountReceived($address),
             amountFiat: $viewModel->amountFiat(true),
             amountReceivedFiat: $viewModel->amountReceivedFiat($address),
             fee: $viewModel->fee(),
