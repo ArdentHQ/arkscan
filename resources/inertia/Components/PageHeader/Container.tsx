@@ -15,8 +15,7 @@ export default function PageHeaderContainer({
         <div className="flex flex-col px-6 pb-6 md:mx-auto md:max-w-7xl md:px-10">
             <div
                 className={classNames({
-                    "flex flex-col space-y-4 overflow-hidden font-semibold sm:flex-row sm:items-end sm:justify-between sm:space-y-0":
-                        true,
+                    "flex flex-col space-y-4 overflow-hidden font-semibold sm:flex-row sm:items-end sm:justify-between sm:space-y-0": true,
                     "sm:items-center sm:rounded-lg sm:border sm:border-theme-secondary-300 sm:dark:border-theme-dark-700":
                         breakpoint === "sm",
                     "md:items-center md:rounded-lg md:border md:border-theme-secondary-300 md:dark:border-theme-dark-700":
