@@ -4,29 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
+use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
 use App\Models\ForgingStats;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\ValidatorCache;
+use ARKEcosystem\Foundation\UserInterface\UI;
 use Inertia\Inertia;
 use Inertia\Response;
-use ARKEcosystem\Foundation\UserInterface\UI;
-use App\DTO\Inertia\Block as BlockDTO;
-use App\DTO\Inertia\Transaction as TransactionDTO;
-use App\DTO\Inertia\Wallet as WalletDTO;
-use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
-use App\Models\Block;
-use App\Models\Scopes\HasMultiPaymentRecipientScope;
-use App\Models\Scopes\OrderByBalanceScope;
-use App\Models\Scopes\OrderByHeightScope;
-use App\Models\Scopes\OrderByTimestampScope;
-use App\Models\Scopes\OrderByTransactionIndexScope;
-use App\Models\Transaction;
-use App\Models\Wallet;
-use App\Services\ExchangeRate;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\AbstractPaginator;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
+
 final class ValidatorsController
 {
     use ValidatorsTab;
@@ -43,7 +28,7 @@ final class ValidatorsController
             'unvote' => true,
         ],
     ];
-    
+
     public function __invoke(): Response
     {
         [$missedBlockCount, $validatorsMissed] = $this->missedBlocks();
@@ -54,7 +39,7 @@ final class ValidatorsController
 
         return Inertia::render('Validators/Validators', [
             'filters'      => self::FILTERS,
-            'validators' => Inertia::optional(function ()  {
+            'validators'   => Inertia::optional(function () {
                 $paginator = $this->getValidators();
 
                 return [
@@ -83,7 +68,6 @@ final class ValidatorsController
             $stats->unique('address')->count(),
         ];
     }
-
 
     private function getValidatorsNoResultsMessageProperty(int $count): null|string
     {
@@ -119,7 +103,6 @@ final class ValidatorsController
             return (int) request()->get('per-page');
         }
 
-
         if (defined(static::class.'::'.$name.'PER_PAGE')) {
             return dd(constant(static::class.'::'.$name.'PER_PAGE'));
         }
@@ -129,7 +112,6 @@ final class ValidatorsController
 
     private function sortDirection(string $name = 'default'): string
     {
-       
         return 'asc';
     }
 
@@ -137,5 +119,4 @@ final class ValidatorsController
     {
         return 'rank';
     }
-
 }

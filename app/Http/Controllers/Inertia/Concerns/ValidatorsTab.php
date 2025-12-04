@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia\Concerns;
 
+use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\On;
-use App\DTO\Inertia\Wallet as WalletDTO;
 
 /**
  * @property bool $isAllSelected
@@ -18,6 +18,14 @@ use App\DTO\Inertia\Wallet as WalletDTO;
  * */
 trait ValidatorsTab
 {
+    protected $filters = [
+        'validators' => [
+            'active'   => true,
+            'standby'  => true,
+            'dormant'  => true,
+            'resigned' => true,
+        ],
+    ];
     // public const VALIDATORS_PER_PAGE = 53;
 
     // public const VALIDATORS_INITIAL_SORT_KEY = 'rank';
@@ -65,7 +73,7 @@ trait ValidatorsTab
     public function getValidators(): LengthAwarePaginator
     {
         // $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page('validators'));
-        
+
         // if (! $this->validatorsIsReady) {
         //     return $emptyResults;
         // }
@@ -107,15 +115,6 @@ trait ValidatorsTab
 
         // return $this->filters['validators']['resigned'] === true;
     }
-
-    protected $filters = [
-        'validators' => [
-            'active' => true,
-            'standby' => true,
-            'dormant' => true,
-            'resigned' => true,
-        ],
-    ];
 
     private function getValidatorsQuery(): Builder
     {
