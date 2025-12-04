@@ -399,9 +399,15 @@ describe('Transactions Tab', function () {
 
             $browser->visitRoute('wallet', $this->wallet)
                 ->waitForText('1 result', ignoreCase: true)
-                ->assertSee(substr($transaction->hash, 0, 5))
-                ->waitForTextIn('[data-testid="wallet:transaction:'.$transaction->hash.':amount"]', '456')
-                ->mouseOver('[data-testid="wallet:transaction:'.$transaction->hash.':amount"] .tooltip-content')
+                ->assertSee(substr($transaction->hash, 0, 5));
+
+            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            if ($resolution['width'] <= 640) {
+                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+            }
+
+            $browser->waitForTextIn($selector, '456')
+                ->mouseOver($selector.' .tooltip-content')
                 ->waitForText(trans('general.fiat_excluding_self', ['amount' => NumberFormatter::currency(123.5, Network::currency())]));
 
             $browser->visitRoute('wallet', $this->recipientWallet)
