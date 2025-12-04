@@ -10,8 +10,9 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useTabPolling } from "@/hooks/use-tab-polling";
+import ValidatorsTab from "./tabs/Validators";
 
-const ValidatorsTabsWrapper = () => {
+const ValidatorsTabsWrapper = ({ validators, filters }: Pick<ValidatorsProps, "validators" | "filters">) => {
     return (
         <TabsProvider
             defaultSelected="validators"
@@ -35,12 +36,12 @@ const ValidatorsTabsWrapper = () => {
                 { text: "Recent Votes", value: "recent-votes" },
             ]}
         >
-            <ValidatorsTabs />
+            <ValidatorsTabs validators={validators} filters={filters} />
         </TabsProvider>
     );
 };
 
-const ValidatorsTabs = () => {
+const ValidatorsTabs = ({ validators, filters }: Pick<ValidatorsProps, "validators" | "filters">) => {
     const { currentTab } = useTabs();
 
     useTabPolling((tab: string, callback?: CallableFunction) => {
@@ -65,7 +66,7 @@ const ValidatorsTabs = () => {
 
     return (
         <>
-            {currentTab === "validators" && <>{/*  */}</>}
+            {currentTab === "validators" && <ValidatorsTab validators={validators} filters={filters} />}
 
             {currentTab === "missed-blocks" && <>{/*  */}</>}
 
@@ -74,7 +75,7 @@ const ValidatorsTabs = () => {
     );
 };
 
-export default function Validators({ statistics, network }: PageProps<ValidatorsProps>) {
+export default function Validators({ statistics, network, validators, filters }: PageProps<ValidatorsProps>) {
     const { t } = useTranslation();
     const metadata = usePageMetadata({
         page: "validators",
@@ -93,7 +94,7 @@ export default function Validators({ statistics, network }: PageProps<Validators
                 <HeaderStats statistics={statistics} />
 
                 <PageHandlerProvider>
-                    <ValidatorsTabsWrapper />
+                    <ValidatorsTabsWrapper validators={validators} filters={filters} />
                 </PageHandlerProvider>
             </Layout>
         </>
