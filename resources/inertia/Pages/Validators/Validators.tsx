@@ -4,6 +4,8 @@ import { usePageMetadata } from "@/Components/General/Metadata";
 import Layout from "@/Layout";
 import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
+import HeaderStats from "@/Components/Validator/HeaderStats";
+import { ValidatorsProps } from "../Validators.contracts";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
@@ -72,7 +74,7 @@ const ValidatorsTabs = () => {
     );
 };
 
-export default function Validators({ network }: PageProps) {
+export default function Validators({ statistics, network }: PageProps<ValidatorsProps>) {
     const { t } = useTranslation();
     const metadata = usePageMetadata({
         page: "validators",
@@ -87,6 +89,8 @@ export default function Validators({ network }: PageProps) {
 
             <Layout>
                 <PageHeader title={t("pages.validators.title")} subtitle={t("pages.validators.subtitle")} />
+
+                <HeaderStats statistics={statistics} />
 
                 <PageHandlerProvider>
                     <ValidatorsTabsWrapper />

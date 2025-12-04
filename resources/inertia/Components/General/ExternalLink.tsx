@@ -5,7 +5,7 @@ export default function ExternalLink({
     className = "link font-semibold inline break-words",
     innerClass = "",
     noIcon = false,
-    iconClass = "inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-secondary-500 w-3 h-3",
+    iconClass = "inline relative flex-shrink-0 ml-0.5 text-theme-secondary-500 w-3 h-3",
     children,
 }: {
     url: string;
@@ -17,14 +17,10 @@ export default function ExternalLink({
 }) {
     return (
         <a href={url} className={className} target="_blank" rel="noopener nofollow noreferrer">
-            <div className="flex items-center justify-center space-x-1">
+            <div className="flex items-center justify-center space-x-2">
                 <span className={innerClass}>{children}</span>
 
-                {!noIcon && (
-                    <span>
-                        <ArrowExternalIcon className={iconClass} />
-                    </span>
-                )}
+                {!noIcon && <ArrowExternalIcon className={iconClass} />}
             </div>
         </a>
     );
