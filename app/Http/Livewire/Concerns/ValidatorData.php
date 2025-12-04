@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use App\DTO\Slot;
+use App\Facades\Blocks;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
@@ -61,10 +62,7 @@ trait ValidatorData
             return [];
         }
 
-        /** @var Block $lastBlock */
-        $lastBlock = Block::query()
-            ->orderBy('number', 'desc')
-            ->first();
+        $lastBlock = Blocks::last();
 
         $heightRange = Monitor::heightRangeByRound(Rounds::current());
 
@@ -211,7 +209,7 @@ trait ValidatorData
             return [];
         }
 
-        $tracking        = ValidatorTracker::execute($validators, $heightRange[0]);
+        $tracking        = ValidatorTracker::executeWithCache($validators, $heightRange[0], Blocks::last());
         $roundBlocks     = $this->getBlocksByRange(Arr::pluck($tracking, 'address'), $heightRange);
         $blockTimestamp  = $roundBlocks->last()->timestamp;
         $validators      = [];

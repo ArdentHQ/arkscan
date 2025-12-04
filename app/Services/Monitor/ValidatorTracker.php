@@ -6,21 +6,32 @@ namespace App\Services\Monitor;
 
 use App\Facades\Network;
 use App\Models\Block;
-use App\Models\Scopes\OrderByHeightScope;
+use App\Services\Cache\RequestScopedCache;
 use Illuminate\Support\Facades\DB;
 
 final class ValidatorTracker
 {
+    public static function executeWithCache(array $validators, int $startHeight, ?Block $lastBlock = null): array
+    {
+        $cacheKey = 'validator_tracker:'.md5(implode(',', $validators).':'.$startHeight.':'.($lastBlock?->number->__toString() ?? '0'));
+
+        return RequestScopedCache::remember($cacheKey, function () use ($validators, $startHeight, $lastBlock) {
+            return static::execute($validators, $startHeight, $lastBlock);
+        });
+    }
+
     /**
      * @param string[] $validators
      * @param int $startHeight
      * @return array
      */
-    public static function execute(array $validators, int $startHeight): array
+    public static function execute(array $validators, int $startHeight, ?Block $lastBlock = null): array
     {
-        // Arrange Block
-        $lastBlock = Block::withScope(OrderByHeightScope::class)->firstOrFail();
-        $height    = $lastBlock->number->toNumber();
+        if ($lastBlock === null) {
+            throw new \InvalidArgumentException('Last block must be provided.');
+        }
+
+        $height = $lastBlock->number->toNumber();
 
         // Act
         $forgingInfo = ForgingInfoCalculator::calculate($startHeight, $height);
@@ -29,7 +40,7 @@ final class ValidatorTracker
         $forgingIndex = 2; // We start at 2 to skip 0 which results in 0 as time and 1 which would be the next forger.
 
         // Note: static order will be found by shifting the index based on the forging data from above
-        $validatorCount    = Network::validatorCount();
+        $validatorCount = Network::validatorCount();
 
         $slotOffset = static::slotOffset($startHeight, $validators);
 
@@ -93,10 +104,6 @@ final class ValidatorTracker
             ->where('number', '>=', $roundHeight)
             ->orderBy('number', 'asc')
             ->get();
-
-        if ($roundValidators->isEmpty()) {
-            return 0;
-        }
 
         $lastForgerAddress = $roundValidators->last()->proposer;
 
