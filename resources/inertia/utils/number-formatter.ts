@@ -25,14 +25,7 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
     const decimals = decimalsFor(currency, showSmallAmounts && isSmallAmount);
 
     if (!isFiat(currency)) {
-        const { currencies } = useSharedData();
-        const symbol = currencies![currency]?.symbol ?? currency;
-        const formatted = new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals,
-        }).format(value);
-
-        return `${symbol} ${formatted}`;
+        return formatWithCurrencyCustom(value, currency, decimals);
     }
 
     const { currencies } = useSharedData();
@@ -44,6 +37,35 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
     }).format(value);
+}
+
+export function formatWithCurrencyCustom(
+    value: number | string,
+    currency: string,
+    decimals: number | null = null
+): string {
+    let result = Number(value).toLocaleString("en-US");
+
+    const valueStr = String(value);
+
+    if (valueStr.includes(".")) {
+        const numericValue = Number(value);
+        const effectiveDecimals = decimals ?? 8;
+        result = numericValue.toFixed(effectiveDecimals);
+
+        if (result.includes(".")) {
+            result = result.replace(/0+$/, "").replace(/\.$/, "");
+        }
+    } else if (valueStr.includes(",")) {
+        result = valueStr;
+    }
+
+    // Gets rid of trailing .00 if amount of decimals is 0
+    if (decimals === 0 && result.includes(".")) {
+        result = result.replace(/0+$/, "").replace(/\.$/, "");
+    }
+
+    return `${result} ${currency.toUpperCase()}`.trim();
 }
 
 export function currencyWithDecimals({
