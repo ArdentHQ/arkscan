@@ -53,6 +53,4 @@ export function useTabPolling(pollCurrentTab: (tab: string, callback?: CallableF
             clearTimeout(pollingTimerRef.current);
         };
     }, [currentTab]);
-
-
 }
