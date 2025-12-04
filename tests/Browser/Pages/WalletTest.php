@@ -355,6 +355,36 @@ describe('Transactions Tab', function () {
         });
     })->with('resolutions');
 
+    it('should correctly format multipayment transactions', function ($resolution) {
+        $transactions = Transaction::factory()
+            ->multiPayment([
+                [
+                    $this->recipientWallet->address,
+                    Wallet::factory()->create()->address,
+                ],
+                [
+                    BigNumber::new(123.5 * 1e18),
+                    BigNumber::new(456 * 1e18),
+                ],
+            ])
+            ->create([
+                'from'              => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5))
+                    ->assertSee('+ 123.50');
+            }
+        });
+    })->with('resolutions');
+
     it('should go to page 2', function ($resolution) {
         Transaction::factory()
             ->transfer()
