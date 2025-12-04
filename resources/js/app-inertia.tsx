@@ -24,11 +24,16 @@ createInertiaApp({
             arkconnectConfig: props.initialPage.props.arkconnectConfig as IConfigArkconnect,
         };
 
+        let theme = props.initialPage.props.theme as string;
+        if (!theme || theme === "auto") {
+            theme = localStorage.theme || "light";
+        }
+
         root.render(
             <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
                 <SettingsProvider
                     tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}
-                    theme={props.initialPage.props.theme as string}
+                    theme={theme}
                 >
                     <ArkConnectProvider configuration={configuration}>
                         <App {...props} />
