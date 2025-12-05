@@ -14,12 +14,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
 /**
  * @property bool $isAllSelected
  * @property LengthAwarePaginator $validators
+ * @property array<string, array<string, bool>> $validatorsFilters
  * */
 trait ValidatorsTab
 {
     public const VALIDATORS_PER_PAGE = 53;
 
-    protected $validatorsFilters = [
+    /** @var array<string, array<string, bool>> */
+    protected array $validatorsFilters = [
         'validators' => [
             'active'   => true,
             'standby'  => true,
@@ -28,14 +30,20 @@ trait ValidatorsTab
         ],
     ];
 
-    public function getValidatorsNoResultsMessageProperty(): null|string
+    public function getValidatorsNoResultsMessageProperty(?int $count = null): null|string
     {
         if (! $this->validatorsHasFilters()) {
-            return trans('tables.validators.no_results.no_filters');
+            return (string) trans('tables.validators.no_results.no_filters');
+        }
+
+        if ($count !== null) {
+            return $count === 0
+                ? (string) trans('tables.validators.no_results.no_results')
+                : null;
         }
 
         if ($this->getValidatorsQuery()->doesntExist()) {
-            return trans('tables.validators.no_results.no_results');
+            return (string) trans('tables.validators.no_results.no_results');
         }
 
         return null;

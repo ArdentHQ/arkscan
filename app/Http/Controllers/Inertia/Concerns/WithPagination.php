@@ -8,16 +8,22 @@ use Illuminate\Support\Str;
 
 trait WithPagination
 {
-    protected function page(): int
+    protected function page(string $name = 'default'): int
     {
-        if (request()->has('page')) {
+        $queryKey = $name === 'default' ? 'page' : "{$name}-page";
+
+        if (request()->has($queryKey)) {
+            return (int) request()->get($queryKey);
+        }
+
+        if ($queryKey !== 'page' && request()->has('page')) {
             return (int) request()->get('page');
         }
 
-        return (int) request()->get('page', 1);
+        return (int) request()->get($queryKey, 1);
     }
 
-    protected function perPage($name = 'default'): int
+    protected function perPage(string $name = 'default'): int
     {
         if (request()->has('per-page')) {
             return (int) request()->get('per-page');
