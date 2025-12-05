@@ -30,28 +30,9 @@ import Percentage from "@/Components/General/Percentage";
 import classNames from "classnames";
 import VoteLink from "@/Components/Validator/VoteLink";
 import ExternalLink from "@/Components/General/ExternalLink";
-
-export function ValidatorStatus({ validator }: { validator: IValidator }) {
-    const { t } = useTranslation();
-
-    const statusLabel = useMemo(() => {
-        if (validator.isActive) {
-            return t("general.validators.forging-status.active");
-        }
-
-        if (validator.isResigned) {
-            return t("general.validators.forging-status.resigned");
-        }
-
-        if (validator.isDormant) {
-            return t("general.validators.forging-status.dormant");
-        }
-
-        return t("general.validators.forging-status.standby");
-    }, [validator.isActive, validator.isResigned, validator.isDormant, t]);
-
-    return <Badge className="encapsulated-badge">{statusLabel}</Badge>;
-}
+import ValidatorStatus from "@/Components/Validator/ValidatorStatus";
+import Votes from "@/Components/Validator/Votes";
+import MissedBlocks from "@/Components/Validator/MissedBlocks";
 
 export function Row({ row: validator }: { row: IValidator }) {
     const { arkconnectConfig, network } = useSharedData();
@@ -99,19 +80,7 @@ export function Row({ row: validator }: { row: IValidator }) {
             </TableCell>
 
             <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50" responsive>
-                {votes > 0 && votes < 0.01 ? (
-                    <Tooltip
-                        content={currencyWithDecimals({
-                            value: votes,
-                            currency: network!.currency,
-                            hideCurrency: true,
-                        })}
-                    >
-                        <span>&lt;0.01</span>
-                    </Tooltip>
-                ) : (
-                    <Number>{votes}</Number>
-                )}
+                <Votes validator={validator} />
             </TableCell>
 
             <TableCell
@@ -123,20 +92,7 @@ export function Row({ row: validator }: { row: IValidator }) {
             </TableCell>
 
             <TableCell className="text-right">
-                <Badge
-                    className={classNames("min-w-[30px] text-center", {
-                        "border-theme-success-100 bg-theme-success-100 text-theme-success-700 dark:border-theme-success-700 dark:text-theme-success-500":
-                            validator.missedBlocksState === "success",
-                        "border-theme-orange-light bg-theme-orange-light text-theme-orange-dark dim:text-theme-warning-400 dark:!border-theme-warning-600 dark:text-theme-warning-400":
-                            validator.missedBlocksState === "warning",
-                        "border-theme-danger-100 bg-theme-danger-100 text-theme-danger-700 dim:border-theme-failed-state-bg dim:text-theme-failed-state-text dark:border-theme-failed-state-bg dark:text-theme-failed-state-text":
-                            validator.missedBlocksState === "danger",
-                        "encapsulated-badge border-transparent bg-theme-secondary-200 dark:border-theme-dark-800 dark:text-theme-dark-500":
-                            validator.missedBlocksState === "inactive",
-                    })}
-                >
-                    {validator.missedBlocks}
-                </Badge>
+                <MissedBlocks validator={validator} />
             </TableCell>
 
             <TableCell className="text-right">
