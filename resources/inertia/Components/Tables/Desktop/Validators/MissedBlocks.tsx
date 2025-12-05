@@ -55,6 +55,7 @@ export function MissedBlocksTable({
 
     return (
         <Table
+            resultSuffix={t("pages.validators.missed-blocks.results_suffix")}
             withHeader
             withFooter
             paginator={blocks}
