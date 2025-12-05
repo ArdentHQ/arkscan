@@ -1,11 +1,11 @@
-import { IFilters, ITabbedData, IValidator, IPaginatedResponse } from "@/types";
+import { IFilters, ITabbedData, IMonitorValidator, IPaginatedResponse } from "@/types";
 import { IBlock, IWallet, ITransaction } from "@/types/generated";
 import { IForgingStats } from "@/types/generated";
 
 export interface IValidatorData {
     statistics: IMonitorStatistics;
-    overflowValidators: IValidator[];
-    validators: IValidator[];
+    overflowValidators: IMonitorValidator[];
+    validators: IMonitorValidator[];
 }
 
 export interface IMonitorStatistics {
