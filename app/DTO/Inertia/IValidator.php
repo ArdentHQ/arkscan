@@ -34,6 +34,9 @@ class IValidator extends Data
         public int $voterCount,
         public float $votes,
         public float $votesPercentage,
+        public int $missedBlocks,
+        #[LiteralTypeScriptType('"success" | "warning" | "danger" | "inactive"')]
+        public string $missedBlocksState,
         // public float $productivity,
         // public string $formattedBalanceTwoDecimals,
         // public string $formattedBalanceFull,
@@ -64,6 +67,22 @@ class IValidator extends Data
             $voteUrl = $viewModel->voteUrl();
         }
 
+        $missedBlocksState = 'success';
+        
+        $missedBlocks = $viewModel->missedBlocks();
+        
+        if ($viewModel->isActive()) {
+            $missedPercentage = $viewModel->productivity();
+    
+            if ($missedPercentage < config('arkscan.productivity.danger')) {
+                $missedBlocksState = 'danger';
+            } elseif ($missedPercentage < config('arkscan.productivity.warning')) {
+                $missedBlocksState = 'warning';
+            }
+        } else {
+            $missedBlocksState = 'inactive';
+        }
+
         return new self(
             rank: $viewModel->rank(),
             address: $wallet->address,
@@ -82,6 +101,8 @@ class IValidator extends Data
             hasUsername: $viewModel->hasUsername(),
             votes: $viewModel->votes(),
             votesPercentage: $viewModel->votesPercentage(),
+            missedBlocks: $missedBlocks,
+            missedBlocksState: $missedBlocksState,
             // productivity: $viewModel->productivity(),
             // formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), 2),
             // formattedBalanceFull: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), null),
