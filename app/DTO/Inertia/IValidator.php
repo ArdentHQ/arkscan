@@ -47,7 +47,7 @@ class IValidator extends Data
         // public ?array $attributes,
         // #[LiteralTypeScriptType('IWallet | null')]
         // public ?Wallet $vote,
-        // public ?string $voteUrl,
+        public ?string $voteUrl,
         // public ?float $votePercentage,
     ) {
     }
@@ -109,7 +109,7 @@ class IValidator extends Data
             // fiatValue: ExchangeRate::convert($wallet->balance, null),
             // totalForged: (string) $viewModel->totalForged(),
             // vote: $votedWallet,
-            // voteUrl: $voteUrl,
+            voteUrl: $voteUrl,
             // votePercentage: $viewModel->votePercentage(),
             voterCount: $viewModel->voterCount(),
         );

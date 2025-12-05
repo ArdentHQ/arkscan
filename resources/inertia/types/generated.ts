@@ -193,6 +193,7 @@ export type IValidator = {
     votesPercentage: number;
     missedBlocks: number;
     missedBlocksState: "success" | "warning" | "danger" | "inactive";
+    voteUrl: string | null;
 };
 export type IWallet = {
     address: string;

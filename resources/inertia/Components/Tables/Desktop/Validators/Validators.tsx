@@ -28,14 +28,14 @@ import Number from "@/Components/General/Number";
 import { currencyWithDecimals } from "@/utils/number-formatter";
 import Percentage from "@/Components/General/Percentage";
 import classNames from "classnames";
+import VoteLink from "@/Components/Validator/VoteLink";
+import ExternalLink from "@/Components/General/ExternalLink";
 
 {
     /* <x-ark-tables.row wire:key="validator-{{ $validator->address() }}">
                 
                 
-                <x-ark-tables.cell class="text-right">
-                    <x-tables.rows.desktop.encapsulated.validators.missed-blocks :model="$validator" />
-                </x-ark-tables.cell>
+    
 
                 <x-ark-tables.cell class="text-right">
                     <x-tables.rows.desktop.encapsulated.validators.vote-link :model="$validator" />
@@ -132,9 +132,15 @@ export function Row({ row: validator }: { row: IValidator }) {
                 </Badge>
             </TableCell>
 
-            <TableCell>{/* <Amount transaction={row} hideCurrency /> */}</TableCell>
-
-            <TableCell>{/* <Fee transaction={row} /> */}</TableCell>
+            <TableCell className="text-right">
+                {arkconnectConfig.enabled ? (
+                    <VoteLink wallet={validator} />
+                ) : (
+                    <ExternalLink url={validator.voteUrl ?? ""} innerClass="text-sm" noIcon>
+                        {t("actions.vote")}
+                    </ExternalLink>
+                )}
+            </TableCell>
         </tr>
     );
 }
