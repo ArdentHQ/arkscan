@@ -85,52 +85,17 @@ final class ValidatorsController
         ];
     }
 
-    private function getValidatorsNoResultsMessageProperty(int $count): null|string
-    {
-        // if (! $this->hasAddressingFilters() && ! $this->hasTransactionTypeFilters()) {
-        //     return trans('tables.transactions.no_results.no_filters');
-        // }
-
-        // if (! $this->hasAddressingFilters()) {
-        //     return trans('tables.transactions.no_results.no_addressing_filters');
-        // }
-
-        // if ($count === 0) {
-        //     return trans('tables.transactions.no_results.no_results');
-        // }
-
-        return null;
-    }
-
-    // private function page(string $name = 'default'): int
-    // {
-    //     if (request()->has('page')) {
-    //         return (int) request()->get('page');
-    //     }
-
-    //     // @TOOD: handle page name
-
-    //     return 1;
-    // }
-
-    // private function perPage(string $name = 'default'): int
-    // {
-    //     if (request()->has('per-page')) {
-    //         return (int) request()->get('per-page');
-    //     }
-
-    //     if (defined(static::class.'::'.$name.'PER_PAGE')) {
-    //         return dd(constant(static::class.'::'.$name.'PER_PAGE'));
-    //     }
-
-    //     return (int) config('arkscan.pagination.per_page');
-    // }
-
+    // TODO: Re-implement sorting once the UI supports it - https://app.clickup.com/t/86dypp5jv
+    //       Look at \App\Http\Livewire\Validators\Concerns\MissedBlocksTab for reference.
+    //       Also check `getMissedBlocks` below
     private function sortDirection(string $name = 'default'): string
     {
         return 'asc';
     }
 
+    // TODO: Re-implement sorting once the UI supports it - https://app.clickup.com/t/86dypp5jv
+    //       Look at \App\Http\Livewire\Validators\Concerns\MissedBlocksTab for reference.
+    //       Also check `getMissedBlocks` below
     private function sortKey(string $name = 'default'): string
     {
         return 'rank';

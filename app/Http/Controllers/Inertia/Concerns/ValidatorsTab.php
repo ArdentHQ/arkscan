@@ -10,7 +10,6 @@ use App\Facades\Network;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Livewire\Attributes\On;
 
 /**
  * @property bool $isAllSelected
@@ -18,6 +17,8 @@ use Livewire\Attributes\On;
  * */
 trait ValidatorsTab
 {
+    public const VALIDATORS_PER_PAGE = 53;
+
     protected $validatorsFilters = [
         'validators' => [
             'active'   => true,
@@ -26,94 +27,40 @@ trait ValidatorsTab
             'resigned' => true,
         ],
     ];
-    // public const VALIDATORS_PER_PAGE = 53;
 
-    // public const VALIDATORS_INITIAL_SORT_KEY = 'rank';
+    public function getValidatorsNoResultsMessageProperty(): null|string
+    {
+        if (! $this->validatorsHasFilters()) {
+            return trans('tables.validators.no_results.no_filters');
+        }
 
-    // public const VALIDATORS_INITIAL_SORT_DIRECTION = SortDirection::ASC;
+        if ($this->getValidatorsQuery()->doesntExist()) {
+            return trans('tables.validators.no_results.no_results');
+        }
 
-    // public bool $validatorsIsReady = false;
-
-    // public function queryStringValidatorsTab(): array
-    // {
-    //     return [
-    //         'paginators.validators'        => ['except' => 1, 'as' => 'page', 'history' => true],
-    //         'paginatorsPerPage.validators' => ['except' => self::defaultPerPage('VALIDATORS'), 'as' => 'per-page', 'history' => true],
-    //         'sortKeys.validators'          => ['as' => 'sort', 'except' => self::defaultSortKey('VALIDATORS')],
-    //         'sortDirections.validators'    => ['as' => 'sort-direction', 'except' => self::defaultSortDirection('VALIDATORS')->value],
-    //         'filters.validators.active'    => ['as' => 'active', 'except' => true],
-    //         'filters.validators.standby'   => ['as' => 'standby', 'except' => true],
-    //         'filters.validators.dormant'   => ['as' => 'dormant', 'except' => false],
-    //         'filters.validators.resigned'  => ['as' => 'resigned', 'except' => false],
-    //     ];
-    // }
-
-    // // We're keeping it here as TabbedComponent has its own mount method
-    // // and we can't override it with arguments.
-    // public function mountValidatorsTab(bool $deferLoading = true): void
-    // {
-    //     if (! $deferLoading) {
-    //         $this->setValidatorsReady();
-    //     }
-    // }
-
-    // public function getValidatorsNoResultsMessageProperty(): null|string
-    // {
-    //     if (! $this->validatorsHasFilters()) {
-    //         return trans('tables.validators.no_results.no_filters');
-    //     }
-
-    //     if ($this->validators->total() === 0) {
-    //         return trans('tables.validators.no_results.no_results');
-    //     }
-
-    //     return null;
-    // }
+        return null;
+    }
 
     public function getValidators(): LengthAwarePaginator
     {
-        // $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page('validators'));
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page('validators'));
 
-        // if (! $this->validatorsIsReady) {
-        //     return $emptyResults;
-        // }
-
-        // if (! $this->validatorsHasFilters()) {
-        //     return $emptyResults;
-        // }
+        if (! $this->validatorsHasFilters()) {
+            return $emptyResults;
+        }
 
         return $this->getValidatorsQuery()
             ->paginate($this->perPage('validators'), page: $this->page('validators'))
             ->through(fn (Wallet $validator) => IValidator::fromModel($validator));
     }
 
-    // public static function validatorsPerPageOptions(): array
-    // {
-    //     return trans('tables.validators.validator_per_page_options');
-    // }
-
-    // #[On('setValidatorsReady')]
-    // public function setValidatorsReady(): void
-    // {
-    //     $this->validatorsIsReady = true;
-    // }
-
+    /**
+     * @TODO: implement validators filters logic https://app.clickup.com/t/86dyqe7cg
+     * @see `app/Http/Livewire/Validators/Concerns/ValidatorsTab.php`
+     */
     private function validatorsHasFilters(): bool
     {
         return true;
-        // if ($this->validatorsFilters['validators']['active'] === true) {
-        //     return true;
-        // }
-
-        // if ($this->validatorsFilters['validators']['standby'] === true) {
-        //     return true;
-        // }
-
-        // if ($this->validatorsFilters['validators']['dormant'] === true) {
-        //     return true;
-        // }
-
-        // return $this->validatorsFilters['validators']['resigned'] === true;
     }
 
     private function getValidatorsQuery(): Builder

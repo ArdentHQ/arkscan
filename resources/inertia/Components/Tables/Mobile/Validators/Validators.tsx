@@ -24,8 +24,6 @@ export function ValidatorsMobileTable({ validators }: Pick<ValidatorsProps, "val
     const { network, arkconnectConfig } = useSharedData();
     const { votingForAddress } = useArkConnect();
 
-    console.log({ votingForAddress, address: validators.data[0].address });
-
     return (
         <MobileTable noResultsMessage={validators.noResultsMessage} resultCount={validators.data.length ?? 0}>
             {validators.data.map((validator: IValidator, index) => (
