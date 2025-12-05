@@ -189,6 +189,7 @@ export type IValidator = {
     username: string | null;
     hasUsername: boolean;
     voterCount: number;
+    votes: number;
 };
 export type IWallet = {
     address: string;

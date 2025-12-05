@@ -25,15 +25,13 @@ import CheckMarkBoxIcon from "@ui/icons/check-mark-box.svg?react";
 import Identity from "@/Components/General/Identity";
 import Badge from "@/Components/General/Badge";
 import Number from "@/Components/General/Number";
+import { currencyWithDecimals } from "@/utils/number-formatter";
 
 {
     /* <x-ark-tables.row wire:key="validator-{{ $validator->address() }}">
                 
                 
-                
-                <x-ark-tables.cell class="text-right">
-                    <x-tables.rows.desktop.encapsulated.validators.number-of-voters :model="$validator" />
-                </x-ark-tables.cell>
+    
 
                 <x-ark-tables.cell
                     class="text-right"
@@ -60,7 +58,7 @@ import Number from "@/Components/General/Number";
             </x-ark-tables.row> */
 }
 export function Row({ row: validator }: { row: IValidator }) {
-    const { arkconnectConfig } = useSharedData();
+    const { arkconnectConfig, network } = useSharedData();
     const { votingForAddress } = useArkConnect();
     const { t } = useTranslation();
 
@@ -79,6 +77,8 @@ export function Row({ row: validator }: { row: IValidator }) {
 
         return t("general.validators.forging-status.standby");
     }, [validator.isActive, validator.isResigned, validator.isDormant, t]);
+
+    const votes = validator.votes;
 
     return (
         <tr className="text-sm font-semibold">
@@ -102,8 +102,24 @@ export function Row({ row: validator }: { row: IValidator }) {
                 <Badge className="encapsulated-badge">{statusLabel}</Badge>
             </TableCell>
 
-            <TableCell className="text-right">
-                <Number className="text-theme-secondary-900 dark:text-theme-dark-50">{validator.voterCount}</Number>
+            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+                <Number>{validator.voterCount}</Number>
+            </TableCell>
+
+            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50" responsive>
+                {votes > 0 && votes < 0.01 ? (
+                    <Tooltip
+                        content={currencyWithDecimals({
+                            value: votes,
+                            currency: network!.currency,
+                            hideCurrency: true,
+                        })}
+                    >
+                        <span>&lt;0.01</span>
+                    </Tooltip>
+                ) : (
+                    <Number>{votes}</Number>
+                )}
             </TableCell>
 
             <TableCell>{/* <Amount transaction={row} hideCurrency /> */}</TableCell>
