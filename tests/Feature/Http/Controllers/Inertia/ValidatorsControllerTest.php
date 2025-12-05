@@ -9,7 +9,7 @@ beforeEach(function () {
     $this->withoutExceptionHandling();
 });
 
-function performWalletRequest($context, $withReload = true, $pageCallback = null, $reloadCallback = null, array $queryString = []): mixed
+function performValidatorsRequest($context, $withReload = true, $pageCallback = null, $reloadCallback = null, array $queryString = []): mixed
 {
     return $context->get(route('validators', $queryString))
         ->assertOk()
@@ -34,14 +34,14 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
 }
 
 it('should render the page without any errors', function () {
-    performWalletRequest($this);
+    performValidatorsRequest($this);
 });
 
 it('should have missed blocks', function () {
     $block1 = ForgingStats::factory()->create();
     $block2 = ForgingStats::factory()->create();
 
-    performWalletRequest(
+    performValidatorsRequest(
         $this,
         reloadCallback: function (Assert $reload) use ($block1, $block2) {
             $reload->has('missedBlocks.data', 2)
