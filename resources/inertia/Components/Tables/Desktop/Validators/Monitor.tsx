@@ -8,7 +8,7 @@ import classNames from "classnames";
 import LoadingTable from "../LoadingTable";
 import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import ValidatorStatusProvider from "@/Providers/ValidatorStatus/ValidatorStatusProvider";
-import { IValidator } from "@/types";
+import { IMonitorValidator } from "@/types";
 import { useTranslation } from "react-i18next";
 import MissedWarning from "@/Components/Validator/Monitor/MissedWarning";
 
@@ -16,7 +16,7 @@ export function MonitorRow({
     validator,
     withFavoriteBorder = true,
 }: {
-    validator: IValidator;
+    validator: IMonitorValidator;
     withFavoriteBorder?: boolean;
 }) {
     const { isFavorite } = useValidatorFavorites();
@@ -75,8 +75,8 @@ export function MonitorTable({
     validators,
     overflowValidators,
 }: {
-    validators: IValidator[];
-    overflowValidators: IValidator[];
+    validators: IMonitorValidator[];
+    overflowValidators: IMonitorValidator[];
 }) {
     const { t } = useTranslation();
     const { isFavorite } = useValidatorFavorites();
@@ -161,8 +161,8 @@ export default function MonitorTableWrapper({
     overflowValidators,
     rowCount,
 }: {
-    validators: IValidator[];
-    overflowValidators: IValidator[];
+    validators: IMonitorValidator[];
+    overflowValidators: IMonitorValidator[];
     rowCount: number;
 }) {
     if (!validators || validators.length === 0) {

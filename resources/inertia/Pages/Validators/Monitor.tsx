@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { usePageMetadata } from "@/Components/General/Metadata";
 import { PageProps } from "@inertiajs/core";
 import Layout from "@/Layout";
-import { IValidatorData } from "../Validators.contracts";
+import { IValidatorData } from "@/Pages/Validators.contracts";
 
 export default function Monitor({
     validatorData,
