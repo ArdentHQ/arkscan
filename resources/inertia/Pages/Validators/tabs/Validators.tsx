@@ -1,7 +1,5 @@
 import ValidatorsTableWrapper from "@/Components/Tables/Desktop/Validators/Validators";
-import TransactionsTableWrapper from "@/Components/Tables/Desktop/Wallet/Transactions";
 import ValidatorsMobileTableWrapper from "@/Components/Tables/Mobile/Validators/Validators";
-import TransactionsMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Transactions";
 import FilterProvider from "@/Providers/Filter/FilterProvider";
 import { ValidatorsProps } from "@/Pages/Validators.contracts";
 import { useTranslation } from "react-i18next";
@@ -72,10 +70,7 @@ export default function ValidatorsTab({ validators, filters }: Pick<ValidatorsPr
         >
             <ValidatorsTableWrapper
                 validators={validators}
-                mobile={
-                    <></>
-                    // <ValidatorsMobileTableWrapper validators={validators} />
-                }
+                mobile={<ValidatorsMobileTableWrapper validators={validators} />}
             />
         </FilterProvider>
     );

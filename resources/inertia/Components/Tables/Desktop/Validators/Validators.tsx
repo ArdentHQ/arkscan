@@ -31,9 +31,7 @@ import classNames from "classnames";
 import VoteLink from "@/Components/Validator/VoteLink";
 import ExternalLink from "@/Components/General/ExternalLink";
 
-export function Row({ row: validator }: { row: IValidator }) {
-    const { arkconnectConfig, network } = useSharedData();
-    const { votingForAddress } = useArkConnect();
+export function ValidatorStatus({ validator }: { validator: IValidator }) {
     const { t } = useTranslation();
 
     const statusLabel = useMemo(() => {
@@ -52,11 +50,19 @@ export function Row({ row: validator }: { row: IValidator }) {
         return t("general.validators.forging-status.standby");
     }, [validator.isActive, validator.isResigned, validator.isDormant, t]);
 
+    return <Badge className="encapsulated-badge">{statusLabel}</Badge>;
+}
+
+export function Row({ row: validator }: { row: IValidator }) {
+    const { arkconnectConfig, network } = useSharedData();
+    const { votingForAddress } = useArkConnect();
+    const { t } = useTranslation();
+
     const votes = validator.votes;
 
     return (
         <tr className="text-sm font-semibold">
-            <TableCell>{validator.rank}</TableCell>
+            <TableCell>{<Number>{validator.rank ?? 0}</Number>}</TableCell>
 
             <TableCell>
                 <div className="flex items-center space-x-2">
@@ -73,7 +79,7 @@ export function Row({ row: validator }: { row: IValidator }) {
             </TableCell>
 
             <TableCell>
-                <Badge className="encapsulated-badge">{statusLabel}</Badge>
+                <ValidatorStatus validator={validator} />
             </TableCell>
 
             <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
@@ -209,7 +215,7 @@ export default function ValidatorsTableWrapper({
     const { t } = useTranslation();
     const { network } = useSharedData();
 
-    if (!validators || isLoading || true) {
+    if (!validators || isLoading) {
         return (
             <LoadingTable
                 mobile={mobile}
@@ -263,6 +269,12 @@ export default function ValidatorsTableWrapper({
             />
         );
     }
+
+    return (
+        <div>
+            <ValidatorsTable validators={validators} mobile={mobile} />
+        </div>
+    );
 }
 
 export function ValidatorsHeaderActions() {

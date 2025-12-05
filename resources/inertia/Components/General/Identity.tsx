@@ -9,20 +9,24 @@ export default function Identity({
     model,
     address: addressProp,
     className,
+    contentClassName,
+    linkClassName,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> &
     React.PropsWithChildren<{
         model?: Pick<IWallet, "address" | "username" | "hasUsername">;
         address?: string;
+        contentClassName?: string;
+        linkClassName?: string;
     }>) {
     const address = model?.address || addressProp;
 
     const hasUsername = model?.hasUsername || false;
 
     return (
-        <div className={classNames("flex items-center md:flex-row md:justify-start", className)} {...props}>
-            <div className="flex items-center md:mr-0">
-                <Link href={route("wallet", address)} className="link font-semibold sm:hidden md:flex">
+        <div className={classNames("flex items-center", className)} {...props}>
+            <div className={classNames("flex items-center", contentClassName)}>
+                <Link href={route("wallet", address)} className={classNames("link font-semibold", linkClassName)}>
                     {hasUsername ? (
                         <div className="validator-name-truncate">{model!.username!}</div>
                     ) : (
