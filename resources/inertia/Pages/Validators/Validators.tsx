@@ -13,8 +13,6 @@ import { useTabPolling } from "@/hooks/use-tab-polling";
 import ValidatorsTab from "./tabs/Validators";
 import MissedBlocksTableWrapper from "@/Components/Tables/Desktop/Validators/MissedBlocks";
 import MissedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Validators/MissedBlocks";
-import { IForgingStats } from "@/types/generated";
-import { IPaginatedResponse } from "../../types";
 
 const ValidatorsTabsWrapper = ({
     missedBlocks,

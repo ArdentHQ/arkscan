@@ -1,6 +1,6 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { ITransaction } from "@/types/generated";
+import { ITransaction, IValidator, IWallet } from "@/types/generated";
 import { IPaginatedResponse } from "@/types";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
@@ -19,13 +19,78 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
 import useSharedData from "@/hooks/use-shared-data";
 import { ValidatorsProps } from "@/Pages/Validators.contracts";
+import { useArkConnect } from "@/Providers/ArkConnect/ArkConnectContext";
+import Tooltip from "@/Components/General/Tooltip";
+import CheckMarkBoxIcon from "@ui/icons/check-mark-box.svg?react";
+import Identity from "@/Components/General/Identity";
 
-export function Row({ row }: { row: ITransaction }) {
+{
+    /* <x-ark-tables.row wire:key="validator-{{ $validator->address() }}">
+                
+                <x-ark-tables.cell>
+                    
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell>
+                    <x-tables.rows.desktop.encapsulated.validators.validator-status :model="$validator" />
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell class="text-right">
+                    <x-tables.rows.desktop.encapsulated.validators.number-of-voters :model="$validator" />
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell
+                    class="text-right"
+                    responsive
+                >
+                    <x-tables.rows.desktop.encapsulated.validators.votes :model="$validator" />
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell
+                    class="text-right"
+                    responsive
+                    breakpoint="lg"
+                >
+                    <x-tables.rows.desktop.encapsulated.validators.votes-percentage :model="$validator" />
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell class="text-right">
+                    <x-tables.rows.desktop.encapsulated.validators.missed-blocks :model="$validator" />
+                </x-ark-tables.cell>
+
+                <x-ark-tables.cell class="text-right">
+                    <x-tables.rows.desktop.encapsulated.validators.vote-link :model="$validator" />
+                </x-ark-tables.cell>
+            </x-ark-tables.row> */
+}
+export function Row({ row: validator }: { row: IValidator }) {
+    const { arkconnectConfig } = useSharedData();
+    const { votingForAddress } = useArkConnect();
+    const { t } = useTranslation();
+
+    // const votingForAddress
+
     return (
         <tr className="text-sm font-semibold">
-            <TableCell className="w-[60px]">{/* <ID transaction={row} /> */}</TableCell>
+            <TableCell>{validator.rank}</TableCell>
 
-            <TableCell>{/* <Age timestamp={row.timestamp} /> */}</TableCell>
+            <TableCell>
+                <div className="flex items-center space-x-2">
+                    <Identity model={validator} />
+                    {/* <x-tables.rows.desktop.encapsulated.address
+                            :model="$validator"
+                            without-clipboard
+                            validator-name-class="md:w-[100px] md-lg:w-auto"
+                        /> */}
+                    {arkconnectConfig.enabled && votingForAddress === validator.address && (
+                        <div>
+                            <Tooltip content={t("pages.validators.arkconnect.voting_for_tooltip")}>
+                                <CheckMarkBoxIcon className="h-4 w-4" />
+                            </Tooltip>
+                        </div>
+                    )}
+                </div>
+            </TableCell>
 
             <TableCell>{/* <Method transaction={row} /> */}</TableCell>
 
@@ -47,46 +112,6 @@ export function ValidatorsTable({
     const { t } = useTranslation();
     const { network } = useSharedData();
 
-    // {
-    //     name: t("tables.validators.rank"),
-    //     type: "string",
-    //     className: "w-[70px]",
-    // },
-    // {
-    //     name: t("tables.validators.validator"),
-    //     type: "address",
-    // },
-    // {
-    //     name: t("tables.validators.status"),
-    //     // type? @TODO
-    // },
-    // {
-    //     name: t("tables.validators.no_of_voters"),
-    //     type: "number",
-    //     className: "whitespace-nowrap",
-    // },
-    // {
-    //     name: t("tables.validators.votes", {
-    //         currency: network!.currency,
-    //     }),
-    //     type: "number",
-    //     className: "whitespace-nowrap",
-    // },
-    // {
-    //     name: t("tables.validators.percentage"),
-    //     type: "number",
-    //     // className: "!py-2.5", ??
-    // },
-    // {
-    //     name: t("tables.validators.missed_blocks"),
-    //     type: "number",
-    //     className: "whitespace-nowrap",
-    // },
-    // {
-    //     name: "",
-    //     type: "string",
-    //     className: "w-[70px]",
-    // },
     return (
         <Table
             withHeader

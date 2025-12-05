@@ -86,10 +86,10 @@
                             validator-name-class="md:w-[100px] md-lg:w-auto"
                         />
 
-                        @if (config('arkscan.arkconnect.enabled'))
+                        @if (true)
                             <div
                                 x-data="{}"
-                                x-show="votingForAddress === '{{ $validator->address() }}'"
+                                {{-- x-show="votingForAddress === '{{ $validator->address() }}'" --}}
                             >
                                 <div data-tippy-content="@lang('pages.validators.arkconnect.voting_for_tooltip')">
                                     <x-ark-icon

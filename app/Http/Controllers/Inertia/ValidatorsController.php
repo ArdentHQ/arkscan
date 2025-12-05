@@ -19,6 +19,7 @@ use Inertia\Response;
 final class ValidatorsController
 {
     use ValidatorsTab;
+    use WithPagination;
 
     public const FILTERS = [
         'validators' => [
@@ -32,7 +33,7 @@ final class ValidatorsController
             'unvote' => true,
         ],
     ];
-    use WithPagination;
+    
 
     public function __invoke(): Response
     {
@@ -102,29 +103,29 @@ final class ValidatorsController
         return null;
     }
 
-    private function page(string $name = 'default'): int
-    {
-        if (request()->has('page')) {
-            return (int) request()->get('page');
-        }
+    // private function page(string $name = 'default'): int
+    // {
+    //     if (request()->has('page')) {
+    //         return (int) request()->get('page');
+    //     }
 
-        // @TOOD: handle page name
+    //     // @TOOD: handle page name
 
-        return 1;
-    }
+    //     return 1;
+    // }
 
-    private function perPage(string $name = 'default'): int
-    {
-        if (request()->has('per-page')) {
-            return (int) request()->get('per-page');
-        }
+    // private function perPage(string $name = 'default'): int
+    // {
+    //     if (request()->has('per-page')) {
+    //         return (int) request()->get('per-page');
+    //     }
 
-        if (defined(static::class.'::'.$name.'PER_PAGE')) {
-            return dd(constant(static::class.'::'.$name.'PER_PAGE'));
-        }
+    //     if (defined(static::class.'::'.$name.'PER_PAGE')) {
+    //         return dd(constant(static::class.'::'.$name.'PER_PAGE'));
+    //     }
 
-        return (int) config('arkscan.pagination.per_page');
-    }
+    //     return (int) config('arkscan.pagination.per_page');
+    // }
 
     private function sortDirection(string $name = 'default'): string
     {
@@ -135,6 +136,7 @@ final class ValidatorsController
     {
         return 'rank';
     }
+
     private function getMissedBlocks(): AbstractPaginator
     {
         if (config('database.default') === 'sqlite') {
