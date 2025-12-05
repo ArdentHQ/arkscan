@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\ForgingStats;
+use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
@@ -38,6 +39,35 @@ it('should render the page without any errors', function () {
 });
 
 it('should have missed blocks', function () {
+    $block1 = ForgingStats::factory()->create();
+    $block2 = ForgingStats::factory()->create();
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($block1, $block2) {
+            $reload->has('missedBlocks.data', 2)
+                ->where('missedBlocks.total', 2)
+                ->where('missedBlocks.current_page', 1)
+                ->where('missedBlocks.last_page', 1)
+                ->where('missedBlocks.meta', [
+                    'pageName'  => 'page',
+                    'urlParams' => [],
+                ])
+                ->where('missedBlocks.data', function ($blocks) use ($block1, $block2) {
+                    $missedHeights = collect($blocks)->pluck('number');
+
+                    return $missedHeights->contains($block1->missed_height) && $missedHeights->contains($block2->missed_height);
+                });
+        },
+    );
+});
+
+it('should pull missed blocks from sqlite databases', function () {
+    Config::set('database.default', 'sqlite');
+    Config::set('database.connections.sqlite.database', ':memory:');
+
+    $this->artisan('migrate:fresh');
+
     $block1 = ForgingStats::factory()->create();
     $block2 = ForgingStats::factory()->create();
 
