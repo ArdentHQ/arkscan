@@ -88,7 +88,19 @@ export function Row({ row: validator }: { row: IValidator }) {
             </TableCell>
 
             <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
-                <Number>{validator.voterCount}</Number>
+                <div>
+                    <Number>{validator.voterCount}</Number>
+
+                    <div className="divide mt-1 hidden space-x-2 divide-x divide-theme-secondary-300 text-xs leading-3.75 text-theme-secondary-700 dark:divide-theme-dark-700 dark:text-theme-dark-200 sm:flex lg:hidden">
+                        <div>
+                            <Number>{validator.votes}</Number>
+                        </div>
+
+                        <div className="pl-2">
+                            <Percentage>{validator.votesPercentage}</Percentage>
+                        </div>
+                    </div>
+                </div>
             </TableCell>
 
             <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50" responsive>
