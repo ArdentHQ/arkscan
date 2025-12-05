@@ -2,18 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Console\Commands\CacheValidatorsWithVoters;
-use App\Facades\Network;
-use App\Models\Block;
 use App\Models\ForgingStats;
-use App\Models\Transaction;
-use App\Models\Wallet;
-use App\Services\BigNumber;
-use App\Services\Cache\NetworkCache;
-use App\Services\Cache\WalletCache;
-use Carbon\Carbon;
 use Inertia\Testing\AssertableInertia as Assert;
-use function Tests\faker;
 
 beforeEach(function () {
     $this->withoutExceptionHandling();

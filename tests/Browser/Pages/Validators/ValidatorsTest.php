@@ -2,15 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Block;
 use App\Models\ForgingStats;
-use App\Models\Scopes\OrderByTimestampScope;
-use App\Models\Scopes\OrderByTransactionIndexScope;
-use App\Models\Transaction;
-use App\Models\Wallet;
-use App\Services\Addresses\Legacy;
-use App\Services\Cache\WalletCache;
-use Facebook\WebDriver\WebDriverBy;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Dusk\Browser;
 
