@@ -68,12 +68,12 @@ class IValidator extends Data
         }
 
         $missedBlocksState = 'success';
-        
+
         $missedBlocks = $viewModel->missedBlocks();
-        
+
         if ($viewModel->isActive()) {
             $missedPercentage = $viewModel->productivity();
-    
+
             if ($missedPercentage < config('arkscan.productivity.danger')) {
                 $missedBlocksState = 'danger';
             } elseif ($missedPercentage < config('arkscan.productivity.warning')) {
