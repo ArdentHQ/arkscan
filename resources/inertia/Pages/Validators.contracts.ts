@@ -1,6 +1,6 @@
-import { IValidator } from "../types";
-import { IFilters, IPaginatedResponse, ITabbedData } from "@/types";
+import { IFilters, ITabbedData, IValidator, IPaginatedResponse } from "@/types";
 import { IBlock, IWallet, ITransaction } from "@/types/generated";
+import { IForgingStats } from "@/types/generated";
 
 export interface IValidatorData {
     statistics: IMonitorStatistics;
@@ -35,4 +35,5 @@ export interface ValidatorsProps {
     statistics: IValidatorsStatistics;
     validators: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
+    missedBlocks: IPaginatedResponse<IForgingStats>;
 }

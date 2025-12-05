@@ -11,8 +11,16 @@ import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 import ValidatorsTab from "./tabs/Validators";
+import MissedBlocksTableWrapper from "@/Components/Tables/Desktop/Validators/MissedBlocks";
+import MissedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Validators/MissedBlocks";
+import { IForgingStats } from "@/types/generated";
+import { IPaginatedResponse } from "../../types";
 
-const ValidatorsTabsWrapper = ({ validators, filters }: Pick<ValidatorsProps, "validators" | "filters">) => {
+const ValidatorsTabsWrapper = ({
+    missedBlocks,
+    validators,
+    filters,
+}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters">) => {
     return (
         <TabsProvider
             defaultSelected="validators"
@@ -36,12 +44,16 @@ const ValidatorsTabsWrapper = ({ validators, filters }: Pick<ValidatorsProps, "v
                 { text: "Recent Votes", value: "recent-votes" },
             ]}
         >
-            <ValidatorsTabs validators={validators} filters={filters} />
+            <ValidatorsTabs missedBlocks={missedBlocks} validators={validators} filters={filters} />
         </TabsProvider>
     );
 };
 
-const ValidatorsTabs = ({ validators, filters }: Pick<ValidatorsProps, "validators" | "filters">) => {
+const ValidatorsTabs = ({
+    missedBlocks,
+    validators,
+    filters,
+}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters">) => {
     const { currentTab } = useTabs();
 
     useTabPolling((tab: string, callback?: CallableFunction) => {
@@ -49,9 +61,9 @@ const ValidatorsTabs = ({ validators, filters }: Pick<ValidatorsProps, "validato
         if (tab === "validators") {
             pollParameters = ["validators"];
         } else if (tab === "missed-blocks") {
-            pollParameters = ["missed-blocks"];
+            pollParameters = ["missedBlocks"];
         } else if (tab === "recent-votes") {
-            pollParameters = ["recent-votes"];
+            pollParameters = ["recentVotes"];
         }
 
         router.reload({
@@ -68,14 +80,25 @@ const ValidatorsTabs = ({ validators, filters }: Pick<ValidatorsProps, "validato
         <>
             {currentTab === "validators" && <ValidatorsTab validators={validators} filters={filters} />}
 
-            {currentTab === "missed-blocks" && <>{/*  */}</>}
+            {currentTab === "missed-blocks" && (
+                <MissedBlocksTableWrapper
+                    blocks={missedBlocks}
+                    mobile={<MissedBlocksMobileTableWrapper blocks={missedBlocks} />}
+                />
+            )}
 
             {currentTab === "recent-votes" && <>{/*  */}</>}
         </>
     );
 };
 
-export default function Validators({ statistics, network, validators, filters }: PageProps<ValidatorsProps>) {
+export default function Validators({
+    statistics,
+    network,
+    missedBlocks,
+    validators,
+    filters,
+}: PageProps<ValidatorsProps>) {
     const { t } = useTranslation();
     const metadata = usePageMetadata({
         page: "validators",
@@ -94,7 +117,7 @@ export default function Validators({ statistics, network, validators, filters }:
                 <HeaderStats statistics={statistics} />
 
                 <PageHandlerProvider>
-                    <ValidatorsTabsWrapper validators={validators} filters={filters} />
+                    <ValidatorsTabsWrapper missedBlocks={missedBlocks} validators={validators} filters={filters} />
                 </PageHandlerProvider>
             </Layout>
         </>

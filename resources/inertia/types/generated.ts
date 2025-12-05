@@ -23,6 +23,15 @@ export type ICurrency = {
     locale: string | null;
     symbol: string | null;
 };
+export type IForgingStats = {
+    hash: string;
+    number: number;
+    timestamp: number;
+    validator: IWallet | null;
+    voterCount: number | null;
+    votesPercentage: number | null;
+    votes: number | null;
+};
 export type INavbarSearchBlockResultData = {
     hash: string;
     transactionCount: number;
