@@ -31,17 +31,6 @@ import classNames from "classnames";
 import VoteLink from "@/Components/Validator/VoteLink";
 import ExternalLink from "@/Components/General/ExternalLink";
 
-{
-    /* <x-ark-tables.row wire:key="validator-{{ $validator->address() }}">
-                
-                
-    
-
-                <x-ark-tables.cell class="text-right">
-                    <x-tables.rows.desktop.encapsulated.validators.vote-link :model="$validator" />
-                </x-ark-tables.cell>
-            </x-ark-tables.row> */
-}
 export function Row({ row: validator }: { row: IValidator }) {
     const { arkconnectConfig, network } = useSharedData();
     const { votingForAddress } = useArkConnect();
