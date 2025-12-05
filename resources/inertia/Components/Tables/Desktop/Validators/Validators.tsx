@@ -220,67 +220,60 @@ export default function ValidatorsTableWrapper({
     const { t } = useTranslation();
     const { network } = useSharedData();
 
-    if (!validators || isLoading) {
+    if (!validators || isLoading || true) {
         return (
-            <>
-                {/* @see resources/views/components/tables/desktop/validators/list-table.blade.php */}
-                <LoadingTable
-                    mobile={mobile}
-                    paginator={validators}
-                    rowCount={rowCount}
-                    header={<ValidatorsHeaderActions />}
-                    columns={[
-                        {
-                            name: t("tables.validators.rank"),
-                            type: "string",
-                            className: "w-[70px]",
-                        },
-                        {
-                            name: t("tables.validators.validator"),
-                            type: "address",
-                        },
-                        {
-                            name: t("tables.validators.status"),
-                            // type? @TODO
-                        },
-                        {
-                            name: t("tables.validators.no_of_voters"),
-                            type: "number",
-                            className: "whitespace-nowrap",
-                        },
-                        {
-                            name: t("tables.validators.votes", {
-                                currency: network!.currency,
-                            }),
-                            type: "number",
-                            className: "whitespace-nowrap",
-                        },
-                        {
-                            name: t("tables.validators.percentage"),
-                            type: "number",
-                            // className: "!py-2.5", ??
-                        },
-                        {
-                            name: t("tables.validators.missed_blocks"),
-                            type: "number",
-                            className: "whitespace-nowrap",
-                        },
-                        {
-                            name: "",
-                            type: "string",
-                            className: "w-[70px]",
-                        },
-                    ]}
-                />
-            </>
+            <LoadingTable
+                mobile={mobile}
+                paginator={validators}
+                rowCount={rowCount}
+                header={<ValidatorsHeaderActions />}
+                columns={[
+                    {
+                        name: t("tables.validators.rank"),
+                        type: "string",
+                        className: "w-[70px]",
+                    },
+                    {
+                        name: t("tables.validators.validator"),
+                        type: "address",
+                    },
+                    {
+                        name: t("tables.validators.status"),
+                    },
+                    {
+                        name: t("tables.validators.no_of_voters"),
+                        type: "number",
+                        className: "whitespace-nowrap text-right",
+                    },
+                    {
+                        name: t("tables.validators.votes", {
+                            currency: network!.currency,
+                        }),
+                        type: "number",
+                        className: "whitespace-nowrap text-right",
+                        responsive: true,
+                    },
+                    {
+                        name: t("tables.validators.percentage"),
+                        type: "number",
+                        className: "text-right",
+                        responsive: true,
+                        breakpoint: "lg",
+                    },
+                    {
+                        name: t("tables.validators.missed_blocks"),
+                        type: "number",
+                        className: "whitespace-nowrap text-right",
+                    },
+                    {
+                        name: "",
+                        type: "string",
+                        className: "w-[70px] text-right",
+                    },
+                ]}
+            />
         );
     }
-
-    return (
-        <div>
-            <ValidatorsTable validators={validators} mobile={mobile} />
-        </div>
-    );
 }
 
 export function ValidatorsHeaderActions() {
