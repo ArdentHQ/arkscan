@@ -9,6 +9,7 @@ use App\Facades\Network;
 use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Livewire\Attributes\On;
 
 /**
  * @property bool $isAllSelected
@@ -21,6 +22,8 @@ trait ValidatorsTab
     public const VALIDATORS_INITIAL_SORT_KEY = 'rank';
 
     public const VALIDATORS_INITIAL_SORT_DIRECTION = SortDirection::ASC;
+
+    public bool $validatorsIsReady = false;
 
     public function queryStringValidatorsTab(): array
     {
@@ -60,7 +63,7 @@ trait ValidatorsTab
 
     public function getValidatorsProperty(): LengthAwarePaginator
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page('validators'));
+        $emptyResults = new LengthAwarePaginator([], 0, $this->getPerPage('validators'), $this->getPage('validators'));
         if (! $this->validatorsIsReady) {
             return $emptyResults;
         }
@@ -70,12 +73,18 @@ trait ValidatorsTab
         }
 
         return $this->getValidatorsQuery()
-            ->paginate($this->perPage('validators'), page: $this->page('validators'));
+            ->paginate($this->getPerPage('validators'), page: $this->getPage('validators'));
     }
 
     public static function validatorsPerPageOptions(): array
     {
         return trans('tables.validators.validator_per_page_options');
+    }
+
+    #[On('setValidatorsReady')]
+    public function setValidatorsReady(): void
+    {
+        $this->validatorsIsReady = true;
     }
 
     private function validatorsHasFilters(): bool

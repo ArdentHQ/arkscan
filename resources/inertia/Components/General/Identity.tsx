@@ -3,8 +3,6 @@ import TruncateMiddle from "./TruncateMiddle";
 import classNames from "classnames";
 import { Link } from "@inertiajs/react";
 
-// Notice that the original blade identity component has a lot of extra
-// logic that we may need in the future.
 export default function Identity({
     model,
     address: addressProp,
