@@ -183,8 +183,12 @@ export type ITransaction = {
 export type IValidator = {
     rank: number | null;
     address: string;
+    isActive: boolean;
+    isDormant: boolean;
+    isResigned: boolean;
     username: string | null;
     hasUsername: boolean;
+    voterCount: number;
 };
 export type IWallet = {
     address: string;

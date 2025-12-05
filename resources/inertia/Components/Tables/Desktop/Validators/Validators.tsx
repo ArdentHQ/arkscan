@@ -12,7 +12,7 @@ import Method from "@/Components/Transaction/Method";
 import Addressing from "@/Components/Transaction/Addressing";
 import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import TableHeader from "../TableHeader";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import ExportTransactionsModal from "../Wallet/ExportTransactionsModal";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
@@ -23,18 +23,14 @@ import { useArkConnect } from "@/Providers/ArkConnect/ArkConnectContext";
 import Tooltip from "@/Components/General/Tooltip";
 import CheckMarkBoxIcon from "@ui/icons/check-mark-box.svg?react";
 import Identity from "@/Components/General/Identity";
+import Badge from "@/Components/General/Badge";
+import Number from "@/Components/General/Number";
 
 {
     /* <x-ark-tables.row wire:key="validator-{{ $validator->address() }}">
                 
-                <x-ark-tables.cell>
-                    
-                </x-ark-tables.cell>
-
-                <x-ark-tables.cell>
-                    <x-tables.rows.desktop.encapsulated.validators.validator-status :model="$validator" />
-                </x-ark-tables.cell>
-
+                
+                
                 <x-ark-tables.cell class="text-right">
                     <x-tables.rows.desktop.encapsulated.validators.number-of-voters :model="$validator" />
                 </x-ark-tables.cell>
@@ -68,7 +64,21 @@ export function Row({ row: validator }: { row: IValidator }) {
     const { votingForAddress } = useArkConnect();
     const { t } = useTranslation();
 
-    // const votingForAddress
+    const statusLabel = useMemo(() => {
+        if (validator.isActive) {
+            return t("general.validators.forging-status.active");
+        }
+
+        if (validator.isResigned) {
+            return t("general.validators.forging-status.resigned");
+        }
+
+        if (validator.isDormant) {
+            return t("general.validators.forging-status.dormant");
+        }
+
+        return t("general.validators.forging-status.standby");
+    }, [validator.isActive, validator.isResigned, validator.isDormant, t]);
 
     return (
         <tr className="text-sm font-semibold">
@@ -77,11 +87,7 @@ export function Row({ row: validator }: { row: IValidator }) {
             <TableCell>
                 <div className="flex items-center space-x-2">
                     <Identity model={validator} />
-                    {/* <x-tables.rows.desktop.encapsulated.address
-                            :model="$validator"
-                            without-clipboard
-                            validator-name-class="md:w-[100px] md-lg:w-auto"
-                        /> */}
+
                     {arkconnectConfig.enabled && votingForAddress === validator.address && (
                         <div>
                             <Tooltip content={t("pages.validators.arkconnect.voting_for_tooltip")}>
@@ -92,9 +98,13 @@ export function Row({ row: validator }: { row: IValidator }) {
                 </div>
             </TableCell>
 
-            <TableCell>{/* <Method transaction={row} /> */}</TableCell>
+            <TableCell>
+                <Badge className="encapsulated-badge">{statusLabel}</Badge>
+            </TableCell>
 
-            <TableCell>{/* <Addressing transaction={row} withoutLink={row.isSentToSelf} /> */}</TableCell>
+            <TableCell className="text-right">
+                <Number className="text-theme-secondary-900 dark:text-theme-dark-50">{validator.voterCount}</Number>
+            </TableCell>
 
             <TableCell>{/* <Amount transaction={row} hideCurrency /> */}</TableCell>
 
