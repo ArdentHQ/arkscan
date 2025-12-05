@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia\Concerns;
 
 use App\DTO\Inertia\IValidator;
-use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Enums\SortDirection;
 use App\Facades\Network;
 use App\Models\Wallet;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
-use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
 use App\DTO\Inertia\ForgingStats as ForgingStatsDTO;
 use App\Enums\SortDirection;
+use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\ForgingStats;
 use App\Services\Cache\NetworkCache;
@@ -33,7 +33,6 @@ final class ValidatorsController
             'unvote' => true,
         ],
     ];
-    
 
     public function __invoke(): Response
     {
