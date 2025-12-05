@@ -26,28 +26,12 @@ import Identity from "@/Components/General/Identity";
 import Badge from "@/Components/General/Badge";
 import Number from "@/Components/General/Number";
 import { currencyWithDecimals } from "@/utils/number-formatter";
+import Percentage from "@/Components/General/Percentage";
 
 {
     /* <x-ark-tables.row wire:key="validator-{{ $validator->address() }}">
                 
                 
-    
-
-                <x-ark-tables.cell
-                    class="text-right"
-                    responsive
-                >
-                    <x-tables.rows.desktop.encapsulated.validators.votes :model="$validator" />
-                </x-ark-tables.cell>
-
-                <x-ark-tables.cell
-                    class="text-right"
-                    responsive
-                    breakpoint="lg"
-                >
-                    <x-tables.rows.desktop.encapsulated.validators.votes-percentage :model="$validator" />
-                </x-ark-tables.cell>
-
                 <x-ark-tables.cell class="text-right">
                     <x-tables.rows.desktop.encapsulated.validators.missed-blocks :model="$validator" />
                 </x-ark-tables.cell>
@@ -120,6 +104,14 @@ export function Row({ row: validator }: { row: IValidator }) {
                 ) : (
                     <Number>{votes}</Number>
                 )}
+            </TableCell>
+
+            <TableCell
+                className="text-right text-theme-secondary-900 dark:text-theme-dark-50"
+                responsive
+                breakpoint="lg"
+            >
+                <Percentage>{validator.votesPercentage}</Percentage>
             </TableCell>
 
             <TableCell>{/* <Amount transaction={row} hideCurrency /> */}</TableCell>
