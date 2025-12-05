@@ -24,8 +24,6 @@
     $address = $model ? $model->address() : $address;
 
     $hasUsername = $model ? $model->hasUsername() : false;
-
-    $hasUsername = false;
 @endphp
 
 <div @class($containerClass)>
