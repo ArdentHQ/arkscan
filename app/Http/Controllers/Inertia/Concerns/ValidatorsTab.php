@@ -30,23 +30,17 @@ trait ValidatorsTab
         ],
     ];
 
-    public function getValidatorsNoResultsMessageProperty(?int $count = null): null|string
+    public function getValidatorsNoResultsMessageProperty(int $count): null|string
     {
+        // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyqe7cg
+        // @codeCoverageIgnoreStart
         if (! $this->validatorsHasFilters()) {
             return (string) trans('tables.validators.no_results.no_filters');
-        }
+        }// @codeCoverageIgnoreEnd
 
-        if ($count !== null) {
-            return $count === 0
-                ? (string) trans('tables.validators.no_results.no_results')
-                : null;
-        }
-
-        if ($this->getValidatorsQuery()->doesntExist()) {
-            return (string) trans('tables.validators.no_results.no_results');
-        }
-
-        return null;
+        return $count === 0
+            ? (string) trans('tables.validators.no_results.no_results')
+            : null;
     }
 
     public function getValidators(): LengthAwarePaginator
