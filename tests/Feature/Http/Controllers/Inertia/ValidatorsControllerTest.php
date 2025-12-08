@@ -40,6 +40,23 @@ function performValidatorsRequest($context, $withReload = true, $pageCallback = 
         });
 }
 
+function createValidatorWallet(string $address, int $rank): Wallet
+{
+    return Wallet::factory()->create([
+        'address'    => $address,
+        'public_key' => 'public-key-'.$address,
+        'attributes' => [
+            'username'                => $address,
+            'validatorPublicKey'      => 'validator-public-'.$address,
+            'validatorRank'           => $rank,
+            'validatorResigned'       => false,
+            'validatorVoteBalance'    => 10 * 1e8,
+            'validatorProducedBlocks' => 100,
+            'validatorMissedBlocks'   => 0,
+        ],
+    ]);
+}
+
 it('should render the page without any errors', function () {
     performValidatorsRequest($this);
 });
@@ -221,4 +238,67 @@ it('should return no results message when there are no validators', function () 
         queryString: [],
         reloadProps: 'validators',
     );
+});
+
+it('should respect validators page query parameter', function () {
+    createValidatorWallet('validator-1', 1);
+    $second = createValidatorWallet('validator-2', 2);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($second) {
+            $reload->where('validators.current_page', 2)
+                ->where('validators.per_page', 1)
+                ->where('validators.data.0.address', $second->address);
+        },
+        queryString: [
+            'validators-page' => 2,
+            'per-page'        => 1,
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should fall back to the default page parameter when validators page is missing', function () {
+    createValidatorWallet('validator-1', 1);
+    $second = createValidatorWallet('validator-2', 2);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($second) {
+            $reload->where('validators.current_page', 2)
+                ->where('validators.per_page', 1)
+                ->where('validators.data.0.address', $second->address);
+        },
+        queryString: [
+            'page'     => 2,
+            'per-page' => 1,
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should honor the per-page parameter for validators', function () {
+    createValidatorWallet('validator-1', 1);
+    createValidatorWallet('validator-2', 2);
+    createValidatorWallet('validator-3', 3);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) {
+            $reload->where('validators.per_page', 2)
+                ->has('validators.data', 2);
+        },
+        queryString: [
+            'per-page' => 2,
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should provide a no results message when called without a count', function () {
+    Wallet::query()->delete();
+    request()->replace([]);
+
+    expect((new ValidatorsController())->getValidatorsNoResultsMessageProperty())->toBe(trans('tables.validators.no_results.no_results'));
 });
