@@ -34,7 +34,7 @@ class IValidator extends Data
     public static function fromModel(Model $wallet): self
     {
         $viewModel   = new WalletViewModel($wallet);
-        
+
         $voteUrl = null;
         if ($viewModel->isValidator() && $wallet->public_key !== null) {
             $voteUrl = $viewModel->voteUrl();
