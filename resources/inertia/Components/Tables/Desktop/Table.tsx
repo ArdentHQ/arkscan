@@ -91,13 +91,7 @@ export function Table({
     const showFooter = withFooter && paginator && resultCount > pagination?.per_page;
 
     return (
-        <div
-            ref={tableRef}
-            className={classNames({
-                "px-6 md:mx-auto md:max-w-7xl md:px-10": true,
-                "pb-8": !withFooter || resultCount === 0,
-            })}
-        >
+        <div ref={tableRef} className="px-6 md:mx-auto md:max-w-7xl md:px-10">
             {withHeader && (
                 <TableHeaderWrapper resultCount={resultCount} resultSuffix={resultSuffix}>
                     {headerActions}

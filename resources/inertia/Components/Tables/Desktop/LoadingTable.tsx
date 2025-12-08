@@ -34,12 +34,7 @@ export function LoadingTableWrapper({
     header?: React.ReactNode;
 }) {
     return (
-        <div
-            className={classNames({
-                "hidden px-6 pt-6 md:mx-auto md:block md:max-w-7xl md:px-10 md:pt-0": true,
-                "pb-8": !withPagination,
-            })}
-        >
+        <div className="hidden px-6 pt-6 md:mx-auto md:block md:max-w-7xl md:px-10 md:pt-0">
             {!!header && <TableHeaderWrapper resultCount={0}>{header}</TableHeaderWrapper>}
 
             <div

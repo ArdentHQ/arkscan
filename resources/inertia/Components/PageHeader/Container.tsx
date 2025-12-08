@@ -12,7 +12,7 @@ export default function PageHeaderContainer({
     extra?: React.ReactNode;
 }) {
     return (
-        <div className="flex flex-col px-6 pb-6 pt-8 md:mx-auto md:max-w-7xl md:px-10">
+        <div className="flex flex-col px-6 pb-6 md:mx-auto md:max-w-7xl md:px-10">
             <div
                 className={classNames({
                     "flex flex-col space-y-4 overflow-hidden font-semibold sm:flex-row sm:items-end sm:justify-between sm:space-y-0": true,
