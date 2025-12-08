@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\ForgingStats as ForgingStatsDTO;
 use App\Enums\SortDirection;
+use App\Http\Controllers\Inertia\Concerns\RecentVotesTab;
 use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
-use App\Http\Livewire\Validators\Concerns\RecentVotesTab;
 use App\Models\ForgingStats;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\ValidatorCache;

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire\Validators\Concerns;
+namespace App\Http\Controllers\Inertia\Concerns;
 
+use App\DTO\Inertia\IVote;
 use App\Enums\SortDirection;
 use App\Models\Scopes\UnvoteScope;
 use App\Models\Scopes\VoteScope;
@@ -17,6 +18,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 trait RecentVotesTab
 {
+    /** @var array<string, array<string, bool>> */
+    protected array $recentVotesFilters = [
+       'recent-votes' => [
+           'vote'   => true,
+           'unvote' => true,
+       ],
+    ];
+
     public function getRecentVotesNoResultsMessageProperty(): null|string
     {
         // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyrauh0
@@ -36,7 +45,9 @@ trait RecentVotesTab
 
     public function getRecentVotes(): LengthAwarePaginator
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->getPerPage('recent-votes'), $this->getPage('recent-votes'));
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('recent-votes'), $this->page(), [
+            'pageName' => 'page',
+        ]);
 
         // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyrauh0
         // @codeCoverageIgnoreStart
@@ -48,7 +59,8 @@ trait RecentVotesTab
         // @codeCoverageIgnoreEnd
 
         return $this->getRecentVotesQuery()
-            ->paginate($this->getPerPage('recent-votes'), page: $this->getPage('recent-votes'));
+            ->paginate($this->perPage('recent-votes'), page: $this->page(), pageName: 'page')
+            ->through(fn (Transaction $transaction) => IVote::fromModel($transaction));
     }
 
     /**
@@ -57,7 +69,7 @@ trait RecentVotesTab
      */
     private function recentVotesHasFilters(): bool
     {
-        return false;
+        return true;
     }
 
     private function getRecentVotesQuery(): Builder
@@ -65,7 +77,7 @@ trait RecentVotesTab
         $sortDirection = SortDirection::ASC;
         // @TODO: add coverage once table sorting is implemented https://app.clickup.com/t/86dypp5jv
         // @codeCoverageIgnoreStart
-        if ($this->getSortDirection('recent-votes') === SortDirection::DESC) {
+        if ($this->sortDirection('recent-votes') === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
         // @codeCoverageIgnoreEnd
@@ -75,16 +87,16 @@ trait RecentVotesTab
             ->where('status', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
-                $query->where(fn ($query) => $query->when($this->filters['recent-votes']['vote'], function ($query) {
+                $query->where(fn ($query) => $query->when($this->recentVotesFilters['recent-votes']['vote'], function ($query) {
                     $query->withScope(VoteScope::class);
                 }))
-                ->orWhere(fn ($query) => $query->when($this->filters['recent-votes']['unvote'], function ($query) {
+                ->orWhere(fn ($query) => $query->when($this->recentVotesFilters['recent-votes']['unvote'], function ($query) {
                     $query->withScope(UnvoteScope::class);
                 }));
             })
-            ->when($this->getSortKey('recent-votes') === 'age', fn ($query) => $query->sortByAge($sortDirection))
-            ->when($this->getSortKey('recent-votes') === 'address', fn ($query) => $query->sortByAddress($sortDirection))
-            ->when($this->getSortKey('recent-votes') === 'type', fn ($query) => $query->sortByType($sortDirection))
-            ->when($this->getSortKey('recent-votes') === 'name', fn ($query) => $query->sortByUsername($sortDirection));
+            ->when($this->sortKey('recent-votes') === 'age', fn ($query) => $query->sortByAge($sortDirection))
+            ->when($this->sortKey('recent-votes') === 'address', fn ($query) => $query->sortByAddress($sortDirection))
+            ->when($this->sortKey('recent-votes') === 'type', fn ($query) => $query->sortByType($sortDirection))
+            ->when($this->sortKey('recent-votes') === 'name', fn ($query) => $query->sortByUsername($sortDirection));
     }
 }
