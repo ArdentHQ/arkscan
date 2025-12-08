@@ -26,7 +26,7 @@ trait RecentVotesTab
        ],
     ];
 
-    public function getRecentVotesNoResultsMessageProperty(): null|string
+    public function getRecentVotesNoResultsMessageProperty(int $count): null|string
     {
         // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyrauh0
         // @codeCoverageIgnoreStart
@@ -36,11 +36,9 @@ trait RecentVotesTab
         }
         // @codeCoverageIgnoreEnd
 
-        if ($this->recentVotes->total() === 0) {
-            return trans('tables.recent-votes.no_results.no_results');
-        }
-
-        return null;
+        return $count === 0
+            ? trans('tables.recent-votes.no_results.no_results')
+            : null;
     }
 
     public function getRecentVotes(): LengthAwarePaginator
