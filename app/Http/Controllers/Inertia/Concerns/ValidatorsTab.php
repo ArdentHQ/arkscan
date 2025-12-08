@@ -45,14 +45,14 @@ trait ValidatorsTab
 
     public function getValidators(): LengthAwarePaginator
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page('validators'));
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page());
 
         if (! $this->validatorsHasFilters()) {
             return $emptyResults;
         }
 
         return $this->getValidatorsQuery()
-            ->paginate($this->perPage('validators'), page: $this->page('validators'))
+            ->paginate($this->perPage('validators'), page: $this->page())
             ->through(fn (Wallet $validator) => IValidator::fromModel($validator));
     }
 
