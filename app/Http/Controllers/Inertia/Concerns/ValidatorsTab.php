@@ -47,9 +47,12 @@ trait ValidatorsTab
     {
         $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page());
 
+        // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyqe7cg
+        // @codeCoverageIgnoreStart
         if (! $this->validatorsHasFilters()) {
             return $emptyResults;
         }
+        // @codeCoverageIgnoreEnd
 
         return $this->getValidatorsQuery()
             ->paginate($this->perPage('validators'), page: $this->page())
@@ -68,9 +71,12 @@ trait ValidatorsTab
     private function getValidatorsQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;
+        // @TODO: add coverage once table sorting is implemented https://app.clickup.com/t/86dypp5jv
+        // @codeCoverageIgnoreStart
         if ($this->sortDirection('validators') === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
+        // @codeCoverageIgnoreEnd
 
         return Wallet::query()
             ->whereNotNull('attributes->validatorPublicKey')
