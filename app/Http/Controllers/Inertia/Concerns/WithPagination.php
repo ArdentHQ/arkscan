@@ -17,10 +17,12 @@ trait WithPagination
     {
         $constantName = Str::upper($name).'_PER_PAGE';  // e.g. VALIDATORS_PER_PAGE
 
+        $perPage = config('arkscan.pagination.per_page');
+
         if (defined(static::class.'::'.$constantName)) {
-            return constant(static::class.'::'.$constantName);
+            $perPage = constant(static::class.'::'.$constantName);
         }
 
-        return (int) request()->get('per-page', config('arkscan.pagination.per_page'));
+        return (int) request()->get('per-page', $perPage);
     }
 }

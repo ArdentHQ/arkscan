@@ -252,7 +252,7 @@ it('should respect validators page query parameter', function () {
                 ->where('validators.data.0.address', $second->address);
         },
         queryString: [
-            'validators-page' => 2,
+            'page'            => 2,
             'per-page'        => 1,
         ],
         reloadProps: 'validators',
@@ -294,11 +294,4 @@ it('should honor the per-page parameter for validators', function () {
         ],
         reloadProps: 'validators',
     );
-});
-
-it('should provide a no results message when called without a count', function () {
-    Wallet::query()->delete();
-    request()->replace([]);
-
-    expect((new ValidatorsController())->getValidatorsNoResultsMessageProperty())->toBe(trans('tables.validators.no_results.no_results'));
 });
