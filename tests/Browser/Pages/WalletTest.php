@@ -2,14 +2,19 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Models\Block;
+use App\Models\MultiPayment;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
+use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
+use App\Services\NumberFormatter;
 use Facebook\WebDriver\WebDriverBy;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Dusk\Browser;
 
@@ -352,6 +357,63 @@ describe('Transactions Tab', function () {
             foreach ($transactions as $transaction) {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
             }
+        });
+    })->with('resolutions');
+
+    it('should correctly format multipayment transactions', function ($resolution) {
+        $transaction = Transaction::factory()
+            ->multiPayment(
+                [
+                    $this->wallet->address,
+                    $this->recipientWallet->address,
+                ],
+                [
+                    BigNumber::new(123.5 * 1e18),
+                    BigNumber::new(456 * 1e18),
+                ],
+            )
+            ->create([
+                'from'              => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        MultiPayment::factory()
+            ->count(2)
+            ->state(new Sequence(
+                [
+                    'to'     => $this->wallet->address,
+                    'amount' => BigNumber::new(123.5 * 1e18),
+                ],
+                [
+                    'to'     => $this->recipientWallet->address,
+                    'amount' => BigNumber::new(456 * 1e18),
+                ],
+            ))
+            ->create([
+                'from' => $transaction->from,
+                'hash' => $transaction->hash,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transaction, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5));
+
+            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            if ($resolution['width'] <= 640) {
+                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+            }
+
+            $browser->waitForTextIn($selector, '456')
+                ->mouseOver($selector.' .tooltip-content')
+                ->waitForText(trans('general.fiat_excluding_self', ['amount' => NumberFormatter::currency(123.5, Network::currency())]));
+
+            $browser->visitRoute('wallet', $this->recipientWallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5))
+                ->assertSee('+ 456');
         });
     })->with('resolutions');
 
