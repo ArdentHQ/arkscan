@@ -2,14 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Delegates\Concerns;
 
-use App\Actions\CacheNetworkHeight;
 use App\DTO\Slot;
 use App\Enums\DelegateForgingStatus;
 use App\Facades\Network;
-use App\Http\Livewire\Concerns\DeferLoading;
-use App\Http\Livewire\Concerns\DelegateData;
 use App\Models\Block;
 use App\Models\Wallet;
 use App\Services\Cache\MonitorCache;
@@ -17,38 +14,16 @@ use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
-use Illuminate\View\View;
-use Livewire\Component;
 
-final class DelegateDataBoxes extends Component
+trait HandlesMonitorDataBoxes
 {
-    use DeferLoading;
-    use DelegateData;
-
-    /** @var mixed */
-    protected $listeners = [
-        'echo:blocks,NewBlock' => 'pollStatistics',
-    ];
-
-    private array $delegates = [];
-
     private array $statistics = [];
-
-    public function render(): View
-    {
-        $this->delegates = $this->fetchDelegates();
-
-        return view('livewire.delegate-data-boxes', [
-            'height'     => CacheNetworkHeight::execute(),
-            'statistics' => $this->statistics,
-        ]);
-    }
 
     public function componentIsReady(): void
     {
         $this->setIsReady();
 
-        $this->pollStatistics();
+        $this->pollData();
     }
 
     public function pollStatistics(): void
@@ -111,9 +86,12 @@ final class DelegateDataBoxes extends Component
 
     public function getNextDelegate(): ? WalletViewModel
     {
-        $this->delegates = $this->fetchDelegates();
+        $delegates = [
+            ...$this->delegates,
+            ...$this->overflowDelegates,
+        ];
 
-        return (new MonitorCache())->setNextDelegate(fn () => optional($this->getSlotsByStatus($this->delegates, 'pending'))->wallet());
+        return (new MonitorCache())->setNextDelegate(fn () => optional($this->getSlotsByStatus($delegates, 'pending'))->wallet());
     }
 
     private function getSlotsByStatus(array $slots, string $status): ?Slot

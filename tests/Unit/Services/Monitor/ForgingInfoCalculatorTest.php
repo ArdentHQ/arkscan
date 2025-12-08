@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Services\Monitor\ForgingInfoCalculator;
 
 it('should calculate the forging information', function (int $timestamp, int $height, int $currentForger, int $nextForger, int $blockTimestamp, bool $canForge) {
-    $result = ForgingInfoCalculator::calculate($timestamp, $height);
+    $result = ForgingInfoCalculator::calculateOriginalOrder($timestamp, $height);
 
     expect($result['currentForger'])->toBe($currentForger);
     expect($result['nextForger'])->toBe($nextForger);
