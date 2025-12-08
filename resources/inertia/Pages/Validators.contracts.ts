@@ -1,5 +1,5 @@
 import { IFilters, ITabbedData, IMonitorValidator, IPaginatedResponse } from "@/types";
-import { IValidator } from "@/types/generated";
+import { IValidator, IVote } from "@/types/generated";
 import { IForgingStats } from "@/types/generated";
 
 export interface IValidatorData {
@@ -35,5 +35,6 @@ export interface ValidatorsProps {
     statistics: IValidatorsStatistics;
     validators: IPaginatedResponse<IValidator>;
     filters: ITabbedData<IFilters>;
+    recentVotes: IPaginatedResponse<IVote>;
     missedBlocks: IPaginatedResponse<IForgingStats>;
 }

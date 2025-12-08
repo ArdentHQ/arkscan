@@ -18,7 +18,8 @@ const ValidatorsTabsWrapper = ({
     missedBlocks,
     validators,
     filters,
-}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters">) => {
+    recentVotes,
+}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters" | "recentVotes">) => {
     return (
         <TabsProvider
             defaultSelected="validators"
@@ -42,7 +43,12 @@ const ValidatorsTabsWrapper = ({
                 { text: "Recent Votes", value: "recent-votes" },
             ]}
         >
-            <ValidatorsTabs missedBlocks={missedBlocks} validators={validators} filters={filters} />
+            <ValidatorsTabs
+                missedBlocks={missedBlocks}
+                validators={validators}
+                filters={filters}
+                recentVotes={recentVotes}
+            />
         </TabsProvider>
     );
 };
@@ -51,7 +57,8 @@ const ValidatorsTabs = ({
     missedBlocks,
     validators,
     filters,
-}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters">) => {
+    recentVotes,
+}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters" | "recentVotes">) => {
     const { currentTab } = useTabs();
 
     useTabPolling((tab: string, callback?: CallableFunction) => {
@@ -96,6 +103,7 @@ export default function Validators({
     missedBlocks,
     validators,
     filters,
+    recentVotes,
 }: PageProps<ValidatorsProps>) {
     const { t } = useTranslation();
     const metadata = usePageMetadata({
@@ -115,7 +123,12 @@ export default function Validators({
                 <HeaderStats statistics={statistics} />
 
                 <PageHandlerProvider>
-                    <ValidatorsTabsWrapper missedBlocks={missedBlocks} validators={validators} filters={filters} />
+                    <ValidatorsTabsWrapper
+                        missedBlocks={missedBlocks}
+                        validators={validators}
+                        filters={filters}
+                        recentVotes={recentVotes}
+                    />
                 </PageHandlerProvider>
             </Layout>
         </>

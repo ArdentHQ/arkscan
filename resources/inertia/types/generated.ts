@@ -195,6 +195,9 @@ export type IValidator = {
     missedBlocksState: "success" | "warning" | "danger" | "inactive";
     voteUrl: string | null;
 };
+export type IVote = {
+    hash: string;
+};
 export type IWallet = {
     address: string;
     balance: string;
