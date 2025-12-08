@@ -2,7 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
+use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Models\ForgingStats;
+use App\Models\Wallet;
+use App\Services\Cache\NetworkCache;
+use App\Services\Cache\ValidatorCache;
+use App\Services\Cache\WalletCache;
 use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -10,11 +16,11 @@ beforeEach(function () {
     $this->withoutExceptionHandling();
 });
 
-function performValidatorsRequest($context, $withReload = true, $pageCallback = null, $reloadCallback = null, array $queryString = []): mixed
+function performValidatorsRequest($context, $withReload = true, $pageCallback = null, $reloadCallback = null, array $queryString = [], string $reloadProps = 'missedBlocks'): mixed
 {
     return $context->get(route('validators', $queryString))
         ->assertOk()
-        ->assertInertia(function (Assert $page) use ($pageCallback, $withReload, $reloadCallback) {
+        ->assertInertia(function (Assert $page) use ($pageCallback, $withReload, $reloadCallback, $reloadProps) {
             $page->missing('missedBlocks')
                 ->component('Validators/Validators');
 
@@ -26,7 +32,7 @@ function performValidatorsRequest($context, $withReload = true, $pageCallback = 
                 return;
             }
 
-            $page->reloadOnly('missedBlocks', function (Assert $reload) use ($reloadCallback) {
+            $page->reloadOnly($reloadProps, function (Assert $reload) use ($reloadCallback) {
                 if (is_callable($reloadCallback)) {
                     $reloadCallback($reload);
                 }
@@ -88,5 +94,131 @@ it('should pull missed blocks from sqlite databases', function () {
                     return $missedHeights->contains($block1->missed_height) && $missedHeights->contains($block2->missed_height);
                 });
         },
+    );
+});
+
+it('should expose filters and statistics data', function () {
+    $walletA = Wallet::factory()->create();
+    $walletB = Wallet::factory()->create();
+
+    ForgingStats::factory()->create([
+        'address' => $walletA->address,
+        'forged'  => false,
+    ]);
+
+    ForgingStats::factory()->create([
+        'address' => $walletA->address,
+        'forged'  => false,
+    ]);
+
+    ForgingStats::factory()->create([
+        'address' => $walletB->address,
+        'forged'  => false,
+    ]);
+
+    $validatorCache = new ValidatorCache();
+    $validatorCache->setTotalWalletsVoted(42);
+    $validatorCache->setTotalBalanceVoted(123.45);
+
+    (new NetworkCache())->setVotesPercentage('67.5');
+
+    performValidatorsRequest(
+        $this,
+        pageCallback: function (Assert $page) {
+            $page->where('filters', ValidatorsController::FILTERS)
+                ->where('statistics', [
+                    'voterCount'       => 42,
+                    'totalVoted'       => 123.45,
+                    'votesPercentage'  => 67.5,
+                    'missedBlocks'     => 3,
+                    'validatorsMissed' => 2,
+                ]);
+        },
+        withReload: false,
+    );
+});
+
+it('should provide validators data with pagination meta', function () {
+    $activeValidator = Wallet::factory()->create([
+        'address'    => 'address-active',
+        'public_key' => 'public-key-active',
+        'attributes' => [
+            'username'                => 'active-validator',
+            'validatorPublicKey'      => 'validator-public-active',
+            'validatorRank'           => 2,
+            'validatorResigned'       => false,
+            'validatorVoteBalance'    => 10 * 1e8,
+            'validatorProducedBlocks' => 100,
+            'validatorMissedBlocks'   => 1,
+        ],
+    ]);
+
+    $standbyRank = Network::validatorCount() + 2;
+
+    $standbyValidator = Wallet::factory()->create([
+        'address'    => 'address-standby',
+        'public_key' => 'public-key-standby',
+        'attributes' => [
+            'username'                => 'standby-validator',
+            'validatorPublicKey'      => 'validator-public-standby',
+            'validatorRank'           => $standbyRank,
+            'validatorResigned'       => false,
+            'validatorVoteBalance'    => 20 * 1e8,
+            'validatorProducedBlocks' => 200,
+            'validatorMissedBlocks'   => 3,
+        ],
+    ]);
+
+    Wallet::factory()->create([
+        'address'    => 'address-non-validator',
+        'public_key' => 'public-key-non-validator',
+        'attributes' => [
+            'username'           => 'non-validator',
+            'validatorPublicKey' => null,
+        ],
+    ]);
+
+    $walletCache = new WalletCache();
+    $walletCache->setVoterCount($activeValidator->address, 5);
+    $walletCache->setVoterCount($standbyValidator->address, 2);
+    $walletCache->setMissedBlocks($activeValidator->address, 4);
+    $walletCache->setMissedBlocks($standbyValidator->address, 1);
+    $walletCache->setProductivity($activeValidator->address, 99.9);
+    $walletCache->setProductivity($standbyValidator->address, 95);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($activeValidator, $standbyValidator, $standbyRank) {
+            $reload->has('validators.data', 2)
+                ->where('validators.total', 2)
+                ->where('validators.current_page', 1)
+                ->where('validators.last_page', 1)
+                ->where('validators.meta', [
+                    'pageName'  => 'page',
+                    'urlParams' => [],
+                ])
+                ->where('validators.noResultsMessage', null)
+                ->where('validators.data.0.address', $activeValidator->address)
+                ->where('validators.data.0.rank', 2)
+                ->where('validators.data.0.voterCount', 5)
+                ->where('validators.data.1.address', $standbyValidator->address)
+                ->where('validators.data.1.rank', $standbyRank)
+                ->where('validators.data.1.voterCount', 2);
+        },
+        queryString: [],
+        reloadProps: 'validators',
+    );
+});
+
+it('should return no results message when there are no validators', function () {
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) {
+            $reload->where('validators.data', [])
+                ->where('validators.total', 0)
+                ->where('validators.noResultsMessage', trans('tables.validators.no_results.no_results'));
+        },
+        queryString: [],
+        reloadProps: 'validators',
     );
 });
