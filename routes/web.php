@@ -14,6 +14,7 @@ use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\ValidatorsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -34,7 +35,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/validators', 'app.validators')->name('validators');
+Route::get('/validators', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
