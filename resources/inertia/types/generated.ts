@@ -177,6 +177,7 @@ export type ITransaction = {
     hasFailedStatus: boolean;
     validatorRegistration: ITransaction | null;
     votedFor: string | null;
+    votedForUsername: string | null;
     sender: IWallet | null;
     recipient: IWallet | null;
 };
@@ -194,9 +195,6 @@ export type IValidator = {
     missedBlocks: number;
     missedBlocksState: "success" | "warning" | "danger" | "inactive";
     voteUrl: string | null;
-};
-export type IVote = {
-    hash: string;
 };
 export type IWallet = {
     address: string;

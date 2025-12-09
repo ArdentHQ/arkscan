@@ -13,6 +13,7 @@ import { useTabPolling } from "@/hooks/use-tab-polling";
 import ValidatorsTab from "./tabs/Validators";
 import MissedBlocksTableWrapper from "@/Components/Tables/Desktop/Validators/MissedBlocks";
 import MissedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Validators/MissedBlocks";
+import RecentVotesTab from "./tabs/RecentVotes";
 
 const ValidatorsTabsWrapper = ({
     missedBlocks,
@@ -92,7 +93,7 @@ const ValidatorsTabs = ({
                 />
             )}
 
-            {currentTab === "recent-votes" && <>{/*  */}</>}
+            {currentTab === "recent-votes" && <RecentVotesTab recentVotes={recentVotes} filters={filters} />}
         </>
     );
 };

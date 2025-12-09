@@ -9,7 +9,9 @@ export default function Addressing({
     alwaysShowAddress = false,
     withoutTruncate = false,
     isGeneric = false,
-}: {
+    className,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
     transaction: ITransaction;
     withoutLink?: boolean;
     alwaysShowAddress?: boolean;
@@ -34,7 +36,7 @@ export default function Addressing({
     }
 
     return (
-        <div className="flex items-center space-x-2 text-sm font-semibold">
+        <div className={classNames("flex items-center space-x-2 text-sm font-semibold", className)} {...props}>
             <div
                 className={classNames({
                     "h-[21px] w-[47px] rounded border text-center text-xs leading-5": true,

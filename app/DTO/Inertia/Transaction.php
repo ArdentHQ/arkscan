@@ -65,6 +65,7 @@ class Transaction extends Data
         public bool $hasFailedStatus,
         public ?self $validatorRegistration,
         public ?string $votedFor,
+        public ?string $votedForUsername,
         public ?WalletDTO $sender,
         public ?WalletDTO $recipient,
     ) {
@@ -74,11 +75,13 @@ class Transaction extends Data
     {
         $viewModel = new TransactionViewModel($transaction);
 
-        $votedFor = null;
+        $votedFor         = null;
+        $votedForUsername = null;
         if ($viewModel->isVote()) {
             $votedFor = $viewModel->voted();
             if ($votedFor !== null) {
-                $votedFor = $votedFor->address();
+                $votedForUsername = $votedFor->username();
+                $votedFor         = $votedFor->address();
             }
         }
 
@@ -90,14 +93,12 @@ class Transaction extends Data
             $sender = WalletDTO::fromModel($senderWallet);
         }
 
-        $recipient = null;
-        if ($viewModel->isTransfer() || $viewModel->isTokenTransfer()) {
-            $recipientAddress = $viewModel->recipient()?->address();
-            if ($recipientAddress !== null) {
-                $recipientWallet = Wallets::findByAddress($recipientAddress);
+        $recipientAddress = $viewModel->recipient()?->address();
 
-                $recipient = WalletDTO::fromModel($recipientWallet);
-            }
+        if ($recipientAddress !== null) {
+            $recipientWallet = Wallets::findByAddress($recipientAddress);
+
+            $recipient = WalletDTO::fromModel($recipientWallet);
         }
 
         $validatorRegistration            = null;
@@ -156,6 +157,7 @@ class Transaction extends Data
             hasFailedStatus: $viewModel->hasFailedStatus(),
             validatorRegistration: $validatorRegistration,
             votedFor: $votedFor,
+            votedForUsername: $votedForUsername,
             sender: $sender,
             recipient: $recipient,
         );

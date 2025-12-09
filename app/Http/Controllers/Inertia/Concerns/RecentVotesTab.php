@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia\Concerns;
 
-use App\DTO\Inertia\IVote;
+use App\DTO\Inertia\Transaction as ITransaction;
 use App\Enums\SortDirection;
 use App\Models\Scopes\UnvoteScope;
 use App\Models\Scopes\VoteScope;
@@ -58,7 +58,7 @@ trait RecentVotesTab
 
         return $this->getRecentVotesQuery()
             ->paginate($this->perPage('recent-votes'), page: $this->page(), pageName: 'page')
-            ->through(fn (Transaction $transaction) => IVote::fromModel($transaction));
+            ->through(fn (Transaction $transaction) => ITransaction::fromModel($transaction));
     }
 
     /**

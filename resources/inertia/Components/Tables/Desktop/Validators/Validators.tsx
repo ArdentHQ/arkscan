@@ -1,20 +1,9 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { ITransaction, IValidator, IWallet } from "@/types/generated";
-import { IPaginatedResponse } from "@/types";
+import { IValidator } from "@/types/generated";
 import { useTranslation } from "react-i18next";
-import Age from "@/Components/Model/Age";
-import ID from "@/Components/Transaction/ID";
-import Amount from "@/Components/Transaction/Amount";
-import Fee from "@/Components/Transaction/Fee";
 import { Table } from "../Table";
-import Method from "@/Components/Transaction/Method";
-import Addressing from "@/Components/Transaction/Addressing";
-import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import TableHeader from "../TableHeader";
-import { useMemo, useState } from "react";
-import ExportTransactionsModal from "../Wallet/ExportTransactionsModal";
-import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
 import useSharedData from "@/hooks/use-shared-data";
@@ -23,11 +12,8 @@ import { useArkConnect } from "@/Providers/ArkConnect/ArkConnectContext";
 import Tooltip from "@/Components/General/Tooltip";
 import CheckMarkBoxIcon from "@ui/icons/check-mark-box.svg?react";
 import Identity from "@/Components/General/Identity";
-import Badge from "@/Components/General/Badge";
 import Number from "@/Components/General/Number";
-import { currencyWithDecimals } from "@/utils/number-formatter";
 import Percentage from "@/Components/General/Percentage";
-import classNames from "classnames";
 import VoteLink from "@/Components/Validator/VoteLink";
 import ExternalLink from "@/Components/General/ExternalLink";
 import ValidatorStatus from "@/Components/Validator/ValidatorStatus";
@@ -35,11 +21,9 @@ import Votes from "@/Components/Validator/Votes";
 import MissedBlocks from "@/Components/Validator/MissedBlocks";
 
 export function Row({ row: validator }: { row: IValidator }) {
-    const { arkconnectConfig, network } = useSharedData();
+    const { arkconnectConfig } = useSharedData();
     const { votingForAddress } = useArkConnect();
     const { t } = useTranslation();
-
-    const votes = validator.votes;
 
     return (
         <tr className="text-sm font-semibold">
