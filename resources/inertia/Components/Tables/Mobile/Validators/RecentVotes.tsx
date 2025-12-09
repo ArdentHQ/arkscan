@@ -2,27 +2,21 @@ import MobileTable from "../Table";
 import MobileTableRow from "../Row";
 import TableCell from "@/Components/Tables/Mobile/TableCell";
 import { MobileTransactionsSkeletonTable } from "../Skeleton/Wallet/Transactions";
-import { ITransaction, IValidator } from "@/types/generated";
+import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
-import useSharedData from "@/hooks/use-shared-data";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import { ValidatorsProps } from "@/Pages/Validators.contracts";
 import { ValidatorsHeaderActions } from "@/Components/Tables/Desktop/Validators/Validators";
-import Number from "@/Components/General/Number";
-import Identity from "@/Components/General/Identity";
-import VoteLink from "@/Components/Validator/VoteLink";
-import ValidatorStatus from "@/Components/Validator/ValidatorStatus";
-import Votes from "@/Components/Validator/Votes";
-import Percentage from "@/Components/General/Percentage";
-import MissedBlocks from "@/Components/Validator/MissedBlocks";
-import { useArkConnect } from "@/Providers/ArkConnect/ArkConnectContext";
-import CheckMarkBoxIcon from "@ui/icons/check-mark-box.svg?react";
+import ID from "@/Components/Transaction/ID";
+import Age from "@/Components/Model/Age";
+import Addressing from "@/Components/Transaction/Addressing";
+import { Link } from "@inertiajs/react";
+import TruncateMiddle from "@/Components/General/TruncateMiddle";
+import Tooltip from "@/Components/General/Tooltip";
 
 export function RecentVotesMobileTable({ recentVotes }: Pick<ValidatorsProps, "recentVotes">) {
     const { t } = useTranslation();
-    const { network, arkconnectConfig } = useSharedData();
-    const { votingForAddress } = useArkConnect();
 
     return (
         <MobileTable noResultsMessage={recentVotes.noResultsMessage} resultCount={recentVotes.data.length ?? 0}>
@@ -31,77 +25,56 @@ export function RecentVotesMobileTable({ recentVotes }: Pick<ValidatorsProps, "r
                     key={index}
                     header={
                         <>
-                            <div className="flex min-w-0 flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
-                                {/* <Number className="min-w-[32px]">{validator.rank ?? 0}</Number>
+                            <div className="flex flex-1 justify-between">
+                                <ID transaction={vote} />
 
-                                <div className="flex min-w-0 flex-1 items-center justify-between pl-3">
-                                    <Identity
-                                        model={validator}
-                                        className="w-full min-w-0"
-                                        contentClassName="min-w-0 w-full"
-                                        linkClassName="pr-2 min-w-0"
-                                    />
-
-                                    <div className="flex items-center">
-                                        <span className="hidden sm:block">
-                                            <ValidatorStatus validator={validator} />
-                                        </span>
-
-                                        <div className="border-theme-secondary-300 dark:border-theme-dark-700 sm:ml-3 sm:border-l sm:pl-3">
-                                            <VoteLink wallet={validator} />
-                                        </div>
-                                    </div>
-                                </div> */}
+                                <Age timestamp={vote.timestamp} className="leading-4.25" />
                             </div>
                         </>
                     }
                     expandable
-                    // expandClass={
-                    //     // !validator.isResigned
-                    //     //     ? "space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700"
-                    //     //     : ""
-                    // }
-                    contentClass={arkconnectConfig.enabled ? "!pb-0 sm:!pb-3" : ""}
                 >
-                    {/* <TableCell label={t("tables.validators.status")}>
-                        <div className="inline-block">
-                            <ValidatorStatus validator={validator} />
-                        </div>
-                    </TableCell>
+                    <div>
+                        <TableCell label={t("tables.recent-votes.addressing")}>
+                            <Addressing transaction={vote} alwaysShowAddress className="sm:hidden" isGeneric />
 
-                    <TableCell label={t("tables.validators.no_of_voters")} className="sm:hidden">
-                        <Number>{validator.voterCount}</Number>
-                    </TableCell>
-
-                    <TableCell label={t("tables.validators.votes", { currency: network?.currency })}>
-                        <Votes validator={validator} />
-                    </TableCell>
-
-                    <TableCell label={t("tables.validators.percentage")}>
-                        <Percentage>{validator.votesPercentage}</Percentage>
-                    </TableCell>
-
-                    <TableCell label={t("tables.validators.missed_blocks")}>
-                        <div className="inline-block">
-                            <MissedBlocks validator={validator} />
-                        </div>
-                    </TableCell>
-
-                    {arkconnectConfig.enabled && (
-                        <TableCell className="sm:hidden">
-                            {votingForAddress === validator.address && (
-                                <div className="-mx-3 mb-1 flex items-center space-x-2 bg-theme-secondary-200 p-3 dark:bg-theme-dark-800 dark:text-theme-dark-200">
-                                    <div>
-                                        <CheckMarkBoxIcon className="h-4 w-4" />
-                                    </div>
-
-                                    <div className="font-semibold">
-                                        {t("pages.validators.arkconnect.voting_for_tooltip")}
-                                    </div>
-                                </div>
-                            )}
+                            <Addressing
+                                transaction={vote}
+                                alwaysShowAddress
+                                className="hidden sm:flex"
+                                withoutTruncate
+                                isGeneric
+                            />
                         </TableCell>
-                    )} */}
+                    </div>
+
+                    <TableCell
+                        label={
+                            <>
+                                {vote.votedFor ? (
+                                    <Tooltip
+                                        content={t("general.transaction.vote_validator", {
+                                            validator: vote.votedFor,
+                                        })}
+                                    >
+                                        <span>{vote.type}</span>
+                                    </Tooltip>
+                                ) : (
+                                    <span>{vote.type}</span>
+                                )}
+                            </>
+                        }
+                    >
+                        {vote.votedFor && (
+                            <Link href={`/wallet/${vote.votedFor}`} className="link text-sm font-semibold">
+                                {vote.votedForUsername ? (
+                                    vote.votedForUsername
+                                ) : (
+                                    <TruncateMiddle>{vote.votedFor}</TruncateMiddle>
+                                )}
+                            </Link>
+                        )}
+                    </TableCell>
                 </MobileTableRow>
             ))}
         </MobileTable>
