@@ -95,6 +95,7 @@ class Transaction extends Data
 
         $recipientAddress = $viewModel->recipient()?->address();
 
+        $recipient = null;
         if ($recipientAddress !== null) {
             $recipientWallet = Wallets::findByAddress($recipientAddress);
 

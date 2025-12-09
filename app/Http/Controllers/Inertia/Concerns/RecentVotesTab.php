@@ -31,14 +31,12 @@ trait RecentVotesTab
         // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyrauh0
         // @codeCoverageIgnoreStart
 
-        if (! $this->recentVotesHasFilters()) {
+        if (! $this->recentVotesHasFilters() || $count === 0) {
             return trans('tables.recent-votes.no_results.no_filters');
         }
         // @codeCoverageIgnoreEnd
 
-        return $count === 0
-            ? trans('tables.recent-votes.no_results.no_results')
-            : null;
+        return null;
     }
 
     public function getRecentVotes(): LengthAwarePaginator
