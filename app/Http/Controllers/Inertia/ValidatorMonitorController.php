@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Inertia;
 
 use App\Actions\CacheNetworkHeight;
 use App\Facades\Network;
-use App\Http\Controllers\Inertia\Concerns\ValidatorData;
 use App\Http\Controllers\Inertia\Concerns\HandlesMonitorDataBoxes;
+use App\Http\Controllers\Inertia\Concerns\ValidatorData;
 use Inertia\Inertia;
 use Inertia\Response;
 
