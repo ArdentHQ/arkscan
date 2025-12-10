@@ -52,9 +52,9 @@ const ValidatorsTabs = ({ missedBlocks }: { missedBlocks: IPaginatedResponse<IFo
         if (tab === "validators") {
             pollParameters = ["validators"];
         } else if (tab === "missed-blocks") {
-            pollParameters = ["missedBlocks"];
+            pollParameters = ["missed-blocks"];
         } else if (tab === "recent-votes") {
-            pollParameters = ["recentVotes"];
+            pollParameters = ["recent-votes"];
         }
 
         router.reload({
