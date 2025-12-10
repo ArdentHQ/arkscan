@@ -363,6 +363,43 @@ describe('Transactions Tab', function () {
         });
     })->with('resolutions');
 
+    it('should correctly format amounts', function (float $amount, string $expected, array $resolution) {
+        $transaction = Transaction::factory()
+            ->transfer()
+            ->create([
+                'value'             => BigNumber::new($amount * 1e18),
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transaction, $resolution, $expected) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5));
+
+            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            if ($resolution['width'] <= 640) {
+                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+            }
+
+            $browser->waitForTextIn($selector, $expected);
+        });
+    })
+    ->with([
+        '2'                => [2.34, '2.34'],
+        '3'                => [2.345, '2.345'],
+        '4'                => [2.3456, '2.3456'],
+        '5'                => [2.34567, '2.34567'],
+        '6'                => [2.345678, '2.345678'],
+        '7'                => [2.3456789, '2.3456789'],
+        '8'                => [2.34567891, '2.34567891'],
+        '8 after rounding' => [2.345678915, '2.34567892'],
+    ])
+    ->with('resolutions');
+
     it('should correctly format multipayment transactions', function ($resolution) {
         $transaction = Transaction::factory()
             ->multiPayment(
