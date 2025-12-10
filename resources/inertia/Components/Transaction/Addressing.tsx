@@ -28,11 +28,9 @@ export default function Addressing({
     }
 
     let interactedWallet: IWallet | null = null;
+
     if (transaction.isTransfer || transaction.isTokenTransfer || alwaysShowAddress) {
         interactedWallet = transaction.sender;
-        if (transaction.isSent) {
-            interactedWallet = transaction.recipient;
-        }
     }
 
     return (
