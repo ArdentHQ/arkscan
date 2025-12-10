@@ -11,10 +11,10 @@ use App\Http\Controllers\Inertia\WalletController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
-use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\ValidatorsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -35,7 +35,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/validators', 'app.validators')->name('validators');
+Route::get('/validators', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
@@ -48,8 +48,6 @@ Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
 Route::get('/addresses/{wallet}', WalletController::class)->name('wallet');
 Route::get('/addresses/{wallet}?view=blocks', WalletController::class)->name('wallet.blocks');
 Route::get('/addresses/{wallet}?view=voters', WalletController::class)->name('wallet.voters');
-
-Route::get('/addresses-old/{wallet}', ShowWalletController::class)->name('wallet-old');
 
 Route::get('/wallets/{wallet}', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);

@@ -126,7 +126,7 @@ export function currencyWithDecimals({
     return hideCurrency ? formatted : `${formatted} ${symbol}`;
 }
 
-// Helper function to strip trailing zeros after formatting (used for crypto)
+// Helper function to strip trailing zeros after formatting. Keep minimum two decimals.
 function stripTrailingZeros(str: string): string {
     // Split into integer and fractional parts
     const parts = str.split(".");
@@ -134,9 +134,9 @@ function stripTrailingZeros(str: string): string {
 
     // Remove trailing zeros from fractional part
     let fractional = parts[1].replace(/0+$/, "");
-    // If fractional is empty, remove the decimal point too
-    if (fractional === "") {
-        return parts[0];
+    // Ensure at least two decimals remain
+    while (fractional.length < 2) {
+        fractional += "0";
     }
     return `${parts[0]}.${fractional}`;
 }

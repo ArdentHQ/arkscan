@@ -199,20 +199,23 @@ describe('Overview', function () {
                 ->visitRoute('wallet', $this->wallet)
                 ->waitForText('52 result', ignoreCase: true)
                 ->click('[data-testid="wallet:transactions:filter:button"]')
-                ->waitForText('Select All');
-
-            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]'))[0]->click();
-            $browser->waitForQueryString('multipayments', 'false')->pause(100);
-            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Votes"]'))[0]->click();
-            $browser->waitForQueryString('votes', 'false')->pause(100);
-            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Validator"]'))[0]->click();
-            $browser->waitForQueryString('validator', 'false')->pause(100);
-
-            $browser->click('[data-testid="pagination:next-page"] button')
-                ->pause(100)
-                ->waitForText('Page 2 of 3')
+                ->waitForText('Select All')
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]')
+                ->waitForQueryString('multipayments', 'false')
+                ->pause(200)
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Votes"]')
+                ->waitForQueryString('votes', 'false')
+                ->pause(200)
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Validator"]')
+                ->waitForQueryString('validator', 'false')
+                ->pause(200)
                 ->click('[data-testid="pagination:next-page"] button')
+                ->pause(400)
+                ->waitForText('Page 2 of 3')
+                ->assertQueryStringHas('page', '2')
                 ->pause(100)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->pause(400)
                 ->waitForText('Page 3 of 3')
                 ->assertQueryStringHas('page', '3');
 
@@ -359,6 +362,43 @@ describe('Transactions Tab', function () {
             }
         });
     })->with('resolutions');
+
+    it('should correctly format amounts', function (float $amount, string $expected, array $resolution) {
+        $transaction = Transaction::factory()
+            ->transfer()
+            ->create([
+                'value'             => BigNumber::new($amount * 1e18),
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transaction, $resolution, $expected) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5));
+
+            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            if ($resolution['width'] <= 640) {
+                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+            }
+
+            $browser->waitForTextIn($selector, $expected);
+        });
+    })
+    ->with([
+        '2'                => [2.34, '2.34'],
+        '3'                => [2.345, '2.345'],
+        '4'                => [2.3456, '2.3456'],
+        '5'                => [2.34567, '2.34567'],
+        '6'                => [2.345678, '2.345678'],
+        '7'                => [2.3456789, '2.3456789'],
+        '8'                => [2.34567891, '2.34567891'],
+        '8 after rounding' => [2.345678915, '2.34567892'],
+    ])
+    ->with('resolutions');
 
     it('should correctly format multipayment transactions', function ($resolution) {
         $transaction = Transaction::factory()
