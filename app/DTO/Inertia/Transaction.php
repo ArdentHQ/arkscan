@@ -94,10 +94,10 @@ class Transaction extends Data
         }
 
         $recipient = null;
-        
+
         if ($viewModel->isTransfer() || $viewModel->isTokenTransfer()) {
             $recipientAddress = $viewModel->recipient()?->address();
-            
+
             if ($recipientAddress !== null) {
                 $recipientWallet = Wallets::findByAddress($recipientAddress);
 

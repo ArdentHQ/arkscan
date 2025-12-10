@@ -175,17 +175,6 @@ it('should make an instance for a vote transaction', function () {
             ],
         ]);
 
-    $consensusWallet = Wallet::factory()
-        ->create([
-            'address'    => Network::knownContract('consensus'),
-            'public_key' => null,
-            'balance'    => 50.34123 * 1e18,
-            'nonce'      => 0,
-            'attributes' => [
-                'username' => 'consensus',
-            ],
-        ]);
-
     $walletTo = Wallet::factory()
         ->activeValidator()
         ->create([
@@ -295,31 +284,7 @@ it('should make an instance for a vote transaction', function () {
             'voteUrl'                     => null,
             'votePercentage'              => null,
         ],
-        'recipient' => [
-            'address'                     => $consensusWallet->address,
-            'attributes'                  => $consensusWallet->attributes,
-            'balance'                     => (string) $consensusWallet->balance,
-            'nonce'                       => (string) $consensusWallet->nonce,
-            'public_key'                  => $consensusWallet->public_key,
-            'isActive'                    => false,
-            'isCold'                      => true,
-            'isValidator'                 => false,
-            'isLegacy'                    => false,
-            'isDormant'                   => false,
-            'legacyAddress'               => null,
-            'username'                    => 'consensus',
-            'vote'                        => null,
-            'votes'                       => '0',
-            'productivity'                => 0.0,
-            'formattedBalanceTwoDecimals' => '50.34 DARK',
-            'formattedBalanceFull'        => '50.34123 DARK',
-            'fiatValue'                   => '$100.68',
-            'totalForged'                 => '0',
-            'hasUsername'                 => true,
-            'isResigned'                  => false,
-            'voteUrl'                     => null,
-            'votePercentage'              => null,
-        ],
+        'recipient'                       => null,
         'votedForUsername'                => 'bill.ding',
     ]);
 });
