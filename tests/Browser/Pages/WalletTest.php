@@ -196,10 +196,10 @@ describe('Overview', function () {
                 ->click('[data-testid="wallet:transactions:filter:button"]')
                 ->waitForText('Select All');
 
-            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]'))[0]->click();
-            $browser->waitForQueryString('multipayments', 'false')->pause(100);
             $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Votes"]'))[0]->click();
             $browser->waitForQueryString('votes', 'false')->pause(100);
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]'))[0]->click();
+            $browser->waitForQueryString('multipayments', 'false')->pause(100);
             $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Validator"]'))[0]->click();
             $browser->waitForQueryString('validator', 'false')->pause(100);
 
