@@ -52,6 +52,7 @@ final class ValidatorsController
 
                     'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getValidatorsNoResultsMessageProperty($paginator->count()),
+                    'perPageOptions'   => trans('tables.validators.validator_per_page_options'),
                 ];
             }),
             'statistics' => [
