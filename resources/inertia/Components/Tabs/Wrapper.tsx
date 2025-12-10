@@ -46,7 +46,7 @@ export default function Wrapper({ tabs }: { tabs: ITab[] }) {
 
             <div
                 ref={containerRef}
-                className="no-scrollbar mb-4 w-screen overflow-scroll bg-theme-secondary-200 px-6 py-2 dark:bg-theme-dark-950 sm:mb-0 sm:w-auto sm:!bg-transparent sm:px-0 sm:py-0"
+                className="no-scrollbar mb-6 w-screen overflow-scroll bg-theme-secondary-200 px-6 py-2 dark:bg-theme-dark-950 sm:mb-4 sm:w-auto sm:!bg-transparent sm:px-0 sm:py-0 md:mb-0"
             >
                 <div className="relative z-10 inline-flex items-center justify-between rounded-xl bg-theme-secondary-200 dark:bg-theme-dark-950 sm:p-1">
                     <div role="tablist" className="flex space-x-1 !px-0 pr-6 sm:pr-0">

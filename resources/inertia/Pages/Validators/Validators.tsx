@@ -10,8 +10,12 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useTabPolling } from "@/hooks/use-tab-polling";
+import MissedBlocksTableWrapper from "@/Components/Tables/Desktop/Validators/MissedBlocks";
+import MissedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Validators/MissedBlocks";
+import { IForgingStats } from "@/types/generated";
+import { IPaginatedResponse } from "../../types";
 
-const ValidatorsTabsWrapper = () => {
+const ValidatorsTabsWrapper = ({ missedBlocks }: { missedBlocks: IPaginatedResponse<IForgingStats> }) => {
     return (
         <TabsProvider
             defaultSelected="validators"
@@ -35,12 +39,12 @@ const ValidatorsTabsWrapper = () => {
                 { text: "Recent Votes", value: "recent-votes" },
             ]}
         >
-            <ValidatorsTabs />
+            <ValidatorsTabs missedBlocks={missedBlocks} />
         </TabsProvider>
     );
 };
 
-const ValidatorsTabs = () => {
+const ValidatorsTabs = ({ missedBlocks }: { missedBlocks: IPaginatedResponse<IForgingStats> }) => {
     const { currentTab } = useTabs();
 
     useTabPolling((tab: string, callback?: CallableFunction) => {
@@ -48,9 +52,9 @@ const ValidatorsTabs = () => {
         if (tab === "validators") {
             pollParameters = ["validators"];
         } else if (tab === "missed-blocks") {
-            pollParameters = ["missed-blocks"];
+            pollParameters = ["missedBlocks"];
         } else if (tab === "recent-votes") {
-            pollParameters = ["recent-votes"];
+            pollParameters = ["recentVotes"];
         }
 
         router.reload({
@@ -67,14 +71,19 @@ const ValidatorsTabs = () => {
         <>
             {currentTab === "validators" && <>{/*  */}</>}
 
-            {currentTab === "missed-blocks" && <>{/*  */}</>}
+            {currentTab === "missed-blocks" && (
+                <MissedBlocksTableWrapper
+                    blocks={missedBlocks}
+                    mobile={<MissedBlocksMobileTableWrapper blocks={missedBlocks} />}
+                />
+            )}
 
             {currentTab === "recent-votes" && <>{/*  */}</>}
         </>
     );
 };
 
-export default function Validators({ statistics, network }: PageProps<ValidatorsProps>) {
+export default function Validators({ statistics, network, missedBlocks }: PageProps<ValidatorsProps>) {
     const { t } = useTranslation();
     const metadata = usePageMetadata({
         page: "validators",
@@ -93,7 +102,7 @@ export default function Validators({ statistics, network }: PageProps<Validators
                 <HeaderStats statistics={statistics} />
 
                 <PageHandlerProvider>
-                    <ValidatorsTabsWrapper />
+                    <ValidatorsTabsWrapper missedBlocks={missedBlocks} />
                 </PageHandlerProvider>
             </Layout>
         </>

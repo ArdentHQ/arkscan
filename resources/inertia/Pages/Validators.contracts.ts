@@ -1,4 +1,5 @@
-import { IValidator } from "../types";
+import { IForgingStats } from "@/types/generated";
+import { IPaginatedResponse, IValidator } from "../types";
 
 export interface IValidatorData {
     statistics: IMonitorStatistics;
@@ -31,4 +32,5 @@ export interface IValidatorsStatistics {
 
 export interface ValidatorsProps {
     statistics: IValidatorsStatistics;
+    missedBlocks: IPaginatedResponse<IForgingStats>;
 }

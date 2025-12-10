@@ -55,7 +55,7 @@ export function TableHeaderWrapper({
                     })}
                 </span>
 
-                {resultSuffix !== undefined && <span>{resultSuffix}</span>}
+                {resultSuffix !== undefined && <span>&nbsp;{resultSuffix}</span>}
             </div>
 
             {children !== undefined && <div>{children}</div>}

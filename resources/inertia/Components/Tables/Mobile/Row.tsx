@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function MobileTableRow({
     header,
     expandable = false,
-    expandClass = "",
+    expandClass = "space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700",
     expandDisabled = false,
     contentClass = "",
     className = "",
@@ -30,7 +30,7 @@ export default function MobileTableRow({
             <div
                 className={classNames({
                     "flex items-center justify-between rounded-t bg-theme-secondary-100 px-4 py-3 font-semibold dark:bg-theme-dark-950": true,
-                    "rounded-b": !children && (!expandable || (!isExpanded && expandable)),
+                    "rounded-b": (!children && !expandable) || (!!children && !isExpanded && expandable),
                     "sm:rounded-b-none": expandable,
                     [expandClass]: expandable,
                 })}

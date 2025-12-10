@@ -1,7 +1,13 @@
-import { IBlock } from "@/types/generated";
+import { IBlock, IForgingStats } from "@/types/generated";
 import Age from "../Model/Age";
 
-export default function Height({ block, withoutLink = false }: { block: IBlock; withoutLink?: boolean }) {
+export default function Height({
+    block,
+    withoutLink = false,
+}: {
+    block: IBlock | IForgingStats;
+    withoutLink?: boolean;
+}) {
     const formattedBlockHeight = Intl.NumberFormat().format(block.number);
 
     return (
