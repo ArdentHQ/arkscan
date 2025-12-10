@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire\Validators\Concerns;
+namespace App\Http\Controllers\Inertia\Concerns;
 
 use App\DTO\Slot;
 use App\Enums\ValidatorForgingStatus;
