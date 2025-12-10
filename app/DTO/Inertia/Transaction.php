@@ -9,7 +9,6 @@ use App\Facades\Wallets;
 use App\Models\Transaction as Model;
 // use App\Models\Wallet;
 use App\ViewModels\TransactionViewModel;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -95,16 +94,14 @@ class Transaction extends Data
         }
 
         $recipient = null;
-        if ($viewModel->isTransfer() || $viewModel->isTokenTransfer() || $viewModel->isVote()) {
+        
+        if ($viewModel->isTransfer() || $viewModel->isTokenTransfer()) {
             $recipientAddress = $viewModel->recipient()?->address();
-
+            
             if ($recipientAddress !== null) {
-                try {
-                    $recipientWallet = Wallets::findByAddress($recipientAddress);
-                    $recipient       = WalletDTO::fromModel($recipientWallet);
-                } catch (ModelNotFoundException) {
-                    // Recipient may be a contract (e.g. consensus); keep null
-                }
+                $recipientWallet = Wallets::findByAddress($recipientAddress);
+
+                $recipient = WalletDTO::fromModel($recipientWallet);
             }
         }
 
