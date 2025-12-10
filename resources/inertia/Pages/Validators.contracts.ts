@@ -1,4 +1,4 @@
-import { IFilters, ITabbedData, IMonitorValidator, IPaginatedResponse } from "@/types";
+import { IFilters, ITabbedData, IValidator, IMonitorValidator, IPaginatedResponse } from "@/types";
 import { IValidator } from "@/types/generated";
 import { IForgingStats } from "@/types/generated";
 
