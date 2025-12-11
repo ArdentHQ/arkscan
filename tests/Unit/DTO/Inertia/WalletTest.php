@@ -226,3 +226,26 @@ it('should make an instance for a voting wallet', function () {
         'votePercentage'              => $wallet->balance->valueOf()->multipliedBy(100)->dividedBy($votedWallet->attributes['validatorVoteBalance'], 2, RoundingMode::DOWN)->toFloat(),
     ]);
 });
+
+it('should not recursively load votes', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $votedWallet = Wallet::factory()
+        ->activeValidator()
+        ->create();
+
+    $wallet = Wallet::factory()
+        ->create([
+            'attributes' => [
+                'vote' => $votedWallet->address,
+            ],
+        ]);
+
+    (new WalletCache())->setVote($votedWallet->address, $votedWallet);
+
+    $subject = WalletDTO::fromModel($wallet);
+
+    expect($subject->vote)->not->toBeNull();
+    expect($subject->vote->vote)->toBeNull();
+});
