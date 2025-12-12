@@ -117,25 +117,25 @@ export function ValidatorsTable({
                         {t("tables.validators.rank")}
                     </TableHeader>
 
-                    <TableHeader>{t("tables.validators.validator")}</TableHeader>
+                    <TableHeader sortId="name">{t("tables.validators.validator")}</TableHeader>
 
                     <TableHeader>{t("tables.validators.status")}</TableHeader>
 
-                    <TableHeader type="number" className="whitespace-nowrap">
+                    <TableHeader sortId="no_of_voters" type="number" className="whitespace-nowrap">
                         {t("tables.validators.no_of_voters")}
                     </TableHeader>
 
-                    <TableHeader type="number" responsive className="whitespace-nowrap">
+                    <TableHeader sortId="votes" type="number" responsive className="whitespace-nowrap">
                         {t("tables.validators.votes", {
                             currency: network!.currency,
                         })}
                     </TableHeader>
 
-                    <TableHeader type="number" responsive breakpoint="lg" className="!py-2.5">
+                    <TableHeader sortId="percentage_votes" type="number" responsive breakpoint="lg" className="!py-2.5">
                         {t("tables.validators.percentage")}
                     </TableHeader>
 
-                    <TableHeader type="number" className="!py-2.5">
+                    <TableHeader sortId="missed_blocks" type="number" className="!py-2.5">
                         {t("tables.validators.missed_blocks")}
                     </TableHeader>
 
