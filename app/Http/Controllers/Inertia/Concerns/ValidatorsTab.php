@@ -54,7 +54,7 @@ trait ValidatorsTab
         if (! $this->validatorsHasFilters()) {
             return $emptyResults;
         }
-    
+
         return $this->getValidatorsQuery()
             ->paginate($this->perPage('validators'), page: $this->page())
             ->through(fn (Wallet $validator) => IValidator::fromModel($validator));
