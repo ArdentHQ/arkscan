@@ -75,7 +75,7 @@ trait ValidatorsTab
     private function getValidatorsQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;
-        if ($this->getSortDirection('validators') === SortDirection::DESC) {
+        if ($this->sortDirection('validators') === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
 
