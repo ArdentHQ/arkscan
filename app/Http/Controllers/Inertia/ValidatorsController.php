@@ -74,7 +74,7 @@ final class ValidatorsController
 
         if (request()->query('sort-direction') === SortDirection::ASC->value) {
             $sortDirection = SortDirection::ASC;
-        } else if ($sortBy === 'age') {
+        } elseif ($sortBy === 'age') {
             // Default sort direction for age is DESC
             $sortDirection = SortDirection::DESC;
         }

@@ -7,7 +7,6 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\ValidatorCache;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 use Laravel\Dusk\Browser;
 
 beforeEach(function () {
