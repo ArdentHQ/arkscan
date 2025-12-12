@@ -9,6 +9,7 @@ use App\Http\Controllers\Inertia\Concerns\MissedBlocksTab;
 use App\Http\Controllers\Inertia\Concerns\RecentVotesTab;
 use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
+use App\Http\Controllers\Inertia\Concerns\WithSorting;
 use App\Models\ForgingStats;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\ValidatorCache;
@@ -22,6 +23,7 @@ final class ValidatorsController
     use RecentVotesTab;
     use MissedBlocksTab;
     use WithPagination;
+    use WithSorting;
 
     public const FILTERS = [
         'validators' => [
@@ -95,23 +97,5 @@ final class ValidatorsController
             $stats->count(),
             $stats->unique('address')->count(),
         ];
-    }
-
-    // TODO: Re-implement sorting once the UI supports it - https://app.clickup.com/t/86dypp5jv
-    //       Look at \App\Http\Livewire\Validators\Concerns\MissedBlocksTab for reference.
-    //       Also check `getMissedBlocks` below
-    private function sortDirection(string $name = 'default'): SortDirection
-    {
-        return SortDirection::ASC;
-    }
-
-    // TODO: Re-implement sorting once the UI supports it - https://app.clickup.com/t/86dypp5jv
-    //       Look at \App\Http\Livewire\Validators\Concerns\MissedBlocksTab for reference.
-    //       Also check `getMissedBlocks` below
-    private function sortKey(string $name = 'default'): string
-    {
-        return 'rank';
-    }
-
-    
+    }    
 }
