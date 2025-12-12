@@ -1,10 +1,11 @@
+import { IFilters, ITabbedData, IValidator, IMonitorValidator, IPaginatedResponse } from "@/types";
+import { IValidator } from "@/types/generated";
 import { IForgingStats } from "@/types/generated";
-import { IPaginatedResponse, IValidator } from "../types";
 
 export interface IValidatorData {
     statistics: IMonitorStatistics;
-    overflowValidators: IValidator[];
-    validators: IValidator[];
+    overflowValidators: IMonitorValidator[];
+    validators: IMonitorValidator[];
 }
 
 export interface IMonitorStatistics {
@@ -32,5 +33,7 @@ export interface IValidatorsStatistics {
 
 export interface ValidatorsProps {
     statistics: IValidatorsStatistics;
+    validators: IPaginatedResponse<IValidator>;
+    filters: ITabbedData<IFilters>;
     missedBlocks: IPaginatedResponse<IForgingStats>;
 }

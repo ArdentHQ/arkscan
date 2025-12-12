@@ -1,0 +1,121 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Inertia\Concerns;
+
+use App\DTO\Inertia\IValidator;
+use App\Enums\SortDirection;
+use App\Facades\Network;
+use App\Models\Wallet;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
+
+/**
+ * @property bool $isAllSelected
+ * @property LengthAwarePaginator $validators
+ * @property array<string, array<string, bool>> $validatorsFilters
+ * */
+trait ValidatorsTab
+{
+    public const VALIDATORS_PER_PAGE = 53;
+
+    /** @var array<string, array<string, bool>> */
+    protected array $validatorsFilters = [
+        'validators' => [
+            'active'   => true,
+            'standby'  => true,
+            'dormant'  => true,
+            'resigned' => true,
+        ],
+    ];
+
+    public function getValidatorsNoResultsMessageProperty(int $count): null|string
+    {
+        // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyqe7cg
+        // @codeCoverageIgnoreStart
+        if (! $this->validatorsHasFilters()) {
+            return (string) trans('tables.validators.no_results.no_filters');
+        }// @codeCoverageIgnoreEnd
+
+        return $count === 0
+            ? (string) trans('tables.validators.no_results.no_results')
+            : null;
+    }
+
+    public function getValidators(): LengthAwarePaginator
+    {
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page());
+
+        // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyqe7cg
+        // @codeCoverageIgnoreStart
+        if (! $this->validatorsHasFilters()) {
+            return $emptyResults;
+        }
+        // @codeCoverageIgnoreEnd
+
+        return $this->getValidatorsQuery()
+            ->paginate($this->perPage('validators'), page: $this->page())
+            ->through(fn (Wallet $validator) => IValidator::fromModel($validator));
+    }
+
+    /**
+     * @TODO: implement validators filters logic https://app.clickup.com/t/86dyqe7cg
+     * @see `app/Http/Livewire/Validators/Concerns/ValidatorsTab.php`
+     */
+    private function validatorsHasFilters(): bool
+    {
+        return true;
+    }
+
+    private function getValidatorsQuery(): Builder
+    {
+        $sortDirection = SortDirection::ASC;
+        // @TODO: add coverage once table sorting is implemented https://app.clickup.com/t/86dypp5jv
+        // @codeCoverageIgnoreStart
+        if ($this->sortDirection('validators') === SortDirection::DESC) {
+            $sortDirection = SortDirection::DESC;
+        }
+        // @codeCoverageIgnoreEnd
+
+        return Wallet::query()
+            ->whereNotNull('attributes->validatorPublicKey')
+            ->where(fn ($query) => $query->when($this->validatorsHasFilters(), function ($query) {
+                $query->where(fn ($query) => $query->when($this->validatorsFilters['validators']['active'] === true, function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('attributes->validatorResigned', null)
+                            ->orWhere('attributes->validatorResigned', false);
+                    })->where(function ($query) {
+                        $query->whereNot('attributes->validatorPublicKey', null)
+                            ->whereNot('attributes->validatorPublicKey', '');
+                    })->whereRaw('COALESCE((attributes->>\'validatorRank\')::int, 0) <= ?', Network::validatorCount());
+                }))
+                ->orWhere(fn ($query) => $query->when($this->validatorsFilters['validators']['standby'] === true, function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('attributes->validatorResigned', null)
+                            ->orWhere('attributes->validatorResigned', false);
+                    })->where(function ($query) {
+                        $query->whereNot('attributes->validatorPublicKey', null)
+                            ->whereNot('attributes->validatorPublicKey', '');
+                    })->where(function ($query) {
+                        $query->whereRaw('COALESCE((attributes->>\'validatorRank\')::int, 0) > ?', Network::validatorCount());
+                    });
+                }))
+                ->orWhere(fn ($query) => $query->when($this->validatorsFilters['validators']['dormant'] === true, function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('attributes->validatorResigned', null)
+                            ->orWhere('attributes->validatorResigned', false);
+                    })->where(function ($query) {
+                        $query->where('attributes->validatorPublicKey', null)
+                            ->orWhere('attributes->validatorPublicKey', '');
+                    });
+                }))
+                ->orWhere(fn ($query) => $query->when($this->validatorsFilters['validators']['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
+            }))
+            ->when($this->sortKey('validators') === 'rank', fn ($query) => $query->sortByRank($sortDirection))
+            ->when($this->sortKey('validators') === 'name', fn ($query) => $query->sortByUsername($sortDirection))
+            ->when($this->sortKey('validators') === 'votes' || $this->sortKey('validators') === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
+            ->when($this->sortKey('validators') === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
+            ->when($this->sortKey('validators') === 'missed_blocks', fn ($query) => $query->sortByMissedBlocks($sortDirection));
+    }
+}

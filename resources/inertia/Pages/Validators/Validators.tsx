@@ -10,12 +10,15 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useTabPolling } from "@/hooks/use-tab-polling";
+import ValidatorsTab from "./tabs/Validators";
 import MissedBlocksTableWrapper from "@/Components/Tables/Desktop/Validators/MissedBlocks";
 import MissedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Validators/MissedBlocks";
-import { IForgingStats } from "@/types/generated";
-import { IPaginatedResponse } from "../../types";
 
-const ValidatorsTabsWrapper = ({ missedBlocks }: { missedBlocks: IPaginatedResponse<IForgingStats> }) => {
+const ValidatorsTabsWrapper = ({
+    missedBlocks,
+    validators,
+    filters,
+}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters">) => {
     return (
         <TabsProvider
             defaultSelected="validators"
@@ -39,12 +42,16 @@ const ValidatorsTabsWrapper = ({ missedBlocks }: { missedBlocks: IPaginatedRespo
                 { text: "Recent Votes", value: "recent-votes" },
             ]}
         >
-            <ValidatorsTabs missedBlocks={missedBlocks} />
+            <ValidatorsTabs missedBlocks={missedBlocks} validators={validators} filters={filters} />
         </TabsProvider>
     );
 };
 
-const ValidatorsTabs = ({ missedBlocks }: { missedBlocks: IPaginatedResponse<IForgingStats> }) => {
+const ValidatorsTabs = ({
+    missedBlocks,
+    validators,
+    filters,
+}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters">) => {
     const { currentTab } = useTabs();
 
     useTabPolling((tab: string, callback?: CallableFunction) => {
@@ -69,7 +76,7 @@ const ValidatorsTabs = ({ missedBlocks }: { missedBlocks: IPaginatedResponse<IFo
 
     return (
         <>
-            {currentTab === "validators" && <>{/*  */}</>}
+            {currentTab === "validators" && <ValidatorsTab validators={validators} filters={filters} />}
 
             {currentTab === "missed-blocks" && (
                 <MissedBlocksTableWrapper
@@ -83,7 +90,13 @@ const ValidatorsTabs = ({ missedBlocks }: { missedBlocks: IPaginatedResponse<IFo
     );
 };
 
-export default function Validators({ statistics, network, missedBlocks }: PageProps<ValidatorsProps>) {
+export default function Validators({
+    statistics,
+    network,
+    missedBlocks,
+    validators,
+    filters,
+}: PageProps<ValidatorsProps>) {
     const { t } = useTranslation();
     const metadata = usePageMetadata({
         page: "validators",
@@ -102,7 +115,7 @@ export default function Validators({ statistics, network, missedBlocks }: PagePr
                 <HeaderStats statistics={statistics} />
 
                 <PageHandlerProvider>
-                    <ValidatorsTabsWrapper missedBlocks={missedBlocks} />
+                    <ValidatorsTabsWrapper missedBlocks={missedBlocks} validators={validators} filters={filters} />
                 </PageHandlerProvider>
             </Layout>
         </>

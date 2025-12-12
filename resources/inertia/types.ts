@@ -9,7 +9,7 @@ export type NavigationItem = {
 
 export type Navigation = NavigationItem[];
 
-export interface IValidator {
+export interface IMonitorValidator {
     wallet: IWallet;
     lastBlock: IBlock | null;
     order: number;
