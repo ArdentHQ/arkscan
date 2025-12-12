@@ -17,12 +17,18 @@ afterEach(function () {
     Cache::tags(['dusk'])->flush();
 });
 
+function browserNumberFormat(Browser $browser, int $value): string
+{
+    return $browser->script('return Intl.NumberFormat().format('.$value.');')[0];
+}
+
 describe('Missed Blocks Tab', function () {
     it('should handle no missed blocks', function ($resolution) {
         $this->browse(function (Browser $browser) use ($resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
 
             $browser->visitRoute('validators')
+                ->waitFor('button#tab-missed-blocks')
                 ->click('button#tab-missed-blocks')
                 ->waitForText(trans('tables.missed-blocks.no_results'));
         });
@@ -41,6 +47,7 @@ describe('Missed Blocks Tab', function () {
             $browser->resize($resolution['width'], $resolution['height']);
 
             $browser->visitRoute('validators')
+                ->waitFor('button#tab-missed-blocks')
                 ->click('button#tab-missed-blocks')
                 ->waitForText('2 results', ignoreCase: true);
         });
@@ -51,16 +58,18 @@ describe('Missed Blocks Tab', function () {
             ForgingStats::factory()
                 ->create([
                     'missed_height' => $i,
+                    'timestamp'     => $i,
                 ]);
         }
 
         $this->browse(function (Browser $browser) use ($resolution) {
-            $sortedBlocks = ForgingStats::orderBy('missed_height', 'desc')
+            $sortedBlocks = ForgingStats::orderBy('timestamp', 'desc')
                 ->whereNotNull('missed_height');
 
             $browser->resize($resolution['width'], $resolution['height']);
 
             $browser->visitRoute('validators')
+                ->waitFor('button#tab-missed-blocks')
                 ->click('button#tab-missed-blocks')
                 ->waitForText('30 results', ignoreCase: true)
                 ->click('[data-testid="pagination:next-page"] button')
@@ -68,7 +77,7 @@ describe('Missed Blocks Tab', function () {
                 ->assertQueryStringHas('page', '2');
 
             foreach ($sortedBlocks->skip(25)->take(5)->get() as $block) {
-                $browser->assertSee(number_format($block->missed_height));
+                $browser->assertSee(browserNumberFormat($browser, $block->missed_height));
             }
         });
     })->with('resolutions');
@@ -78,11 +87,12 @@ describe('Missed Blocks Tab', function () {
             ForgingStats::factory()
                 ->create([
                     'missed_height' => $i,
+                    'timestamp'     => $i,
                 ]);
         }
 
         $this->browse(function (Browser $browser) use ($resolution) {
-            $sortedBlocks = ForgingStats::orderBy('missed_height', 'desc')
+            $sortedBlocks = ForgingStats::orderBy('timestamp', 'desc')
                 ->whereNotNull('missed_height');
 
             $browser->resize($resolution['width'], $resolution['height']);
@@ -96,7 +106,7 @@ describe('Missed Blocks Tab', function () {
                 ->waitForText('Page 1 of 3');
 
             foreach ($sortedBlocks->take(10)->get() as $block) {
-                $browser->assertSee(number_format($block->missed_height));
+                $browser->assertSee(browserNumberFormat($browser, $block->missed_height));
             }
         });
     })->with('resolutions');
@@ -617,7 +627,7 @@ describe('Missed Blocks Tab', function () {
         });
     });
 
-    it('should force ascending if invalid query string value', function () {
+    it('should fall back to default if invalid query string value', function () {
         $wallet2 = Wallet::factory()->activeValidator()->create([
             'attributes' => [
                 'username'             => 'validator-2',
@@ -654,8 +664,8 @@ describe('Missed Blocks Tab', function () {
                 ->visitRoute('validators', ['tab' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'testing'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->waitForSeeInOrder([
-                    'validator-1',
                     'validator-2',
+                    'validator-1',
                 ], ignoreCase: true);
         });
     });
