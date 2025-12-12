@@ -18,6 +18,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
  * */
 trait RecentVotesTab
 {
+    public const RECENT_VOTES_INITIAL_SORT_KEY = 'age';
+
+    public const RECENT_VOTES_INITIAL_SORT_DIRECTION = SortDirection::DESC;
+
     /** @var array<string, array<string, bool>> */
     protected array $recentVotesFilters = [
        'recent-votes' => [

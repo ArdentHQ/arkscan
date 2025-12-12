@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
-use App\Enums\SortDirection;
 use App\Http\Controllers\Inertia\Concerns\MissedBlocksTab;
 use App\Http\Controllers\Inertia\Concerns\RecentVotesTab;
 use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;

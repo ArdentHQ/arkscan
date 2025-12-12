@@ -11,6 +11,10 @@ use Illuminate\Pagination\AbstractPaginator;
 
 trait MissedBlocksTab
 {
+    public const MISSED_BLOCKS_INITIAL_SORT_KEY = 'age';
+
+    public const MISSED_BLOCKS_INITIAL_SORT_DIRECTION = SortDirection::DESC;
+
     private function getMissedBlocks(): AbstractPaginator
     {
         if (config('database.default') === 'sqlite') {
@@ -21,15 +25,12 @@ trait MissedBlocksTab
                 ->through(fn (ForgingStats $voter) => ForgingStatsDTO::fromModel($voter));
         }
 
-        $sortBy        = request()->query('sort', 'age');
         $sortDirection = SortDirection::ASC;
-
-        if (request()->query('sort-direction') === SortDirection::ASC->value) {
-            $sortDirection = SortDirection::ASC;
-        } elseif ($sortBy === 'age') {
-            // Default sort direction for age is DESC
+        if ($this->sortDirection('missed-blocks') === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
+
+        $sortBy = $this->sortKey('missed-blocks');
 
         return ForgingStats::query()
             ->with('validator')

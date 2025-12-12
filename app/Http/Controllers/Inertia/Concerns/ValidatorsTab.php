@@ -20,6 +20,10 @@ trait ValidatorsTab
 {
     public const VALIDATORS_PER_PAGE = 53;
 
+    public const VALIDATORS_INITIAL_SORT_KEY = 'rank';
+
+    public const VALIDATORS_INITIAL_SORT_DIRECTION = SortDirection::ASC;
+
     /** @var array<string, array<string, bool>> */
     protected array $validatorsFilters = [
         'validators' => [

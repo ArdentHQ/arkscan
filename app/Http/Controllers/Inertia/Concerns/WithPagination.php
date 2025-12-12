@@ -15,7 +15,7 @@ trait WithPagination
 
     protected function perPage(string $name = 'default'): int
     {
-        $constantName = Str::upper($name).'_PER_PAGE';  // e.g. VALIDATORS_PER_PAGE
+        $constantName = Str::of($name)->replace('-', '_')->upper().'_PER_PAGE';  // e.g. VALIDATORS_PER_PAGE
 
         $perPage = config('arkscan.pagination.per_page');
 
