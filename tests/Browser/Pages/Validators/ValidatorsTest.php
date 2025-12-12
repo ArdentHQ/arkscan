@@ -22,6 +22,53 @@ function browserNumberFormat(Browser $browser, int $value): string
     return $browser->script('return Intl.NumberFormat().format('.$value.');')[0];
 }
 
+function seedMissedBlocksSortingData(int $count, bool $withCachedVoters): array
+{
+    $timestamps  = range(100_000, 100_000 + $count - 1);
+    $heights     = range(1, $count);
+    $voteWeights = range(1, $count);
+    $voterCounts = range(1, $count);
+
+    shuffle($heights);
+    shuffle($voteWeights);
+    shuffle($voterCounts);
+
+    $records     = [];
+    $cacheCounts = [];
+
+    for ($i = 0; $i < $count; $i++) {
+        $wallet = Wallet::factory()->activeValidator()->create();
+
+        $attributes                        = $wallet->attributes;
+        $attributes['validatorVoteBalance'] = (string) BigNumber::new($voteWeights[$i])->multipliedBy('1000000000000000000');
+        $wallet->attributes                = $attributes;
+        $wallet->save();
+
+        ForgingStats::factory()->create([
+            'address'       => $wallet->address,
+            'timestamp'     => $timestamps[$i],
+            'missed_height' => $heights[$i],
+            'forged'        => false,
+        ]);
+
+        $records[] = [
+            'address'       => $wallet->address,
+            'timestamp'     => $timestamps[$i],
+            'missed_height' => $heights[$i],
+            'votes'         => $voteWeights[$i],
+            'no_of_voters'  => $voterCounts[$i],
+        ];
+
+        $cacheCounts[$wallet->address] = $voterCounts[$i];
+    }
+
+    if ($withCachedVoters) {
+        (new ValidatorCache())->setAllVoterCounts($cacheCounts);
+    }
+
+    return $records;
+}
+
 describe('Missed Blocks Tab', function () {
     it('should handle no missed blocks', function ($resolution) {
         $this->browse(function (Browser $browser) use ($resolution) {
@@ -462,18 +509,6 @@ describe('Missed Blocks Tab', function () {
             'address' => $wallet2->address,
         ]);
 
-        // Livewire::test(Tabs::class)
-        //     ->set('view', 'missed-blocks')
-        //     ->call('setMissedBlocksReady')
-        //     ->call('sortBy', $sortKey)
-        //     ->set('sortDirections.missed-blocks', SortDirection::DESC)
-        //     ->assertSeeInOrder([
-        //         $wallet1->address,
-        //         $wallet2->address,
-        //         $wallet1->address,
-        //         $wallet2->address,
-        //     ]);
-
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $sortKey) {
             $browser->resize(1280, 1024);
 
@@ -490,60 +525,6 @@ describe('Missed Blocks Tab', function () {
         'votes',
         'percentage_votes',
     ]);
-
-    // it('should alternate sorting direction', function () {
-    //     $wallet1 = Wallet::factory()->activeValidator()->create([
-    //         'attributes' => [
-    //             'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
-    //         ],
-    //     ]);
-
-    //     ForgingStats::factory()->create([
-    //         'address'    => $wallet1->address,
-    //     ]);
-
-    //     (new ValidatorCache())->setAllVoterCounts([
-    //         $wallet1->address => 30,
-    //     ]);
-
-    //     $component = Livewire::test(Tabs::class)
-    //         ->set('view', 'missed-blocks')
-    //         ->call('setMissedBlocksReady')
-    //         ->assertSet('sortKeys.missed-blocks', 'age')
-    //         ->assertSet('sortDirections.missed-blocks', SortDirection::DESC)
-    //         ->call('sortBy', 'age')
-    //         ->assertSet('sortKeys.missed-blocks', 'age')
-    //         ->assertSet('sortDirections.missed-blocks', SortDirection::ASC);
-
-    //     foreach (['name', 'no_of_voters', 'votes', 'percentage_votes', 'missed_blocks'] as $column) {
-    //         $component->call('sortBy', $column)
-    //             ->assertSet('sortKeys.missed-blocks', $column)
-    //             ->assertSet('sortDirections.missed-blocks', SortDirection::ASC)
-    //             ->call('sortBy', $column)
-    //             ->assertSet('sortKeys.missed-blocks', $column)
-    //             ->assertSet('sortDirections.missed-blocks', SortDirection::DESC);
-    //     }
-    // });
-
-    // it('should handle empty table', function () {
-    //     $component = Livewire::test(Tabs::class)
-    //         ->set('view', 'missed-blocks')
-    //         ->call('setMissedBlocksReady')
-    //         ->assertSet('sortKeys.missed-blocks', 'age')
-    //         ->assertSet('sortDirections.missed-blocks', SortDirection::DESC)
-    //         ->call('sortBy', 'age')
-    //         ->assertSet('sortKeys.missed-blocks', 'age')
-    //         ->assertSet('sortDirections.missed-blocks', SortDirection::ASC);
-
-    //     foreach (['name', 'no_of_voters', 'votes', 'percentage_votes', 'missed_blocks'] as $column) {
-    //         $component->call('sortBy', $column)
-    //             ->assertSet('sortKeys.missed-blocks', $column)
-    //             ->assertSet('sortDirections.missed-blocks', SortDirection::ASC)
-    //             ->call('sortBy', $column)
-    //             ->assertSet('sortKeys.missed-blocks', $column)
-    //             ->assertSet('sortDirections.missed-blocks', SortDirection::DESC);
-    //     }
-    // });
 
     it('should reset page on sorting change', function () {
         $wallet1 = Wallet::factory()->activeValidator()->create([
@@ -670,219 +651,113 @@ describe('Missed Blocks Tab', function () {
         });
     });
 
-    // it('should handle sorting several pages without cached data', function ($columnSortBy, $modelSortBy) {
-    //     $validatorData = [];
+    it('should handle sorting several pages without cached data', function (string $sortKey) {
+        $records = collect(seedMissedBlocksSortingData(100, false));
 
-    //     $sortByVotesData = [];
+        $sorted = $records->sort(function (array $a, array $b) use ($sortKey): int {
+            if ($sortKey === 'height') {
+                $cmp = $a['missed_height'] <=> $b['missed_height'];
 
-    //     foreach (range(1, 145) as $rank) {
-    //         $wallet          = faker()->wallet;
+                return $cmp !== 0 ? $cmp : ($b['timestamp'] <=> $a['timestamp']);
+            }
 
-    //         $sortByVotesData[$wallet['address']] = random_int(10, 100);
+            if ($sortKey === 'age') {
+                return $a['timestamp'] <=> $b['timestamp'];
+            }
 
-    //         $validatorData[] = [
-    //             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
-    //             'nonce'             => faker()->numberBetween(1, 1000),
-    //             'updated_at'        => faker()->numberBetween(1, 1000),
-    //             'address'           => $wallet['address'],
-    //             'public_key'        => $wallet['publicKey'],
-    //             'attributes'        => json_encode([
-    //                 'validatorRank'           => $rank,
-    //                 'validatorVoteBalance'    => (string) BigNumber::new($sortByVotesData[$wallet['address']]),
-    //                 'validatorProducedBlocks' => faker()->numberBetween(1, 1000),
-    //                 'validatorMissedBlocks'   => faker()->numberBetween(1, 1000),
-    //             ]),
-    //         ];
-    //     }
+            if ($sortKey === 'no_of_voters') {
+                return $a['timestamp'] <=> $b['timestamp'];
+            }
 
-    //     Wallet::insert($validatorData);
+            if ($sortKey === 'votes' || $sortKey === 'percentage_votes') {
+                $cmp = $a['votes'] <=> $b['votes'];
 
-    //     $missedBlocks       = [];
-    //     $missedBlockCounter = 0;
+                return $cmp !== 0 ? $cmp : ($b['timestamp'] <=> $a['timestamp']);
+            }
 
-    //     $missedBlocksData = [];
+            return 0;
+        })->values();
 
-    //     $validators = Wallet::all();
+        $this->browse(function (Browser $browser) use ($sorted, $sortKey) {
+            $browser->resize(1280, 1024);
 
-    //     foreach ($validators as $validator) {
-    //         $missedBlockCount = random_int(2, 4);
-    //         foreach (range(1, $missedBlockCount) as $_) {
-    //             $missedBlocksData[] = [
-    //                 'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-    //                 'address'       => $validator->address,
-    //                 'forged'        => faker()->boolean(),
-    //                 'missed_height' => faker()->numberBetween(1, 10000),
-    //             ];
+            foreach (range(1, 4) as $page) {
+                $addresses = $sorted->slice(($page - 1) * 25, 25)->pluck('address')->values()->all();
 
-    //             $missedBlockCounter++;
-    //         }
-    //     }
+                $browser->visitRoute('validators', [
+                    'tab'            => 'missed-blocks',
+                    'sort'           => $sortKey,
+                    'sort-direction' => 'asc',
+                    'page'           => $page,
+                ])
+                    ->waitForText('100 results', 20, ignoreCase: true)
+                    ->waitForText('Page '.$page.' of 4', 20);
 
-    //     ForgingStats::insert($missedBlocksData);
+                $browser->waitForSeeInOrder($addresses, seconds: 20, ignoreCase: true);
+            }
+        });
+    })->with([
+        'height',
+        'age',
+        'no_of_voters',
+        'votes',
+        'percentage_votes',
+    ]);
 
-    //     $missedBlocks = ForgingStats::all();
+    it('should handle sorting several pages with cached data', function (string $sortKey) {
+        $records = collect(seedMissedBlocksSortingData(100, true));
 
-    //     $missedBlocks = $missedBlocks->sort(function ($a, $b) use ($modelSortBy, $sortByVotesData) {
-    //         if ($modelSortBy === 'validatorVoteBalance') {
-    //             $aValue = $sortByVotesData[$a->address];
-    //             $bValue = $sortByVotesData[$b->address];
-    //         } else {
-    //             $aValue = Arr::get($a, $modelSortBy);
-    //             $bValue = Arr::get($b, $modelSortBy);
-    //         }
+        $sorted = $records->sort(function (array $a, array $b) use ($sortKey): int {
+            if ($sortKey === 'height') {
+                $cmp = $a['missed_height'] <=> $b['missed_height'];
 
-    //         if (is_numeric($bValue) && is_numeric($aValue)) {
-    //             if ((int) $aValue === (int) $bValue) {
-    //                 return $b->timestamp - $a->timestamp;
-    //             }
+                return $cmp !== 0 ? $cmp : ($b['timestamp'] <=> $a['timestamp']);
+            }
 
-    //             return (int) $aValue - (int) $bValue;
-    //         }
+            if ($sortKey === 'age') {
+                return $a['timestamp'] <=> $b['timestamp'];
+            }
 
-    //         $value = strcmp($aValue, $bValue);
-    //         if ($value === 0) {
-    //             return $b->timestamp - $a->timestamp;
-    //         }
+            if ($sortKey === 'no_of_voters') {
+                $cmp = $a['no_of_voters'] <=> $b['no_of_voters'];
 
-    //         return $value;
-    //     });
+                return $cmp !== 0 ? $cmp : ($b['timestamp'] <=> $a['timestamp']);
+            }
 
-    //     $component = Livewire::test(Tabs::class)
-    //         ->set('view', 'missed-blocks')
-    //         ->call('setMissedBlocksReady')
-    //         ->call('sortBy', $columnSortBy)
-    //         ->set('sortDirections.missed-blocks', SortDirection::ASC);
+            if ($sortKey === 'votes' || $sortKey === 'percentage_votes') {
+                $cmp = $a['votes'] <=> $b['votes'];
 
-    //     foreach (range(1, 4) as $page) {
-    //         $pageData = $missedBlocks->chunk(25)->get($page - 1)->pluck('address');
+                return $cmp !== 0 ? $cmp : ($b['timestamp'] <=> $a['timestamp']);
+            }
 
-    //         $component->call('gotoPage', $page)
-    //             ->assertSeeInOrder([
-    //                 ...$pageData,
-    //                 ...$pageData,
-    //             ]);
-    //     }
-    // })->with([
-    //     'height'           => ['height', 'missed_height'],
-    //     'age'              => ['age', 'timestamp'],
-    //     'no_of_voters'     => ['no_of_voters', 'timestamp'],
-    //     'votes'            => ['votes', 'validatorVoteBalance'],
-    //     'percentage_votes' => ['percentage_votes', 'validatorVoteBalance'],
-    // ]);
+            return 0;
+        })->values();
 
-    // it('should handle sorting several pages with cached data', function ($columnSortBy, $modelSortBy) {
-    //     $this->freezeTime();
-    //     $this->travelTo('2025-09-04 13:44:12');
+        $this->browse(function (Browser $browser) use ($sorted, $sortKey) {
+            $browser->resize(1280, 1024);
 
-    //     $validatorData = [];
+            foreach (range(1, 4) as $page) {
+                $addresses = $sorted->slice(($page - 1) * 25, 25)->pluck('address')->values()->all();
 
-    //     $sortByVotesData = [];
+                $browser->visitRoute('validators', [
+                    'tab'            => 'missed-blocks',
+                    'sort'           => $sortKey,
+                    'sort-direction' => 'asc',
+                    'page'           => $page,
+                ])
+                    ->waitForText('100 results', 20, ignoreCase: true)
+                    ->waitForText('Page '.$page.' of 4', 20);
 
-    //     foreach (range(1, 145) as $rank) {
-    //         $wallet          = faker()->wallet;
-
-    //         $sortByVotesData[$wallet['address']] = random_int(10, 100);
-
-    //         $validatorData[] = [
-    //             'balance'           => faker()->numberBetween(1, 1000) * 1e18,
-    //             'nonce'             => faker()->numberBetween(1, 1000),
-    //             'updated_at'        => faker()->numberBetween(1, 1000),
-    //             'address'           => $wallet['address'],
-    //             'public_key'        => $wallet['publicKey'],
-    //             'attributes'        => json_encode([
-    //                 'validatorRank'           => $rank,
-    //                 'validatorVoteBalance'    => (string) BigNumber::new($sortByVotesData[$wallet['address']]),
-    //                 'validatorProducedBlocks' => faker()->numberBetween(1, 1000),
-    //                 'validatorMissedBlocks'   => faker()->numberBetween(1, 1000),
-    //             ]),
-    //         ];
-    //     }
-
-    //     Wallet::insert($validatorData);
-
-    //     $voterCounts        = [];
-    //     $missedBlocks       = [];
-    //     $missedBlockCounter = 0;
-
-    //     $missedBlocksData = [];
-
-    //     $validators = Wallet::all();
-
-    //     foreach ($validators as $validator) {
-    //         $missedBlockCount = random_int(2, 4);
-    //         foreach (range(1, $missedBlockCount) as $_) {
-    //             $missedBlocksData[] = [
-    //                 'timestamp'     => Timestamp::fromUnix(Carbon::now()->subHours($missedBlockCounter)->unix())->unix(),
-    //                 'address'       => $validator->address,
-    //                 'forged'        => faker()->boolean(),
-    //                 'missed_height' => faker()->numberBetween(1, 10000),
-    //             ];
-
-    //             $sortByVotesData[$validator->address] = $validator->attributes['validatorVoteBalance'];
-
-    //             $missedBlockCounter++;
-    //         }
-
-    //         $voterCounts[$validator->address] = random_int(10, 100);
-    //     }
-
-    //     ForgingStats::insert($missedBlocksData);
-
-    //     $missedBlocks = ForgingStats::all();
-
-    //     $validatorCache = new ValidatorCache();
-    //     $validatorCache->setAllVoterCounts($voterCounts);
-
-    //     $missedBlocks = $missedBlocks->sort(function ($a, $b) use ($modelSortBy, $voterCounts, $sortByVotesData) {
-    //         if ($modelSortBy === 'no_of_voters') {
-    //             $aValue = $voterCounts[$a->address];
-    //             $bValue = $voterCounts[$b->address];
-    //         } elseif ($modelSortBy === 'votes' || $modelSortBy === 'percentage_votes') {
-    //             $aValue = $sortByVotesData[$a->address];
-    //             $bValue = $sortByVotesData[$b->address];
-    //         } else {
-    //             $aValue = Arr::get($a, $modelSortBy);
-    //             $bValue = Arr::get($b, $modelSortBy);
-    //         }
-
-    //         if (is_numeric($bValue) && is_numeric($aValue)) {
-    //             if ((int) $aValue === (int) $bValue) {
-    //                 return $b->timestamp - $a->timestamp;
-    //             }
-
-    //             return (int) $aValue - (int) $bValue;
-    //         }
-
-    //         $value = strcmp($aValue, $bValue);
-    //         if ($value === 0) {
-    //             return $b->timestamp - $a->timestamp;
-    //         }
-
-    //         return $value;
-    //     });
-
-    //     $component = Livewire::test(Tabs::class)
-    //         ->set('view', 'missed-blocks')
-    //         ->call('setMissedBlocksReady')
-    //         ->call('sortBy', $columnSortBy)
-    //         ->set('sortDirections.missed-blocks', SortDirection::ASC);
-
-    //     foreach (range(1, 4) as $page) {
-    //         $pageData = $missedBlocks->chunk(25)->get($page - 1)->pluck('address');
-
-    //         $component->call('gotoPage', $page)
-    //             ->assertSeeInOrder([
-    //                 ...$pageData,
-    //                 ...$pageData,
-    //             ]);
-    //     }
-    // })->with([
-    //     'height'           => ['height', 'missed_height'],
-    //     'age'              => ['age', 'timestamp'],
-    //     'no_of_voters'     => ['no_of_voters', 'no_of_voters'],
-    //     'votes'            => ['votes', 'votes'],
-    //     'percentage_votes' => ['percentage_votes', 'percentage_votes'],
-    // ]);
+                $browser->waitForSeeInOrder($addresses, seconds: 20, ignoreCase: true);
+            }
+        });
+    })->with([
+        'height',
+        'age',
+        'no_of_voters',
+        'votes',
+        'percentage_votes',
+    ]);
 });
 
 dataset('resolutions', [
