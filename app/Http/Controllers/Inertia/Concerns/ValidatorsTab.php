@@ -29,8 +29,8 @@ trait ValidatorsTab
         'validators' => [
             'active'   => true,
             'standby'  => true,
-            'dormant'  => true,
-            'resigned' => true,
+            'dormant'  => false,
+            'resigned' => false,
         ],
     ];
 

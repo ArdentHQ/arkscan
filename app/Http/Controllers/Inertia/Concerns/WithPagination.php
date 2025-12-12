@@ -10,7 +10,7 @@ trait WithPagination
 {
     protected function page(): int
     {
-        return (int) request()->get('page');
+        return (int) request()->get('page') ?? 1;
     }
 
     protected function perPage(string $name = 'default'): int
