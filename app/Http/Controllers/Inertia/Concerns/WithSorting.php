@@ -11,18 +11,20 @@ trait WithSorting
 {
     private function sortDirection(string $name = 'default'): SortDirection
     {
-        $constantName = Str::of($name)->replace('-', '_')->upper().'_INITIAL_SORT_DIRECTION'; 
+        $sortDirection = request()->get('sort-direction');
 
-        if (defined(static::class.'::'.$constantName)) {
-            $defaultSortDirection = constant(static::class.'::'.$constantName);
+        if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value], true)) {
+            return SortDirection::from($sortDirection);
         }
 
-        return request()->get('sort', $defaultSortDirection);
+        $constantName = Str::of($name)->replace('-', '_')->upper().'_INITIAL_SORT_DIRECTION';
+
+        return constant(static::class.'::'.$constantName);
     }
 
     private function sortKey(string $name = 'default'): string
     {
-        $constantName = Str::of($name)->replace('-', '_')->upper().'_INITIAL_SORT_KEY'; 
+        $constantName = Str::of($name)->replace('-', '_')->upper().'_INITIAL_SORT_KEY';
 
         if (defined(static::class.'::'.$constantName)) {
             $defaultSortKey = constant(static::class.'::'.$constantName);

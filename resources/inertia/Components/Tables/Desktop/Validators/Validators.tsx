@@ -1,6 +1,6 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { IValidator } from "@/types/generated";
+import { IValidator, SortDirection } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
 import TableHeader from "../TableHeader";
@@ -19,6 +19,7 @@ import ExternalLink from "@/Components/General/ExternalLink";
 import ValidatorStatus from "@/Components/Validator/ValidatorStatus";
 import Votes from "@/Components/Validator/Votes";
 import MissedBlocks from "@/Components/Validator/MissedBlocks";
+import TableSortingProvider from "@/Providers/TableSorting/TableSortingProvider";
 
 export function Row({ row: validator }: { row: IValidator }) {
     const { arkconnectConfig } = useSharedData();
@@ -111,8 +112,10 @@ export function ValidatorsTable({
             headerActions={<ValidatorsHeaderActions />}
             noResultsMessage={validators.noResultsMessage}
             columns={
-                <>
-                    <TableHeader width="70">{t("tables.validators.rank")}</TableHeader>
+                <TableSortingProvider initialSortBy="rank" initialSortDirection={SortDirection.ASC}>
+                    <TableHeader sortId="rank" width="70">
+                        {t("tables.validators.rank")}
+                    </TableHeader>
 
                     <TableHeader>{t("tables.validators.validator")}</TableHeader>
 
@@ -137,7 +140,7 @@ export function ValidatorsTable({
                     </TableHeader>
 
                     <TableHeader width="70">{""}</TableHeader>
-                </>
+                </TableSortingProvider>
             }
         />
     );

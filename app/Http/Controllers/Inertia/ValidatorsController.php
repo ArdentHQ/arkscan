@@ -96,5 +96,5 @@ final class ValidatorsController
             $stats->count(),
             $stats->unique('address')->count(),
         ];
-    }    
+    }
 }

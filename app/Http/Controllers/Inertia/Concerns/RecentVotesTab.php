@@ -78,7 +78,7 @@ trait RecentVotesTab
         if ($this->sortDirection('recent-votes') === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
-        
+
         return Transaction::query()
             ->with('votedFor')
             ->where('status', true)

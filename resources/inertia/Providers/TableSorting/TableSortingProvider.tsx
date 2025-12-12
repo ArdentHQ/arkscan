@@ -16,7 +16,7 @@ export default function TableSortingProvider({
     initialSortBy: string;
     initialSortDirection: SortDirection;
     children: React.ReactNode;
-    onChange: (sortBy: string) => void;
+    onChange?: (sortBy: string) => void;
 }) {
     const isMounting = useRef(false);
 
@@ -61,7 +61,7 @@ export default function TableSortingProvider({
             preserveScroll: true,
             onSuccess: () => {
                 refreshPage(() => {
-                    onChange(sortBy);
+                    onChange?.(sortBy);
                 });
             },
         });
