@@ -1,7 +1,7 @@
 import TableCell from "../TableCell";
 import LoadingTable, { ILoadingTableColumn } from "../LoadingTable";
 import { IPaginatedResponse } from "@/types";
-import { IForgingStats } from "@/types/generated";
+import { IForgingStats, SortDirection } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
 import TableHeader from "../TableHeader";
@@ -12,6 +12,7 @@ import useSharedData from "@/hooks/use-shared-data";
 import Address from "@/Components/Wallet/Address";
 import Number from "@/Components/General/Number";
 import { networkCurrency } from "@/utils/number-formatter";
+import TableSortingProvider from "@/Providers/TableSorting/TableSortingProvider";
 
 export function Row({ row }: { row: IForgingStats }) {
     return (
@@ -63,29 +64,35 @@ export function MissedBlocksTable({
             mobile={mobile}
             noResultsMessage={blocks.noResultsMessage}
             columns={
-                <>
-                    <TableHeader type="string" className="width-[200px] whitespace-nowrap">
+                <TableSortingProvider initialSortBy="age" initialSortDirection={SortDirection.DESC} onChange={() => {}}>
+                    <TableHeader sortId="height" type="string" className="width-[200px] whitespace-nowrap">
                         {t("tables.blocks.height")}
                     </TableHeader>
 
-                    <TableHeader breakpoint="md-lg" responsive>
+                    <TableHeader sortId="age" breakpoint="md-lg" responsive>
                         {t("tables.blocks.age")}
                     </TableHeader>
 
-                    <TableHeader>{t("tables.missed-blocks.validator")}</TableHeader>
+                    <TableHeader sortId="name">{t("tables.missed-blocks.validator")}</TableHeader>
 
-                    <TableHeader className="text-right">{t("tables.missed-blocks.no_of_voters")}</TableHeader>
+                    <TableHeader sortId="no_of_voters" type="number">
+                        {t("tables.missed-blocks.no_of_voters")}
+                    </TableHeader>
 
-                    <TableHeader className="text-right">
+                    <TableHeader sortId="votes" type="number">
                         {t("tables.missed-blocks.votes", {
                             currency: network?.currency,
                         })}
                     </TableHeader>
 
-                    <TableHeader className="text-right" tooltip={t("tables.missed-blocks.info.percentage")}>
+                    <TableHeader
+                        sortId="percentage_votes"
+                        type="number"
+                        tooltip={t("tables.missed-blocks.info.percentage")}
+                    >
                         {t("tables.missed-blocks.percentage")}
                     </TableHeader>
-                </>
+                </TableSortingProvider>
             }
         />
     );
