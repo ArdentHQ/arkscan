@@ -13,9 +13,6 @@ use App\Services\Timestamp;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-/**
- * @property LengthAwarePaginator $recentVotes
- * */
 trait RecentVotesTab
 {
     public const RECENT_VOTES_INITIAL_SORT_KEY = 'age';
@@ -32,15 +29,14 @@ trait RecentVotesTab
 
     public function getRecentVotesNoResultsMessageProperty(int $count): null|string
     {
-        // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyrauh0
-        // @codeCoverageIgnoreStart
-
-        if (! $this->recentVotesHasFilters() || $count === 0) {
-            return trans('tables.recent-votes.no_results.no_filters');
+        if (! $this->recentVotesHasFilters()) {
+            return (string) trans('tables.recent-votes.no_results.no_filters');
         }
-        // @codeCoverageIgnoreEnd
 
-        return null;
+        return $count === 0
+            ? (string) trans('tables.recent-votes.no_results.no_results')
+            : null;
+        
     }
 
     public function getRecentVotes(): LengthAwarePaginator
@@ -49,27 +45,22 @@ trait RecentVotesTab
             'pageName' => 'page',
         ]);
 
-        // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyrauh0
-        // @codeCoverageIgnoreStart
-
         if (! $this->recentVotesHasFilters()) {
             return $emptyResults;
         }
-
-        // @codeCoverageIgnoreEnd
 
         return $this->getRecentVotesQuery()
             ->paginate($this->perPage('recent-votes'), page: $this->page(), pageName: 'page')
             ->through(fn (Transaction $transaction) => ITransaction::fromModel($transaction));
     }
 
-    /**
-     * @TODO: implement recent votes filters logic https://app.clickup.com/t/86dyrauh0
-     * @see `app/Http/Livewire/Validators/Concerns/RecentVotesTab.php`
-     */
     private function recentVotesHasFilters(): bool
     {
-        return true;
+        if ($this->hasFilter('vote', $this->recentVotesFilters['recent-votes']['vote'])) {
+            return true;
+        }
+
+        return $this->hasFilter('unvote', $this->recentVotesFilters['recent-votes']['unvote']);
     }
 
     private function getRecentVotesQuery(): Builder
@@ -84,10 +75,10 @@ trait RecentVotesTab
             ->where('status', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
             ->where(function ($query) {
-                $query->where(fn ($query) => $query->when($this->recentVotesFilters['recent-votes']['vote'], function ($query) {
+                $query->where(fn ($query) => $query->when($this->hasFilter('vote', $this->recentVotesFilters['recent-votes']['vote']), function ($query) {
                     $query->withScope(VoteScope::class);
                 }))
-                ->orWhere(fn ($query) => $query->when($this->recentVotesFilters['recent-votes']['unvote'], function ($query) {
+                ->orWhere(fn ($query) => $query->when($this->hasFilter('unvote', $this->recentVotesFilters['recent-votes']['unvote']), function ($query) {
                     $query->withScope(UnvoteScope::class);
                 }));
             })

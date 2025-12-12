@@ -11,11 +11,6 @@ use App\Models\Wallet;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-/**
- * @property bool $isAllSelected
- * @property LengthAwarePaginator $validators
- * @property array<string, array<string, bool>> $validatorsFilters
- * */
 trait ValidatorsTab
 {
     public const VALIDATORS_PER_PAGE = 53;
