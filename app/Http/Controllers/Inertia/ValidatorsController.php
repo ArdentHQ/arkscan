@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Inertia;
 use App\Http\Controllers\Inertia\Concerns\MissedBlocksTab;
 use App\Http\Controllers\Inertia\Concerns\RecentVotesTab;
 use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
+use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Http\Controllers\Inertia\Concerns\WithSorting;
 use App\Models\ForgingStats;
@@ -23,6 +24,7 @@ final class ValidatorsController
     use MissedBlocksTab;
     use WithPagination;
     use WithSorting;
+    use WithFilters;
 
     public const FILTERS = [
         'validators' => [

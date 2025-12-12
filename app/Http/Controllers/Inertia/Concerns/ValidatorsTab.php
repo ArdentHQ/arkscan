@@ -36,11 +36,9 @@ trait ValidatorsTab
 
     public function getValidatorsNoResultsMessageProperty(int $count): null|string
     {
-        // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyqe7cg
-        // @codeCoverageIgnoreStart
         if (! $this->validatorsHasFilters()) {
             return (string) trans('tables.validators.no_results.no_filters');
-        }// @codeCoverageIgnoreEnd
+        }
 
         return $count === 0
             ? (string) trans('tables.validators.no_results.no_results')
@@ -49,27 +47,34 @@ trait ValidatorsTab
 
     public function getValidators(): LengthAwarePaginator
     {
-        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page());
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage('validators'), $this->page(), [
+            'pageName' => 'page',
+        ]);
 
-        // @TODO: add coverage once filters are in set https://app.clickup.com/t/86dyqe7cg
-        // @codeCoverageIgnoreStart
         if (! $this->validatorsHasFilters()) {
             return $emptyResults;
         }
-        // @codeCoverageIgnoreEnd
-
+    
         return $this->getValidatorsQuery()
             ->paginate($this->perPage('validators'), page: $this->page())
             ->through(fn (Wallet $validator) => IValidator::fromModel($validator));
     }
 
-    /**
-     * @TODO: implement validators filters logic https://app.clickup.com/t/86dyqe7cg
-     * @see `app/Http/Livewire/Validators/Concerns/ValidatorsTab.php`
-     */
     private function validatorsHasFilters(): bool
     {
-        return true;
+        if ($this->hasFilter('active', $this->validatorsFilters['validators']['active'])) {
+            return true;
+        }
+
+        if ($this->hasFilter('standby', $this->validatorsFilters['validators']['standby'])) {
+            return true;
+        }
+
+        if ($this->hasFilter('dormant', $this->validatorsFilters['validators']['dormant'])) {
+            return true;
+        }
+
+        return $this->hasFilter('resigned', $this->validatorsFilters['validators']['resigned']);
     }
 
     private function getValidatorsQuery(): Builder
@@ -82,7 +87,7 @@ trait ValidatorsTab
         return Wallet::query()
             ->whereNotNull('attributes->validatorPublicKey')
             ->where(fn ($query) => $query->when($this->validatorsHasFilters(), function ($query) {
-                $query->where(fn ($query) => $query->when($this->validatorsFilters['validators']['active'] === true, function ($query) {
+                $query->where(fn ($query) => $query->when($this->hasFilter('active', $this->validatorsFilters['validators']['active']), function ($query) {
                     $query->where(function ($query) {
                         $query->where('attributes->validatorResigned', null)
                             ->orWhere('attributes->validatorResigned', false);
@@ -91,7 +96,7 @@ trait ValidatorsTab
                             ->whereNot('attributes->validatorPublicKey', '');
                     })->whereRaw('COALESCE((attributes->>\'validatorRank\')::int, 0) <= ?', Network::validatorCount());
                 }))
-                ->orWhere(fn ($query) => $query->when($this->validatorsFilters['validators']['standby'] === true, function ($query) {
+                ->orWhere(fn ($query) => $query->when($this->hasFilter('standby', $this->validatorsFilters['validators']['standby']), function ($query) {
                     $query->where(function ($query) {
                         $query->where('attributes->validatorResigned', null)
                             ->orWhere('attributes->validatorResigned', false);
@@ -102,7 +107,7 @@ trait ValidatorsTab
                         $query->whereRaw('COALESCE((attributes->>\'validatorRank\')::int, 0) > ?', Network::validatorCount());
                     });
                 }))
-                ->orWhere(fn ($query) => $query->when($this->validatorsFilters['validators']['dormant'] === true, function ($query) {
+                ->orWhere(fn ($query) => $query->when($this->hasFilter('dormant', $this->validatorsFilters['validators']['dormant']), function ($query) {
                     $query->where(function ($query) {
                         $query->where('attributes->validatorResigned', null)
                             ->orWhere('attributes->validatorResigned', false);
@@ -111,7 +116,7 @@ trait ValidatorsTab
                             ->orWhere('attributes->validatorPublicKey', '');
                     });
                 }))
-                ->orWhere(fn ($query) => $query->when($this->validatorsFilters['validators']['resigned'] === true, fn ($query) => $query->where('attributes->validatorResigned', true)));
+                ->orWhere(fn ($query) => $query->when($this->hasFilter('resigned', $this->validatorsFilters['validators']['resigned']), fn ($query) => $query->where('attributes->validatorResigned', true)));
             }))
             ->when($this->sortKey('validators') === 'rank', fn ($query) => $query->sortByRank($sortDirection))
             ->when($this->sortKey('validators') === 'name', fn ($query) => $query->sortByUsername($sortDirection))

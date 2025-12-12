@@ -7,13 +7,32 @@ import { useTranslation } from "react-i18next";
 export default function ValidatorsTab({ validators, filters }: Pick<ValidatorsProps, "validators" | "filters">) {
     const { t } = useTranslation();
 
+    filters;
+
     return (
         <FilterProvider
-            initialOptions={
-                [
-                    // @TODO: implement validators filters logic https://app.clickup.com/t/86dyqe7cg
-                ]
-            }
+            initialOptions={[
+                {
+                    label: t("tables.filters.validators.active"),
+                    value: "active",
+                    selected: filters.validators.active,
+                },
+                {
+                    label: t("tables.filters.validators.standby"),
+                    value: "standby",
+                    selected: filters.validators.standby,
+                },
+                {
+                    label: t("tables.filters.validators.dormant"),
+                    value: "dormant",
+                    selected: filters.validators.dormant,
+                },
+                {
+                    label: t("tables.filters.validators.resigned"),
+                    value: "resigned",
+                    selected: filters.validators.resigned,
+                },
+            ]}
             onChange={() => {}}
         >
             <ValidatorsTableWrapper
