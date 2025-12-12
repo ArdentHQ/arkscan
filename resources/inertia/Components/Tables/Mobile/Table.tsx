@@ -1,23 +1,38 @@
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 
-export default function MobileTable({ noResultsMessage, className = '', children }: React.PropsWithChildren<{
+export default function MobileTable({
+    noResultsMessage,
+    className = "",
+    resultCount,
+    children,
+}: React.PropsWithChildren<{
     noResultsMessage?: string;
     className?: string;
+    resultCount?: number;
 }>) {
     return (
-        <div className="table-container px-6 md:px-10">
-            <div className={classNames({
-                'flex flex-col space-y-3 table-list-mobile table-list-encapsulated': true,
-                [className]: true,
-            })}>
-                {!!noResultsMessage ? (
-                    <div className="dark:text-theme-dark-200">
-                        {noResultsMessage}
+        <>
+            {resultCount === 0 ? (
+                <div className="leading-7 dark:text-theme-dark-200">{noResultsMessage}</div>
+            ) : (
+                <>
+                    <div
+                        className={classNames({
+                            "table-container": true,
+                            [className]: !!className,
+                        })}
+                    >
+                        <div
+                            className={classNames({
+                                "table-list-mobile table-list-encapsulated flex flex-col space-y-3": true,
+                                [className]: true,
+                            })}
+                        >
+                            {children}
+                        </div>
                     </div>
-                ) : (<>
-                    {children}
-                </>)}
-            </div>
-        </div>
-    )
+                </>
+            )}
+        </>
+    );
 }

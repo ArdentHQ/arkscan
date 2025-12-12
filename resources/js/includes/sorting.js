@@ -1,15 +1,6 @@
-export const sortRow = (
-    row1,
-    row2,
-    row1Value,
-    row2Value,
-    sortAscending,
-    sortByRowIndex
-) => {
-    const isRow1Numeric =
-        row1Value !== "" && !isNaN(row1Value) && row1Value !== null;
-    const isRow2Numeric =
-        row2Value !== "" && !isNaN(row2Value) && row2Value !== null;
+export const sortRow = (row1, row2, row1Value, row2Value, sortAscending, sortByRowIndex) => {
+    const isRow1Numeric = row1Value !== "" && !isNaN(row1Value) && row1Value !== null;
+    const isRow2Numeric = row2Value !== "" && !isNaN(row2Value) && row2Value !== null;
 
     if (isNaN(row1Value) && isNaN(row2Value)) {
         return sortAscending

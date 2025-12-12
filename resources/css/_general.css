@@ -3,7 +3,7 @@ html {
 }
 
 body {
-    @apply flex flex-col min-h-screen font-sans text-theme-secondary-700;
+    @apply flex min-h-screen flex-col font-sans text-theme-secondary-700;
 }
 
 #app {
@@ -17,10 +17,10 @@ body {
 
 /* Network Status Block */
 .network-status-block {
-    @apply inline-block w-full text-center border border-transparent bg-theme-secondary-200;
+    @apply inline-block w-full border border-transparent bg-theme-secondary-200 text-center;
 }
 .dark .network-status-block {
-    @apply bg-theme-secondary-900 border-theme-secondary-800;
+    @apply border-theme-secondary-800 bg-theme-secondary-900;
 }
 
 .network-status-block-entries {
@@ -29,7 +29,7 @@ body {
 
 @screen md {
     .network-status-block {
-        @apply px-0 rounded-lg;
+        @apply rounded-lg px-0;
     }
     .network-status-block-entries {
         @apply justify-start;
@@ -43,7 +43,7 @@ body {
 }
 
 .navbar-settings-option {
-    @apply items-center justify-between pt-6 border-theme-secondary-300;
+    @apply items-center justify-between border-theme-secondary-300 pt-6;
 }
 .navbar-settings-option:first-child {
     @apply pt-0;
@@ -52,7 +52,7 @@ body {
     @apply border-0;
 }
 .navbar-settings-option-with-border {
-    @apply pb-6 border-b border-dashed navbar-settings-option;
+    @apply navbar-settings-option border-b border-dashed pb-6;
 }
 .dark .navbar-settings-option {
     @apply border-theme-secondary-800;
@@ -60,7 +60,7 @@ body {
 
 /* Transaction Icon */
 .transaction-icon {
-    @apply flex-shrink-0 text-theme-secondary-900 border-theme-secondary-900;
+    @apply flex-shrink-0 border-theme-secondary-900 text-theme-secondary-900;
 }
 
 body.table-compact:not(.table-compact-until-lg) .transparent {
@@ -68,36 +68,36 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 }
 
 .dark .transaction-icon {
-    @apply text-theme-secondary-600 border-theme-secondary-600;
+    @apply border-theme-secondary-600 text-theme-secondary-600;
 }
 
 @screen md {
     .transaction-icon {
-        @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
+        @apply flex h-11 w-11 items-center justify-center rounded-full border-2;
     }
 }
 
 @screen sm {
     .chart-details > .detail-box:nth-child(2n + 1) {
-        @apply pr-6 border-r border-theme-secondary-300;
+        @apply border-r border-theme-secondary-300 pr-6;
     }
 }
 
 @screen md {
     .validator-details > .detail-box:nth-child(2n + 1) {
-        @apply pr-6 border-r border-theme-secondary-300;
+        @apply border-r border-theme-secondary-300 pr-6;
     }
 }
 
 @screen lg {
     .validator-details > .detail-box:not(:last-child) {
-        @apply pr-6 border-r border-theme-secondary-300;
+        @apply border-r border-theme-secondary-300 pr-6;
     }
 }
 
 @screen xl {
     .chart-details > .detail-box:not(:last-child) {
-        @apply pr-6 border-r border-theme-secondary-300;
+        @apply border-r border-theme-secondary-300 pr-6;
     }
 
     .chart-details > .detail-box:last-child {
@@ -163,7 +163,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 
 /* Loading States */
 .loading-state {
-    @apply bg-theme-secondary-300 animate-pulse;
+    @apply animate-pulse bg-theme-secondary-300;
 }
 
 .dark .loading-state {
@@ -172,7 +172,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 
 /* Tab Badge */
 .info-badge {
-    @apply ml-1 text-sm rounded bg-theme-primary-100;
+    @apply ml-1 rounded bg-theme-primary-100 text-sm;
     padding: 2px 6px;
 }
 .dark .info-badge {
@@ -266,7 +266,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 }
 
 .wallet-icons-row > *:not(:first-child) {
-    @apply pl-2 ml-2;
+    @apply ml-2 pl-2;
 }
 
 /* Progress circles validators */
@@ -280,17 +280,17 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 
 /* Vote/Unvote circles */
 .vote-circle {
-    @apply flex-shrink-0 text-theme-success-500 border-theme-success-500 dark:text-theme-success-600 dark:border-theme-success-600;
+    @apply flex-shrink-0 border-theme-success-500 text-theme-success-500 dark:border-theme-success-600 dark:text-theme-success-600;
 }
 
 .unvote-circle {
-    @apply flex-shrink-0 text-theme-danger-500 border-theme-danger-500 dark:text-theme-danger-600 dark:border-theme-danger-600;
+    @apply flex-shrink-0 border-theme-danger-500 text-theme-danger-500 dark:border-theme-danger-600 dark:text-theme-danger-600;
 }
 
 @screen lg {
     .vote-circle,
     .unvote-circle {
-        @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
+        @apply flex h-11 w-11 items-center justify-center rounded-full border-2;
     }
 }
 
@@ -306,7 +306,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     border-width: 7px;
     margin-left: -7px;
 
-    @apply pointer-events-none h-0 w-0 top-full left-1/2 absolute border-t-theme-secondary-900 dark:border-t-theme-dark-800;
+    @apply pointer-events-none absolute left-1/2 top-full h-0 w-0 border-t-theme-secondary-900 dark:border-t-theme-dark-800;
 }
 
 /* Search */
@@ -410,7 +410,7 @@ input.qr-code-amount[type="number"] {
 /* Note: I've copied most of the `.custom-scroll` class here. Some of the existing 
    class makes the scrollbar "thick", like it would be on any other website. */
 .code-block-custom-scroll::-webkit-scrollbar {
-    @apply rounded-lg w-1.5 h-1;
+    @apply h-1 w-1.5 rounded-lg;
 }
 
 .code-block-custom-scroll::-webkit-scrollbar-track-piece:start {

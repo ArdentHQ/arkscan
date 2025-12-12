@@ -33,21 +33,9 @@ const PriceChart = (values, labels, isPlaceholder, darkMode, isPositive) => {
             let border;
 
             if (isPlaceholder) {
-                border = this.darkMode
-                    ? "rgba(126, 138, 156, 1)"
-                    : "rgba(196, 200, 207, 1)";
-                gradient.addColorStop(
-                    0,
-                    this.darkMode
-                        ? "rgba(126, 138, 156, 1)"
-                        : "rgba(196, 200, 207, 1)"
-                );
-                gradient.addColorStop(
-                    1,
-                    this.darkMode
-                        ? "rgba(126, 138, 156, 0)"
-                        : "rgba(196, 200, 207, 0)"
-                );
+                border = this.darkMode ? "rgba(126, 138, 156, 1)" : "rgba(196, 200, 207, 1)";
+                gradient.addColorStop(0, this.darkMode ? "rgba(126, 138, 156, 1)" : "rgba(196, 200, 207, 1)");
+                gradient.addColorStop(1, this.darkMode ? "rgba(126, 138, 156, 0)" : "rgba(196, 200, 207, 0)");
             } else if (isPositive) {
                 border = "rgba(40, 149, 72, 1)";
                 gradient.addColorStop(0, "rgba(40, 149, 72, 0.5)");

@@ -25,6 +25,10 @@ final class CitextArray implements CastsAttributes
             return $value;
         }
 
+        if ($value === null) {
+            return [];
+        }
+
         return array_filter(explode(',', trim($value, '{}')));
     }
 

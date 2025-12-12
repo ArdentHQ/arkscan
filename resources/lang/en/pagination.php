@@ -21,9 +21,9 @@ return [
     'records'           => 'Records',
     'first'             => 'First',
     'last'              => 'Last',
-    'showing_x_results' => 'Showing :count results',
+    'showing_x_results' => 'Showing :results results',
     'view_all'          => 'View All',
-    'x_results'         => ':count Results',
+    'x_results'         => ':results Results',
 
     'per_page_options' => [
         10,

@@ -10,10 +10,7 @@ export const truncateMiddle = (text, maxLength = 10) => {
 
     let partLength = Math.floor(maxLength / 2);
 
-    let parts = [
-        value.substring(0, partLength),
-        value.substring(value.length - partLength),
-    ];
+    let parts = [value.substring(0, partLength), value.substring(value.length - partLength)];
 
     return parts.join("…");
 };
@@ -24,9 +21,7 @@ export const TruncateDynamic = (value) => {
         throttleTimeout: null,
 
         init() {
-            new ResizeObserver(() => this.throttledTruncate()).observe(
-                this.$root
-            );
+            new ResizeObserver(() => this.throttledTruncate()).observe(this.$root);
 
             window.addEventListener("resize", () => this.throttledTruncate());
 

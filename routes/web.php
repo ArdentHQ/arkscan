@@ -3,14 +3,18 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BlocksController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
+use App\Http\Controllers\Inertia\WalletController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
-use App\Http\Controllers\ShowWalletController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\ValidatorsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -31,7 +35,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/validators', 'app.validators')->name('validators');
+Route::get('/validators', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksController::class)->name('blocks');
@@ -41,9 +45,9 @@ Route::get('/transactions', TransactionsController::class)->name('transactions')
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
-Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
-Route::get('/addresses/{wallet}?view=voters', ShowWalletController::class)->name('wallet.voters');
-Route::get('/addresses/{wallet}?view=blocks', ShowWalletController::class)->name('wallet.blocks');
+Route::get('/addresses/{wallet}', WalletController::class)->name('wallet');
+Route::get('/addresses/{wallet}?view=blocks', WalletController::class)->name('wallet.blocks');
+Route::get('/addresses/{wallet}?view=voters', WalletController::class)->name('wallet.voters');
 
 Route::get('/wallets/{wallet}', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
@@ -78,3 +82,15 @@ Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 Route::post('/webhooks', WebhooksController::class)
     ->withoutMiddleware([VerifyCsrfToken::class])
     ->name('webhooks');
+
+Route::post('/currency/update', [CurrencyController::class, 'update'])
+    ->name('currency.update');
+
+Route::post('/theme/update', [ThemeController::class, 'update'])
+    ->name('theme.update');
+
+Route::get('/navbar/search', [SearchController::class, 'index'])
+    ->name('navbar-search.index');
+
+Route::post('/navbar/search/redirect', [SearchController::class, 'redirect'])
+    ->name('navbar-search.redirect');

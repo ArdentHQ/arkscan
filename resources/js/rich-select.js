@@ -4,7 +4,7 @@ const RichSelect = (
     initialValue = "",
     initialText = "",
     grouped = false,
-    dispatchEvent = undefined
+    dispatchEvent = undefined,
 ) => ({
     options,
     onInput($dispatch, $event) {
@@ -40,10 +40,7 @@ const RichSelect = (
 
         this.value = value;
 
-        this.text =
-            groupName !== null
-                ? this.options[groupName][value]
-                : this.options[value];
+        this.text = groupName !== null ? this.options[groupName][value] : this.options[value];
 
         this.open = false;
 
@@ -98,14 +95,12 @@ const RichSelect = (
     },
     onArrowUp() {
         const optionsCount = this.getOptionsCount();
-        this.selected =
-            this.selected - 1 < 0 ? optionsCount - 1 : this.selected - 1;
+        this.selected = this.selected - 1 < 0 ? optionsCount - 1 : this.selected - 1;
         this.scrollToSelectedOption();
     },
     onArrowDown() {
         const optionsCount = this.getOptionsCount();
-        this.selected =
-            this.selected + 1 > optionsCount - 1 ? 0 : this.selected + 1;
+        this.selected = this.selected + 1 > optionsCount - 1 ? 0 : this.selected + 1;
         this.scrollToSelectedOption();
     },
     scrollToSelectedOption() {

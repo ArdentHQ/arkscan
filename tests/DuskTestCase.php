@@ -6,6 +6,7 @@ namespace Tests;
 
 use App\Contracts\MarketDataProvider;
 use App\Services\MarketDataProviders\CryptoCompare;
+use Facebook\WebDriver\Chrome\ChromeDevToolsDriver;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -15,6 +16,7 @@ use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use PHPUnit\Framework\Attributes\BeforeClass;
 
@@ -51,6 +53,27 @@ abstract class DuskTestCase extends BaseTestCase
     {
         if (! static::runningInSail()) {
             static::startChromeDriver(['--port=9515']);
+        }
+    }
+
+    /** Grants permissions for the browser.
+     *
+     * Taken from https://stackoverflow.com/a/74575917
+     * @param mixed $permissions
+     */
+    protected function grantPermission(Browser $browser, $permissions)
+    {
+        try {
+            $driver   = $browser->driver;
+            $devtools = new ChromeDevToolsDriver($driver);
+
+            $result = $devtools->execute('Browser.grantPermissions', [
+                'permissions' => $permissions,
+            ]);
+
+            return $result;
+        } catch (\Exception) {
+            return;
         }
     }
 

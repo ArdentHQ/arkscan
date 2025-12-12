@@ -1,0 +1,251 @@
+<?php
+
+declare(strict_types=1);
+
+use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Models\Wallet;
+use App\Services\Addresses\Legacy;
+use App\Services\ArkVaultUrlBuilder;
+use App\Services\BigNumber;
+use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\Cache\ValidatorCache;
+use App\Services\Cache\WalletCache;
+use Brick\Math\RoundingMode;
+use function Tests\faker;
+
+it('should make an instance for non-validators', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $wallet = Wallet::factory()
+        ->create([
+            'balance'    => 100.34123 * 1e18,
+            'attributes' => [
+                'username' => 'joe.blogs',
+                'isLegacy' => true,
+            ],
+        ]);
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+    $subject = WalletDTO::fromModel($wallet);
+
+    expect($subject->toArray())->toEqual([
+        'address'                     => $wallet->address,
+        'attributes'                  => $wallet->attributes,
+        'balance'                     => (string) $wallet->balance,
+        'nonce'                       => (string) $wallet->nonce,
+        'public_key'                  => $wallet->public_key,
+        'isActive'                    => false,
+        'isCold'                      => false,
+        'isValidator'                 => false,
+        'isLegacy'                    => true,
+        'isDormant'                   => false,
+        'legacyAddress'               => Legacy::generateAddressFromPublicKey($wallet->public_key),
+        'username'                    => 'joe.blogs',
+        'vote'                        => null,
+        'votes'                       => '0',
+        'productivity'                => 0.0,
+        'formattedBalanceTwoDecimals' => '100.34 DARK',
+        'formattedBalanceFull'        => '100.34123 DARK',
+        'fiatValue'                   => '$200.68',
+        'totalForged'                 => '0',
+        'hasUsername'                 => true,
+        'voteUrl'                     => null,
+        'isResigned'                  => false,
+        'votePercentage'              => null,
+    ]);
+});
+
+it('should make an instance for active validators', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $wallet = Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'balance' => 100.34123 * 1e18,
+        ]);
+
+    (new WalletCache())->setProductivity($wallet->address, 1.23);
+    (new ValidatorCache())->setTotalFees([$wallet->address => 1.23 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$wallet->address => 1.23 * 1e18]);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+    $subject = WalletDTO::fromModel($wallet);
+
+    expect($subject->toArray())->toEqual([
+        'address'                     => $wallet->address,
+        'attributes'                  => $wallet->attributes,
+        'balance'                     => (string) $wallet->balance,
+        'nonce'                       => (string) $wallet->nonce,
+        'public_key'                  => $wallet->public_key,
+        'isActive'                    => true,
+        'isCold'                      => false,
+        'isValidator'                 => true,
+        'isLegacy'                    => false,
+        'isDormant'                   => false,
+        'legacyAddress'               => null,
+        'username'                    => null,
+        'vote'                        => null,
+        'votes'                       => (string) BigNumber::new($wallet->attributes['validatorVoteBalance'] ?? 0)->toFloat(),
+        'productivity'                => 1.23,
+        'formattedBalanceTwoDecimals' => '100.34 DARK',
+        'formattedBalanceFull'        => '100.34123 DARK',
+        'fiatValue'                   => '$200.68',
+        'totalForged'                 => '2.46',
+        'hasUsername'                 => false,
+        'isResigned'                  => false,
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+        'votePercentage'              => null,
+    ]);
+});
+
+it('should make an instance for standby validators', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $wallet = Wallet::factory()
+        ->standbyValidator()
+        ->create([
+            'balance' => 100.34123 * 1e18,
+        ]);
+
+    (new WalletCache())->setProductivity($wallet->address, 1.23);
+    (new ValidatorCache())->setTotalFees([$wallet->address => 1.23 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$wallet->address => 1.23 * 1e18]);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+    $subject = WalletDTO::fromModel($wallet);
+
+    expect($subject->toArray())->toEqual([
+        'address'                     => $wallet->address,
+        'attributes'                  => $wallet->attributes,
+        'balance'                     => (string) $wallet->balance,
+        'nonce'                       => (string) $wallet->nonce,
+        'public_key'                  => $wallet->public_key,
+        'isActive'                    => false,
+        'isCold'                      => false,
+        'isValidator'                 => true,
+        'isLegacy'                    => false,
+        'isDormant'                   => false,
+        'legacyAddress'               => null,
+        'username'                    => null,
+        'vote'                        => null,
+        'votes'                       => (string) BigNumber::new($wallet->attributes['validatorVoteBalance'] ?? 0)->toFloat(),
+        'productivity'                => 1.23,
+        'formattedBalanceTwoDecimals' => '100.34 DARK',
+        'formattedBalanceFull'        => '100.34123 DARK',
+        'fiatValue'                   => '$200.68',
+        'totalForged'                 => '2.46',
+        'hasUsername'                 => false,
+        'isResigned'                  => false,
+        'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($wallet->public_key),
+        'votePercentage'              => null,
+    ]);
+});
+
+it('should make an instance for a voting wallet', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $votedWallet = Wallet::factory()
+        ->activeValidator()
+        ->create([
+            'balance'    => 100.34123 * 1e18,
+            'attributes' => [
+                'validatorVoteBalance' => 200.0 * 1e18,
+                'validatorPublicKey'   => faker()->publicKey,
+            ],
+        ]);
+
+    $wallet = Wallet::factory()
+        ->create([
+            'balance'    => 100.34123 * 1e18,
+            'attributes' => [
+                'username' => 'joe.blogs',
+                'vote'     => $votedWallet->address,
+            ],
+        ]);
+
+    (new WalletCache())->setVote($votedWallet->address, $votedWallet);
+    (new WalletCache())->setProductivity($votedWallet->address, 1.23);
+    (new ValidatorCache())->setTotalFees([$votedWallet->address => 1.23 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$votedWallet->address => 1.23 * 1e18]);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+    $subject = WalletDTO::fromModel($wallet);
+
+    expect($subject->toArray())->toEqual([
+        'address'                     => $wallet->address,
+        'attributes'                  => $wallet->attributes,
+        'balance'                     => (string) $wallet->balance,
+        'nonce'                       => (string) $wallet->nonce,
+        'public_key'                  => $wallet->public_key,
+        'isActive'                    => false,
+        'isCold'                      => false,
+        'isValidator'                 => false,
+        'isLegacy'                    => false,
+        'isDormant'                   => false,
+        'legacyAddress'               => null,
+        'username'                    => 'joe.blogs',
+        'vote'                        => [
+            'address'                     => $votedWallet->address,
+            'attributes'                  => $votedWallet->attributes,
+            'balance'                     => (string) $votedWallet->balance,
+            'nonce'                       => (string) $votedWallet->nonce,
+            'public_key'                  => $votedWallet->public_key,
+            'isActive'                    => true,
+            'isCold'                      => false,
+            'isValidator'                 => true,
+            'isLegacy'                    => false,
+            'isDormant'                   => false,
+            'legacyAddress'               => null,
+            'username'                    => null,
+            'vote'                        => null,
+            'votes'                       => (string) BigNumber::new($votedWallet->attributes['validatorVoteBalance'] ?? 0)->toFloat(),
+            'productivity'                => 1.23,
+            'formattedBalanceTwoDecimals' => '100.34 DARK',
+            'formattedBalanceFull'        => '100.34123 DARK',
+            'fiatValue'                   => '$200.68',
+            'totalForged'                 => '2.46',
+            'isResigned'                  => false,
+            'hasUsername'                 => false,
+            'voteUrl'                     => ArkVaultUrlBuilder::get()->generateVote($votedWallet->public_key),
+            'votePercentage'              => null,
+        ],
+        'votes'                       => '0',
+        'productivity'                => 0.0,
+        'formattedBalanceTwoDecimals' => '100.34 DARK',
+        'formattedBalanceFull'        => '100.34123 DARK',
+        'fiatValue'                   => '$200.68',
+        'totalForged'                 => '0',
+        'hasUsername'                 => true,
+        'isResigned'                  => false,
+        'voteUrl'                     => null,
+        'votePercentage'              => $wallet->balance->valueOf()->multipliedBy(100)->dividedBy($votedWallet->attributes['validatorVoteBalance'], 2, RoundingMode::DOWN)->toFloat(),
+    ]);
+});
+
+it('should not recursively load votes', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $votedWallet = Wallet::factory()
+        ->activeValidator()
+        ->create();
+
+    $wallet = Wallet::factory()
+        ->create([
+            'attributes' => [
+                'vote' => $votedWallet->address,
+            ],
+        ]);
+
+    (new WalletCache())->setVote($votedWallet->address, $votedWallet);
+
+    $subject = WalletDTO::fromModel($wallet);
+
+    expect($subject->vote)->not->toBeNull();
+    expect($subject->vote->vote)->toBeNull();
+});

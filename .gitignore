@@ -22,4 +22,4 @@ TxtVoteReport.txt
 .env.testing
 .env.dusk.*
 /.phpunit.cache
-/resources/lang/php_*.json
+/resources/lang/**/php_*.json

@@ -3,27 +3,16 @@ import axios from "axios";
 
 export class BlocksApi {
     static async request(host, query, address) {
-        const response = await axios.get(
-            `${host}/validators/${address}/blocks`,
-            {
-                params: query,
-            }
-        );
+        const response = await axios.get(`${host}/validators/${address}/blocks`, {
+            params: query,
+        });
 
         return response.data;
     }
 
     static async fetchAll(
-        {
-            host,
-            query,
-            address,
-            limit = 100,
-            blocks = [],
-            orderBy = "number:desc",
-            height,
-        },
-        instance
+        { host, query, address, limit = 100, blocks = [], orderBy = "number:desc", height },
+        instance,
     ) {
         try {
             const page = await this.request(
@@ -34,7 +23,7 @@ export class BlocksApi {
                     ...query,
                     "number.to": height,
                 },
-                address
+                address,
             );
 
             if (instance?.hasAborted()) {
@@ -49,10 +38,7 @@ export class BlocksApi {
 
             height = page.data[page.data.length - 1]["number"] - 1;
         } catch (e) {
-            throw new FailedExportRequest(
-                "There was a problem fetching blocks.",
-                blocks
-            );
+            throw new FailedExportRequest("There was a problem fetching blocks.", blocks);
         }
 
         return await this.fetchAll(
@@ -64,7 +50,7 @@ export class BlocksApi {
                 address,
                 height,
             },
-            instance
+            instance,
         );
     }
 
@@ -76,7 +62,7 @@ export class BlocksApi {
                 orderBy,
                 ...query,
             },
-            address
+            address,
         );
 
         return page.data.pop();

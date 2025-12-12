@@ -1,6 +1,4 @@
-export default function TruncateMiddle({ length = 10, children }: React.PropsWithChildren<{
-    length?: number;
-}>) {
+export default function TruncateMiddle({ length = 10, children }: { length?: number; children: React.ReactNode }) {
     const text = children as string;
     const maxLength = length;
 
@@ -8,8 +6,14 @@ export default function TruncateMiddle({ length = 10, children }: React.PropsWit
         return <span>{text}</span>;
     }
 
-    const start = text.slice(0, length);
-    const end = text.slice(-length);
+    const partLength = Math.floor(maxLength / 2);
 
-    return <span>{start}…{end}</span>;
+    const start = text.slice(0, partLength);
+    const end = text.slice(-partLength);
+
+    return (
+        <span>
+            {start}…{end}
+        </span>
+    );
 }

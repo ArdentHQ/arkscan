@@ -1,20 +1,48 @@
-import { createRoot } from 'react-dom/client'
-import { createInertiaApp } from '@inertiajs/react'
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
-import loadI18n from '../inertia/i18n';
+import { createRoot } from "react-dom/client";
+import { createInertiaApp } from "@inertiajs/react";
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import loadI18n from "../inertia/i18n";
+import ArkConnectProvider from "@/Providers/ArkConnect/ArkConnectProvider";
+import WebhooksProvider from "@/Providers/Webhooks/WebhooksProvider";
+import SettingsProvider from "@/Providers/Settings/SettingsProvider";
+import { IConfigArkconnect, INetwork, IPriceTickerData } from "@/types/generated";
+import { ArkConnectConfiguration } from "@/Providers/ArkConnect/types";
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
 loadI18n();
 
 createInertiaApp({
-    id: 'inertia-body',
-    resolve: (name) => resolvePageComponent(`../inertia/Pages/${name}.tsx`, import.meta.glob('../inertia/Pages/**/*.tsx')),
+    id: "inertia-body",
+    resolve: (name) =>
+        resolvePageComponent(`../inertia/Pages/${name}.tsx`, import.meta.glob("../inertia/Pages/**/*.tsx")),
     setup({ el, App, props }) {
-        const root = createRoot(el) // This requires react-dom/client
-        root.render(<App {...props} />)
+        const root = createRoot(el); // This requires react-dom/client
+
+        const configuration: ArkConnectConfiguration = {
+            network: props.initialPage.props.network as INetwork,
+            arkconnectConfig: props.initialPage.props.arkconnectConfig as IConfigArkconnect,
+        };
+
+        let theme = props.initialPage.props.theme as string;
+        if (!theme || theme === "auto") {
+            theme = localStorage.theme || "light";
+        }
+
+        root.render(
+            <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
+                <SettingsProvider
+                    tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}
+                    theme={theme}
+                >
+                    <ArkConnectProvider configuration={configuration}>
+                        <App {...props} />
+                    </ArkConnectProvider>
+                </SettingsProvider>
+            </WebhooksProvider>,
+        );
     },
     progress: {
-        color: '#4B5563',
+        color: "#4B5563",
     },
-})
+});

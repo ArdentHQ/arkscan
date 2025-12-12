@@ -25,7 +25,7 @@ window.chartTooltip = (context) => {
             "text-white",
             "leading-3.75",
             "text-left",
-            "p-2"
+            "p-2",
         );
 
         tooltipEl.style.opacity = 1;
@@ -47,19 +47,12 @@ window.chartTooltip = (context) => {
     }
 
     const titleLines = tooltip.title || [];
-    const dataValue =
-        tooltip.dataPoints[0].dataset.data[tooltip.dataPoints[0].dataIndex];
+    const dataValue = tooltip.dataPoints[0].dataset.data[tooltip.dataPoints[0].dataIndex];
 
     const tableHead = document.createElement("thead");
     const heading = document.createElement("span");
     heading.innerHTML = "Price:";
-    heading.classList.add(
-        "mr-1",
-        "font-semibold",
-        "text-theme-secondary-500",
-        "dark:text-theme-dark-200",
-        "text-xs"
-    );
+    heading.classList.add("mr-1", "font-semibold", "text-theme-secondary-500", "dark:text-theme-dark-200", "text-xs");
 
     const tr = document.createElement("tr");
     tr.style.backgroundColor = "inherit";
@@ -87,10 +80,7 @@ window.chartTooltip = (context) => {
         td.style.borderWidth = 0;
         td.classList.add("pt-1.5");
 
-        const date = dayjs(
-            dateString.replace("p.m.", "pm"),
-            "MMM D, YYYY, H:mm:ss a"
-        );
+        const date = dayjs(dateString.replace("p.m.", "pm"), "MMM D, YYYY, H:mm:ss a");
         const text = document.createElement("span");
         text.innerHTML = date.format("D MMM YYYY HH:mm:ss");
         text.classList.add(
@@ -98,7 +88,7 @@ window.chartTooltip = (context) => {
             "text-theme-secondary-500",
             "dark:text-theme-dark-200",
             "text-xs",
-            "whitespace-nowrap"
+            "whitespace-nowrap",
         );
 
         td.appendChild(text);
@@ -122,6 +112,5 @@ window.chartTooltip = (context) => {
     // Display, position, and set styles for font
     tooltipEl.style.opacity = 1;
     tooltipEl.style.left = positionX + tooltip.caretX + "px";
-    tooltipEl.style.top =
-        positionY + tooltip.caretY - tooltipEl.clientHeight - 16 + "px";
+    tooltipEl.style.top = positionY + tooltip.caretY - tooltipEl.clientHeight - 16 + "px";
 };

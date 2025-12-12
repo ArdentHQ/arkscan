@@ -139,6 +139,8 @@ return [
     ],
 
     'filters' => [
+        'select_all' => 'Select All',
+
         'transactions' => [
             'addressing'          => 'Addressing',
             'types'               => 'Types',

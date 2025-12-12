@@ -1,28 +1,20 @@
-export interface IBlock {
-    hash: string;
-    number: number;
-}
+import { IBlock, IWallet } from "./types/generated";
 
-export interface IWallet {
-    address: string;
-    username?: string;
-    hasForged?: boolean;
-    justMissed?: boolean;
-    isResigned?: boolean;
-    isPending?: boolean;
-    keepsMissing?: boolean;
-    missedCount?: number;
-    blocksSinceLastForged?: number;
-    durationSinceLastForged?: number;
-    public_key: string;
-}
+export type NavigationItem = {
+    label: string;
+    route?: string;
+    url?: string;
+    children?: NavigationItem[];
+};
+
+export type Navigation = NavigationItem[];
 
 export interface IValidator {
     wallet: IWallet;
     lastBlock: IBlock | null;
     order: number;
     forgingAt: string | Date;
-    status: 'done' | 'next' | 'pending';
+    status: "done" | "next" | "pending";
     secondsUntilForge: number;
 }
 
@@ -47,22 +39,36 @@ export interface IStatistics {
     };
 }
 
-export interface INetwork {
-    coin: string;
-    name: string;
-    alias: string;
-    api: string;
-    explorerTitle: string;
-    currency: string;
-    currencySymbol: string;
-    confirmations: number;
-    knownWalletsUrl: string;
-    knownWallets: string[];
-    knownContracts: string[];
-    canBeExchanged: boolean;
-    epoch: string;
-    validatorCount: number;
-    blockTime: number;
-    blockReward: number;
-    supply: number;
+export interface IPaginatedResponse<T> {
+    data: T[];
+    current_page: number;
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: Array<{
+        url: string | null;
+        label: string;
+        active: boolean;
+    }>;
+    meta: {
+        pageName: string;
+        urlParams: Record<string, any>;
+    };
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+
+    noResultsMessage: string;
+}
+
+export interface ITabbedData<T> {
+    [tab: string]: T;
+}
+
+export interface IFilters {
+    [key: string]: boolean;
 }

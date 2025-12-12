@@ -7,19 +7,19 @@
 .table-filter-item__checkbox input[type="checkbox"],
 .dropdown__checkbox input[type="checkbox"],
 .export-modal__checkbox input[type="checkbox"] {
-    @apply w-5 h-5 cursor-pointer dark:border-theme-dark-600;
+    @apply h-5 w-5 cursor-pointer dark:border-theme-dark-600;
 }
 
 .table-filter-item__checkbox input[type="checkbox"]:checked,
 .dropdown__checkbox input[type="checkbox"]:checked,
 .export-modal__checkbox input[type="checkbox"]:checked {
-    @apply bg-theme-primary-600 border-theme-primary-600 dark:bg-theme-dark-blue-500 dark:border-theme-dark-blue-500;
+    @apply border-theme-primary-600 bg-theme-primary-600 dark:border-theme-dark-blue-500 dark:bg-theme-dark-blue-500;
 }
 
 .table-filter-item__checkbox:hover input[type="checkbox"]:checked,
 .dropdown__checkbox:hover input[type="checkbox"]:checked,
 .export-modal__checkbox:hover input[type="checkbox"]:checked {
-    @apply border-theme-primary-600 bg-theme-primary-700 dark:bg-theme-dark-blue-600 dark:border-theme-dark-blue-600;
+    @apply border-theme-primary-600 bg-theme-primary-700 dark:border-theme-dark-blue-600 dark:bg-theme-dark-blue-600;
 }
 
 .dropdown__checkbox:hover input[type="checkbox"] {
@@ -30,7 +30,7 @@
 }
 
 .table-filter-item__checkbox > div {
-    @apply flex-1 flex flex-col;
+    @apply flex flex-1 flex-col;
 }
 .table-filter-item__checkbox > div > div {
     @apply flex-1;
@@ -38,29 +38,29 @@
 .table-filter-item__checkbox > div > div > div:nth-child(2),
 .dropdown__checkbox > div > div:nth-child(2),
 .export-modal__checkbox > div > div:nth-child(2) {
-    @apply flex items-center flex-1;
+    @apply flex flex-1 items-center;
 }
 
 .table-filter-item__checkbox label,
 .dropdown__checkbox label,
 .export-modal__checkbox label {
-    @apply cursor-pointer flex-1 leading-5;
+    @apply flex-1 cursor-pointer leading-5;
 }
 
 /* Input and Select field styling overrides */
 
 .form-select,
 .input-text {
-    @apply outline-transparent outline outline-1 hover:outline-theme-primary-400 hover:border-theme-primary-400 focus:border-transparent transition-default;
+    @apply transition-default outline outline-1 outline-transparent hover:border-theme-primary-400 hover:outline-theme-primary-400 focus:border-transparent;
 }
 
 .form-select:focus,
 .input-text:focus {
-    @apply border-theme-primary-600 outline-offset-0 outline outline-1 outline-theme-primary-600;
+    @apply border-theme-primary-600 outline outline-1 outline-offset-0 outline-theme-primary-600;
 }
 
 .input-text--error {
-    @apply border-theme-danger-500 outline-offset-0 outline outline-1 outline-theme-danger-500;
+    @apply border-theme-danger-500 outline outline-1 outline-offset-0 outline-theme-danger-500;
 }
 .input-text::placeholder {
     @apply text-theme-secondary-500;
@@ -74,7 +74,7 @@
 
 .dark :not(.light).form-select,
 .dark :not(.light).input-text {
-    @apply hover:outline-theme-dark-blue-400 hover:border-theme-dark-blue-400;
+    @apply hover:border-theme-dark-blue-400 hover:outline-theme-dark-blue-400;
 }
 
 .dark :not(.light).input-text--error {
@@ -96,15 +96,13 @@
 
 /* Rich Input Select */
 .dropdown-entry:not(.dropdown-entry-selected),
-.rich-select-dropdown-entry:not(.rich-select-dropdown-entry-selected):not(
-        .rich-select-dropdown-entry-hover
-    ) {
+.rich-select-dropdown-entry:not(.rich-select-dropdown-entry-selected):not(.rich-select-dropdown-entry-hover) {
     @apply dark:bg-theme-dark-800;
 }
 
 /* ARKConnect Toast */
 .arkconnect-toast .input-checkbox {
-    @apply dark:border-theme-secondary-600 dim:border-theme-dim-400;
+    @apply dim:border-theme-dim-400 dark:border-theme-secondary-600;
 }
 .arkconnect-toast .input-checkbox:checked {
     @apply border-transparent;

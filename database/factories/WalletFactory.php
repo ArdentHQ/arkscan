@@ -51,19 +51,9 @@ final class WalletFactory extends Factory
         });
     }
 
-    public function standbyValidator(bool $isResigned = true)
+    public function standbyValidator()
     {
-        return $this->state(function () use ($isResigned) {
-            if ($isResigned) {
-                return [
-                    'attributes' => [
-                        'validatorResigned'    => true,
-                        'validatorPublicKey'   => $this->faker->publicKey,
-                        'validatorVoteBalance' => $this->faker->numberBetween(1, 100) * 1e18,
-                    ],
-                ];
-            }
-
+        return $this->state(function () {
             return [
                 'attributes' => [
                     'validatorRank'           => $this->faker->numberBetween(Network::validatorCount() + 1, (Network::validatorCount() * 2) - 1),
@@ -93,6 +83,19 @@ final class WalletFactory extends Factory
                     'validatorForgedRewards'  => $this->faker->numberBetween(1, 100) * 1e18,
                     'validatorProducedBlocks' => $this->faker->numberBetween(1, 1000),
                     'validatorResigned'       => false,
+                ],
+            ];
+        });
+    }
+
+    public function resignedValidator()
+    {
+        return $this->state(function () {
+            return [
+                'attributes' => [
+                    'validatorResigned'    => true,
+                    'validatorPublicKey'   => $this->faker->publicKey,
+                    'validatorVoteBalance' => $this->faker->numberBetween(1, 100) * 1e18,
                 ],
             ];
         });

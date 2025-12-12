@@ -1,0 +1,1002 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Facades\Network;
+use App\Models\Block;
+use App\Models\MultiPayment;
+use App\Models\Scopes\OrderByTimestampScope;
+use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\Transaction;
+use App\Models\Wallet;
+use App\Services\Addresses\Legacy;
+use App\Services\BigNumber;
+use App\Services\Cache\WalletCache;
+use App\Services\NumberFormatter;
+use Facebook\WebDriver\WebDriverBy;
+use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Support\Facades\Cache;
+use Laravel\Dusk\Browser;
+
+beforeEach(function () {
+    $this->withoutExceptionHandling();
+});
+
+afterEach(function () {
+    Cache::tags(['dusk'])->flush();
+});
+
+describe('Overview', function () {
+    it('should display wallet overview information', function ($resolution) {
+        $validator = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        $wallet = Wallet::factory()
+            ->create([
+                'balance'    => 32423 * 1e18,
+                'attributes' => [
+                    'username' => 'joe.blogs',
+                    'vote'     => $validator->address,
+                ],
+            ]);
+
+        (new WalletCache())->setVote($validator->address, $validator);
+
+        $this->browse(function (Browser $browser) use ($wallet, $validator, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7))
+                ->assertSee('joe.blogs')
+                ->assertSee('32,423 DARK')
+                ->assertSee(substr($validator->address, 0, 7));
+        });
+    })->with('resolutions');
+
+    it('should handle balance with many decimal places', function ($resolution) {
+        $wallet = Wallet::factory()
+            ->create([
+                'balance' => 32423.32465432 * 1e18,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            if ($resolution['width'] >= 640) {
+                $browser->assertSee('32,423.32465432 DARK');
+            } else {
+                $browser->assertSee('32,423.32 DARK');
+            }
+        });
+    })->with('resolutions');
+
+    it('should copy address to clipboard', function ($resolution) {
+        $wallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $this->grantPermission($browser, ['clipboardReadWrite', 'clipboardSanitizedWrite']);
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7))
+                ->click('[data-testid="wallet:copy-address"] button')
+                ->waitForText(trans('pages.wallet.address_copied'));
+
+            $browser->assertScript('navigator.clipboard.readText()', $wallet->address);
+        });
+    })->with('resolutions');
+
+    it('should open public key modal & copy it to clipboard', function ($resolution) {
+        $wallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $this->grantPermission($browser, ['clipboardReadWrite', 'clipboardSanitizedWrite']);
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7))
+                ->click('[data-testid="wallet:show-public-key"] > button')
+                ->waitForText(substr($wallet->public_key, 0, 7))
+                ->click('[data-testid="wallet:show-public-key:clipboard"] button')
+                ->waitForText(trans('pages.wallet.copied_public_key'))
+                ->click('button[data-testid="wallet:show-public-key:close"]')
+                ->assertDontSee(substr($wallet->public_key, 0, 7));
+
+            $browser->assertScript('navigator.clipboard.readText()', $wallet->public_key);
+        });
+    })->with('resolutions');
+
+    it('should open legacy address modal & copy it to clipboard', function ($resolution) {
+        $wallet = Wallet::factory()
+            ->create([
+                'attributes' => [
+                    'isLegacy' => true,
+                ],
+            ]);
+
+        $legacyAddress = Legacy::generateAddressFromPublicKey($wallet->public_key);
+
+        $this->browse(function (Browser $browser) use ($wallet, $legacyAddress, $resolution) {
+            $this->grantPermission($browser, ['clipboardReadWrite', 'clipboardSanitizedWrite']);
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7))
+                ->click('[data-testid="wallet:show-legacy-address"] > button')
+                ->waitForText(substr($legacyAddress, 0, 7))
+                ->click('[data-testid="wallet:show-legacy-address:clipboard"] button')
+                ->waitForText(trans('pages.wallet.legacy_address_copied'))
+                ->click('button[data-testid="wallet:show-legacy-address:close"]')
+                ->assertDontSee(substr($legacyAddress, 0, 7));
+
+            $browser->assertScript('navigator.clipboard.readText()', $legacyAddress);
+        });
+    })->with('resolutions');
+
+    it('should open qr code modal & expand amount options', function ($resolution) {
+        $wallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7))
+                ->click('[data-testid="wallet:show-qr-code-modal:button"]')
+                ->waitForText(trans('pages.wallet.qrcode.title'))
+                ->clickAtXPath('//button[.//text()="Specify Amount"]')
+                ->waitForText(trans('pages.wallet.qrcode.description'));
+        });
+    })->with('resolutions');
+
+    it('should show correct validator status', function ($factoryMethod, $status, $resolution) {
+        $wallet = Wallet::factory()
+            ->{$factoryMethod}()
+            ->create();
+
+        $this->browse(function (Browser $browser) use ($wallet, $status, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7))
+                ->assertSee(trans('pages.validators.'.$status));
+        });
+    })->with([
+        'active'   => ['activeValidator', 'active'],
+        'standby'  => ['standbyValidator', 'standby'],
+        'dormant'  => ['dormantValidator', 'dormant'],
+        'resigned' => ['resignedValidator', 'resigned'],
+    ])->with('resolutions');
+
+    it('should track querystring between tabs', function () {
+        $this->wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->count(52)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        Block::factory()
+            ->count(30)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->resize(1280, 800)
+                ->visitRoute('wallet', $this->wallet)
+                ->waitForText('52 result', ignoreCase: true)
+                ->click('[data-testid="wallet:transactions:filter:button"]')
+                ->waitForText('Select All')
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]')
+                ->waitForQueryString('multipayments', 'false')
+                ->pause(200)
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Votes"]')
+                ->waitForQueryString('votes', 'false')
+                ->pause(200)
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Validator"]')
+                ->waitForQueryString('validator', 'false')
+                ->pause(200)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->pause(400)
+                ->waitForText('Page 2 of 3')
+                ->assertQueryStringHas('page', '2')
+                ->pause(100)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->pause(400)
+                ->waitForText('Page 3 of 3')
+                ->assertQueryStringHas('page', '3');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('button#tab-blocks')
+                ->waitForText('30 results', ignoreCase: true)
+                ->assertQueryStringMissing('page')
+                ->assertQueryStringMissing('per-page')
+                ->assertQueryStringMissing('multipayments')
+                ->assertQueryStringMissing('votes')
+                ->assertQueryStringMissing('validator');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('[data-testid="pagination:next-page"] button')
+                ->pause(100)
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringMissing('multipayments')
+                ->assertQueryStringMissing('votes')
+                ->assertQueryStringMissing('validator')
+                ->assertQueryStringMissing('per-page')
+                ->assertQueryStringHas('page', '2');
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('button#tab-transactions')
+                ->pause(100)
+                ->waitForText('52 results', ignoreCase: true)
+                ->assertSee('Page 3 of 3')
+                ->assertQueryStringHas('multipayments', 'false')
+                ->assertQueryStringHas('votes', 'false')
+                ->assertQueryStringHas('validator', 'false')
+                ->assertQueryStringHas('page', '3')
+                ->assertQueryStringMissing('per-page');
+        });
+    });
+
+    it('should track public key modal simpleanalytics event once when opened', function () {
+        $wallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:show-public-key"] > button')
+                ->waitForText(substr($wallet->public_key, 0, 7))
+                ->click('button[data-testid="wallet:show-public-key:close"]')
+                ->assertDontSee(substr($wallet->public_key, 0, 7))
+                ->click('[data-testid="wallet:show-public-key"] > button')
+                ->waitForText(substr($wallet->public_key, 0, 7));
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['wallet_modal_public_key_opened']);
+        });
+    });
+
+    it('should track legacy address modal simpleanalytics event once when opened', function () {
+        $wallet = Wallet::factory()
+            ->create([
+                'attributes' => [
+                    'isLegacy' => true,
+                ],
+            ]);
+
+        $legacyAddress = Legacy::generateAddressFromPublicKey($wallet->public_key);
+
+        $this->browse(function (Browser $browser) use ($wallet, $legacyAddress) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:show-legacy-address"] > button')
+                ->waitForText(substr($legacyAddress, 0, 7))
+                ->click('button[data-testid="wallet:show-legacy-address:close"]')
+                ->assertDontSee(substr($legacyAddress, 0, 7))
+                ->click('[data-testid="wallet:show-legacy-address"] > button')
+                ->waitForText(substr($legacyAddress, 0, 7));
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['wallet_modal_legacy_address_opened']);
+        });
+    });
+
+    it('should track qr code modal simpleanalytics event once when opened', function () {
+        $wallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:show-qr-code-modal:button"]')
+                ->waitForText(trans('pages.wallet.qrcode.title'))
+                ->click('button[data-testid="wallet:show-qr-code-modal:close"]')
+                ->pause(250)
+                ->assertDontSee(trans('pages.wallet.qrcode.title'))
+                ->click('[data-testid="wallet:show-qr-code-modal:button"]')
+                ->waitForText(trans('pages.wallet.qrcode.title'));
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['qr_code_opened']);
+        });
+    });
+});
+
+describe('Transactions Tab', function () {
+    beforeEach(function () {
+        $this->wallet          = Wallet::factory()->create();
+        $this->recipientWallet = Wallet::factory()->create();
+    });
+
+    it('should display transactions', function ($resolution) {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should correctly format amounts', function (float $amount, string $expected, array $resolution) {
+        $transaction = Transaction::factory()
+            ->transfer()
+            ->create([
+                'value'             => BigNumber::new($amount * 1e18),
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transaction, $resolution, $expected) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5));
+
+            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            if ($resolution['width'] <= 640) {
+                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+            }
+
+            $browser->waitForTextIn($selector, $expected);
+        });
+    })
+    ->with([
+        '2'                => [2.34, '2.34'],
+        '3'                => [2.345, '2.345'],
+        '4'                => [2.3456, '2.3456'],
+        '5'                => [2.34567, '2.34567'],
+        '6'                => [2.345678, '2.345678'],
+        '7'                => [2.3456789, '2.3456789'],
+        '8'                => [2.34567891, '2.34567891'],
+        '8 after rounding' => [2.345678915, '2.34567892'],
+    ])
+    ->with('resolutions');
+
+    it('should correctly format multipayment transactions', function ($resolution) {
+        $transaction = Transaction::factory()
+            ->multiPayment(
+                [
+                    $this->wallet->address,
+                    $this->recipientWallet->address,
+                ],
+                [
+                    BigNumber::new(123.5 * 1e18),
+                    BigNumber::new(456 * 1e18),
+                ],
+            )
+            ->create([
+                'from'              => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        MultiPayment::factory()
+            ->count(2)
+            ->state(new Sequence(
+                [
+                    'to'     => $this->wallet->address,
+                    'amount' => BigNumber::new(123.5 * 1e18),
+                ],
+                [
+                    'to'     => $this->recipientWallet->address,
+                    'amount' => BigNumber::new(456 * 1e18),
+                ],
+            ))
+            ->create([
+                'from' => $transaction->from,
+                'hash' => $transaction->hash,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transaction, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5));
+
+            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            if ($resolution['width'] <= 640) {
+                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+            }
+
+            $browser->waitForTextIn($selector, '456')
+                ->mouseOver($selector.' .tooltip-content')
+                ->waitForText(trans('general.fiat_excluding_self', ['amount' => NumberFormatter::currency(123.5, Network::currency())]));
+
+            $browser->visitRoute('wallet', $this->recipientWallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5))
+                ->assertSee('+ 456');
+        });
+    })->with('resolutions');
+
+    it('should go to page 2', function ($resolution) {
+        Transaction::factory()
+            ->transfer()
+            ->count(30)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($resolution) {
+            $sortedTransactions = Transaction::where('from', $this->wallet->address)
+                ->withScope(OrderByTimestampScope::class)
+                ->withScope(OrderByTransactionIndexScope::class);
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('30 results', ignoreCase: true)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringHas('page', '2');
+
+            foreach ($sortedTransactions->skip(25)->take(5)->get() as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should reset to page 1 on per-page change', function ($resolution) {
+        Transaction::factory()
+            ->transfer()
+            ->count(30)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($resolution) {
+            $sortedTransactions = Transaction::where('from', $this->wallet->address)
+                ->withScope(OrderByTimestampScope::class)
+                ->withScope(OrderByTransactionIndexScope::class);
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'page' => 2])
+                ->waitForText('30 results', ignoreCase: true)
+                ->assertSee('Page 2 of 2')
+                ->click('[data-testid="pagination:per-page-dropdown:button"]')
+                ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
+                ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//span[.//text()="10"]')
+                ->waitForText('Page 1 of 3');
+
+            foreach ($sortedTransactions->take(10)->get() as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should export transactions from the modal', function ($resolution) {
+        Transaction::factory()
+            ->transfer()
+            ->count(3)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        // @see tests/routes/dusk.php
+        Cache::tags(['dusk'])->set('dusk.transactions_response', [
+            'data' => [
+                [
+                    'hash'      => 'dusk-transaction-1',
+                    'timestamp' => [
+                        'epoch' => now()->timestamp,
+                    ],
+                    'from'  => $this->wallet->address,
+                    'to'    => $this->recipientWallet->address,
+                    'value' => '125000000',
+                    'fee'   => '1000000',
+                ],
+            ],
+            'meta' => [
+                'count' => 1,
+            ],
+        ]);
+
+        $description    = trans('pages.wallet.export-transactions-modal.description');
+        $successMessage = trans('pages.wallet.export-transactions-modal.success_message', ['count' => 1]);
+
+        $this->browse(function (Browser $browser) use ($resolution, $description, $successMessage) {
+            $downloadName     = sprintf('%s.csv', $this->wallet->address);
+            $downloadSelector = '[data-testid="wallet:transactions-export:download"]';
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('3 results', ignoreCase: true)
+                ->click('[data-testid="wallet:transactions:export-button"]')
+                ->waitForText($description)
+                ->assertDisabled('[data-testid="wallet:transactions-export:submit"]')
+                ->click('[data-testid="wallet:transactions-export:types-trigger"]')
+                ->click('[data-testid="wallet:transactions-export:type-transfers"]')
+                ->click('[data-testid="wallet:transactions-export:types-trigger"]')
+                ->click('[data-testid="wallet:transactions-export:columns-trigger"]')
+                ->click('[data-testid="wallet:transactions-export:column-id"]')
+                ->click('[data-testid="wallet:transactions-export:columns-trigger"]')
+                ->assertEnabled('[data-testid="wallet:transactions-export:submit"]')
+                ->click('[data-testid="wallet:transactions-export:submit"]')
+                ->waitForText($successMessage)
+                ->assertVisible($downloadSelector)
+                ->assertAttribute($downloadSelector, 'download', $downloadName);
+
+            expect($browser->attribute($downloadSelector, 'href'))->toStartWith('data:text/csv');
+        });
+    })->with('resolutions');
+
+    it('should track export modal simpleanalytics event once when opened', function () {
+        Transaction::factory()
+            ->transfer()
+            ->count(3)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $description = trans('pages.wallet.export-transactions-modal.description');
+
+        $this->browse(function (Browser $browser) use ($description) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('3 results', ignoreCase: true);
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:transactions:export-button"]')
+                ->waitForText($description)
+                ->clickAtXPath('//button[.//text()="Cancel"]')
+                ->assertDontSee($description)
+                ->click('[data-testid="wallet:transactions:export-button"]')
+                ->waitForText($description);
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['wallet_modal_export_transactions_opened']);
+        });
+    });
+
+    it('should open the filter', function ($resolution) {
+        Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('[data-testid="wallet:transactions:filter:button"]')
+                ->waitForText('Select All');
+
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Select All"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Outgoing"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Incoming"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Transfers"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Votes"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Validator"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Username"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Contract Deployment"]')))->toHaveCount(1);
+            expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Others"]')))->toHaveCount(1);
+        });
+    })->with('resolutions');
+
+    it('should track querystring for filters', function () {
+        Transaction::factory()
+            ->transfer()
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->recipientWallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->resize(1280, 800)
+                ->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->click('[data-testid="wallet:transactions:filter:button"]')
+                ->waitForText('Select All');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Transfers"]'))[0]->click();
+
+            $browser->waitForQueryString('transfers', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]'))[0]->click();
+
+            $browser->waitForQueryString('multipayments', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Votes"]'))[0]->click();
+
+            $browser->waitForQueryString('votes', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Validator"]'))[0]->click();
+
+            $browser->waitForQueryString('validator', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Username"]'))[0]->click();
+
+            $browser->waitForQueryString('username', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Contract Deployment"]'))[0]->click();
+
+            $browser->waitForQueryString('contract_deployment', 'false');
+
+            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Others"]'))[0]->click();
+
+            $browser->waitForQueryString('others', 'false');
+        });
+    });
+});
+
+describe('Blocks Tab', function () {
+    beforeEach(function () {
+        $this->wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        $attributes             = $this->wallet->getAttribute('attributes') ?? [];
+        $attributes['username'] = 'dusk-validator';
+        $this->wallet->setAttribute('attributes', $attributes);
+        $this->wallet->save();
+    });
+
+    it('should not be visible if not a validator', function ($resolution) {
+        $nonValidatorWallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($nonValidatorWallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $nonValidatorWallet)
+                ->waitForText(substr($nonValidatorWallet->address, 0, 7))
+                ->assertMissing('button#tab-blocks');
+        });
+    })->with('resolutions');
+
+    it('should navigate to tab and back', function ($resolution) {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $blocks = Block::factory()
+            ->count(6)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $blocks, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('button#tab-blocks')
+                ->waitForText('6 results', ignoreCase: true);
+
+            foreach ($blocks as $block) {
+                $browser->assertSee(number_format($block->number->toNumber()));
+            }
+
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should show tab on page load from query string', function ($resolution) {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $blocks = Block::factory()
+            ->count(6)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $blocks, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'tab' => 'blocks'])
+                ->waitForText('6 results', ignoreCase: true);
+
+            foreach ($blocks as $block) {
+                $browser->assertSee(number_format($block->number->toNumber()));
+            }
+
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should export blocks from the modal', function ($resolution) {
+        Transaction::factory()
+            ->transfer()
+            ->count(2)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        Block::factory()
+            ->count(3)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        // @see tests/routes/dusk.php
+        Cache::tags(['dusk'])->set('dusk.blocks_response', [
+            'data' => [
+                [
+                    'hash'               => 'dusk-block-1',
+                    'timestamp'          => (string) (now()->timestamp * 1000),
+                    'transactionsCount'  => 12,
+                    'amount'             => '6400000000',
+                    'fee'                => '50000000',
+                    'reward'             => '200000000',
+                    'number'             => 123456789,
+                ],
+            ],
+            'meta' => [
+                'count' => 1,
+            ],
+        ]);
+
+        $description    = trans('pages.wallet.export-blocks-modal.description');
+        $successMessage = 'A total of 1 blocks have been retrieved and are ready for download.';
+
+        $this->browse(function (Browser $browser) use ($resolution, $description, $successMessage) {
+            $downloadName     = 'dusk-validator.csv';
+            $downloadSelector = '[data-testid="wallet:blocks-export:download"]';
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('2 results', ignoreCase: true)
+                ->click('button#tab-blocks')
+                ->waitForText('3 results', ignoreCase: true)
+                ->click('[data-testid="wallet:blocks:export-button"]')
+                ->waitForText($description)
+                ->assertDisabled('[data-testid="wallet:blocks-export:submit"]')
+                ->click('[data-testid="wallet:blocks-export:columns-trigger"]')
+                ->click('[data-testid="wallet:blocks-export:column-id"]')
+                ->click('[data-testid="wallet:blocks-export:columns-trigger"]')
+                ->assertEnabled('[data-testid="wallet:blocks-export:submit"]')
+                ->click('[data-testid="wallet:blocks-export:submit"]')
+                ->waitForText($successMessage)
+                ->assertVisible($downloadSelector)
+                ->assertAttribute($downloadSelector, 'download', $downloadName);
+
+            expect($browser->attribute($downloadSelector, 'href'))->toStartWith('data:text/csv');
+        });
+    })->with('resolutions');
+
+    it('should track export modal simpleanalytics event once when opened', function () {
+        Transaction::factory()
+            ->transfer()
+            ->count(2)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        Block::factory()
+            ->count(3)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        $description = trans('pages.wallet.export-blocks-modal.description');
+
+        $this->browse(function (Browser $browser) use ($description) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('2 results', ignoreCase: true)
+                ->click('button#tab-blocks')
+                ->waitForText('3 results', ignoreCase: true);
+
+            $browser->script('window.sa_event = function(event) { window._sa_events = window._sa_events || []; window._sa_events.push(event); };');
+
+            $browser->click('[data-testid="wallet:blocks:export-button"]')
+                ->waitForText($description)
+                ->clickAtXPath('//button[.//text()="Cancel"]')
+                ->assertDontSee($description)
+                ->click('[data-testid="wallet:blocks:export-button"]')
+                ->waitForText($description);
+
+            $events = $browser->script('return window._sa_events;');
+
+            expect($events[0])->toEqual(['wallet_modal_export_blocks_opened']);
+        });
+    });
+});
+
+describe('Voters Tab', function () {
+    beforeEach(function () {
+        $this->wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+    });
+
+    it('should not be visible if not a validator', function ($resolution) {
+        $nonValidatorWallet = Wallet::factory()->create();
+
+        $this->browse(function (Browser $browser) use ($nonValidatorWallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $nonValidatorWallet)
+                ->waitForText(substr($nonValidatorWallet->address, 0, 7))
+                ->assertMissing('button#tab-voters');
+        });
+    })->with('resolutions');
+
+    it('should navigate to tab and back', function ($resolution) {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $voters = Wallet::factory()
+            ->count(10)
+            ->create([
+                'attributes' => [
+                    'vote' => $this->wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $voters, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('button#tab-voters')
+                ->waitForText('10 results', ignoreCase: true);
+
+            foreach ($voters as $voter) {
+                if ($resolution['width'] <= 640) {
+                    $browser->assertSee(substr($voter->address, 0, 5).'…'.substr($voter->address, -5));
+                } else {
+                    $browser->assertSee(substr($voter->address, 0, 7));
+                }
+            }
+
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should show tab on page load from query string', function ($resolution) {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $voters = Wallet::factory()
+            ->count(10)
+            ->create([
+                'attributes' => [
+                    'vote' => $this->wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $voters, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'tab' => 'voters'])
+                ->waitForText('10 results', ignoreCase: true);
+
+            foreach ($voters as $voter) {
+                if ($resolution['width'] <= 640) {
+                    $browser->assertSee(substr($voter->address, 0, 5).'…'.substr($voter->address, -5));
+                } else {
+                    $browser->assertSee(substr($voter->address, 0, 7));
+                }
+            }
+
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    })->with('resolutions');
+});
+
+dataset('resolutions', [
+    'desktop' => [['width' => 1280, 'height' => 1024]],
+    'lg'      => [['width' => 1024, 'height' => 768]],
+    'md-lg'   => [['width' => 960, 'height' => 667]],
+    'md'      => [['width' => 768, 'height' => 1024]],
+    'sm'      => [['width' => 640, 'height' => 960]],
+    'xs'      => [['width' => 370, 'height' => 844]],
+]);

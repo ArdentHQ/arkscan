@@ -187,6 +187,7 @@ return [
         'value'                  => 'Value',
         'copied_public_key'      => 'Public Key Copied',
         'address_copied'         => 'Address Copied',
+        'legacy_address_copied'  => 'Legacy Address Copied',
 
         'qrcode'                => [
             'title'                             => 'Send Funds',
@@ -243,6 +244,8 @@ return [
             'types_placeholder'   => 'Select Types',
             'columns_placeholder' => 'Select Columns',
             'success_toast'       => '<span class="font-semibold" style="word-break: break-word;">:address.csv</span> has been saved successfully',
+            'success_message'     => 'A total of :count transactions have been retrieved and are ready for download.',
+            'error'               => 'There was a problem fetching transactions.',
 
             'types_x_selected' => [
                 'singular' => 'Type Selected',
@@ -352,6 +355,7 @@ return [
                 'id'                   => 'Block ID',
                 'timestamp'            => 'Block Date',
                 'numberOfTransactions' => 'Transactions',
+                'volume'               => 'Volume [:networkCurrency]',
                 'total'                => 'Total Rewards [:networkCurrency]',
                 'totalFiat'            => 'Total Rewards [:userCurrency]',
                 'rate'                 => 'Rate [:userCurrency]',

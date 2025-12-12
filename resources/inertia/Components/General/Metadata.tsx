@@ -1,7 +1,15 @@
 import { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 
-export function buildMetadataTags({ title, description, image }: { title: string; description: string; image?: string }): ReactElement[] {
+export function buildMetadataTags({
+    title,
+    description,
+    image,
+}: {
+    title: string;
+    description: string;
+    image?: string;
+}): ReactElement[] {
     const tags: ReactElement[] = [
         <title key="title">{title}</title>,
 

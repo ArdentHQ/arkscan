@@ -45,39 +45,22 @@ const Wallet = (network, xData = {}) => {
                 return this.handleExtensionLoadEvent();
             }
 
-            window.addEventListener(
-                "ARKConnectLoaded",
-                this.handleExtensionLoadEvent.bind(this)
-            );
+            window.addEventListener("ARKConnectLoaded", this.handleExtensionLoadEvent.bind(this));
         },
 
         async handleExtensionLoadEvent() {
-            this.extension().on(
-                "addressChanged",
-                this.handleAddressChangedEvent.bind(this)
-            );
+            this.extension().on("addressChanged", this.handleAddressChangedEvent.bind(this));
 
-            this.extension().on(
-                "connected",
-                this.handleConnectionEvent.bind(this)
-            );
+            this.extension().on("connected", this.handleConnectionEvent.bind(this));
 
-            this.extension().on(
-                "disconnected",
-                this.handleConnectionEvent.bind(this)
-            );
+            this.extension().on("disconnected", this.handleConnectionEvent.bind(this));
 
-            this.extension().on(
-                "lockToggled",
-                this.handleLockToggledEvent.bind(this)
-            );
+            this.extension().on("lockToggled", this.handleLockToggledEvent.bind(this));
 
             this.hasExtension = window.arkconnect !== undefined;
 
             try {
-                await this.setConnectedStatus(
-                    await this.extension().isConnected()
-                );
+                await this.setConnectedStatus(await this.extension().isConnected());
             } catch (e) {
                 //
             }
@@ -169,12 +152,8 @@ const Wallet = (network, xData = {}) => {
         async updateCurrentNetwork() {
             const extensionNetwork = await this.extension().getNetwork();
 
-            this.isOnSameNetwork =
-                extensionNetwork.toLowerCase() ===
-                this.network.alias.toLowerCase();
-            this.isWrongNetworkMessageIgnored = this.getIgnoredToastAddresses(
-                "network"
-            ).includes(this.address);
+            this.isOnSameNetwork = extensionNetwork.toLowerCase() === this.network.alias.toLowerCase();
+            this.isWrongNetworkMessageIgnored = this.getIgnoredToastAddresses("network").includes(this.address);
         },
 
         async updateAddress() {
@@ -182,10 +161,7 @@ const Wallet = (network, xData = {}) => {
         },
 
         async updateVote() {
-            const publicKey = await WalletsApi.getVote(
-                network.api,
-                await this.address
-            );
+            const publicKey = await WalletsApi.getVote(network.api, await this.address);
 
             if (!publicKey) {
                 this.votingFor = null;
@@ -202,25 +178,18 @@ const Wallet = (network, xData = {}) => {
             }
 
             this.votingFor = await WalletsApi.wallet(network.api, publicKey);
-            this.isVotedValidatorOnStandby =
-                this.votingFor.attributes?.delegate?.rank >
-                this.network.validatorCount;
-            this.isVotedValidatorResigned =
-                this.votingFor.attributes?.delegate?.resigned === true;
-            this.isVotedValidatorResignedIgnored =
-                this.getIgnoredToastAddresses("resigned").includes(
-                    this.votingFor.address
-                );
-            this.isVotedValidatorOnStandbyIgnored =
-                this.getIgnoredToastAddresses("standby").includes(
-                    this.votingFor.address
-                );
+            this.isVotedValidatorOnStandby = this.votingFor.attributes?.delegate?.rank > this.network.validatorCount;
+            this.isVotedValidatorResigned = this.votingFor.attributes?.delegate?.resigned === true;
+            this.isVotedValidatorResignedIgnored = this.getIgnoredToastAddresses("resigned").includes(
+                this.votingFor.address,
+            );
+            this.isVotedValidatorOnStandbyIgnored = this.getIgnoredToastAddresses("standby").includes(
+                this.votingFor.address,
+            );
         },
 
         getIgnoredToastAddresses(type) {
-            let ignoredAddresses = localStorage.getItem(
-                `ignoredToastAddresses:${type}`
-            );
+            let ignoredAddresses = localStorage.getItem(`ignoredToastAddresses:${type}`);
             if (ignoredAddresses) {
                 return JSON.parse(ignoredAddresses);
             }
@@ -240,10 +209,7 @@ const Wallet = (network, xData = {}) => {
 
             ignoredAddresses.push(address);
 
-            localStorage.setItem(
-                `ignoredToastAddresses:${type}`,
-                JSON.stringify(ignoredAddresses)
-            );
+            localStorage.setItem(`ignoredToastAddresses:${type}`, JSON.stringify(ignoredAddresses));
         },
 
         ignoreWrongNetworkAddress(address) {
@@ -365,19 +331,13 @@ const Wallet = (network, xData = {}) => {
 
                     await this.updateVote();
 
-                    if (
-                        loopCounter > MAX_VOTE_CHECK_ATTEMPTS ||
-                        this.votingForAddress !== votingForAddress
-                    ) {
+                    if (loopCounter > MAX_VOTE_CHECK_ATTEMPTS || this.votingForAddress !== votingForAddress) {
                         clearTimeout(updateVoteTimer);
 
                         return;
                     }
 
-                    updateVoteTimer = setTimeout(
-                        updateVoteLoop,
-                        VOTE_CHECK_TIMEOUT
-                    );
+                    updateVoteTimer = setTimeout(updateVoteLoop, VOTE_CHECK_TIMEOUT);
                 };
 
                 updateVoteLoop();
@@ -397,9 +357,7 @@ const Wallet = (network, xData = {}) => {
             };
 
             if (transactionData.amount === NaN) {
-                throw new Error(
-                    `There was a problem determining Transaction Amount "${amount}"`
-                );
+                throw new Error(`There was a problem determining Transaction Amount "${amount}"`);
             }
 
             try {
@@ -435,12 +393,8 @@ const Wallet = (network, xData = {}) => {
                 return true;
             }
 
-            const isCompatible = /chrome|firefox/.test(
-                navigator.userAgent.toLowerCase()
-            );
-            const isMobile = /android|iphone|ipad|ipod/.test(
-                navigator.userAgent.toLowerCase()
-            );
+            const isCompatible = /chrome|firefox/.test(navigator.userAgent.toLowerCase());
+            const isMobile = /android|iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
 
             return isCompatible && !isMobile;
         },

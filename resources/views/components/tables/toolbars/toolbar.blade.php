@@ -27,11 +27,11 @@
 ])>
     <div class="font-semibold dark:text-theme-dark-200">
         <span class="hidden sm:inline">
-            @lang('pagination.showing_x_results', ['count' => number_format($resultCount, 0)])
+            @lang('pagination.showing_x_results', ['results' => number_format($resultCount, 0)])
         </span>
 
         <span class="sm:hidden">
-            @lang('pagination.x_results', ['count' => number_format($resultCount, 0)])
+            @lang('pagination.x_results', ['results' => number_format($resultCount, 0)])
         </span>
 
         @if ($resultSuffix)
