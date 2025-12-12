@@ -455,3 +455,45 @@ it('should cache newest address only since last run', function () {
 
     expect($cache->getNewestAddress()['address'])->toBe($wallet5->address);
 });
+
+it('should cache wallet with most transactions', function () {
+    $walletWithMostTransactions = Wallet::factory()->create();
+
+    $otherWallet = Wallet::factory()->create();
+
+    Transaction::factory()
+        ->transfer()
+        ->count(3)
+        ->create([
+            'sender_public_key' => $walletWithMostTransactions->public_key,
+        ]);
+
+    Transaction::factory()
+        ->transfer()
+        ->count(9)
+        ->create([
+            'to' => $otherWallet->address,
+        ]);
+
+    Transaction::factory()
+        ->transfer()
+        ->count(2)
+        ->create([
+            'to' => $walletWithMostTransactions->address,
+        ]);
+
+    Transaction::factory()
+        ->multiPayment(
+            [$walletWithMostTransactions->address],
+            [BigNumber::new(10 * 1e18)],
+        )
+        ->count(5)
+        ->create();
+
+    $this->artisan('explorer:cache-address-statistics');
+
+    expect((new StatisticsCache())->getMostTransactions())->toBe([
+        'address' => $walletWithMostTransactions->address,
+        'value'   => 10,
+    ]);
+});
