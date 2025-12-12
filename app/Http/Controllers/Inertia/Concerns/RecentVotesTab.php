@@ -75,13 +75,10 @@ trait RecentVotesTab
     private function getRecentVotesQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;
-        // @TODO: add coverage once table sorting is implemented https://app.clickup.com/t/86dypp5jv
-        // @codeCoverageIgnoreStart
         if ($this->sortDirection('recent-votes') === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
-        // @codeCoverageIgnoreEnd
-
+        
         return Transaction::query()
             ->with('votedFor')
             ->where('status', true)

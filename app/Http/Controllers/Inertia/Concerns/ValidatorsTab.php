@@ -75,12 +75,9 @@ trait ValidatorsTab
     private function getValidatorsQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;
-        // @TODO: add coverage once table sorting is implemented https://app.clickup.com/t/86dypp5jv
-        // @codeCoverageIgnoreStart
-        if ($this->sortDirection('validators') === SortDirection::DESC) {
+        if ($this->getSortDirection('validators') === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;
         }
-        // @codeCoverageIgnoreEnd
 
         return Wallet::query()
             ->whereNotNull('attributes->validatorPublicKey')
