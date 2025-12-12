@@ -61,6 +61,23 @@ function createValidatorWallet(string $address, int $rank): Wallet
     ]);
 }
 
+function createValidatorWalletWithAttributes(string $address, int $rank, array $attributeOverrides = []): Wallet
+{
+    return Wallet::factory()->create([
+        'address'    => $address,
+        'public_key' => 'public-key-'.$address,
+        'attributes' => array_merge([
+            'username'                => $address,
+            'validatorPublicKey'      => 'validator-public-'.$address,
+            'validatorRank'           => $rank,
+            'validatorResigned'       => false,
+            'validatorVoteBalance'    => 10 * 1e8,
+            'validatorProducedBlocks' => 100,
+            'validatorMissedBlocks'   => 0,
+        ], $attributeOverrides),
+    ]);
+}
+
 it('should render the page without any errors', function () {
     performValidatorsRequest($this);
 });
@@ -108,6 +125,133 @@ it('should provide recent votes data', function () {
                 ->where('recentVotes.data.0.votedFor', $walletTo->address)
                 ->where('recentVotes.data.0.sender.address', $walletFrom->address);
         },
+        reloadProps: 'recentVotes',
+    );
+});
+
+it('should return no results message when there are no recent votes', function () {
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) {
+            $reload->where('recentVotes.data', [])
+                ->where('recentVotes.total', 0)
+                ->where('recentVotes.noResultsMessage', trans('tables.recent-votes.no_results.no_results'));
+        },
+        reloadProps: 'recentVotes',
+    );
+});
+
+it('should return no filters message when recent votes filters are disabled', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse('2025-09-11')->format('Y-m-d') => 2.0,
+    ]));
+
+    $walletFrom = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'recent-voter',
+            'isLegacy' => true,
+        ],
+    ]);
+
+    $walletTo = Wallet::factory()->activeValidator()->create([
+        'attributes' => [
+            'username' => 'recent-vote-target',
+        ],
+    ]);
+
+    Transaction::factory()
+        ->vote($walletTo->address)
+        ->create([
+            'sender_public_key' => $walletFrom->public_key,
+            'from'              => $walletFrom->address,
+            'timestamp'         => Carbon::now()->unix() * 1000,
+            'status'            => true,
+        ]);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) {
+            $reload->where('recentVotes.data', [])
+                ->where('recentVotes.total', 0)
+                ->where('recentVotes.noResultsMessage', trans('tables.recent-votes.no_results.no_filters'));
+        },
+        queryString: [
+            'vote'   => 0,
+            'unvote' => 0,
+        ],
+        reloadProps: 'recentVotes',
+    );
+});
+
+it('should filter recent votes by vote and unvote flags', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse('2025-09-11')->format('Y-m-d') => 2.0,
+    ]));
+
+    $walletFrom = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'vote-filter-sender',
+            'isLegacy' => true,
+        ],
+    ]);
+
+    $walletTo = Wallet::factory()->activeValidator()->create([
+        'attributes' => [
+            'username' => 'vote-filter-target',
+        ],
+    ]);
+
+    $vote = Transaction::factory()
+        ->vote($walletTo->address)
+        ->create([
+            'sender_public_key' => $walletFrom->public_key,
+            'from'              => $walletFrom->address,
+            'timestamp'         => Carbon::now()->unix() * 1000,
+            'status'            => true,
+        ]);
+
+    $unvote = Transaction::factory()
+        ->unvote()
+        ->create([
+            'sender_public_key' => $walletFrom->public_key,
+            'from'              => $walletFrom->address,
+            'timestamp'         => Carbon::now()->unix() * 1000,
+            'status'            => true,
+        ]);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($vote) {
+            $reload->has('recentVotes.data', 1)
+                ->where('recentVotes.total', 1)
+                ->where('recentVotes.data.0.hash', $vote->hash);
+        },
+        queryString: [
+            'vote'   => 1,
+            'unvote' => 0,
+        ],
+        reloadProps: 'recentVotes',
+    );
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($unvote) {
+            $reload->has('recentVotes.data', 1)
+                ->where('recentVotes.total', 1)
+                ->where('recentVotes.data.0.hash', $unvote->hash);
+        },
+        queryString: [
+            'vote'   => 0,
+            'unvote' => 1,
+        ],
         reloadProps: 'recentVotes',
     );
 });
@@ -274,6 +418,223 @@ it('should provide validators data with pagination meta', function () {
                 ->where('validators.data.1.voterCount', 2);
         },
         queryString: [],
+        reloadProps: 'validators',
+    );
+});
+
+it('should return no filters message when all validator filters are disabled', function () {
+    createValidatorWallet('validator-1', 1);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) {
+            $reload->where('validators.data', [])
+                ->where('validators.total', 0)
+                ->where('validators.noResultsMessage', trans('tables.validators.no_results.no_filters'));
+        },
+        queryString: [
+            'active'   => 0,
+            'standby'  => 0,
+            'dormant'  => 0,
+            'resigned' => 0,
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should filter validators by standby flag', function () {
+    $active = createValidatorWallet('validator-active', 1);
+
+    $standbyRank = Network::validatorCount() + 1;
+    $standby     = createValidatorWallet('validator-standby', $standbyRank);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($standby, $active) {
+            $reload->has('validators.data', 1)
+                ->where('validators.total', 1)
+                ->where('validators.data.0.address', $standby->address);
+        },
+        queryString: [
+            'active'   => 0,
+            'standby'  => 1,
+            'dormant'  => 0,
+            'resigned' => 0,
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should filter validators by dormant flag', function () {
+    createValidatorWallet('validator-active', 1);
+
+    $dormant = createValidatorWalletWithAttributes('validator-dormant', Network::validatorCount() + 5, [
+        'validatorPublicKey' => '',
+    ]);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($dormant) {
+            $reload->has('validators.data', 1)
+                ->where('validators.total', 1)
+                ->where('validators.data.0.address', $dormant->address);
+        },
+        queryString: [
+            'active'   => 0,
+            'standby'  => 0,
+            'dormant'  => 1,
+            'resigned' => 0,
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should filter validators by resigned flag', function () {
+    createValidatorWallet('validator-active', 1);
+
+    $resigned = createValidatorWalletWithAttributes('validator-resigned', 10, [
+        'validatorResigned' => true,
+    ]);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($resigned) {
+            $reload->has('validators.data', 1)
+                ->where('validators.total', 1)
+                ->where('validators.data.0.address', $resigned->address);
+        },
+        queryString: [
+            'active'   => 0,
+            'standby'  => 0,
+            'dormant'  => 0,
+            'resigned' => 1,
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should support sorting validators by rank in descending order', function () {
+    $first  = createValidatorWallet('validator-1', 1);
+    $second = createValidatorWallet('validator-2', 2);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($second, $first) {
+            $reload->has('validators.data', 2)
+                ->where('validators.data.0.address', $second->address)
+                ->where('validators.data.1.address', $first->address);
+        },
+        queryString: [
+            'sort'           => 'rank',
+            'sort-direction' => 'desc',
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should support sorting validators by name', function () {
+    $a = createValidatorWalletWithAttributes('validator-b', 1, ['username' => 'b']);
+    $b = createValidatorWalletWithAttributes('validator-a', 2, ['username' => 'a']);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($b, $a) {
+            $reload->has('validators.data', 2)
+                ->where('validators.data.0.address', $b->address)
+                ->where('validators.data.1.address', $a->address);
+        },
+        queryString: [
+            'sort' => 'name',
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should support sorting validators by votes and percentage votes', function () {
+    $low  = createValidatorWalletWithAttributes('validator-low', 1, ['validatorVoteBalance' => 5 * 1e8]);
+    $high = createValidatorWalletWithAttributes('validator-high', 2, ['validatorVoteBalance' => 50 * 1e8]);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($high, $low) {
+            $reload->has('validators.data', 2)
+                ->where('validators.data.0.address', $high->address)
+                ->where('validators.data.1.address', $low->address);
+        },
+        queryString: [
+            'sort'           => 'votes',
+            'sort-direction' => 'desc',
+        ],
+        reloadProps: 'validators',
+    );
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($high, $low) {
+            $reload->has('validators.data', 2)
+                ->where('validators.data.0.address', $high->address)
+                ->where('validators.data.1.address', $low->address);
+        },
+        queryString: [
+            'sort'           => 'percentage_votes',
+            'sort-direction' => 'desc',
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should support sorting validators by number of voters', function () {
+    $low  = createValidatorWallet('validator-low', 1);
+    $high = createValidatorWallet('validator-high', 2);
+
+    $validatorCache = new ValidatorCache();
+    $validatorCache->setAllVoterCounts([
+        $low->address  => 1,
+        $high->address => 10,
+    ]);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($high, $low) {
+            $reload->has('validators.data', 2)
+                ->where('validators.data.0.address', $high->address)
+                ->where('validators.data.1.address', $low->address);
+        },
+        queryString: [
+            'sort'           => 'no_of_voters',
+            'sort-direction' => 'desc',
+        ],
+        reloadProps: 'validators',
+    );
+});
+
+it('should support sorting validators by missed blocks', function () {
+    $low  = createValidatorWallet('validator-low', 1);
+    $high = createValidatorWallet('validator-high', 2);
+
+    ForgingStats::factory()->create([
+        'address' => $high->address,
+    ]);
+
+    ForgingStats::factory()->create([
+        'address' => $high->address,
+    ]);
+
+    ForgingStats::factory()->create([
+        'address' => $low->address,
+    ]);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($high, $low) {
+            $reload->has('validators.data', 2)
+                ->where('validators.data.0.address', $high->address)
+                ->where('validators.data.1.address', $low->address);
+        },
+        queryString: [
+            'sort'           => 'missed_blocks',
+            'sort-direction' => 'desc',
+        ],
         reloadProps: 'validators',
     );
 });
