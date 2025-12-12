@@ -41,7 +41,7 @@ export interface ValidatorsProps {
             dormant: boolean;
             resigned: boolean;
         };
-        ['recent-votes']: {
+        ["recent-votes"]: {
             vote: boolean;
             unvote: boolean;
         };
