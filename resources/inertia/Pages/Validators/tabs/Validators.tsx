@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 export default function ValidatorsTab({ validators, filters }: Pick<ValidatorsProps, "validators" | "filters">) {
     const { t } = useTranslation();
 
-    filters;
-
     return (
         <FilterProvider
             initialOptions={[
@@ -33,7 +31,6 @@ export default function ValidatorsTab({ validators, filters }: Pick<ValidatorsPr
                     selected: filters.validators.resigned,
                 },
             ]}
-            onChange={() => {}}
         >
             <ValidatorsTableWrapper
                 validators={validators}
