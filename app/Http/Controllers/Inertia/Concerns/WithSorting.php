@@ -26,6 +26,8 @@ trait WithSorting
     {
         $constantName = Str::of($name)->replace('-', '_')->upper().'_INITIAL_SORT_KEY';
 
+        $defaultSortKey = null;
+
         if (defined(static::class.'::'.$constantName)) {
             $defaultSortKey = constant(static::class.'::'.$constantName);
         }

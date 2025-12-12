@@ -36,7 +36,6 @@ trait RecentVotesTab
         return $count === 0
             ? (string) trans('tables.recent-votes.no_results.no_results')
             : null;
-        
     }
 
     public function getRecentVotes(): LengthAwarePaginator
