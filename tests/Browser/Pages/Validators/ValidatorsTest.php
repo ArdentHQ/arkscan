@@ -39,9 +39,9 @@ function seedMissedBlocksSortingData(int $count, bool $withCachedVoters): array
     for ($i = 0; $i < $count; $i++) {
         $wallet = Wallet::factory()->activeValidator()->create();
 
-        $attributes                        = $wallet->attributes;
+        $attributes                         = $wallet->attributes;
         $attributes['validatorVoteBalance'] = (string) BigNumber::new($voteWeights[$i])->multipliedBy('1000000000000000000');
-        $wallet->attributes                = $attributes;
+        $wallet->attributes                 = $attributes;
         $wallet->save();
 
         ForgingStats::factory()->create([
