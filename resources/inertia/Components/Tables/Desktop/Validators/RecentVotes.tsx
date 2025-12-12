@@ -1,6 +1,6 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { ITransaction } from "@/types/generated";
+import { ITransaction, SortDirection } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { Table } from "../Table";
 import TableHeader from "../TableHeader";
@@ -13,6 +13,7 @@ import Addressing from "@/Components/Transaction/Addressing";
 import { Link } from "@inertiajs/react";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import Method from "@/Components/Transaction/Method";
+import TableSortingProvider from "@/Providers/TableSorting/TableSortingProvider";
 
 export function Row({ row: vote }: { row: ITransaction }) {
     const votedFor = vote.votedFor;
@@ -66,15 +67,15 @@ export function RecentVotesTable({
             headerActions={<RecentVotesHeaderActions />}
             noResultsMessage={recentVotes.noResultsMessage}
             columns={
-                <>
+                <TableSortingProvider initialSortBy="age" initialSortDirection={SortDirection.DESC}>
                     <TableHeader width="200">{t("tables.recent-votes.id")}</TableHeader>
-                    <TableHeader breakpoint="xl" responsive>
+                    <TableHeader sortId="age" breakpoint="xl" responsive>
                         {t("tables.recent-votes.age")}
                     </TableHeader>
-                    <TableHeader>{t("tables.recent-votes.addressing")}</TableHeader>
-                    <TableHeader>{t("tables.recent-votes.type")}</TableHeader>
-                    <TableHeader>{t("tables.recent-votes.validator")}</TableHeader>
-                </>
+                    <TableHeader sortId="address">{t("tables.recent-votes.addressing")}</TableHeader>
+                    <TableHeader sortId="type">{t("tables.recent-votes.type")}</TableHeader>
+                    <TableHeader sortId="name">{t("tables.recent-votes.validator")}</TableHeader>
+                </TableSortingProvider>
             }
         />
     );
