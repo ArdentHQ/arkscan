@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\ForgingStats as ForgingStatsDTO;
 use App\Enums\SortDirection;
+use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\ForgingStats;
 use App\Services\Cache\NetworkCache;
@@ -17,7 +18,21 @@ use Inertia\Response;
 
 final class ValidatorsController
 {
+    use ValidatorsTab;
     use WithPagination;
+
+    public const FILTERS = [
+        'validators' => [
+            'active'   => true,
+            'standby'  => true,
+            'dormant'  => false,
+            'resigned' => false,
+        ],
+        'recent-votes' => [
+            'vote'   => true,
+            'unvote' => true,
+        ],
+    ];
 
     public function __invoke(): Response
     {
@@ -28,6 +43,17 @@ final class ValidatorsController
         $totalVoted     = $validatorCache->getTotalBalanceVoted();
 
         return Inertia::render('Validators/Validators', [
+            'filters'      => self::FILTERS,
+            'validators'   => Inertia::optional(function () {
+                $paginator = $this->getValidators();
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getValidatorsNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
             'statistics' => [
                 'voterCount'       => $voterCount,
                 'totalVoted'       => $totalVoted,
@@ -57,6 +83,22 @@ final class ValidatorsController
             $stats->count(),
             $stats->unique('address')->count(),
         ];
+    }
+
+    // TODO: Re-implement sorting once the UI supports it - https://app.clickup.com/t/86dypp5jv
+    //       Look at \App\Http\Livewire\Validators\Concerns\MissedBlocksTab for reference.
+    //       Also check `getMissedBlocks` below
+    private function sortDirection(string $name = 'default'): SortDirection
+    {
+        return SortDirection::ASC;
+    }
+
+    // TODO: Re-implement sorting once the UI supports it - https://app.clickup.com/t/86dypp5jv
+    //       Look at \App\Http\Livewire\Validators\Concerns\MissedBlocksTab for reference.
+    //       Also check `getMissedBlocks` below
+    private function sortKey(string $name = 'default'): string
+    {
+        return 'rank';
     }
 
     private function getMissedBlocks(): AbstractPaginator

@@ -194,20 +194,23 @@ describe('Overview', function () {
                 ->visitRoute('wallet', $this->wallet)
                 ->waitForText('52 result', ignoreCase: true)
                 ->click('[data-testid="wallet:transactions:filter:button"]')
-                ->waitForText('Select All');
-
-            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]'))[0]->click();
-            $browser->waitForQueryString('multipayments', 'false')->pause(100);
-            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Votes"]'))[0]->click();
-            $browser->waitForQueryString('votes', 'false')->pause(100);
-            $browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Validator"]'))[0]->click();
-            $browser->waitForQueryString('validator', 'false')->pause(100);
-
-            $browser->click('[data-testid="pagination:next-page"] button')
-                ->pause(100)
-                ->waitForText('Page 2 of 3')
+                ->waitForText('Select All')
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Multipayments"]')
+                ->waitForQueryString('multipayments', 'false')
+                ->pause(200)
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Votes"]')
+                ->waitForQueryString('votes', 'false')
+                ->pause(200)
+                ->clickAtXPath('//div[contains(@class, "dropdown")]//label[text()="Validator"]')
+                ->waitForQueryString('validator', 'false')
+                ->pause(200)
                 ->click('[data-testid="pagination:next-page"] button')
+                ->pause(400)
+                ->waitForText('Page 2 of 3')
+                ->assertQueryStringHas('page', '2')
                 ->pause(100)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->pause(400)
                 ->waitForText('Page 3 of 3')
                 ->assertQueryStringHas('page', '3');
 

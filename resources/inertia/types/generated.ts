@@ -24,7 +24,6 @@ export type ICurrency = {
     symbol: string | null;
 };
 export type IForgingStats = {
-    hash: string;
     number: number;
     timestamp: number;
     validator: IWallet | null;
@@ -180,6 +179,21 @@ export type ITransaction = {
     votedFor: string | null;
     sender: IWallet | null;
     recipient: IWallet | null;
+};
+export type IValidator = {
+    rank: number | null;
+    address: string;
+    isActive: boolean;
+    isDormant: boolean;
+    isResigned: boolean;
+    username: string | null;
+    hasUsername: boolean;
+    voterCount: number;
+    votes: number;
+    votesPercentage: number;
+    missedBlocks: number;
+    missedBlocksState: "success" | "warning" | "danger" | "inactive";
+    voteUrl: string | null;
 };
 export type IWallet = {
     address: string;
