@@ -28,7 +28,7 @@ export function Row({ row: validator }: { row: IValidator }) {
 
     return (
         <tr className="text-sm font-semibold">
-            <TableCell>{<Number>{validator.rank ?? 0}</Number>}</TableCell>
+            <TableCell>{validator.rank ? <Number>{validator.rank}</Number> : ""}</TableCell>
 
             <TableCell>
                 <div className="flex items-center space-x-2">
