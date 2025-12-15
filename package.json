@@ -2,8 +2,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "dev": "cross-env NODE_OPTIONS=--disable-warning=MODULE_TYPELESS_PACKAGE_JSON vite",
+        "build": "cross-env NODE_OPTIONS=--disable-warning=MODULE_TYPELESS_PACKAGE_JSON vite build"
     },
     "devDependencies": {
         "@babel/runtime": "^7.24.4",
