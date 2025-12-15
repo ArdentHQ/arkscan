@@ -2,6 +2,7 @@ import { ITransaction, IWallet } from "@/types/generated";
 import classNames from "classnames";
 import TruncateMiddle from "../General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
 export default function Addressing({
     transaction,
@@ -9,32 +10,49 @@ export default function Addressing({
     alwaysShowAddress = false,
     withoutTruncate = false,
     isGeneric = false,
-}: {
+    className,
+    forWallet = false,
+    ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
     transaction: ITransaction;
     withoutLink?: boolean;
     alwaysShowAddress?: boolean;
     withoutTruncate?: boolean;
     isGeneric?: boolean;
+    forWallet?: Boolean;
 }) {
     const { t } = useTranslation();
 
-    let direction = t("tables.transactions.from");
-    if (transaction.isSentToSelf) {
-        direction = t("tables.transactions.return");
-    } else if (transaction.isSent) {
-        direction = t("tables.transactions.to");
-    }
-
     let interactedWallet: IWallet | null = null;
+
+    const isSent = useMemo(() => {
+        return forWallet && transaction.isSent && !transaction.isSentToSelf;
+    }, [transaction.isSent, transaction.isSentToSelf, forWallet]);
+
+    const isSentToSelf = useMemo(() => {
+        return forWallet && transaction.isSentToSelf;
+    }, [transaction.isSentToSelf, forWallet]);
+
     if (transaction.isTransfer || transaction.isTokenTransfer || alwaysShowAddress) {
         interactedWallet = transaction.sender;
-        if (transaction.isSent) {
+
+        if (isSent) {
             interactedWallet = transaction.recipient;
         }
     }
 
+    const direction = useMemo(() => {
+        if (isSentToSelf) {
+            return t("tables.transactions.return");
+        } else if (isSent) {
+            return t("tables.transactions.to");
+        }
+
+        return t("tables.transactions.from");
+    }, [isSentToSelf, isSent]);
+
     return (
-        <div className="flex items-center space-x-2 text-sm font-semibold">
+        <div className={classNames("flex items-center space-x-2 text-sm font-semibold", className)} {...props}>
             <div
                 className={classNames({
                     "h-[21px] w-[47px] rounded border text-center text-xs leading-5": true,

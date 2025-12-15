@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\ForgingStats as ForgingStatsDTO;
 use App\Enums\SortDirection;
+use App\Http\Controllers\Inertia\Concerns\RecentVotesTab;
 use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\ForgingStats;
@@ -19,6 +20,7 @@ use Inertia\Response;
 final class ValidatorsController
 {
     use ValidatorsTab;
+    use RecentVotesTab;
     use WithPagination;
 
     public const FILTERS = [
@@ -55,13 +57,17 @@ final class ValidatorsController
                     'perPageOptions'   => trans('tables.validators.validator_per_page_options'),
                 ];
             }),
-            'statistics' => [
-                'voterCount'       => $voterCount,
-                'totalVoted'       => $totalVoted,
-                'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
-                'missedBlocks'     => $missedBlockCount,
-                'validatorsMissed' => $validatorsMissed,
-            ],
+
+            'recentVotes' => Inertia::optional(function () {
+                $paginator = $this->getRecentVotes();
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getRecentVotesNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
 
             'missedBlocks' => Inertia::optional(function () {
                 $paginator = $this->getMissedBlocks();
@@ -73,6 +79,14 @@ final class ValidatorsController
                     'noResultsMessage' => $this->getMissedBlocksNoResultsMessageProperty($paginator->count()),
                 ];
             }),
+
+            'statistics' => [
+                'voterCount'       => $voterCount,
+                'totalVoted'       => $totalVoted,
+                'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
+                'missedBlocks'     => $missedBlockCount,
+                'validatorsMissed' => $validatorsMissed,
+            ],
         ]);
     }
 
