@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\ForgingStats as ForgingStatsDTO;
 use App\Enums\SortDirection;
+use App\Http\Controllers\Inertia\Concerns\RecentVotesTab;
 use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\ForgingStats;
@@ -19,6 +20,7 @@ use Inertia\Response;
 final class ValidatorsController
 {
     use ValidatorsTab;
+    use RecentVotesTab;
     use WithPagination;
 
     public const FILTERS = [
@@ -52,6 +54,16 @@ final class ValidatorsController
 
                     'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getValidatorsNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+            'recentVotes' => Inertia::optional(function () {
+                $paginator = $this->getRecentVotes();
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getRecentVotesNoResultsMessageProperty($paginator->count()),
                 ];
             }),
             'statistics' => [
