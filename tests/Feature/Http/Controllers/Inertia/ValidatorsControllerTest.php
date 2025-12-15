@@ -5,10 +5,14 @@ declare(strict_types=1);
 use App\Facades\Network;
 use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Models\ForgingStats;
+use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
+use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -59,6 +63,53 @@ function createValidatorWallet(string $address, int $rank): Wallet
 
 it('should render the page without any errors', function () {
     performValidatorsRequest($this);
+});
+
+it('should provide recent votes data', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse('2025-09-11')->format('Y-m-d') => 2.0,
+    ]));
+
+    $walletFrom = Wallet::factory()->create([
+        'balance'    => 100.34123 * 1e18,
+        'attributes' => [
+            'username' => 'joe.blogs',
+            'isLegacy' => true,
+        ],
+    ]);
+
+    $walletTo = Wallet::factory()->activeValidator()->create([
+        'balance'    => 50.34123 * 1e18,
+        'attributes' => [
+            'username' => 'bill.ding',
+        ],
+    ]);
+
+    $transaction = Transaction::factory()
+        ->vote($walletTo->address)
+        ->create([
+            'sender_public_key' => $walletFrom->public_key,
+            'from'              => $walletFrom->address,
+            'timestamp'         => Carbon::now()->unix() * 1000,
+            'status'            => true,
+        ]);
+
+    performValidatorsRequest(
+        $this,
+        reloadCallback: function (Assert $reload) use ($transaction, $walletFrom, $walletTo) {
+            $reload->has('recentVotes.data', 1)
+                ->where('recentVotes.total', 1)
+                ->where('recentVotes.current_page', 1)
+                ->where('recentVotes.data.0.hash', $transaction->hash)
+                ->where('recentVotes.data.0.votedFor', $walletTo->address)
+                ->where('recentVotes.data.0.sender.address', $walletFrom->address);
+        },
+        reloadProps: 'recentVotes',
+    );
 });
 
 it('should have missed blocks', function () {

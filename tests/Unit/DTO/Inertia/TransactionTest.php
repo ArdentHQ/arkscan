@@ -158,6 +158,7 @@ it('should make an instance', function () {
             'voteUrl'                     => null,
             'votePercentage'              => null,
         ],
+        'votedForUsername'                => null,
     ]);
 });
 
@@ -283,7 +284,8 @@ it('should make an instance for a vote transaction', function () {
             'voteUrl'                     => null,
             'votePercentage'              => null,
         ],
-        'recipient' => null,
+        'recipient'                       => null,
+        'votedForUsername'                => 'bill.ding',
     ]);
 });
 
@@ -464,7 +466,8 @@ it('should make an instance for a validator resignation transaction', function (
                 'voteUrl'                     => null,
                 'votePercentage'              => null,
             ],
-            'recipient' => null,
+            'recipient'                       => null,
+            'votedForUsername'                => null,
         ],
         'votedFor' => null,
         'sender'   => [
@@ -492,6 +495,7 @@ it('should make an instance for a validator resignation transaction', function (
             'voteUrl'                     => null,
             'votePercentage'              => null,
         ],
-        'recipient' => null,
+        'recipient'                       => null,
+        'votedForUsername'                => null,
     ]);
 });
