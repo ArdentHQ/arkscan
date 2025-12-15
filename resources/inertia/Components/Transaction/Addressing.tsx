@@ -25,19 +25,31 @@ export default function Addressing({
 
     let interactedWallet: IWallet | null = null;
 
+    const isSent = useMemo(() => {
+        return wallet && transaction.isSent && !transaction.isSentToSelf;
+    }, [transaction.isSent, transaction.isSentToSelf, wallet]);
+
+    const isSentToSelf = useMemo(() => {
+        return wallet && transaction.isSentToSelf;
+    }, [transaction.isSentToSelf, wallet]);
+
     if (transaction.isTransfer || transaction.isTokenTransfer || alwaysShowAddress) {
         interactedWallet = transaction.sender;
+
+        if (isSent) {
+            interactedWallet = transaction.recipient;
+        }
     }
 
     const direction = useMemo(() => {
-        if (wallet && transaction.isSentToSelf) {
+        if (isSentToSelf) {
             return t("tables.transactions.return");
-        } else if (wallet && transaction.isSent) {
+        } else if (isSent) {
             return t("tables.transactions.to");
         }
 
         return t("tables.transactions.from");
-    }, [transaction.isSentToSelf, transaction.isSent, wallet]);
+    }, [isSentToSelf, isSent]);
 
     return (
         <div className={classNames("flex items-center space-x-2 text-sm font-semibold", className)} {...props}>
