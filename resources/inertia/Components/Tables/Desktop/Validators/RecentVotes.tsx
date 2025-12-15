@@ -113,7 +113,6 @@ export default function RecentVotesTableWrapper({
                     {
                         name: t("tables.recent-votes.addressing"),
                         type: "address",
-                        className: "hidden lg:flex",
                     },
                     {
                         name: t("tables.recent-votes.type"),
