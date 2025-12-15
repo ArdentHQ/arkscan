@@ -2,6 +2,7 @@ import { ITransaction, IWallet } from "@/types/generated";
 import classNames from "classnames";
 import TruncateMiddle from "../General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 
 export default function Addressing({
     transaction,
@@ -10,6 +11,7 @@ export default function Addressing({
     withoutTruncate = false,
     isGeneric = false,
     className,
+    wallet,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
     transaction: ITransaction;
@@ -17,21 +19,25 @@ export default function Addressing({
     alwaysShowAddress?: boolean;
     withoutTruncate?: boolean;
     isGeneric?: boolean;
+    wallet?: IWallet;
 }) {
     const { t } = useTranslation();
-
-    let direction = t("tables.transactions.from");
-    if (transaction.isSentToSelf) {
-        direction = t("tables.transactions.return");
-    } else if (transaction.isSent) {
-        direction = t("tables.transactions.to");
-    }
 
     let interactedWallet: IWallet | null = null;
 
     if (transaction.isTransfer || transaction.isTokenTransfer || alwaysShowAddress) {
         interactedWallet = transaction.sender;
     }
+
+    const direction = useMemo(() => {
+        if (wallet && transaction.isSentToSelf) {
+            return t("tables.transactions.return");
+        } else if (wallet && transaction.isSent) {
+            return t("tables.transactions.to");
+        }
+
+        return t("tables.transactions.from");
+    }, [transaction.isSentToSelf, transaction.isSent, wallet]);
 
     return (
         <div className={classNames("flex items-center space-x-2 text-sm font-semibold", className)} {...props}>
