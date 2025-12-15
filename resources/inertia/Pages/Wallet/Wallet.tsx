@@ -1,6 +1,6 @@
 import { PageProps } from "@inertiajs/core";
 import { Head, router } from "@inertiajs/react";
-import { useEffect, useRef } from "react";
+import { PropsWithChildren, useEffect, useRef } from "react";
 import { IFilters, IPaginatedResponse, ITabbedData } from "@/types";
 import { IBlock, ITransaction } from "@/types/generated";
 import { usePageMetadata } from "@/Components/General/Metadata";
@@ -22,55 +22,17 @@ import useSharedData from "@/hooks/use-shared-data";
 import Layout from "@/Layout";
 
 const WalletTabsWrapper = ({
-    wallet,
     transactions,
     blocks,
     voters,
     filters,
 }: {
-    wallet: IWallet;
     transactions?: IPaginatedResponse<ITransaction>;
     blocks?: IPaginatedResponse<IBlock>;
     voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
-    const tabs = [{ text: "Transactions", value: "transactions" }];
-    const queryStringDefaults: ITabsQueryString = {
-        transactions: {
-            page: 1,
-            "per-page": 25,
-            outgoing: true,
-            incoming: true,
-            transfers: true,
-            multipayments: true,
-            votes: true,
-            validator: true,
-            username: true,
-            contract_deployment: true,
-            others: true,
-        },
-    };
-
-    if (wallet.isValidator) {
-        tabs.push({ text: "Validated Blocks", value: "blocks" });
-        tabs.push({ text: "Voters", value: "voters" });
-
-        queryStringDefaults["blocks"] = {
-            page: 1,
-            "per-page": 25,
-        };
-
-        queryStringDefaults["voters"] = {
-            page: 1,
-            "per-page": 25,
-        };
-    }
-
-    return (
-        <TabsProvider defaultSelected="transactions" queryStringDefaults={queryStringDefaults} tabs={tabs}>
-            <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
-        </TabsProvider>
-    );
+    return <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />;
 };
 
 const WalletTabs = ({
@@ -203,7 +165,7 @@ const WalletTabs = ({
     }, [currentTab]);
 
     return (
-        <>
+        <div id="wallet:tabs:content">
             {currentTab === "transactions" && (
                 <WalletTransactionsTab transactions={transactions} filters={filters.transactions} />
             )}
@@ -222,9 +184,54 @@ const WalletTabs = ({
                     <VotersTableWrapper voters={voters} mobile={<VotersMobileTableWrapper voters={voters} />} />
                 </>
             )}
-        </>
+        </div>
     );
 };
+
+function WalletPageHandlerProvider({ children, wallet }: PropsWithChildren<{ wallet: IWallet }>) {
+    const tabs = [{ text: "Transactions", value: "transactions" }];
+    const queryStringDefaults: ITabsQueryString = {
+        transactions: {
+            page: 1,
+            "per-page": 25,
+            outgoing: true,
+            incoming: true,
+            transfers: true,
+            multipayments: true,
+            votes: true,
+            validator: true,
+            username: true,
+            contract_deployment: true,
+            others: true,
+        },
+    };
+
+    if (wallet.isValidator) {
+        tabs.push({ text: "Validated Blocks", value: "blocks" });
+        tabs.push({ text: "Voters", value: "voters" });
+
+        queryStringDefaults["blocks"] = {
+            page: 1,
+            "per-page": 25,
+        };
+
+        queryStringDefaults["voters"] = {
+            page: 1,
+            "per-page": 25,
+        };
+    }
+
+    return (
+        <TabsProvider
+            defaultSelected="transactions"
+            queryStringDefaults={queryStringDefaults}
+            tabs={tabs}
+            header={<Overview wallet={wallet} />}
+        >
+            <PageHandlerProvider>{children}</PageHandlerProvider>
+        </TabsProvider>
+    );
+}
 
 export default function Wallet({ transactions, blocks, wallet, voters, network, filters }: PageProps<WalletProps>) {
     const metadata = usePageMetadata({
@@ -240,17 +247,9 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
             <Head>{metadata}</Head>
 
             <Layout>
-                <Overview wallet={wallet} />
-
-                <PageHandlerProvider>
-                    <WalletTabsWrapper
-                        wallet={wallet}
-                        transactions={transactions}
-                        blocks={blocks}
-                        voters={voters}
-                        filters={filters}
-                    />
-                </PageHandlerProvider>
+                <WalletPageHandlerProvider wallet={wallet}>
+                    <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
+                </WalletPageHandlerProvider>
             </Layout>
         </>
     );
