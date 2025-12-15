@@ -366,9 +366,9 @@ describe('Overview', function () {
                 ->waitForText('20 results', ignoreCase: true)
                 ->pause(400);
 
-            $scrollTop = $browser->script('return window.scrollY;')[0];
+            $scrollTop    = $browser->script('return window.scrollY;')[0];
             $navbarHeight = $browser->script('return document.querySelector("#navbar")?.clientHeight || 0;')[0];
-            $offsetTop = $browser->script('return document.getElementById("wallet:tabs:content").offsetTop;')[0];
+            $offsetTop    = $browser->script('return document.getElementById("wallet:tabs:content").offsetTop;')[0];
 
             expect($scrollTop)->toEqual($offsetTop - $navbarHeight);
         });
@@ -407,9 +407,9 @@ describe('Overview', function () {
             $browser->clickAtXPath('//button[.//text()="View"]')
                 ->pause(500);
 
-            $scrollTop = $browser->script('return window.scrollY;')[0];
+            $scrollTop    = $browser->script('return window.scrollY;')[0];
             $navbarHeight = $browser->script('return document.querySelector("#navbar")?.clientHeight || 0;')[0];
-            $offsetTop = $browser->script('return document.getElementById("wallet:tabs:content").offsetTop;')[0];
+            $offsetTop    = $browser->script('return document.getElementById("wallet:tabs:content").offsetTop;')[0];
 
             expect($scrollTop)->toEqual($offsetTop - $navbarHeight);
         });
