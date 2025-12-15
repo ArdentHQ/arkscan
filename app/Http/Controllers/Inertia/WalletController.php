@@ -45,6 +45,7 @@ final class WalletController
         return Inertia::render('Wallet/Wallet', [
             'wallet'       => WalletDTO::fromModel($wallet),
             'filters'      => self::FILTERS,
+            'baseRoute'    => route('wallet', $wallet->address),
 
             'transactions' => Inertia::optional(function () use ($wallet) {
                 $paginator = $this->getTransactions($wallet);

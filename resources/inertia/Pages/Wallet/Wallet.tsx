@@ -34,6 +34,7 @@ const WalletTabsWrapper = ({
     voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
+    const { baseUrl } = useSharedData<WalletProps>();
     const tabs = [{ text: "Transactions", value: "transactions" }];
     const queryStringDefaults: ITabsQueryString = {
         transactions: {
@@ -67,7 +68,12 @@ const WalletTabsWrapper = ({
     }
 
     return (
-        <TabsProvider defaultSelected="transactions" queryStringDefaults={queryStringDefaults} tabs={tabs}>
+        <TabsProvider
+            defaultSelected="transactions"
+            queryStringDefaults={queryStringDefaults}
+            tabs={tabs}
+            baseUrl={baseUrl}
+        >
             <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
         </TabsProvider>
     );
