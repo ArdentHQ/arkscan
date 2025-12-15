@@ -1,5 +1,5 @@
-import defaultConfig from "./vendor/arkecosystem/foundation/resources/tailwind.config.js";
-import plugin from "tailwindcss/plugin";
+const defaultConfig = require("./tailwind.foundation.config.cjs");
+const plugin = require("tailwindcss/plugin");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
