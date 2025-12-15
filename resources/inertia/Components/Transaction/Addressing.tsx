@@ -11,7 +11,7 @@ export default function Addressing({
     withoutTruncate = false,
     isGeneric = false,
     className,
-    wallet,
+    forWallet = false,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
     transaction: ITransaction;
@@ -19,19 +19,19 @@ export default function Addressing({
     alwaysShowAddress?: boolean;
     withoutTruncate?: boolean;
     isGeneric?: boolean;
-    wallet?: IWallet;
+    forWallet?: Boolean;
 }) {
     const { t } = useTranslation();
 
     let interactedWallet: IWallet | null = null;
 
     const isSent = useMemo(() => {
-        return wallet && transaction.isSent && !transaction.isSentToSelf;
-    }, [transaction.isSent, transaction.isSentToSelf, wallet]);
+        return forWallet && transaction.isSent && !transaction.isSentToSelf;
+    }, [transaction.isSent, transaction.isSentToSelf, forWallet]);
 
     const isSentToSelf = useMemo(() => {
-        return wallet && transaction.isSentToSelf;
-    }, [transaction.isSentToSelf, wallet]);
+        return forWallet && transaction.isSentToSelf;
+    }, [transaction.isSentToSelf, forWallet]);
 
     if (transaction.isTransfer || transaction.isTokenTransfer || alwaysShowAddress) {
         interactedWallet = transaction.sender;
