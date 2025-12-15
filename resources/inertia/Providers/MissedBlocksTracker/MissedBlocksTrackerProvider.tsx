@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import MissedBlocksTrackerContext from "./MissedBlocksTrackerContext";
 import { IMonitorValidator } from "@/types";

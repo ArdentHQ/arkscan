@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import FilterContext from "./FilterContext";
 import { IFilterContextType, IFilterEntry } from "./types";
