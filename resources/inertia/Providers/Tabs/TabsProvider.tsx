@@ -8,11 +8,13 @@ export default function TabsProvider({
     defaultSelected,
     queryStringDefaults,
     tabs,
+    header,
     children,
 }: {
     defaultSelected: string;
     queryStringDefaults: ITabsQueryString;
     tabs: ITab[];
+    header?: React.ReactNode;
     children: React.ReactNode;
 }) {
     const [currentTab, setCurrentTab] = useState<string>();
@@ -20,6 +22,7 @@ export default function TabsProvider({
     const [onChange, setOnChange] = useState<TabChangedMethod | null>(null);
     const [queryStringValues, setQueryStringValues] = useState<ITabsQueryString>(queryStringDefaults);
     const [tabLoaded, setTabLoaded] = useState<Record<string, boolean>>({});
+    const [events, setEvents] = useState<Record<string, ((tab: ITab) => void)[]>>({});
 
     const changeTab = (newTab: string) => {
         if (currentTab) {
@@ -62,6 +65,12 @@ export default function TabsProvider({
             onSuccess: () => {
                 const tabObject = tabs.find((tab) => tab.value === newTab) ?? tabs[0];
                 setSelectedTab(tabObject);
+
+                Object.entries(events).forEach(([event, callbacks]) => {
+                    if (event === "tabChange") {
+                        callbacks.forEach((callback) => callback(tabObject));
+                    }
+                });
 
                 if (onChange) {
                     onChange(tabObject, tabLoaded[newTab] !== true);
@@ -116,10 +125,26 @@ export default function TabsProvider({
         onTabChange: (callback: TabChangedMethod) => {
             setOnChange(() => callback);
         },
+        addEventListener: (event: string, callback: (tab: ITab) => void) => {
+            const existingEvents = events[event] || [];
+            setEvents({
+                ...events,
+                [event]: [...existingEvents, callback],
+            });
+        },
+        removeEventListener: (event: string, callback: (tab: ITab) => void) => {
+            const existingEvents = events[event] || [];
+            setEvents({
+                ...events,
+                [event]: existingEvents.filter((cb) => cb !== callback),
+            });
+        },
     };
 
     return (
         <TabsContext.Provider value={value}>
+            {header}
+
             <Wrapper tabs={tabs} />
 
             <div>{children}</div>

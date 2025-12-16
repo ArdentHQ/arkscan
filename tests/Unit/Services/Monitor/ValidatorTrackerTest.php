@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Facades\Blocks;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Services\Monitor\ValidatorTracker;
@@ -23,7 +24,7 @@ it('should calculate the forging order', function () {
 
     $roundHeight = Rounds::current()->round_height;
 
-    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight);
+    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight, Blocks::last());
 
     expect($order)->toHaveCount(Network::validatorCount());
 
@@ -57,7 +58,7 @@ it('should handle no missed block', function () {
 
     $roundHeight = Rounds::current()->round_height;
 
-    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight);
+    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight, Blocks::last());
 
     expect(collect($order)->where('status', 'done')->count())->toBe(51);
     expect(collect($order)->where('status', 'next')->count())->toBe(1);
@@ -113,7 +114,7 @@ it('should handle one missed block', function () {
 
     $roundHeight = Rounds::current()->round_height;
 
-    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight);
+    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight, Blocks::last());
 
     expect(collect($order)->where('status', 'done')->count())->toBe(51);
     expect(collect($order)->where('status', 'next')->count())->toBe(1);
@@ -179,7 +180,7 @@ it('should handle missed blocks', function () {
 
     $roundHeight = Rounds::current()->round_height;
 
-    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight);
+    $order = ValidatorTracker::execute($validators->pluck('address')->toArray(), $roundHeight, Blocks::last());
 
     expect(collect($order)->where('status', 'done')->count())->toBe(51);
     expect(collect($order)->where('status', 'next')->count())->toBe(1);

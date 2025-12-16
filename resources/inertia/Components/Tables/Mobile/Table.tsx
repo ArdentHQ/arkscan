@@ -18,7 +18,7 @@ export default function MobileTable({
                 <>
                     <div
                         className={classNames({
-                            "table-container mb-4": true,
+                            "table-container": true,
                             [className]: !!className,
                         })}
                     >

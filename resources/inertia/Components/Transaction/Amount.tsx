@@ -10,12 +10,14 @@ export default function Amount({
     withNetworkCurrency = false,
     breakpoint = "md-lg",
     hideCurrency,
+    testId,
 }: {
     transaction: ITransaction;
     withoutFee?: boolean;
     withNetworkCurrency?: boolean;
     breakpoint?: "md-lg" | "lg" | "xl";
     hideCurrency?: boolean;
+    testId?: string;
 }) {
     const { network } = useSharedData();
 
@@ -68,6 +70,7 @@ export default function Amount({
                 "flex flex-col md:space-y-1": true,
                 [containerBreakpointClass]: true,
             })}
+            data-testid={testId}
         >
             <div className="inline-block leading-4.25">
                 <AmountFiatTooltip

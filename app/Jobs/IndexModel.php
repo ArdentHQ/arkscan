@@ -22,6 +22,11 @@ abstract class IndexModel implements ShouldQueue, ShouldBeUnique
     use SerializesModels;
 
     /**
+     * @var int
+     */
+    public $tries = 1;
+
+    /**
      * Execute the job.
      * @return void
      */

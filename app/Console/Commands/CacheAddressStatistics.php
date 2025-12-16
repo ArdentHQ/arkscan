@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use stdClass;
 
 final class CacheAddressStatistics extends Command
 {
@@ -93,34 +94,44 @@ final class CacheAddressStatistics extends Command
 
     private function cacheMostTransactions(StatisticsCache $cache): void
     {
-        /** @var array{address?: string, tx_count?: int} $mostTransactions */
-        $mostTransactions = (array) DB::connection('explorer')
-            ->query()
-            ->select([
-                DB::raw('count(transactions.hash) as tx_count'),
-                DB::raw('wallets.address'),
-            ])
-            ->from('transactions')
-            ->join('wallets', 'transactions.sender_public_key', '=', 'wallets.public_key')
-            ->groupBy('wallets.address')
-            ->orderBy('tx_count', 'desc')
-            ->limit(1)
-            ->first();
+        /** @var stdClass|null $mostActive */
+        $mostActive = DB::connection('explorer')->selectOne("
+            SELECT address, COUNT(*) AS tx_count
+            FROM (
+                SELECT DISTINCT t.hash, w.address
+                FROM transactions t
+                JOIN wallets w ON t.sender_public_key = w.public_key
 
-        if (count($mostTransactions) > 0) {
-            if (! $this->hasChanges) {
-                $currentValue = $cache->getMostTransactions() ?? [];
-                if (Arr::get($currentValue, 'address') !== $mostTransactions['address']) {
-                    $this->hasChanges = true;
-                } elseif (Arr::get($currentValue, 'value') !== $mostTransactions['tx_count']) {
-                    $this->hasChanges = true;
-                }
+                UNION
+
+                SELECT DISTINCT t.hash, t.\"to\"
+                FROM transactions t
+                WHERE t.\"to\" IS NOT NULL AND t.\"to\" != ''
+
+                UNION
+
+                SELECT DISTINCT t.hash, u.addr
+                FROM transactions t
+                CROSS JOIN LATERAL unnest(t.multi_payment_recipients) u(addr)
+                WHERE t.multi_payment_recipients IS NOT NULL
+            ) s
+            WHERE address IS NOT NULL AND address != ''
+            GROUP BY address
+            ORDER BY tx_count DESC
+            LIMIT 1
+        ");
+
+        if ($mostActive !== null && isset($mostActive->address)) {
+            $newValue = [
+                'address' => $mostActive->address,
+                'value'   => (int) $mostActive->tx_count,
+            ];
+
+            if ($cache->getMostTransactions() !== $newValue) {
+                $this->hasChanges = true;
             }
 
-            $cache->setMostTransactions([
-                'address' => $mostTransactions['address'],
-                'value'   => $mostTransactions['tx_count'],
-            ]);
+            $cache->setMostTransactions($newValue);
         }
     }
 

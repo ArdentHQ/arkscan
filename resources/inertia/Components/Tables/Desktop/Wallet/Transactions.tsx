@@ -39,7 +39,7 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell className="text-right" lastOn="md-lg">
-                <Amount transaction={row} hideCurrency />
+                <Amount testId={`wallet:transaction:${row.hash}:amount`} transaction={row} hideCurrency />
             </TableCell>
 
             <TableCell className="text-right" breakpoint="md-lg" responsive>

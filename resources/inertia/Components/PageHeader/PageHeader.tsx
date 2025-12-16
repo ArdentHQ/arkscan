@@ -7,7 +7,7 @@ export default function PageHeader({
     subtitle?: string;
 }>) {
     return (
-        <div className="flex flex-col space-y-6 px-6 pb-6 pt-8 font-semibold md:mx-auto md:max-w-7xl md:px-10">
+        <div className="flex flex-col space-y-6 px-6 pb-6 font-semibold md:mx-auto md:max-w-7xl md:px-10">
             <div className="flex flex-col space-y-1.5">
                 <h1 className="mb-0 text-lg font-semibold leading-5.25 md:text-2xl md:leading-[1.8125rem]">{title}</h1>
 

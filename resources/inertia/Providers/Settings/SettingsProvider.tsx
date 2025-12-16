@@ -78,6 +78,7 @@ export default function SettingsProvider({
         }
 
         setCurrentTheme(newTheme);
+        localStorage.theme = newTheme;
 
         return new Promise((resolve, reject) => {
             router.post(
@@ -91,6 +92,8 @@ export default function SettingsProvider({
                     },
                     onError: (error) => {
                         setCurrentTheme(currentTheme);
+                        localStorage.theme = currentTheme;
+
                         reject(error);
                     },
                 },
