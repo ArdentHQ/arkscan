@@ -2,6 +2,7 @@ import { ITransaction, IWallet } from "@/types/generated";
 import classNames from "classnames";
 import TruncateMiddle from "../General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
+import { Link } from "@inertiajs/react";
 
 export default function Addressing({
     transaction,
@@ -63,13 +64,14 @@ export default function Addressing({
                                 )}
                             </span>
                         ) : (
-                            <a className="link" href={`/addresses/${interactedWallet!.address}`}>
+                            <Link className="link" href={route("wallet", interactedWallet!.address)}>
                                 {interactedWallet!.hasUsername && interactedWallet!.username}
                                 {!interactedWallet!.hasUsername && withoutTruncate && interactedWallet!.address}
                                 {!interactedWallet!.hasUsername && !withoutTruncate && (
                                     <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
                                 )}
-                            </a>
+                                xx
+                            </Link>
                         )}
                     </>
                 ) : (
