@@ -7,6 +7,7 @@ import { IStatistics } from "@/types";
 import { Link } from "@inertiajs/react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
+import { IMonitorStatistics } from "@/Pages/Validators.contracts";
 
 export function HeaderStat({
     title,
@@ -34,7 +35,7 @@ export function HeaderStat({
     );
 }
 
-export default function HeaderStats({ height, statistics }: { height: number; statistics?: IStatistics }) {
+export default function HeaderStats({ height, statistics }: { height: number; statistics?: IMonitorStatistics }) {
     const { t } = useTranslation();
 
     const isLoading = !statistics;

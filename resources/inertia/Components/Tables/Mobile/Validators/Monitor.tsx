@@ -11,11 +11,11 @@ import TableCell from "../TableCell";
 import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { MobileMonitorSkeletonTable } from "../Skeleton/Validators/Monitor";
-import { IValidator } from "@/types";
+import { IMonitorValidator } from "@/types";
 import ValidatorStatusProvider from "@/Providers/ValidatorStatus/ValidatorStatusProvider";
 import { useTranslation } from "react-i18next";
 
-export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
+export function MonitorMobileHeader({ validator }: { validator: IMonitorValidator }) {
     return (
         <div className="flex min-w-0 flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
             <div className="flex items-center">
@@ -56,13 +56,13 @@ export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
     );
 }
 
-export function MonitorMobileTable({ validators }: { validators: IValidator[] }) {
+export function MonitorMobileTable({ validators }: { validators: IMonitorValidator[] }) {
     const { t } = useTranslation();
     const { isFavorite } = useValidatorFavorites();
 
     return (
         <MobileTable>
-            {validators.map((validator: IValidator, index) => (
+            {validators.map((validator: IMonitorValidator, index) => (
                 <ValidatorStatusProvider key={index} forgingAt={validator.forgingAt} validator={validator}>
                     <MobileTableRow
                         expandClass={classNames({
@@ -97,7 +97,7 @@ export function MonitorMobileTable({ validators }: { validators: IValidator[] })
     );
 }
 
-export function MobileFavoritesTable({ validators }: { validators: IValidator[] }) {
+export function MobileFavoritesTable({ validators }: { validators: IMonitorValidator[] }) {
     const { isFavorite } = useValidatorFavorites();
 
     const favoritedValidators = (validators || []).filter((validator) => isFavorite(validator.wallet.public_key));
@@ -122,7 +122,7 @@ export default function MonitorMobileTableWrapper({
     validators,
     rowCount,
 }: {
-    validators: IValidator[];
+    validators: IMonitorValidator[];
     rowCount: number;
 }) {
     if (!validators || validators.length === 0) {

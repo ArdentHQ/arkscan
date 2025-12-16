@@ -13,9 +13,9 @@ export default function VoteLink({
     voteText,
     unvoteText,
 }: {
-    wallet: IWallet;
-    voteText: React.ReactNode;
-    unvoteText: React.ReactNode;
+    wallet: Pick<IWallet, "address" | "isResigned" | "voteUrl">;
+    voteText?: React.ReactNode;
+    unvoteText?: React.ReactNode;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
@@ -57,7 +57,13 @@ export default function VoteLink({
                             "text-theme-danger-400 hover:text-theme-danger-500": votingForAddress === validatorAddress,
                         })}
                         useDefaultButtonClasses={false}
-                        button={<>{votingForAddress !== validatorAddress ? voteText : unvoteText}</>}
+                        button={
+                            <>
+                                {votingForAddress !== validatorAddress
+                                    ? (voteText ?? t("actions.vote"))
+                                    : (unvoteText ?? t("actions.unvote"))}
+                            </>
+                        }
                         dropdownClasses={classNames({
                             "w-[147px]": true,
                         })}

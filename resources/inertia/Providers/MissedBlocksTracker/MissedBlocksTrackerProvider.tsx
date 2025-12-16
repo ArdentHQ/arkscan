@@ -1,8 +1,6 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import MissedBlocksTrackerContext from "./MissedBlocksTrackerContext";
-import { IValidator } from "@/types";
+import { IMonitorValidator } from "@/types";
 import dayjs from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import { MissedBlocksTrackerContextType } from "./types";
@@ -14,11 +12,11 @@ export default function MissedBlocksTrackerProvider({
     validators,
     children,
 }: {
-    validators: IValidator[];
+    validators: IMonitorValidator[];
     children: React.ReactNode;
 }) {
     const tickingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const [currentForger, setCurrentForger] = useState<IValidator | undefined>();
+    const [currentForger, setCurrentForger] = useState<IMonitorValidator | undefined>();
     const [consecutiveMissedBlocks, setConsecutiveMissedBlocks] = useState<number>(0);
     const [secondsOffset, setSecondsOffset] = useState<number>(0);
 

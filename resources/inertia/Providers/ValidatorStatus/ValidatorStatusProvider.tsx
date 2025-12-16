@@ -1,8 +1,6 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import ValidatorStatusContext from "./ValidatorStatusContext";
-import { IValidator } from "@/types";
+import { IMonitorValidator } from "@/types";
 import dayjs, { Dayjs } from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import {
@@ -11,7 +9,7 @@ import {
     ForgingStatusGenerating,
     ForgingStatusMissed,
     ForgingStatusPending,
-    IValidatorStatusContextType,
+    IMonitorValidatorStatusContextType,
 } from "./types";
 import { useMissedBlocksTracker } from "../MissedBlocksTracker/MissedBlocksTrackerContext";
 import { MISSED_BLOCKS_SECONDS_THRESHOLD } from "@/constants";
@@ -24,7 +22,7 @@ export default function ValidatorStatusProvider({
     children,
 }: {
     forgingAt: string | Date;
-    validator: IValidator;
+    validator: IMonitorValidator;
     children: React.ReactNode;
 }) {
     const [dateTime, setDateTime] = useState<Dayjs>(dayjs(forgingAt));
@@ -107,7 +105,7 @@ export default function ValidatorStatusProvider({
         }
     }, [validator.wallet, currentForger, seconds]);
 
-    const value: IValidatorStatusContextType = {
+    const value: IMonitorValidatorStatusContextType = {
         output,
         dateTime,
         status,
