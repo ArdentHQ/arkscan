@@ -777,6 +777,72 @@ describe('Missed Blocks', function () {
         );
     });
 
+    it('should return no results message when there are no missed blocks', function () {
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('missedBlocks.data', [])
+                    ->where('missedBlocks.total', 0)
+                    ->where('missedBlocks.noResultsMessage', trans('tables.missed-blocks.no_results'));
+            },
+            queryString: [],
+            reloadProps: 'missedBlocks',
+        );
+    });
+
+    it('should respect missed blocks page query parameter', function () {
+        ForgingStats::factory()->create(['timestamp' => Carbon::now()->subMinutes(5)->getTimestamp()]);
+        $second = ForgingStats::factory()->create(['timestamp' => Carbon::now()->subMinutes(10)->getTimestamp()]);
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($second) {
+                $reload->where('missedBlocks.current_page', 2)
+                    ->where('missedBlocks.per_page', 1)
+                    ->where('missedBlocks.data.0.validator.address', $second->address);
+            },
+            queryString: [
+                'page'     => 2,
+                'per-page' => 1,
+            ],
+            reloadProps: 'missedBlocks',
+        );
+    });
+
+    it('should fall back to the default page parameter when missed blocks page is missing', function () {
+        $first = ForgingStats::factory()->create(['timestamp' => Carbon::now()->subMinutes(5)->getTimestamp()]);
+        ForgingStats::factory()->create(['timestamp' => Carbon::now()->subMinutes(10)->getTimestamp()]);
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($first) {
+                $reload->where('missedBlocks.current_page', 1)
+                    ->where('missedBlocks.per_page', 1)
+                    ->where('missedBlocks.data.0.validator.address', $first->address);
+            },
+            queryString: [
+                'per-page' => 1,
+            ],
+            reloadProps: 'missedBlocks',
+        );
+    });
+
+    it('should honor the per-page parameter for missed blocks', function () {
+        ForgingStats::factory(3)->create();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('missedBlocks.per_page', 2)
+                    ->has('missedBlocks.data', 2);
+            },
+            queryString: [
+                'per-page' => 2,
+            ],
+            reloadProps: 'missedBlocks',
+        );
+    });
+
     it('should sort height in ascending order', function () {
         $wallet1 = Wallet::factory()->activeValidator()->create([
             'attributes' => [
@@ -883,10 +949,6 @@ describe('Missed Blocks', function () {
                     ->where('missedBlocks.data.0.validator.address', $wallet2->address)
                     ->where('missedBlocks.data.1.validator.address', $wallet1->address);
             },
-            queryString: [
-                'sort'           => 'age',
-                'sort-direction' => 'desc',
-            ],
             reloadProps: 'missedBlocks',
         );
     });
