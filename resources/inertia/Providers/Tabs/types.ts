@@ -5,6 +5,8 @@ export interface ITabsContextType {
     selectPrevious: () => void;
     selectNext: () => void;
     onTabChange: (callback: TabChangedMethod) => void;
+    addEventListener: (event: string, callback: (tab: ITab) => void) => void;
+    removeEventListener: (event: string, callback: (tab: ITab) => void) => void;
 }
 
 export interface ITab {
