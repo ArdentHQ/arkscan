@@ -43,6 +43,7 @@ Route::get('/blocks', BlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
+// @TODO: remove this route after new transactions page is implemented https://app.clickup.com/t/86dyw9fz4
 Route::get('/transactions-old', LegacyTransactionsController::class)->name('transactions-old');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
