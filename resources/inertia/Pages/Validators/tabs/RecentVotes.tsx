@@ -9,12 +9,18 @@ export default function RecentVotesTab({ recentVotes, filters }: Pick<Validators
 
     return (
         <FilterProvider
-            initialOptions={
-                [
-                    // @TODO: implement validators filters logic https://app.clickup.com/t/86dyqe7cg
-                ]
-            }
-            onChange={() => {}}
+            initialOptions={[
+                {
+                    label: t("tables.filters.recent-votes.vote"),
+                    value: "vote",
+                    selected: filters["recent-votes"].vote,
+                },
+                {
+                    label: t("tables.filters.recent-votes.unvote"),
+                    value: "unvote",
+                    selected: filters["recent-votes"].unvote,
+                },
+            ]}
         >
             <RecentVotesTableWrapper
                 recentVotes={recentVotes}

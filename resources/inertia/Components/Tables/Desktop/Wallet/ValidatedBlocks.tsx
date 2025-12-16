@@ -81,6 +81,7 @@ export function ValidatedBlocksTable({
                         tooltip={t("pages.wallets.blocks.total_reward_tooltip", {
                             currency: network!.currency,
                         })}
+                        type="number"
                     >
                         {t("tables.blocks.total_reward", {
                             currency: network!.currency,
@@ -96,6 +97,7 @@ export function ValidatedBlocksTable({
                                 tooltip={t("pages.wallets.blocks.value_tooltip", {
                                     currency: network!.currency,
                                 })}
+                                type="number"
                             >
                                 {t("tables.blocks.value", {
                                     currency: network!.currency,

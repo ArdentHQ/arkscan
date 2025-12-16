@@ -11,6 +11,10 @@ use Illuminate\Pagination\AbstractPaginator;
 
 trait MissedBlocksTab
 {
+    public const MISSED_BLOCKS_INITIAL_SORT_KEY = 'age';
+
+    public const MISSED_BLOCKS_INITIAL_SORT_DIRECTION = SortDirection::DESC;
+
     private function getMissedBlocks(): AbstractPaginator
     {
         if (config('database.default') === 'sqlite') {
@@ -21,23 +25,20 @@ trait MissedBlocksTab
                 ->through(fn (ForgingStats $voter) => ForgingStatsDTO::fromModel($voter));
         }
 
-        // TODO: Re-implement sorting once the UI supports it - https://app.clickup.com/t/86dypp5jv
-        //       Look at \App\Http\Livewire\Validators\Concerns\MissedBlocksTab for reference.
-        $missedBlocksSortKey = 'height';
-        $sortDirection       = SortDirection::DESC;
+        $sortDirection = SortDirection::ASC;
+        if ($this->sortDirection('missed-blocks') === SortDirection::DESC) {
+            $sortDirection = SortDirection::DESC;
+        }
+
+        $sortBy = $this->sortKey('missed-blocks');
 
         return ForgingStats::query()
             ->with('validator')
-            // @phpstan-ignore-next-line
-            ->when($missedBlocksSortKey === 'height', fn ($query) => $query->sortByHeight($sortDirection))
-            // @phpstan-ignore-next-line
-            ->when($missedBlocksSortKey === 'age', fn ($query) => $query->sortByAge($sortDirection))
-            // @phpstan-ignore-next-line
-            ->when($missedBlocksSortKey === 'name', fn ($query) => $query->sortByUsername($sortDirection))
-            // @phpstan-ignore-next-line
-            ->when($missedBlocksSortKey === 'votes' || $missedBlocksSortKey === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
-            // @phpstan-ignore-next-line
-            ->when($missedBlocksSortKey === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
+            ->when($sortBy === 'height', fn ($query) => $query->sortByHeight($sortDirection))
+            ->when($sortBy === 'age', fn ($query) => $query->sortByAge($sortDirection))
+            ->when($sortBy === 'name', fn ($query) => $query->sortByUsername($sortDirection))
+            ->when($sortBy === 'votes' || $sortBy === 'percentage_votes', fn ($query) => $query->sortByVoteCount($sortDirection))
+            ->when($sortBy === 'no_of_voters', fn ($query) => $query->sortByNumberOfVoters($sortDirection))
             ->whereNotNull('missed_height')
             ->paginate($this->perPage(), page: $this->page())
             ->through(fn (ForgingStats $voter) => ForgingStatsDTO::fromModel($voter));

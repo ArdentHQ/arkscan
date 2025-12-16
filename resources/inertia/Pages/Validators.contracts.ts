@@ -34,7 +34,18 @@ export interface IValidatorsStatistics {
 export interface ValidatorsProps {
     statistics: IValidatorsStatistics;
     validators: IPaginatedResponse<IValidator>;
-    filters: ITabbedData<IFilters>;
+    filters: {
+        validators: {
+            active: boolean;
+            standby: boolean;
+            dormant: boolean;
+            resigned: boolean;
+        };
+        ["recent-votes"]: {
+            vote: boolean;
+            unvote: boolean;
+        };
+    };
     recentVotes: IPaginatedResponse<ITransaction>;
     missedBlocks: IPaginatedResponse<IForgingStats>;
 }

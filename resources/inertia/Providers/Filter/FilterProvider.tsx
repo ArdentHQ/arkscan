@@ -37,7 +37,7 @@ export default function FilterProvider({
 }: {
     initialOptions: IFilterEntry[];
     children: React.ReactNode;
-    onChange: (filters: IFilters) => void;
+    onChange?: (filters: IFilters) => void;
 }) {
     const isMounting = useRef(false);
 
@@ -76,7 +76,7 @@ export default function FilterProvider({
             preserveScroll: true,
             onSuccess: () => {
                 refreshPage(() => {
-                    onChange(selectedFilters);
+                    onChange?.(selectedFilters);
                 });
             },
         });
