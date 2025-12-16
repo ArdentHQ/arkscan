@@ -364,48 +364,50 @@ return [
     ],
 
     'validators'        => [
-        'title'               => 'Validators',
-        'subtitle'            => 'List of validators registered on the network.',
-        'x_validators'        => '{1} 1 Validator|:count Validators',
-        'voting_x_addresses'  => 'Voting (:count Addresses)',
+        'title'                 => 'Validators',
+        'subtitle'              => 'List of validators registered on the network.',
+        'x_validators'          => '{1} 1 Validator|:count Validators',
+        'x_validators_singular' => ':count Validator',
+        'x_validators_plural'   => ':count Validators',
+        'voting_x_addresses'    => 'Voting (:count Addresses)',
 
-        'missed-blocks'      => [
+        'missed-blocks'         => [
             'title'          => 'Missed Blocks (30 Days)',
             'results_suffix' => '(30 Days)',
         ],
 
-        'recent-votes'      => [
+        'recent-votes'          => [
             'results_suffix' => '(30 Days)',
         ],
 
-        'explore'            => [
+        'explore'               => [
             'title'    => 'How can I become a validator?',
             'subtitle' => 'Step-by-step guide on how to register as a validator',
             'action'   => 'Explore',
         ],
 
-        'tabs'               => [
+        'tabs'                  => [
             'validators'     => 'Validators',
             'missed_blocks'  => 'Missed Blocks',
             'recent_votes'   => 'Recent Votes',
         ],
 
-        'active'             => 'Active',
-        'standby'            => 'Standby',
-        'resigned'           => 'Resigned',
-        'dormant'            => 'Dormant',
-        'order'              => 'Order',
-        'name'               => 'Validator Name',
-        'forging_at'         => 'Time to Forge',
-        'status'             => 'Status',
-        'block_id'           => 'Block ID',
-        'success'            => 'Block Generated',
-        'warning'            => 'Block Missed',
-        'danger'             => ':0 Blocks Missed',
-        'completed'          => 'Completed',
-        'next'               => 'Next',
-        'now'                => 'Now',
-        'monitor'            => 'Monitor',
+        'active'                => 'Active',
+        'standby'               => 'Standby',
+        'resigned'              => 'Resigned',
+        'dormant'               => 'Dormant',
+        'order'                 => 'Order',
+        'name'                  => 'Validator Name',
+        'forging_at'            => 'Time to Forge',
+        'status'                => 'Status',
+        'block_id'              => 'Block ID',
+        'success'               => 'Block Generated',
+        'warning'               => 'Block Missed',
+        'danger'                => ':0 Blocks Missed',
+        'completed'             => 'Completed',
+        'next'                  => 'Next',
+        'now'                   => 'Now',
+        'monitor'               => 'Monitor',
 
         'dormant_tooltip' => 'Inactive Validator: awaiting BLS key registration',
 

@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import TabsContext from "./TabsContext";
 import { ITab, ITabsContextType, ITabsQueryString, TabChangedMethod } from "./types";

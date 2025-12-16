@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
 export default function Badge({
-    colors = "border-transparent bg-theme-secondary-200 dark:border-theme-dark-700 dark:text-theme-dark-200",
+    colors = "border-transparent bg-theme-secondary-200 dark:border-theme-dark-700 dark:text-theme-dark-200 text-theme-secondary-700",
     className = "",
     children,
 }: {

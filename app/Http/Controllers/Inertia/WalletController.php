@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Inertia;
 use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
 use App\Models\Scopes\OrderByBalanceScope;
@@ -26,6 +27,8 @@ use Inertia\Response;
 
 final class WalletController
 {
+    use WithPagination;
+
     public const FILTERS = [
         'transactions' => [
             'outgoing'            => true,
@@ -118,16 +121,6 @@ final class WalletController
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage(), page: $this->page())
             ->through(fn (Wallet $voter) => WalletDTO::fromModel($voter));
-    }
-
-    private function page(): int
-    {
-        return (int) request()->get('page', 1);
-    }
-
-    private function perPage(): int
-    {
-        return (int) request()->get('per-page', 25);
     }
 
     private function filter(string $key): bool
