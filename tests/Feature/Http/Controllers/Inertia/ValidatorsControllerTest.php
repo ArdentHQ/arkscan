@@ -16,9 +16,11 @@ use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
 
+use function Tests\fakeKnownWallets;
 use function Tests\faker;
 
 beforeEach(function () {
@@ -129,6 +131,59 @@ it('should expose filters and statistics data', function () {
 });
 
 describe('Recent Votes', function () {
+    function generateTransactions(): array
+    {
+        $validator1 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0x522CbD1C22529a27ba4BFDBf4b6f037F71b2AC77',
+            'attributes' => [
+                'username' => 'validator-1',
+            ],
+        ]);
+
+        $validator2 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0x09C94A51cb63b4b70A9Dbf190543c371741D13Fd',
+            'attributes' => [
+                'username' => 'validator-2',
+            ],
+        ]);
+
+        $validator3 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0x2a74550fC2e741118182B7ab020DC0B7Ed01e1db',
+            'attributes' => [
+                'username' => 'validator-3',
+            ],
+        ]);
+
+        $sender1 = Wallet::factory()->create(['address' => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B']);
+        $sender2 = Wallet::factory()->create(['address' => '0x38b4a84773bC55e88D07cBFC76444C2A37600084']);
+
+        $voteTransaction = Transaction::factory()
+            ->vote($validator1->address)
+            ->create([
+                'timestamp'      => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+                'from'           => $sender1->address,
+                'status'         => true,
+            ]);
+
+        $unvoteTransaction = Transaction::factory()
+        ->unvote()
+        ->create([
+            'timestamp'      => Carbon::parse('2023-09-18 04:41:04')->getTimestampMs(),
+            'from'           => $sender2->address,
+            'status'         => true,
+        ]);
+
+        return [
+            'validator1'           => $validator1,
+            'validator2'           => $validator2,
+            'validator3'           => $validator3,
+            'voteTransaction'      => $voteTransaction,
+            'unvoteTransaction'    => $unvoteTransaction,
+        ];
+    };
+
+    beforeEach(fn () => $this->travelTo('2023-09-20 05:41:04'));
+
     it('should provide recent votes data', function () {
         $this->freezeTime();
         $this->travelTo('2025-09-11 12:00:00');
@@ -298,6 +353,370 @@ describe('Recent Votes', function () {
             queryString: [
                 'vote'   => 0,
                 'unvote' => 1,
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort by age descending by default', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->has('recentVotes.data', 2)
+                    ->where('recentVotes.data.0.hash', $data['unvoteTransaction']->hash)
+                    ->where('recentVotes.data.1.hash', $data['voteTransaction']->hash);
+            },
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort age in ascending order', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->has('recentVotes.data', 2)
+                    ->where('recentVotes.data.0.hash', $data['voteTransaction']->hash)
+                    ->where('recentVotes.data.1.hash', $data['unvoteTransaction']->hash);
+            },
+            queryString: [
+                'sort'           => 'age',
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort address in ascending order', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->has('recentVotes.data', 2)
+                    ->where('recentVotes.data.0.hash', $data['unvoteTransaction']->hash)
+                    ->where('recentVotes.data.1.hash', $data['voteTransaction']->hash);
+            },
+            queryString: [
+                'sort'           => 'address',
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort address in descending order', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->has('recentVotes.data', 2)
+                    ->where('recentVotes.data.0.hash', $data['voteTransaction']->hash)
+                    ->where('recentVotes.data.1.hash', $data['unvoteTransaction']->hash);
+            },
+            queryString: [
+                'sort'           => 'address',
+                'sort-direction' => 'desc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort type in ascending order', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->has('recentVotes.data', 2)
+                    ->where('recentVotes.data.0.hash', $data['voteTransaction']->hash)
+                    ->where('recentVotes.data.1.hash', $data['unvoteTransaction']->hash);
+            },
+            queryString: [
+                'sort'           => 'type',
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort type in descending order', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->has('recentVotes.data', 2)
+                    ->where('recentVotes.data.0.hash', $data['unvoteTransaction']->hash)
+                    ->where('recentVotes.data.1.hash', $data['voteTransaction']->hash);
+            },
+            queryString: [
+                'sort'           => 'type',
+                'sort-direction' => 'desc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should force default sort direction if invalid query string value', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->has('recentVotes.data', 2)
+                    ->where('recentVotes.data.0.hash', $data['unvoteTransaction']->hash)
+                    ->where('recentVotes.data.1.hash', $data['voteTransaction']->hash);
+            },
+            queryString: [
+                'sort'           => 'type',
+                'sort-direction' => 'testing',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort name then address in ascending order when missing names', function () {
+        $validator1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'username' => 'validator-name',
+            ],
+        ]);
+
+        $validator2 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'attributes' => [
+                'username' => null,
+            ],
+        ]);
+
+        $voteTransaction = Transaction::factory()->vote($validator1->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $unvoteTransaction = Transaction::factory()->unvote()->create([
+            'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $voteTransaction2 = Transaction::factory()->vote($validator2->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $unvoteTransaction2 = Transaction::factory()->unvote()->create([
+            'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($voteTransaction, $voteTransaction2, $unvoteTransaction, $unvoteTransaction2) {
+                $reload->has('recentVotes.data', 4)
+                    ->where('recentVotes.data.0.hash', $voteTransaction2->hash)
+                    ->where('recentVotes.data.1.hash', $voteTransaction->hash)
+                    ->where('recentVotes.data.2.hash', $unvoteTransaction->hash)
+                    ->where('recentVotes.data.3.hash', $unvoteTransaction2->hash);
+            },
+            queryString: [
+                'sort'           => 'name',
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort name then address in descending order when missing names', function () {
+        $validator1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'username' => 'validator-name',
+            ],
+        ]);
+
+        $validator2 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'attributes' => [
+                'username' => null,
+            ],
+        ]);
+
+        $voteTransaction = Transaction::factory()->vote($validator1->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $unvoteTransaction = Transaction::factory()->unvote()->create([
+            'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $voteTransaction2 = Transaction::factory()->vote($validator2->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $unvoteTransaction2 = Transaction::factory()->unvote()->create([
+            'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($voteTransaction, $voteTransaction2, $unvoteTransaction, $unvoteTransaction2) {
+                $reload->has('recentVotes.data', 4)
+                    ->where('recentVotes.data.0.hash', $voteTransaction->hash)
+                    ->where('recentVotes.data.1.hash', $voteTransaction2->hash)
+                    ->where('recentVotes.data.2.hash', $unvoteTransaction->hash)
+                    ->where('recentVotes.data.3.hash', $unvoteTransaction2->hash);
+            },
+            queryString: [
+                'sort'           => 'name',
+                'sort-direction' => 'desc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort known name, then name, then address in ascending order when missing names', function () {
+        fakeKnownWallets();
+
+        Config::set('arkscan.networks.development.knownWallets', 'http://some.url');
+
+        $validator1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'username' => 'validator-name',
+            ],
+        ]);
+
+        $validator2 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0x2a74550fC2e741118182B7ab020DC0B7Ed01e1db',
+            'attributes' => [
+                'username' => null,
+            ],
+        ]);
+
+        $validator3 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'attributes' => [
+                'username' => 'validator-3',
+            ],
+        ]);
+
+        $voteTransaction1 = Transaction::factory()->vote($validator1->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $unvoteTransaction = Transaction::factory()->unvote()->create([
+            'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $voteTransaction2 = Transaction::factory()->vote($validator2->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $unvoteTransaction2 = Transaction::factory()->unvote()->create([
+            'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $voteTransaction3 = Transaction::factory()->vote($validator3->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        Artisan::call('explorer:cache-known-wallets');
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($voteTransaction1, $voteTransaction2, $voteTransaction3, $unvoteTransaction, $unvoteTransaction2) {
+                $reload->has('recentVotes.data', 5)
+                    ->where('recentVotes.data.0.hash', $voteTransaction2->hash)
+                    ->where('recentVotes.data.1.hash', $voteTransaction3->hash)
+                    ->where('recentVotes.data.2.hash', $voteTransaction1->hash)
+                    ->where('recentVotes.data.3.hash', $unvoteTransaction->hash)
+                    ->where('recentVotes.data.4.hash', $unvoteTransaction2->hash);
+            },
+            queryString: [
+                'sort'           => 'name',
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should sort known name, then name, then address in descending order when missing names', function () {
+        fakeKnownWallets();
+
+        Config::set('arkscan.networks.development.knownWallets', 'http://some.url');
+
+        $validator1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'username' => 'validator-name',
+            ],
+        ]);
+
+        $validator2 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0x2a74550fC2e741118182B7ab020DC0B7Ed01e1db',
+            'attributes' => [
+                'username' => null,
+            ],
+        ]);
+
+        $validator3 = Wallet::factory()->activeValidator()->create([
+            'address'    => '0xC5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'attributes' => [
+                'username' => 'validator-3',
+            ],
+        ]);
+
+        $voteTransaction1 = Transaction::factory()->vote($validator1->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $unvoteTransaction = Transaction::factory()->unvote()->create([
+            'timestamp' => Carbon::parse('2023-09-18 04:41:05')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $voteTransaction2 = Transaction::factory()->vote($validator2->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 05:41:06')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $unvoteTransaction2 = Transaction::factory()->unvote()->create([
+            'timestamp' => Carbon::parse('2023-09-18 06:41:07')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        $voteTransaction3 = Transaction::factory()->vote($validator3->address)->create([
+            'timestamp' => Carbon::parse('2023-09-18 07:41:06')->getTimestampMs(),
+            'status'    => true,
+        ]);
+
+        Artisan::call('explorer:cache-known-wallets');
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($voteTransaction1, $voteTransaction2, $voteTransaction3, $unvoteTransaction, $unvoteTransaction2) {
+                $reload->has('recentVotes.data', 5)
+                    ->where('recentVotes.data.0.hash', $voteTransaction1->hash)
+                    ->where('recentVotes.data.1.hash', $voteTransaction3->hash)
+                    ->where('recentVotes.data.2.hash', $voteTransaction2->hash)
+                    ->where('recentVotes.data.3.hash', $unvoteTransaction->hash)
+                    ->where('recentVotes.data.4.hash', $unvoteTransaction2->hash);
+            },
+            queryString: [
+                'sort'           => 'name',
+                'sort-direction' => 'desc',
             ],
             reloadProps: 'recentVotes',
         );
