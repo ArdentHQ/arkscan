@@ -797,6 +797,42 @@ describe('Recent Votes', function () {
             reloadProps: 'recentVotes',
         );
     });
+
+    it('should handle empty table when sorting', function ($sortBy) {
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('recentVotes.data', [])
+                    ->where('recentVotes.total', 0)
+                    ->where('recentVotes.noResultsMessage', trans('tables.recent-votes.no_results.no_results'));
+            },
+            queryString: [
+                'sort' => $sortBy,
+                'sort-direction' => 'desc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('recentVotes.data', [])
+                    ->where('recentVotes.total', 0)
+                    ->where('recentVotes.noResultsMessage', trans('tables.recent-votes.no_results.no_results'));
+            },
+            queryString: [
+                'sort' => $sortBy,
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'recentVotes',
+        );
+    })->with([
+        'age',
+        'address',
+        'type',
+        'name',
+    ]);
+
 });
 
 describe('Missed Blocks', function () {
@@ -1113,6 +1149,86 @@ describe('Missed Blocks', function () {
             },
             queryString: [
                 'sort'           => 'no_of_voters',
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'missedBlocks',
+        );
+    });
+
+    it('should sort name in descending order', function () {
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'address' => '0xA5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'attributes' => [
+                'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
+                'username'             => 'validator-a',
+            ],
+        ]);
+
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'address' => '0xB5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'attributes' => [
+                'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
+                'username'             => 'validator-b',
+            ],
+        ]);
+
+        ForgingStats::factory()->create([
+            'address' => $wallet1->address,
+        ]);
+
+        ForgingStats::factory()->create([
+            'address' => $wallet2->address,
+        ]);
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($wallet1, $wallet2) {
+                $reload->has('missedBlocks.data', 2)
+                    ->where('missedBlocks.data.0.validator.address', $wallet2->address)
+                    ->where('missedBlocks.data.1.validator.address', $wallet1->address);
+            },
+            queryString: [
+                'sort'           => 'name',
+                'sort-direction' => 'desc',
+            ],
+            reloadProps: 'missedBlocks',
+        );
+    });
+
+    it('should sort name in ascending order', function () {
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'address' => '0xA5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'attributes' => [
+                'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
+                'username'             => 'validator-a',
+            ],
+        ]);
+
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'address' => '0xB5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'attributes' => [
+                'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
+                'username'             => 'validator-b',
+            ],
+        ]);
+
+        ForgingStats::factory()->create([
+            'address' => $wallet1->address,
+        ]);
+
+        ForgingStats::factory()->create([
+            'address' => $wallet2->address,
+        ]);
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($wallet1, $wallet2) {
+                $reload->has('missedBlocks.data', 2)
+                    ->where('missedBlocks.data.0.validator.address', $wallet1->address)
+                    ->where('missedBlocks.data.1.validator.address', $wallet2->address);
+            },
+            queryString: [
+                'sort'           => 'name',
                 'sort-direction' => 'asc',
             ],
             reloadProps: 'missedBlocks',
@@ -1621,6 +1737,43 @@ describe('Missed Blocks', function () {
         'votes',
         'percentage_votes',
     ]);
+
+    it('should handle empty table when sorting', function ($sortBy) {
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('missedBlocks.data', [])
+                    ->where('missedBlocks.total', 0)
+                    ->where('missedBlocks.noResultsMessage', trans('tables.missed-blocks.no_results'));
+            },
+            queryString: [
+                'sort' => $sortBy,
+                'sort-direction' => 'desc',
+            ],
+            reloadProps: 'missedBlocks',
+        );
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('missedBlocks.data', [])
+                    ->where('missedBlocks.total', 0)
+                    ->where('missedBlocks.noResultsMessage', trans('tables.missed-blocks.no_results'));
+            },
+            queryString: [
+                'sort' => $sortBy,
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'missedBlocks',
+        );
+    })->with([
+        'age',
+        'name',
+        'height',
+        'no_of_voters',
+        'votes',
+        'percentage_votes',
+    ]);
 });
 
 describe('Validators', function () {
@@ -1913,6 +2066,44 @@ describe('Validators', function () {
             reloadProps: 'validators',
         );
     });
+
+    it('should handle empty table when sorting', function ($sortBy) {
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('validators.data', [])
+                    ->where('validators.total', 0)
+                    ->where('validators.noResultsMessage', trans('tables.validators.no_results.no_results'));
+            },
+            queryString: [
+                'sort' => $sortBy,
+                'sort-direction' => 'desc',
+            ],
+            reloadProps: 'validators',
+        );
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('validators.data', [])
+                    ->where('validators.total', 0)
+                    ->where('validators.noResultsMessage', trans('tables.validators.no_results.no_results'));
+            },
+            queryString: [
+                'sort' => $sortBy,
+                'sort-direction' => 'asc',
+            ],
+            reloadProps: 'validators',
+        );
+    })->with([
+        'age',
+        'name',
+        'rank',
+        'votes',
+        'percentage_votes',
+        'no_of_voters',
+        'missed_blocks',
+    ]);
 
     it('should return no results message when there are no validators', function () {
         performValidatorsRequest(
