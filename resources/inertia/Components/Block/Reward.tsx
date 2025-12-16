@@ -13,7 +13,7 @@ export default function Reward({
     className?: string;
 }) {
     return (
-        <>
+        <div>
             <AmountFiatTooltip
                 amount={block.totalReward}
                 fiat={block.totalRewardFiat}
@@ -22,8 +22,8 @@ export default function Reward({
             />
 
             {!withoutValue && (
-                <div className="mt-1 text-xs font-semibold leading-4.25 xl:hidden">{block.rewardFiat}</div>
+                <div className="mt-1 text-xs font-semibold leading-4.25 lg:hidden">{block.rewardFiat}</div>
             )}
-        </>
+        </div>
     );
 }

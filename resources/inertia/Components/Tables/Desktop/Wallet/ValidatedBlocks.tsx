@@ -36,6 +36,12 @@ export function Row({ row }: { row: IBlock }) {
             <TableCell className="text-right" last-on={network?.canBeExchanged ? "lg" : undefined}>
                 <Reward block={row} withoutValue={!network?.canBeExchanged} />
             </TableCell>
+
+            {network?.canBeExchanged && (
+                <TableCell className="text-right" breakpoint="lg" responsive>
+                    {row.rewardFiat}
+                </TableCell>
+            )}
         </tr>
     );
 }
@@ -88,20 +94,18 @@ export function ValidatedBlocksTable({
                     </TableHeader>
 
                     {network?.canBeExchanged && (
-                        <>
-                            <TableHeader
-                                className="whitespace-nowrap"
-                                breakpoint="lg"
-                                responsive
-                                tooltip={t("pages.wallets.blocks.value_tooltip", {
-                                    currency: network!.currency,
-                                })}
-                            >
-                                {t("tables.blocks.value", {
-                                    currency: network!.currency,
-                                })}
-                            </TableHeader>
-                        </>
+                        <TableHeader
+                            className="whitespace-nowrap text-right"
+                            breakpoint="lg"
+                            responsive
+                            tooltip={t("pages.wallets.blocks.value_tooltip", {
+                                currency: network!.currency,
+                            })}
+                        >
+                            {t("tables.blocks.value", {
+                                currency: network!.currency,
+                            })}
+                        </TableHeader>
                     )}
                 </>
             }

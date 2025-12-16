@@ -122,7 +122,7 @@ it('should show 0 if no corresponding validator registration', function () {
         ->assertOk()
         ->assertSeeHtmlInOrder([
             trans('pages.transaction.header.unlocked_amount'),
-            ' 0 DARK',
+            '0.00',
             trans('pages.transaction.legacy_registration_tooltip'),
         ]);
 });
