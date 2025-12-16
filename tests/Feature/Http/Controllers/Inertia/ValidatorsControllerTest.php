@@ -358,6 +358,82 @@ describe('Recent Votes', function () {
         );
     });
 
+    it('should respect recent votes page query parameter', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->where('recentVotes.current_page', 2)
+                    ->where('recentVotes.per_page', 1)
+                    ->where('recentVotes.data.0.hash', $data['voteTransaction']->hash);
+            },
+            queryString: [
+                'page'     => 2,
+                'per-page' => 1,
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should fall back to the default page parameter when recent votes page is missing', function () {
+        $data = generateTransactions();
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) use ($data) {
+                $reload->where('recentVotes.current_page', 1)
+                    ->where('recentVotes.per_page', 1)
+                    ->where('recentVotes.data.0.hash', $data['unvoteTransaction']->hash);
+            },
+            queryString: [
+                'per-page' => 1,
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
+    it('should honor the per-page parameter for recent votes', function () {
+        $validator1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'username' => 'validator-name',
+            ],
+        ]);
+
+        Transaction::factory()
+            ->vote($validator1->address)
+            ->create([
+                'timestamp' => Carbon::parse('2023-09-18 03:41:04')->getTimestampMs(),
+                'status'    => true,
+            ]);
+
+        Transaction::factory()
+            ->vote($validator1->address)
+            ->create([
+                'timestamp' => Carbon::parse('2023-09-18 02:41:04')->getTimestampMs(),
+                'status'    => true,
+            ]);
+
+        Transaction::factory()
+            ->vote($validator1->address)
+            ->create([
+                'timestamp' => Carbon::parse('2023-09-18 01:41:04')->getTimestampMs(),
+                'status'    => true,
+            ]);
+
+        performValidatorsRequest(
+            $this,
+            reloadCallback: function (Assert $reload) {
+                $reload->where('recentVotes.per_page', 2)
+                    ->has('recentVotes.data', 2);
+            },
+            queryString: [
+                'per-page' => 2,
+            ],
+            reloadProps: 'recentVotes',
+        );
+    });
+
     it('should sort by age descending by default', function () {
         $data = generateTransactions();
 
