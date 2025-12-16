@@ -94,37 +94,43 @@ export default function RecentVotesTableWrapper({
 
     if (!recentVotes || isLoading) {
         return (
-            <LoadingTable
-                mobile={mobile}
-                paginator={recentVotes}
-                rowCount={rowCount}
-                header={<RecentVotesHeaderActions />}
-                columns={[
-                    {
-                        name: t("tables.recent-votes.id"),
-                        type: "string",
-                        className: "w-[200px]",
-                    },
-                    {
-                        name: t("tables.recent-votes.age"),
-                        type: "string",
-                        responsive: true,
-                        breakpoint: "xl",
-                    },
-                    {
-                        name: t("tables.recent-votes.addressing"),
-                        type: "address",
-                    },
-                    {
-                        name: t("tables.recent-votes.type"),
-                        type: "string",
-                    },
-                    {
-                        name: t("tables.recent-votes.validator"),
-                        type: "string",
-                    },
-                ]}
-            />
+            <TableSortingProvider initialSortBy="age" initialSortDirection={SortDirection.DESC}>
+                <LoadingTable
+                    mobile={mobile}
+                    paginator={recentVotes}
+                    rowCount={rowCount}
+                    header={<RecentVotesHeaderActions />}
+                    columns={[
+                        {
+                            name: t("tables.recent-votes.id"),
+                            type: "string",
+                            className: "w-[200px]",
+                        },
+                        {
+                            name: t("tables.recent-votes.age"),
+                            type: "string",
+                            responsive: true,
+                            breakpoint: "xl",
+                            sortId: "age",
+                        },
+                        {
+                            name: t("tables.recent-votes.addressing"),
+                            type: "address",
+                            sortId: "address",
+                        },
+                        {
+                            name: t("tables.recent-votes.type"),
+                            type: "string",
+                            sortId: "type",
+                        },
+                        {
+                            name: t("tables.recent-votes.validator"),
+                            type: "string",
+                            sortId: "name",
+                        },
+                    ]}
+                />
+            </TableSortingProvider>
         );
     }
 

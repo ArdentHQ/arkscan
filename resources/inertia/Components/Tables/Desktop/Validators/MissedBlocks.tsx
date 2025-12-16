@@ -115,37 +115,43 @@ export default function MissedBlocksTableWrapper({
         const columns: ILoadingTableColumn[] = [
             {
                 name: t("tables.blocks.height"),
+                sortId: "height",
             },
             {
                 name: t("tables.blocks.age"),
                 breakpoint: "md-lg",
                 responsive: true,
+                sortId: "age",
             },
             {
                 name: t("tables.missed-blocks.validator"),
                 type: "address",
+                sortId: "name",
             },
             {
                 name: t("tables.missed-blocks.no_of_voters"),
                 type: "number",
+                sortId: "no_of_voters",
             },
             {
                 name: t("tables.missed-blocks.votes", {
                     currency: network?.currency,
                 }),
                 type: "number",
+                sortId: "votes",
             },
             {
                 name: t("tables.missed-blocks.percentage"),
                 type: "number",
                 tooltip: t("tables.missed-blocks.info.percentage"),
+                sortId: "percentage_votes",
             },
         ];
 
         return (
-            <>
+            <TableSortingProvider initialSortBy="age" initialSortDirection={SortDirection.DESC} onChange={() => {}}>
                 <LoadingTable mobile={mobile} paginator={blocks} rowCount={rowCount} columns={columns} />
-            </>
+            </TableSortingProvider>
         );
     }
 

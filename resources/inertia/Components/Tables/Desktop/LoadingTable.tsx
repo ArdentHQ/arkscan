@@ -18,6 +18,7 @@ export interface ILoadingTableColumn {
     responsive?: boolean;
     breakpoint?: "sm" | "md" | "md-lg" | "lg" | "xl";
     lastOn?: "sm" | "md" | "md-lg" | "lg" | "xl";
+    sortId?: string;
 }
 
 export function LoadingTableWrapper({
@@ -44,7 +45,8 @@ export function LoadingTableWrapper({
 
             <div
                 className={classNames({
-                    "validator-monitor hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "validator-monitor hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block":
+                        true,
                     "rounded-t-xl": !header,
                     "rounded-b-xl": !withPagination,
                 })}
@@ -64,6 +66,8 @@ export function LoadingTableWrapper({
                                         lastOn={column.lastOn}
                                         responsive={column.responsive}
                                         breakpoint={column.breakpoint}
+                                        sortId={column.sortId}
+                                        sortDisabled={true}
                                     >
                                         {!column.tooltip && (column.name || "")}
 

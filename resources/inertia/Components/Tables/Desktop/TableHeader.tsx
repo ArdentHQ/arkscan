@@ -108,6 +108,7 @@ export default function TableHeader({
     type,
     tooltip,
     sortId,
+    sortDisabled = false,
 
     ...props
 }: React.TdHTMLAttributes<HTMLTableCellElement> &
@@ -121,6 +122,7 @@ export default function TableHeader({
         type?: "string" | "number" | "id";
         tooltip?: string;
         sortId?: string;
+        sortDisabled?: boolean;
     }>) {
     const { t } = useTranslation();
 
@@ -142,7 +144,7 @@ export default function TableHeader({
             {!tooltip && (
                 <>
                     {sortId ? (
-                        <SortableHeader sortId={sortId} disabled={!sortId} type={type}>
+                        <SortableHeader sortId={sortId} disabled={sortDisabled} type={type}>
                             <span>{name ? t(name) : children}</span>
                         </SortableHeader>
                     ) : name ? (
@@ -156,7 +158,7 @@ export default function TableHeader({
             {!!tooltip && (
                 <div className={classNames(["flex items-center space-x-2", type === "number" && "justify-end"])}>
                     {sortId ? (
-                        <SortableHeader sortId={sortId} disabled={!sortId} type={type}>
+                        <SortableHeader sortId={sortId} disabled={sortDisabled} type={type}>
                             <span>{name ? t(name) : children}</span>
 
                             <TableHeaderTooltip text={tooltip} />

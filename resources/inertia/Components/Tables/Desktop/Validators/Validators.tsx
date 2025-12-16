@@ -160,56 +160,64 @@ export default function ValidatorsTableWrapper({
 
     if (!validators || isLoading) {
         return (
-            <LoadingTable
-                mobile={mobile}
-                paginator={validators}
-                rowCount={rowCount}
-                header={<ValidatorsHeaderActions />}
-                columns={[
-                    {
-                        name: t("tables.validators.rank"),
-                        type: "string",
-                        className: "w-[70px]",
-                    },
-                    {
-                        name: t("tables.validators.validator"),
-                        type: "address",
-                    },
-                    {
-                        name: t("tables.validators.status"),
-                    },
-                    {
-                        name: t("tables.validators.no_of_voters"),
-                        type: "number",
-                        className: "whitespace-nowrap text-right",
-                    },
-                    {
-                        name: t("tables.validators.votes", {
-                            currency: network!.currency,
-                        }),
-                        type: "number",
-                        className: "whitespace-nowrap text-right",
-                        responsive: true,
-                    },
-                    {
-                        name: t("tables.validators.percentage"),
-                        type: "number",
-                        className: "text-right",
-                        responsive: true,
-                        breakpoint: "lg",
-                    },
-                    {
-                        name: t("tables.validators.missed_blocks"),
-                        type: "number",
-                        className: "whitespace-nowrap text-right",
-                    },
-                    {
-                        name: "",
-                        type: "string",
-                        className: "w-[70px] text-right",
-                    },
-                ]}
-            />
+            <TableSortingProvider initialSortBy="rank" initialSortDirection={SortDirection.ASC}>
+                <LoadingTable
+                    mobile={mobile}
+                    paginator={validators}
+                    rowCount={rowCount}
+                    header={<ValidatorsHeaderActions />}
+                    columns={[
+                        {
+                            name: t("tables.validators.rank"),
+                            type: "string",
+                            className: "w-[70px]",
+                            sortId: "rank",
+                        },
+                        {
+                            name: t("tables.validators.validator"),
+                            type: "address",
+                            sortId: "name",
+                        },
+                        {
+                            name: t("tables.validators.status"),
+                        },
+                        {
+                            name: t("tables.validators.no_of_voters"),
+                            type: "number",
+                            className: "whitespace-nowrap text-right",
+                            sortId: "no_of_voters",
+                        },
+                        {
+                            name: t("tables.validators.votes", {
+                                currency: network!.currency,
+                            }),
+                            type: "number",
+                            className: "whitespace-nowrap text-right",
+                            responsive: true,
+                            sortId: "votes",
+                        },
+                        {
+                            name: t("tables.validators.percentage"),
+                            type: "number",
+                            className: "text-right",
+                            responsive: true,
+                            breakpoint: "lg",
+                            sortId: "percentage_votes",
+                        },
+                        {
+                            name: t("tables.validators.missed_blocks"),
+                            type: "number",
+                            className: "whitespace-nowrap text-right",
+                            sortId: "missed_blocks",
+                        },
+                        {
+                            name: "",
+                            type: "string",
+                            className: "w-[70px] text-right",
+                        },
+                    ]}
+                />
+            </TableSortingProvider>
         );
     }
 
