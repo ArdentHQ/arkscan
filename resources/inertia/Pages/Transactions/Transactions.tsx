@@ -26,7 +26,7 @@ export default function Transactions({ network }: PageProps<TransactionsProps>) 
                     subtitle={t("pages.transactions.subtitle", { network: network.name })}
                 />
 
-                <p>Transactions</p>
+                {/* Content goes here */}
             </Layout>
         </>
     );
