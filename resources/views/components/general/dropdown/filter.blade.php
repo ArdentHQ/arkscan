@@ -59,14 +59,11 @@
         :dropdown-wrapper-class="Arr::toCssClasses(['w-full',
             'hidden md:block' => ! $mobile,
         ])"
-        dropdown-background="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 py-[0.125rem]"
-        dropdown-padding=""
         :button-class="Arr::toCssClasses(['flex flex-1 justify-center items-center rounded sm:flex-none button-secondary',
             'h-8 w-8 p-0' => $withoutText,
             'w-full sm:py-1.5 sm:px-4 md:p-2' => ! $withoutText,
         ])"
         active-button-class=""
-        content-class=""
         :button-wrapper-class="Arr::toCssClasses(['w-full h-5 md:h-4' => ! $withoutText])"
     >
         <x-slot name="button">

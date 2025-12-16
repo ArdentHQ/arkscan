@@ -25,14 +25,7 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
     const decimals = decimalsFor(currency, showSmallAmounts && isSmallAmount);
 
     if (!isFiat(currency)) {
-        const { currencies } = useSharedData();
-        const symbol = currencies![currency]?.symbol ?? currency;
-        const formatted = new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals,
-        }).format(value);
-
-        return `${symbol} ${formatted}`;
+        return formatWithCurrencyCustom(value, currency, decimals);
     }
 
     const { currencies } = useSharedData();
@@ -44,6 +37,35 @@ export function currency(value: number, currency: string, showSmallAmounts = fal
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
     }).format(value);
+}
+
+export function formatWithCurrencyCustom(
+    value: number | string,
+    currency: string,
+    decimals: number | null = null,
+): string {
+    let result = Number(value).toLocaleString("en-US");
+
+    const valueStr = String(value);
+
+    if (valueStr.includes(".")) {
+        const numericValue = Number(value);
+        const effectiveDecimals = decimals ?? 8;
+        result = numericValue.toFixed(effectiveDecimals);
+
+        if (result.includes(".")) {
+            result = result.replace(/0+$/, "").replace(/\.$/, "");
+        }
+    } else if (valueStr.includes(",")) {
+        result = valueStr;
+    }
+
+    // Gets rid of trailing .00 if amount of decimals is 0
+    if (decimals === 0 && result.includes(".")) {
+        result = result.replace(/0+$/, "").replace(/\.$/, "");
+    }
+
+    return `${result} ${currency.toUpperCase()}`.trim();
 }
 
 export function currencyWithDecimals({
@@ -104,7 +126,7 @@ export function currencyWithDecimals({
     return hideCurrency ? formatted : `${formatted} ${symbol}`;
 }
 
-// Helper function to strip trailing zeros after formatting (used for crypto)
+// Helper function to strip trailing zeros after formatting. Keep minimum two decimals.
 function stripTrailingZeros(str: string): string {
     // Split into integer and fractional parts
     const parts = str.split(".");
@@ -112,9 +134,9 @@ function stripTrailingZeros(str: string): string {
 
     // Remove trailing zeros from fractional part
     let fractional = parts[1].replace(/0+$/, "");
-    // If fractional is empty, remove the decimal point too
-    if (fractional === "") {
-        return parts[0];
+    // Ensure at least two decimals remain
+    while (fractional.length < 2) {
+        fractional += "0";
     }
     return `${parts[0]}.${fractional}`;
 }

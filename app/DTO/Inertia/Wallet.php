@@ -45,14 +45,16 @@ class Wallet extends Data
     ) {
     }
 
-    public static function fromModel(Model $wallet): self
+    public static function fromModel(Model $wallet, bool $isVote = false): self
     {
         $viewModel   = new WalletViewModel($wallet);
         $votedWallet = null;
 
-        $vote        = $viewModel->vote();
-        if ($vote !== null) {
-            $votedWallet = self::fromModel($vote->model());
+        if (! $isVote) {
+            $vote = $viewModel->vote();
+            if ($vote !== null) {
+                $votedWallet = self::fromModel($vote->model(), true);
+            }
         }
 
         $voteUrl = null;

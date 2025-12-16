@@ -41,7 +41,11 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                             currency: network?.currency,
                         })}
                     >
-                        <Amount transaction={transaction} hideCurrency={true} />
+                        <Amount
+                            testId={`wallet:transaction:mobile:${transaction.hash}:amount`}
+                            transaction={transaction}
+                            hideCurrency={true}
+                        />
                     </TableCell>
 
                     <div className="sm:flex sm:flex-1 sm:justify-end">

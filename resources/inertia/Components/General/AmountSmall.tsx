@@ -20,7 +20,7 @@ function AmountSmallWithoutTooltip({
                     &lt;{smallAmount} {hideCurrency ? "" : network!.currency}
                 </>
             ) : (
-                <>{currencyWithDecimals({ value: amount, currency: network!.currency, decimals: 2, hideCurrency })}</>
+                <>{currencyWithDecimals({ value: amount, currency: network!.currency, hideCurrency })}</>
             )}
         </>
     );
@@ -91,7 +91,7 @@ export default function AmountSmall({
     return (
         <>
             {amount === 0 ? (
-                <span>0{!hideCurrency ? " " + network!.currency : ""}</span>
+                <span>0.00{!hideCurrency ? " " + network!.currency : ""}</span>
             ) : (
                 <>
                     {hideTooltip ? (

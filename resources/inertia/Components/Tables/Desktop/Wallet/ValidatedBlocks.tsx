@@ -1,20 +1,21 @@
-import TableCell from "../TableCell";
 import LoadingTable, { ILoadingTableColumn } from "../LoadingTable";
-import { IPaginatedResponse } from "@/types";
-import { IBlock } from "@/types/generated";
-import { useTranslation } from "react-i18next";
-import { Table } from "../Table";
-import TableHeader from "../TableHeader";
-import classNames from "classnames";
-import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
-import Height from "@/Components/Block/Height";
+
 import Age from "@/Components/Model/Age";
-import Reward from "@/Components/Block/Reward";
-import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
-import { useState } from "react";
-import { WalletProps } from "@/Pages/Wallet.contracts";
 import ExportBlocksModal from "./ExportBlocksModal";
+import Height from "@/Components/Block/Height";
+import { IBlock } from "@/types/generated";
+import { IPaginatedResponse } from "@/types";
+import Reward from "@/Components/Block/Reward";
+import { Table } from "../Table";
+import TableCell from "../TableCell";
+import TableHeader from "../TableHeader";
+import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
+import { WalletProps } from "@/Pages/Wallet.contracts";
+import classNames from "classnames";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export function Row({ row }: { row: IBlock }) {
     const { network } = useSharedData();
@@ -36,6 +37,12 @@ export function Row({ row }: { row: IBlock }) {
             <TableCell className="text-right" last-on={network?.canBeExchanged ? "lg" : undefined}>
                 <Reward block={row} withoutValue={!network?.canBeExchanged} />
             </TableCell>
+
+            {network?.canBeExchanged && (
+                <TableCell className="text-right" breakpoint="lg" responsive>
+                    {row.rewardFiat}
+                </TableCell>
+            )}
         </tr>
     );
 }
@@ -89,21 +96,19 @@ export function ValidatedBlocksTable({
                     </TableHeader>
 
                     {network?.canBeExchanged && (
-                        <>
-                            <TableHeader
-                                className="whitespace-nowrap"
-                                breakpoint="lg"
-                                responsive
-                                tooltip={t("pages.wallets.blocks.value_tooltip", {
-                                    currency: network!.currency,
-                                })}
-                                type="number"
-                            >
-                                {t("tables.blocks.value", {
-                                    currency: network!.currency,
-                                })}
-                            </TableHeader>
-                        </>
+                        <TableHeader
+                            className="whitespace-nowrap text-right"
+                            breakpoint="lg"
+                            responsive
+                            tooltip={t("pages.wallets.blocks.value_tooltip", {
+                                currency: network!.currency,
+                            })}
+                            type="number"
+                        >
+                            {t("tables.blocks.value", {
+                                currency: network!.currency,
+                            })}
+                        </TableHeader>
                     )}
                 </>
             }

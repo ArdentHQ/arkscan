@@ -21,6 +21,13 @@ final class CacheBlocks implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    /**
+     * CacheBlocks is scheduled every five minutes, so Horizon does not need to retry failures.
+     *
+     * @var int
+     */
+    public $tries = 1;
+
     public function handle(BlockCache $cache): void
     {
         $largestBlockByFees             = (new HighestBlockFeeAggregate())->aggregate();

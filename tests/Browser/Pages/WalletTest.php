@@ -2,14 +2,19 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Models\Block;
+use App\Models\MultiPayment;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
+use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
+use App\Services\NumberFormatter;
 use Facebook\WebDriver\WebDriverBy;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Dusk\Browser;
 
@@ -328,6 +333,133 @@ describe('Overview', function () {
             expect($events[0])->toEqual(['qr_code_opened']);
         });
     });
+
+    it('should switch to voters tab and scroll down when clicking "View" for votes', function ($resolution) {
+        $wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $wallet->address,
+                'to'                => $wallet->address,
+                'sender_public_key' => $wallet->public_key,
+            ]);
+
+        Wallet::factory()
+            ->count(20)
+            ->create([
+                'attributes' => [
+                    'vote' => $wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText('5 results', ignoreCase: true);
+
+            $browser->clickAtXPath('//button[.//text()="View"]')
+                ->waitForText('20 results', ignoreCase: true)
+                ->pause(400);
+
+            $scrollTop    = $browser->script('return window.scrollY;')[0];
+            $navbarHeight = $browser->script('return document.querySelector("#navbar")?.clientHeight || 0;')[0];
+            $offsetTop    = $browser->script('return document.getElementById("wallet:tabs:content").offsetTop;')[0];
+
+            expect($scrollTop)->toEqual($offsetTop - $navbarHeight);
+        });
+    })->with('resolutions');
+
+    it('should scroll to voters tab if already visible when clicking "View" for votes', function ($resolution) {
+        $wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $wallet->address,
+                'to'                => $wallet->address,
+                'sender_public_key' => $wallet->public_key,
+            ]);
+
+        Wallet::factory()
+            ->count(20)
+            ->create([
+                'attributes' => [
+                    'vote' => $wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('button#tab-voters')
+                ->waitForText('20 results', ignoreCase: true);
+
+            $browser->clickAtXPath('//button[.//text()="View"]')
+                ->pause(500);
+
+            $scrollTop    = $browser->script('return window.scrollY;')[0];
+            $navbarHeight = $browser->script('return document.querySelector("#navbar")?.clientHeight || 0;')[0];
+            $offsetTop    = $browser->script('return document.getElementById("wallet:tabs:content").offsetTop;')[0];
+
+            expect($scrollTop)->toEqual($offsetTop - $navbarHeight);
+        });
+    })->with('resolutions');
+
+    it('should clear scroll event after clicking "View" for votes', function ($resolution) {
+        $wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $wallet->address,
+                'to'                => $wallet->address,
+                'sender_public_key' => $wallet->public_key,
+            ]);
+
+        Wallet::factory()
+            ->count(20)
+            ->create([
+                'attributes' => [
+                    'vote' => $wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText('5 results', ignoreCase: true);
+
+            $browser->clickAtXPath('//button[.//text()="View"]')
+                ->waitForText('20 results', ignoreCase: true)
+                ->pause(400);
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('button#tab-voters')
+                ->waitForText('20 results', ignoreCase: true)
+                ->pause(400);
+
+            $scrollTop = $browser->script('return window.scrollY;')[0];
+
+            expect($scrollTop)->toEqual(0);
+        });
+    })->with('resolutions');
 });
 
 describe('Transactions Tab', function () {
@@ -355,6 +487,100 @@ describe('Transactions Tab', function () {
             foreach ($transactions as $transaction) {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
             }
+        });
+    })->with('resolutions');
+
+    it('should correctly format amounts', function (float $amount, string $expected, array $resolution) {
+        $transaction = Transaction::factory()
+            ->transfer()
+            ->create([
+                'value'             => BigNumber::new($amount * 1e18),
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transaction, $resolution, $expected) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5));
+
+            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            if ($resolution['width'] <= 640) {
+                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+            }
+
+            $browser->waitForTextIn($selector, $expected);
+        });
+    })
+    ->with([
+        '2'                => [2.34, '2.34'],
+        '3'                => [2.345, '2.345'],
+        '4'                => [2.3456, '2.3456'],
+        '5'                => [2.34567, '2.34567'],
+        '6'                => [2.345678, '2.345678'],
+        '7'                => [2.3456789, '2.3456789'],
+        '8'                => [2.34567891, '2.34567891'],
+        '8 after rounding' => [2.345678915, '2.34567892'],
+    ])
+    ->with('resolutions');
+
+    it('should correctly format multipayment transactions', function ($resolution) {
+        $transaction = Transaction::factory()
+            ->multiPayment(
+                [
+                    $this->wallet->address,
+                    $this->recipientWallet->address,
+                ],
+                [
+                    BigNumber::new(123.5 * 1e18),
+                    BigNumber::new(456 * 1e18),
+                ],
+            )
+            ->create([
+                'from'              => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        MultiPayment::factory()
+            ->count(2)
+            ->state(new Sequence(
+                [
+                    'to'     => $this->wallet->address,
+                    'amount' => BigNumber::new(123.5 * 1e18),
+                ],
+                [
+                    'to'     => $this->recipientWallet->address,
+                    'amount' => BigNumber::new(456 * 1e18),
+                ],
+            ))
+            ->create([
+                'from' => $transaction->from,
+                'hash' => $transaction->hash,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transaction, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5));
+
+            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            if ($resolution['width'] <= 640) {
+                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+            }
+
+            $browser->waitForTextIn($selector, '456')
+                ->mouseOver($selector.' .tooltip-content')
+                ->waitForText(trans('general.fiat_excluding_self', ['amount' => NumberFormatter::currency(123.5, Network::currency())]));
+
+            $browser->visitRoute('wallet', $this->recipientWallet)
+                ->waitForText('1 result', ignoreCase: true)
+                ->assertSee(substr($transaction->hash, 0, 5))
+                ->assertSee('+ 456');
         });
     })->with('resolutions');
 
