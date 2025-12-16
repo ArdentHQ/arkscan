@@ -9,12 +9,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
+use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ThemeController;
-use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\TransactionsController as LegacyTransactionsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -42,6 +43,7 @@ Route::get('/blocks', BlocksController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
+Route::get('/transactions-old', LegacyTransactionsController::class)->name('transactions-old');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
