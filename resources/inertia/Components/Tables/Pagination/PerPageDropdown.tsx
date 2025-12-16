@@ -6,6 +6,7 @@ import { IPaginatedResponse } from "@/types";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
+import { useTranslation } from "react-i18next";
 
 function PerPageComponent({
     disabled = false,
@@ -16,8 +17,11 @@ function PerPageComponent({
     paginator: IPaginatedResponse<any>;
     onChange: (perPage: number) => void;
 }) {
+    const { t } = useTranslation();
     const [perPage, setPerPage] = useState<number>();
     const { isOpen } = useDropdown();
+    const perPageOptions =
+        paginator.perPageOptions ?? (t("pagination.per_page_options", { returnObjects: true }) as number[]);
 
     useEffect(() => {
         if (perPage !== undefined) {
@@ -53,21 +57,15 @@ function PerPageComponent({
             }
             testId="pagination:per-page-dropdown"
         >
-            <DropdownItem onClick={() => setPerPage(10)} selected={(paginator.per_page ?? perPage) === 10}>
-                10
-            </DropdownItem>
-
-            <DropdownItem onClick={() => setPerPage(25)} selected={(paginator.per_page ?? perPage) === 25}>
-                25
-            </DropdownItem>
-
-            <DropdownItem onClick={() => setPerPage(50)} selected={(paginator.per_page ?? perPage) === 50}>
-                50
-            </DropdownItem>
-
-            <DropdownItem onClick={() => setPerPage(100)} selected={(paginator.per_page ?? perPage) === 100}>
-                100
-            </DropdownItem>
+            {perPageOptions.map((option: number) => (
+                <DropdownItem
+                    key={option}
+                    onClick={() => setPerPage(option)}
+                    selected={(paginator.per_page ?? perPage) === option}
+                >
+                    {option}
+                </DropdownItem>
+            ))}
         </Dropdown>
     );
 }

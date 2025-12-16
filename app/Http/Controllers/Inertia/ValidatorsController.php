@@ -54,8 +54,10 @@ final class ValidatorsController
 
                     'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getValidatorsNoResultsMessageProperty($paginator->count()),
+                    'perPageOptions'   => trans('tables.validators.validator_per_page_options'),
                 ];
             }),
+
             'recentVotes' => Inertia::optional(function () {
                 $paginator = $this->getRecentVotes();
 
@@ -66,13 +68,6 @@ final class ValidatorsController
                     'noResultsMessage' => $this->getRecentVotesNoResultsMessageProperty($paginator->count()),
                 ];
             }),
-            'statistics' => [
-                'voterCount'       => $voterCount,
-                'totalVoted'       => $totalVoted,
-                'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
-                'missedBlocks'     => $missedBlockCount,
-                'validatorsMissed' => $validatorsMissed,
-            ],
 
             'missedBlocks' => Inertia::optional(function () {
                 $paginator = $this->getMissedBlocks();
@@ -84,6 +79,14 @@ final class ValidatorsController
                     'noResultsMessage' => $this->getMissedBlocksNoResultsMessageProperty($paginator->count()),
                 ];
             }),
+
+            'statistics' => [
+                'voterCount'       => $voterCount,
+                'totalVoted'       => $totalVoted,
+                'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
+                'missedBlocks'     => $missedBlockCount,
+                'validatorsMissed' => $validatorsMissed,
+            ],
         ]);
     }
 
