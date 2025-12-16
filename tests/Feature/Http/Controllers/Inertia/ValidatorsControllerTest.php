@@ -19,7 +19,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
-
 use function Tests\fakeKnownWallets;
 use function Tests\faker;
 
@@ -807,7 +806,7 @@ describe('Recent Votes', function () {
                     ->where('recentVotes.noResultsMessage', trans('tables.recent-votes.no_results.no_results'));
             },
             queryString: [
-                'sort' => $sortBy,
+                'sort'           => $sortBy,
                 'sort-direction' => 'desc',
             ],
             reloadProps: 'recentVotes',
@@ -821,7 +820,7 @@ describe('Recent Votes', function () {
                     ->where('recentVotes.noResultsMessage', trans('tables.recent-votes.no_results.no_results'));
             },
             queryString: [
-                'sort' => $sortBy,
+                'sort'           => $sortBy,
                 'sort-direction' => 'asc',
             ],
             reloadProps: 'recentVotes',
@@ -832,7 +831,6 @@ describe('Recent Votes', function () {
         'type',
         'name',
     ]);
-
 });
 
 describe('Missed Blocks', function () {
@@ -1157,7 +1155,7 @@ describe('Missed Blocks', function () {
 
     it('should sort name in descending order', function () {
         $wallet1 = Wallet::factory()->activeValidator()->create([
-            'address' => '0xA5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'address'    => '0xA5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
             'attributes' => [
                 'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
                 'username'             => 'validator-a',
@@ -1165,7 +1163,7 @@ describe('Missed Blocks', function () {
         ]);
 
         $wallet2 = Wallet::factory()->activeValidator()->create([
-            'address' => '0xB5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'address'    => '0xB5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
             'attributes' => [
                 'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
                 'username'             => 'validator-b',
@@ -1197,7 +1195,7 @@ describe('Missed Blocks', function () {
 
     it('should sort name in ascending order', function () {
         $wallet1 = Wallet::factory()->activeValidator()->create([
-            'address' => '0xA5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'address'    => '0xA5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
             'attributes' => [
                 'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
                 'username'             => 'validator-a',
@@ -1205,7 +1203,7 @@ describe('Missed Blocks', function () {
         ]);
 
         $wallet2 = Wallet::factory()->activeValidator()->create([
-            'address' => '0xB5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
+            'address'    => '0xB5a19e23E99bdFb7aae4301A009763AdC01c1b5B',
             'attributes' => [
                 'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
                 'username'             => 'validator-b',
@@ -1747,7 +1745,7 @@ describe('Missed Blocks', function () {
                     ->where('missedBlocks.noResultsMessage', trans('tables.missed-blocks.no_results'));
             },
             queryString: [
-                'sort' => $sortBy,
+                'sort'           => $sortBy,
                 'sort-direction' => 'desc',
             ],
             reloadProps: 'missedBlocks',
@@ -1761,7 +1759,7 @@ describe('Missed Blocks', function () {
                     ->where('missedBlocks.noResultsMessage', trans('tables.missed-blocks.no_results'));
             },
             queryString: [
-                'sort' => $sortBy,
+                'sort'           => $sortBy,
                 'sort-direction' => 'asc',
             ],
             reloadProps: 'missedBlocks',
@@ -2076,7 +2074,7 @@ describe('Validators', function () {
                     ->where('validators.noResultsMessage', trans('tables.validators.no_results.no_results'));
             },
             queryString: [
-                'sort' => $sortBy,
+                'sort'           => $sortBy,
                 'sort-direction' => 'desc',
             ],
             reloadProps: 'validators',
@@ -2090,7 +2088,7 @@ describe('Validators', function () {
                     ->where('validators.noResultsMessage', trans('tables.validators.no_results.no_results'));
             },
             queryString: [
-                'sort' => $sortBy,
+                'sort'           => $sortBy,
                 'sort-direction' => 'asc',
             ],
             reloadProps: 'validators',

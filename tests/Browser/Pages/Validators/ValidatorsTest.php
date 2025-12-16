@@ -134,9 +134,6 @@ describe('Validators Tab', function () {
         });
     })->with('resolutions');
 
-
-
-
     it('should sort by rank by default', function () {
         $wallet2 = Wallet::factory()->activeValidator()->create([
             'attributes' => [
