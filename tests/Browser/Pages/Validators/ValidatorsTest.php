@@ -69,6 +69,72 @@ function seedMissedBlocksSortingData(int $count, bool $withCachedVoters): array
     return $records;
 }
 
+describe('Validators Tab', function () {
+    it('should handle no data', function ($resolution) {
+        $this->browse(function (Browser $browser) use ($resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('validators')
+                ->waitForText(trans('tables.validators.no_results'));
+        });
+    })->with('resolutions');
+
+    it('should display data', function ($resolution) {
+        $wallets = Wallet::factory(4)->activeValidator()->create();
+
+        $this->browse(function (Browser $browser) use ($wallets, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('validators')
+                ->waitForText('4 results', ignoreCase: true);
+
+            foreach ($wallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should go to page 2', function ($resolution) {
+        Wallet::factory(53)->activeValidator()->create();
+        $standbyWallets = Wallet::factory(10)->standbyValidator()->create();
+
+        $this->browse(function (Browser $browser) use ($standbyWallets, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('validators')
+                ->waitForText('63 results', ignoreCase: true)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringHas('page', '2');
+
+            foreach ($standbyWallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should reset to page 1 on per-page change', function ($resolution) {
+        $activeWallets = Wallet::factory(10)->activeValidator()->create();
+        Wallet::factory(53)->standbyValidator()->create();
+
+        $this->browse(function (Browser $browser) use ($activeWallets, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('validators', ['page' => 2])
+                ->waitForText('63 results', ignoreCase: true)
+                ->assertSee('Page 2 of 2')
+                ->click('[data-testid="pagination:per-page-dropdown:button"]')
+                ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
+                ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//span[.//text()="10"]')
+                ->waitForText('Page 1 of 7');
+
+            foreach ($activeWallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    })->with('resolutions');
+});
+
 describe('Missed Blocks Tab', function () {
     it('should handle no missed blocks', function ($resolution) {
         $this->browse(function (Browser $browser) use ($resolution) {
