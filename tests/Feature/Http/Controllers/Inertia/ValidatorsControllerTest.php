@@ -409,6 +409,7 @@ it('should provide validators data with pagination meta', function () {
                     'pageName'  => 'page',
                     'urlParams' => [],
                 ])
+                ->where('validators.perPageOptions', trans('tables.validators.validator_per_page_options'))
                 ->where('validators.noResultsMessage', null)
                 ->where('validators.data.0.address', $activeValidator->address)
                 ->where('validators.data.0.rank', 2)

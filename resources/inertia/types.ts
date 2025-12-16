@@ -42,6 +42,7 @@ export interface IPaginatedResponse<T> {
     total: number;
 
     noResultsMessage: string;
+    perPageOptions?: number[] | null;
 }
 
 export interface ITabbedData<T> {
