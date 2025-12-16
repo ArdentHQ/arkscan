@@ -33,7 +33,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                     }
                 >
                     <TableCell label={transaction.type} className="sm:flex-1">
-                        <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} />
+                        <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} forWallet />
                     </TableCell>
 
                     <TableCell

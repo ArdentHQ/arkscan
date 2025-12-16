@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useRef, useState } from "react";
 import FilterContext from "./FilterContext";
 import { IFilterContextType, IFilterEntry } from "./types";
@@ -39,7 +37,7 @@ export default function FilterProvider({
 }: {
     initialOptions: IFilterEntry[];
     children: React.ReactNode;
-    onChange: (filters: IFilters) => void;
+    onChange?: (filters: IFilters) => void;
 }) {
     const isMounting = useRef(false);
 
@@ -78,7 +76,7 @@ export default function FilterProvider({
             preserveScroll: true,
             onSuccess: () => {
                 refreshPage(() => {
-                    onChange(selectedFilters);
+                    onChange?.(selectedFilters);
                 });
             },
         });

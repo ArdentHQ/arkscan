@@ -1,9 +1,9 @@
-import { IValidator } from "@/types";
+import { IMonitorValidator } from "@/types";
 import { useTranslation } from "react-i18next";
 import AlertTriangleIcon from "@ui/icons/alert-triangle.svg?react";
 import Tooltip from "@/Components/General/Tooltip";
 
-export default function MissedWarning({ validator, testId }: { validator: IValidator; testId?: string }) {
+export default function MissedWarning({ validator, testId }: { validator: IMonitorValidator; testId?: string }) {
     const { t } = useTranslation();
 
     if (validator.wallet.keepsMissing === false) {

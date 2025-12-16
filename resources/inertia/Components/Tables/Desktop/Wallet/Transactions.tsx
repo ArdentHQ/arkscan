@@ -35,7 +35,7 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell>
-                <Addressing transaction={row} withoutLink={row.isSentToSelf} />
+                <Addressing transaction={row} withoutLink={row.isSentToSelf} forWallet />
             </TableCell>
 
             <TableCell className="text-right" lastOn="md-lg">

@@ -65,7 +65,6 @@ function FilterComponent({
                     <div className="ml-2 md:hidden">{t("actions.filter")}</div>
                 </div>
             }
-            testId={testId}
         >
             {withSelectAll && (
                 <SelectAllOption selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />

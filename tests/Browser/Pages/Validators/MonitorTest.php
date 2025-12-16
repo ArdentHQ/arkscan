@@ -68,8 +68,13 @@ describe('Monitor', function () {
                 $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
             }
 
-            $browser->waitFor($missedWarningSelector)
-                ->mouseOver($missedWarningSelector)
+            $browser->waitFor($missedWarningSelector);
+
+            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+            $browser->script('window.scrollBy(0, -200)');
+
+            $browser->mouseOver($missedWarningSelector)
                 ->waitForText('Validator last forged 207 blocks ago (~ 28 min)');
         });
     })->with('resolutions');
@@ -122,8 +127,13 @@ describe('Monitor', function () {
                 $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
             }
 
-            $browser->waitFor($missedWarningSelector)
-                ->mouseOver($missedWarningSelector)
+            $browser->waitFor($missedWarningSelector);
+
+            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+            $browser->script('window.scrollBy(0, -200)');
+
+            $browser->mouseOver($missedWarningSelector)
                 ->waitForText('Validator last forged 207 blocks ago (~ 1h 28 min)', 20);
         });
     })->with('resolutions');
@@ -176,8 +186,13 @@ describe('Monitor', function () {
                 $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
             }
 
-            $browser->waitFor($missedWarningSelector)
-                ->mouseOver($missedWarningSelector)
+            $browser->waitFor($missedWarningSelector);
+
+            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+            $browser->script('window.scrollBy(0, -200)');
+
+            $browser->mouseOver($missedWarningSelector)
                 ->waitForText('Validator last forged 207 blocks ago (more than a day)', 20);
         });
     })->with('resolutions');
