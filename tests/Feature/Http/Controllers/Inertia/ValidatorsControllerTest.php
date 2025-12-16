@@ -1863,26 +1863,25 @@ describe('Validators', function () {
                     ->where('validators.data.0.address', $second->address);
             },
             queryString: [
-                'page'            => 2,
-                'per-page'        => 1,
+                'page'     => 2,
+                'per-page' => 1,
             ],
             reloadProps: 'validators',
         );
     });
 
     it('should fall back to the default page parameter when validators page is missing', function () {
-        createValidatorWallet('validator-1', 1);
-        $second = createValidatorWallet('validator-2', 2);
+        $first = createValidatorWallet('validator-1', 1);
+        createValidatorWallet('validator-2', 2);
 
         performValidatorsRequest(
             $this,
-            reloadCallback: function (Assert $reload) use ($second) {
-                $reload->where('validators.current_page', 2)
+            reloadCallback: function (Assert $reload) use ($first) {
+                $reload->where('validators.current_page', 1)
                     ->where('validators.per_page', 1)
-                    ->where('validators.data.0.address', $second->address);
+                    ->where('validators.data.0.address', $first->address);
             },
             queryString: [
-                'page'     => 2,
                 'per-page' => 1,
             ],
             reloadProps: 'validators',
