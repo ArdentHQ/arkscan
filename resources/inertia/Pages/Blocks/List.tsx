@@ -31,10 +31,6 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
                 />
 
                 <HeaderStats statistics={statistics} />
-
-                {/* <PageHandlerProvider>
-                    <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
-                </PageHandlerProvider> */}
             </Layout>
         </>
     );
