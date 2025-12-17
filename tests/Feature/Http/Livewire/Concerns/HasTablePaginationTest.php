@@ -63,6 +63,18 @@ it('should resolve per page from querystring', function () {
     expect($perPage)->toBe(25);
 });
 
+it('should resolve to default per page if querystring value does not exist', function () {
+    app()->instance('request', Request::create('my_url', 'GET', parameters: [
+        'per-page' => '13',
+    ]));
+
+    $instance = new HasTablePaginationStub();
+
+    $perPage = $instance->callResolvePerPage();
+
+    expect($perPage)->toBe(50);
+});
+
 it('should resolve default per page if invalid querystring value', function () {
     app()->instance('request', Request::create('my_url', 'GET', parameters: [
         'per-page' => 'invalid',

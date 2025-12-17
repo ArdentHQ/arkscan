@@ -86,7 +86,7 @@
     box-shadow: 0 0 1px 1px var(--theme-color-dark-800) inset;
 }
 
-.dim .ark-info-element > div {
+.dim .ark-info-element > div:not(.tooltip-content) {
     @apply bg-theme-dark-blue-900;
     box-shadow: 0 0 1px 1px var(--theme-color-dark-blue-900) inset;
 }
