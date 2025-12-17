@@ -3,6 +3,8 @@ import Detail from "@/Components/General/Detail";
 import Number from "@/Components/General/Number";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import LoadingText from "@/Components/Loading/Text";
+import { IStatistics } from "@/types";
+import { Link } from "@inertiajs/react";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { IMonitorStatistics } from "@/Pages/Validators.contracts";
@@ -89,7 +91,7 @@ export default function HeaderStats({ height, statistics }: { height: number; st
                 <Card>
                     <Detail title={t("pages.validator-monitor.stats.next_slot")} isLoading={isLoading}>
                         {!!statistics?.nextValidator && statistics?.nextValidator?.address ? (
-                            <a href={`/addresses/${statistics?.nextValidator?.address}`} className="link">
+                            <Link href={route("wallet", statistics?.nextValidator?.address)} className="link">
                                 {statistics?.nextValidator?.attributes?.username ? (
                                     <>{statistics?.nextValidator?.attributes?.username}</>
                                 ) : (
@@ -97,7 +99,7 @@ export default function HeaderStats({ height, statistics }: { height: number; st
                                         <TruncateMiddle>{statistics?.nextValidator?.address}</TruncateMiddle>
                                     </>
                                 )}
-                            </a>
+                            </Link>
                         ) : (
                             <span className="text-theme-secondary-500 dark:text-theme-dark-700">N/A</span>
                         )}
