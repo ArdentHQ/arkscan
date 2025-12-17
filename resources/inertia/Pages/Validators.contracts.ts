@@ -1,4 +1,4 @@
-import { IFilters, ITabbedData, IMonitorValidator, IPaginatedResponse } from "@/types";
+import { IMonitorValidator, IPaginatedResponse } from "@/types";
 import { ITransaction, IValidator } from "@/types/generated";
 import { IForgingStats } from "@/types/generated";
 
@@ -48,4 +48,5 @@ export interface ValidatorsProps {
     };
     recentVotes: IPaginatedResponse<ITransaction>;
     missedBlocks: IPaginatedResponse<IForgingStats>;
+    baseUrl: string;
 }
