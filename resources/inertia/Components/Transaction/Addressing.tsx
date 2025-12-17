@@ -88,7 +88,6 @@ export default function Addressing({
                                 {!interactedWallet!.hasUsername && !withoutTruncate && (
                                     <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
                                 )}
-                                xx
                             </Link>
                         )}
                     </>
