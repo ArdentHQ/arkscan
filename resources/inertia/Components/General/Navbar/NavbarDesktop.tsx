@@ -12,6 +12,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
 
     const link = route(routeName);
     const isActive = currentRoute === link;
+
     return (
         <a
             href={link}
