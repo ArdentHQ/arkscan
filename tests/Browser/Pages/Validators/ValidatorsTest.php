@@ -3,9 +3,14 @@
 declare(strict_types=1);
 
 use App\Models\ForgingStats;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
+use App\Services\Cache\CryptoDataCache;
+use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\ValidatorCache;
+use App\Services\Cache\WalletCache;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Dusk\Browser;
 
@@ -60,6 +65,8 @@ function seedMissedBlocksSortingData(int $count, bool $withCachedVoters): array
         ];
 
         $cacheCounts[$wallet->address] = $voterCounts[$i];
+
+        (new WalletCache())->setVoterCount($wallet->address, $voterCounts[$i]);
     }
 
     if ($withCachedVoters) {
@@ -68,6 +75,68 @@ function seedMissedBlocksSortingData(int $count, bool $withCachedVoters): array
 
     return $records;
 }
+
+describe('Validators Tab', function () {
+    it('should show tab on page load without query string', function () {
+        $missedBlock1 = ForgingStats::factory()->create([
+            'missed_height' => 100,
+        ]);
+
+        $missedBlock2 = ForgingStats::factory()->create([
+            'missed_height' => 134,
+        ]);
+
+        $wallets = Wallet::factory()->activeValidator()->count(5)->create();
+
+        $this->browse(function (Browser $browser) use ($missedBlock1, $missedBlock2, $wallets) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('validators')
+                ->waitForText('5 results', ignoreCase: true)
+                ->assertPathIs('/validators');
+
+            foreach ($wallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+
+            $browser->click('button#tab-missed-blocks')
+                ->waitForText('2 results', ignoreCase: true)
+                ->assertPathIs('/validators/missed-blocks')
+                ->assertSee($missedBlock1->missed_height)
+                ->assertSee($missedBlock2->missed_height);
+        });
+    });
+
+    it('should show tab on page load without url path segment', function () {
+        $missedBlock1 = ForgingStats::factory()->create([
+            'missed_height' => 100,
+        ]);
+
+        $missedBlock2 = ForgingStats::factory()->create([
+            'missed_height' => 134,
+        ]);
+
+        $wallets = Wallet::factory()->activeValidator()->count(5)->create();
+
+        $this->browse(function (Browser $browser) use ($missedBlock1, $missedBlock2, $wallets) {
+            $browser->resize(1280, 800);
+
+            $browser->visit('validators')
+                ->waitForText('5 results', ignoreCase: true)
+                ->assertPathIs('/validators');
+
+            foreach ($wallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+
+            $browser->click('button#tab-missed-blocks')
+                ->waitForText('2 results', ignoreCase: true)
+                ->assertPathIs('/validators/missed-blocks')
+                ->assertSee($missedBlock1->missed_height)
+                ->assertSee($missedBlock2->missed_height);
+        });
+    });
+});
 
 describe('Missed Blocks Tab', function () {
     it('should handle no missed blocks', function ($resolution) {
@@ -144,7 +213,7 @@ describe('Missed Blocks Tab', function () {
 
             $browser->resize($resolution['width'], $resolution['height']);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks', 'page' => 2])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks', 'page' => 2])
                 ->waitForText('30 results', ignoreCase: true)
                 ->assertSee('Page 2 of 2')
                 ->click('[data-testid="pagination:per-page-dropdown:button"]')
@@ -184,7 +253,7 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:height"]')
                 ->waitForSeeInOrder([
@@ -220,9 +289,10 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:height"]')
+                ->pause(300)
                 ->click('[data-testid="table:header:sortable:height"]')
                 ->waitForSeeInOrder([
                     $wallet2->address,
@@ -257,7 +327,7 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->waitForSeeInOrder([
                     $wallet2->address,
@@ -292,7 +362,7 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:age"]')
                 ->waitForSeeInOrder([
@@ -338,10 +408,13 @@ describe('Missed Blocks Tab', function () {
             $wallet2->address => 10,
         ]);
 
+        (new WalletCache())->setVoterCount($wallet1->address, 30);
+        (new WalletCache())->setVoterCount($wallet2->address, 10);
+
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $walletWithoutVoters) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('3 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:no_of_voters"]')
                 ->waitForSeeInOrder([
@@ -367,7 +440,7 @@ describe('Missed Blocks Tab', function () {
 
         $walletWithoutVoters = Wallet::factory()->activeValidator()->create([
             'attributes' => [
-                'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
+                'validatorVoteBalance' => (string) BigNumber::new(3000 * 1e18),
             ],
         ]);
 
@@ -388,12 +461,16 @@ describe('Missed Blocks Tab', function () {
             $wallet2->address => 10,
         ]);
 
+        (new WalletCache())->setVoterCount($wallet1->address, 30);
+        (new WalletCache())->setVoterCount($wallet2->address, 10);
+
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $walletWithoutVoters) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('3 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:no_of_voters"]')
+                ->pause(300)
                 ->click('[data-testid="table:header:sortable:no_of_voters"]')
                 ->waitForSeeInOrder([
                     $wallet1->address,
@@ -440,7 +517,7 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $walletWithoutVoters) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('3 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:no_of_voters"]')
                 ->waitForSeeInOrder([
@@ -475,7 +552,7 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $sortKey) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:'.$sortKey.'"]')
                 ->waitForSeeInOrder([
@@ -512,9 +589,10 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $sortKey) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:'.$sortKey.'"]')
+                ->pause(300)
                 ->click('[data-testid="table:header:sortable:'.$sortKey.'"]')
                 ->waitForSeeInOrder([
                     $wallet1->address,
@@ -550,7 +628,7 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
                 ->waitForText('40 results', ignoreCase: true)
                 ->click('[data-testid="pagination:next-page"] button')
                 ->pause(400)
@@ -593,13 +671,13 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'asc'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'asc'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->waitForSeeInOrder([
                     'validator-1',
                     'validator-2',
                 ], ignoreCase: true)
-                ->visitRoute('validators', ['tab' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'desc'])
+                ->visitRoute('validators', ['view' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'desc'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->waitForSeeInOrder([
                     'validator-2',
@@ -636,13 +714,13 @@ describe('Missed Blocks Tab', function () {
         $this->browse(function (Browser $browser) {
             $browser->resize(1280, 1024);
 
-            $browser->visitRoute('validators', ['tab' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'desc'])
+            $browser->visitRoute('validators', ['view' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'desc'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->waitForSeeInOrder([
                     'validator-2',
                     'validator-1',
                 ], ignoreCase: true)
-                ->visitRoute('validators', ['tab' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'testing'])
+                ->visitRoute('validators', ['view' => 'missed-blocks', 'sort' => 'name', 'sort-direction' => 'testing'])
                 ->waitForText('2 results', ignoreCase: true)
                 ->waitForSeeInOrder([
                     'validator-2',
@@ -685,7 +763,7 @@ describe('Missed Blocks Tab', function () {
                 $addresses = $sorted->slice(($page - 1) * 25, 25)->pluck('address')->values()->all();
 
                 $browser->visitRoute('validators', [
-                    'tab'            => 'missed-blocks',
+                    'view'           => 'missed-blocks',
                     'sort'           => $sortKey,
                     'sort-direction' => 'asc',
                     'page'           => $page,
@@ -740,7 +818,7 @@ describe('Missed Blocks Tab', function () {
                 $addresses = $sorted->slice(($page - 1) * 25, 25)->pluck('address')->values()->all();
 
                 $browser->visitRoute('validators', [
-                    'tab'            => 'missed-blocks',
+                    'view'           => 'missed-blocks',
                     'sort'           => $sortKey,
                     'sort-direction' => 'asc',
                     'page'           => $page,
@@ -758,6 +836,180 @@ describe('Missed Blocks Tab', function () {
         'votes',
         'percentage_votes',
     ]);
+
+    it('should show tab on page load from query string', function () {
+        $missedBlock1 = ForgingStats::factory()->create([
+            'missed_height' => 100,
+        ]);
+
+        $missedBlock2 = ForgingStats::factory()->create([
+            'missed_height' => 134,
+        ]);
+
+        $wallets = Wallet::factory()->activeValidator()->count(5)->create();
+
+        $this->browse(function (Browser $browser) use ($missedBlock1, $missedBlock2, $wallets) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('validators', ['view' => 'missed-blocks'])
+                ->waitForText('2 results', ignoreCase: true)
+                ->assertPathIs('/validators/missed-blocks')
+                ->assertSee($missedBlock1->missed_height)
+                ->assertSee($missedBlock2->missed_height)
+                ->click('button#tab-validators')
+                ->waitForText('5 results', ignoreCase: true)
+                ->assertPathIs('/validators');
+
+            foreach ($wallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    });
+
+    it('should show tab on page load from url path segment', function () {
+        $missedBlock1 = ForgingStats::factory()->create([
+            'missed_height' => 100,
+        ]);
+
+        $missedBlock2 = ForgingStats::factory()->create([
+            'missed_height' => 134,
+        ]);
+
+        $wallets = Wallet::factory()->activeValidator()->count(5)->create();
+
+        $this->browse(function (Browser $browser) use ($missedBlock1, $missedBlock2, $wallets) {
+            $browser->resize(1280, 800);
+
+            $browser->visit('validators/missed-blocks')
+                ->waitForText('2 results', ignoreCase: true)
+                ->assertPathIs('/validators/missed-blocks')
+                ->assertSee($missedBlock1->missed_height)
+                ->assertSee($missedBlock2->missed_height)
+                ->click('button#tab-validators')
+                ->waitForText('5 results', ignoreCase: true)
+                ->assertPathIs('/validators');
+
+            foreach ($wallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    });
+});
+
+describe('Recent Votes Tab', function () {
+    it('should show tab on page load from query string', function () {
+        (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+        (new CryptoDataCache())->setPrices('USD.week', collect([
+            Carbon::parse('2025-09-11')->format('Y-m-d') => 2.0,
+        ]));
+
+        $walletFrom = Wallet::factory()->create([
+            'attributes' => [
+                'username' => 'vote-filter-sender',
+                'isLegacy' => true,
+            ],
+        ]);
+
+        $walletTo = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'username' => 'vote-filter-target',
+            ],
+        ]);
+
+        $vote = Transaction::factory()
+            ->vote($walletTo->address)
+            ->create([
+                'sender_public_key' => $walletFrom->public_key,
+                'from'              => $walletFrom->address,
+                'timestamp'         => Carbon::now()->unix() * 1000,
+                'status'            => true,
+            ]);
+
+        $unvote = Transaction::factory()
+            ->unvote()
+            ->create([
+                'sender_public_key' => $walletFrom->public_key,
+                'from'              => $walletFrom->address,
+                'timestamp'         => Carbon::now()->unix() * 1000,
+                'status'            => true,
+            ]);
+
+        $wallets = Wallet::factory()->activeValidator()->count(5)->create();
+
+        $this->browse(function (Browser $browser) use ($vote, $unvote, $wallets) {
+            $browser->resize(1280, 800);
+
+            $browser->visitRoute('validators', ['view' => 'recent-votes'])
+                ->waitForText('2 results', ignoreCase: true)
+                ->assertPathIs('/validators/recent-votes')
+                ->assertSee(substr($vote->hash, 0, 5).'…'.substr($vote->hash, -5))
+                ->assertSee(substr($unvote->hash, 0, 5).'…'.substr($unvote->hash, -5))
+                ->click('button#tab-validators')
+                ->waitForText('5 results', ignoreCase: true)
+                ->assertPathIs('/validators');
+
+            foreach ($wallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    });
+
+    it('should show tab on page load from url path segment', function () {
+        (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+        (new CryptoDataCache())->setPrices('USD.week', collect([
+            Carbon::parse('2025-09-11')->format('Y-m-d') => 2.0,
+        ]));
+
+        $walletFrom = Wallet::factory()->create([
+            'attributes' => [
+                'username' => 'vote-filter-sender',
+                'isLegacy' => true,
+            ],
+        ]);
+
+        $walletTo = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'username' => 'vote-filter-target',
+            ],
+        ]);
+
+        $vote = Transaction::factory()
+            ->vote($walletTo->address)
+            ->create([
+                'sender_public_key' => $walletFrom->public_key,
+                'from'              => $walletFrom->address,
+                'timestamp'         => Carbon::now()->unix() * 1000,
+                'status'            => true,
+            ]);
+
+        $unvote = Transaction::factory()
+            ->unvote()
+            ->create([
+                'sender_public_key' => $walletFrom->public_key,
+                'from'              => $walletFrom->address,
+                'timestamp'         => Carbon::now()->unix() * 1000,
+                'status'            => true,
+            ]);
+
+        $wallets = Wallet::factory()->activeValidator()->count(5)->create();
+
+        $this->browse(function (Browser $browser) use ($vote, $unvote, $wallets) {
+            $browser->resize(1280, 800);
+
+            $browser->visit('validators/recent-votes')
+                ->waitForText('2 results', ignoreCase: true)
+                ->assertPathIs('/validators/recent-votes')
+                ->assertSee(substr($vote->hash, 0, 5).'…'.substr($vote->hash, -5))
+                ->assertSee(substr($unvote->hash, 0, 5).'…'.substr($unvote->hash, -5))
+                ->click('button#tab-validators')
+                ->waitForText('5 results', ignoreCase: true)
+                ->assertPathIs('/validators');
+
+            foreach ($wallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    });
 });
 
 dataset('resolutions', [
