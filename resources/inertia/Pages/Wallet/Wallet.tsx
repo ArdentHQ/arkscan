@@ -142,8 +142,8 @@ const WalletTabs = ({
     );
 };
 
-function WalletPageHandlerProvider({ children, wallet }: PropsWithChildren<{ wallet: IWallet }>) {
-    const { baseUrl } = useSharedData<WalletProps>();
+function WalletPageHandlerProvider({ children }: PropsWithChildren) {
+    const { baseUrl, wallet } = useSharedData<WalletProps>();
     const tabs = [{ text: "Transactions", value: "transactions" }];
     const queryStringDefaults: ITabsQueryString = {
         transactions: {
@@ -203,7 +203,7 @@ export default function Wallet({ transactions, blocks, wallet, voters, network, 
             <Head>{metadata}</Head>
 
             <Layout>
-                <WalletPageHandlerProvider wallet={wallet}>
+                <WalletPageHandlerProvider>
                     <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
                 </WalletPageHandlerProvider>
             </Layout>
