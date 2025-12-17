@@ -45,11 +45,11 @@ export function VotersTable({ voters, mobile }: { voters: IPaginatedResponse<IWa
                         {t("general.wallet.address")}
                     </TableHeader>
 
-                    <TableHeader className="text-right">
+                    <TableHeader type="number">
                         {t("tables.wallets.balance_currency", { currency: network!.currency })}
                     </TableHeader>
 
-                    <TableHeader className="text-right" tooltip={t("pages.wallets.percentage_tooltip")}>
+                    <TableHeader type="number" tooltip={t("pages.wallets.percentage_tooltip")}>
                         {t("general.wallet.percentage")}
                     </TableHeader>
                 </>

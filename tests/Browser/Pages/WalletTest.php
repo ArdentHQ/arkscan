@@ -333,6 +333,133 @@ describe('Overview', function () {
             expect($events[0])->toEqual(['qr_code_opened']);
         });
     });
+
+    it('should switch to voters tab and scroll down when clicking "View" for votes', function ($resolution) {
+        $wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $wallet->address,
+                'to'                => $wallet->address,
+                'sender_public_key' => $wallet->public_key,
+            ]);
+
+        Wallet::factory()
+            ->count(20)
+            ->create([
+                'attributes' => [
+                    'vote' => $wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText('5 results', ignoreCase: true);
+
+            $browser->clickAtXPath('//button[.//text()="View"]')
+                ->waitForText('20 results', ignoreCase: true)
+                ->pause(400);
+
+            $scrollTop    = $browser->script('return window.scrollY;')[0];
+            $navbarHeight = $browser->script('return document.querySelector("#navbar")?.clientHeight || 0;')[0];
+            $offsetTop    = $browser->script('return document.getElementById("wallet:tabs:content").offsetTop;')[0];
+
+            expect($scrollTop)->toEqual($offsetTop - $navbarHeight);
+        });
+    })->with('resolutions');
+
+    it('should scroll to voters tab if already visible when clicking "View" for votes', function ($resolution) {
+        $wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $wallet->address,
+                'to'                => $wallet->address,
+                'sender_public_key' => $wallet->public_key,
+            ]);
+
+        Wallet::factory()
+            ->count(20)
+            ->create([
+                'attributes' => [
+                    'vote' => $wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('button#tab-voters')
+                ->waitForText('20 results', ignoreCase: true);
+
+            $browser->clickAtXPath('//button[.//text()="View"]')
+                ->pause(500);
+
+            $scrollTop    = $browser->script('return window.scrollY;')[0];
+            $navbarHeight = $browser->script('return document.querySelector("#navbar")?.clientHeight || 0;')[0];
+            $offsetTop    = $browser->script('return document.getElementById("wallet:tabs:content").offsetTop;')[0];
+
+            expect($scrollTop)->toEqual($offsetTop - $navbarHeight);
+        });
+    })->with('resolutions');
+
+    it('should clear scroll event after clicking "View" for votes', function ($resolution) {
+        $wallet = Wallet::factory()
+            ->activeValidator()
+            ->create();
+
+        Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $wallet->address,
+                'to'                => $wallet->address,
+                'sender_public_key' => $wallet->public_key,
+            ]);
+
+        Wallet::factory()
+            ->count(20)
+            ->create([
+                'attributes' => [
+                    'vote' => $wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText('5 results', ignoreCase: true);
+
+            $browser->clickAtXPath('//button[.//text()="View"]')
+                ->waitForText('20 results', ignoreCase: true)
+                ->pause(400);
+
+            $browser->script('window.scrollTo(0, 0);');
+
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true)
+                ->click('button#tab-voters')
+                ->waitForText('20 results', ignoreCase: true)
+                ->pause(400);
+
+            $scrollTop = $browser->script('return window.scrollY;')[0];
+
+            expect($scrollTop)->toEqual(0);
+        });
+    })->with('resolutions');
 });
 
 describe('Transactions Tab', function () {

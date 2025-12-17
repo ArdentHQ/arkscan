@@ -1,3 +1,6 @@
+// Importing the vendor Tailwind config triggers Node's `MODULE_TYPELESS_PACKAGE_JSON` warning
+// (Node reparses the file as ESM because it contains ESM syntax); this only affects build-time
+// performance/log noise and does not impact the compiled app runtime.
 import defaultConfig from "./vendor/arkecosystem/foundation/resources/tailwind.config.js";
 import plugin from "tailwindcss/plugin";
 

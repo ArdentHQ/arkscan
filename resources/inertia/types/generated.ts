@@ -23,6 +23,14 @@ export type ICurrency = {
     locale: string | null;
     symbol: string | null;
 };
+export type IForgingStats = {
+    number: number;
+    timestamp: number;
+    validator: IWallet | null;
+    voterCount: number | null;
+    votesPercentage: number | null;
+    votes: number | null;
+};
 export type INavbarSearchBlockResultData = {
     hash: string;
     transactionCount: number;
@@ -169,8 +177,24 @@ export type ITransaction = {
     hasFailedStatus: boolean;
     validatorRegistration: ITransaction | null;
     votedFor: string | null;
+    votedForUsername: string | null;
     sender: IWallet | null;
     recipient: IWallet | null;
+};
+export type IValidator = {
+    rank: number | null;
+    address: string;
+    isActive: boolean;
+    isDormant: boolean;
+    isResigned: boolean;
+    username: string | null;
+    hasUsername: boolean;
+    voterCount: number;
+    votes: number;
+    votesPercentage: number;
+    missedBlocks: number;
+    missedBlocksState: "success" | "warning" | "danger" | "inactive";
+    voteUrl: string | null;
 };
 export type IWallet = {
     address: string;

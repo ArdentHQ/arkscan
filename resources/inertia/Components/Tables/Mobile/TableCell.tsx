@@ -4,7 +4,7 @@ export default function TableCell({
     children,
     className = "",
 }: React.PropsWithChildren<{
-    label?: string;
+    label?: string | React.ReactNode;
     className?: string;
 }>) {
     return (

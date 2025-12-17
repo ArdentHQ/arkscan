@@ -49,6 +49,18 @@ export default ({ mode }) => defineConfig({
             ),
         },
     },
+    // Suppress warnings about use client from radix ui
+    build: {
+        rollupOptions: {
+            onwarn(warning, warn) {
+                if (warning.code === "MODULE_LEVEL_DIRECTIVE" && /use client/i.test(warning.message)) {
+                    return;
+                }
+
+                warn(warning);
+            },
+        },
+    },
     server: detectServerConfig(mode) || {
         host: loadEnv(mode, process.cwd()).VITE_HOST ?? 'localhost',
         port: 3000,

@@ -9,34 +9,13 @@ export type NavigationItem = {
 
 export type Navigation = NavigationItem[];
 
-export interface IValidator {
+export interface IMonitorValidator {
     wallet: IWallet;
     lastBlock: IBlock | null;
     order: number;
     forgingAt: string | Date;
     status: "done" | "next" | "pending";
     secondsUntilForge: number;
-}
-
-export interface IValidatorData {
-    statistics: any;
-    overflowValidators: IValidator[];
-    validators: IValidator[];
-}
-
-export interface IStatistics {
-    performances?: {
-        forging?: string | number;
-        missed?: string | number;
-        missing?: string | number;
-    };
-    blockCount?: number;
-    nextValidator?: {
-        address?: string;
-        attributes?: {
-            username?: string;
-        };
-    };
 }
 
 export interface IPaginatedResponse<T> {
@@ -63,6 +42,7 @@ export interface IPaginatedResponse<T> {
     total: number;
 
     noResultsMessage: string;
+    perPageOptions?: number[] | null;
 }
 
 export interface ITabbedData<T> {
