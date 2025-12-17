@@ -45,8 +45,9 @@ export default function TabsProvider({
     };
 
     const changeTabUrl = (newTab: string) => {
-        const updatedUrl = new URL(baseUrl);
+        const updatedUrl = new URL(location.href);
         updatedUrl.search = "";
+        updatedUrl.pathname = baseUrl;
 
         if (newTab !== defaultSelected) {
             updatedUrl.pathname += `/${newTab}`;
@@ -88,7 +89,7 @@ export default function TabsProvider({
     useEffect(() => {
         let tab: string | null = null;
 
-        const currentBaseUrl = `${location.protocol}//${location.hostname.replace(/\/$/, "")}/${location.pathname.replace(/^\//, "")}`;
+        const currentBaseUrl = `/${location.pathname.replace(/^\//, "")}`;
         if (currentBaseUrl !== baseUrl) {
             tab = currentBaseUrl.replace(baseUrl + "/", "");
         }

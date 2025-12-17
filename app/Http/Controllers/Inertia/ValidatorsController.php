@@ -49,7 +49,7 @@ final class ValidatorsController
 
         return Inertia::render('Validators/Validators', [
             'filters'      => self::FILTERS,
-            'baseUrl'      => route('validators'),
+            'baseUrl'      => route('validators', absolute: false),
 
             'validators'   => Inertia::optional(function () {
                 $paginator = $this->getValidators();
