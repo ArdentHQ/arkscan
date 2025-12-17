@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire\Concerns;
+namespace App\Http\Controllers\Inertia\Concerns;
 
 use App\DTO\Slot;
 use App\Facades\Blocks;
@@ -50,7 +50,7 @@ trait ValidatorData
      *
      * @return array<Slot>
      */
-    public function getOverflowValidatorsProperty(): array
+    public function overflowValidators(): array
     {
         $missedCount = collect($this->validators)
             ->filter(fn ($validator) => $validator->justMissed())

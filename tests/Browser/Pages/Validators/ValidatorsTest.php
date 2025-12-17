@@ -107,6 +107,30 @@ describe('Validators Tab', function () {
         });
     });
 
+    it('should handle no data', function ($resolution) {
+        $this->browse(function (Browser $browser) use ($resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('validators')
+                ->waitForText(trans('tables.validators.no_results'));
+        });
+    })->with('resolutions');
+
+    it('should display data', function ($resolution) {
+        $wallets = Wallet::factory(4)->activeValidator()->create();
+
+        $this->browse(function (Browser $browser) use ($wallets, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('validators')
+                ->waitForText('4 results', ignoreCase: true);
+
+            foreach ($wallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    })->with('resolutions');
+
     it('should show tab on page load without url path segment', function () {
         $missedBlock1 = ForgingStats::factory()->create([
             'missed_height' => 100,
@@ -136,6 +160,320 @@ describe('Validators Tab', function () {
                 ->assertSee($missedBlock2->missed_height);
         });
     });
+
+    it('should go to page 2', function ($resolution) {
+        Wallet::factory(53)->activeValidator()->create();
+        $standbyWallets = Wallet::factory(10)->standbyValidator()->create();
+
+        $this->browse(function (Browser $browser) use ($standbyWallets, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('validators')
+                ->waitForText('63 results', ignoreCase: true)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringHas('page', '2');
+
+            foreach ($standbyWallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should reset to page 1 on per-page change', function ($resolution) {
+        $activeWallets = Wallet::factory(10)->activeValidator()->create();
+        Wallet::factory(53)->standbyValidator()->create();
+
+        $this->browse(function (Browser $browser) use ($activeWallets, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('validators', ['page' => 2])
+                ->waitForText('63 results', ignoreCase: true)
+                ->assertSee('Page 2 of 2')
+                ->click('[data-testid="pagination:per-page-dropdown:button"]')
+                ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
+                ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//span[.//text()="10"]')
+                ->waitForText('Page 1 of 7');
+
+            foreach ($activeWallets as $wallet) {
+                $browser->assertSee(substr($wallet->address, 0, 5).'…'.substr($wallet->address, -5));
+            }
+        });
+    })->with('resolutions');
+
+    it('should sort by rank by default', function () {
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 2,
+                'validatorVoteBalance'    => 4000 * 1e18,
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 1,
+                'validatorVoteBalance'    => 10000 * 1e18,
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $this->browse(function (Browser $browser) use ($wallet1, $wallet2) {
+            $browser->resize(1920, 1080);
+
+            $browser->visitRoute('validators')
+                ->waitForText('2 results', ignoreCase: true)
+                ->waitForSeeInOrder([
+                    substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
+                    substr($wallet2->address, 0, 5).'…'.substr($wallet2->address, -5),
+                ], ignoreCase: true);
+        });
+    });
+
+    it('should sort rank in descending order', function () {
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 1,
+                'validatorVoteBalance'    => 10000 * 1e18,
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 2,
+                'validatorVoteBalance'    => 4000 * 1e18,
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $this->browse(function (Browser $browser) use ($wallet1, $wallet2) {
+            $browser->resize(1920, 1080);
+
+            $browser->visitRoute('validators')
+                ->waitForText('2 results', ignoreCase: true)
+                ->click('[data-testid="table:header:sortable:rank"]')
+                ->waitForSeeInOrder([
+                    substr($wallet2->address, 0, 5).'…'.substr($wallet2->address, -5),
+                    substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
+                ], ignoreCase: true);
+        });
+    });
+
+    it('should sort number of voters in ascending order', function () {
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 1,
+                'validatorVoteBalance'    => (string) BigNumber::new(10000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 2,
+                'validatorVoteBalance'    => (string) BigNumber::new(4000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $walletWithoutVotes = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 3,
+                'validatorVoteBalance'    => (string) BigNumber::new(0),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $validatorCache = new ValidatorCache();
+        $validatorCache->setAllVoterCounts([
+            $wallet1->address => 30,
+            $wallet2->address => 10,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $walletWithoutVotes) {
+            $browser->resize(1920, 1080);
+
+            $browser->visitRoute('validators')
+                ->waitForText('3 results', ignoreCase: true)
+                ->click('[data-testid="table:header:sortable:no_of_voters"]')
+                ->waitForSeeInOrder([
+                    substr($wallet2->address, 0, 5).'…'.substr($wallet2->address, -5),
+                    substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
+                    substr($walletWithoutVotes->address, 0, 5).'…'.substr($walletWithoutVotes->address, -5),
+                ], ignoreCase: true);
+        });
+    });
+
+    it('should sort number of voters in descending order', function () {
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 1,
+                'validatorVoteBalance'    => (string) BigNumber::new(10000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 2,
+                'validatorVoteBalance'    => (string) BigNumber::new(4000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $walletWithoutVotes = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 3,
+                'validatorVoteBalance'    => (string) BigNumber::new(0),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $validatorCache = new ValidatorCache();
+        $validatorCache->setAllVoterCounts([
+            $wallet1->address => 30,
+            $wallet2->address => 10,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $walletWithoutVotes) {
+            $browser->resize(1920, 1080);
+
+            $browser->visitRoute('validators')
+                ->waitForText('3 results', ignoreCase: true)
+                ->click('[data-testid="table:header:sortable:no_of_voters"]')
+                ->click('[data-testid="table:header:sortable:no_of_voters"]')
+                ->waitForSeeInOrder([
+                    substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
+                    substr($wallet2->address, 0, 5).'…'.substr($wallet2->address, -5),
+                    substr($walletWithoutVotes->address, 0, 5).'…'.substr($walletWithoutVotes->address, -5),
+                ], ignoreCase: true);
+        });
+    });
+
+    it('should handle no cached votes when sorting by number of voters', function () {
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 1,
+                'validatorVoteBalance'    => (string) BigNumber::new(10000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 2,
+                'validatorVoteBalance'    => (string) BigNumber::new(4000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $walletWithoutVotes = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 3,
+                'validatorVoteBalance'    => (string) BigNumber::new(0),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $walletWithoutVotes) {
+            $browser->resize(1920, 1080);
+
+            $browser->visitRoute('validators')
+                ->waitForText('3 results', ignoreCase: true)
+                ->click('[data-testid="table:header:sortable:no_of_voters"]')
+                ->click('[data-testid="table:header:sortable:no_of_voters"]')
+                ->waitForSeeInOrder([
+                    substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
+                    substr($wallet2->address, 0, 5).'…'.substr($wallet2->address, -5),
+                    substr($walletWithoutVotes->address, 0, 5).'…'.substr($walletWithoutVotes->address, -5),
+                ], ignoreCase: true);
+        });
+    });
+
+    it('should sort votes & percentage in ascending order', function (string $sortKey) {
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 1,
+                'validatorVoteBalance'    => (string) BigNumber::new(10000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 2,
+                'validatorVoteBalance'    => (string) BigNumber::new(4000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $sortKey) {
+            $browser->resize(1920, 1080);
+
+            $browser->visitRoute('validators')
+                ->waitForText('2 results', ignoreCase: true)
+                ->click('[data-testid="table:header:sortable:'.$sortKey.'"]')
+                ->waitForSeeInOrder([
+                    substr($wallet2->address, 0, 5).'…'.substr($wallet2->address, -5),
+                    substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
+                ], ignoreCase: true);
+        });
+    })->with([
+        'votes',
+        'percentage_votes',
+    ]);
+
+    it('should sort votes & percentage in descending order', function (string $sortKey) {
+        $wallet1 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 1,
+                'validatorVoteBalance'    => (string) BigNumber::new(10000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $wallet2 = Wallet::factory()->activeValidator()->create([
+            'attributes' => [
+                'validatorRank'           => 2,
+                'validatorVoteBalance'    => (string) BigNumber::new(4000 * 1e18),
+                'validatorPublicKey'      => 'publicKey',
+                'validatorProducedBlocks' => 1000,
+            ],
+        ]);
+
+        $this->browse(function (Browser $browser) use ($wallet1, $wallet2, $sortKey) {
+            $browser->resize(1920, 1080);
+
+            $browser->visitRoute('validators')
+                ->waitForText('2 results', ignoreCase: true)
+                ->click('[data-testid="table:header:sortable:'.$sortKey.'"]')
+                ->click('[data-testid="table:header:sortable:'.$sortKey.'"]')
+                ->waitForSeeInOrder([
+                    substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
+                    substr($wallet2->address, 0, 5).'…'.substr($wallet2->address, -5),
+                ], ignoreCase: true);
+        });
+    })->with([
+        'votes',
+        'percentage_votes',
+    ]);
 });
 
 describe('Missed Blocks Tab', function () {
