@@ -4,15 +4,26 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\BigNumber;
-use App\Services\NumberFormatter;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Inertia\Testing\AssertableInertia as Assert;
+
+beforeEach(function () {
+    Cache::tags('statistics')->flush();
+});
 
 it('should render the page without any errors', function () {
     $this->withoutExceptionHandling();
 
     $this
         ->get(route('transactions'))
-        ->assertOk();
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->has('transactionCount')
+            ->has('volume')
+            ->has('totalFees')
+            ->has('averageFee'));
 });
 
 it('should get the transaction stats for the last 24 hours', function () {
@@ -33,44 +44,24 @@ it('should get the transaction stats for the last 24 hours', function () {
     $this
         ->get(route('transactions'))
         ->assertOk()
-        ->assertViewHas([
-            'transactionCount' => 148,
-            'volume'           => 18204,
-            'totalFees'        => 0.01554,
-            'averageFee'       => 0.000105,
-        ])
-        ->assertSeeInOrder([
-            'Transactions (24h)',
-            '148',
-            'Volume (24h)',
-        ])
-        ->assertSeeInOrder([
-            'Volume (24h)',
-            '18,204 DARK',
-            'Total Fees (24h)',
-        ])
-        ->assertSeeInOrder([
-            'Total Fees (24h)',
-            '0.01554 DARK',
-            'Average Fee (24h)',
-        ])
-        ->assertSeeInOrder([
-            'Average Fee (24h)',
-            '0.000105 DARK',
-            'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
-        ]);
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->where('transactionCount', 148)
+            ->where('volume', fn ($value) => abs($value - 18204) < 0.00000001)
+            ->where('totalFees', fn ($value) => abs($value - 0.01554) < 0.00000001)
+            ->where('averageFee', fn ($value) => abs($value - 0.000105) < 0.00000001));
 
     $this->travelTo('2021-04-15 16:02:04');
 
     $this
         ->get(route('transactions'))
         ->assertOk()
-        ->assertViewHas([
-            'transactionCount' => 0,
-            'volume'           => 0,
-            'totalFees'        => 0,
-            'averageFee'       => 0,
-        ]);
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->where('transactionCount', 0)
+            ->where('volume', 0)
+            ->where('totalFees', 0)
+            ->where('averageFee', 0));
 });
 
 it('should show the correct decimal places for the stats', function ($decimalPlaces, $amount, $fee, $expectedFormattedFee) {
@@ -95,32 +86,12 @@ it('should show the correct decimal places for the stats', function ($decimalPla
     $this
         ->get(route('transactions'))
         ->assertOk()
-        ->assertViewHas([
-            'transactionCount' => 1,
-            'volume'           => $amount,
-            'totalFees'        => $fee,
-            'averageFee'       => $fee,
-        ])
-        ->assertSeeInOrder([
-            'Transactions (24h)',
-            '1',
-            'Volume (24h)',
-        ])
-        ->assertSeeInOrder([
-            'Volume (24h)',
-            number_format($amount, $decimalPlaces).' DARK',
-            'Total Fees (24h)',
-        ])
-        ->assertSeeInOrder([
-            'Total Fees (24h)',
-            NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
-            'Average Fee (24h)',
-        ])
-        ->assertSeeInOrder([
-            'Average Fee (24h)',
-            NumberFormatter::networkCurrency($fee, 8, withSuffix: true),
-            'Showing 0 results', // alpine isn't triggered so nothing is shown in the table
-        ]);
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->where('transactionCount', 1)
+            ->where('volume', fn ($value) => abs($value - $amount) < 0.00000001)
+            ->where('totalFees', fn ($value) => abs($value - $fee) < 0.00000001)
+            ->where('averageFee', fn ($value) => abs($value - $fee) < 0.00000001));
 })->with([
     8 => [8, 919123.48392049, 99184739, '2082879519000'],
     7 => [7, 919123.4839204, 99184730, '2082879330000'],
@@ -145,12 +116,12 @@ it('should cache the transaction stats for 5 minutes', function () {
     $this
         ->get(route('transactions'))
         ->assertOk()
-        ->assertViewHas([
-            'transactionCount' => 146,
-            'volume'           => $volume,
-            'totalFees'        => 0.01533,
-            'averageFee'       => 0.000105,
-        ]);
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->where('transactionCount', 146)
+            ->where('volume', fn ($value) => abs($value - $volume) < 0.00000001)
+            ->where('totalFees', fn ($value) => abs($value - 0.01533) < 0.00000001)
+            ->where('averageFee', fn ($value) => abs($value - 0.000105) < 0.00000001));
 
     Transaction::factory(12)->create([
         'timestamp'       => Carbon::parse('2021-04-14 13:03:04')->getTimestampMs(),
@@ -161,12 +132,12 @@ it('should cache the transaction stats for 5 minutes', function () {
     $this
         ->get(route('transactions'))
         ->assertOk()
-        ->assertViewHas([
-            'transactionCount' => 146,
-            'volume'           => $volume,
-            'totalFees'        => 0.01533,
-            'averageFee'       => 0.000105,
-        ]);
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->where('transactionCount', 146)
+            ->where('volume', fn ($value) => abs($value - $volume) < 0.00000001)
+            ->where('totalFees', fn ($value) => abs($value - 0.01533) < 0.00000001)
+            ->where('averageFee', fn ($value) => abs($value - 0.000105) < 0.00000001));
 
     $this->travelTo('2021-04-14 16:09:04');
 
@@ -175,10 +146,10 @@ it('should cache the transaction stats for 5 minutes', function () {
     $this
         ->get(route('transactions'))
         ->assertOk()
-        ->assertViewHas([
-            'transactionCount' => 158,
-            'volume'           => $volume,
-            'totalFees'        => 0.01659,
-            'averageFee'       => 0.000105,
-        ]);
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->where('transactionCount', 158)
+            ->where('volume', fn ($value) => abs($value - $volume) < 0.00000001)
+            ->where('totalFees', fn ($value) => abs($value - 0.01659) < 0.00000001)
+            ->where('averageFee', fn ($value) => abs($value - 0.000105) < 0.00000001));
 });
