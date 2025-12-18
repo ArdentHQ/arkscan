@@ -352,6 +352,7 @@ describe('Validators Tab', function () {
             $browser->visitRoute('validators')
                 ->waitForText('3 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:no_of_voters"]')
+                ->pause(300)
                 ->click('[data-testid="table:header:sortable:no_of_voters"]')
                 ->waitForSeeInOrder([
                     substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
@@ -395,6 +396,7 @@ describe('Validators Tab', function () {
             $browser->visitRoute('validators')
                 ->waitForText('3 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:no_of_voters"]')
+                ->pause(300)
                 ->click('[data-testid="table:header:sortable:no_of_voters"]')
                 ->waitForSeeInOrder([
                     substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
@@ -464,6 +466,7 @@ describe('Validators Tab', function () {
             $browser->visitRoute('validators')
                 ->waitForText('2 results', ignoreCase: true)
                 ->click('[data-testid="table:header:sortable:'.$sortKey.'"]')
+                ->pause(300)
                 ->click('[data-testid="table:header:sortable:'.$sortKey.'"]')
                 ->waitForSeeInOrder([
                     substr($wallet1->address, 0, 5).'…'.substr($wallet1->address, -5),
