@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Inertia\TransactionsController;
-use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -216,6 +216,6 @@ it('should return transactions and no message when results exist', function () {
     $paginator = $controller->getTransactions();
 
     expect($paginator->total())->toBe(1);
-    expect($paginator->items()[0])->toBeInstanceOf(\App\DTO\Inertia\Transaction::class);
+    expect($paginator->items()[0])->toBeInstanceOf(App\DTO\Inertia\Transaction::class);
     expect($controller->getNoResultsMessageProperty($paginator->count()))->toBeNull();
 });
