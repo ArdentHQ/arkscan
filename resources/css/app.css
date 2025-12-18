@@ -20,7 +20,7 @@
 @import "_pikaday.css";
 
 @layer base {
-    html {
+    html:not(.env-dusk) {
         scroll-behavior: smooth;
     }
 }
