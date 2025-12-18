@@ -1,5 +1,5 @@
 import TableCell from "../TableCell";
-import LoadingTable from "../LoadingTable";
+import LoadingTable, { ILoadingTableColumn } from "../LoadingTable";
 import { ITransaction } from "@/types/generated";
 import { IPaginatedResponse } from "@/types";
 import { useTranslation } from "react-i18next";
@@ -14,6 +14,7 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
 import useSharedData from "@/hooks/use-shared-data";
 import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
+import LoadingText from "@/Components/Loading/Text";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -137,6 +138,19 @@ export default function TransactionsTableWrapper({
                             type: "address",
                             indicatorHeight: "h-[21px]",
                             className: "text-left",
+                            render: () => (
+                                <div className="flex flex-1 flex-col justify-between space-y-2 font-semibold leading-4.25 lg:flex-row lg:space-x-2">
+                                    <div className="flex flex-row space-x-2">
+                                        <LoadingText width="w-[39px]" />
+                                        <LoadingText />
+                                    </div>
+
+                                    <div className="flex flex-row space-x-2">
+                                        <LoadingText width="w-[39px]" />
+                                        <LoadingText />
+                                    </div>
+                                </div>
+                            ),
                         },
                         {
                             name: t("tables.transactions.amount", {

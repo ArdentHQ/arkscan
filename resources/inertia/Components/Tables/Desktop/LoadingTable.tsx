@@ -19,6 +19,7 @@ export interface ILoadingTableColumn {
     breakpoint?: "sm" | "md" | "md-lg" | "lg" | "xl";
     lastOn?: "sm" | "md" | "md-lg" | "lg" | "xl";
     sortId?: string;
+    render?: (column: ILoadingTableColumn) => React.ReactNode;
 }
 
 export function LoadingTableWrapper({
@@ -92,45 +93,53 @@ export function LoadingTableWrapper({
                                             responsive={column.responsive}
                                             breakpoint={column.breakpoint}
                                         >
-                                            {column?.type && ["number"].includes(column?.type) && (
-                                                <LoadingText
-                                                    width={column.indicatorWidth || "w-[70px]"}
-                                                    height={column.indicatorHeight || indicatorHeight}
-                                                />
-                                            )}
+                                            {column.render ? (
+                                                column.render(column)
+                                            ) : (
+                                                <>
+                                                    {column?.type && ["number"].includes(column?.type) && (
+                                                        <LoadingText
+                                                            width={column.indicatorWidth || "w-[70px]"}
+                                                            height={column.indicatorHeight || indicatorHeight}
+                                                        />
+                                                    )}
 
-                                            {column?.type && ["id"].includes(column?.type) && (
-                                                <LoadingText
-                                                    width={column.indicatorWidth || "w-[20px]"}
-                                                    height={column.indicatorHeight || indicatorHeight}
-                                                />
-                                            )}
+                                                    {column?.type && ["id"].includes(column?.type) && (
+                                                        <LoadingText
+                                                            width={column.indicatorWidth || "w-[20px]"}
+                                                            height={column.indicatorHeight || indicatorHeight}
+                                                        />
+                                                    )}
 
-                                            {column?.type && ["badge"].includes(column?.type) && (
-                                                <LoadingText
-                                                    width={column.indicatorWidth || "w-[140px]"}
-                                                    height={column.indicatorHeight || indicatorHeight}
-                                                />
-                                            )}
+                                                    {column?.type && ["badge"].includes(column?.type) && (
+                                                        <LoadingText
+                                                            width={column.indicatorWidth || "w-[140px]"}
+                                                            height={column.indicatorHeight || indicatorHeight}
+                                                        />
+                                                    )}
 
-                                            {column?.type && ["address"].includes(column?.type) && (
-                                                <div className="flex space-x-2">
-                                                    <LoadingText
-                                                        width={column.indicatorWidth || "w-[39px]"}
-                                                        height={column.indicatorHeight || indicatorHeight}
-                                                    />
+                                                    {column?.type && ["address"].includes(column?.type) && (
+                                                        <div className="flex space-x-2">
+                                                            <LoadingText
+                                                                width={column.indicatorWidth || "w-[39px]"}
+                                                                height={column.indicatorHeight || indicatorHeight}
+                                                            />
 
-                                                    <LoadingText
-                                                        width={column.indicatorWidth || "w-[70px]"}
-                                                        height={column.indicatorHeight || indicatorHeight}
-                                                    />
-                                                </div>
-                                            )}
+                                                            <LoadingText
+                                                                width={column.indicatorWidth || "w-[70px]"}
+                                                                height={column.indicatorHeight || indicatorHeight}
+                                                            />
+                                                        </div>
+                                                    )}
 
-                                            {(!column?.type ||
-                                                ["number", "id", "badge", "address"].includes(column?.type) ===
-                                                    false) && (
-                                                <LoadingText height={column.indicatorHeight || indicatorHeight} />
+                                                    {(!column?.type ||
+                                                        ["number", "id", "badge", "address"].includes(column?.type) ===
+                                                            false) && (
+                                                        <LoadingText
+                                                            height={column.indicatorHeight || indicatorHeight}
+                                                        />
+                                                    )}
+                                                </>
                                             )}
                                         </TableCell>
                                     ))}
