@@ -37,7 +37,7 @@ final class BlocksListController
                 'maxTransactions' => $data['max_transactions'],
             ],
 
-            'blocks' => function () {
+            'blocks' => Inertia::optional(function () {
                 $paginator = $this->getBlocks();
 
                 return [
@@ -46,7 +46,7 @@ final class BlocksListController
                     'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->noResultsMessage($paginator->count()),
                 ];
-            },
+            }),
         ]);
     }
 
@@ -83,8 +83,15 @@ final class BlocksListController
 
     public function getBlocks(): LengthAwarePaginator
     {
-        /** @var Block $lastBlock */
+        /** @var ?Block $lastBlock */
         $lastBlock = Block::withScope(OrderByTimestampScope::class)->first();
+
+        if ($lastBlock === null) {
+            return new LengthAwarePaginator([], 0, $this->perPage(), $this->page(), [
+                'path'     => route('blocks'),
+                'pageName' => 'page',
+            ]);
+        }
 
         /** @var Block $firstBlock */
         $firstBlock = Block::withScope(OrderByTimestampScope::class, 'asc')->first();

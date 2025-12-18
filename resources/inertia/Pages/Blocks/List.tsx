@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 
 import Layout from "@/Layout";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
@@ -12,6 +12,7 @@ import useShareData from "@/hooks/use-shared-data";
 import BlocksListTableWrapper from "@/Components/Tables/Desktop/Blocks/List";
 import BlocksListMobileTableWrapper from "@/Components/Tables/Mobile/Blocks/List";
 import MobileDivider from "@/Components/General/MobileDivider";
+import { useEffect } from "react";
 
 export default function List({ statistics }: PageProps<BlocksListProps>) {
     const { t } = useTranslation();
@@ -22,6 +23,12 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
             name: network.name,
         },
     });
+
+    useEffect(() => {
+        router.reload({
+            only: ["blocks"],
+        });
+    }, []);
 
     return (
         <>
