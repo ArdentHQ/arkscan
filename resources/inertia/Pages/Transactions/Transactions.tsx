@@ -6,14 +6,12 @@ import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import { TransactionsProps } from "../Transactions.contracts";
 import HeaderStats from "@/Components/Transaction/HeaderStats";
+import TransactionsTable from "@/Components/Transaction/TransactionsTable";
+import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
+import { useEffect } from "react";
+import { router } from "@inertiajs/react";
 
-export default function Transactions({
-    network,
-    transactionCount,
-    volume,
-    totalFees,
-    averageFee,
-}: PageProps<TransactionsProps>) {
+export default function Transactions({ network, statistics, filters, transactions }: PageProps<TransactionsProps>) {
     const { t } = useTranslation();
 
     const metadata = usePageMetadata({
@@ -22,6 +20,12 @@ export default function Transactions({
             name: network.name,
         },
     });
+
+    useEffect(() => {
+        router.reload({
+            only: ["transactions"],
+        });
+    }, []);
 
     return (
         <>
@@ -33,16 +37,9 @@ export default function Transactions({
                     subtitle={t("pages.transactions.subtitle", { network: network.name })}
                 />
 
-                <HeaderStats
-                    transactionCount={transactionCount}
-                    volume={volume}
-                    totalFees={totalFees}
-                    averageFee={averageFee}
-                />
+                <HeaderStats {...statistics} />
 
-                <div className="border-t-4 border-theme-secondary-200 px-6 pb-8 pt-6 dark:border-theme-dark-950 md:mx-auto md:max-w-7xl md:border-0 md:px-10 md:pb-6 md:pt-0">
-                    {/*  */}
-                </div>
+                <TransactionsTable transactions={transactions} filters={filters} />
             </Layout>
         </>
     );
