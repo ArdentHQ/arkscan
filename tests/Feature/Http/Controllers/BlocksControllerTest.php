@@ -21,7 +21,7 @@ it('should render the page without any errors', function () {
     ]);
 
     $this
-        ->get(route('blocks'))
+        ->get(route('blocks-old'))
         ->assertOk();
 });
 
@@ -78,7 +78,7 @@ it('should get the block stats for the last 24 hours', function () {
     $blockCount = Block::where('timestamp', '>', Carbon::parse('2021-04-13 16:02:04')->getTimestampMs())->count();
 
     $this
-        ->get(route('blocks'))
+        ->get(route('blocks-old'))
         ->assertOk()
         ->assertViewHas([
             'forgedCount'     => $blockCount,
@@ -110,7 +110,7 @@ it('should get the block stats for the last 24 hours', function () {
     $this->travelTo('2021-04-15 16:02:04');
 
     $this
-        ->get(route('blocks'))
+        ->get(route('blocks-old'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 0,
@@ -132,7 +132,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
     ]);
 
     $this
-        ->get(route('blocks'))
+        ->get(route('blocks-old'))
         ->assertOk()
         ->assertViewHas([
             'forgedCount'     => 1,
@@ -196,7 +196,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     }
 
     $this
-        ->get(route('blocks'))
+        ->get(route('blocks-old'))
         ->assertOk()
         ->assertViewHas([
             'forgedCount'     => 148,
@@ -228,7 +228,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     }
 
     $this
-        ->get(route('blocks'))
+        ->get(route('blocks-old'))
         ->assertOk()
         ->assertViewHas([
             'forgedCount'     => 148,
@@ -240,7 +240,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     $this->travelTo('2021-04-14 16:09:04');
 
     $this
-        ->get(route('blocks'))
+        ->get(route('blocks-old'))
         ->assertOk()
         ->assertViewHas([
             'forgedCount'     => 160,
