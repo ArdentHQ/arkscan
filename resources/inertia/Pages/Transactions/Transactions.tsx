@@ -40,7 +40,9 @@ export default function Transactions({
                     averageFee={averageFee}
                 />
 
-                {/* Content goes here */}
+                <div className="border-t-4 border-theme-secondary-200 px-6 pb-8 pt-6 dark:border-theme-dark-950 md:mx-auto md:max-w-7xl md:border-0 md:px-10 md:pb-6 md:pt-0">
+                    {/*  */}
+                </div>
             </Layout>
         </>
     );
