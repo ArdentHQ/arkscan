@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Inertia\TransactionsController;
-use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -157,41 +156,45 @@ it('should cache the transaction stats for 5 minutes', function () {
             ->where('statistics.averageFee', fn ($value) => abs($value - 0.000105) < 0.00000001));
 });
 
-it('should return empty transactions and the no-filters message when all filters are disabled', function () {
+it('should show the no-filters message when all filters are disabled', function () {
     $query = collect(TransactionsController::FILTERS)
         ->keys()
         ->mapWithKeys(fn (string $key) => [$key => false])
         ->toArray();
 
-    app()->instance('request', Request::create(route('transactions'), 'GET', $query));
-
-    $controller = new TransactionsController();
-
-    $paginator = $controller->getTransactions();
-
-    expect($paginator->total())->toBe(0);
-    expect($controller->getNoResultsMessageProperty($paginator->count()))
-        ->toBe(trans('tables.transactions.no_results.no_filters'));
+    $this
+        ->get(route('transactions', $query), [
+            'X-Inertia-Partial-Component' => 'Transactions/Transactions',
+            'X-Inertia-Partial-Data'      => 'transactions',
+        ])
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->has('transactions.data', 0)
+            ->has('transactions.meta')
+            ->where('transactions.noResultsMessage', (string) trans('tables.transactions.no_results.no_filters')));
 });
 
-it('should return the no-results message when filters are enabled but there are no results', function () {
-    app()->instance('request', Request::create(route('transactions'), 'GET', [
-        'transfers'           => true,
-        'multipayments'       => false,
-        'votes'               => false,
-        'validator'           => false,
-        'username'            => false,
-        'contract_deployment' => false,
-        'others'              => false,
-    ]));
-
-    $controller = new TransactionsController();
-
-    $paginator = $controller->getTransactions();
-
-    expect($paginator->total())->toBe(0);
-    expect($controller->getNoResultsMessageProperty($paginator->count()))
-        ->toBe((string) trans('tables.transactions.no_results.no_results'));
+it('should show the no-results message when filters are enabled but no results exist', function () {
+    $this
+        ->get(route('transactions', [
+            'transfers'           => true,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
+        ]), [
+            'X-Inertia-Partial-Component' => 'Transactions/Transactions',
+            'X-Inertia-Partial-Data'      => 'transactions',
+        ])
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->has('transactions.data', 0)
+            ->has('transactions.meta')
+            ->where('transactions.noResultsMessage', (string) trans('tables.transactions.no_results.no_results')));
 });
 
 it('should return transactions and no message when results exist', function () {
@@ -199,23 +202,25 @@ it('should return transactions and no message when results exist', function () {
     Wallet::factory()->create(['address' => $transaction->from]);
     Wallet::factory()->create(['address' => $transaction->to]);
 
-    app()->instance('request', Request::create(route('transactions'), 'GET', [
-        'transfers'           => true,
-        'multipayments'       => false,
-        'votes'               => false,
-        'validator'           => false,
-        'username'            => false,
-        'contract_deployment' => false,
-        'others'              => false,
-        'per-page'            => 10,
-        'page'                => 1,
-    ]));
-
-    $controller = new TransactionsController();
-
-    $paginator = $controller->getTransactions();
-
-    expect($paginator->total())->toBe(1);
-    expect($paginator->items()[0])->toBeInstanceOf(\App\DTO\Inertia\Transaction::class);
-    expect($controller->getNoResultsMessageProperty($paginator->count()))->toBeNull();
+    $this
+        ->get(route('transactions', [
+            'transfers'           => true,
+            'multipayments'       => false,
+            'votes'               => false,
+            'validator'           => false,
+            'username'            => false,
+            'contract_deployment' => false,
+            'others'              => false,
+            'per-page'            => 10,
+            'page'                => 1,
+        ]), [
+            'X-Inertia-Partial-Component' => 'Transactions/Transactions',
+            'X-Inertia-Partial-Data'      => 'transactions',
+        ])
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/Transactions')
+            ->has('transactions.data', 1)
+            ->has('transactions.meta')
+            ->where('transactions.noResultsMessage', null));
 });
