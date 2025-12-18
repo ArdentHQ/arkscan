@@ -5,6 +5,7 @@ import Fee from "./Fee";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
 
 export default function Amount({
+    forWallet = false,
     transaction,
     withoutFee = false,
     withNetworkCurrency = false,
@@ -12,6 +13,7 @@ export default function Amount({
     hideCurrency,
     testId,
 }: {
+    forWallet?: boolean;
     transaction: ITransaction;
     withoutFee?: boolean;
     withNetworkCurrency?: boolean;
@@ -21,20 +23,22 @@ export default function Amount({
 }) {
     const { network } = useSharedData();
 
-    let isReceived = !transaction.isSent;
-    let isSent = transaction.isSent;
+    let isReceived = forWallet ? !transaction.isSent : false;
+    let isSent = forWallet ? transaction.isSent : false;
 
     let amount = transaction.amount;
     let amountFiat = transaction.amountFiat;
     let amountForItself: number | undefined = undefined;
 
-    if (isReceived || transaction.isSentToSelf) {
-        amount = transaction.amountReceived;
-        amountFiat = transaction.amountReceivedFiat;
-    } else {
-        amountForItself = transaction.amountForItself;
-        if (amountForItself > 0) {
-            amount = transaction.amountExcludingItself;
+    if (forWallet) {
+        if (isReceived || transaction.isSentToSelf) {
+            amount = transaction.amountReceived;
+            amountFiat = transaction.amountReceivedFiat;
+        } else {
+            amountForItself = transaction.amountForItself;
+            if (amountForItself > 0) {
+                amount = transaction.amountExcludingItself;
+            }
         }
     }
 

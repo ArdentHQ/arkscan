@@ -45,6 +45,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                             testId={`wallet:transaction:mobile:${transaction.hash}:amount`}
                             transaction={transaction}
                             hideCurrency={true}
+                            forWallet
                         />
                     </TableCell>
 

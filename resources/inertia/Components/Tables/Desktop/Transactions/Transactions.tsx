@@ -9,7 +9,6 @@ import Amount from "@/Components/Transaction/Amount";
 import Fee from "@/Components/Transaction/Fee";
 import { Table } from "../Table";
 import Method from "@/Components/Transaction/Method";
-import Addressing from "@/Components/Transaction/Addressing";
 import TableHeader from "../TableHeader";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
@@ -36,12 +35,7 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell className="text-right" lastOn="lg">
-                <Amount
-                    testId={`wallet:transaction:${row.hash}:amount`}
-                    transaction={row}
-                    hideCurrency
-                    breakpoint="lg"
-                />
+                <Amount testId={`transaction:${row.hash}:amount`} transaction={row} breakpoint="lg" />
             </TableCell>
 
             <TableCell className="text-right" breakpoint="lg" responsive>
