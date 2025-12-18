@@ -35,11 +35,16 @@ export function Row({ row }: { row: ITransaction }) {
                 <AddressingGeneric transaction={row} />
             </TableCell>
 
-            <TableCell className="text-right" lastOn="md-lg">
-                <Amount testId={`wallet:transaction:${row.hash}:amount`} transaction={row} hideCurrency />
+            <TableCell className="text-right" lastOn="lg">
+                <Amount
+                    testId={`wallet:transaction:${row.hash}:amount`}
+                    transaction={row}
+                    hideCurrency
+                    breakpoint="lg"
+                />
             </TableCell>
 
-            <TableCell className="text-right" breakpoint="md-lg" responsive>
+            <TableCell className="text-right" breakpoint="lg" responsive>
                 <Fee transaction={row} />
             </TableCell>
         </tr>
@@ -77,13 +82,13 @@ export function TransactionsTable({
 
                     <TableHeader>{t("tables.transactions.addressing")}</TableHeader>
 
-                    <TableHeader className="last-until-md-lg text-right" last-on="md-lg">
+                    <TableHeader className="last-until-lg text-right" last-on="lg">
                         {t("tables.transactions.amount", {
                             currency: network!.currency,
                         })}
                     </TableHeader>
 
-                    <TableHeader className="text-right" responsive breakpoint="md-lg">
+                    <TableHeader className="text-right" responsive breakpoint="lg">
                         {t("tables.transactions.fee", {
                             currency: network!.currency,
                         })}
@@ -144,7 +149,7 @@ export default function TransactionsTableWrapper({
                                 currency: network!.currency,
                             }),
                             className: "text-right w-[100px]",
-                            lastOn: "md-lg",
+                            lastOn: "lg",
                         },
                         {
                             name: t("tables.transactions.fee", {
@@ -152,7 +157,7 @@ export default function TransactionsTableWrapper({
                             }),
                             className: "text-right w-[100px]",
                             responsive: true,
-                            breakpoint: "md-lg",
+                            breakpoint: "lg",
                         },
                     ]}
                 />
