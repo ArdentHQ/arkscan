@@ -1,7 +1,7 @@
 import MobileTable from "../Table";
 import MobileTableRow from "../Row";
 import TableCell from "../TableCell";
-import { MobileTransactionsSkeletonTable } from "../Skeleton/Wallet/Transactions";
+import { MobileTransactionsSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Transactions/Transactions";
 import { IPaginatedResponse } from "@/types";
 import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
