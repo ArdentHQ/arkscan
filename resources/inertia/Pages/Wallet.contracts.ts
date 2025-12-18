@@ -8,4 +8,5 @@ export interface WalletProps {
     wallet: IWallet;
     rates: Record<string, number>;
     filters: ITabbedData<IFilters>;
+    baseUrl: string;
 }
