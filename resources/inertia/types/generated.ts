@@ -6,6 +6,7 @@ export type IBlock = {
     totalReward: number;
     totalRewardFiat: string;
     rewardFiat: string;
+    proposer: IWallet;
 };
 export type IConfigArkconnect = {
     enabled: boolean;

@@ -9,6 +9,9 @@ import { BlocksListProps } from "../Blocks.contracts";
 import { useTranslation } from "react-i18next";
 import HeaderStats from "@/Components/Blocks/HeaderStats";
 import useShareData from "@/hooks/use-shared-data";
+import BlocksListTableWrapper from "@/Components/Tables/Desktop/Blocks/List";
+import BlocksListMobileTableWrapper from "@/Components/Tables/Mobile/Blocks/List";
+import MobileDivider from "@/Components/General/MobileDivider";
 
 export default function List({ statistics }: PageProps<BlocksListProps>) {
     const { t } = useTranslation();
@@ -31,6 +34,12 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
                 />
 
                 <HeaderStats statistics={statistics} />
+
+                <MobileDivider className="mb-6" />
+
+                <PageHandlerProvider>
+                    <BlocksListTableWrapper mobile={<BlocksListMobileTableWrapper />} />
+                </PageHandlerProvider>
             </Layout>
         </>
     );
