@@ -85,6 +85,8 @@ final class TransactionsController
 
     private function hasFilters(): bool
     {
-        return collect(self::FILTERS)->some(fn ($_, $filterName) => $this->hasFilter($filterName, self::FILTERS[$filterName]));
+        return collect(self::FILTERS)
+            ->keys()
+            ->some(fn ($filterName) => $this->hasFilter($filterName, self::FILTERS[$filterName]));
     }
 }
