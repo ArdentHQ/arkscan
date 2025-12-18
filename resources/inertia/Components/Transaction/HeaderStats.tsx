@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import Currency from "@/Components/General/Currency";
 import useShareData from "@/hooks/use-shared-data";
 import { TransactionsProps } from "@/Pages/Transactions.contracts";
+import { currencyWithDecimals } from "@/utils/number-formatter";
 
 export default function HeaderStats({
     transactionCount,
@@ -25,17 +26,17 @@ export default function HeaderStats({
                 </Card>
                 <Card className="flex-1">
                     <Detail title={t("pages.transactions.volume_24h")}>
-                        <Currency currency={network!.currency} decimals={0} value={volume} />
+                        {currencyWithDecimals({ value: volume, currency: network!.currency })}
                     </Detail>
                 </Card>
                 <Card className="flex-1">
                     <Detail title={t("pages.transactions.total_fees_24h")}>
-                        <Currency currency={network!.currency} decimals={0} value={totalFees} />
+                        {currencyWithDecimals({ value: totalFees, currency: network!.currency })}
                     </Detail>
                 </Card>
                 <Card className="flex-1">
                     <Detail title={t("pages.transactions.average_fee_24h")}>
-                        <Currency currency={network!.currency} decimals={0} value={averageFee} />
+                        {currencyWithDecimals({ value: averageFee, currency: network!.currency })}
                     </Detail>
                 </Card>
             </div>
