@@ -6,6 +6,7 @@ use App\Http\Controllers\BlocksController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Inertia\BlocksListController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
@@ -38,7 +39,8 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('/validators/{view?}', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
-Route::get('/blocks', BlocksController::class)->name('blocks');
+Route::get('/blocks', BlocksListController::class)->name('blocks');
+Route::get('/blocks-old', BlocksController::class)->name('blocks-old');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
