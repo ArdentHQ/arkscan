@@ -14,6 +14,7 @@ import TableHeader from "../TableHeader";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
 import useSharedData from "@/hooks/use-shared-data";
+import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -31,7 +32,7 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell>
-                <Addressing transaction={row} withoutLink={row.isSentToSelf} />
+                <AddressingGeneric transaction={row} />
             </TableCell>
 
             <TableCell className="text-right" lastOn="md-lg">
