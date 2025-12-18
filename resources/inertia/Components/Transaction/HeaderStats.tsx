@@ -2,7 +2,6 @@ import Card from "@/Components/General/Card";
 import Detail from "@/Components/General/Detail";
 import Number from "@/Components/General/Number";
 import { useTranslation } from "react-i18next";
-import Currency from "@/Components/General/Currency";
 import useShareData from "@/hooks/use-shared-data";
 import { TransactionsProps } from "@/Pages/Transactions.contracts";
 import { currencyWithDecimals } from "@/utils/number-formatter";
