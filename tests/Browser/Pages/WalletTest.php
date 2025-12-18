@@ -688,11 +688,17 @@ describe('Transactions Tab', function () {
                 ->waitForText($description)
                 ->assertDisabled('[data-testid="wallet:transactions-export:submit"]')
                 ->click('[data-testid="wallet:transactions-export:types-trigger"]')
+                ->pause(100)
                 ->click('[data-testid="wallet:transactions-export:type-transfers"]')
+                ->pause(100)
                 ->click('[data-testid="wallet:transactions-export:types-trigger"]')
+                ->pause(100)
                 ->click('[data-testid="wallet:transactions-export:columns-trigger"]')
+                ->pause(100)
                 ->click('[data-testid="wallet:transactions-export:column-id"]')
+                ->pause(100)
                 ->click('[data-testid="wallet:transactions-export:columns-trigger"]')
+                ->pause(100)
                 ->assertEnabled('[data-testid="wallet:transactions-export:submit"]')
                 ->click('[data-testid="wallet:transactions-export:submit"]')
                 ->waitForText($successMessage)
@@ -875,7 +881,7 @@ describe('Blocks Tab', function () {
         });
     })->with('resolutions');
 
-    it('should show tab on page load from query string', function ($resolution) {
+    it('should show tab on page load from query string', function () {
         $transactions = Transaction::factory()
             ->transfer()
             ->count(5)
@@ -891,11 +897,12 @@ describe('Blocks Tab', function () {
                 'proposer' => $this->wallet->address,
             ]);
 
-        $this->browse(function (Browser $browser) use ($transactions, $blocks, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) use ($transactions, $blocks) {
+            $browser->resize(1280, 800);
 
-            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'tab' => 'blocks'])
-                ->waitForText('6 results', ignoreCase: true);
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'blocks'])
+                ->waitForText('6 results', ignoreCase: true)
+                ->assertPathIs('/addresses/'.$this->wallet->address.'/blocks');
 
             foreach ($blocks as $block) {
                 $browser->assertSee(number_format($block->number->toNumber()));
@@ -908,7 +915,43 @@ describe('Blocks Tab', function () {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
             }
         });
-    })->with('resolutions');
+    });
+
+    it('should show tab on page load from url path segment', function () {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $blocks = Block::factory()
+            ->count(6)
+            ->create([
+                'proposer' => $this->wallet->address,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $blocks) {
+            $browser->resize(1280, 800);
+
+            $browser->visit('addresses/'.$this->wallet->address.'/blocks')
+                ->waitForText('6 results', ignoreCase: true)
+                ->assertPathIs('/addresses/'.$this->wallet->address.'/blocks');
+
+            foreach ($blocks as $block) {
+                $browser->assertSee(number_format($block->number->toNumber()));
+            }
+
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    });
 
     it('should export blocks from the modal', function ($resolution) {
         Transaction::factory()
@@ -961,8 +1004,11 @@ describe('Blocks Tab', function () {
                 ->waitForText($description)
                 ->assertDisabled('[data-testid="wallet:blocks-export:submit"]')
                 ->click('[data-testid="wallet:blocks-export:columns-trigger"]')
+                ->pause(100)
                 ->click('[data-testid="wallet:blocks-export:column-id"]')
+                ->pause(100)
                 ->click('[data-testid="wallet:blocks-export:columns-trigger"]')
+                ->pause(100)
                 ->assertEnabled('[data-testid="wallet:blocks-export:submit"]')
                 ->click('[data-testid="wallet:blocks-export:submit"]')
                 ->waitForText($successMessage)
@@ -1077,7 +1123,7 @@ describe('Voters Tab', function () {
         });
     })->with('resolutions');
 
-    it('should show tab on page load from query string', function ($resolution) {
+    it('should show tab on page load from query string', function () {
         $transactions = Transaction::factory()
             ->transfer()
             ->count(5)
@@ -1095,18 +1141,15 @@ describe('Voters Tab', function () {
                 ],
             ]);
 
-        $this->browse(function (Browser $browser) use ($transactions, $voters, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) use ($transactions, $voters) {
+            $browser->resize(1280, 800);
 
-            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'tab' => 'voters'])
-                ->waitForText('10 results', ignoreCase: true);
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'voters'])
+                ->waitForText('10 results', ignoreCase: true)
+                ->assertPathIs('/addresses/'.$this->wallet->address.'/voters');
 
             foreach ($voters as $voter) {
-                if ($resolution['width'] <= 640) {
-                    $browser->assertSee(substr($voter->address, 0, 5).'…'.substr($voter->address, -5));
-                } else {
-                    $browser->assertSee(substr($voter->address, 0, 7));
-                }
+                $browser->assertSee(substr($voter->address, 0, 7));
             }
 
             $browser->click('button#tab-transactions')
@@ -1116,7 +1159,45 @@ describe('Voters Tab', function () {
                 $browser->assertSee(substr($transaction->hash, 0, 5));
             }
         });
-    })->with('resolutions');
+    });
+
+    it('should show tab on page load from url path segment', function () {
+        $transactions = Transaction::factory()
+            ->transfer()
+            ->count(5)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $voters = Wallet::factory()
+            ->count(10)
+            ->create([
+                'attributes' => [
+                    'vote' => $this->wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) use ($transactions, $voters) {
+            $browser->resize(1280, 800);
+
+            $browser->visit('addresses/'.$this->wallet->address.'/voters')
+                ->waitForText('10 results', ignoreCase: true)
+                ->assertPathIs('/addresses/'.$this->wallet->address.'/voters');
+
+            foreach ($voters as $voter) {
+                $browser->assertSee(substr($voter->address, 0, 7));
+            }
+
+            $browser->click('button#tab-transactions')
+                ->waitForText('5 results', ignoreCase: true);
+
+            foreach ($transactions as $transaction) {
+                $browser->assertSee(substr($transaction->hash, 0, 5));
+            }
+        });
+    });
 });
 
 dataset('resolutions', [

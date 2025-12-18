@@ -5,7 +5,7 @@ import Layout from "@/Layout";
 import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import HeaderStats from "@/Components/Validator/HeaderStats";
-import { ValidatorsProps } from "../Validators.contracts";
+import { IValidatorsStatistics, ValidatorsProps } from "../Validators.contracts";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
@@ -14,6 +14,8 @@ import ValidatorsTab from "./tabs/Validators";
 import MissedBlocksTableWrapper from "@/Components/Tables/Desktop/Validators/MissedBlocks";
 import MissedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Validators/MissedBlocks";
 import RecentVotesTab from "./tabs/RecentVotes";
+import useSharedData from "@/hooks/use-shared-data";
+import { PropsWithChildren } from "react";
 
 const ValidatorsTabsWrapper = ({
     missedBlocks,
@@ -22,35 +24,12 @@ const ValidatorsTabsWrapper = ({
     recentVotes,
 }: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters" | "recentVotes">) => {
     return (
-        <TabsProvider
-            defaultSelected="validators"
-            queryStringDefaults={{
-                validators: {
-                    page: 1,
-                    "per-page": 25,
-                },
-                "missed-blocks": {
-                    page: 1,
-                    "per-page": 25,
-                },
-                "recent-votes": {
-                    page: 1,
-                    "per-page": 25,
-                },
-            }}
-            tabs={[
-                { text: "Validators", value: "validators" },
-                { text: "Missed Blocks", value: "missed-blocks" },
-                { text: "Recent Votes", value: "recent-votes" },
-            ]}
-        >
-            <ValidatorsTabs
-                missedBlocks={missedBlocks}
-                validators={validators}
-                filters={filters}
-                recentVotes={recentVotes}
-            />
-        </TabsProvider>
+        <ValidatorsTabs
+            missedBlocks={missedBlocks}
+            validators={validators}
+            filters={filters}
+            recentVotes={recentVotes}
+        />
     );
 };
 
@@ -98,8 +77,40 @@ const ValidatorsTabs = ({
     );
 };
 
+function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
+    const { baseUrl, statistics } = useSharedData<ValidatorsProps>();
+
+    return (
+        <TabsProvider
+            defaultSelected="validators"
+            queryStringDefaults={{
+                validators: {
+                    page: 1,
+                    "per-page": 25,
+                },
+                "missed-blocks": {
+                    page: 1,
+                    "per-page": 25,
+                },
+                "recent-votes": {
+                    page: 1,
+                    "per-page": 25,
+                },
+            }}
+            tabs={[
+                { text: "Validators", value: "validators" },
+                { text: "Missed Blocks", value: "missed-blocks" },
+                { text: "Recent Votes", value: "recent-votes" },
+            ]}
+            header={<HeaderStats statistics={statistics} />}
+            baseUrl={baseUrl}
+        >
+            <PageHandlerProvider>{children}</PageHandlerProvider>
+        </TabsProvider>
+    );
+}
+
 export default function Validators({
-    statistics,
     network,
     missedBlocks,
     validators,
@@ -121,16 +132,14 @@ export default function Validators({
             <Layout>
                 <PageHeader title={t("pages.validators.title")} subtitle={t("pages.validators.subtitle")} />
 
-                <HeaderStats statistics={statistics} />
-
-                <PageHandlerProvider>
+                <ValidatorsPageHandlerProvider>
                     <ValidatorsTabsWrapper
                         missedBlocks={missedBlocks}
                         validators={validators}
                         filters={filters}
                         recentVotes={recentVotes}
                     />
-                </PageHandlerProvider>
+                </ValidatorsPageHandlerProvider>
             </Layout>
         </>
     );

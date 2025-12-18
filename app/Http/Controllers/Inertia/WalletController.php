@@ -43,11 +43,16 @@ final class WalletController
         ],
     ];
 
-    public function __invoke(Wallet $wallet): Response
+    private string $view = 'transactions';
+
+    public function __invoke(Wallet $wallet, string $view = 'transactions'): Response
     {
+        $this->view = $view;
+
         return Inertia::render('Wallet/Wallet', [
             'wallet'       => WalletDTO::fromModel($wallet),
             'filters'      => self::FILTERS,
+            'baseUrl'      => route('wallet', $wallet->address, false),
 
             'transactions' => Inertia::optional(function () use ($wallet) {
                 $paginator = $this->getTransactions($wallet);
@@ -129,14 +134,14 @@ final class WalletController
             return request()->get($key) === 'true';
         }
 
-        $currentTab = request()->get('tab', 'transactions');
+        $currentTab = $this->view;
 
         return Arr::get(self::FILTERS, $currentTab.'.'.$key, false);
     }
 
     private function filters(): array
     {
-        $currentTab = request()->get('tab', 'transactions');
+        $currentTab = $this->view;
 
         $filters = Arr::get(self::FILTERS, $currentTab, []);
         foreach ($filters as $key => $value) {
