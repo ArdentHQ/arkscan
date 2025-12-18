@@ -46,7 +46,7 @@ final class TransactionsController
                     'averageFee'       => BigNumber::new($data['average_fee'])->toFloat(),
                 ];
             },
-            'transactions'     => Inertia::optional(function () {
+            'transactions'     => Inertia::lazy(function () {
                 $paginator = $this->getTransactions();
 
                 return [
