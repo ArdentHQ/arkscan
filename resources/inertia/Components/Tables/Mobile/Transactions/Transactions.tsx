@@ -10,10 +10,10 @@ import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Transaction/Amount";
 import useSharedData from "@/hooks/use-shared-data";
 import Fee from "@/Components/Transaction/Fee";
-import Addressing from "@/Components/Transaction/Addressing";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Transactions/Transactions";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
+import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
 
 export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
     const { t } = useTranslation();
@@ -33,7 +33,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                     }
                 >
                     <TableCell label={transaction.type} className="sm:flex-1">
-                        <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} />
+                        <AddressingGeneric transaction={transaction} />
                     </TableCell>
 
                     <TableCell

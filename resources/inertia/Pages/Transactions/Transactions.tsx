@@ -7,7 +7,6 @@ import PageHeader from "@/Components/PageHeader/PageHeader";
 import { TransactionsProps } from "../Transactions.contracts";
 import HeaderStats from "@/Components/Transaction/HeaderStats";
 import TransactionsTable from "@/Components/Transaction/TransactionsTable";
-import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import { useEffect } from "react";
 import { router } from "@inertiajs/react";
 
