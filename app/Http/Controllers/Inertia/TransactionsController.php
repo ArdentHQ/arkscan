@@ -34,13 +34,18 @@ final class TransactionsController
 
     public function __invoke(): Response
     {
-        $data = (new StatisticsCache())->getTransactionData();
-
         return Inertia::render('Transactions/Transactions', [
-            'transactionCount' => $data['transaction_count'],
-            'volume'           => BigNumber::new($data['volume'])->toFloat(),
-            'totalFees'        => BigNumber::new($data['total_fees'])->toFloat(),
-            'averageFee'       => BigNumber::new($data['average_fee'])->toFloat(),
+            'filters'          => fn () => self::FILTERS,
+            'statistics'       => function () {
+                $data = (new StatisticsCache())->getTransactionData();
+
+                return [
+                    'transactionCount' => $data['transaction_count'],
+                    'volume'           => BigNumber::new($data['volume'])->toFloat(),
+                    'totalFees'        => BigNumber::new($data['total_fees'])->toFloat(),
+                    'averageFee'       => BigNumber::new($data['average_fee'])->toFloat(),
+                ];
+            },
             'transactions'     => Inertia::optional(function () {
                 $paginator = $this->getTransactions();
 
