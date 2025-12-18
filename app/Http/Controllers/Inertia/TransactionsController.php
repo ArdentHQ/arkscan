@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Scopes\OrderByTimestampScope;
@@ -15,7 +16,6 @@ use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\DTO\Inertia\Transaction as TransactionDTO;
 
 final class TransactionsController
 {
@@ -31,7 +31,6 @@ final class TransactionsController
         'contract_deployment' => true,
         'others'              => true,
     ];
-
 
     public function __invoke(): Response
     {
@@ -86,30 +85,6 @@ final class TransactionsController
 
     private function hasFilters(): bool
     {
-        if ($this->hasFilter('transfers', self::FILTERS['transfers']) === true) {
-            return true;
-        }
-
-        if ($this->hasFilter('multipayments', self::FILTERS['multipayments']) === true) {
-            return true;
-        }
-
-        if ($this->hasFilter('votes', self::FILTERS['votes']) === true) {
-            return true;
-        }
-
-        if ($this->hasFilter('validator', self::FILTERS['validator']) === true) {
-            return true;
-        }
-
-        if ($this->hasFilter('username', self::FILTERS['username']) === true) {
-            return true;
-        }
-
-        if ($this->hasFilter('contract_deployment', self::FILTERS['contract_deployment']) === true) {
-            return true;
-        }
-
-        return $this->hasFilter('others', self::FILTERS['others']) === true;
+        return collect(self::FILTERS)->some(fn ($_, $filterName) => $this->hasFilter($filterName, self::FILTERS[$filterName]));
     }
 }
