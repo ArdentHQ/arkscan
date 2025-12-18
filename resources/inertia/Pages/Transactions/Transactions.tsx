@@ -9,6 +9,7 @@ import HeaderStats from "@/Components/Transaction/HeaderStats";
 import TransactionsTable from "@/Components/Transaction/TransactionsTable";
 import { useEffect } from "react";
 import { router } from "@inertiajs/react";
+import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 
 export default function Transactions({ network, statistics, filters, transactions }: PageProps<TransactionsProps>) {
     const { t } = useTranslation();
@@ -38,7 +39,9 @@ export default function Transactions({ network, statistics, filters, transaction
 
                 <HeaderStats {...statistics} />
 
-                <TransactionsTable transactions={transactions} filters={filters} />
+                <PageHandlerProvider>
+                    <TransactionsTable transactions={transactions} filters={filters} />
+                </PageHandlerProvider>
             </Layout>
         </>
     );
