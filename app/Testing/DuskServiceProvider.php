@@ -32,6 +32,7 @@ class DuskServiceProvider extends ServiceProvider
             $offset  = 0;
 
             foreach ($text as $textSegment) {
+                $textSegment = (string) $textSegment;
                 $textSegment = $ignoreCase ? strtolower($textSegment) : $textSegment;
                 $position    = strpos($content, $textSegment, $offset);
 

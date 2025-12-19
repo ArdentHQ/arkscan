@@ -53,9 +53,11 @@ export function formatWithCurrencyCustom(
         const effectiveDecimals = decimals ?? 8;
         result = numericValue.toFixed(effectiveDecimals);
 
-        if (result.includes(".")) {
-            result = result.replace(/0+$/, "").replace(/\.$/, "");
-        }
+        result = new Intl.NumberFormat("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: effectiveDecimals,
+            useGrouping: true,
+        }).format(numericValue);
     } else if (valueStr.includes(",")) {
         result = valueStr;
     }

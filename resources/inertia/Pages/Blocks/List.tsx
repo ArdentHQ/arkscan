@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 
 import Layout from "@/Layout";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
@@ -9,6 +9,36 @@ import { BlocksListProps } from "../Blocks.contracts";
 import { useTranslation } from "react-i18next";
 import HeaderStats from "@/Components/Blocks/HeaderStats";
 import useShareData from "@/hooks/use-shared-data";
+import BlocksListTableWrapper from "@/Components/Tables/Desktop/Blocks/List";
+import BlocksListMobileTableWrapper from "@/Components/Tables/Mobile/Blocks/List";
+import MobileDivider from "@/Components/General/MobileDivider";
+import { useEffect } from "react";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+
+function TableWrapper() {
+    const { setRefreshPage } = usePageHandler();
+
+    const updateTable = (callback?: CallableFunction) => {
+        router.reload({
+            only: ["blocks"],
+            onSuccess: () => {
+                if (callback) {
+                    callback();
+                }
+            },
+        });
+    };
+
+    useEffect(() => {
+        updateTable();
+
+        setRefreshPage((callback: CallableFunction) => {
+            updateTable(callback);
+        });
+    }, []);
+
+    return <BlocksListTableWrapper mobile={<BlocksListMobileTableWrapper />} />;
+}
 
 export default function List({ statistics }: PageProps<BlocksListProps>) {
     const { t } = useTranslation();
@@ -19,6 +49,12 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
             name: network.name,
         },
     });
+
+    useEffect(() => {
+        router.reload({
+            only: ["blocks"],
+        });
+    }, []);
 
     return (
         <>
@@ -31,6 +67,12 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
                 />
 
                 <HeaderStats statistics={statistics} />
+
+                <MobileDivider className="mb-6" />
+
+                <PageHandlerProvider>
+                    <TableWrapper />
+                </PageHandlerProvider>
             </Layout>
         </>
     );
