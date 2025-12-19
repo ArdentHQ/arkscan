@@ -48,9 +48,8 @@ final class ValidatorsController
         $totalVoted     = $validatorCache->getTotalBalanceVoted();
 
         return Inertia::render('Validators/Validators', [
-            'filters'      => self::FILTERS,
+            'filters'      => fn () => $this->filters(),
             'baseUrl'      => route('validators', absolute: false),
-
             'validators'   => Inertia::optional(function () {
                 $paginator = $this->getValidators();
 
@@ -93,6 +92,14 @@ final class ValidatorsController
                 'validatorsMissed' => $validatorsMissed,
             ],
         ]);
+    }
+
+    private function filters(): array
+    {
+        return collect(self::FILTERS)
+            ->keys()
+            ->mapWithKeys(fn ($groupName) => [$groupName => collect(self::FILTERS[$groupName])->keys()->mapWithKeys(fn ($filterName) => [$filterName => $this->hasFilter($filterName, self::FILTERS[$groupName][$filterName])])])
+            ->toArray();
     }
 
     private function missedBlocks(): array
