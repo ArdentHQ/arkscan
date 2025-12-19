@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\BlocksController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
@@ -41,7 +40,6 @@ Route::get('/validators/{view?}', ValidatorsController::class)->name('validators
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksListController::class)->name('blocks');
-Route::get('/blocks-old', BlocksController::class)->name('blocks-old');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
