@@ -36,11 +36,11 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell className="text-right" lastOn="lg">
-                <Amount testId={`transaction:${row.hash}:amount`} transaction={row} breakpoint="lg" />
+                <Amount testId={`transaction:${row.hash}:amount`} transaction={row} breakpoint="lg" hideCurrency />
             </TableCell>
 
             <TableCell className="text-right" breakpoint="lg" responsive>
-                <Fee transaction={row} />
+                <Fee transaction={row} hideCurrency />
             </TableCell>
         </tr>
     );
