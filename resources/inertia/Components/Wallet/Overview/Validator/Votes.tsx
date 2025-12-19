@@ -25,7 +25,7 @@ export default function WalletOverviewValidatorVotes({ wallet }: { wallet: IWall
                             <Link
                                 className="link"
                                 href={
-                                    route("wallet", { wallet: wallet.address, tab: "voters" }) + "#wallet:tabs:content"
+                                    route("wallet", { wallet: wallet.address, view: "voters" }) + "#wallet:tabs:content"
                                 }
                             >
                                 {t("general.view")}
