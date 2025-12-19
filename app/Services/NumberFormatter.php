@@ -9,7 +9,6 @@ use App\Facades\Network;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
-use Brick\Math\RoundingMode;
 use Illuminate\Support\Str;
 use ReflectionClass;
 
@@ -145,10 +144,10 @@ final class NumberFormatter
         }
 
         return static::formatWithCurrencyCustom(
-                $value,
-                $currency,
-                self::CRYPTO_DECIMALS
-            );
+            $value,
+            $currency,
+            self::CRYPTO_DECIMALS
+        );
     }
 
     public static function isFiat(string $currency): bool
