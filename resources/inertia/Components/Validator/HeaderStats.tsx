@@ -99,7 +99,7 @@ export default function HeaderStats({ statistics }: { statistics: IValidatorsSta
 
                         <Link
                             className="link pl-3 text-sm !leading-5 md:text-base"
-                            href={route("validators", { tab: "missed-blocks" }) + "#validators:tabs:content"}
+                            href={route("validators", { view: "missed-blocks" }) + "#validators:tabs:content"}
                         >
                             {t("actions.view")}
                         </Link>
