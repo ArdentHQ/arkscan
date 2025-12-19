@@ -175,7 +175,7 @@ jobs:
                   ARKSCAN_DB_PASSWORD: password
 
     # browser:
-    #     needs: [unit]
+    #     needs: [conflicts, analyse, format]
 
     #     runs-on: ubuntu-latest
 

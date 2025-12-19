@@ -36,7 +36,7 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::get('/validators', ValidatorsController::class)->name('validators');
+Route::get('/validators/{view?}', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksListController::class)->name('blocks');
@@ -47,18 +47,16 @@ Route::get('/transactions', TransactionsController::class)->name('transactions')
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
-Route::get('/addresses/{wallet}', WalletController::class)->name('wallet');
-Route::get('/addresses/{wallet}?view=blocks', WalletController::class)->name('wallet.blocks');
-Route::get('/addresses/{wallet}?view=voters', WalletController::class)->name('wallet.voters');
+Route::get('/addresses/{wallet}/{view?}', WalletController::class)->name('wallet');
 
-Route::get('/wallets/{wallet}', function (Wallet $wallet) {
+Route::get('/wallets/{wallet}/', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
 });
 Route::get('/wallets/{wallet}/voters', function (Wallet $wallet) {
-    return redirect()->route('wallet.voters', $wallet);
+    return redirect()->route('wallet', ['wallet' => $wallet, 'view' => 'voters']);
 });
 Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
-    return redirect()->route('wallet.blocks', $wallet);
+    return redirect()->route('wallet', ['wallet' => $wallet, 'view' => 'blocks']);
 });
 
 Route::view('/statistics', 'app.statistics')->name('statistics');
