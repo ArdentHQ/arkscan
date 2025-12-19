@@ -28,10 +28,10 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
 
     return $context->get(route('wallet', ['wallet' => $wallet, ...$queryString ?? []]))
         ->assertOk()
-        ->assertInertia(function (Assert $page) use ($pageCallback, $wallet, $withReload, $reloadCallback) {
+        ->assertInertia(function (Assert $page) use ($pageCallback, $wallet, $withReload, $reloadCallback, $queryString) {
             $page->where('wallet.address', $wallet->address)
                 ->where('filters', [
-                    'transactions' => [
+                    'transactions' => array_merge([
                         'outgoing'            => true,
                         'incoming'            => true,
                         'transfers'           => true,
@@ -41,7 +41,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                         'username'            => true,
                         'contract_deployment' => true,
                         'others'              => true,
-                    ],
+                    ], array_map(fn ($value) => $value === 'true', $queryString)),
                 ])
                 ->missing('transactions')
                 ->missing('blocks')
