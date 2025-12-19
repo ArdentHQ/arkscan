@@ -26,7 +26,7 @@ trait RecentVotesTab
            'unvote' => true,
        ],
     ];
-    
+
     protected ?bool $recentVotesHasFilters = null;
 
     public function getRecentVotesNoResultsMessageProperty(int $count): null|string
