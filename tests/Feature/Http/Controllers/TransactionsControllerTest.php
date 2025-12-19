@@ -11,7 +11,7 @@ it('should render the page without any errors', function () {
     $this->withoutExceptionHandling();
 
     $this
-        ->get(route('transactions'))
+        ->get(route('transactions-old'))
         ->assertOk();
 });
 
@@ -31,7 +31,7 @@ it('should get the transaction stats for the last 24 hours', function () {
     ]);
 
     $this
-        ->get(route('transactions'))
+        ->get(route('transactions-old'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 148,
@@ -63,7 +63,7 @@ it('should get the transaction stats for the last 24 hours', function () {
     $this->travelTo('2021-04-15 16:02:04');
 
     $this
-        ->get(route('transactions'))
+        ->get(route('transactions-old'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 0,
@@ -93,7 +93,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
     $fee = BigNumber::new($formattedFee)->toFloat();
 
     $this
-        ->get(route('transactions'))
+        ->get(route('transactions-old'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 1,
@@ -143,7 +143,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     $volume = (123 * 146);
 
     $this
-        ->get(route('transactions'))
+        ->get(route('transactions-old'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 146,
@@ -159,7 +159,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     ]);
 
     $this
-        ->get(route('transactions'))
+        ->get(route('transactions-old'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 146,
@@ -173,7 +173,7 @@ it('should cache the transaction stats for 5 minutes', function () {
     $volume += 123 * 12;
 
     $this
-        ->get(route('transactions'))
+        ->get(route('transactions-old'))
         ->assertOk()
         ->assertViewHas([
             'transactionCount' => 158,
