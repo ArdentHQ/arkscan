@@ -6,14 +6,10 @@ import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import { TransactionsProps } from "../Transactions.contracts";
 import HeaderStats from "@/Components/Transaction/HeaderStats";
+import TransactionsTable from "@/Components/Transaction/TransactionsTable";
+import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 
-export default function Transactions({
-    network,
-    transactionCount,
-    volume,
-    totalFees,
-    averageFee,
-}: PageProps<TransactionsProps>) {
+export default function TransactionsList({ network, statistics, filters, transactions }: PageProps<TransactionsProps>) {
     const { t } = useTranslation();
 
     const metadata = usePageMetadata({
@@ -33,14 +29,11 @@ export default function Transactions({
                     subtitle={t("pages.transactions.subtitle", { network: network.name })}
                 />
 
-                <HeaderStats
-                    transactionCount={transactionCount}
-                    volume={volume}
-                    totalFees={totalFees}
-                    averageFee={averageFee}
-                />
+                <HeaderStats {...statistics} />
 
-                {/* Content goes here */}
+                <PageHandlerProvider>
+                    <TransactionsTable transactions={transactions} filters={filters} />
+                </PageHandlerProvider>
             </Layout>
         </>
     );

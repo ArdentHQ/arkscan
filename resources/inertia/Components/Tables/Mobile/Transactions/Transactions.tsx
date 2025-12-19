@@ -1,7 +1,7 @@
 import MobileTable from "../Table";
 import MobileTableRow from "../Row";
 import TableCell from "../TableCell";
-import { MobileTransactionsSkeletonTable } from "../Skeleton/Wallet/Transactions";
+import { MobileTransactionsSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Transactions/Transactions";
 import { IPaginatedResponse } from "@/types";
 import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
@@ -10,10 +10,10 @@ import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Transaction/Amount";
 import useSharedData from "@/hooks/use-shared-data";
 import Fee from "@/Components/Transaction/Fee";
-import Addressing from "@/Components/Transaction/Addressing";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
-import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Wallet/Transactions";
+import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Transactions/Transactions";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
+import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
 
 export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
     const { t } = useTranslation();
@@ -33,7 +33,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                     }
                 >
                     <TableCell label={transaction.type} className="sm:flex-1">
-                        <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} forWallet />
+                        <AddressingGeneric transaction={transaction} />
                     </TableCell>
 
                     <TableCell
@@ -45,7 +45,6 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                             testId={`wallet:transaction:mobile:${transaction.hash}:amount`}
                             transaction={transaction}
                             hideCurrency={true}
-                            forWallet
                         />
                     </TableCell>
 
@@ -77,7 +76,7 @@ export default function TransactionsMobileTableWrapper({
         return (
             <div>
                 <TableHeaderWrapper resultCount={0}>
-                    <TransactionsHeaderActions hasTransactions={false} />
+                    <TransactionsHeaderActions />
                 </TableHeaderWrapper>
 
                 <MobileTransactionsSkeletonTable rowCount={rowCount} />
