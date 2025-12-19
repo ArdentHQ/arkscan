@@ -14,11 +14,22 @@ export default function TransactionsTable({
     const { t } = useTranslation();
     const { setRefreshPage } = usePageHandler();
 
+    const updateTable = (callback?: CallableFunction) => {
+        router.reload({
+            only: ["transactions", "filters"],
+            onSuccess: () => {
+                if (callback) {
+                    callback();
+                }
+            },
+        });
+    };
+
     useEffect(() => {
-        setRefreshPage(() => {
-            router.reload({
-                only: ["transactions", "filters"],
-            });
+        updateTable();
+
+        setRefreshPage((callback: CallableFunction) => {
+            updateTable(callback);
         });
     }, []);
 
@@ -61,12 +72,6 @@ export default function TransactionsTable({
                     selected: filters.others,
                 },
             ]}
-            onChange={() => {
-                console.log("reload");
-                router.reload({
-                    only: ["transactions", "filters"],
-                });
-            }}
         >
             <TransactionsTableWrapper
                 transactions={transactions}

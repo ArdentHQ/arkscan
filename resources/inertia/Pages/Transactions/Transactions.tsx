@@ -7,8 +7,6 @@ import PageHeader from "@/Components/PageHeader/PageHeader";
 import { TransactionsProps } from "../Transactions.contracts";
 import HeaderStats from "@/Components/Transaction/HeaderStats";
 import TransactionsTable from "@/Components/Transaction/TransactionsTable";
-import { useEffect } from "react";
-import { router } from "@inertiajs/react";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 
 export default function Transactions({ network, statistics, filters, transactions }: PageProps<TransactionsProps>) {
@@ -20,12 +18,6 @@ export default function Transactions({ network, statistics, filters, transaction
             name: network.name,
         },
     });
-
-    useEffect(() => {
-        router.reload({
-            only: ["transactions"],
-        });
-    }, []);
 
     return (
         <>
