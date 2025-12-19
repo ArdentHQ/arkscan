@@ -22,7 +22,7 @@ class Block extends Data
         public float $totalReward,
         public string $totalRewardFiat,
         public string $rewardFiat,
-        public WalletDTO $proposer,
+        public string $proposer,
     ) {
     }
 
@@ -38,7 +38,7 @@ class Block extends Data
             totalReward: $viewModel->totalReward(),
             totalRewardFiat: $viewModel->totalRewardFiat(),
             rewardFiat: $viewModel->rewardFiat(),
-            proposer: WalletDTO::fromModel(Wallet::firstWhere('address', $block->proposer)),
+            proposer: $block->proposer,
         );
     }
 }
