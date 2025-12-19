@@ -112,9 +112,9 @@ final class BlocksListController
             ->where('number', '>', $heightFrom)
             ->get();
 
-        return new LengthAwarePaginator($blocks, $blockCount, $this->perPage(), $this->page(), [
+        return (new LengthAwarePaginator($blocks, $blockCount, $this->perPage(), $this->page(), [
             'path'     => route('blocks'),
             'pageName' => 'page',
-        ])->through(fn (Block $block) => BlockDTO::fromModel($block));
+        ]))->through(fn (Block $block) => BlockDTO::fromModel($block));
     }
 }
