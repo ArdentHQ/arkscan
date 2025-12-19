@@ -15,7 +15,6 @@ use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ThemeController;
-use App\Http\Controllers\TransactionsController as LegacyTransactionsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -43,8 +42,6 @@ Route::get('/blocks', BlocksListController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
-// @TODO: remove this route after new transactions page is implemented https://app.clickup.com/t/86dyw9fz4
-Route::get('/transactions-old', LegacyTransactionsController::class)->name('transactions-old');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
