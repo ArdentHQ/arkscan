@@ -29,7 +29,7 @@ export function Row({ row: block }: { row: IBlock }) {
 
             <TableCell>
                 <div className="flex flex-col whitespace-nowrap text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50 md:space-y-1 xl:space-y-0">
-                    <Address wallet={{ address: block.proposer }} />
+                    <Address wallet={{ address: block.proposer }} truncate />
 
                     <div className="mt-1 text-xs font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200 md-lg:hidden">
                         <span>{block.transactionCount}</span>

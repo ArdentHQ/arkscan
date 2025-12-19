@@ -39,7 +39,7 @@ export function BlocksListMobileTable({ blocks }: { blocks: IPaginatedResponse<I
                     }
                 >
                     <TableCell label={t("tables.blocks.generated_by")}>
-                        <Address wallet={{ address: block.proposer }} />
+                        <Address wallet={{ address: block.proposer }} truncate />
                     </TableCell>
 
                     <TableCell label={t("tables.blocks.transactions")}>{block.transactionCount}</TableCell>
