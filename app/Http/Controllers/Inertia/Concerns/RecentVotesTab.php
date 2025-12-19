@@ -26,6 +26,8 @@ trait RecentVotesTab
            'unvote' => true,
        ],
     ];
+    
+    protected ?bool $recentVotesHasFilters = null;
 
     public function getRecentVotesNoResultsMessageProperty(int $count): null|string
     {
@@ -55,11 +57,15 @@ trait RecentVotesTab
 
     private function recentVotesHasFilters(): bool
     {
-        if ($this->hasFilter('vote', $this->recentVotesFilters['recent-votes']['vote'])) {
-            return true;
+        if ($this->recentVotesHasFilters !== null) {
+            return $this->recentVotesHasFilters;
         }
 
-        return $this->hasFilter('unvote', $this->recentVotesFilters['recent-votes']['unvote']);
+        $recentVotesHasFilters = collect($this->recentVotesFilters['recent-votes'])->keys()->some(fn ($key) => $this->hasFilter($key, $this->recentVotesFilters['recent-votes'][$key]));
+
+        $this->recentVotesHasFilters = $recentVotesHasFilters;
+
+        return $this->recentVotesHasFilters;
     }
 
     private function getRecentVotesQuery(): Builder
