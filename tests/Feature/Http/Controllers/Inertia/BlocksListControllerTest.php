@@ -16,17 +16,27 @@ beforeEach(function () {
     $this->withoutExceptionHandling();
 });
 
-function performBlocksListRequest($context, $pageCallback = null, array $queryString = []): mixed
+function performBlocksListRequest($context, $withReload = true, $pageCallback = null, $reloadCallback = null, array $queryString = [], string $reloadProps = 'blocks'): mixed
 {
     return $context->get(route('blocks', $queryString))
         ->assertOk()
-        ->assertInertia(function (Assert $page) use ($pageCallback) {
+        ->assertInertia(function (Assert $page) use ($pageCallback, $withReload, $reloadCallback, $reloadProps) {
             $page->missing('missedBlocks')
                 ->component('Blocks/List');
 
             if (is_callable($pageCallback)) {
                 $pageCallback($page);
             }
+
+            if (! $withReload) {
+                return;
+            }
+
+            $page->reloadOnly($reloadProps, function (Assert $reload) use ($reloadCallback) {
+                if (is_callable($reloadCallback)) {
+                    $reloadCallback($reload);
+                }
+            });
         });
 }
 
@@ -208,7 +218,7 @@ it('should list the first page of records', function () {
 
     performBlocksListRequest(
         $this,
-        pageCallback: function (Assert $page) {
+        reloadCallback: function (Assert $page) {
             foreach (ViewModelFactory::paginate(Block::withScope(OrderByTimestampScope::class)->paginate())->items() as $index => $block) {
                 $page->where("blocks.data.{$index}.hash", $block->hash());
             }
@@ -234,7 +244,7 @@ it('should list the last page of records', function () {
 
     performBlocksListRequest(
         $this,
-        pageCallback: function (Assert $page) {
+        reloadCallback: function (Assert $page) {
             $blocks = Block::withScope(OrderByTimestampScope::class)
                 ->paginate(25, ['*'], 'page', 2, Block::count());
 
@@ -265,7 +275,7 @@ it('should handle a lot of blocks', function () {
 
     performBlocksListRequest(
         $this,
-        pageCallback: function (Assert $page) {
+        reloadCallback: function (Assert $page) {
             $blocks = Block::withScope(OrderByTimestampScope::class)
                 ->paginate(25, ['*'], 'page', 159, Block::count());
 
@@ -298,7 +308,7 @@ it('should handle snapshot of blocks', function () {
 
     performBlocksListRequest(
         $this,
-        pageCallback: function (Assert $page) use ($pageCount) {
+        reloadCallback: function (Assert $page) use ($pageCount) {
             $page->where('blocks.total', 511)
                 ->where('blocks.per_page', 25)
                 ->where('blocks.current_page', 1)
@@ -329,7 +339,7 @@ it('should list the last page of a snapshot', function () {
 
     performBlocksListRequest(
         $this,
-        pageCallback: function (Assert $page) use ($pageCount, $blockCount) {
+        reloadCallback: function (Assert $page) use ($pageCount, $blockCount) {
             $blocks = Block::withScope(OrderByTimestampScope::class)
                 ->paginate(25, ['*'], 'page', $pageCount, $blockCount);
 
@@ -346,7 +356,7 @@ it('should list the last page of a snapshot', function () {
 it('should show no results message if no blocks', function () {
     performBlocksListRequest(
         $this,
-        pageCallback: function (Assert $page) {
+        reloadCallback: function (Assert $page) {
             $page->has('blocks.data', 0)
                 ->where('blocks.total', 0)
                 ->where('blocks.noResultsMessage', trans('tables.blocks.no_results'));
