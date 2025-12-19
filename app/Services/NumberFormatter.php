@@ -9,6 +9,8 @@ use App\Facades\Network;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use ARKEcosystem\Foundation\NumberFormatter\ResolveScientificNotation;
+use Brick\Math\RoundingMode;
+use Illuminate\Support\Str;
 use ReflectionClass;
 
 final class NumberFormatter
@@ -45,8 +47,7 @@ final class NumberFormatter
         $isSmallAmount = $value < 1;
 
         if (! static::isFiat($currency)) {
-            return BetterNumberFormatter::new()
-                ->formatWithCurrencyCustom($value, $currency, static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount));
+            return static::formatWithCurrencyCustom($value, $currency, static::decimalsFor($currency, $showSmallAmounts && $isSmallAmount));
         }
 
         return BetterNumberFormatter::new()
@@ -70,7 +71,7 @@ final class NumberFormatter
             return $formatter->formatCurrency(floatval(number_format((float) $value, $decimals ?? 4, '.', '')), $currency);
         }
 
-        return $formatter->formatWithCurrencyCustom($value, $currency, $decimals ?? 8);
+        return static::formatWithCurrencyCustom($value, $currency, $decimals ?? 8, $formatter);
     }
 
     /**
@@ -97,7 +98,7 @@ final class NumberFormatter
      */
     public static function currencyWithoutSuffix($value, string $currency): string
     {
-        return trim(BetterNumberFormatter::new()->formatWithCurrencyCustom($value, '', static::decimalsFor($currency)));
+        return trim(static::formatWithCurrencyCustom($value, '', static::decimalsFor($currency)));
     }
 
     /**
@@ -143,8 +144,7 @@ final class NumberFormatter
             return trim(trim(self::currencyWithDecimals($value, $currency, 0), '0'), '.');
         }
 
-        return BetterNumberFormatter::new()
-            ->formatWithCurrencyCustom(
+        return static::formatWithCurrencyCustom(
                 $value,
                 $currency,
                 self::CRYPTO_DECIMALS
@@ -194,5 +194,26 @@ final class NumberFormatter
         }
 
         return UnitConverter::gweiToArk($value, $currency);
+    }
+
+    // A variation of ARKEcosystem\Foundation\NumberFormatter\Concerns\HasCustomFormatters#formatWithCurrencyCustom
+    private static function formatWithCurrencyCustom(int | float | string $value, string $currency, ?int $decimals = null, ?BetterNumberFormatter $formatter = null): string
+    {
+        $formatter = $formatter ?? BetterNumberFormatter::new();
+
+        $result = $formatter->formatWithDecimal((float) $value);
+
+        if (Str::contains((string) $value, '.')) {
+            $result = rtrim(rtrim((string) $result, '0'), '.');
+        } elseif (Str::contains((string) $value, ',')) {
+            $result = $value;
+        }
+
+        // Gets rid of trailing .00 if amount of decimals is 0
+        if ($decimals === 0 && Str::contains((string) $result, '.')) {
+            $result = rtrim(rtrim($result, '0'), '.');
+        }
+
+        return rtrim($result.' '.strtoupper($currency));
     }
 }
