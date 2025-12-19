@@ -50,28 +50,6 @@ final class BlocksListController
         ]);
     }
 
-    private function blockData(): array
-    {
-        return Cache::remember('blocks:stats', self::STATS_TTL, function () {
-            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix();
-
-            $data      = (array) DB::connection('explorer')
-                ->table('blocks')
-                ->selectRaw('COUNT(blocks.*) as block_count')
-                ->selectRaw('SUM(reward) as total_rewards')
-                ->selectRaw('MAX(transactions_count) as max_transactions')
-                ->where('blocks.timestamp', '>', $timestamp * 1000)
-                ->first();
-
-            return [
-                'block_count'      => $data['block_count'],
-                'missed_count'     => ForgingStats::missed()->where('timestamp', '>', $timestamp)->count(),
-                'total_rewards'    => $data['total_rewards'] ?? 0,
-                'max_transactions' => $data['max_transactions'] ?? 0,
-            ];
-        });
-    }
-
     public function noResultsMessage(int $count): null|string
     {
         if ($count === 0) {
@@ -116,5 +94,27 @@ final class BlocksListController
             'path'     => route('blocks'),
             'pageName' => 'page',
         ]))->through(fn (Block $block) => BlockDTO::fromModel($block));
+    }
+
+    private function blockData(): array
+    {
+        return Cache::remember('blocks:stats', self::STATS_TTL, function () {
+            $timestamp = Timestamp::fromUnix(Carbon::now()->subDays(1)->unix())->unix();
+
+            $data      = (array) DB::connection('explorer')
+                ->table('blocks')
+                ->selectRaw('COUNT(blocks.*) as block_count')
+                ->selectRaw('SUM(reward) as total_rewards')
+                ->selectRaw('MAX(transactions_count) as max_transactions')
+                ->where('blocks.timestamp', '>', $timestamp * 1000)
+                ->first();
+
+            return [
+                'block_count'      => $data['block_count'],
+                'missed_count'     => ForgingStats::missed()->where('timestamp', '>', $timestamp)->count(),
+                'total_rewards'    => $data['total_rewards'] ?? 0,
+                'max_transactions' => $data['max_transactions'] ?? 0,
+            ];
+        });
     }
 }
