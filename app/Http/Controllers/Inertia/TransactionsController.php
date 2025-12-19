@@ -34,7 +34,7 @@ final class TransactionsController
 
     public function __invoke(): Response
     {
-        return Inertia::render('Transactions/Transactions', [
+        return Inertia::render('Transactions/List', [
             'filters'          => fn () => $this->filters(),
             'statistics'       => function () {
                 $data = (new StatisticsCache())->getTransactionData();
