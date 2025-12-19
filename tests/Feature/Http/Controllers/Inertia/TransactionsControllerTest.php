@@ -21,7 +21,7 @@ it('should render the page without any errors', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->has('statistics.transactionCount')
             ->has('statistics.volume')
             ->has('statistics.totalFees')
@@ -47,7 +47,7 @@ it('should get the transaction stats for the last 24 hours', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->where('statistics.transactionCount', 148)
             ->where('statistics.volume', fn ($value) => abs($value - 18204) < 0.00000001)
             ->where('statistics.totalFees', fn ($value) => abs($value - 0.01554) < 0.00000001)
@@ -59,7 +59,7 @@ it('should get the transaction stats for the last 24 hours', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->where('statistics.transactionCount', 0)
             ->where('statistics.volume', 0)
             ->where('statistics.totalFees', 0)
@@ -89,7 +89,7 @@ it('should show the correct decimal places for the stats', function ($decimalPla
         ->get(route('transactions'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->where('statistics.transactionCount', 1)
             ->where('statistics.volume', fn ($value) => abs($value - $amount) < 0.00000001)
             ->where('statistics.totalFees', fn ($value) => abs($value - $fee) < 0.00000001)
@@ -119,7 +119,7 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->where('statistics.transactionCount', 146)
             ->where('statistics.volume', fn ($value) => abs($value - $volume) < 0.00000001)
             ->where('statistics.totalFees', fn ($value) => abs($value - 0.01533) < 0.00000001)
@@ -135,7 +135,7 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->where('statistics.transactionCount', 146)
             ->where('statistics.volume', fn ($value) => abs($value - $volume) < 0.00000001)
             ->where('statistics.totalFees', fn ($value) => abs($value - 0.01533) < 0.00000001)
@@ -149,7 +149,7 @@ it('should cache the transaction stats for 5 minutes', function () {
         ->get(route('transactions'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->where('statistics.transactionCount', 158)
             ->where('statistics.volume', fn ($value) => abs($value - $volume) < 0.00000001)
             ->where('statistics.totalFees', fn ($value) => abs($value - 0.01659) < 0.00000001)
@@ -164,12 +164,12 @@ it('should show the no-filters message when all filters are disabled', function 
 
     $this
         ->get(route('transactions', $query), [
-            'X-Inertia-Partial-Component' => 'Transactions/Transactions',
+            'X-Inertia-Partial-Component' => 'Transactions/List',
             'X-Inertia-Partial-Data'      => 'transactions',
         ])
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->has('transactions.data', 0)
             ->has('transactions.meta')
             ->where('transactions.noResultsMessage', (string) trans('tables.transactions.no_results.no_filters')));
@@ -186,12 +186,12 @@ it('should show the no-results message when filters are enabled but no results e
             'contract_deployment' => false,
             'others'              => false,
         ]), [
-            'X-Inertia-Partial-Component' => 'Transactions/Transactions',
+            'X-Inertia-Partial-Component' => 'Transactions/List',
             'X-Inertia-Partial-Data'      => 'transactions',
         ])
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->has('transactions.data', 0)
             ->has('transactions.meta')
             ->where('transactions.noResultsMessage', (string) trans('tables.transactions.no_results.no_results')));
@@ -214,12 +214,12 @@ it('should return transactions and no message when results exist', function () {
             'per-page'            => 10,
             'page'                => 1,
         ]), [
-            'X-Inertia-Partial-Component' => 'Transactions/Transactions',
+            'X-Inertia-Partial-Component' => 'Transactions/List',
             'X-Inertia-Partial-Data'      => 'transactions',
         ])
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Transactions/Transactions')
+            ->component('Transactions/List')
             ->has('transactions.data', 1)
             ->has('transactions.meta')
             ->where('transactions.noResultsMessage', null));
