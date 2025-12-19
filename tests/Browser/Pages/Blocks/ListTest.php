@@ -25,49 +25,79 @@ afterEach(function () {
     Cache::flush();
 });
 
-it('should show the correct decimal places for the stats', function ($decimalPlaces, $totalRewards, $resolution) {
-    // $this->travelTo('2021-04-14 16:02:04');
+it('should go to page 2', function ($resolution) {
+    for ($i = 84831; $i < 84831 + 50; $i++) {
+        Block::factory()->create([
+            'number'    => $i,
+            'timestamp' => Carbon::now()->subSeconds(800 - ($i * 8))->getTimestampMs(),
+        ]);
+    }
 
+    $blocks = Block::orderBy('number', 'desc')->get();
+
+    $this->browse(function (Browser $browser) use ($blocks, $resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('blocks')
+            ->waitForText('50 results', ignoreCase: true)
+            ->assertSee('Page 1 of 2');
+
+        foreach ($blocks->take(25) as $block) {
+            $browser->assertSee(number_format($block->number->toNumber()));
+        }
+
+        $browser->click('[data-testid="pagination:next-page"] button')
+            ->waitForText('Page 2 of 2')
+            ->assertQueryStringHas('page', '2');
+
+        foreach ($blocks->skip(25)->take(25) as $block) {
+            $browser->assertSee(number_format($block->number->toNumber()));
+        }
+    });
+})->with('resolutions');
+
+it('should reset to page 1 on per-page change', function ($resolution) {
+    for ($i = 84831; $i < 84831 + 50; $i++) {
+        Block::factory()->create([
+            'number'    => $i,
+            'timestamp' => Carbon::now()->subSeconds(800 - ($i * 8))->getTimestampMs(),
+        ]);
+    }
+
+    $blocks = Block::orderBy('number', 'desc')->get();
+
+    $this->browse(function (Browser $browser) use ($blocks, $resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('blocks', ['page' => 2])
+            ->waitForText('50 results', ignoreCase: true)
+            ->assertSee('Page 2 of 2');
+
+        foreach ($blocks->skip(25)->take(25) as $block) {
+            $browser->assertSee(number_format($block->number->toNumber()));
+        }
+
+        $browser->click('[data-testid="pagination:per-page-dropdown:button"]')
+            ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
+            ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//span[.//text()="10"]')
+            ->waitForText('Page 1 of 5');
+
+        foreach ($blocks->take(10) as $block) {
+            $browser->assertSee(number_format($block->number->toNumber()));
+        }
+    });
+})->with('resolutions');
+
+it('should show the correct decimal places for the stats', function ($decimalPlaces, $totalRewards, $resolution) {
     $transactionsCount = 23;
 
     Block::factory()->create([
         'timestamp'          => Carbon::now()->subHours(3)->getTimestampMs(),
-        // 'timestamp'          => Carbon::parse('2021-04-14 13:02:04')->getTimestampMs(),
         'reward'             => $totalRewards * 1e18,
         'transactions_count' => $transactionsCount,
     ]);
 
     Cache::flush();
-
-    // $this
-    //     ->get(route('blocks-old'))
-    //     ->assertOk()
-    //     ->assertViewHas([
-    //         'forgedCount'     => 1,
-    //         'missedCount'     => 0,
-    //         'totalRewards'    => $totalRewards,
-    //         'maxTransactions' => $transactionsCount,
-    //     ])
-    //     ->assertSeeInOrder([
-    //         'Blocks Produced (24h)',
-    //         '1',
-    //         'Missed Blocks (24h)',
-    //     ])
-    //     ->assertSeeInOrder([
-    //         'Missed Blocks (24h)',
-    //         '0',
-    //         'Block Rewards (24h)',
-    //     ])
-    //     ->assertSeeInOrder([
-    //         'Block Rewards (24h)',
-    //         number_format($totalRewards, $decimalPlaces).' DARK',
-    //         'Max Transactions (24h)',
-    //     ])
-    //     ->assertSeeInOrder([
-    //         'Max Transactions (24h)',
-    //         $transactionsCount,
-    //         'Showing 0 results',
-    //     ]);
 
     $this->browse(function (Browser $browser) use ($decimalPlaces, $totalRewards, $transactionsCount, $resolution) {
         $browser->resize($resolution['width'], $resolution['height']);
@@ -94,17 +124,6 @@ it('should show the correct decimal places for the stats', function ($decimalPla
                 $transactionsCount,
                 '1 results',
             ], ignoreCase: true);
-            // ->waitForSeeInOrder([
-            //     'Blocks Produced (24h)',
-            //     '1',
-            //     'Missed Blocks (24h)',
-            //     '0',
-            //     'Block Rewards (24h)',
-            //     number_format($totalRewards, $decimalPlaces).' DARK',
-            //     'Max Transactions (24h)',
-            //     $transactionsCount,
-            //     'Showing 0 results',
-            // ], ignoreCase: true);
     });
 })->with([
     8 => [8, 919123.48392049],
