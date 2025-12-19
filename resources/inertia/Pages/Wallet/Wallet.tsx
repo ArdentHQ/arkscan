@@ -119,7 +119,7 @@ const WalletTabs = ({
     }, [wallet.public_key, currentTab]);
 
     return (
-        <div id="wallet:tabs:content">
+        <div id="wallet:tabs:content" className="scroll-mt-13 sm:scroll-mt-16 md:scroll-mt-[123px]">
             {currentTab === "transactions" && (
                 <WalletTransactionsTab transactions={transactions} filters={filters.transactions} />
             )}

@@ -16,6 +16,7 @@ import headerBgDark from "@images/validators/header-bg-dark.svg";
 import headerBgMobileDark from "@images/validators/header-bg-mobile-dark.svg";
 import headerBgDim from "@images/validators/header-bg-dim.svg";
 import headerBgMobileDim from "@images/validators/header-bg-mobile-dim.svg";
+import { Link } from "@inertiajs/react";
 
 function ExploreHeaderStat() {
     const { t } = useTranslation();
@@ -96,14 +97,12 @@ export default function HeaderStats({ statistics }: { statistics: IValidatorsSta
                             </Badge>
                         </div>
 
-                        <button
+                        <Link
                             className="link pl-3 text-sm !leading-5 md:text-base"
-                            onClick={() => {
-                                // TODO: switch tabs and scroll to table - https://app.clickup.com/t/86dynrhkp
-                            }}
+                            href={route("validators", { tab: "missed-blocks" }) + "#validators:tabs:content"}
                         >
                             {t("actions.view")}
-                        </button>
+                        </Link>
                     </Detail>
                 </Card>
 

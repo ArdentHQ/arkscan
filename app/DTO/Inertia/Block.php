@@ -20,6 +20,7 @@ class Block extends Data
         public float $totalReward,
         public string $totalRewardFiat,
         public string $rewardFiat,
+        public string $proposer,
     ) {
     }
 
@@ -35,6 +36,7 @@ class Block extends Data
             totalReward: $viewModel->totalReward(),
             totalRewardFiat: $viewModel->totalRewardFiat(),
             rewardFiat: $viewModel->rewardFiat(),
+            proposer: $block->proposer,
         );
     }
 }
