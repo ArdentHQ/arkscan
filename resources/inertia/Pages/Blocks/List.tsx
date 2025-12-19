@@ -13,6 +13,32 @@ import BlocksListTableWrapper from "@/Components/Tables/Desktop/Blocks/List";
 import BlocksListMobileTableWrapper from "@/Components/Tables/Mobile/Blocks/List";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { useEffect } from "react";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+
+function TableWrapper() {
+    const { setRefreshPage } = usePageHandler();
+
+    const updateTable = (callback?: CallableFunction) => {
+        router.reload({
+            only: ["blocks"],
+            onSuccess: () => {
+                if (callback) {
+                    callback();
+                }
+            },
+        });
+    };
+
+    useEffect(() => {
+        updateTable();
+
+        setRefreshPage((callback: CallableFunction) => {
+            updateTable(callback);
+        });
+    }, []);
+
+    return <BlocksListTableWrapper mobile={<BlocksListMobileTableWrapper />} />;
+}
 
 export default function List({ statistics }: PageProps<BlocksListProps>) {
     const { t } = useTranslation();
@@ -45,7 +71,7 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
                 <MobileDivider className="mb-6" />
 
                 <PageHandlerProvider>
-                    <BlocksListTableWrapper mobile={<BlocksListMobileTableWrapper />} />
+                    <TableWrapper />
                 </PageHandlerProvider>
             </Layout>
         </>
