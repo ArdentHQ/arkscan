@@ -41,6 +41,12 @@ final class ValidatorsController
 
     public function __invoke(): Response
     {
+        [$missedBlockCount, $validatorsMissed] = $this->missedBlocks();
+
+        $validatorCache = new ValidatorCache();
+        $voterCount     = $validatorCache->getTotalWalletsVoted();
+        $totalVoted     = $validatorCache->getTotalBalanceVoted();
+
         return Inertia::render('Validators/Validators', [
             'filters'      => self::FILTERS,
             'baseUrl'      => route('validators', absolute: false),
@@ -79,26 +85,14 @@ final class ValidatorsController
                 ];
             }),
 
-            'statistics' => fn () => $this->getStatistics(),
-
+            'statistics' => [
+                'voterCount'       => $voterCount,
+                'totalVoted'       => $totalVoted,
+                'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
+                'missedBlocks'     => $missedBlockCount,
+                'validatorsMissed' => $validatorsMissed,
+            ],
         ]);
-    }
-
-    private function getStatistics(): array
-    {
-        [$missedBlockCount, $validatorsMissed] = $this->missedBlocks();
-
-        $validatorCache = new ValidatorCache();
-        $voterCount     = $validatorCache->getTotalWalletsVoted();
-        $totalVoted     = $validatorCache->getTotalBalanceVoted();
-
-        return [
-            'voterCount'       => $voterCount,
-            'totalVoted'       => $totalVoted,
-            'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
-            'missedBlocks'     => $missedBlockCount,
-            'validatorsMissed' => $validatorsMissed,
-        ];
     }
 
     private function missedBlocks(): array
