@@ -37,6 +37,7 @@ final class AnalysisTest extends TestCase
             'Tests\createRealisticRound',
             'Tests\createFullRound',
             'Tests\createPartialRound',
+            'Tests\getRoundDelegates',
             'Tests\mockTaggedCache',
             'Tests\delegatesForRound',
             'Tests\getDelegateForgingPosition',

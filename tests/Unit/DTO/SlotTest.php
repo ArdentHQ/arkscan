@@ -34,7 +34,8 @@ it('should make an instance that has all properties', function (string $status) 
         ],
         status: $status,
         roundBlockCount: $roundBlockCount,
-        roundNumber: 1
+        roundNumber: 1,
+        secondsUntilForge: 0,
     );
 
     expect($subject->publicKey())->toBeString();
@@ -70,7 +71,8 @@ it('should not be marked as missing if it never had a block', function () {
         lastBlock: [],
         status: 'done',
         roundBlockCount: $roundBlockCount,
-        roundNumber: 1
+        roundNumber: 1,
+        secondsUntilForge: 0,
     );
 
     expect($subject->keepsMissing())->toBeFalse();
@@ -101,7 +103,8 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
         ],
         status: 'done',
         roundBlockCount: $roundBlockCount,
-        roundNumber: 10
+        roundNumber: 10,
+        secondsUntilForge: 0,
     );
 
     $this->assertDatabaseMissing('forging_stats', [
