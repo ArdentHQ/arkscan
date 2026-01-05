@@ -196,20 +196,35 @@ final class NumberFormatter
     }
 
     // A variation of ARKEcosystem\Foundation\NumberFormatter\Concerns\HasCustomFormatters#formatWithCurrencyCustom
-    private static function formatWithCurrencyCustom(int | float | string $value, string $currency, ?int $decimals = null, ?BetterNumberFormatter $formatter = null): string
+    private static function formatWithCurrencyCustom(
+        int | float | string $value,
+        string $currency,
+        ?int $decimals = null,
+        ?BetterNumberFormatter $formatter = null,
+    ): string
     {
         $formatter = $formatter ?? BetterNumberFormatter::new();
 
+        if ($decimals !== null) {
+            $formatter = $formatter->withMinFractionDigits($decimals);
+        }
+
         $result = $formatter->formatWithDecimal((float) $value);
 
-        if (Str::contains((string) $value, '.')) {
-            $result = rtrim(rtrim((string) $result, '0'), '.');
-        } elseif (Str::contains((string) $value, ',')) {
-            $result = $value;
+        if (str_contains((string) $value, 'E')) {
+            $result = number_format((float) ResolveScientificNotation::execute((float) $value), $decimals ?? 8);
+        }
+
+        if (Str::contains($result, '.')) {
+            $result = rtrim(rtrim($result, '0'), '.');
+        }
+
+        if (Str::contains((string) $value, ',')) {
+            $result = (string) $value;
         }
 
         // Gets rid of trailing .00 if amount of decimals is 0
-        if ($decimals === 0 && Str::contains((string) $result, '.')) {
+        if ($decimals === 0 && Str::contains($result, '.')) {
             $result = rtrim(rtrim($result, '0'), '.');
         }
 
