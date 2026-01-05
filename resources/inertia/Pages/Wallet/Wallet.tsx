@@ -1,4 +1,4 @@
-import { Head, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { IBlock, ITransaction } from "@/types/generated";
 import { IFilters, IPaginatedResponse, ITabbedData } from "@/types";
 import { PropsWithChildren, useEffect } from "react";
@@ -16,12 +16,10 @@ import VotersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Voters";
 import VotersTableWrapper from "@/Components/Tables/Desktop/Wallet/Voters";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import WalletTransactionsTab from "./tabs/Transactions";
-import { usePageMetadata } from "@/Components/General/Metadata";
 import useSharedData from "@/hooks/use-shared-data";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
-import { useTranslation } from "react-i18next";
 
 const WalletTabsWrapper = ({
     transactions,
@@ -190,26 +188,12 @@ function WalletPageHandlerProvider({ children }: PropsWithChildren) {
     );
 }
 
-export default function Wallet({
-    transactions,
-    blocks,
-    wallet,
-    voters,
-    network,
-    filters,
-    metaPage,
-    metaDetail = {},
-}: PageProps<WalletProps>) {
-    const { t } = useTranslation();
+export default function Wallet({ transactions, blocks, voters, filters }: PageProps<WalletProps>) {
     return (
-        <>
-            <Head title={t(`metatags.${metaPage}.title`, { ...metaDetail })} />
-
-            <Layout>
-                <WalletPageHandlerProvider>
-                    <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
-                </WalletPageHandlerProvider>
-            </Layout>
-        </>
+        <Layout>
+            <WalletPageHandlerProvider>
+                <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
+            </WalletPageHandlerProvider>
+        </Layout>
     );
 }
