@@ -13,5 +13,4 @@ final class HomeController
     {
         return Inertia::render('Home/Index', []);
     }
-
 }
