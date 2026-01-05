@@ -17,6 +17,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Inertia\Response as InertiaResponse;
 use Laravel\Fortify\Fortify;
 
 final class AppServiceProvider extends ServiceProvider
@@ -80,6 +81,19 @@ final class AppServiceProvider extends ServiceProvider
 
             /* @phpstan-ignore-next-line */
             return collect($this->items);
+        });
+
+        InertiaResponse::macro('withMeta', function (string $pageName, array $detail = []) {
+            /** @var InertiaResponse $this */
+            $this->with('metaPage', $pageName);
+            $this->with('metaDetail', $detail);
+
+            $this->withViewData([
+                'metaPage'   => $pageName,
+                'metaDetail' => $detail,
+            ]);
+
+            return $this;
         });
     }
 

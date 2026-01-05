@@ -111,23 +111,18 @@ function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
 }
 
 export default function Validators({
-    network,
     missedBlocks,
     validators,
     filters,
     recentVotes,
+    metaPage,
+    metaDetail = {},
 }: PageProps<ValidatorsProps>) {
     const { t } = useTranslation();
-    const metadata = usePageMetadata({
-        page: "validators",
-        detail: {
-            name: network.name,
-        },
-    });
 
     return (
         <>
-            <Head>{metadata}</Head>
+            <Head title={t(`metatags.${metaPage}.title`, { ...metaDetail })} />
 
             <Layout>
                 <PageHeader title={t("pages.validators.title")} subtitle={t("pages.validators.subtitle")} />

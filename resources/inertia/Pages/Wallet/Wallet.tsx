@@ -21,6 +21,7 @@ import useSharedData from "@/hooks/use-shared-data";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
+import { useTranslation } from "react-i18next";
 
 const WalletTabsWrapper = ({
     transactions,
@@ -189,18 +190,20 @@ function WalletPageHandlerProvider({ children }: PropsWithChildren) {
     );
 }
 
-export default function Wallet({ transactions, blocks, wallet, voters, network, filters }: PageProps<WalletProps>) {
-    const metadata = usePageMetadata({
-        page: "wallet",
-        detail: {
-            name: network.name,
-            address: wallet.address,
-        },
-    });
-
+export default function Wallet({
+    transactions,
+    blocks,
+    wallet,
+    voters,
+    network,
+    filters,
+    metaPage,
+    metaDetail = {},
+}: PageProps<WalletProps>) {
+    const { t } = useTranslation();
     return (
         <>
-            <Head>{metadata}</Head>
+            <Head title={t(`metatags.${metaPage}.title`, { ...metaDetail })} />
 
             <Layout>
                 <WalletPageHandlerProvider>

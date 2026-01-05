@@ -12,6 +12,10 @@
         microsoft-tile-color="#de5846"
         theme-color="#ffffff"
     >
+        @if (isset($metaPage))
+            <x-metadata :page="$metaPage" :detail="isset($metaDetail) ? $metaDetail : []" />
+        @endif
+    
         @vite('resources/js/app-inertia.tsx')
         @inertiaHead
         @routes
