@@ -17,7 +17,7 @@ export default function Monitor({
     validatorData,
     height,
     rowCount,
-    network,
+    network: { currency },
 }: PageProps<{
     validatorData: IValidatorData;
     height: number;
@@ -27,7 +27,7 @@ export default function Monitor({
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const metadata = usePageMetadata({
         page: "validator-monitor",
-        detail: { name: network.name },
+        detail: { name: currency },
     });
 
     useEffect(() => {

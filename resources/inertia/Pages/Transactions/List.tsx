@@ -15,7 +15,7 @@ export default function TransactionsList({ network, statistics, filters, transac
     const metadata = usePageMetadata({
         page: "transactions",
         detail: {
-            name: network.name,
+            name: network.currency,
         },
     });
 

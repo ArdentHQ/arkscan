@@ -189,11 +189,18 @@ function WalletPageHandlerProvider({ children }: PropsWithChildren) {
     );
 }
 
-export default function Wallet({ transactions, blocks, wallet, voters, network, filters }: PageProps<WalletProps>) {
+export default function Wallet({
+    transactions,
+    blocks,
+    wallet,
+    voters,
+    network: { currency },
+    filters,
+}: PageProps<WalletProps>) {
     const metadata = usePageMetadata({
         page: "wallet",
         detail: {
-            name: network.name,
+            name: currency,
             address: wallet.address,
         },
     });

@@ -111,7 +111,7 @@ function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
 }
 
 export default function Validators({
-    network,
+    network: { currency },
     missedBlocks,
     validators,
     filters,
@@ -121,7 +121,7 @@ export default function Validators({
     const metadata = usePageMetadata({
         page: "validators",
         detail: {
-            name: network.name,
+            name: currency,
         },
     });
 

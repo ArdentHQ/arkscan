@@ -40,13 +40,12 @@ function TableWrapper() {
     return <BlocksListTableWrapper mobile={<BlocksListMobileTableWrapper />} />;
 }
 
-export default function List({ statistics }: PageProps<BlocksListProps>) {
+export default function List({ statistics, network: { currency } }: PageProps<BlocksListProps>) {
     const { t } = useTranslation();
-    const { network } = useShareData();
     const metadata = usePageMetadata({
         page: "blocks",
         detail: {
-            name: network.name,
+            name: currency,
         },
     });
 
