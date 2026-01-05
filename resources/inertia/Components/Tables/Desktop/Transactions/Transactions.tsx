@@ -1,5 +1,5 @@
 import TableCell from "../TableCell";
-import LoadingTable from "../LoadingTable";
+import LoadingTable, { ILoadingTableColumn } from "../LoadingTable";
 import { ITransaction } from "@/types/generated";
 import { IPaginatedResponse } from "@/types";
 import { useTranslation } from "react-i18next";
@@ -9,15 +9,12 @@ import Amount from "@/Components/Transaction/Amount";
 import Fee from "@/Components/Transaction/Fee";
 import { Table } from "../Table";
 import Method from "@/Components/Transaction/Method";
-import Addressing from "@/Components/Transaction/Addressing";
-import UnderlineArrowDownIcon from "@ui/icons/arrows/underline-arrow-down.svg?react";
 import TableHeader from "../TableHeader";
-import { useState } from "react";
-import ExportTransactionsModal from "./ExportTransactionsModal";
-import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
 import useSharedData from "@/hooks/use-shared-data";
+import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
+import LoadingText from "@/Components/Loading/Text";
 
 export function Row({ row }: { row: ITransaction }) {
     return (
@@ -35,15 +32,15 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell>
-                <Addressing transaction={row} withoutLink={row.isSentToSelf} forWallet />
+                <AddressingGeneric transaction={row} />
             </TableCell>
 
-            <TableCell className="text-right" lastOn="md-lg">
-                <Amount testId={`wallet:transaction:${row.hash}:amount`} transaction={row} hideCurrency forWallet />
+            <TableCell className="text-right" lastOn="lg">
+                <Amount testId={`transaction:${row.hash}:amount`} transaction={row} breakpoint="lg" hideCurrency />
             </TableCell>
 
-            <TableCell className="text-right" breakpoint="md-lg" responsive>
-                <Fee transaction={row} />
+            <TableCell className="text-right" breakpoint="lg" responsive>
+                <Fee transaction={row} hideCurrency />
             </TableCell>
         </tr>
     );
@@ -66,7 +63,7 @@ export function TransactionsTable({
             paginator={transactions}
             rowComponent={Row}
             mobile={mobile}
-            headerActions={<TransactionsHeaderActions hasTransactions={transactions.total > 0} />}
+            headerActions={<TransactionsHeaderActions />}
             noResultsMessage={transactions.noResultsMessage}
             columns={
                 <>
@@ -80,13 +77,13 @@ export function TransactionsTable({
 
                     <TableHeader>{t("tables.transactions.addressing")}</TableHeader>
 
-                    <TableHeader className="last-until-md-lg text-right" last-on="md-lg">
+                    <TableHeader className="last-until-lg text-right" last-on="lg">
                         {t("tables.transactions.amount", {
                             currency: network!.currency,
                         })}
                     </TableHeader>
 
-                    <TableHeader className="text-right" responsive breakpoint="md-lg">
+                    <TableHeader className="text-right" responsive breakpoint="lg">
                         {t("tables.transactions.fee", {
                             currency: network!.currency,
                         })}
@@ -117,7 +114,7 @@ export default function TransactionsTableWrapper({
                     mobile={mobile}
                     paginator={transactions}
                     rowCount={rowCount}
-                    header={<TransactionsHeaderActions hasTransactions={false} />}
+                    header={<TransactionsHeaderActions />}
                     columns={[
                         {
                             name: t("tables.transactions.id"),
@@ -141,13 +138,26 @@ export default function TransactionsTableWrapper({
                             type: "address",
                             indicatorHeight: "h-[21px]",
                             className: "text-left",
+                            render: () => (
+                                <div className="flex flex-1 flex-col justify-between space-y-2 font-semibold leading-4.25 lg:flex-row lg:space-x-2">
+                                    <div className="flex flex-row space-x-2">
+                                        <LoadingText width="w-[39px]" />
+                                        <LoadingText />
+                                    </div>
+
+                                    <div className="flex flex-row space-x-2">
+                                        <LoadingText width="w-[39px]" />
+                                        <LoadingText />
+                                    </div>
+                                </div>
+                            ),
                         },
                         {
                             name: t("tables.transactions.amount", {
                                 currency: network!.currency,
                             }),
                             className: "text-right w-[100px]",
-                            lastOn: "md-lg",
+                            lastOn: "lg",
                         },
                         {
                             name: t("tables.transactions.fee", {
@@ -155,7 +165,7 @@ export default function TransactionsTableWrapper({
                             }),
                             className: "text-right w-[100px]",
                             responsive: true,
-                            breakpoint: "md-lg",
+                            breakpoint: "lg",
                         },
                     ]}
                 />
@@ -170,40 +180,11 @@ export default function TransactionsTableWrapper({
     );
 }
 
-export function TransactionsHeaderActions({ hasTransactions }: { hasTransactions: boolean }) {
-    const { t } = useTranslation();
-    const { wallet, rates, network, settings } = useSharedData<WalletProps>();
-
-    const [isTransactionsExportModalOpen, setIsTransactionsExportModalOpen] = useState(false);
-
+export function TransactionsHeaderActions() {
     return (
         <div className="flex items-center justify-end space-x-3">
             <div className="flex-1">
-                <button
-                    type="button"
-                    data-testid="wallet:transactions:export-button"
-                    className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
-                    disabled={!hasTransactions}
-                    onClick={() => setIsTransactionsExportModalOpen(true)}
-                >
-                    <UnderlineArrowDownIcon className="h-4 w-4" />
-
-                    <span>{t("actions.export")}</span>
-                </button>
-
-                <ExportTransactionsModal
-                    isOpen={isTransactionsExportModalOpen}
-                    onClose={() => setIsTransactionsExportModalOpen(false)}
-                    address={wallet.address}
-                    network={network}
-                    userCurrency={settings?.currency || ""}
-                    rates={rates}
-                    canBeExchanged={network?.canBeExchanged || false}
-                />
-            </div>
-
-            <div className="flex-1">
-                <Filter testId="wallet:transactions:filter" withSelectAll />
+                <Filter testId="transactions:filter" withSelectAll />
             </div>
         </div>
     );

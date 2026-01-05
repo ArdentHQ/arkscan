@@ -5,10 +5,12 @@ export default function Fee({
     transaction,
     className = "",
     withoutStyling = false,
+    hideCurrency = false,
 }: {
     transaction: ITransaction;
     className?: string;
     withoutStyling?: boolean;
+    hideCurrency?: boolean;
 }) {
     return (
         <AmountFiatTooltip
@@ -16,6 +18,7 @@ export default function Fee({
             fiat={transaction.feeFiat}
             className={className}
             withoutStyling={withoutStyling}
+            hideCurrency={hideCurrency}
         />
     );
 }

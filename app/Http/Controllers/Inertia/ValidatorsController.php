@@ -41,12 +41,6 @@ final class ValidatorsController
 
     public function __invoke(): Response
     {
-        [$missedBlockCount, $validatorsMissed] = $this->missedBlocks();
-
-        $validatorCache = new ValidatorCache();
-        $voterCount     = $validatorCache->getTotalWalletsVoted();
-        $totalVoted     = $validatorCache->getTotalBalanceVoted();
-
         return Inertia::render('Validators/Validators', [
             'filters'      => fn () => $this->filters(),
             'baseUrl'      => route('validators', absolute: false),
@@ -84,13 +78,8 @@ final class ValidatorsController
                 ];
             }),
 
-            'statistics' => [
-                'voterCount'       => $voterCount,
-                'totalVoted'       => $totalVoted,
-                'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
-                'missedBlocks'     => $missedBlockCount,
-                'validatorsMissed' => $validatorsMissed,
-            ],
+            'statistics' => fn () => $this->getStatistics(),
+
         ]);
     }
 
@@ -100,6 +89,23 @@ final class ValidatorsController
             ->keys()
             ->mapWithKeys(fn ($groupName) => [$groupName => collect(self::FILTERS[$groupName])->keys()->mapWithKeys(fn ($filterName) => [$filterName => $this->hasFilter($filterName, self::FILTERS[$groupName][$filterName])])])
             ->toArray();
+    }
+
+    private function getStatistics(): array
+    {
+        [$missedBlockCount, $validatorsMissed] = $this->missedBlocks();
+
+        $validatorCache = new ValidatorCache();
+        $voterCount     = $validatorCache->getTotalWalletsVoted();
+        $totalVoted     = $validatorCache->getTotalBalanceVoted();
+
+        return [
+            'voterCount'       => $voterCount,
+            'totalVoted'       => $totalVoted,
+            'votesPercentage'  => (new NetworkCache())->getVotesPercentage(),
+            'missedBlocks'     => $missedBlockCount,
+            'validatorsMissed' => $validatorsMissed,
+        ];
     }
 
     private function missedBlocks(): array
