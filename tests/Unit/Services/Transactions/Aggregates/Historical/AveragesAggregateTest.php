@@ -46,7 +46,7 @@ it('should return count for non-multipayment', function () {
     expect((new AveragesAggregate())->aggregate())->toBe([
         'count'  => $transactionCount / $daysSinceEpoch,
         'amount' => 120 / $daysSinceEpoch,
-        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch),
+        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e18,
     ]);
 });
 
@@ -111,6 +111,6 @@ it('should return count for multipayment', function () {
     expect((new AveragesAggregate())->aggregate())->toBe([
         'count'  => (int) round($transactionCount / $daysSinceEpoch),
         'amount' => 62 / $daysSinceEpoch,
-        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch),
+        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e18,
     ]);
 });

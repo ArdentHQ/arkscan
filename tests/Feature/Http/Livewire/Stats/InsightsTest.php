@@ -155,7 +155,7 @@ it('should render transaction daily average', function (): void {
 
     $transactionCount = (int) round(9 / $daysSinceEpoch);
     $totalAmount      = (int) round(((1000 * 4) + (3 * 2000)) / $daysSinceEpoch);
-    $totalFees        = (float) round((((9 * 2) + (10 * 3) + (11 * 4)) * 21000) / $daysSinceEpoch);
+    $totalFees        = (float) round((((9 * 2) + (10 * 3) + (11 * 4)) * 21000) / $daysSinceEpoch) / 1e18;
 
     expect((new AveragesAggregate())->aggregate())->toBe([
         'count'  => $transactionCount,

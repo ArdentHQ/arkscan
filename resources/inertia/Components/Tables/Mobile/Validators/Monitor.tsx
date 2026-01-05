@@ -12,6 +12,8 @@ import BlockHeight from "@/Components/Validator/Monitor/BlockHeight";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { MobileMonitorSkeletonTable } from "../Skeleton/Validators/Monitor";
 import { IValidator } from "@/types";
+import ValidatorStatusProvider from "@/Providers/ValidatorStatus/ValidatorStatusProvider";
+import { useTranslation } from "react-i18next";
 
 export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
     return (
@@ -27,7 +29,7 @@ export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
             </div>
 
             <div className="flex flex-1 justify-between items-center pl-3 min-w-0">
-                <div className="flex flex-1 items-center min-w-0">
+                <div className="flex flex-1 items-center min-w-0 space-x-2">
                     <TableCell className="min-w-0">
                         <Address
                             wallet={validator.wallet}
@@ -47,11 +49,11 @@ export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
 
                 <div className="flex items-center sm:space-x-3 h-[21px]">
                     <div className="flex items-center sm:hidden">
-                        <Status validator={validator} withText={false} />
+                        <Status withText={false} />
                     </div>
 
                     <div className="hidden sm:block">
-                        <Status validator={validator} />
+                        <Status />
                     </div>
                 </div>
             </div>
@@ -60,47 +62,47 @@ export function MonitorMobileHeader({ validator }: { validator: IValidator }) {
 }
 
 export function MonitorMobileTable({ validators }: { validators: IValidator[] }) {
+    const { t } = useTranslation();
     const { isFavorite } = useValidatorFavorites();
 
     return (
         <MobileTable>
-            {validators.map((validator, index) => (
-                <MobileTableRow
+            {validators.map((validator: IValidator, index) => (
+                <ValidatorStatusProvider
                     key={index}
-                    expandClass={classNames({
-                        'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700': ! validator.wallet?.isResigned,
-                    })}
-                    className={classNames({
-                        'validator-monitor-favorite': isFavorite(validator.wallet.public_key),
-                    })}
-                    expandable={true}
-                    header={<MonitorMobileHeader validator={validator} />}
+                    forgingAt={validator.forgingAt}
+                    validator={validator}
                 >
-                    <TableCell label="Status" className="sm:hidden">
-                        <Status
-                            validator={validator}
-                            className="sm:hidden"
-                        />
-                    </TableCell>
+                    <MobileTableRow
+                        expandClass={classNames({
+                            'space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700': ! validator.wallet?.isResigned,
+                        })}
+                        className={classNames({
+                            'validator-monitor-favorite': isFavorite(validator.wallet.public_key),
+                        })}
+                        expandable={true}
+                        header={<MonitorMobileHeader validator={validator} />}
+                    >
+                        <TableCell label={t('tables.validator-monitor.status')} className="sm:hidden">
+                            <Status className="sm:hidden" />
+                        </TableCell>
 
-                    <TableCell label="Time to Forge">
-                        <TimeToForge
-                            forgingAt={validator.forgingAt}
-                            wallet={validator.wallet}
-                        />
-                    </TableCell>
+                        <TableCell label={t('tables.validator-monitor.time_to_forge')}>
+                            <TimeToForge validator={validator} />
+                        </TableCell>
 
-                    <TableCell label="Block Height">
-                        <BlockHeight validator={validator} />
-                    </TableCell>
+                        <TableCell label={t('tables.validator-monitor.block_height')}>
+                            <BlockHeight validator={validator} />
+                        </TableCell>
 
-                    <div className="sm:hidden pt-4 mt-4 border-t sm:border-t-0 sm:pt-0 sm:mt-0 border-theme-secondary-300 dark:border-theme-dark-700">
-                        <FavoriteIcon
-                            validator={validator}
-                            label="Favorite"
-                        />
-                    </div>
-                </MobileTableRow>
+                        <div className="sm:hidden pt-4 mt-4 border-t sm:border-t-0 sm:pt-0 sm:mt-0 border-theme-secondary-300 dark:border-theme-dark-700">
+                            <FavoriteIcon
+                                validator={validator}
+                                label={t('tables.validator-monitor.favorite')}
+                            />
+                        </div>
+                    </MobileTableRow>
+                </ValidatorStatusProvider>
             ))}
         </MobileTable>
     );

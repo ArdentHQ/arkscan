@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\RoundRepository as Contract;
+use App\Facades\Blocks;
 use App\Facades\Rounds;
 use App\Models\Block;
 use App\Models\Round;
@@ -30,7 +31,7 @@ final class RoundRepository implements Contract
         $roundNumber = $round->round;
         $validators  = Rounds::byRound($roundNumber)->validators;
         $heightRange = Monitor::heightRangeByRound($round);
-        $validators  = new SupportCollection(ValidatorTracker::execute($validators, $heightRange[0]));
+        $validators  = new SupportCollection(ValidatorTracker::executeWithCache($validators, $heightRange[0], Blocks::last()));
 
         if ($withBlock) {
             $blocks = Block::whereBetween('number', $heightRange)->get()->keyBy('proposer');

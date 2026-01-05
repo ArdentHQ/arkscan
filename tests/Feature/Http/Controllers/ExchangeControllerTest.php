@@ -10,6 +10,8 @@ beforeEach(function () {
 });
 
 it('should render the page', function () {
+    $this->withoutExceptionHandling();
+
     $this
         ->get(route('exchanges'))
         ->assertOk();

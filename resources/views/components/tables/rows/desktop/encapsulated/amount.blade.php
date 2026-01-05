@@ -24,6 +24,16 @@
         }
     }
 
+    if ($wallet && $model->isValidatorResignation()) {
+        $registration = $model->validatorRegistration();
+        if ($registration !== null) {
+            $amount = $registration->amount();
+        }
+
+        $isReceived = true;
+        $isSent = false;
+    }
+
     $feeBreakpointClass = [
         'md-lg' => 'md-lg:hidden',
         'lg' => 'lg:hidden',

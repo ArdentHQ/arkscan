@@ -1,7 +1,7 @@
 import { IValidator } from "@/types";
 
 export default function BlockHeight({ validator }: { validator: IValidator }) {
-    if (validator.wallet?.hasForged) {
+    if (validator.wallet?.hasForged && validator.lastBlock?.number !== undefined) {
         return (
             <a
                 href={`/blocks/${validator?.lastBlock?.hash}`}

@@ -206,3 +206,58 @@ it('should not trim 0 at the end of votes or total forged', function () {
             '12,340 DARK',
         ]);
 });
+
+it('should show resigned status for validators', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'validatorPublicKey'      => 'publicKey',
+            'validatorVoteBalance'    => 12340.37456742 * 1e18,
+            'validatorProducedBlocks' => 12340,
+            'validatorResigned'       => true,
+        ],
+    ]);
+
+    (new ValidatorCache())->setTotalFees([$wallet->address => 2340.37456741 * 1e18]);
+    (new ValidatorCache())->setTotalRewards([$wallet->address => 10000.00000001 * 1e18]);
+
+    $this
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->address)
+        ->assertSee('Resigned')
+        ->assertDontSee('Active')
+        ->assertDontSee('Standby')
+        ->assertDontSee('Dormant');
+});
+
+it('should show dormant status for validators', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'validatorPublicKey' => null,
+        ],
+    ]);
+
+    $this
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->address)
+        ->assertSee('Dormant')
+        ->assertDontSee('Active')
+        ->assertDontSee('Standby')
+        ->assertDontSee('Resigned');
+});
+
+it('should show standby status for validators', function () {
+    $wallet = Wallet::factory()->standbyValidator()->create([
+        'attributes' => [
+            'validatorPublicKey' => 'publicKey',
+            'validatorRank'      => 54,
+        ],
+    ]);
+
+    $this
+        ->get(route('wallet', $wallet))
+        ->assertSee($wallet->address)
+        ->assertSee('Standby')
+        ->assertDontSee('Active')
+        ->assertDontSee('Resigned')
+        ->assertDontSee('Dormant');
+});

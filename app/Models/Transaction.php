@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Casts\BigInteger;
+use App\Models\Casts\CitextArray;
 use App\Models\Casts\UnixSeconds;
 use App\Models\Concerns\HasEmptyScope;
 use App\Models\Concerns\SearchesCaseInsensitive;
@@ -53,6 +54,7 @@ use Laravel\Scout\Searchable;
  * @property array $logs
  * @property resource|null $output
  * @property string|null $decoded_error
+ * @property array $multi_payment_recipients
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Transaction extends Model
@@ -113,16 +115,17 @@ final class Transaction extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'value'             => BigInteger::class,
-        'gas_price'         => BigInteger::class,
-        'gas'               => BigInteger::class,
-        'timestamp'         => UnixSeconds::class,
-        'transaction_index' => 'int',
-        'block_number'      => 'int',
-        'status'            => 'bool',
-        'gas_used'          => BigInteger::class,
-        'gas_refunded'      => BigInteger::class,
-        'logs'              => 'array',
+        'value'                    => BigInteger::class,
+        'gas_price'                => BigInteger::class,
+        'gas'                      => BigInteger::class,
+        'timestamp'                => UnixSeconds::class,
+        'transaction_index'        => 'int',
+        'block_number'             => 'int',
+        'status'                   => 'bool',
+        'gas_used'                 => BigInteger::class,
+        'gas_refunded'             => BigInteger::class,
+        'logs'                     => 'array',
+        'multi_payment_recipients' => CitextArray::class,
     ];
 
     protected $with = [

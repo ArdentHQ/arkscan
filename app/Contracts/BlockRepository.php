@@ -22,4 +22,6 @@ interface BlockRepository
      * @param int|string $height
      */
     public function findByIdentifier($height): Block;
+
+    public function last(): Block;
 }

@@ -76,6 +76,7 @@
                     :amount="$amount"
                     :address="$wallet?->address()"
                     hide-tooltip
+                    without-currency
                 />
             @else
                 {{ ExplorerNumberFormatter::networkCurrency($amount) }}

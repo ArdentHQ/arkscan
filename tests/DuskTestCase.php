@@ -10,19 +10,19 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use PHPUnit\Framework\Attributes\BeforeClass;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    // use CreatesApplication;
-    use RefreshDatabase;
+    use DatabaseTruncation;
 
-    protected $connectionsToTransact = ['pgsql', 'explorer'];
+    protected $connectionsToTruncate = ['pgsql', 'explorer'];
 
     /**
      * Setup the test environment.
@@ -32,6 +32,8 @@ abstract class DuskTestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Cache::flush();
 
         Config::set('arkscan.networks.development.knownWallets', null);
 
@@ -77,12 +79,15 @@ abstract class DuskTestCase extends BaseTestCase
     }
 
     /**
-     * Refresh a conventional test database.
+     * Truncate the database tables for all configured connections.
      *
      * @return void
      */
-    protected function refreshTestDatabase()
+    protected function truncateDatabaseTables(): void
     {
+        $this->beforeTruncatingDatabase();
+
+        // Migrate and seed the database on first run...
         if (! RefreshDatabaseState::$migrated) {
             $this->artisan('migrate:fresh', [
                 ...$this->migrateFreshUsing(),
@@ -99,8 +104,13 @@ abstract class DuskTestCase extends BaseTestCase
             $this->app[Kernel::class]->setArtisan(null);
 
             RefreshDatabaseState::$migrated = true;
+
+            return;
         }
 
-        $this->beginDatabaseTransaction();
+        // Always clear any test data on subsequent runs...
+        $this->truncateTablesForAllConnections();
+
+        $this->afterTruncatingDatabase();
     }
 }

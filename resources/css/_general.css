@@ -425,3 +425,13 @@ input.qr-code-amount[type="number"] {
 .tippy-box {
     @apply break-words;
 }
+
+/* No scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+    @apply hidden;
+}
+
+/* Firefox */
+.no-scrollbar {
+    scrollbar-width: none;
+}

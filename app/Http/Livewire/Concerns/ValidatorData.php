@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use App\DTO\Slot;
+use App\Facades\Blocks;
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
@@ -56,17 +57,12 @@ trait ValidatorData
             ->count();
 
         /** @var ?Slot $lastSlot */
-        $lastSlot   = collect($this->validators)->last();
-        $lastStatus = $lastSlot?->status() ?? 'pending';
-
+        $lastSlot = collect($this->validators)->last();
         if ($lastSlot === null) {
             return [];
         }
 
-        /** @var Block $lastBlock */
-        $lastBlock = Block::query()
-            ->orderBy('number', 'desc')
-            ->first();
+        $lastBlock = Blocks::last();
 
         $heightRange = Monitor::heightRangeByRound(Rounds::current());
 
@@ -101,6 +97,7 @@ trait ValidatorData
             ->orderBy('number', 'asc')
             ->get();
 
+        $lastStatus = $lastSlot->status();
         if ($lastStatus !== 'done' || $overflowBlocks->isEmpty()) {
             return $this->getOverflowSlots(
                 $missedCount,
@@ -111,18 +108,17 @@ trait ValidatorData
             );
         }
 
-        $lastTimestamp = $lastRoundBlock->timestamp;
-        if ($overflowBlocks->isNotEmpty()) {
-            $lastTimestamp = $overflowBlocks->last()['timestamp'];
-        }
-
         $overflowBlockCount = $overflowBlocks->groupBy('proposer')
             ->map(function ($blocks) {
                 return count($blocks);
             });
 
-        $hasReachedFinalSlot = $lastTimestamp === $lastRoundBlock->timestamp;
+        $hasReachedFinalSlot = $lastRoundBlock->number === $heightRange[1];
+        if ($overflowBlocks->isNotEmpty()) {
+            $hasReachedFinalSlot = $overflowBlocks->last()['number'] === $heightRange[1];
+        }
 
+        $lastTimestamp = $lastRoundBlock->timestamp;
         $overflowSlots = $this->getOverflowSlots(
             $missedCount,
             $lastStatus,
@@ -213,7 +209,7 @@ trait ValidatorData
             return [];
         }
 
-        $tracking        = ValidatorTracker::execute($validators, $heightRange[0]);
+        $tracking        = ValidatorTracker::executeWithCache($validators, $heightRange[0], Blocks::last());
         $roundBlocks     = $this->getBlocksByRange(Arr::pluck($tracking, 'address'), $heightRange);
         $blockTimestamp  = $roundBlocks->last()->timestamp;
         $validators      = [];

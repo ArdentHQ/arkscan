@@ -9,7 +9,7 @@
 
 <x-wallet.overview.item-entry :title="trans('pages.wallet.validator.productivity_title')">
     <x-slot name="value">
-        @unless($wallet->isResigned())
+        @if(! $wallet->isResigned() && ! $wallet->isDormant())
             <div @class([
                 'flex items-center space-x-2',
                 'text-theme-secondary-500 dark:text-theme-dark-700' => ! $wallet->isActive(),
@@ -31,6 +31,6 @@
                     'border-theme-success-200 bg-theme-success-700 dark:border-theme-success-600 dark:bg-theme-success-500' => $isHigh,
                 ])></div>
             </div>
-        @endunless
+        @endif
     </x-slot>
 </x-wallet.overview.item-entry>

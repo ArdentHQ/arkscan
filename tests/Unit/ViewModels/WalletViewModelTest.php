@@ -693,11 +693,13 @@ it('should get the validator user name', function () {
 });
 
 it('should get the vote url with validator', function () {
-    $this->subject = new WalletViewModel(Wallet::factory()->create());
+    $this->subject = new WalletViewModel(Wallet::factory()->create([
+        'public_key' => '03a4d147a417376742f9ab78c7c3891574d19376aa62e7bbddceaf12e096e79fe0',
+    ]));
 
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=Mainsail&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
-    expect($this->subject->voteUrl())->toContain('&validator='.$this->subject->address());
+    expect($this->subject->voteUrl())->toContain('&publicKey=03a4d147a417376742f9ab78c7c3891574d19376aa62e7bbddceaf12e096e79fe0');
 });
 
 it('should get whether validator is standby', function () {

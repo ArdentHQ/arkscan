@@ -22,7 +22,7 @@ final class RoundRepositoryWithCache implements RoundRepository
 
     public function current(): Round
     {
-        return $this->rounds->current();
+        return $this->remember(fn () => $this->rounds->current(), Network::blockTime() / 2);
     }
 
     public function byRound(int $round): Round

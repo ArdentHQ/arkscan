@@ -4,30 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e5778abef526c354a00fe59993d7f0f",
+    "content-hash": "e338a32c2cc00df1324037009e3bb84b",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
-            "version": "dev-feat/mainsail",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArdentHQ/arkvault-url-php.git",
-                "reference": "eb031293dfb9c77d79f382bf6659e58802a2eb43"
+                "reference": "4482a31c07d0d4b02b4d9318709f7168d7aff3ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArdentHQ/arkvault-url-php/zipball/eb031293dfb9c77d79f382bf6659e58802a2eb43",
-                "reference": "eb031293dfb9c77d79f382bf6659e58802a2eb43",
+                "url": "https://api.github.com/repos/ArdentHQ/arkvault-url-php/zipball/4482a31c07d0d4b02b4d9318709f7168d7aff3ba",
+                "reference": "4482a31c07d0d4b02b4d9318709f7168d7aff3ba",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.34",
-                "pestphp/pest": "^1.21",
-                "phpstan/phpstan": "^1.10",
-                "rector/rector": "^0.18"
+                "friendsofphp/php-cs-fixer": "^3.64",
+                "pestphp/pest": "^2.5",
+                "phpstan/phpstan": "^1.12",
+                "rector/rector": "^1.2"
             },
             "type": "library",
             "autoload": {
@@ -48,9 +48,9 @@
             "description": "Deeplink URL generator for ARK based networks",
             "support": {
                 "issues": "https://github.com/ArdentHQ/arkvault-url-php/issues",
-                "source": "https://github.com/ArdentHQ/arkvault-url-php/tree/feat/mainsail"
+                "source": "https://github.com/ArdentHQ/arkvault-url-php/tree/1.2.0"
             },
-            "time": "2024-05-29T12:09:00+00:00"
+            "time": "2025-09-24T08:21:34+00:00"
         },
         {
             "name": "arkecosystem/crypto",
@@ -5208,16 +5208,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.6.3",
+            "version": "v3.6.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "56aa1bb63a46e06181c56fa64717a7287e19115e"
+                "reference": "ef04be759da41b14d2d129e670533180a44987dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/56aa1bb63a46e06181c56fa64717a7287e19115e",
-                "reference": "56aa1bb63a46e06181c56fa64717a7287e19115e",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/ef04be759da41b14d2d129e670533180a44987dc",
+                "reference": "ef04be759da41b14d2d129e670533180a44987dc",
                 "shasum": ""
             },
             "require": {
@@ -5272,7 +5272,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.6.3"
+                "source": "https://github.com/livewire/livewire/tree/v3.6.4"
             },
             "funding": [
                 {
@@ -5280,7 +5280,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-04-12T22:26:52+00:00"
+            "time": "2025-07-17T05:12:15+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -17176,7 +17176,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ardenthq/arkvault-url": 20,
         "arkecosystem/crypto": 20
     },
     "prefer-stable": true,

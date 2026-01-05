@@ -1,8 +1,4 @@
-<x-navbar.dropdown
-    dropdown-background="bg-white dark:bg-theme-dark-900 border border-white dark:border-theme-dark-700 px-1 py-[0.125rem]"
-    dropdown-padding=""
-    without-dropdown-icon
->
+<x-navbar.dropdown without-dropdown-icon>
     <x-slot
         name="button"
         class="w-8"

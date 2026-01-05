@@ -63,18 +63,19 @@ describe('Monitor', function () {
     {
         $wallets = Wallet::factory(Network::validatorCount())->create();
 
-        createRoundEntry(112168, 5944904, $wallets);
+        createRoundEntry(112168, 5944852 - Network::validatorCount(), $wallets); // create previous round
+        createRoundEntry(112168, 5944852, $wallets);
 
         $wallets->each(function ($wallet) {
             $block = Block::factory()->create([
-                'number'            => 5944900,
+                'number'            => 5944848,
                 'timestamp'         => 113620904,
                 'proposer'          => $wallet->address,
             ]);
 
             // Start height for round 112168
             Block::factory()->create([
-                'number'            => 5944904,
+                'number'            => 5944852,
                 'timestamp'         => 113620904,
                 'proposer'          => $wallet->address,
             ]);
@@ -427,9 +428,9 @@ describe('Monitor', function () {
         $this->travel(Network::blockTime() + 2)->seconds();
 
         // Overflow slot 3
-        createBlock($height + 1, $validators->get(2)['address'], $this);
+        $lastBlock = createBlock($height + 1, $validators->get(2)['address'], $this);
 
-        $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds((Network::blockTime() * (Network::validatorCount() + 4)) + $totalMissedSeconds + 2);
+        $overflowForgeTime = Carbon::createFromTimestamp($lastBlock->timestamp)->subSeconds((Network::blockTime() * 2) + 2);
 
         performRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
             $reload->has('validatorData.overflowValidators', 6)
@@ -473,7 +474,7 @@ describe('Monitor', function () {
 
         expect($height)->toBe((3 * Network::validatorCount()) - 4);
 
-        $overflowForgeTime = Carbon::parse('2024-02-01 14:00:00Z')->addSeconds(Network::blockTime() * Network::validatorCount());
+        $overflowForgeTime = Carbon::now()->addSeconds((Network::blockTime() * 5)); // 4 unforged slots + extra slot to get the start time of the overflow slot
 
         performRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
             $reload->where('validatorData.validators', function ($validators) {
@@ -654,13 +655,14 @@ describe('Data Boxes', function () {
             ->activeValidator()
             ->create();
 
-        createRoundEntry(112168, 5944904, $wallets);
+        createRoundEntry(112167, 5944852 - Network::validatorCount(), $wallets); // create previous round
+        createRoundEntry(112168, 5944852, $wallets);
 
         $wallets->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
             $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
 
             $block = Block::factory()->create([
-                'number'            => 5944900,
+                'number'            => 5944848,
                 'timestamp'         => $timestamp,
                 'proposer'          => $wallet->address,
             ]);
@@ -668,7 +670,7 @@ describe('Data Boxes', function () {
             // Start height for round 112168
             if ($addBlockForNextRound) {
                 Block::factory()->create([
-                    'number'            => 5944904,
+                    'number'            => 5944852,
                     'timestamp'         => $timestamp,
                     'proposer'          => $wallet->address,
                 ]);
@@ -685,8 +687,9 @@ describe('Data Boxes', function () {
             (new WalletCache())->setPerformance($wallet->address, $performances);
 
             (new WalletCache())->setLastBlock($wallet->address, [
-                'id'     => $block->hash,
-                'number' => $block->number->toNumber(),
+                'id'        => $block->hash,
+                'number'    => $block->number->toNumber(),
+                'timestamp' => $block->timestamp,
             ]);
         });
     }
@@ -776,17 +779,17 @@ describe('Data Boxes', function () {
             ->activeValidator()
             ->create();
 
-        createRoundEntry(112168, 5944904, $wallets);
+        createRoundEntry(112168, 5944852, $wallets);
 
         $wallets->each(function ($wallet) {
             Block::factory()->create([
-                'number'            => 5944900,
+                'number'            => 5944848,
                 'timestamp'         => 113620904,
                 'proposer'          => $wallet->address,
             ]);
 
             Block::factory()->create([
-                'number'            => 5944904,
+                'number'            => 5944852,
                 'timestamp'         => 113620904,
                 'proposer'          => $wallet->address,
             ]);

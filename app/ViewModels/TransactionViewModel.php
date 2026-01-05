@@ -115,6 +115,20 @@ final class TransactionViewModel implements ViewModel
         return ExchangeRate::convert($this->fee(), $this->transaction->timestamp, $showSmallAmounts);
     }
 
+    public function amount(): float
+    {
+        if (! $this->isMultiPayment()) {
+            return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
+        }
+
+        $amount = BigNumber::zero();
+        foreach ($this->multiPaymentRecipients() as $recipient) {
+            $amount->plus((string) $recipient->amount);
+        }
+
+        return $amount->toFloat();
+    }
+
     public function amountForItself(): float
     {
         if (! $this->isMultiPayment()) {
@@ -151,20 +165,6 @@ final class TransactionViewModel implements ViewModel
 
         $amount = BigNumber::zero();
         foreach ($recipients as $recipient) {
-            $amount->plus((string) $recipient->amount);
-        }
-
-        return $amount->toFloat();
-    }
-
-    public function amount(): float
-    {
-        if (! $this->isMultiPayment()) {
-            return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
-        }
-
-        $amount = BigNumber::zero();
-        foreach ($this->multiPaymentRecipients() as $recipient) {
             $amount->plus((string) $recipient->amount);
         }
 

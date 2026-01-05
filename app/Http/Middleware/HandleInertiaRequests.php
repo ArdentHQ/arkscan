@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Facades\Network;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -39,7 +40,8 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
-            //
+
+            'network' => Network::toArray(),
         ];
     }
 }

@@ -6,17 +6,28 @@
     :has-empty-value="! $wallet->isValidator()"
 >
     <x-slot name="value">
-        @unless($wallet->isResigned())
+        @if (! $wallet->isResigned() && ! $wallet->isDormant())
             <span>#{{ $wallet->rank() }}</span>
             <span>/</span>
-        @endunless
+        @endif
 
-        @if($wallet->isResigned())
+        @if($wallet->isDormant())
+            <div class="flex items-center space-x-2">
+                <span class="text-theme-secondary-700 dark:text-theme-dark-500">
+                    @lang('pages.validators.dormant')
+                </span>
+
+                <x-ark-info
+                    :tooltip="trans('pages.validators.dormant_tooltip')"
+                    type="info"
+                />
+            </div>
+        @elseif($wallet->isResigned())
             <span class="text-theme-danger-700 dark:text-theme-danger-400">
                 @lang('pages.validators.resigned')
             </span>
         @elseif($wallet->rank() > Network::validatorCount())
-            <span class="text-theme-secondary-500 dark:text-theme-dark-700">
+            <span class="text-theme-secondary-500 dark:text-theme-dark-500">
                 @lang('pages.validators.standby')
             </span>
         @else

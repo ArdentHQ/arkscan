@@ -11,7 +11,9 @@ export interface IWallet {
     isResigned?: boolean;
     isPending?: boolean;
     keepsMissing?: boolean;
+    missedCount?: number;
     blocksSinceLastForged?: number;
+    durationSinceLastForged?: number;
     public_key: string;
 }
 
@@ -20,6 +22,8 @@ export interface IValidator {
     lastBlock: IBlock | null;
     order: number;
     forgingAt: string | Date;
+    status: 'done' | 'next' | 'pending';
+    secondsUntilForge: number;
 }
 
 export interface IValidatorData {
@@ -41,4 +45,24 @@ export interface IStatistics {
             username?: string;
         };
     };
+}
+
+export interface INetwork {
+    coin: string;
+    name: string;
+    alias: string;
+    api: string;
+    explorerTitle: string;
+    currency: string;
+    currencySymbol: string;
+    confirmations: number;
+    knownWalletsUrl: string;
+    knownWallets: string[];
+    knownContracts: string[];
+    canBeExchanged: boolean;
+    epoch: string;
+    validatorCount: number;
+    blockTime: number;
+    blockReward: number;
+    supply: number;
 }

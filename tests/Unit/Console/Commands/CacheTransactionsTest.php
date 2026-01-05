@@ -82,7 +82,7 @@ it('should cache data', function (): void {
 
     $transactionCount = (int) round(10 / 2);
     $totalAmount      = (int) round(((3 * 2000) + 9000 + (4 * 3000)) / 2);
-    $totalFees        = (float) round(((9 * 2) + (10 * 3) + (11 * 4) + 10) * 21000) / 2;
+    $totalFees        = (float) round(((9 * 2) + (10 * 3) + (11 * 4) + 10) * 21000) / 2 / 1e18;
 
     Artisan::call('explorer:cache-transactions');
 

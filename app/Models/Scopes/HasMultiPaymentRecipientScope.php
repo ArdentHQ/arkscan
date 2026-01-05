@@ -17,11 +17,6 @@ final class HasMultiPaymentRecipientScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $builder->whereExists(function ($query) {
-            $query->selectRaw('1')
-                ->from('multi_payments')
-                ->whereColumn('transactions.hash', 'multi_payments.hash')
-                ->where('multi_payments.to', $this->address);
-        });
+        $builder->whereRaw('"multi_payment_recipients" @> ARRAY[?]::citext[]', [$this->address]);
     }
 }

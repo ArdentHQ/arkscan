@@ -85,10 +85,6 @@ final class Slot
 
     public function keepsMissing(): bool
     {
-        if ($this->isWaiting()) {
-            return false;
-        }
-
         if ($this->getLastHeight() === 0) {
             return false;
         }
@@ -153,10 +149,13 @@ final class Slot
             'wallet'            => [
                 ...$this->wallet->model()->toArray(),
 
-                'isPending'   => $this->isPending(),
-                'hasForged'   => $this->hasForged(),
-                'justMissed'  => $this->justMissed(),
-                'missedCount' => $this->missedCount(),
+                'isPending'               => $this->isPending(),
+                'hasForged'               => $this->hasForged(),
+                'justMissed'              => $this->justMissed(),
+                'missedCount'             => $this->missedCount(),
+                'keepsMissing'            => $this->keepsMissing(),
+                'blocksSinceLastForged'   => $this->wallet->blocksSinceLastForged(),
+                'durationSinceLastForged' => $this->wallet->durationSinceLastForged(),
             ],
             'forgingAt'         => $this->forgingAt->toIso8601String(),
             'lastBlock'         => $this->lastBlock,
@@ -208,6 +207,6 @@ final class Slot
 
     private function getLastHeight(): int
     {
-        return Arr::get($this->lastBlock, 'height', 0);
+        return Arr::get($this->lastBlock, 'number', 0);
     }
 }
