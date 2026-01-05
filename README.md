@@ -4,7 +4,7 @@
     <img src="./banner.png" />
 </p>
 
-[![Build Status](https://badgen.now.sh/github/status/ArdentHQ/arkscan/develop)](https://github.com/ArdentHQ/arkscan/actions?query=branch%3Adevelop)
+[![Build Status](https://github.com/ArdentHQ/arkscan/actions/workflows/ci.yml/badge.svg)](https://github.com/ArdentHQ/arkscan/actions)
 [![Codecov](https://badgen.now.sh/codecov/c/github/ArdentHQ/arkscan)](https://codecov.io/gh/ArdentHQ/arkscan)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
