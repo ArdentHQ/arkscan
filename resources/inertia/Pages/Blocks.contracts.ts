@@ -1,3 +1,6 @@
+import { IPaginatedResponse } from "@/types";
+import { IBlock } from "@/types/generated";
+
 export interface IBlocksStatistics {
     forgedCount: number;
     missedCount: number;
@@ -7,4 +10,5 @@ export interface IBlocksStatistics {
 
 export interface BlocksListProps {
     statistics: IBlocksStatistics;
+    blocks: IPaginatedResponse<IBlock>;
 }

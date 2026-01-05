@@ -14,6 +14,7 @@
     $class = ['inline-flex items-center font-semibold', $class];
     $sentToSelfClass = null;
 
+    
     $isSentToSelf = $amountForItself !== null && $amountForItself > 0;
     if (! $withoutStyling) {
         if(! $isSent && ! $isReceived) {

@@ -4,6 +4,7 @@
     @if (config('arkscan.arkconnect.enabled'))
         x-data="Wallet({{ json_encode(Network::toArray()) }})"
     @endif
+    class="env-{{ app()->environment() }}"
 >
     @push('scripts')
         @vite('resources/js/webhooks.js')

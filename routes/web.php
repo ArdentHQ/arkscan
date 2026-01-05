@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\BlocksController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inertia\BlocksListController;
+use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
@@ -15,7 +15,6 @@ use App\Http\Controllers\ShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ThemeController;
-use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -40,7 +39,6 @@ Route::get('/validators/{view?}', ValidatorsController::class)->name('validators
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
 Route::get('/blocks', BlocksListController::class)->name('blocks');
-Route::get('/blocks-old', BlocksController::class)->name('blocks-old');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');

@@ -62,7 +62,7 @@ const ValidatorsTabs = ({
     });
 
     return (
-        <>
+        <div id="validators:tabs:content" className="scroll-mt-13 sm:scroll-mt-16 md:scroll-mt-[123px]">
             {currentTab === "validators" && <ValidatorsTab validators={validators} filters={filters} />}
 
             {currentTab === "missed-blocks" && (
@@ -73,7 +73,7 @@ const ValidatorsTabs = ({
             )}
 
             {currentTab === "recent-votes" && <RecentVotesTab recentVotes={recentVotes} filters={filters} />}
-        </>
+        </div>
     );
 };
 

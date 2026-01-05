@@ -12,7 +12,7 @@ export default function HeaderStats({ statistics }: { statistics: IBlocksStatist
     const { network } = useShareData();
 
     return (
-        <div className="grid w-full flex-1 grid-cols-1 gap-2 px-6 pb-6 sm:grid-cols-2 md:mx-auto md:max-w-7xl md:gap-3 md:px-10 xl:grid-cols-4">
+        <div className="grid w-full flex-1 grid-cols-1 gap-2 px-6 pb-6 sm:grid-cols-2 md:mx-auto md:max-w-7xl md:gap-3 md:px-10 md:pb-3 xl:grid-cols-4">
             <Card>
                 <Detail title={t("pages.blocks.blocks_produced_24h")}>
                     <Number>{statistics.forgedCount}</Number>

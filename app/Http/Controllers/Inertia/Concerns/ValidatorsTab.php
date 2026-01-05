@@ -19,6 +19,8 @@ trait ValidatorsTab
 
     public const VALIDATORS_INITIAL_SORT_DIRECTION = SortDirection::ASC;
 
+    protected ?bool $validatorHasFilters = null;
+
     /** @var array<string, array<string, bool>> */
     protected array $validatorsFilters = [
         'validators' => [
@@ -57,19 +59,15 @@ trait ValidatorsTab
 
     private function validatorsHasFilters(): bool
     {
-        if ($this->hasFilter('active', $this->validatorsFilters['validators']['active'])) {
-            return true;
+        if ($this->validatorHasFilters !== null) {
+            return $this->validatorHasFilters;
         }
 
-        if ($this->hasFilter('standby', $this->validatorsFilters['validators']['standby'])) {
-            return true;
-        }
+        $validatorHasFilters = collect($this->validatorsFilters['validators'])->keys()->some(fn ($key) => $this->hasFilter($key, $this->validatorsFilters['validators'][$key]));
 
-        if ($this->hasFilter('dormant', $this->validatorsFilters['validators']['dormant'])) {
-            return true;
-        }
+        $this->validatorHasFilters = $validatorHasFilters;
 
-        return $this->hasFilter('resigned', $this->validatorsFilters['validators']['resigned']);
+        return $this->validatorHasFilters;
     }
 
     private function getValidatorsQuery(): Builder
