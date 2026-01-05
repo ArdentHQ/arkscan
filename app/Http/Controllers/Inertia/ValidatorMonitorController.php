@@ -44,6 +44,8 @@ final class ValidatorMonitorController
                     'statistics'         => $this->statistics,
                 ];
             }),
+        ])->withMeta('validator-monitor', [
+            'name' => Network::currency(),
         ]);
     }
 }
