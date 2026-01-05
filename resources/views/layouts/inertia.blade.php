@@ -6,11 +6,12 @@
     @endif
     class="env-{{ app()->environment() }}"
 >
-    <x-ark-pages-includes-layout-head-inertia
+    <x-ark-pages-includes-layout-head
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
         microsoft-tile-color="#de5846"
-        theme-color="#ffffff"
+        theme-color="#ffffff" 
+        :inertia="true"
     >
         @if (isset($metaPage))
             <x-metadata :page="$metaPage" :detail="isset($metaDetail) ? $metaDetail : []" />
@@ -19,7 +20,7 @@
         @vite('resources/js/app-inertia.tsx')
         @inertiaHead
         @routes
-    </x-ark-pages-includes-layout-head-inertia>
+    </x-ark-pages-includes-layout-head>
 
     <x-ark-pages-includes-layout-body class="table-compact">
         <x-slot name="content">
