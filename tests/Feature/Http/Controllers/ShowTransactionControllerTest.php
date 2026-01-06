@@ -202,6 +202,39 @@ it('should render the page for multipayments without any errors', function () {
         ]);
 });
 
+it('should not cause rounding issues with decimal places', function () {
+    $recipient1 = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->multiPayment([
+            $recipient1->address,
+        ], [
+            BigNumber::new(5.501155 * 1e18),
+        ])
+        ->create();
+
+    MultiPayment::factory()
+        ->count(2)
+        ->state(new Sequence(
+            [
+                'to'     => $recipient1->address,
+                'amount' => BigNumber::new(5.501155 * 1e18),
+            ],
+        ))
+        ->create([
+            'from' => $transaction->from,
+            'hash' => $transaction->hash,
+        ]);
+
+    $this
+        ->get(route('transaction', $transaction->hash))
+        ->assertOk()
+        ->assertSee($transaction->hash)
+        ->assertSeeInOrder([
+            '5.501155 DARK',
+        ]);
+});
+
 it('should show transaction error', function () {
     $gasUsed     = BigNumber::new(79326);
     $transaction = Transaction::factory()->create([
