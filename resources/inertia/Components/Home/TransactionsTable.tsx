@@ -25,6 +25,7 @@ function HomeTransactionsTable({
 
     return (
         <Table
+            hidePagination
             paginator={transactions}
             rowComponent={Row}
             mobile={mobile}
