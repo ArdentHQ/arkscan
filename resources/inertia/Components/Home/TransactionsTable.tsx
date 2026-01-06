@@ -29,6 +29,7 @@ function HomeTransactionsTable({
             rowComponent={Row}
             mobile={mobile}
             noResultsMessage={transactions.noResultsMessage}
+            withFooter
             columns={
                 <>
                     <TableHeader>{t("tables.transactions.id")}</TableHeader>

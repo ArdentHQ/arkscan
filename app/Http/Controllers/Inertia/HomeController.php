@@ -31,6 +31,7 @@ final class HomeController
                     'noResultsMessage' => $this->getNoResultsMessageProperty($paginator->total()),
                 ];
             }),
+            'baseUrl'      => route('home', absolute: false),
         ])
             ->withMeta('home', [
                 'name' => Network::currency(),
