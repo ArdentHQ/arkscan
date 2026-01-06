@@ -201,8 +201,7 @@ final class NumberFormatter
         string $currency,
         ?int $decimals = null,
         ?BetterNumberFormatter $formatter = null,
-    ): string
-    {
+    ): string {
         $formatter = $formatter ?? BetterNumberFormatter::new();
 
         if ($decimals !== null) {
