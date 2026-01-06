@@ -12,12 +12,21 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 
 function HomeTransactionsTab({ transactions }: Pick<HomeProps, "transactions">) {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const { baseUrl } = useSharedData<HomeProps>();
 
     useEffect(() => {
         const pollTransactions = () => {
-            router.reload({
-                only: ["transactions"],
-            });
+            router.get(
+                baseUrl,
+                {},
+                {
+                    only: ["transactions"],
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                    showProgress: false,
+                },
+            );
         };
 
         const removeListener = router.on("success", () => {
@@ -39,7 +48,7 @@ function HomeTransactionsTab({ transactions }: Pick<HomeProps, "transactions">) 
 
             clearTimeout(pollingTimerRef.current);
         };
-    }, []);
+    }, [baseUrl]);
 
     return <HomeTransactionsTableWrapper transactions={transactions} />;
 }
