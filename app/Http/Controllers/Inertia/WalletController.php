@@ -52,7 +52,7 @@ final class WalletController
 
         return Inertia::render('Wallet/Wallet', [
             'wallet'       => WalletDTO::fromModel($wallet),
-            'filters'      => self::FILTERS,
+            'filters'      => fn () => $this->getFilters(),
             'baseUrl'      => route('wallet', $wallet->address, false),
 
             'transactions' => Inertia::optional(function () use ($wallet) {
@@ -242,5 +242,15 @@ final class WalletController
         }
 
         return null;
+    }
+
+    private function getFilters(): array
+    {
+        return [
+            'transactions' => collect(self::FILTERS['transactions'])
+            ->keys()
+            ->mapWithKeys(fn ($filterName) => [$filterName => $this->filter($filterName) === true])
+            ->toArray(),
+        ];
     }
 }
