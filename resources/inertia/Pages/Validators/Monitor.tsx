@@ -1,4 +1,4 @@
-import { Head, router } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import MonitorTableWrapper from "@/Components/Tables/Desktop/Validators/Monitor";
@@ -8,7 +8,6 @@ import MonitorMobileTableWrapper from "@/Components/Tables/Mobile/Validators/Mon
 import MobileDivider from "@/Components/General/MobileDivider";
 import MissedBlocksTrackerProvider from "@/Providers/MissedBlocksTracker/MissedBlocksTrackerProvider";
 import { useTranslation } from "react-i18next";
-import { usePageMetadata } from "@/Components/General/Metadata";
 import { PageProps } from "@inertiajs/core";
 import Layout from "@/Layout";
 import { IValidatorData } from "@/Pages/Validators.contracts";
@@ -17,7 +16,6 @@ export default function Monitor({
     validatorData,
     height,
     rowCount,
-    network,
 }: PageProps<{
     validatorData: IValidatorData;
     height: number;
@@ -25,10 +23,6 @@ export default function Monitor({
 }>) {
     const { t } = useTranslation();
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const metadata = usePageMetadata({
-        page: "validator-monitor",
-        detail: { name: network.name },
-    });
 
     useEffect(() => {
         router.on("success", () => {
@@ -53,38 +47,28 @@ export default function Monitor({
     }, []);
 
     return (
-        <>
-            <Head>{metadata}</Head>
+        <Layout>
+            <PageHeader title={t("pages.validator-monitor.title")} subtitle={t("pages.validator-monitor.subtitle")} />
 
-            <Layout>
-                <PageHeader
-                    title={t("pages.validator-monitor.title")}
-                    subtitle={t("pages.validator-monitor.subtitle")}
-                />
+            <HeaderStats height={height} statistics={validatorData?.statistics} />
 
-                <HeaderStats height={height} statistics={validatorData?.statistics} />
+            <ValidatorFavoritesProvider>
+                <MissedBlocksTrackerProvider
+                    validators={[...(validatorData?.validators ?? []), ...(validatorData?.overflowValidators ?? [])]}
+                >
+                    <MonitorTableWrapper
+                        validators={validatorData?.validators}
+                        overflowValidators={validatorData?.overflowValidators}
+                        rowCount={rowCount}
+                    />
 
-                <ValidatorFavoritesProvider>
-                    <MissedBlocksTrackerProvider
-                        validators={[
-                            ...(validatorData?.validators ?? []),
-                            ...(validatorData?.overflowValidators ?? []),
-                        ]}
-                    >
-                        <MonitorTableWrapper
-                            validators={validatorData?.validators}
-                            overflowValidators={validatorData?.overflowValidators}
-                            rowCount={rowCount}
-                        />
+                    <MobileDivider />
 
-                        <MobileDivider />
-
-                        <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
-                            <MonitorMobileTableWrapper validators={validatorData?.validators} rowCount={rowCount} />
-                        </div>
-                    </MissedBlocksTrackerProvider>
-                </ValidatorFavoritesProvider>
-            </Layout>
-        </>
+                    <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
+                        <MonitorMobileTableWrapper validators={validatorData?.validators} rowCount={rowCount} />
+                    </div>
+                </MissedBlocksTrackerProvider>
+            </ValidatorFavoritesProvider>
+        </Layout>
     );
 }

@@ -8,6 +8,8 @@ type ValidationErrors = Record<string, string>;
 declare module "@inertiajs/core" {
     export interface PageProps<T extends object = {}> extends IRequestData, T {
         errors: ValidationErrors;
+        metaPage?: string;
+        metaDetail?: Record<string, string | number>;
     }
 }
 

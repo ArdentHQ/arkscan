@@ -1,11 +1,9 @@
-import { Head, router } from "@inertiajs/react";
-import { useTranslation } from "react-i18next";
-import { usePageMetadata } from "@/Components/General/Metadata";
+import { router } from "@inertiajs/react";
 import Layout from "@/Layout";
 import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import HeaderStats from "@/Components/Validator/HeaderStats";
-import { IValidatorsStatistics, ValidatorsProps } from "../Validators.contracts";
+import { ValidatorsProps } from "../Validators.contracts";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
@@ -16,6 +14,7 @@ import MissedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Validator
 import RecentVotesTab from "./tabs/RecentVotes";
 import useSharedData from "@/hooks/use-shared-data";
 import { PropsWithChildren } from "react";
+import { useTranslation } from "react-i18next";
 
 const ValidatorsTabsWrapper = ({
     missedBlocks,
@@ -110,37 +109,20 @@ function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
     );
 }
 
-export default function Validators({
-    network,
-    missedBlocks,
-    validators,
-    filters,
-    recentVotes,
-}: PageProps<ValidatorsProps>) {
+export default function Validators({ missedBlocks, validators, filters, recentVotes }: PageProps<ValidatorsProps>) {
     const { t } = useTranslation();
-    const metadata = usePageMetadata({
-        page: "validators",
-        detail: {
-            name: network.name,
-        },
-    });
-
     return (
-        <>
-            <Head>{metadata}</Head>
+        <Layout>
+            <PageHeader title={t("pages.validators.title")} subtitle={t("pages.validators.subtitle")} />
 
-            <Layout>
-                <PageHeader title={t("pages.validators.title")} subtitle={t("pages.validators.subtitle")} />
-
-                <ValidatorsPageHandlerProvider>
-                    <ValidatorsTabsWrapper
-                        missedBlocks={missedBlocks}
-                        validators={validators}
-                        filters={filters}
-                        recentVotes={recentVotes}
-                    />
-                </ValidatorsPageHandlerProvider>
-            </Layout>
-        </>
+            <ValidatorsPageHandlerProvider>
+                <ValidatorsTabsWrapper
+                    missedBlocks={missedBlocks}
+                    validators={validators}
+                    filters={filters}
+                    recentVotes={recentVotes}
+                />
+            </ValidatorsPageHandlerProvider>
+        </Layout>
     );
 }

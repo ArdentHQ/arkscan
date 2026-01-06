@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
+use App\Facades\Network;
 use App\Http\Controllers\Inertia\Concerns\MissedBlocksTab;
 use App\Http\Controllers\Inertia\Concerns\RecentVotesTab;
 use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
@@ -80,6 +81,8 @@ final class ValidatorsController
 
             'statistics' => fn () => $this->getStatistics(),
 
+        ])->withMeta('validators', [
+            'name' => Network::currency(),
         ]);
     }
 

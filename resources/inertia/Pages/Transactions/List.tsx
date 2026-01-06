@@ -1,6 +1,4 @@
-import { Head } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import { usePageMetadata } from "@/Components/General/Metadata";
 import Layout from "@/Layout";
 import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
@@ -12,29 +10,18 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 export default function TransactionsList({ network, statistics, filters, transactions }: PageProps<TransactionsProps>) {
     const { t } = useTranslation();
 
-    const metadata = usePageMetadata({
-        page: "transactions",
-        detail: {
-            name: network.name,
-        },
-    });
-
     return (
-        <>
-            <Head>{metadata}</Head>
+        <Layout>
+            <PageHeader
+                title={t("pages.transactions.title")}
+                subtitle={t("pages.transactions.subtitle", { network: network.name })}
+            />
 
-            <Layout>
-                <PageHeader
-                    title={t("pages.transactions.title")}
-                    subtitle={t("pages.transactions.subtitle", { network: network.name })}
-                />
+            <HeaderStats {...statistics} />
 
-                <HeaderStats {...statistics} />
-
-                <PageHandlerProvider>
-                    <TransactionsTable transactions={transactions} filters={filters} />
-                </PageHandlerProvider>
-            </Layout>
-        </>
+            <PageHandlerProvider>
+                <TransactionsTable transactions={transactions} filters={filters} />
+            </PageHandlerProvider>
+        </Layout>
     );
 }
