@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Models\Transaction;
 use App\Facades\Network;
 use App\Facades\Settings;
+use App\Models\Transaction;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\NetworkStatusBlockCache;
@@ -62,7 +62,7 @@ it('should return transactions without a no-results message', function () {
 });
 
 it('should include chart data with market stats', function () {
-    $currency = Settings::currency();
+    $currency        = Settings::currency();
     $networkCurrency = Network::currency();
 
     (new NetworkStatusBlockCache())->setPrice($networkCurrency, $currency, 2.0);
@@ -75,7 +75,7 @@ it('should include chart data with market stats', function () {
         1_700_007_200 => 1.2,
     ]));
 
-    $expectedVolume = NumberFormatter::currencyForViews(2255149, $currency);
+    $expectedVolume    = NumberFormatter::currencyForViews(2255149, $currency);
     $expectedMarketCap = MarketCap::getFormatted($networkCurrency, $currency);
 
     $this
@@ -92,7 +92,7 @@ it('should include chart data with market stats', function () {
 });
 
 it('should fallback to day period when chartPeriod is invalid', function () {
-    $currency = Settings::currency();
+    $currency        = Settings::currency();
     $networkCurrency = Network::currency();
 
     (new NetworkStatusBlockCache())->setPrice($networkCurrency, $currency, 1.0);
