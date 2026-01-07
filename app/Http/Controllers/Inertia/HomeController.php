@@ -16,7 +16,6 @@ use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\ExchangeRate;
-use App\Services\MainsailApi;
 use App\Services\NumberFormatter;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\UserInterface\UI;
@@ -61,47 +60,6 @@ final class HomeController
         ]);
     }
 
-    private function statistics()
-    {
-        $gasLow = (string) GasTracker::low();
-        $gasAverage = (string) GasTracker::average();
-        $gasHigh = (string) GasTracker::high();
-
-        $gasLowValue = null;
-        $gasAverageValue = null;
-        $gasHighValue = null;
-
-        if (Network::canBeExchanged()) {
-            $gasLowValue = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasLow, 'gwei')), null, true);
-            $gasAverageValue = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasAverage, 'gwei')), null, true);
-            $gasHighValue = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasHigh, 'gwei')), null, true);
-        }
-
-        return [
-            'addresses'   => $this->getWallets(),
-            'totalSupply' => $this->getTotalSupply(),
-            'voting'      => [
-                'percentage' => $this->getVotingPercent(),
-                'amount'     => NumberFormatter::currencyShortNotation($this->getVotingValue()),
-            ],
-
-            'gas' => [
-                'low' => [
-                    'amount' => $gasLow,
-                    'value'  => $gasLowValue,
-                ],
-                'average' => [
-                    'amount' => $gasAverage,
-                    'value'  => $gasAverageValue,
-                ],
-                'high' => [
-                    'amount' => $gasHigh,
-                    'value'  => $gasHighValue,
-                ],
-            ],
-        ];
-    }
-
     public function noTransactionsResultsMessage(int $total): ?string
     {
         return $total === 0
@@ -137,5 +95,46 @@ final class HomeController
         $supply = CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
 
         return NumberFormatter::currencyShortNotation($supply);
+    }
+
+    private function statistics()
+    {
+        $gasLow     = (string) GasTracker::low();
+        $gasAverage = (string) GasTracker::average();
+        $gasHigh    = (string) GasTracker::high();
+
+        $gasLowValue     = null;
+        $gasAverageValue = null;
+        $gasHighValue    = null;
+
+        if (Network::canBeExchanged()) {
+            $gasLowValue     = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasLow, 'gwei')), null, true);
+            $gasAverageValue = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasAverage, 'gwei')), null, true);
+            $gasHighValue    = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasHigh, 'gwei')), null, true);
+        }
+
+        return [
+            'addresses'   => $this->getWallets(),
+            'totalSupply' => $this->getTotalSupply(),
+            'voting'      => [
+                'percentage' => $this->getVotingPercent(),
+                'amount'     => NumberFormatter::currencyShortNotation($this->getVotingValue()),
+            ],
+
+            'gas' => [
+                'low' => [
+                    'amount' => $gasLow,
+                    'value'  => $gasLowValue,
+                ],
+                'average' => [
+                    'amount' => $gasAverage,
+                    'value'  => $gasAverageValue,
+                ],
+                'high' => [
+                    'amount' => $gasHigh,
+                    'value'  => $gasHighValue,
+                ],
+            ],
+        ];
     }
 }
