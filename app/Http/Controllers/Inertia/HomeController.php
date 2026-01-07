@@ -12,7 +12,10 @@ use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceChartCache;
+use App\Services\MarketCap;
+use App\Services\NumberFormatter;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -88,7 +91,9 @@ final class HomeController
 
         $datasets->push($currentPrice);
 
-        $labels = collect($chartData->get('labels', []))->values()->all();
+        $labels    = collect($chartData->get('labels', []))->values()->all();
+        $volume    = (new CryptoDataCache())->getVolume($currency);
+        $marketCap = MarketCap::getFormatted(Network::currency(), $currency);
 
         return [
             'datasets'        => $datasets->values()->all(),
@@ -96,6 +101,10 @@ final class HomeController
             'theme'           => [
                 'name' => $initialValue > $currentPrice ? 'red' : 'green',
                 'mode' => Settings::theme(),
+            ],
+            'market'          => [
+                'volume'    => $volume !== null ? NumberFormatter::currencyForViews($volume, $currency) : null,
+                'marketCap' => $marketCap,
             ],
             'period'          => $period,
             'refreshInterval' => (int) config('arkscan.statistics.refreshInterval', 60),

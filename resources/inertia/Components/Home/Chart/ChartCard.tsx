@@ -7,16 +7,20 @@ import { HomeProps } from "@/Pages/Home.contracts";
 export default function ChartCard() {
     const { t } = useTranslation();
     const {
+        chart,
         network: { canBeExchanged = false },
     } = useSharedData<HomeProps>();
+
+    if (!chart) {
+        return null;
+    }
 
     return (
         <div
             className={classNames(
-                "flex-1 rounded-xl border border-theme-secondary-300 bg-theme-secondary-100 dark:border-theme-dark-700 dark:bg-theme-dark-950",
+                "flex-1 rounded-xl border border-theme-secondary-300 bg-white p-4 dark:border-theme-dark-700 dark:bg-theme-dark-950 sm:px-6 sm:py-4",
                 {
-                    "px-4 py-3 sm:px-6 sm:pb-4 md:py-6": canBeExchanged,
-                    "md-lg:px-6 md-lg:py-6": !canBeExchanged,
+                    "md-lg:py-6": !canBeExchanged,
                 },
             )}
         >
@@ -36,7 +40,7 @@ export default function ChartCard() {
                         "pointer-events-none blur-md": !canBeExchanged,
                     })}
                 >
-                    <ChartContent />
+                    <ChartContent chart={chart} canBeExchanged={canBeExchanged} />
                 </div>
             </div>
         </div>

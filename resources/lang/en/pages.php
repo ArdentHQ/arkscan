@@ -30,7 +30,7 @@ return [
 
     'home'             => [
         'statistics' => [
-            'title'               => 'Statistics',
+            'title'               => 'Market Overview',
             'current_supply'      => 'Current Supply',
             'volume'              => 'Volume (24h)',
             'market_cap'          => 'Market Cap',

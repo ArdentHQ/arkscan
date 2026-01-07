@@ -54,7 +54,7 @@ export default function ChartCanvas({
             return;
         }
 
-        const tooltipHandler = window.chartTooltip ?? null;
+        const tooltipHandler = tooltips ? window.chartTooltip ?? null : null;
         const chart = CustomChart(
             id,
             datasets,

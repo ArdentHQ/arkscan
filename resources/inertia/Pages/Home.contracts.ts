@@ -8,10 +8,16 @@ export interface HomeChartTheme {
     mode: string | null;
 }
 
+export interface HomeChartMarket {
+    volume: string | null;
+    marketCap: string | null;
+}
+
 export interface HomeChartData {
     datasets: number[];
     labels: Array<number | string>;
     theme: HomeChartTheme;
+    market: HomeChartMarket;
     period: HomeChartPeriod;
     refreshInterval: number;
 }
@@ -19,5 +25,5 @@ export interface HomeChartData {
 export interface HomeProps {
     transactions?: IPaginatedResponse<ITransaction>;
     baseUrl: string;
-    chart: HomeChartData;
+    chart?: HomeChartData;
 }

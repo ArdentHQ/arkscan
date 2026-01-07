@@ -1,26 +1,30 @@
-import classNames from "classnames";
 import { useEffect, useMemo, useRef } from "react";
 import { router, usePoll } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
 import useSettings from "@/Providers/Settings/useSettings";
 import ChartCanvas from "@/Components/Home/Chart/ChartCanvas";
-import ExchangesButton from "@/Components/Home/Chart/ExchangesButton";
-import PeriodDropdown from "@/Components/Home/Chart/PeriodDropdown";
-import PriceTicker from "@/Components/Home/Chart/PriceTicker";
-import { HomeChartPeriod, HomeProps } from "@/Pages/Home.contracts";
+import MarketOverviewHeader from "@/Components/Home/Chart/MarketOverviewHeader";
+import MarketStat from "@/Components/Home/Chart/MarketStat";
+import { currency, hasSymbol } from "@/utils/number-formatter";
+import { HomeChartData, HomeProps } from "@/Pages/Home.contracts";
 
-const DEFAULT_PERIOD: HomeChartPeriod = "day";
-
-export default function ChartContent() {
-    const {
-        broadcasting,
-        chart,
-        network: { canBeExchanged = false },
-    } = useSharedData<HomeProps>();
-    const { currency, theme } = useSettings();
-    const previousCurrencyRef = useRef(currency);
+export default function ChartContent({ chart, canBeExchanged }: { chart: HomeChartData; canBeExchanged: boolean }) {
+    const { t } = useTranslation();
+    const { broadcasting, network } = useSharedData<HomeProps>();
+    const { currency: selectedCurrency, theme, isPriceAvailable, priceExchangeRate } = useSettings();
+    const previousCurrencyRef = useRef(selectedCurrency);
 
     const chartTheme = useMemo(() => ({ ...chart.theme, mode: theme }), [chart.theme, theme]);
+    const currencySuffix = hasSymbol(selectedCurrency) ? selectedCurrency : undefined;
+    const priceValue =
+        isPriceAvailable && priceExchangeRate !== null ? currency(priceExchangeRate, selectedCurrency) : null;
+    const pricePair =
+        network?.currency && network.currency !== selectedCurrency
+            ? `${network.currency}/${selectedCurrency}`
+            : undefined;
+    const volumeValue = chart.market?.volume ?? null;
+    const marketCapValue = chart.market?.marketCap ?? null;
 
     usePoll(
         chart.refreshInterval * 1000,
@@ -33,87 +37,67 @@ export default function ChartContent() {
     );
 
     useEffect(() => {
-        if (previousCurrencyRef.current === currency) {
+        if (previousCurrencyRef.current === selectedCurrency) {
             return;
         }
 
-        previousCurrencyRef.current = currency;
+        previousCurrencyRef.current = selectedCurrency;
 
         router.reload({
             only: ["chart"],
             showProgress: false,
         });
-    }, [currency]);
-
-    const updatePeriod = (period: HomeChartPeriod) => {
-        if (period === chart.period) {
-            return;
-        }
-
-        const url = new URL(window.location.href);
-
-        if (period === DEFAULT_PERIOD) {
-            url.searchParams.delete("chartPeriod");
-        } else {
-            url.searchParams.set("chartPeriod", period);
-        }
-
-        router.get(
-            url.toString(),
-            {},
-            {
-                preserveScroll: true,
-                preserveState: true,
-                replace: true,
-                showProgress: false,
-                only: ["chart"],
-            },
-        );
-    };
+    }, [selectedCurrency]);
 
     return (
-        <div className="h-full flex-col">
-            <div
-                className={classNames("h-full flex-row justify-between sm:flex-col", {
-                    "hidden md-lg:flex": !canBeExchanged,
-                    flex: canBeExchanged,
-                })}
-            >
-                <div className="flex items-center whitespace-nowrap sm:flex-1 sm:justify-between">
-                    <PriceTicker />
+        <div className="flex flex-col space-y-4">
+            <MarketOverviewHeader showExchanges={canBeExchanged} />
 
-                    <div className="hidden items-center space-x-3 sm:flex">
-                        <PeriodDropdown period={chart.period} onChange={updatePeriod} />
-                        <ExchangesButton />
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <MarketStat
+                    label={t("pages.home.charts.price")}
+                    value={priceValue}
+                    suffix={pricePair}
+                    disabled={!canBeExchanged || !isPriceAvailable || priceValue === null}
+                />
 
-                <div className="flex min-w-0 flex-1 justify-end sm:items-center sm:justify-between">
-                    <div className="hidden h-[140px] w-full sm:mt-4 sm:flex md:h-[157px] lg:mt-[1.125rem]">
-                        <ChartCanvas
-                            id="price-chart"
-                            className="h-auto w-full"
-                            canvasClassName="max-w-full"
-                            datasets={chart.datasets}
-                            labels={chart.labels}
-                            theme={chartTheme}
-                            currency={currency}
-                            height={109}
-                            width={null}
-                            grid
-                            tooltips
-                            showCrosshair
-                            hasDateTimeLabels
-                            yPadding={10}
-                            xPadding={0}
-                        />
-                    </div>
+                <MarketStat
+                    label={t("pages.home.statistics.volume")}
+                    value={volumeValue}
+                    suffix={currencySuffix}
+                    disabled={!canBeExchanged || volumeValue === null}
+                />
 
-                    <ExchangesButton className="hidden items-center xs:flex sm:hidden" />
-                </div>
+                <MarketStat
+                    label={t("pages.home.statistics.market_cap")}
+                    value={marketCapValue}
+                    suffix={currencySuffix}
+                    disabled={!canBeExchanged || marketCapValue === null}
+                />
             </div>
 
-            <ExchangesButton className="mt-3 flex items-center xs:hidden" buttonClassName="flex-1" />
+            <div className="relative h-[57px] overflow-hidden rounded-lg">
+                <div className="absolute inset-0 rounded-lg bg-[radial-gradient(#D5DEE8_1px,transparent_1px)] [background-size:8px_8px] dim:bg-[radial-gradient(#34445C_1px,transparent_1px)] dark:bg-[radial-gradient(#2B3340_1px,transparent_1px)]" />
+
+                <div className="relative z-10 h-full">
+                    <ChartCanvas
+                        id="price-chart"
+                        className="h-full w-full"
+                        canvasClassName="max-w-full"
+                        datasets={chart.datasets}
+                        labels={chart.labels}
+                        theme={chartTheme}
+                        currency={selectedCurrency}
+                        grid={false}
+                        tooltips={false}
+                        showCrosshair={false}
+                        hasDateTimeLabels
+                        height={57}
+                        yPadding={0}
+                        xPadding={0}
+                    />
+                </div>
+            </div>
         </div>
     );
 }
