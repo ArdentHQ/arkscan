@@ -7,18 +7,16 @@ import ChartCanvas from "@/Components/Home/Chart/ChartCanvas";
 import ExchangesButton from "@/Components/Home/Chart/ExchangesButton";
 import PeriodDropdown from "@/Components/Home/Chart/PeriodDropdown";
 import PriceTicker from "@/Components/Home/Chart/PriceTicker";
-import { HomeChartData, HomeChartPeriod, HomeProps } from "@/Pages/Home.contracts";
+import { HomeChartPeriod, HomeProps } from "@/Pages/Home.contracts";
 
 const DEFAULT_PERIOD: HomeChartPeriod = "day";
 
-export default function ChartContent({
-    chart,
-    canBeExchanged,
-}: {
-    chart: HomeChartData;
-    canBeExchanged: boolean;
-}) {
-    const { broadcasting } = useSharedData<HomeProps>();
+export default function ChartContent() {
+    const {
+        broadcasting,
+        chart,
+        network: { canBeExchanged = false },
+    } = useSharedData<HomeProps>();
     const { currency, theme } = useSettings();
     const previousCurrencyRef = useRef(currency);
 
@@ -43,7 +41,6 @@ export default function ChartContent({
 
         router.reload({
             only: ["chart"],
-            preserveState: true,
             showProgress: false,
         });
     }, [currency]);
@@ -92,7 +89,7 @@ export default function ChartContent({
                 </div>
 
                 <div className="flex min-w-0 flex-1 justify-end sm:items-center sm:justify-between">
-                    <div className="hidden h-[140px] w-full sm:flex sm:mt-4 md:h-[157px] lg:mt-[1.125rem]">
+                    <div className="hidden h-[140px] w-full sm:mt-4 sm:flex md:h-[157px] lg:mt-[1.125rem]">
                         <ChartCanvas
                             id="price-chart"
                             className="h-auto w-full"
@@ -112,7 +109,7 @@ export default function ChartContent({
                         />
                     </div>
 
-                    <ExchangesButton className="hidden items-center sm:hidden xs:flex" />
+                    <ExchangesButton className="hidden items-center xs:flex sm:hidden" />
                 </div>
             </div>
 

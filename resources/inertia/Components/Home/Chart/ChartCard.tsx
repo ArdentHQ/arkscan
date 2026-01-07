@@ -6,9 +6,9 @@ import { HomeProps } from "@/Pages/Home.contracts";
 
 export default function ChartCard() {
     const { t } = useTranslation();
-    const { chart, network } = useSharedData<HomeProps>();
-
-    const canBeExchanged = network?.canBeExchanged === true;
+    const {
+        network: { canBeExchanged = false },
+    } = useSharedData<HomeProps>();
 
     return (
         <div
@@ -36,7 +36,7 @@ export default function ChartCard() {
                         "pointer-events-none blur-md": !canBeExchanged,
                     })}
                 >
-                    <ChartContent chart={chart} canBeExchanged={canBeExchanged} />
+                    <ChartContent />
                 </div>
             </div>
         </div>
