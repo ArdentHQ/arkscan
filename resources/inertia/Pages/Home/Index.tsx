@@ -11,6 +11,7 @@ import useSharedData from "@/hooks/use-shared-data";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
+import Statistics from "@/Components/Home/Statistics";
 
 function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transactions">) {
     const { currentTab } = useTabs();
@@ -71,9 +72,11 @@ function HomeTabsProvider({ children }: PropsWithChildren) {
     );
 }
 
-export default function HomeIndex({ blocks, transactions }: PageProps<HomeProps>) {
+export default function HomeIndex({ blocks, statistics, transactions }: PageProps<HomeProps>) {
     return (
         <Layout>
+            <Statistics statistics={statistics} />
+
             <div className="mt-6 pb-8 md:pb-6">
                 <HomeTabsProvider>
                     <PageHandlerProvider>

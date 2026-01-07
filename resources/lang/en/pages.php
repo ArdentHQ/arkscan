@@ -30,13 +30,20 @@ return [
 
     'home'             => [
         'statistics' => [
-            'title'               => 'Statistics',
+            'title'               => 'Network Statistics',
             'current_supply'      => 'Current Supply',
             'volume'              => 'Volume (24h)',
             'market_cap'          => 'Market Cap',
             'block_height'        => 'Block Height',
+            'total_supply'        => 'Total Supply',
+            'voting'              => 'Voting (:percentage)',
+            'addresses'           => 'Addresses',
             'currency_price'      => ':currency Price',
             'chart_not_supported' => 'Not supported on development networks',
+
+            'gas_low'     => 'Gas Low',
+            'gas_average' => 'Gas Average',
+            'gas_high'    => 'Gas High',
         ],
 
         'footer' => [
