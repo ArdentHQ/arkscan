@@ -22,7 +22,7 @@ export default function MarketOverviewHeader({ showExchanges }: { showExchanges:
                     </Link>
                 )}
             </div>
-            <hr className="-mx-6 border-b border-t-0 border-theme-secondary-300 dark:border-theme-dark-700" />
+            <hr className="-mx-4 border-b border-t-0 border-theme-secondary-300 dark:border-theme-dark-700 sm:-mx-6" />
         </div>
     );
 }
