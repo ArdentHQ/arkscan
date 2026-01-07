@@ -7,6 +7,7 @@ interface HeaderItemProps {
     contentClass?: string;
     slotClass?: string;
     withoutPadding?: boolean;
+    backgroundClass?: string;
     children?: ReactNode;
     className?: string;
 }
@@ -16,6 +17,7 @@ export default function HeaderItem({
     background = null,
     contentClass = "",
     slotClass = "",
+    backgroundClass = "",
     withoutPadding = false,
     children,
     className = "",
@@ -27,7 +29,7 @@ export default function HeaderItem({
                 className,
             )}
         >
-            {background !== null && <div className="absolute z-20">{background}</div>}
+            {background !== null && <div className={classNames("absolute z-20", backgroundClass)}>{background}</div>}
 
             <div
                 className={classNames(
