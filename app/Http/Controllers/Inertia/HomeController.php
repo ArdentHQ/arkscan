@@ -80,9 +80,10 @@ final class HomeController
 
         $currency     = Settings::currency();
         $currentPrice = (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency) ?? 0.0;
-        $chartData    = collect((new PriceChartCache())->getHistoricalRaw($currency, $period));
+        /** @var array{labels?: array<int|string, int|float|string>, datasets?: array<int, int|float>} $chartData */
+        $chartData = (new PriceChartCache())->getHistoricalRaw($currency, $period);
 
-        $datasets     = collect($chartData->get('datasets', []));
+        $datasets     = collect($chartData['datasets'] ?? []);
         $initialValue = $datasets->first() ?? $currentPrice;
 
         if ($datasets->isNotEmpty()) {
@@ -91,7 +92,7 @@ final class HomeController
 
         $datasets->push($currentPrice);
 
-        $labels    = collect($chartData->get('labels', []))->values()->all();
+        $labels    = collect($chartData['labels'] ?? [])->values()->all();
         $volume    = (new CryptoDataCache())->getVolume($currency);
         $marketCap = MarketCap::getFormatted(Network::currency(), $currency);
 
