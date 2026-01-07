@@ -21,7 +21,7 @@ export interface IHomeStatistics {
             value: number;
             amount: string;
         };
-    },
+    };
 }
 
 export interface HomeProps {
