@@ -67,6 +67,7 @@ export function Table({
     columns,
     withHeader = false,
     withFooter = false,
+    hidePagination = false,
     resultSuffix,
     paginator,
     rowComponent,
@@ -79,6 +80,7 @@ export function Table({
     withFooter?: boolean;
     resultSuffix?: string;
     paginator: IPaginatedResponse<any>;
+    hidePagination?: boolean;
     rowComponent: React.ComponentType<{ row: any; key?: React.Key }>;
     mobile?: React.ReactNode;
     headerActions?: React.ReactNode;
@@ -88,7 +90,7 @@ export function Table({
     const { pagination } = useSharedData();
     const resultCount = paginator?.total ?? 0;
 
-    const showFooter = withFooter && paginator && resultCount > pagination?.per_page;
+    const showFooter = withFooter && paginator && resultCount > pagination?.per_page && !hidePagination;
 
     return (
         <div ref={tableRef} className="px-6 md:mx-auto md:max-w-7xl md:px-10">
@@ -102,7 +104,7 @@ export function Table({
                 className={classNames({
                     "hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
                     "rounded-t-xl": !withHeader,
-                    "rounded-b-xl": !showFooter,
+                    "rounded-b-xl": !showFooter && !hidePagination,
                 })}
             >
                 <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
@@ -121,7 +123,7 @@ export function Table({
 
                     {resultCount === 0 && <div className="px-6 py-4 text-center">{noResultsMessage}</div>}
 
-                    {!!pagination && resultCount < pagination?.per_page && (
+                    {!!pagination && resultCount < pagination?.per_page && !hidePagination && (
                         <div className="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
                     )}
                 </div>
@@ -129,7 +131,7 @@ export function Table({
 
             {mobile}
 
-            {showFooter && <Pagination paginator={paginator} tableRef={tableRef} />}
+            {showFooter && !hidePagination && <Pagination paginator={paginator} tableRef={tableRef} />}
         </div>
     );
 }

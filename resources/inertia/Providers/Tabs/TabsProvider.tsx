@@ -11,6 +11,8 @@ export default function TabsProvider({
     baseUrl,
     header,
     children,
+    useQueryParam = false,
+    viewParam = "view",
 }: {
     defaultSelected: string;
     queryStringDefaults: ITabsQueryString;
@@ -18,6 +20,8 @@ export default function TabsProvider({
     baseUrl: string;
     header?: React.ReactNode;
     children: React.ReactNode;
+    useQueryParam?: boolean;
+    viewParam?: string;
 }) {
     const [currentTab, setCurrentTab] = useState<string>();
     const [selectedTab, setSelectedTab] = useState<ITab>();
@@ -49,8 +53,12 @@ export default function TabsProvider({
         updatedUrl.search = "";
         updatedUrl.pathname = baseUrl;
 
-        if (newTab !== defaultSelected) {
+        if (!useQueryParam && newTab !== defaultSelected) {
             updatedUrl.pathname += `/${newTab}`;
+        }
+
+        if (useQueryParam && newTab !== defaultSelected) {
+            updatedUrl.searchParams.set(viewParam, newTab);
         }
 
         Object.entries(queryStringValues[newTab]).forEach(([param, value]) => {
@@ -89,13 +97,15 @@ export default function TabsProvider({
     useEffect(() => {
         let tab: string | null = null;
 
-        const currentBaseUrl = `/${location.pathname.replace(/^\//, "")}`;
-        if (currentBaseUrl !== baseUrl) {
-            tab = currentBaseUrl.replace(baseUrl + "/", "");
+        if (!useQueryParam) {
+            const currentBaseUrl = `/${location.pathname.replace(/^\//, "")}`;
+            if (currentBaseUrl !== baseUrl) {
+                tab = currentBaseUrl.replace(baseUrl + "/", "");
+            }
         }
 
         if (!tab) {
-            tab = new URL(location.href).searchParams.get("view") ?? defaultSelected;
+            tab = new URL(location.href).searchParams.get(viewParam) ?? defaultSelected;
         }
 
         if (tab) {
