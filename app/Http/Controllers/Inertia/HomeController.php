@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
+use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Facades\Network;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Scopes\OrderByTimestampScope;
+use App\Models\Block;
+use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Transaction;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -28,20 +31,38 @@ final class HomeController
                     ...$paginator->toArray(),
 
                     'meta'             => UI::getPaginationData($paginator),
-                    'noResultsMessage' => $this->getNoResultsMessageProperty($paginator->total()),
+                    'noResultsMessage' => $this->noTransactionsResultsMessage($paginator->total()),
                 ];
             }),
-            'baseUrl'      => route('home', absolute: false),
-        ])
-            ->withMeta('home', [
-                'name' => Network::currency(),
-            ]);
+
+            'blocks' => Inertia::optional(function () {
+                $paginator = $this->getBlocks();
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->noBlocksResultsMessage($paginator->total()),
+                ];
+            }),
+
+            'baseUrl' => route('home', absolute: false),
+        ])->withMeta('home', [
+            'name' => Network::currency(),
+        ]);
     }
 
-    public function getNoResultsMessageProperty(int $total): ?string
+    public function noTransactionsResultsMessage(int $total): ?string
     {
         return $total === 0
             ? (string) trans('tables.transactions.no_results.no_results')
+            : null;
+    }
+
+    public function noBlocksResultsMessage(int $total): ?string
+    {
+        return $total === 0
+            ? (string) trans('tables.blocks.no_results')
             : null;
     }
 
@@ -52,5 +73,12 @@ final class HomeController
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage('transactions'), page: $this->page())
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
+    }
+
+    public function getBlocks(): LengthAwarePaginator
+    {
+        return Block::withScope(OrderByHeightScope::class)
+            ->paginate((int) config('arkscan.pagination.per_page'))
+            ->through(fn (Block $block) => BlockDTO::fromModel($block));
     }
 }
