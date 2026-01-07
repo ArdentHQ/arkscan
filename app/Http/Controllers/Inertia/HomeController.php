@@ -19,8 +19,6 @@ use Inertia\Response;
 
 final class HomeController
 {
-    use WithPagination;
-
     public function __invoke(): Response
     {
         return Inertia::render('Home/Index', [
@@ -71,7 +69,7 @@ final class HomeController
         return Transaction::query()
             ->with('votedFor')
             ->withScope(OrderByTimestampScope::class)
-            ->paginate($this->perPage('transactions'), page: $this->page())
+            ->paginate((int) config('arkscan.pagination.per_page'))
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
     }
 
