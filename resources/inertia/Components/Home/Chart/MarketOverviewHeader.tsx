@@ -15,7 +15,7 @@ export default function MarketOverviewHeader({ showExchanges }: { showExchanges:
                 {showExchanges && (
                     <Link
                         href={route("exchanges")}
-                        className="transition-default flex items-center space-x-1 text-sm font-semibold text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500"
+                        className="transition-default flex items-center space-x-1 font-semibold text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500"
                     >
                         <span>{t("actions.exchanges")}</span>
                         <ChevronRightSmallIcon className="h-3 w-3" />

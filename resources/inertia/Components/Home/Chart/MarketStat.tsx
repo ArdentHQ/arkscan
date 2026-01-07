@@ -16,7 +16,7 @@ export default function MarketStat({
     const isDisabled = disabled || value === null || value === undefined || value === "";
 
     return (
-        <div className="flex flex-col space-y-1">
+        <div className="flex flex-col space-y-2">
             <div className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">{label}</div>
 
             <div
