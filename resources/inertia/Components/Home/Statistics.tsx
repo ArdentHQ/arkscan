@@ -4,7 +4,7 @@ import classNames from "classnames";
 import ChevronRightSmallIcon from "@ui/icons/arrows/chevron-right-small.svg?react";
 import { IHomeStatistics } from "@/Pages/Home.contracts";
 import Tooltip from "../General/Tooltip";
-import { currency } from "@/utils/number-formatter";
+import Info from "../General/Info";
 
 function StatEntry({
     label,
@@ -12,12 +12,14 @@ function StatEntry({
     tooltip,
     disabled,
     className = "space-y-2",
+    withBorder = true,
 }: {
     label: string;
-    value: string | number;
+    value: string | number | React.ReactNode;
     tooltip?: string;
     disabled?: boolean;
     className?: string;
+    withBorder?: boolean;
 }) {
     const { t } = useTranslation();
 
@@ -27,8 +29,10 @@ function StatEntry({
         <div
             className={classNames([
                 className,
-                "border-b border-dashed border-theme-secondary-300 pb-3 group-last/statistics:last:border-b-0 group-last/statistics:last:pb-0",
-                "dark:border-theme-dark-700 sm:group-last/statistics:border-b-0 sm:group-last/statistics:pb-0",
+                withBorder &&
+                    "border-b border-dashed border-theme-secondary-300 pb-3 group-first/statistics:border-b group-first/statistics:pb-3 group-first/statistics:last:border-b-0",
+                withBorder &&
+                    "dark:border-theme-dark-700 sm:group-first/statistics:last:border-b sm:group-last/statistics:border-b-0 sm:group-last/statistics:pb-0",
             ])}
         >
             <div className="text-sm font-semibold dark:text-theme-dark-200">{label}</div>
@@ -52,10 +56,38 @@ function StatEntry({
     );
 }
 
-function StatRow({ children }: { children: React.ReactNode }) {
+function StatRow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     return (
-        <div className="gap group/statistics space-y-3 px-4 sm:grid sm:grid-cols-3 sm:gap-3 sm:space-y-0 md-lg:px-6">
+        <div
+            className={classNames(
+                "gap group/statistics space-y-3 px-4 sm:grid sm:grid-cols-3 sm:gap-3 sm:space-y-0 md-lg:px-6",
+                className,
+            )}
+        >
             {children}
+        </div>
+    );
+}
+
+function MobileGasTooltip({ statistics }: { statistics: IHomeStatistics }) {
+    const { t } = useTranslation();
+
+    return (
+        <div className="w-[196px] space-y-2 font-semibold">
+            {["low", "average", "high"].map((level) => (
+                <div className="flex items-center justify-between">
+                    <div className="flex space-x-1">
+                        <span>{t(`pages.home.statistics.gas-levels.${level}`)}:</span>
+                        <span className="text-theme-secondary-700 dark:text-theme-dark-200">
+                            {t("pages.home.statistics.30_seconds")}
+                        </span>
+                    </div>
+
+                    <span>
+                        {(statistics.gas as any)[level].amount} {t("general.gwei")}
+                    </span>
+                </div>
+            ))}
         </div>
     );
 }
@@ -67,14 +99,18 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
     return (
         <div className="px-6 md:mx-auto md:max-w-7xl md:border-0 md:px-10">
             <div className="flex flex-col space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
-                <div className="flex min-w-0 flex-1 flex-col rounded-xl border border-theme-secondary-300 py-3 dark:border-theme-dark-700 md:py-4">
+                <div className="flex min-w-0 flex-1 flex-col rounded-xl border border-theme-secondary-300 pt-3 dark:border-theme-dark-700 sm:pb-3 md:py-4">
                     <div className="mb-3 flex items-center justify-between border-b border-theme-secondary-300 px-4 pb-3 dark:border-theme-dark-700 sm:px-6 md:mb-4 md:pb-4">
-                        <h2 className="mb-0 text-xl font-semibold leading-[29px] md:text-2xl">
-                            {t("pages.home.statistics.title")}
+                        <h2 className="mb-0 text-lg font-semibold md:text-2xl md:leading-[29px]">
+                            <span className="hidden leading-5.25 sm:inline">{t("pages.home.statistics.title")}</span>
+                            <span className="leading-5.25 sm:hidden">{t("pages.home.statistics.title_mobile")}</span>
                         </h2>
 
-                        <a href={route("statistics")} className="link group font-semibold">
-                            <div className="inline-flex items-center space-x-2 group-hover:underline">
+                        <a
+                            href={route("statistics")}
+                            className="link rounded px-2 py-1.5 font-semibold hover:bg-theme-primary-200 hover:text-theme-primary-700 dark:hover:bg-theme-dark-700 dark:hover:text-theme-dark-50"
+                        >
+                            <div className="inline-flex items-center space-x-2">
                                 <span className="leading-5">{t("actions.view")}</span>
 
                                 <ChevronRightSmallIcon className="h-3 w-3" />
@@ -97,7 +133,7 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                             <StatEntry label={t("pages.home.statistics.addresses")} value={statistics.addresses} />
                         </StatRow>
 
-                        <StatRow>
+                        <StatRow className="hidden sm:grid">
                             {network.canBeExchanged ? (
                                 <>
                                     <StatEntry
@@ -137,6 +173,31 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                                 </>
                             )}
                         </StatRow>
+                    </div>
+
+                    <div className="rounded-b-xl bg-theme-secondary-300 dark:bg-theme-dark-950 sm:hidden">
+                        <StatEntry
+                            label={t("pages.home.statistics.gas_tracker")}
+                            className="space-y-2 px-4 py-3"
+                            withBorder={false}
+                            value={
+                                <div className="flex items-center space-x-2">
+                                    <span>
+                                        {network.canBeExchanged
+                                            ? statistics.gas.average.value
+                                            : t("pages.home.statistics.gas_average_value", {
+                                                  value: `${statistics.gas.average.amount} ${t("general.gwei")}`,
+                                              })}
+                                    </span>
+
+                                    <Info
+                                        type="info"
+                                        className="flex"
+                                        tooltip={<MobileGasTooltip statistics={statistics} />}
+                                    />
+                                </div>
+                            }
+                        />
                     </div>
                 </div>
 
