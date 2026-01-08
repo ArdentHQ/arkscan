@@ -1,7 +1,8 @@
 import { IPaginatedResponse } from "@/types";
-import { ITransaction } from "@/types/generated";
+import { IBlock, ITransaction } from "@/types/generated";
 
 export interface HomeProps {
+    blocks?: IPaginatedResponse<IBlock>;
     transactions?: IPaginatedResponse<ITransaction>;
     baseUrl: string;
 }

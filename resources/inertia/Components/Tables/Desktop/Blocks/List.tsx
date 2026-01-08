@@ -12,6 +12,7 @@ import Age from "@/Components/Model/Age";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
 import Address from "@/Components/Wallet/Address";
+import { IPaginatedResponse } from "@/types";
 
 export function Row({ row: block }: { row: IBlock }) {
     const { network } = useSharedData();
@@ -69,19 +70,24 @@ export function Row({ row: block }: { row: IBlock }) {
 export function BlocksListTable({
     blocks,
     mobile,
+    withHeader = true,
+    hidePagination = false,
 }: Pick<BlocksListProps, "blocks"> & {
     mobile?: React.ReactNode;
+    withHeader?: boolean;
+    hidePagination?: boolean;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
 
     return (
         <Table
-            withHeader
+            withHeader={withHeader}
             withFooter
             paginator={blocks}
             rowComponent={Row}
             mobile={mobile}
+            hidePagination={hidePagination}
             noResultsMessage={blocks.noResultsMessage}
             columns={
                 <>
@@ -136,6 +142,62 @@ export function BlocksListTable({
     );
 }
 
+export function BlocksListLoadingState({
+    blocks,
+    mobile,
+    rowCount = 20,
+}: {
+    blocks?: IPaginatedResponse<IBlock>;
+    mobile?: React.ReactNode;
+    rowCount?: number;
+}) {
+    const { t } = useTranslation();
+    const { network } = useSharedData<BlocksListProps>();
+
+    const columns: ILoadingTableColumn[] = [
+        {
+            name: t("tables.blocks.height"),
+        },
+        {
+            name: t("tables.blocks.age"),
+            breakpoint: "md-lg",
+            responsive: true,
+        },
+        {
+            name: t("tables.blocks.transactions"),
+            type: "number",
+        },
+        {
+            name: t("tables.blocks.total_reward", {
+                currency: network!.currency,
+            }),
+            type: "number",
+            tooltip: t("pages.wallets.blocks.total_reward_tooltip", {
+                currency: network!.currency,
+            }),
+            lastOn: network?.canBeExchanged ? "lg" : undefined,
+        },
+    ];
+
+    if (network?.canBeExchanged) {
+        columns.push({
+            name: t("tables.blocks.value", { currency: network!.currency }),
+            type: "number",
+            tooltip: t("pages.wallets.blocks.value_tooltip", {
+                currency: network!.currency,
+            }),
+            breakpoint: "lg",
+            responsive: true,
+        });
+    }
+
+    return (
+        <>
+            <LoadingTable mobile={mobile} paginator={blocks} rowCount={rowCount} columns={columns} />
+        </>
+    );
+}
+
 export default function BlocksListTableWrapper({
     mobile,
     rowCount = 20,
@@ -144,52 +206,10 @@ export default function BlocksListTableWrapper({
     rowCount?: number;
 }) {
     const { isLoading } = usePageHandler();
-    const { t } = useTranslation();
-    const { blocks, network } = useSharedData<BlocksListProps>();
+    const { blocks } = useSharedData<BlocksListProps>();
 
     if (!blocks || isLoading) {
-        const columns: ILoadingTableColumn[] = [
-            {
-                name: t("tables.blocks.height"),
-            },
-            {
-                name: t("tables.blocks.age"),
-                breakpoint: "md-lg",
-                responsive: true,
-            },
-            {
-                name: t("tables.blocks.transactions"),
-                type: "number",
-            },
-            {
-                name: t("tables.blocks.total_reward", {
-                    currency: network!.currency,
-                }),
-                type: "number",
-                tooltip: t("pages.wallets.blocks.total_reward_tooltip", {
-                    currency: network!.currency,
-                }),
-                lastOn: network?.canBeExchanged ? "lg" : undefined,
-            },
-        ];
-
-        if (network?.canBeExchanged) {
-            columns.push({
-                name: t("tables.blocks.value", { currency: network!.currency }),
-                type: "number",
-                tooltip: t("pages.wallets.blocks.value_tooltip", {
-                    currency: network!.currency,
-                }),
-                breakpoint: "lg",
-                responsive: true,
-            });
-        }
-
-        return (
-            <>
-                <LoadingTable mobile={mobile} paginator={blocks} rowCount={rowCount} columns={columns} />
-            </>
-        );
+        return <BlocksListLoadingState blocks={blocks} mobile={mobile} rowCount={rowCount} />;
     }
 
     return (

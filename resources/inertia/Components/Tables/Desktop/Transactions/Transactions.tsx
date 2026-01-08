@@ -49,21 +49,30 @@ export function Row({ row }: { row: ITransaction }) {
 export function TransactionsTable({
     transactions,
     mobile,
+    withHeader = true,
+    withFooter = true,
+    hidePagination = false,
+    headerActions,
 }: {
     transactions: IPaginatedResponse<ITransaction>;
     mobile?: React.ReactNode;
+    withHeader?: boolean;
+    withFooter?: boolean;
+    hidePagination?: boolean;
+    headerActions?: React.ReactNode;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
 
     return (
         <Table
-            withHeader
-            withFooter
+            withHeader={withHeader}
+            withFooter={withFooter}
+            hidePagination={hidePagination}
             paginator={transactions}
             rowComponent={Row}
             mobile={mobile}
-            headerActions={<TransactionsHeaderActions />}
+            headerActions={headerActions}
             noResultsMessage={transactions.noResultsMessage}
             columns={
                 <>
@@ -94,6 +103,85 @@ export function TransactionsTable({
     );
 }
 
+export function TransactionsListLoadingState({
+    header,
+    transactions,
+    mobile,
+    rowCount = 20,
+}: {
+    header?: React.ReactNode;
+    transactions?: IPaginatedResponse<ITransaction>;
+    mobile?: React.ReactNode;
+    rowCount?: number;
+}) {
+    const { t } = useTranslation();
+    const { network } = useSharedData();
+
+    return (
+        <>
+            <LoadingTable
+                mobile={mobile}
+                paginator={transactions}
+                rowCount={rowCount}
+                header={header}
+                columns={[
+                    {
+                        name: t("tables.transactions.id"),
+                        type: "string",
+                        className: "w-[60px]",
+                    },
+                    {
+                        name: t("tables.transactions.age"),
+                        type: "string",
+                        className: "w-[60px]",
+                        responsive: true,
+                        breakpoint: "xl",
+                    },
+                    {
+                        name: t("tables.transactions.method"),
+                        indicatorHeight: "h-[21px]",
+                        className: "text-left",
+                    },
+                    {
+                        name: t("tables.transactions.addressing"),
+                        type: "address",
+                        indicatorHeight: "h-[21px]",
+                        className: "text-left",
+                        render: () => (
+                            <div className="flex flex-1 flex-col justify-between space-y-2 font-semibold leading-4.25 lg:flex-row lg:space-x-2">
+                                <div className="flex flex-row space-x-2">
+                                    <LoadingText width="w-[39px]" />
+                                    <LoadingText />
+                                </div>
+
+                                <div className="flex flex-row space-x-2">
+                                    <LoadingText width="w-[39px]" />
+                                    <LoadingText />
+                                </div>
+                            </div>
+                        ),
+                    },
+                    {
+                        name: t("tables.transactions.amount", {
+                            currency: network!.currency,
+                        }),
+                        className: "text-right w-[100px]",
+                        lastOn: "lg",
+                    },
+                    {
+                        name: t("tables.transactions.fee", {
+                            currency: network!.currency,
+                        }),
+                        className: "text-right w-[100px]",
+                        responsive: true,
+                        breakpoint: "lg",
+                    },
+                ]}
+            />
+        </>
+    );
+}
+
 export default function TransactionsTableWrapper({
     transactions,
     mobile,
@@ -104,78 +192,24 @@ export default function TransactionsTableWrapper({
     rowCount?: number;
 }) {
     const { isLoading } = usePageHandler();
-    const { t } = useTranslation();
-    const { network } = useSharedData();
-
     if (!transactions || isLoading) {
         return (
-            <>
-                <LoadingTable
-                    mobile={mobile}
-                    paginator={transactions}
-                    rowCount={rowCount}
-                    header={<TransactionsHeaderActions />}
-                    columns={[
-                        {
-                            name: t("tables.transactions.id"),
-                            type: "string",
-                            className: "w-[60px]",
-                        },
-                        {
-                            name: t("tables.transactions.age"),
-                            type: "string",
-                            className: "w-[60px]",
-                            responsive: true,
-                            breakpoint: "xl",
-                        },
-                        {
-                            name: t("tables.transactions.method"),
-                            indicatorHeight: "h-[21px]",
-                            className: "text-left",
-                        },
-                        {
-                            name: t("tables.transactions.addressing"),
-                            type: "address",
-                            indicatorHeight: "h-[21px]",
-                            className: "text-left",
-                            render: () => (
-                                <div className="flex flex-1 flex-col justify-between space-y-2 font-semibold leading-4.25 lg:flex-row lg:space-x-2">
-                                    <div className="flex flex-row space-x-2">
-                                        <LoadingText width="w-[39px]" />
-                                        <LoadingText />
-                                    </div>
-
-                                    <div className="flex flex-row space-x-2">
-                                        <LoadingText width="w-[39px]" />
-                                        <LoadingText />
-                                    </div>
-                                </div>
-                            ),
-                        },
-                        {
-                            name: t("tables.transactions.amount", {
-                                currency: network!.currency,
-                            }),
-                            className: "text-right w-[100px]",
-                            lastOn: "lg",
-                        },
-                        {
-                            name: t("tables.transactions.fee", {
-                                currency: network!.currency,
-                            }),
-                            className: "text-right w-[100px]",
-                            responsive: true,
-                            breakpoint: "lg",
-                        },
-                    ]}
-                />
-            </>
+            <TransactionsListLoadingState
+                transactions={transactions}
+                mobile={mobile}
+                rowCount={rowCount}
+                header={<TransactionsHeaderActions />}
+            />
         );
     }
 
     return (
         <div>
-            <TransactionsTable transactions={transactions} mobile={mobile} />
+            <TransactionsTable
+                headerActions={<TransactionsHeaderActions />}
+                transactions={transactions}
+                mobile={mobile}
+            />
         </div>
     );
 }
