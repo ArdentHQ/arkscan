@@ -1,5 +1,5 @@
 import { IPaginatedResponse } from "@/types";
-import { ITransaction } from "@/types/generated";
+import { IBlock, ITransaction } from "@/types/generated";
 
 export type HomeChartPeriod = "all" | "day" | "week" | "month" | "year";
 
@@ -23,6 +23,7 @@ export interface HomeChartData {
 }
 
 export interface HomeProps {
+    blocks?: IPaginatedResponse<IBlock>;
     transactions?: IPaginatedResponse<ITransaction>;
     baseUrl: string;
     chart?: HomeChartData;

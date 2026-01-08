@@ -57,14 +57,20 @@ export function BlocksListMobileTable({ blocks }: { blocks: IPaginatedResponse<I
     );
 }
 
-export default function BlocksListMobileTableWrapper({ rowCount = 10 }: { rowCount?: number }) {
+export default function BlocksListMobileTableWrapper({
+    rowCount = 10,
+    withResultCount = true,
+}: {
+    rowCount?: number;
+    withResultCount?: boolean;
+}) {
     const { isLoading } = usePageHandler();
     const { blocks } = useSharedData<BlocksListProps>();
 
     if (!blocks || isLoading) {
         return (
             <div>
-                <TableHeaderWrapper resultCount={0} />
+                {withResultCount && <TableHeaderWrapper resultCount={0} />}
 
                 <MobileBlocksListSkeletonTable rowCount={rowCount} />
             </div>

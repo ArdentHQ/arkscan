@@ -4,64 +4,41 @@ import HomeChartCard from "@/Components/Home/Chart/ChartCard";
 import { PageProps } from "@inertiajs/core";
 import { HomeProps } from "@/Pages/Home.contracts";
 import { router } from "@inertiajs/react";
-import { PropsWithChildren, useEffect, useRef } from "react";
+import { PropsWithChildren } from "react";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
+import { useTabPolling } from "@/hooks/use-tab-polling";
+import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
 
-function HomeTransactionsTab({ transactions }: Pick<HomeProps, "transactions">) {
-    const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const { baseUrl } = useSharedData<HomeProps>();
-
-    useEffect(() => {
-        const pollTransactions = () => {
-            router.get(
-                baseUrl,
-                {},
-                {
-                    only: ["transactions"],
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                    showProgress: false,
-                },
-            );
-        };
-
-        const removeListener = router.on("success", () => {
-            if (pollingTimerRef.current) {
-                clearTimeout(pollingTimerRef.current);
-            }
-
-            pollingTimerRef.current = setTimeout(pollTransactions, 10000);
-        });
-
-        pollTransactions();
-
-        return () => {
-            removeListener();
-
-            if (!pollingTimerRef.current) {
-                return;
-            }
-
-            clearTimeout(pollingTimerRef.current);
-        };
-    }, [baseUrl]);
-
-    return <HomeTransactionsTableWrapper transactions={transactions} />;
-}
-
-function HomeTabs({ transactions }: Pick<HomeProps, "transactions">) {
+function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transactions">) {
     const { currentTab } = useTabs();
+
+    useTabPolling((tab: string, callback?: CallableFunction) => {
+        let pollParameters: string[] = [];
+        if (tab === "transactions") {
+            pollParameters = ["transactions"];
+        } else if (tab === "blocks") {
+            pollParameters = ["blocks"];
+        }
+
+        router.reload({
+            only: pollParameters,
+            onSuccess: () => {
+                if (callback) {
+                    callback();
+                }
+            },
+        });
+    });
 
     return (
         <div id="home:tabs:content" className="scroll-mt-13 sm:scroll-mt-16 md:scroll-mt-[123px]">
-            {currentTab === "transactions" && <HomeTransactionsTab transactions={transactions} />}
+            {currentTab === "transactions" && <HomeTransactionsTableWrapper transactions={transactions} />}
 
-            {currentTab === "blocks" && <div />}
+            {currentTab === "blocks" && <HomeBlocksTableWrapper blocks={blocks} />}
         </div>
     );
 }
@@ -95,7 +72,7 @@ function HomeTabsProvider({ children }: PropsWithChildren) {
     );
 }
 
-export default function HomeIndex({ transactions }: PageProps<HomeProps>) {
+export default function HomeIndex({ blocks, transactions }: PageProps<HomeProps>) {
     return (
         <Layout>
             <div className="mt-6 pb-8 md:pb-6">
@@ -109,7 +86,7 @@ export default function HomeIndex({ transactions }: PageProps<HomeProps>) {
 
                 <HomeTabsProvider>
                     <PageHandlerProvider>
-                        <HomeTabs transactions={transactions} />
+                        <HomeTabs blocks={blocks} transactions={transactions} />
                     </PageHandlerProvider>
                 </HomeTabsProvider>
             </div>

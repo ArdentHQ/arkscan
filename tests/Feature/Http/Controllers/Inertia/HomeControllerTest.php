@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Facades\Network;
 use App\Facades\Settings;
+use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
@@ -31,7 +32,8 @@ it('should render the page without any errors', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
             ->where('baseUrl', route('home', absolute: false))
-            ->missing('transactions'));
+            ->missing('transactions')
+            ->missing('blocks'));
 });
 
 it('should show the no-results message when no transactions exist', function () {
@@ -44,6 +46,18 @@ it('should show the no-results message when no transactions exist', function () 
                 ->has('transactions.data', 0)
                 ->has('transactions.meta')
                 ->where('transactions.noResultsMessage', (string) trans('tables.transactions.no_results.no_results'))));
+});
+
+it('should show the no-results message when no blocks exist', function () {
+    $this
+        ->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Home/Index')
+            ->reloadOnly('blocks', fn (Assert $reload) => $reload
+                ->has('blocks.data', 0)
+                ->has('blocks.meta')
+                ->where('blocks.noResultsMessage', (string) trans('tables.blocks.no_results'))));
 });
 
 it('should return transactions without a no-results message', function () {
@@ -59,6 +73,21 @@ it('should return transactions without a no-results message', function () {
                 ->has('transactions.meta')
                 ->where('transactions.data.0.hash', $transaction->hash)
                 ->where('transactions.noResultsMessage', null)));
+});
+
+it('should return blocks without a no-results message', function () {
+    $block = Block::factory()->create();
+
+    $this
+        ->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Home/Index')
+            ->reloadOnly('blocks', fn (Assert $reload) => $reload
+                ->has('blocks.data', 1)
+                ->has('blocks.meta')
+                ->where('blocks.data.0.hash', $block->hash)
+                ->where('blocks.noResultsMessage', null)));
 });
 
 it('should include chart data with market stats', function () {
