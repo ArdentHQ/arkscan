@@ -29,6 +29,10 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
         : t("pages.home.charts.price");
     const volumeValue = chart.market?.volume ?? null;
     const marketCapValue = chart.market?.marketCap ?? null;
+    const dotsClassName =
+        chartTheme.name === "red"
+            ? "bg-[radial-gradient(var(--theme-color-danger-100)_1px,transparent_1px)] dark:bg-[radial-gradient(var(--theme-color-dark-800)_1px,transparent_1px)] dim:bg-[radial-gradient(var(--theme-color-dim-800)_1px,transparent_1px)]"
+            : "bg-[radial-gradient(var(--theme-color-success-100)_1px,transparent_1px)] dark:bg-[radial-gradient(var(--theme-color-success-800)_1px,transparent_1px)] dim:bg-[radial-gradient(var(--theme-color-dim-800)_1px,transparent_1px)]";
 
     usePoll(
         chart.refreshInterval * 1000,
@@ -105,7 +109,7 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
                 </div>
 
                 <div className="relative h-[57px] overflow-hidden rounded-lg">
-                    <div className="absolute inset-0 rounded-lg bg-[radial-gradient(#D5DEE8_1px,transparent_1px)] [background-size:8px_8px] dim:bg-[radial-gradient(#34445C_1px,transparent_1px)] dark:bg-[radial-gradient(#2B3340_1px,transparent_1px)]" />
+                    <div className={`absolute inset-0 rounded-lg [background-size:8px_8px] ${dotsClassName}`} />
 
                     <div className="relative z-10 h-full">
                         <ChartCanvas
