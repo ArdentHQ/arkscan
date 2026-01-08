@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { router, usePoll } from "@inertiajs/react";
+import { Link, router, usePoll } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
 import useSettings from "@/Providers/Settings/useSettings";
@@ -8,6 +8,7 @@ import MarketOverviewHeader from "@/Components/Home/Chart/MarketOverviewHeader";
 import MarketStat from "@/Components/Home/Chart/MarketStat";
 import { currency, hasSymbol } from "@/utils/number-formatter";
 import { HomeChartData, HomeProps } from "@/Pages/Home.contracts";
+import ChevronRightSmallIcon from "@ui/icons/arrows/chevron-right-small.svg?react";
 
 export default function ChartContent({ chart, canBeExchanged }: { chart: HomeChartData; canBeExchanged: boolean }) {
     const { t } = useTranslation();
@@ -23,6 +24,9 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
         network?.currency && network.currency !== selectedCurrency
             ? `${network.currency}/${selectedCurrency}`
             : undefined;
+    const priceTitle = network?.currency
+        ? `${network.currency} ${t("pages.home.charts.price")}`
+        : t("pages.home.charts.price");
     const volumeValue = chart.market?.volume ?? null;
     const marketCapValue = chart.market?.marketCap ?? null;
 
@@ -50,52 +54,77 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
     }, [selectedCurrency]);
 
     return (
-        <div className="flex flex-col space-y-4">
-            <MarketOverviewHeader showExchanges={canBeExchanged} />
+        <div className="flex flex-col">
+            <div className="flex items-end justify-between sm:hidden sm:items-center">
+                <div className="flex flex-col space-y-2">
+                    <div className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                        {priceTitle}
+                    </div>
+                    <div className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                        {priceValue ?? t("general.na")}
+                        {currencySuffix && priceValue && <span className="ml-1">{currencySuffix}</span>}
+                    </div>
+                </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <MarketStat
-                    label={t("pages.home.charts.price")}
-                    value={priceValue}
-                    suffix={pricePair}
-                    disabled={!canBeExchanged || !isPriceAvailable || priceValue === null}
-                />
+                {canBeExchanged && (
+                    <Link
+                        href={route("exchanges")}
+                        className="transition-default flex items-center space-x-1 font-semibold text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500"
+                    >
+                        <span>{t("actions.exchanges")}</span>
 
-                <MarketStat
-                    label={t("pages.home.statistics.volume")}
-                    value={volumeValue}
-                    suffix={currencySuffix}
-                    disabled={!canBeExchanged || volumeValue === null}
-                />
-
-                <MarketStat
-                    label={t("pages.home.statistics.market_cap")}
-                    value={marketCapValue}
-                    suffix={currencySuffix}
-                    disabled={!canBeExchanged || marketCapValue === null}
-                />
+                        <ChevronRightSmallIcon className="h-3 w-3" />
+                    </Link>
+                )}
             </div>
 
-            <div className="relative h-[57px] overflow-hidden rounded-lg">
-                <div className="absolute inset-0 rounded-lg bg-[radial-gradient(#D5DEE8_1px,transparent_1px)] [background-size:8px_8px] dim:bg-[radial-gradient(#34445C_1px,transparent_1px)] dark:bg-[radial-gradient(#2B3340_1px,transparent_1px)]" />
+            <div className="hidden flex-col space-y-4 sm:flex">
+                <MarketOverviewHeader showExchanges={canBeExchanged} />
 
-                <div className="relative z-10 h-full">
-                    <ChartCanvas
-                        id="price-chart"
-                        className="h-full w-full"
-                        canvasClassName="max-w-full"
-                        datasets={chart.datasets}
-                        labels={chart.labels}
-                        theme={chartTheme}
-                        currency={selectedCurrency}
-                        grid={false}
-                        tooltips={false}
-                        showCrosshair={false}
-                        hasDateTimeLabels
-                        height={57}
-                        yPadding={0}
-                        xPadding={0}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                    <MarketStat
+                        label={t("pages.home.charts.price")}
+                        value={priceValue}
+                        suffix={pricePair}
+                        disabled={!canBeExchanged || !isPriceAvailable || priceValue === null}
                     />
+
+                    <MarketStat
+                        label={t("pages.home.statistics.volume")}
+                        value={volumeValue}
+                        suffix={currencySuffix}
+                        disabled={!canBeExchanged || volumeValue === null}
+                    />
+
+                    <MarketStat
+                        label={t("pages.home.statistics.market_cap")}
+                        value={marketCapValue}
+                        suffix={currencySuffix}
+                        disabled={!canBeExchanged || marketCapValue === null}
+                    />
+                </div>
+
+                <div className="relative h-[57px] overflow-hidden rounded-lg">
+                    <div className="absolute inset-0 rounded-lg bg-[radial-gradient(#D5DEE8_1px,transparent_1px)] [background-size:8px_8px] dim:bg-[radial-gradient(#34445C_1px,transparent_1px)] dark:bg-[radial-gradient(#2B3340_1px,transparent_1px)]" />
+
+                    <div className="relative z-10 h-full">
+                        <ChartCanvas
+                            id="price-chart"
+                            className="h-full w-full"
+                            canvasClassName="max-w-full"
+                            datasets={chart.datasets}
+                            labels={chart.labels}
+                            theme={chartTheme}
+                            currency={selectedCurrency}
+                            grid={false}
+                            tooltips={false}
+                            showCrosshair={false}
+                            hasDateTimeLabels
+                            height={57}
+                            yPadding={0}
+                            xPadding={0}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

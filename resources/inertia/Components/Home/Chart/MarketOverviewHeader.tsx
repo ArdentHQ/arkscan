@@ -6,7 +6,7 @@ export default function MarketOverviewHeader({ showExchanges }: { showExchanges:
     const { t } = useTranslation();
 
     return (
-        <div className="pb-3">
+        <div>
             <div className="flex items-center justify-between pb-4">
                 <h2 className="mb-0 text-xl font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl">
                     {t("pages.home.statistics.title")}
