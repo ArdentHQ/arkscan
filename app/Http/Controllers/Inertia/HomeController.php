@@ -97,7 +97,7 @@ final class HomeController
         return NumberFormatter::currencyShortNotation($supply);
     }
 
-    private function statistics()
+    private function statistics(): array
     {
         $gasLow     = (string) GasTracker::low();
         $gasAverage = (string) GasTracker::average();
@@ -108,9 +108,9 @@ final class HomeController
         $gasHighValue    = null;
 
         if (Network::canBeExchanged()) {
-            $gasLowValue     = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasLow, 'gwei')), null, true);
-            $gasAverageValue = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasAverage, 'gwei')), null, true);
-            $gasHighValue    = ExchangeRate::convert(BigNumber::new(UnitConverter::parseUnits($gasHigh, 'gwei')), null, true);
+            $gasLowValue     = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasLow, 'gwei')), null, true);
+            $gasAverageValue = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasAverage, 'gwei')), null, true);
+            $gasHighValue    = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasHigh, 'gwei')), null, true);
         }
 
         return [
