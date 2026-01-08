@@ -109,7 +109,7 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
                 </div>
 
                 <div className="relative h-[57px] overflow-hidden rounded-lg">
-                    <div className={`absolute inset-0 rounded-lg [background-size:8px_8px] ${dotsClassName}`} />
+                    <div className={`absolute inset-0 rounded-lg [background-size:6px_6px] ${dotsClassName}`} />
 
                     <div className="relative z-10 h-full">
                         <ChartCanvas
