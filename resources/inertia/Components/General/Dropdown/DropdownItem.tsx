@@ -17,9 +17,9 @@ export default function DropdownItem({
     asChild?: boolean;
 }) {
     const itemClassName = classNames({
-        "transition-default my-1 w-full cursor-pointer whitespace-nowrap rounded-lg px-5 py-[0.875rem] font-semibold leading-5 flex items-center justify-between":
-            true,
-        "bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-secondary-900 dark:text-theme-dark-500": disabled,
+        "transition-default my-1 w-full cursor-pointer whitespace-nowrap rounded-lg px-5 py-[0.875rem] font-semibold leading-5 flex items-center justify-between": true,
+        "bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-secondary-900 dark:text-theme-dark-500":
+            disabled,
         "bg-theme-secondary-200 text-theme-primary-600 dark:bg-theme-dark-950 dark:text-theme-dark-50":
             selected && !disabled,
         "border-transparent font-semibold text-theme-secondary-700 hover:bg-theme-secondary-200 hover:text-theme-secondary-900 dark:text-theme-dark-200 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50":
