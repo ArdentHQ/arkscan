@@ -73,7 +73,7 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
                 {canBeExchanged && (
                     <Link
                         href={route("exchanges")}
-                        className="transition-default flex items-center space-x-1 font-semibold text-theme-primary-600 hover:text-theme-primary-700 dark:text-theme-dark-blue-400 dark:hover:text-theme-dark-blue-500"
+                        className="link transition-default flex items-center space-x-2 font-semibold"
                     >
                         <span>{t("actions.exchanges")}</span>
 
@@ -82,10 +82,10 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
                 )}
             </div>
 
-            <div className="hidden flex-col space-y-4 sm:flex">
+            <div className="hidden flex-col sm:flex">
                 <MarketOverviewHeader showExchanges={canBeExchanged} />
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <MarketStat
                         label={t("pages.home.charts.price")}
                         value={priceValue}
@@ -108,7 +108,7 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
                     />
                 </div>
 
-                <div className="relative h-[57px] overflow-hidden rounded-lg">
+                <div className="relative mt-3 h-[57px] overflow-hidden rounded-lg">
                     <div className={`absolute inset-0 rounded-lg [background-size:6px_6px] ${dotsClassName}`} />
 
                     <div className="relative z-10 h-full">

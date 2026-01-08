@@ -18,7 +18,7 @@ export default function ChartCard() {
     return (
         <div
             className={classNames(
-                "flex-1 rounded-xl border border-theme-secondary-300 bg-white px-4 py-3 dark:border-theme-dark-700 dark:bg-theme-dark-950 sm:px-6 sm:py-4",
+                "flex-1 rounded-xl border border-theme-secondary-300 bg-white px-4 py-3 dark:border-theme-dark-700 dark:bg-theme-dark-900 sm:px-6 sm:py-4",
                 {
                     "md-lg:py-6": !canBeExchanged,
                 },
