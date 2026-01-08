@@ -28,7 +28,10 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                         <>
                             <ID transaction={transaction} />
 
-                            <Age timestamp={transaction.timestamp} />
+                            <Age
+                                className="text-theme-secondary-700 dark:text-theme-dark-200"
+                                timestamp={transaction.timestamp}
+                            />
                         </>
                     }
                 >
