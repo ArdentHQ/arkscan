@@ -11,6 +11,7 @@ import useSharedData from "@/hooks/use-shared-data";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
+import ArkVaultCTA from "@/Components/Home/ArkVaultCTA";
 
 function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transactions">) {
     const { currentTab } = useTabs();
@@ -74,12 +75,16 @@ function HomeTabsProvider({ children }: PropsWithChildren) {
 export default function HomeIndex({ blocks, transactions }: PageProps<HomeProps>) {
     return (
         <Layout>
-            <div className="mt-6 pb-8 md:pb-6">
+            <div className="mt-6 md:-mb-2">
                 <HomeTabsProvider>
                     <PageHandlerProvider>
                         <HomeTabs blocks={blocks} transactions={transactions} />
                     </PageHandlerProvider>
                 </HomeTabsProvider>
+
+                <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
+                    <ArkVaultCTA />
+                </div>
             </div>
         </Layout>
     );
