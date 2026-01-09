@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
-use App\Http\Controllers\HomeController as LegacyHomeController;
 use App\Http\Controllers\Inertia\BlocksListController;
 use App\Http\Controllers\Inertia\HomeController;
 use App\Http\Controllers\Inertia\TransactionsController;
