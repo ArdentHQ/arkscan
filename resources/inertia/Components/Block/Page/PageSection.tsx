@@ -31,7 +31,7 @@ export default function PageSection({
 
                     <div
                         className={classNames({
-                            "flex space-x-4 text-sm leading-5 sm:rounded-xl sm:text-base": true,
+                            "flex space-x-4 text-sm sm:rounded-xl sm:text-base sm:leading-5": true,
                             "px-3 sm:border sm:px-6 sm:py-4": !noBorder,
                             [borderClass]: !noBorder,
                             [wrapperContainerClass]: !!wrapperContainerClass,
