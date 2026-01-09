@@ -22,16 +22,22 @@ function TransactionsMobile({ transactions }: { transactions?: IPaginatedRespons
     );
 }
 
-export default function TransactionList({ transactions }: { transactions?: IPaginatedResponse<ITransaction> }) {
+export default function TransactionList({
+    transactions,
+    noMargins = false,
+}: {
+    transactions?: IPaginatedResponse<ITransaction>;
+    noMargins?: boolean;
+}) {
     const { t } = useTranslation();
 
     return (
         <PageSection title={t("pages.block.transactions")} noBorder>
             <div className="hidden md:block">
                 {!transactions ? (
-                    <TransactionsListLoadingState rowCount={10} />
+                    <TransactionsListLoadingState noMargins={noMargins} rowCount={10} />
                 ) : (
-                    <TransactionsTable transactions={transactions} withHeader={false} />
+                    <TransactionsTable noMargins={noMargins} transactions={transactions} withHeader={false} />
                 )}
             </div>
 

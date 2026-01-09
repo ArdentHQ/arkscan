@@ -19,9 +19,9 @@ export default function PageSection({
         <div className="group px-3 dark:text-theme-dark-200 sm:px-6 md:mx-auto md:max-w-7xl md:px-10">
             <div className="mt-6 flex group-first:mt-0 sm:mt-0 sm:space-x-3 group-first:sm:-mt-2">
                 <div className="ml-3 hidden w-[1.625rem] flex-col sm:flex">
-                    <div className="group-first:sm:block -mt-2 hidden h-[9px] w-full border-l-2 border-theme-secondary-300 dark:border-theme-dark-700 sm:block" />
+                    <div className="-mt-2 hidden h-[9px] w-full border-l-2 border-theme-secondary-300 dark:border-theme-dark-700 sm:block group-first:sm:block" />
                     <div className="hidden min-h-[12px] w-full rounded-bl-xl border-b-2 border-l-2 border-theme-secondary-300 dark:border-theme-dark-700 sm:block" />
-                    <div className="group-last:hidden hidden min-h-[12px] w-full flex-1 border-l-2 border-theme-secondary-300 dark:border-theme-dark-700 sm:block" />
+                    <div className="hidden min-h-[12px] w-full flex-1 border-l-2 border-theme-secondary-300 group-last:hidden dark:border-theme-dark-700 sm:block" />
                 </div>
 
                 <div className="flex min-w-0 flex-1 flex-col space-y-3 font-semibold sm:space-y-2 sm:pb-4">
@@ -37,7 +37,7 @@ export default function PageSection({
                             [wrapperContainerClass]: !!wrapperContainerClass,
                         })}
                     >
-                        <div className="flex flex-1 flex-col space-y-3 whitespace-nowrap">{children}</div>
+                        <div className="flex flex-1 flex-col whitespace-nowrap">{children}</div>
                     </div>
                 </div>
             </div>

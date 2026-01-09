@@ -47,6 +47,7 @@ export function Row({ row }: { row: ITransaction }) {
 }
 
 export function TransactionsTable({
+    noMargins = false,
     transactions,
     mobile,
     withHeader = true,
@@ -54,6 +55,7 @@ export function TransactionsTable({
     hidePagination = false,
     headerActions,
 }: {
+    noMargins?: boolean;
     transactions: IPaginatedResponse<ITransaction>;
     mobile?: React.ReactNode;
     withHeader?: boolean;
@@ -66,6 +68,7 @@ export function TransactionsTable({
 
     return (
         <Table
+            noMargins={noMargins}
             withHeader={withHeader}
             withFooter={withFooter}
             hidePagination={hidePagination}
@@ -104,11 +107,13 @@ export function TransactionsTable({
 }
 
 export function TransactionsListLoadingState({
+    noMargins = false,
     header,
     transactions,
     mobile,
     rowCount = 20,
 }: {
+    noMargins?: boolean;
     header?: React.ReactNode;
     transactions?: IPaginatedResponse<ITransaction>;
     mobile?: React.ReactNode;
@@ -124,6 +129,7 @@ export function TransactionsListLoadingState({
                 paginator={transactions}
                 rowCount={rowCount}
                 header={header}
+                noMargins={noMargins}
                 columns={[
                     {
                         name: t("tables.transactions.id"),

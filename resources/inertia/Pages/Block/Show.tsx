@@ -35,7 +35,7 @@ export default function Show({ block, transactions }: PageProps<BlockShowProps>)
 
                 <Confirmations block={block} />
 
-                {block.transactionCount > 0 && <TransactionList transactions={transactions} />}
+                {block.transactionCount > 0 && <TransactionList noMargins transactions={transactions} />}
             </div>
         </Layout>
     );
