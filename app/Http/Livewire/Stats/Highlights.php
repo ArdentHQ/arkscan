@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Stats;
 
-use App\Actions\CacheNetworkSupply;
 use App\Facades\Network;
-use App\Models\Wallet;
+use App\Http\Controllers\Concerns\WithStatistics;
 use App\Services\Cache\NetworkCache;
-use App\Services\Cache\ValidatorCache;
 use App\Services\NumberFormatter;
 use Illuminate\View\View;
 use Livewire\Component;
 
 final class Highlights extends Component
 {
+    use WithStatistics;
+
     public string $refreshInterval = '';
 
     public string $currency = '';
@@ -37,36 +37,10 @@ final class Highlights extends Component
         ]);
     }
 
-    private function getTotalSupply(): string
-    {
-        $supply = CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
-
-        return NumberFormatter::number($supply);
-    }
-
-    private function getVotingPercent(): string
-    {
-        $votesPercent = (new NetworkCache())->getVotesPercentage();
-
-        return NumberFormatter::percentage($votesPercent);
-    }
-
-    private function getVotingValue(): float
-    {
-        return (new ValidatorCache())->getTotalBalanceVoted();
-    }
-
     private function getValidators(): string
     {
         $registeredValidators = (new NetworkCache())->getValidatorRegistrationCount();
 
         return NumberFormatter::number($registeredValidators);
-    }
-
-    private function getWallets(): string
-    {
-        $wallets = Wallet::count();
-
-        return NumberFormatter::number($wallets);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Facades\Services;
 
+use App\Services\BigNumber;
 use Illuminate\Support\Facades\Facade;
 
 /**
