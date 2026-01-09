@@ -6,9 +6,12 @@ interface SectionDetailRowProps {
 
 export default function SectionDetailRow({ title, value, children }: SectionDetailRowProps) {
     return (
-        <div className="flex items-center justify-between">
-            <span className="text-theme-secondary-700 dark:text-theme-dark-200">{title}</span>
-            <span className="text-theme-secondary-900 dark:text-theme-dark-50">{value ?? children}</span>
+        <div className="flex items-center space-x-4">
+            <div className="w-[106px] whitespace-nowrap">{title}</div>
+
+            <div className="flex-1 space-y-3 text-right text-theme-secondary-900 dark:text-theme-dark-50 sm:text-left">
+                <span>{value ?? children}</span>
+            </div>
         </div>
     );
 }
