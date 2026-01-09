@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
 use App\Models\Block;
 use App\Models\MultiPayment;
 use App\Models\Transaction;
@@ -12,11 +11,8 @@ use App\Services\Cache\MainsailCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\ValidatorCache;
-use App\Services\NumberFormatter;
-use Carbon\Carbon;
 use Facebook\WebDriver\WebDriverBy;
 use Illuminate\Database\Eloquent\Factories\Sequence;
-use Illuminate\Support\Facades\Cache;
 use Laravel\Dusk\Browser;
 
 describe('Statistics', function () {
