@@ -7,6 +7,9 @@ import Number from "@/Components/General/Number";
 export default function Confirmations({ block }: { block: IBlockDetails }) {
     const { t } = useTranslation();
 
+    const confirmationsKey =
+        block.confirmations === 1 ? "general.confirmation_singular" : "general.confirmation_plural";
+
     return (
         <PageSection
             title={t("pages.transaction.status.header")}
@@ -25,7 +28,7 @@ export default function Confirmations({ block }: { block: IBlockDetails }) {
                             <Number>1000</Number>+ {t("general.confirmations_only")}
                         </>
                     ) : (
-                        t("general.confirmations", { count: block.confirmations })
+                        t(confirmationsKey, { count: block.confirmations })
                     )}
                 </div>
             </div>
