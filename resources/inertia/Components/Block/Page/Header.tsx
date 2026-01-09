@@ -26,7 +26,7 @@ export default function BlockHeader({ block }: { block: IBlockDetails }) {
     const { t } = useTranslation();
 
     return (
-        <PageHeaderContainer label={t("pages.block.block_id")} extra={<HeaderActions block={block} />}>
+        <PageHeaderContainer label={t("pages.block.block_id")} breakpoint="sm" extra={<HeaderActions block={block} />}>
             <TruncateDynamic value={block.hash} />
         </PageHeaderContainer>
     );
