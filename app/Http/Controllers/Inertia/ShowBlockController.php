@@ -42,7 +42,7 @@ final class ShowBlockController
     public function noResultsMessage(int $count): null|string
     {
         if ($count === 0) {
-            return trans('tables.transactions.no_results');
+            return trans('tables.transactions.no_results.no_results');
         }
 
         return null;
