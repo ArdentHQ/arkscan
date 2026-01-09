@@ -175,7 +175,7 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                         </StatRow>
                     </div>
 
-                    <div className="rounded-b-xl bg-theme-secondary-300 dark:bg-theme-dark-950 sm:hidden">
+                    <div className="rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950 sm:hidden">
                         <StatEntry
                             label={t("pages.home.statistics.gas_tracker")}
                             className="space-y-2 px-4 py-3"
