@@ -58,7 +58,7 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
     }, [selectedCurrency]);
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col px-4 pb-3 sm:px-0 sm:pb-0">
             <div className="flex items-end justify-between sm:hidden sm:items-center">
                 <div className="flex flex-col space-y-2">
                     <div className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
@@ -85,49 +85,51 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
             <div className="hidden flex-col sm:flex">
                 <MarketOverviewHeader showExchanges={canBeExchanged} />
 
-                <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-                    <MarketStat
-                        label={t("pages.home.charts.price")}
-                        value={priceValue}
-                        suffix={pricePair}
-                        disabled={!canBeExchanged || !isPriceAvailable || priceValue === null}
-                    />
-
-                    <MarketStat
-                        label={t("pages.home.statistics.volume")}
-                        value={volumeValue}
-                        suffix={currencySuffix}
-                        disabled={!canBeExchanged || volumeValue === null}
-                    />
-
-                    <MarketStat
-                        label={t("pages.home.statistics.market_cap")}
-                        value={marketCapValue}
-                        suffix={currencySuffix}
-                        disabled={!canBeExchanged || marketCapValue === null}
-                    />
-                </div>
-
-                <div className="relative mt-3 h-[57px] overflow-hidden rounded-lg">
-                    <div className={`absolute inset-0 rounded-lg [background-size:6px_6px] ${dotsClassName}`} />
-
-                    <div className="relative z-10 h-full">
-                        <ChartCanvas
-                            id="price-chart"
-                            className="h-full w-full"
-                            canvasClassName="max-w-full"
-                            datasets={chart.datasets}
-                            labels={chart.labels}
-                            theme={chartTheme}
-                            currency={selectedCurrency}
-                            grid={false}
-                            tooltips={false}
-                            showCrosshair={false}
-                            hasDateTimeLabels
-                            height={57}
-                            yPadding={0}
-                            xPadding={0}
+                <div className="px-4 md-lg:px-6">
+                    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                        <MarketStat
+                            label={t("pages.home.charts.price")}
+                            value={priceValue}
+                            suffix={pricePair}
+                            disabled={!canBeExchanged || !isPriceAvailable || priceValue === null}
                         />
+
+                        <MarketStat
+                            label={t("pages.home.statistics.volume")}
+                            value={volumeValue}
+                            suffix={currencySuffix}
+                            disabled={!canBeExchanged || volumeValue === null}
+                        />
+
+                        <MarketStat
+                            label={t("pages.home.statistics.market_cap")}
+                            value={marketCapValue}
+                            suffix={currencySuffix}
+                            disabled={!canBeExchanged || marketCapValue === null}
+                        />
+                    </div>
+
+                    <div className="relative mt-3 h-[57px] overflow-hidden rounded-lg">
+                        <div className={`absolute inset-0 rounded-lg [background-size:6px_6px] ${dotsClassName}`} />
+
+                        <div className="relative z-10 h-full">
+                            <ChartCanvas
+                                id="price-chart"
+                                className="h-full w-full"
+                                canvasClassName="max-w-full"
+                                datasets={chart.datasets}
+                                labels={chart.labels}
+                                theme={chartTheme}
+                                currency={selectedCurrency}
+                                grid={false}
+                                tooltips={false}
+                                showCrosshair={false}
+                                hasDateTimeLabels
+                                height={57}
+                                yPadding={0}
+                                xPadding={0}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
