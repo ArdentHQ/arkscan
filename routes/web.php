@@ -36,7 +36,6 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::get('/home-old', LegacyHomeController::class)->name('home-old');
 Route::get('/validators/{view?}', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
