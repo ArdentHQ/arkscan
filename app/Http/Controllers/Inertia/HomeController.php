@@ -4,31 +4,34 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
+use App\Actions\CacheNetworkSupply;
 use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
-use App\Enums\StatsPeriods;
 use App\Facades\Network;
-use App\Facades\Settings;
+use App\Facades\Services\GasTracker;
+use App\Http\Controllers\Concerns\WithStatistics;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
-use App\Services\Cache\CryptoDataCache;
-use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\Cache\PriceChartCache;
-use App\Services\MarketCap;
+use App\Services\BigNumber;
+use App\Services\ExchangeRate;
 use App\Services\NumberFormatter;
+use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\UserInterface\UI;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
 use Inertia\Response;
 
 final class HomeController
 {
-    public function __invoke(Request $request): Response
+    use WithStatistics;
+
+    public function __invoke(): Response
     {
         return Inertia::render('Home/Index', [
+            'statistics' => $this->statistics(),
+
             'transactions' => Inertia::optional(function () {
                 $paginator = $this->getTransactions();
 
@@ -50,7 +53,7 @@ final class HomeController
                     'noResultsMessage' => $this->noBlocksResultsMessage($paginator->total()),
                 ];
             }),
-            'chart'   => fn () => $this->getChartData($request),
+
             'baseUrl' => route('home', absolute: false),
         ])->withMeta('home', [
             'name' => Network::currency(),
@@ -87,52 +90,51 @@ final class HomeController
             ->through(fn (Block $block) => BlockDTO::fromModel($block));
     }
 
-    private function getChartData(Request $request): array
+    protected function getTotalSupply(): string
     {
-        $period           = $request->query('chartPeriod', StatsPeriods::DAY);
-        $availablePeriods = [
-            StatsPeriods::ALL,
-            StatsPeriods::DAY,
-            StatsPeriods::WEEK,
-            StatsPeriods::MONTH,
-            StatsPeriods::YEAR,
-        ];
+        $supply = CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
 
-        if (! in_array($period, $availablePeriods, true)) {
-            $period = StatsPeriods::DAY;
+        return NumberFormatter::currencyShortNotation($supply);
+    }
+
+    private function statistics(): array
+    {
+        $gasLow     = (string) GasTracker::low();
+        $gasAverage = (string) GasTracker::average();
+        $gasHigh    = (string) GasTracker::high();
+
+        $gasLowValue     = null;
+        $gasAverageValue = null;
+        $gasHighValue    = null;
+
+        if (Network::canBeExchanged()) {
+            $gasLowValue     = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasLow, 'gwei')), null, true);
+            $gasAverageValue = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasAverage, 'gwei')), null, true);
+            $gasHighValue    = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasHigh, 'gwei')), null, true);
         }
-
-        $currency     = Settings::currency();
-        $currentPrice = (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency) ?? 0.0;
-        /** @var array{labels?: array<int|string, int|float|string>, datasets?: array<int, int|float>} $chartData */
-        $chartData = (new PriceChartCache())->getHistoricalRaw($currency, $period);
-
-        $datasets     = collect($chartData['datasets'] ?? []);
-        $initialValue = $datasets->first() ?? $currentPrice;
-
-        if ($datasets->isNotEmpty()) {
-            $datasets->pop();
-        }
-
-        $datasets->push($currentPrice);
-
-        $labels    = collect($chartData['labels'] ?? [])->values()->all();
-        $volume    = (new CryptoDataCache())->getVolume($currency);
-        $marketCap = MarketCap::getFormatted(Network::currency(), $currency);
 
         return [
-            'datasets'        => $datasets->values()->all(),
-            'labels'          => $labels,
-            'theme'           => [
-                'name' => $initialValue > $currentPrice ? 'red' : 'green',
-                'mode' => Settings::theme(),
+            'addresses'   => $this->getWallets(),
+            'totalSupply' => $this->getTotalSupply(),
+            'voting'      => [
+                'percentage' => $this->getVotingPercent(),
+                'amount'     => NumberFormatter::currencyShortNotation($this->getVotingValue()),
             ],
-            'market'          => [
-                'volume'    => $volume !== null ? NumberFormatter::currencyForViews($volume, $currency) : null,
-                'marketCap' => $marketCap,
+
+            'gas' => [
+                'low' => [
+                    'amount' => $gasLow,
+                    'value'  => $gasLowValue,
+                ],
+                'average' => [
+                    'amount' => $gasAverage,
+                    'value'  => $gasAverageValue,
+                ],
+                'high' => [
+                    'amount' => $gasHigh,
+                    'value'  => $gasHighValue,
+                ],
             ],
-            'period'          => $period,
-            'refreshInterval' => (int) config('arkscan.statistics.refreshInterval', 60),
         ];
     }
 }

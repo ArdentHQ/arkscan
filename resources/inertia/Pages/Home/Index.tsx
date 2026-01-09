@@ -1,17 +1,19 @@
-import Layout from "@/Layout";
-import HomeTransactionsTableWrapper from "@/Components/Home/TransactionsTable";
 import HomeChartCard from "@/Components/Home/Chart/ChartCard";
-import { PageProps } from "@inertiajs/core";
+import ArkVaultCTA from "@/Components/Home/ArkVaultCTA";
+import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
 import { HomeProps } from "@/Pages/Home.contracts";
-import { router } from "@inertiajs/react";
+import HomeTransactionsTableWrapper from "@/Components/Home/TransactionsTable";
+import Layout from "@/Layout";
+import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
+import { PageProps } from "@inertiajs/core";
 import { PropsWithChildren } from "react";
+import Statistics from "@/Components/Home/Statistics";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
+import { router } from "@inertiajs/react";
+import useSharedData from "@/hooks/use-shared-data";
+import { useTabPolling } from "@/hooks/use-tab-polling";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useTranslation } from "react-i18next";
-import useSharedData from "@/hooks/use-shared-data";
-import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
-import { useTabPolling } from "@/hooks/use-tab-polling";
-import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
 
 function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transactions">) {
     const { currentTab } = useTabs();
@@ -72,23 +74,31 @@ function HomeTabsProvider({ children }: PropsWithChildren) {
     );
 }
 
-export default function HomeIndex({ blocks, transactions }: PageProps<HomeProps>) {
+export default function HomeIndex({ blocks, statistics, transactions }: PageProps<HomeProps>) {
     return (
         <Layout>
+            <Statistics statistics={statistics} />
+
             <div className="mt-6 pb-8 md:pb-6">
-                <div className="mt-8 px-6 md:mx-auto md:max-w-7xl md:border-0 md:px-10">
+                {/* <div className="mt-8 px-6 md:mx-auto md:max-w-7xl md:border-0 md:px-10">
                     <div className="flex flex-col space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
-                        <div className="flex-1">{/* Stats */}</div>
+                        <div className="flex-1">
+                            <Statistics statistics={statistics} />
+                        </div>
 
                         <HomeChartCard />
                     </div>
-                </div>
+                </div> */}
 
                 <HomeTabsProvider>
                     <PageHandlerProvider>
                         <HomeTabs blocks={blocks} transactions={transactions} />
                     </PageHandlerProvider>
                 </HomeTabsProvider>
+
+                <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
+                    <ArkVaultCTA />
+                </div>
             </div>
         </Layout>
     );
