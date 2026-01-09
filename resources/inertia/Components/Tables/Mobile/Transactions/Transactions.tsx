@@ -45,7 +45,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                         })}
                     >
                         <Amount
-                            testId={`wallet:transaction:mobile:${transaction.hash}:amount`}
+                            testId={`transaction:mobile:${transaction.hash}:amount`}
                             transaction={transaction}
                             hideCurrency={true}
                         />

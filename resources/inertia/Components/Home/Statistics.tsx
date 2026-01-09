@@ -194,6 +194,7 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                                         type="info"
                                         className="flex"
                                         tooltip={<MobileGasTooltip statistics={statistics} />}
+                                        testId="statistics:gas-tracker"
                                     />
                                 </div>
                             }

@@ -507,9 +507,9 @@ describe('Transactions Tab', function () {
                 ->waitForText('1 result', ignoreCase: true)
                 ->assertSee(substr($transaction->hash, 0, 5));
 
-            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            $selector = '[data-testid="transaction:'.$transaction->hash.':amount"]';
             if ($resolution['width'] <= 640) {
-                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+                $selector = '[data-testid="transaction:mobile:'.$transaction->hash.':amount"]';
             }
 
             $browser->waitForTextIn($selector, $expected);
@@ -570,7 +570,7 @@ describe('Transactions Tab', function () {
 
             $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
             if ($resolution['width'] <= 640) {
-                $selector = '[data-testid="wallet:transaction:mobile:'.$transaction->hash.':amount"]';
+                $selector = '[data-testid="transaction:mobile:'.$transaction->hash.':amount"]';
             }
 
             $browser->waitForTextIn($selector, '456')
