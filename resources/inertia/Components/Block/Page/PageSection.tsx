@@ -37,7 +37,7 @@ export default function PageSection({
                             [wrapperContainerClass]: !!wrapperContainerClass,
                         })}
                     >
-                        <div className="flex flex-1 flex-col whitespace-nowrap">{children}</div>
+                        <div className="flex flex-1 flex-col space-y-3 whitespace-nowrap">{children}</div>
                     </div>
                 </div>
             </div>

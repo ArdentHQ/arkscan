@@ -33,15 +33,17 @@ export default function TransactionList({
 
     return (
         <PageSection title={t("pages.block.transactions")} noBorder>
-            <div className="hidden md:block">
-                {!transactions ? (
-                    <TransactionsListLoadingState noMargins={noMargins} rowCount={10} />
-                ) : (
-                    <TransactionsTable noMargins={noMargins} transactions={transactions} withHeader={false} />
-                )}
-            </div>
+            <div>
+                <div className="hidden md:block">
+                    {!transactions ? (
+                        <TransactionsListLoadingState rowCount={10} />
+                    ) : (
+                        <TransactionsTable noMargins={noMargins} transactions={transactions} withHeader={false} />
+                    )}
+                </div>
 
-            <TransactionsMobile transactions={transactions} />
+                <TransactionsMobile transactions={transactions} />
+            </div>
         </PageSection>
     );
 }
