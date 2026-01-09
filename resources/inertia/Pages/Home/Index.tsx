@@ -80,16 +80,6 @@ export default function HomeIndex({ blocks, statistics, transactions }: PageProp
             <Statistics statistics={statistics} />
 
             <div className="mt-6 pb-8 md:pb-6">
-                {/* <div className="mt-8 px-6 md:mx-auto md:max-w-7xl md:border-0 md:px-10">
-                    <div className="flex flex-col space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
-                        <div className="flex-1">
-                            <Statistics statistics={statistics} />
-                        </div>
-
-                        <HomeChartCard />
-                    </div>
-                </div> */}
-
                 <HomeTabsProvider>
                     <PageHandlerProvider>
                         <HomeTabs blocks={blocks} transactions={transactions} />
