@@ -362,7 +362,7 @@ describe('Overview', function () {
             $browser->visitRoute('wallet', $wallet)
                 ->waitForText('5 results', ignoreCase: true);
 
-            $browser->clickAtXPath('//button[.//text()="View"]')
+            $browser->clickAtXPath('//a[.//text()="View"]')
                 ->waitForText('20 results', ignoreCase: true)
                 ->pause(400);
 
@@ -404,7 +404,7 @@ describe('Overview', function () {
                 ->click('button#tab-voters')
                 ->waitForText('20 results', ignoreCase: true);
 
-            $browser->clickAtXPath('//button[.//text()="View"]')
+            $browser->clickAtXPath('//a[.//text()="View"]')
                 ->pause(500);
 
             $scrollTop    = $browser->script('return window.scrollY;')[0];
@@ -443,7 +443,7 @@ describe('Overview', function () {
             $browser->visitRoute('wallet', $wallet)
                 ->waitForText('5 results', ignoreCase: true);
 
-            $browser->clickAtXPath('//button[.//text()="View"]')
+            $browser->clickAtXPath('//a[.//text()="View"]')
                 ->waitForText('20 results', ignoreCase: true)
                 ->pause(400);
 
@@ -568,7 +568,7 @@ describe('Transactions Tab', function () {
                 ->waitForText('1 result', ignoreCase: true)
                 ->assertSee(substr($transaction->hash, 0, 5));
 
-            $selector = '[data-testid="wallet:transaction:'.$transaction->hash.':amount"]';
+            $selector = '[data-testid="transaction:'.$transaction->hash.':amount"]';
             if ($resolution['width'] <= 640) {
                 $selector = '[data-testid="transaction:mobile:'.$transaction->hash.':amount"]';
             }
