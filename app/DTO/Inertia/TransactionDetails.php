@@ -94,9 +94,9 @@ class TransactionDetails extends Data
 
         return [
             // Ensure invalid UTF-8 does not break JSON serialization.
-            'formatted' => self::safeUtf8($transaction->formattedPayload()),
-            'utf8'      => self::safeUtf8($transaction->utf8Payload()),
-            'raw'       => self::safeUtf8($transaction->rawPayload()),
+            'formatted' => self::safeUtf8($transaction->formattedPayload() ?? ''),
+            'utf8'      => self::safeUtf8($transaction->utf8Payload() ?? ''),
+            'raw'       => self::safeUtf8($transaction->rawPayload() ?? ''),
         ];
     }
 
@@ -114,12 +114,8 @@ class TransactionDetails extends Data
             ->toArray();
     }
 
-    private static function safeUtf8(?string $value): ?string
+    private static function safeUtf8(string $value): ?string
     {
-        if ($value === null) {
-            return null;
-        }
-
         // Skip normalization when the payload is already valid UTF-8.
         if (preg_match('//u', $value) === 1) {
             return $value;

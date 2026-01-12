@@ -3,21 +3,28 @@
 declare(strict_types=1);
 
 use App\DTO\Inertia\TransactionDetails;
-use ReflectionMethod;
+use App\Models\Transaction;
+use App\Services\Cache\NetworkCache;
+use function Tests\fakeCryptoCompare;
 
-it('returns null when payload input is null', function () {
-    $method = new ReflectionMethod(TransactionDetails::class, 'safeUtf8');
-    $method->setAccessible(true);
+it('normalizes invalid utf8 payloads for the dto', function () {
+    fakeCryptoCompare();
 
-    expect($method->invoke(null, null))->toBeNull();
-});
+    (new NetworkCache())->setHeight(fn () => 1000);
 
-it('normalizes invalid utf8 payload input', function () {
-    $method = new ReflectionMethod(TransactionDetails::class, 'safeUtf8');
-    $method->setAccessible(true);
+    $transaction = Transaction::factory()
+        ->withPayload('c328')
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
 
-    $result = $method->invoke(null, "\xC3\x28");
+    $details = TransactionDetails::fromModel($transaction);
+    $payload = $details->payload;
 
-    expect($result)->toBeString();
-    expect(preg_match('//u', $result))->toBe(1);
+    expect($payload)->not->toBeNull();
+    expect($payload['raw'])->toBe('c328');
+    expect($payload['formatted'])->toBeString();
+    expect($payload['utf8'])->toBeString();
+    expect(preg_match('//u', $payload['utf8']))->toBe(1);
 });
