@@ -39,7 +39,7 @@ class TransactionDetails extends Data
     public static function fromModel(Model $transaction): self
     {
         $viewModel = new TransactionViewModel($transaction);
-        $username = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
+        $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
 
         return new self(
             timestampFormatted: Timestamp::fromUnixHuman($transaction->timestamp),
