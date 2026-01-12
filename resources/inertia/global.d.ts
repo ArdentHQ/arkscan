@@ -33,5 +33,7 @@ declare global {
         };
 
         sa_event: (event: string, callback?: () => void) => void;
+
+        chartTooltip?: (context: any) => void;
     }
 }
