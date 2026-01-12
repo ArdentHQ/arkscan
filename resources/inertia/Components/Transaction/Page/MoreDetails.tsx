@@ -32,7 +32,7 @@ export default function TransactionMoreDetails({
             <PageSection
                 title={t("pages.transaction.more_details")}
                 className="mt-6 sm:hidden"
-                wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap"
+                wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap max-w-full"
             >
                 <MobileTableRow
                     header={<span className="font-semibold">{t("pages.transaction.gas_information")}</span>}
