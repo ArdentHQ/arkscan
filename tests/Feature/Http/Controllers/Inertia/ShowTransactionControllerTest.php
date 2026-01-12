@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\NetworkCache;
+use App\Facades\Network;
 use Inertia\Testing\AssertableInertia as Assert;
 use function Tests\fakeCryptoCompare;
 
@@ -44,6 +45,7 @@ it('should return decoded token transfer details', function () {
     (new NetworkCache())->setHeight(fn () => 1000);
 
     $recipient = Wallet::factory()->create();
+    Wallet::factory()->create(['address' => Network::knownContract('consensus')]);
 
     $transaction = Transaction::factory()
         ->tokenTransfer($recipient->address, 1)
