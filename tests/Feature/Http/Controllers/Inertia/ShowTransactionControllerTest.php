@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
+use App\Enums\ContractMethod;
 use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -62,6 +63,32 @@ it('should return decoded token transfer details', function () {
             ->where('details.tokenTransfer.recipient', $recipient->address)
             ->where('details.tokenTransfer.amount', '1')
             ->where('details.payload.raw', fn ($payload) => is_string($payload) && $payload !== ''));
+});
+
+it('should return null token transfer details when payload has no arguments', function () {
+    $this->withoutExceptionHandling();
+
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $transaction = Transaction::factory()
+        ->withPayload(ContractMethod::transfer())
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+            'to'           => Network::knownContract('consensus'),
+        ]);
+
+    Wallet::factory()->create(['address' => $transaction->from]);
+    Wallet::factory()->create(['address' => $transaction->to]);
+
+    $this
+        ->get(route('transaction', $transaction->hash))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transaction/Show')
+            ->where('details.tokenTransfer', null));
 });
 
 it('should return multipayment recipients', function () {
