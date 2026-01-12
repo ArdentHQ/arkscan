@@ -132,6 +132,6 @@ class TransactionDetails extends Data
         $converted = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
         mb_substitute_character($previousSubstitute);
 
-        return $converted;
+        return $converted === false ? null : $converted;
     }
 }
