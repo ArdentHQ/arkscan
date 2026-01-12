@@ -127,7 +127,7 @@ export default function TransactionMoreDetails({
                             <PageSection
                                 className="!px-0 sm:mt-2"
                                 wrapperContainerClass="w-full"
-                                wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap"
+                                wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap max-w-full"
                             >
                                 <TransactionCodeBlock payload={payload} />
                             </PageSection>
