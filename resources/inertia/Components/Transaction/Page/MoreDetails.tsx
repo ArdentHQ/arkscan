@@ -80,11 +80,11 @@ export default function TransactionMoreDetails({
                 </div>
 
                 <PageSection
-                    className="!px-0"
+                    className="mt-4 !px-0"
                     wrapperContainerClass="max-w-full leading-7"
-                    wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap"
+                    wrapperClass="flex flex-1 flex-col whitespace-nowrap"
                 >
-                    <div className="inline-block">
+                    <div className="mb-1 inline-block">
                         <Badge className="inline-block text-sm">{t("pages.transaction.gas_information")}</Badge>
                     </div>
 
@@ -96,6 +96,7 @@ export default function TransactionMoreDetails({
                     />
 
                     <SectionDetailRow
+                        className="mt-2"
                         title={t("pages.transaction.header.usage_by_transaction")}
                         value={<Number>{gasUsed}</Number>}
                         allowEmpty
