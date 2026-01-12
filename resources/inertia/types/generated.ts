@@ -200,6 +200,7 @@ export type ITransaction = {
     recipient: IWallet | null;
 };
 export type ITransactionDetails = {
+    timestampFormatted: string;
     confirmations: number;
     transactionError: string | null;
     recipientIsContract: boolean;

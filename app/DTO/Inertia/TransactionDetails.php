@@ -8,6 +8,7 @@ use App\Enums\TokenTransferArgument;
 use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
 use App\Services\ExchangeRate;
+use App\Services\Timestamp;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
 use Spatie\LaravelData\Data;
@@ -18,6 +19,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class TransactionDetails extends Data
 {
     public function __construct(
+        public string $timestampFormatted,
         public int $confirmations,
         public ?string $transactionError,
         public bool $recipientIsContract,
@@ -39,6 +41,7 @@ class TransactionDetails extends Data
         $viewModel = new TransactionViewModel($transaction);
 
         return new self(
+            timestampFormatted: Timestamp::fromUnixHuman($transaction->timestamp),
             confirmations: $viewModel->confirmations(),
             transactionError: $viewModel->transactionError(),
             recipientIsContract: $viewModel->recipient()?->isContract() ?? false,

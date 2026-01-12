@@ -1,21 +1,21 @@
 import { useTranslation } from "react-i18next";
-import dayjs from "dayjs";
 import { Link } from "@inertiajs/react";
-import { ITransaction } from "@/types/generated";
-import { DATE_TIME_FORMAT } from "@/constants";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import Number from "@/Components/General/Number";
+import type { TransactionDetails as TransactionDetailsProps, TransactionShowProps } from "@/Pages/Transaction.contracts";
 
 export default function TransactionDetails({
     transaction,
+    details,
     headerWidthClass,
 }: {
-    transaction: ITransaction;
+    transaction: TransactionShowProps["transaction"];
+    details: TransactionDetailsProps;
     headerWidthClass: string;
 }) {
     const { t } = useTranslation();
 
-    const timestamp = dayjs(transaction.timestamp * 1000).format(DATE_TIME_FORMAT);
+    const timestamp = details.timestampFormatted;
 
     return (
         <PageSection title={t("pages.transaction.transaction_details")}>
