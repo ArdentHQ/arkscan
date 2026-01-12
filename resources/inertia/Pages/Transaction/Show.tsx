@@ -25,7 +25,11 @@ export default function Show({ transaction, details }: PageProps<TransactionShow
 
                 <TransactionAction transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
 
-                <TransactionAddressing transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
+                <TransactionAddressing
+                    transaction={transaction}
+                    details={details}
+                    headerWidthClass={headerWidthClass}
+                />
 
                 {transaction.isTokenTransfer && details.tokenTransfer && (
                     <TransactionToken details={details} headerWidthClass={headerWidthClass} />

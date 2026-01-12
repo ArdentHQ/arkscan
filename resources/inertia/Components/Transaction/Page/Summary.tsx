@@ -19,8 +19,7 @@ export default function TransactionSummary({
     const { t } = useTranslation();
     const { network, settings } = useSharedData();
 
-    const showAmountRow =
-        transaction.isTransfer || transaction.isTokenTransfer || transaction.isMultiPayment;
+    const showAmountRow = transaction.isTransfer || transaction.isTokenTransfer || transaction.isMultiPayment;
     const showLockedAmount = transaction.isValidatorRegistration && transaction.amount > 0;
     const showUnlockedAmount = transaction.isValidatorResignation;
 
@@ -29,8 +28,7 @@ export default function TransactionSummary({
         registrationAmount !== null && registrationAmount > 0 ? registrationAmount : transaction.amount;
 
     const isFiatCurrency = isFiat(settings!.currency);
-    const isSmallFiatValue =
-        isFiatCurrency && details.totalFiatValue !== null && details.totalFiatValue < 0.01;
+    const isSmallFiatValue = isFiatCurrency && details.totalFiatValue !== null && details.totalFiatValue < 0.01;
 
     return (
         <PageSection title={t("pages.transaction.transaction_summary")}>
@@ -41,7 +39,10 @@ export default function TransactionSummary({
             )}
 
             {showLockedAmount && (
-                <SectionDetailRow title={t("pages.transaction.header.locked_amount")} headerWidthClass={headerWidthClass}>
+                <SectionDetailRow
+                    title={t("pages.transaction.header.locked_amount")}
+                    headerWidthClass={headerWidthClass}
+                >
                     <div className="flex items-center justify-end space-x-2 sm:justify-start">
                         <AmountSmall amount={transaction.amount} />
 
@@ -79,12 +80,8 @@ export default function TransactionSummary({
             {network?.canBeExchanged && (
                 <SectionDetailRow
                     title={t("pages.transaction.header.value")}
-                    value={
-                        isSmallFiatValue
-                            ? `<${currency(0.01, settings!.currency)}`
-                            : details.totalFiat
-                    }
-                    tooltip={isSmallFiatValue ? details.totalFiat ?? undefined : undefined}
+                    value={isSmallFiatValue ? `<${currency(0.01, settings!.currency)}` : details.totalFiat}
+                    tooltip={isSmallFiatValue ? (details.totalFiat ?? undefined) : undefined}
                     headerWidthClass={headerWidthClass}
                 />
             )}

@@ -21,7 +21,10 @@ export default function PageSection({
 }: PageSectionProps) {
     return (
         <div
-            className={classNames("group px-3 dark:text-theme-dark-200 sm:px-6 md:mx-auto md:max-w-7xl md:px-10", className)}
+            className={classNames(
+                "group px-3 dark:text-theme-dark-200 sm:px-6 md:mx-auto md:max-w-7xl md:px-10",
+                className,
+            )}
         >
             <div className="mt-6 flex group-first:mt-0 sm:mt-0 sm:space-x-3 group-first:sm:-mt-2">
                 <div className="ml-3 hidden w-[1.625rem] flex-col sm:flex">

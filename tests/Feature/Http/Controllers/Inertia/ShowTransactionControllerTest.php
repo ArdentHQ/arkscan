@@ -100,7 +100,7 @@ it('should return multipayment recipients', function () {
             ->component('Transaction/Show')
             ->has('details.multiPaymentRecipients', 2)
             ->where('details.multiPaymentRecipients', function ($data) use ($recipients, $amounts) {
-                $addresses = collect($data)->pluck('address')->sort()->values()->all();
+                $addresses    = collect($data)->pluck('address')->sort()->values()->all();
                 $amountValues = collect($data)->pluck('amount')->sort()->values()->all();
 
                 return $addresses === $recipients->pluck('address')->sort()->values()->all()
