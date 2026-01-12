@@ -16,16 +16,18 @@ import useSharedData from "@/hooks/use-shared-data";
 import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
 import LoadingText from "@/Components/Loading/Text";
 
-export function Row({ row }: { row: ITransaction }) {
+export function Row({ row, noAge }: { row: ITransaction; noAge?: boolean }) {
     return (
         <tr className="text-sm font-semibold">
             <TableCell className="w-[60px]">
                 <ID transaction={row} />
             </TableCell>
 
-            <TableCell breakpoint="xl" responsive>
-                <Age timestamp={row.timestamp} />
-            </TableCell>
+            {!noAge && (
+                <TableCell breakpoint="xl" responsive>
+                    <Age timestamp={row.timestamp} />
+                </TableCell>
+            )}
 
             <TableCell>
                 <Method transaction={row} />
@@ -48,6 +50,7 @@ export function Row({ row }: { row: ITransaction }) {
 
 export function TransactionsTable({
     noMargins = false,
+    noAge = false,
     transactions,
     mobile,
     withHeader = true,
@@ -56,6 +59,7 @@ export function TransactionsTable({
     headerActions,
 }: {
     noMargins?: boolean;
+    noAge?: boolean;
     transactions: IPaginatedResponse<ITransaction>;
     mobile?: React.ReactNode;
     withHeader?: boolean;
@@ -73,7 +77,9 @@ export function TransactionsTable({
             withFooter={withFooter}
             hidePagination={hidePagination}
             paginator={transactions}
-            rowComponent={Row}
+            rowComponent={({ row, key }: { row: ITransaction; key?: React.Key }) => (
+                <Row row={row} noAge={noAge} key={key ?? undefined} />
+            )}
             mobile={mobile}
             headerActions={headerActions}
             noResultsMessage={transactions.noResultsMessage}
@@ -81,9 +87,11 @@ export function TransactionsTable({
                 <>
                     <TableHeader>{t("tables.transactions.id")}</TableHeader>
 
-                    <TableHeader breakpoint="xl" responsive>
-                        {t("tables.transactions.age")}
-                    </TableHeader>
+                    {!noAge && (
+                        <TableHeader breakpoint="xl" responsive>
+                            {t("tables.transactions.age")}
+                        </TableHeader>
+                    )}
 
                     <TableHeader>{t("tables.transactions.method")}</TableHeader>
 
@@ -108,6 +116,7 @@ export function TransactionsTable({
 
 export function TransactionsListLoadingState({
     noMargins = false,
+    noAge = false,
     header,
     transactions,
     mobile,
@@ -118,9 +127,70 @@ export function TransactionsListLoadingState({
     transactions?: IPaginatedResponse<ITransaction>;
     mobile?: React.ReactNode;
     rowCount?: number;
+    noAge?: boolean;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
+
+    const columns: ILoadingTableColumn[] = [
+        {
+            name: t("tables.transactions.id"),
+            type: "string",
+            className: "w-[60px]",
+        },
+
+        {
+            name: t("tables.transactions.method"),
+            indicatorHeight: "h-[21px]",
+            className: "text-left",
+        },
+        {
+            name: t("tables.transactions.addressing"),
+            type: "address",
+            indicatorHeight: "h-[21px]",
+            className: "text-left",
+            render: () => (
+                <div className="flex flex-1 flex-col justify-between space-y-2 font-semibold leading-4.25 lg:flex-row lg:space-x-2 lg:space-y-0">
+                    <div className="flex flex-row space-x-2">
+                        <LoadingText width="w-[39px]" />
+                        <LoadingText />
+                    </div>
+
+                    <div className="flex flex-row space-x-2">
+                        <LoadingText width="w-[39px]" />
+                        <LoadingText />
+                    </div>
+                </div>
+            ),
+        },
+        {
+            name: t("tables.transactions.amount", {
+                currency: network!.currency,
+            }),
+            className: "text-right w-[100px]",
+            lastOn: "lg",
+        },
+        {
+            name: t("tables.transactions.fee", {
+                currency: network!.currency,
+            }),
+            className: "text-right w-[100px]",
+            responsive: true,
+            breakpoint: "lg",
+        },
+    ];
+
+    if (!noAge) {
+        // push as the second item
+        columns.splice(1, 0, {
+            name: t("tables.transactions.age"),
+            type: "string",
+            className: "w-[60px] lg:hidden",
+            responsive: true,
+            breakpoint: "xl",
+            lastOn: "lg",
+        });
+    }
 
     return (
         <>
@@ -130,59 +200,7 @@ export function TransactionsListLoadingState({
                 rowCount={rowCount}
                 header={header}
                 noMargins={noMargins}
-                columns={[
-                    {
-                        name: t("tables.transactions.id"),
-                        type: "string",
-                        className: "w-[60px]",
-                    },
-                    {
-                        name: t("tables.transactions.age"),
-                        type: "string",
-                        className: "w-[60px]",
-                        responsive: true,
-                        breakpoint: "xl",
-                    },
-                    {
-                        name: t("tables.transactions.method"),
-                        indicatorHeight: "h-[21px]",
-                        className: "text-left",
-                    },
-                    {
-                        name: t("tables.transactions.addressing"),
-                        type: "address",
-                        indicatorHeight: "h-[21px]",
-                        className: "text-left",
-                        render: () => (
-                            <div className="flex flex-1 flex-col justify-between space-y-2 font-semibold leading-4.25 lg:flex-row lg:space-x-2 lg:space-y-0">
-                                <div className="flex flex-row space-x-2">
-                                    <LoadingText width="w-[39px]" />
-                                    <LoadingText />
-                                </div>
-
-                                <div className="flex flex-row space-x-2">
-                                    <LoadingText width="w-[39px]" />
-                                    <LoadingText />
-                                </div>
-                            </div>
-                        ),
-                    },
-                    {
-                        name: t("tables.transactions.amount", {
-                            currency: network!.currency,
-                        }),
-                        className: "text-right w-[100px]",
-                        lastOn: "lg",
-                    },
-                    {
-                        name: t("tables.transactions.fee", {
-                            currency: network!.currency,
-                        }),
-                        className: "text-right w-[100px]",
-                        responsive: true,
-                        breakpoint: "lg",
-                    },
-                ]}
+                columns={columns}
             />
         </>
     );

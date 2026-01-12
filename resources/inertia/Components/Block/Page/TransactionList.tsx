@@ -6,18 +6,24 @@ import { TransactionsTable, TransactionsListLoadingState } from "@/Components/Ta
 import { TransactionsMobileTable } from "@/Components/Tables/Mobile/Transactions/Transactions";
 import { MobileTransactionsSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Transactions/Transactions";
 
-function TransactionsMobile({ transactions }: { transactions?: IPaginatedResponse<ITransaction> }) {
+function TransactionsMobile({
+    transactions,
+    noAge,
+}: {
+    transactions?: IPaginatedResponse<ITransaction>;
+    noAge?: boolean;
+}) {
     if (!transactions) {
         return (
             <div className="md:hidden">
-                <MobileTransactionsSkeletonTable rowCount={10} />
+                <MobileTransactionsSkeletonTable rowCount={10} noAge={noAge} />
             </div>
         );
     }
 
     return (
         <div className="md:hidden">
-            <TransactionsMobileTable transactions={transactions} />
+            <TransactionsMobileTable transactions={transactions} noAge={noAge} />
         </div>
     );
 }
@@ -36,13 +42,13 @@ export default function TransactionList({
             <div>
                 <div className="hidden md:block">
                     {!transactions ? (
-                        <TransactionsListLoadingState noMargins={noMargins} rowCount={10} />
+                        <TransactionsListLoadingState noMargins={noMargins} rowCount={10} noAge />
                     ) : (
-                        <TransactionsTable noMargins={noMargins} transactions={transactions} withHeader={false} />
+                        <TransactionsTable noMargins={noMargins} transactions={transactions} withHeader={false} noAge />
                     )}
                 </div>
 
-                <TransactionsMobile transactions={transactions} />
+                <TransactionsMobile transactions={transactions} noAge />
             </div>
         </PageSection>
     );
