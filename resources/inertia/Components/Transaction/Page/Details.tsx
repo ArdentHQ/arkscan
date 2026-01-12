@@ -19,7 +19,11 @@ export default function TransactionDetails({
 
     return (
         <PageSection title={t("pages.transaction.transaction_details")}>
-            <SectionDetailRow title={t("pages.transaction.header.timestamp")} value={timestamp} headerWidthClass={headerWidthClass} />
+            <SectionDetailRow
+                title={t("pages.transaction.header.timestamp")}
+                value={timestamp}
+                headerWidthClass={headerWidthClass}
+            />
 
             <SectionDetailRow title={t("pages.transaction.header.block")} headerWidthClass={headerWidthClass}>
                 <Link href={route("block", transaction.block_hash)} className="link">

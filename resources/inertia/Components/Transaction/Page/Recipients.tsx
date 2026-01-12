@@ -10,7 +10,7 @@ export default function TransactionRecipients({ recipients }: { recipients: Tran
 
     return (
         <PageSection title={t("general.recipients")} noBorder>
-            <div className="overflow-hidden rounded-t-xl rounded-b-xl border border-theme-secondary-300 dark:border-theme-dark-700">
+            <div className="overflow-hidden rounded-b-xl rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700">
                 <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
                     <table>
                         <thead className="bg-theme-secondary-100 dark:bg-black">

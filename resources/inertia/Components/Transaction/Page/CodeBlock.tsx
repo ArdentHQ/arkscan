@@ -31,7 +31,7 @@ export default function TransactionCodeBlock({ payload }: { payload: Transaction
                             key={tab}
                             type="button"
                             className={classNames(
-                                "group/tab flex h-full items-center px-1.5 transition-default sm:first:pl-1.5",
+                                "group/tab transition-default flex h-full items-center px-1.5 sm:first:pl-1.5",
                                 {
                                     "cursor-default text-theme-primary-500 dark:text-theme-dark-blue-500": view === tab,
                                     "cursor-pointer text-theme-secondary-500 hover:text-theme-secondary-50 dark:text-theme-dark-200 dark:hover:text-theme-dark-50":
@@ -42,7 +42,7 @@ export default function TransactionCodeBlock({ payload }: { payload: Transaction
                         >
                             <div
                                 className={classNames(
-                                    "flex h-full items-center border-b-2 border-theme-primary-500 transition-default sm:pb-0",
+                                    "transition-default flex h-full items-center border-b-2 border-theme-primary-500 sm:pb-0",
                                     {
                                         "border-theme-primary-500 dark:border-theme-dark-blue-500": view === tab,
                                         "border-transparent group-hover/tab:border-theme-secondary-700 dark:group-hover/tab:border-theme-dark-500":
@@ -59,7 +59,7 @@ export default function TransactionCodeBlock({ payload }: { payload: Transaction
                 </div>
             </div>
 
-            <div className="flex flex-1 overflow-x-auto rounded-b-lg bg-black p-4 text-[13px] font-normal text-[#C3B6FD] shadow-code-block code-block-custom-scroll">
+            <div className="code-block-custom-scroll flex flex-1 overflow-x-auto rounded-b-lg bg-black p-4 text-[13px] font-normal text-[#C3B6FD] shadow-code-block">
                 <pre>{content}</pre>
             </div>
 

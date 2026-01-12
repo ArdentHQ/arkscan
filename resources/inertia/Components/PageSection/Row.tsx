@@ -27,12 +27,7 @@ export default function SectionDetailRow({
     const { t } = useTranslation();
 
     const hasValue =
-        value !== null &&
-        value !== undefined &&
-        value !== "" &&
-        value !== 0 &&
-        value !== "0" &&
-        value !== false;
+        value !== null && value !== undefined && value !== "" && value !== 0 && value !== "0" && value !== false;
     const hasChildren = (children !== null && children !== undefined) || React.Children.count(children) > 0;
     const shouldShowValue = hasValue || (allowEmpty && (value === 0 || value === "0"));
 
@@ -48,7 +43,7 @@ export default function SectionDetailRow({
                     valueClassName,
                 )}
             >
-                {(!hasValue && !hasChildren && !allowEmpty) && <span>{t("general.na")}</span>}
+                {!hasValue && !hasChildren && !allowEmpty && <span>{t("general.na")}</span>}
 
                 {(hasValue || hasChildren || allowEmpty) && (
                     <>

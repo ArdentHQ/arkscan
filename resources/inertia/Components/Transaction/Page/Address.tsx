@@ -26,12 +26,16 @@ export default function TransactionAddress({
     const username = wallet?.username ?? null;
 
     if (!resolvedAddress) {
-        return <span className={classNames("text-theme-secondary-900 dark:text-theme-dark-50", className)}>{t("general.na")}</span>;
+        return (
+            <span className={classNames("text-theme-secondary-900 dark:text-theme-dark-50", className)}>
+                {t("general.na")}
+            </span>
+        );
     }
 
     return (
         <div className={classNames("flex items-center justify-end sm:justify-start", className)}>
-            <Link href={route("wallet", resolvedAddress)} className="min-w-0 link">
+            <Link href={route("wallet", resolvedAddress)} className="link min-w-0">
                 <div className="hidden md:inline">
                     {hasUsername ? username : <TruncateDynamic value={resolvedAddress} />}
                 </div>
@@ -56,7 +60,7 @@ export default function TransactionAddress({
             <Clipboard
                 value={resolvedAddress}
                 noStyling
-                className="ml-2 flex h-auto w-auto items-center transition-default text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
+                className="transition-default ml-2 flex h-auto w-auto items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
                 tooltipContent={t("pages.wallet.address_copied")}
                 checkmarksClass=""
             />

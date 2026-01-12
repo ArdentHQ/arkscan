@@ -20,9 +20,7 @@ export default function TransactionToken({
     }
 
     const amount =
-        details.tokenTransfer.amount !== null
-            ? weiToArk(details.tokenTransfer.amount, network?.currency)
-            : null;
+        details.tokenTransfer.amount !== null ? weiToArk(details.tokenTransfer.amount, network?.currency) : null;
 
     return (
         <PageSection title={t("pages.transaction.tokens_transferred")}>

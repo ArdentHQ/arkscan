@@ -34,7 +34,11 @@ export default function TransactionStatus({
         : t("pages.transaction.status.failed_no_message");
 
     return (
-        <PageSection title={t("pages.transaction.status.header")} borderClass={borderClass} wrapperContainerClass={wrapperContainerClass}>
+        <PageSection
+            title={t("pages.transaction.status.header")}
+            borderClass={borderClass}
+            wrapperContainerClass={wrapperContainerClass}
+        >
             <div
                 className={classNames("flex items-center space-x-2 divide-x sm:space-x-3", {
                     "divide-theme-success-200 dark:divide-theme-success-800": !hasFailedStatus,
@@ -66,15 +70,11 @@ export default function TransactionStatus({
                     )}
                 </div>
 
-                {hasFailedStatus && (
-                    <div className="hidden pl-2 sm:pl-3 lg:block">
-                        {errorMessage}
-                    </div>
-                )}
+                {hasFailedStatus && <div className="hidden pl-2 sm:pl-3 lg:block">{errorMessage}</div>}
             </div>
 
             {hasFailedStatus && (
-                <div className="mt-2 whitespace-normal border-t border-theme-danger-200 px-3 pt-2 sm:mt-3 sm:pl-6 sm:pt-3 lg:hidden dark:border-theme-dark-700">
+                <div className="mt-2 whitespace-normal border-t border-theme-danger-200 px-3 pt-2 dark:border-theme-dark-700 sm:mt-3 sm:pl-6 sm:pt-3 lg:hidden">
                     {errorMessage}
                 </div>
             )}

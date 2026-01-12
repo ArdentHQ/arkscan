@@ -15,8 +15,7 @@ export default function TransactionAddressing({
 }) {
     const { t } = useTranslation();
 
-    const recipientAddress =
-        transaction.to ?? transaction.deployed_contract_address ?? transaction.from;
+    const recipientAddress = transaction.to ?? transaction.deployed_contract_address ?? transaction.from;
 
     const recipientLabel = details.recipientIsContract
         ? t("pages.transaction.header.interacted_with")
