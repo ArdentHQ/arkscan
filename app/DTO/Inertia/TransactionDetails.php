@@ -39,6 +39,7 @@ class TransactionDetails extends Data
     public static function fromModel(Model $transaction): self
     {
         $viewModel = new TransactionViewModel($transaction);
+        $username = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
 
         return new self(
             timestampFormatted: Timestamp::fromUnixHuman($transaction->timestamp),
@@ -46,7 +47,7 @@ class TransactionDetails extends Data
             transactionError: $viewModel->transactionError(),
             recipientIsContract: $viewModel->recipient()?->isContract() ?? false,
             validatorPublicKey: $viewModel->validatorPublicKey(),
-            username: $viewModel->username(),
+            username: $username,
             tokenTransfer: self::tokenTransferDetails($viewModel),
             payload: self::payloadDetails($viewModel),
             multiPaymentRecipients: self::multiPaymentRecipients($viewModel),
