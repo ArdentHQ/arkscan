@@ -1,11 +1,13 @@
 import classNames from "classnames";
 
 interface PageSectionProps {
-    title: string;
+    title?: string;
     children: React.ReactNode;
     noBorder?: boolean;
     wrapperContainerClass?: string;
     borderClass?: string;
+    className?: string;
+    wrapperClass?: string;
 }
 
 export default function PageSection({
@@ -14,9 +16,13 @@ export default function PageSection({
     noBorder = false,
     wrapperContainerClass = "",
     borderClass = "sm:border-theme-secondary-300 dark:border-theme-dark-700",
+    className = "",
+    wrapperClass = "flex flex-1 flex-col space-y-3 whitespace-nowrap",
 }: PageSectionProps) {
     return (
-        <div className="group px-3 dark:text-theme-dark-200 sm:px-6 md:mx-auto md:max-w-7xl md:px-10">
+        <div
+            className={classNames("group px-3 dark:text-theme-dark-200 sm:px-6 md:mx-auto md:max-w-7xl md:px-10", className)}
+        >
             <div className="mt-6 flex group-first:mt-0 sm:mt-0 sm:space-x-3 group-first:sm:-mt-2">
                 <div className="ml-3 hidden w-[1.625rem] flex-col sm:flex">
                     <div className="-mt-2 hidden h-[9px] w-full border-l-2 border-theme-secondary-300 dark:border-theme-dark-700 sm:block group-first:sm:block" />
@@ -25,9 +31,11 @@ export default function PageSection({
                 </div>
 
                 <div className="flex min-w-0 flex-1 flex-col space-y-3 font-semibold sm:space-y-2 sm:pb-4">
-                    <div className="border-l-2 border-theme-primary-400 bg-theme-secondary-100 px-3 py-2 dark:border-theme-dark-blue-400 dark:bg-theme-dark-950 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 dark:sm:bg-transparent">
-                        {title}
-                    </div>
+                    {title && (
+                        <div className="border-l-2 border-theme-primary-400 bg-theme-secondary-100 px-3 py-2 dark:border-theme-dark-blue-400 dark:bg-theme-dark-950 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 dark:sm:bg-transparent">
+                            {title}
+                        </div>
+                    )}
 
                     <div
                         className={classNames({
@@ -37,7 +45,7 @@ export default function PageSection({
                             [wrapperContainerClass]: !!wrapperContainerClass,
                         })}
                     >
-                        <div className="flex flex-1 flex-col space-y-3 whitespace-nowrap">{children}</div>
+                        <div className={wrapperClass}>{children}</div>
                     </div>
                 </div>
             </div>

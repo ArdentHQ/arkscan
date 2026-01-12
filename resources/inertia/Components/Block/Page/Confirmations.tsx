@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { IBlockDetails } from "@/types/generated";
-import PageSection from "./PageSection";
+import { PageSection } from "@/Components/PageSection";
 import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
 import Number from "@/Components/General/Number";
 
