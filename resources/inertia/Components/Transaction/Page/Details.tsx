@@ -2,7 +2,10 @@ import { useTranslation } from "react-i18next";
 import { Link } from "@inertiajs/react";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import Number from "@/Components/General/Number";
-import type { TransactionDetails as TransactionDetailsProps, TransactionShowProps } from "@/Pages/Transaction.contracts";
+import type {
+    TransactionDetails as TransactionDetailsProps,
+    TransactionShowProps,
+} from "@/Pages/Transaction.contracts";
 
 export default function TransactionDetails({
     transaction,
