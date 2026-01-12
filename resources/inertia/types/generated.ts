@@ -199,6 +199,18 @@ export type ITransaction = {
     sender: IWallet | null;
     recipient: IWallet | null;
 };
+export type ITransactionDetails = {
+    confirmations: number;
+    transactionError: string | null;
+    recipientIsContract: boolean;
+    validatorPublicKey: string | null;
+    username: string | null;
+    tokenTransfer: { recipient: string; amount: string | null } | null;
+    payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
+    multiPaymentRecipients: { address: string; amount: string }[];
+    totalFiat: string;
+    totalFiatValue: number;
+};
 export type IValidator = {
     rank: number | null;
     address: string;
