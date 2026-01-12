@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Facades\Network;
 use App\Enums\ContractMethod;
+use App\Facades\Network;
 use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
