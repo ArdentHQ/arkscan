@@ -8,13 +8,14 @@ use App\Http\Controllers\HomeController as LegacyHomeController;
 use App\Http\Controllers\Inertia\BlocksListController;
 use App\Http\Controllers\Inertia\HomeController;
 use App\Http\Controllers\Inertia\ShowBlockController;
+use App\Http\Controllers\Inertia\ShowTransactionController;
 use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController as LegacyShowBlockController;
-use App\Http\Controllers\ShowTransactionController;
+use App\Http\Controllers\ShowTransactionController as LegacyShowTransactionController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\WebhooksController;
@@ -47,6 +48,7 @@ Route::get('/old-blocks/{block}', LegacyShowBlockController::class)->name('old-b
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
+Route::get('/old-transactions/{transaction}', LegacyShowTransactionController::class)->name('old-transaction');
 
 Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
 Route::get('/addresses/{wallet}/{view?}', WalletController::class)->name('wallet');
