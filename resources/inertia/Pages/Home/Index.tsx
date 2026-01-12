@@ -1,17 +1,19 @@
-import Layout from "@/Layout";
-import HomeTransactionsTableWrapper from "@/Components/Home/TransactionsTable";
-import { PageProps } from "@inertiajs/core";
+import HomeChartCard from "@/Components/Home/Chart/ChartCard";
+import ArkVaultCTA from "@/Components/Home/ArkVaultCTA";
+import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
 import { HomeProps } from "@/Pages/Home.contracts";
-import { router } from "@inertiajs/react";
+import HomeTransactionsTableWrapper from "@/Components/Home/TransactionsTable";
+import Layout from "@/Layout";
+import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
+import { PageProps } from "@inertiajs/core";
 import { PropsWithChildren } from "react";
+import Statistics from "@/Components/Home/Statistics";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
+import { router } from "@inertiajs/react";
+import useSharedData from "@/hooks/use-shared-data";
+import { useTabPolling } from "@/hooks/use-tab-polling";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useTranslation } from "react-i18next";
-import useSharedData from "@/hooks/use-shared-data";
-import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
-import { useTabPolling } from "@/hooks/use-tab-polling";
-import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
-import Statistics from "@/Components/Home/Statistics";
 
 function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transactions">) {
     const { currentTab } = useTabs();
@@ -83,6 +85,10 @@ export default function HomeIndex({ blocks, statistics, transactions }: PageProp
                         <HomeTabs blocks={blocks} transactions={transactions} />
                     </PageHandlerProvider>
                 </HomeTabsProvider>
+
+                <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
+                    <ArkVaultCTA />
+                </div>
             </div>
         </Layout>
     );

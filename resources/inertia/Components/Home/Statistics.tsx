@@ -2,10 +2,10 @@ import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
 import classNames from "classnames";
 import ChevronRightSmallIcon from "@ui/icons/arrows/chevron-right-small.svg?react";
-import { IHomeStatistics } from "@/Pages/Home.contracts";
+import { HomeProps, IHomeStatistics } from "@/Pages/Home.contracts";
 import Tooltip from "../General/Tooltip";
 import Info from "../General/Info";
-
+import ChartContent from "@/Components/Home/Chart/ChartContent";
 function StatEntry({
     label,
     value,
@@ -94,7 +94,7 @@ function MobileGasTooltip({ statistics }: { statistics: IHomeStatistics }) {
 
 export default function Statistics({ statistics }: { statistics: IHomeStatistics }) {
     const { t } = useTranslation();
-    const { network } = useSharedData();
+    const { network, chart } = useSharedData<HomeProps>();
 
     return (
         <div className="px-6 md:mx-auto md:max-w-7xl md:border-0 md:px-10">
@@ -204,8 +204,8 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
 
                 <div
                     className={classNames([
-                        "flex-1 rounded-xl border border-theme-secondary-300 bg-theme-secondary-100 dark:border-theme-dark-700 dark:bg-theme-dark-950",
-                        network.canBeExchanged && "px-4 py-3 sm:px-6 sm:pb-4 md:py-6",
+                        "flex min-w-0 flex-1 flex-col rounded-xl border border-theme-secondary-300 dark:border-theme-dark-700",
+                        network.canBeExchanged && "pt-3 sm:pb-3 md:py-4",
                         !network.canBeExchanged && "md-lg:px-6 md-lg:py-6",
                     ])}
                 >
@@ -215,14 +215,14 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                             !network.canBeExchanged && "hidden md-lg:block",
                         ])}
                     >
-                        {network.canBeExchanged && (
+                        {!network.canBeExchanged && (
                             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-sm font-semibold text-theme-secondary-500 dark:text-theme-dark-400">
                                 {t("pages.home.statistics.chart_not_supported")}
                             </div>
                         )}
 
                         <div className={classNames([!network.canBeExchanged && "pointer-events-none blur-md"])}>
-                            {/* <livewire:home.chart /> */}
+                            <ChartContent chart={chart} canBeExchanged={network.canBeExchanged} />
                         </div>
                     </div>
                 </div>
