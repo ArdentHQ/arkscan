@@ -119,6 +119,18 @@ class TransactionDetails extends Data
             return null;
         }
 
-        return preg_match('//u', $value) === 1 ? $value : null;
+        // Skip normalization when the payload is already valid UTF-8.
+        if (preg_match('//u', $value) === 1) {
+            return $value;
+        }
+
+        // Invalid UTF-8 in payloads breaks JSON encoding and causes Inertia JSON.parse errors;
+        // normalize to the replacement character to keep the response valid.
+        $previousSubstitute = mb_substitute_character();
+        mb_substitute_character(0xFFFD);
+        $converted = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+        mb_substitute_character($previousSubstitute);
+
+        return $converted;
     }
 }
