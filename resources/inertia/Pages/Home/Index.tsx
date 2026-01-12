@@ -1,3 +1,4 @@
+import HomeChartCard from "@/Components/Home/Chart/ChartCard";
 import ArkVaultCTA from "@/Components/Home/ArkVaultCTA";
 import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
 import { HomeProps } from "@/Pages/Home.contracts";
@@ -78,7 +79,7 @@ export default function HomeIndex({ blocks, statistics, transactions }: PageProp
         <Layout>
             <Statistics statistics={statistics} />
 
-            <div className="mt-6 md:-mb-2">
+            <div className="mt-6 pb-8 md:pb-6">
                 <HomeTabsProvider>
                     <PageHandlerProvider>
                         <HomeTabs blocks={blocks} transactions={transactions} />

@@ -2,20 +2,30 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
+use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\MainsailCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\Cache\PriceChartCache;
 use App\Services\Cache\ValidatorCache;
+use App\Services\MarketCap;
+use App\Services\NumberFormatter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
     Cache::tags('statistics')->flush();
+    Cache::tags('price_chart')->flush();
+    Cache::tags('crypto_data')->flush();
+    Cache::tags('network_status_block')->flush();
+    Cache::tags('network')->flush();
 });
 
 it('should render the page without any errors', function () {
@@ -156,4 +166,53 @@ it('should return blocks without a no-results message', function () {
                 ->has('blocks.meta')
                 ->where('blocks.data.0.hash', $block->hash)
                 ->where('blocks.noResultsMessage', null)));
+});
+
+it('should include chart data with market stats', function () {
+    $currency        = Settings::currency();
+    $networkCurrency = Network::currency();
+
+    (new NetworkStatusBlockCache())->setPrice($networkCurrency, $currency, 2.0);
+    (new NetworkCache())->setSupply(fn () => 1_000_000.0);
+    (new CryptoDataCache())->setVolume($currency, '2255149');
+
+    (new PriceChartCache())->setHistoricalRaw($currency, 'day', collect([
+        1_700_000_000 => 1.0,
+        1_700_003_600 => 1.5,
+        1_700_007_200 => 1.2,
+    ]));
+
+    $expectedVolume    = NumberFormatter::currencyForViews(2255149, $currency);
+    $expectedMarketCap = MarketCap::getFormatted($networkCurrency, $currency);
+
+    $this
+        ->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Home/Index')
+            ->has('chart')
+            ->where('chart.period', 'day')
+            ->where('chart.datasets.2', 2)
+            ->where('chart.theme.name', 'green')
+            ->where('chart.market.volume', $expectedVolume)
+            ->where('chart.market.marketCap', $expectedMarketCap));
+});
+
+it('should fallback to day period when chartPeriod is invalid', function () {
+    $currency        = Settings::currency();
+    $networkCurrency = Network::currency();
+
+    (new NetworkStatusBlockCache())->setPrice($networkCurrency, $currency, 1.0);
+    (new NetworkCache())->setSupply(fn () => 1_000_000.0);
+    (new PriceChartCache())->setHistoricalRaw($currency, 'day', collect([
+        1_700_000_000 => 1.0,
+        1_700_003_600 => 1.1,
+    ]));
+
+    $this
+        ->get(route('home', ['chartPeriod' => 'invalid']))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Home/Index')
+            ->where('chart.period', 'day'));
 });
