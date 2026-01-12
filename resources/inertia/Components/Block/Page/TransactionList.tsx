@@ -36,7 +36,7 @@ export default function TransactionList({
             <div>
                 <div className="hidden md:block">
                     {!transactions ? (
-                        <TransactionsListLoadingState rowCount={10} />
+                        <TransactionsListLoadingState noMargins={noMargins} rowCount={10} />
                     ) : (
                         <TransactionsTable noMargins={noMargins} transactions={transactions} withHeader={false} />
                     )}
