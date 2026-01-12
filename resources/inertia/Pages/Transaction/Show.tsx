@@ -21,11 +21,7 @@ export default function Show({ transaction, details }: PageProps<TransactionShow
             <TransactionHeader transaction={transaction} />
 
             <div>
-                <TransactionDetails
-                    transaction={transaction}
-                    details={details}
-                    headerWidthClass={headerWidthClass}
-                />
+                <TransactionDetails transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
 
                 <TransactionAction transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
 

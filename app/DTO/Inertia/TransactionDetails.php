@@ -92,9 +92,10 @@ class TransactionDetails extends Data
         }
 
         return [
-            'formatted' => $transaction->formattedPayload(),
-            'utf8'      => $transaction->utf8Payload(),
-            'raw'       => $transaction->rawPayload(),
+            // Ensure invalid UTF-8 does not break JSON serialization.
+            'formatted' => self::safeUtf8($transaction->formattedPayload()),
+            'utf8'      => self::safeUtf8($transaction->utf8Payload()),
+            'raw'       => self::safeUtf8($transaction->rawPayload()),
         ];
     }
 
@@ -110,5 +111,14 @@ class TransactionDetails extends Data
             ])
             ->values()
             ->toArray();
+    }
+
+    private static function safeUtf8(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return preg_match('//u', $value) === 1 ? $value : null;
     }
 }

@@ -133,14 +133,16 @@ export default function TransactionMoreDetails({
                             </PageSection>
                         )}
 
-                        <PageSection className="!px-0" wrapperContainerClass="max-w-full" noBorder>
-                            <button
-                                type="button"
-                                className="link border-b border-dashed border-theme-primary-500 leading-5 hover:border-theme-primary-700 hover:no-underline"
-                                onClick={() => setIsDesktopPayloadExpanded(!isDesktopPayloadExpanded)}
-                            >
-                                {isDesktopPayloadExpanded ? t("actions.hide") : t("actions.view_all")}
-                            </button>
+                        <PageSection className="mt-2 !px-0" wrapperContainerClass="max-w-full" noBorder>
+                            <div>
+                                <button
+                                    type="button"
+                                    className="link border-b border-dashed border-theme-primary-500 leading-5 hover:border-theme-primary-700 hover:no-underline"
+                                    onClick={() => setIsDesktopPayloadExpanded(!isDesktopPayloadExpanded)}
+                                >
+                                    {isDesktopPayloadExpanded ? t("actions.hide") : t("actions.view_all")}
+                                </button>
+                            </div>
                         </PageSection>
                     </div>
                 )}
