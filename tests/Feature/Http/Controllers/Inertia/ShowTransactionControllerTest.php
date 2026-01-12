@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Facades\Network;
 use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\NetworkCache;
-use App\Facades\Network;
 use Inertia\Testing\AssertableInertia as Assert;
 use function Tests\fakeCryptoCompare;
 
