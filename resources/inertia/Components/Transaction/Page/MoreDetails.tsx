@@ -47,7 +47,9 @@ export default function TransactionMoreDetails({
                     </TableCell>
                 </MobileTableRow>
 
-                <MobileTableRow header={<span className="font-semibold">{t("pages.transaction.other_attributes")}</span>}>
+                <MobileTableRow
+                    header={<span className="font-semibold">{t("pages.transaction.other_attributes")}</span>}
+                >
                     <TableCell label={t("pages.transaction.header.position_in_block")}>
                         <Number>{transaction.transaction_index}</Number>
                     </TableCell>
@@ -72,7 +74,7 @@ export default function TransactionMoreDetails({
                 )}
             </PageSection>
 
-            <div className="hidden sm:block px-6 md:mx-auto md:max-w-7xl md:px-10">
+            <div className="hidden px-6 sm:block md:mx-auto md:max-w-7xl md:px-10">
                 <div className="font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
                     {t("pages.transaction.more_details")}
                 </div>
@@ -83,7 +85,7 @@ export default function TransactionMoreDetails({
                     wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap"
                 >
                     <div className="inline-block">
-                        <Badge className="text-sm">{t("pages.transaction.gas_information")}</Badge>
+                        <Badge className="inline-block text-sm">{t("pages.transaction.gas_information")}</Badge>
                     </div>
 
                     <SectionDetailRow
@@ -107,7 +109,7 @@ export default function TransactionMoreDetails({
                     wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap"
                 >
                     <div className="inline-block">
-                        <Badge className="text-sm">{t("pages.transaction.other_attributes")}</Badge>
+                        <Badge className="inline-block text-sm">{t("pages.transaction.other_attributes")}</Badge>
                     </div>
 
                     <SectionDetailRow
