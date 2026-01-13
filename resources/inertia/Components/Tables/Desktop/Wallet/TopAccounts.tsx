@@ -169,9 +169,7 @@ export function TopAccountsTable({
             noResultsMessage={wallets.noResultsMessage}
             columns={
                 <>
-                    <TableHeader type="id" className="whitespace-nowrap">
-                        {t("general.wallet.rank")}
-                    </TableHeader>
+                    <TableHeader className="whitespace-nowrap">{t("general.wallet.rank")}</TableHeader>
 
                     <TableHeader>{t("general.wallet.address")}</TableHeader>
 

@@ -11,6 +11,7 @@ import Number from "@/Components/General/Number";
 import Percentage from "@/Components/General/Percentage";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import useSharedData from "@/hooks/use-shared-data";
+import classNames from "classnames";
 
 export function TopAccountsMobileTable({ wallets }: { wallets: IPaginatedResponse<IWallet> }) {
     const { t } = useTranslation();
@@ -27,15 +28,23 @@ export function TopAccountsMobileTable({ wallets }: { wallets: IPaginatedRespons
                         key={wallet.address}
                         header={
                             <div className="flex items-center space-x-3">
-                                <Number className="min-w-[32px]">{rank}</Number>
+                                <Number>{rank}</Number>
 
-                                <Link className="link min-w-0" href={route("wallet", wallet.address)}>
+                                <Link className="link min-w-0 sm:hidden" href={route("wallet", wallet.address)}>
                                     <TruncateMiddle>{wallet.address}</TruncateMiddle>
+                                </Link>
+                                <Link className="link hidden min-w-0 sm:block" href={route("wallet", wallet.address)}>
+                                    {wallet.address}
                                 </Link>
                             </div>
                         }
                     >
-                        <TableCell label={t("labels.name")}>
+                        <TableCell
+                            label={t("labels.name")}
+                            className={classNames({
+                                "hidden sm:block": !wallet.hasUsername,
+                            })}
+                        >
                             {wallet.hasUsername ? (
                                 <div className="inline-block text-theme-secondary-900 dark:text-theme-dark-50">
                                     {wallet.username}
@@ -48,6 +57,9 @@ export function TopAccountsMobileTable({ wallets }: { wallets: IPaginatedRespons
                         </TableCell>
 
                         <TableCell
+                            className={classNames({
+                                "!mt-0": !wallet.hasUsername,
+                            })}
                             label={t("tables.wallets.balance_currency", {
                                 currency: network?.currency,
                             })}
