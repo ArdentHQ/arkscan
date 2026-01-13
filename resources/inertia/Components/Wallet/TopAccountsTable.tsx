@@ -27,7 +27,5 @@ export default function TopAccountsTable({ wallets }: Pick<TopAccountsProps, "wa
         });
     }, []);
 
-    return (
-        <TopAccountsTableWrapper wallets={wallets} mobile={<TopAccountsMobileTableWrapper wallets={wallets} />} />
-    );
+    return <TopAccountsTableWrapper wallets={wallets} mobile={<TopAccountsMobileTableWrapper wallets={wallets} />} />;
 }
