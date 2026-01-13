@@ -74,6 +74,7 @@ export function Table({
     mobile,
     headerActions,
     noResultsMessage,
+    noMargins = false,
 }: {
     columns: React.ReactNode;
     withHeader?: boolean;
@@ -85,6 +86,7 @@ export function Table({
     mobile?: React.ReactNode;
     headerActions?: React.ReactNode;
     noResultsMessage?: React.ReactNode;
+    noMargins?: boolean;
 }) {
     const tableRef = useRef<HTMLDivElement>(null);
     const { pagination } = useSharedData();
@@ -93,7 +95,12 @@ export function Table({
     const showFooter = withFooter && paginator && resultCount > pagination?.per_page && !hidePagination;
 
     return (
-        <div ref={tableRef} className="px-6 md:mx-auto md:max-w-7xl md:px-10">
+        <div
+            ref={tableRef}
+            className={classNames({
+                "px-6 md:mx-auto md:max-w-7xl md:px-10": !noMargins,
+            })}
+        >
             {withHeader && (
                 <TableHeaderWrapper resultCount={resultCount} resultSuffix={resultSuffix}>
                     {headerActions}

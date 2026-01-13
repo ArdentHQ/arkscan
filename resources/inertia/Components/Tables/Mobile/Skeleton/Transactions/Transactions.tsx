@@ -3,7 +3,7 @@ import LoadingText from "@/Components/Loading/Text";
 import LoadingTableCell from "../TableCell";
 import LoadingTable from "../Table";
 
-export function MobileTransactionsSkeletonTable({ rowCount }: { rowCount: number }) {
+export function MobileTransactionsSkeletonTable({ rowCount, noAge }: { rowCount: number; noAge?: boolean }) {
     const rows = [];
     for (let i = 0; i < rowCount; i++) {
         rows.push(
@@ -12,7 +12,7 @@ export function MobileTransactionsSkeletonTable({ rowCount }: { rowCount: number
                 header={
                     <>
                         <LoadingText />
-                        <LoadingText />
+                        {!noAge && <LoadingText />}
                     </>
                 }
             >
