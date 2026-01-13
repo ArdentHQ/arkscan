@@ -15,7 +15,13 @@ import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Transacti
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
 
-export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
+export function TransactionsMobileTable({
+    transactions,
+    noAge,
+}: {
+    transactions: IPaginatedResponse<ITransaction>;
+    noAge?: boolean;
+}) {
     const { t } = useTranslation();
     const { network } = useSharedData();
 
@@ -28,10 +34,12 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                         <>
                             <ID transaction={transaction} />
 
-                            <Age
-                                className="text-theme-secondary-700 dark:text-theme-dark-200"
-                                timestamp={transaction.timestamp}
-                            />
+                            {!noAge && (
+                                <Age
+                                    className="text-theme-secondary-700 dark:text-theme-dark-200"
+                                    timestamp={transaction.timestamp}
+                                />
+                            )}
                         </>
                     }
                 >

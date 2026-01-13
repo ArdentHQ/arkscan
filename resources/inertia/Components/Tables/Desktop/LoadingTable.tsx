@@ -28,15 +28,21 @@ export function LoadingTableWrapper({
     indicatorHeight = "h-[17px]",
     withPagination = false,
     header,
+    noMargins = false,
 }: {
     columns: Array<ILoadingTableColumn>;
     rowCount: number;
     indicatorHeight?: string;
     withPagination?: boolean;
     header?: React.ReactNode;
+    noMargins?: boolean;
 }) {
     return (
-        <div className="hidden px-6 pt-6 md:mx-auto md:block md:max-w-7xl md:px-10 md:pt-0">
+        <div
+            className={classNames("hidden md:block", {
+                "px-6 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0": !noMargins,
+            })}
+        >
             {!!header && <TableHeaderWrapper resultCount={0}>{header}</TableHeaderWrapper>}
 
             <div
@@ -160,6 +166,7 @@ export default function LoadingTable({
     paginator,
     indicatorHeight = "h-[17px]",
     header,
+    noMargins = false,
 }: {
     columns: Array<ILoadingTableColumn>;
     rowCount: number;
@@ -167,6 +174,7 @@ export default function LoadingTable({
     paginator?: IPaginatedResponse<any>;
     indicatorHeight?: string;
     header?: React.ReactNode;
+    noMargins?: boolean;
 }) {
     let isLoading = false;
     if (paginator) {
@@ -176,6 +184,7 @@ export default function LoadingTable({
     return (
         <>
             <LoadingTableWrapper
+                noMargins={noMargins}
                 withPagination={isLoading}
                 rowCount={rowCount}
                 columns={columns}
