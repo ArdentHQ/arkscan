@@ -20,6 +20,7 @@ export default function AddressingGeneric({
     const recipient = transaction.recipient;
     const senderHasUsername = sender?.hasUsername ?? false;
     const recipientHasUsername = recipient?.hasUsername ?? false;
+    const contractAddress = transaction.deployed_contract_address ?? transaction.to ?? recipient?.address ?? "";
 
     return (
         <div
@@ -56,10 +57,14 @@ export default function AddressingGeneric({
                                 <TruncateMiddle>{recipient?.address}</TruncateMiddle>
                             )}
                         </Link>
-                    ) : (
-                        <Link className="link whitespace-nowrap" href={route("wallet", recipient?.address ?? "")}>
+                    ) : contractAddress ? (
+                        <Link className="link whitespace-nowrap" href={route("wallet", contractAddress)}>
                             {t("tables.transactions.contract")}
                         </Link>
+                    ) : (
+                        <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                            {t("tables.transactions.contract")}
+                        </span>
                     )}
                 </Tooltip>
             </div>
