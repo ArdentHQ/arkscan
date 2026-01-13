@@ -120,7 +120,7 @@ export function TopAccountsTable({
         return (
             <tr className="text-sm font-semibold">
                 <TableCell>
-                    <Number>{rank}</Number>
+                    <Number className="leading-4.25">{rank}</Number>
                 </TableCell>
 
                 <TableCell>
