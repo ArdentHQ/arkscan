@@ -241,8 +241,12 @@ export type IWallet = {
     legacyAddress: string | null;
     username: string | null;
     hasUsername: boolean;
+    isKnown: boolean;
+    isOwnedByExchange: boolean;
+    hasSecondSignature: boolean;
     votes: string;
     productivity: number;
+    balancePercentage: number;
     formattedBalanceTwoDecimals: string;
     formattedBalanceFull: string;
     fiatValue: string;

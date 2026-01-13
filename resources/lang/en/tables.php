@@ -50,6 +50,7 @@ return [
     'wallets' => [
         'balance_currency' => 'Balance (:currency)',
         'no_results'       => 'This validator does not currently have any voters.',
+        'top_accounts_no_results' => 'There are currently no accounts to display.',
     ],
 
     'exchanges' => [
