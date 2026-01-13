@@ -7,6 +7,7 @@ namespace App\DTO\Inertia;
 use App\Facades\Network;
 use App\Models\Wallet as Model;
 use App\Services\ExchangeRate;
+use App\Services\NumberFormatter as ExplorerNumberFormatter;
 use App\ViewModels\WalletViewModel;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter;
 use Spatie\LaravelData\Data;
@@ -38,6 +39,7 @@ class Wallet extends Data
         public float $balancePercentage,
         public string $formattedBalanceTwoDecimals,
         public string $formattedBalanceFull,
+        public string $formattedBalanceFullWithoutSuffix,
         public string $fiatValue,
         public string $totalForged,
         // TODO: Consider using another data object for the attributes
@@ -89,6 +91,7 @@ class Wallet extends Data
             balancePercentage: $viewModel->balancePercentage(),
             formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), 2),
             formattedBalanceFull: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), null),
+            formattedBalanceFullWithoutSuffix: ExplorerNumberFormatter::currencyWithoutSuffix($viewModel->balance(), Network::currency()),
             fiatValue: ExchangeRate::convert($wallet->balance, null),
             totalForged: (string) $viewModel->totalForged(),
             vote: $votedWallet,

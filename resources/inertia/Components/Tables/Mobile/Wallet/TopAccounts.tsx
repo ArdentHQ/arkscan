@@ -6,7 +6,6 @@ import TableCell from "../TableCell";
 import { MobileTopAccountsSkeletonTable } from "../Skeleton/Wallet/TopAccounts";
 import { IPaginatedResponse } from "@/types";
 import { IWallet } from "@/types/generated";
-import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Number from "@/Components/General/Number";
 import Percentage from "@/Components/General/Percentage";
@@ -53,7 +52,7 @@ export function TopAccountsMobileTable({ wallets }: { wallets: IPaginatedRespons
                                 currency: network?.currency,
                             })}
                         >
-                            {wallet.formattedBalanceFull}
+                            {wallet.formattedBalanceFullWithoutSuffix}
                         </TableCell>
 
                         <TableCell label={t("general.wallet.percentage")}>
@@ -78,8 +77,6 @@ export default function TopAccountsMobileTableWrapper({
     if (!wallets || isLoading) {
         return (
             <div>
-                <TableHeaderWrapper resultCount={0} />
-
                 <MobileTopAccountsSkeletonTable rowCount={rowCount} />
             </div>
         );

@@ -46,12 +46,13 @@ function WalletTypeIcons({ wallet }: { wallet: IWallet }) {
 
 function WalletVotingIndicator({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
+    const isVoting = wallet.attributes?.vote !== null && wallet.attributes?.vote !== undefined;
 
-    if (!wallet.vote) {
+    if (!isVoting) {
         return null;
     }
 
-    const validatorLabel = wallet.vote.username ?? wallet.vote.address;
+    const validatorLabel = wallet.vote?.username ?? wallet.vote?.address;
     const tooltip = validatorLabel ? (
         <span
             dangerouslySetInnerHTML={{
@@ -83,7 +84,7 @@ function WalletAddress({ address }: { address: string }) {
     }
 
     return (
-        <div className="flex w-full items-center justify-between text-sm leading-4.25">
+        <div className="flex w-full items-center text-sm leading-4.25">
             <Link className="link min-w-0" href={route("wallet", address)}>
                 <span className="xl:hidden">
                     <TruncateMiddle>{address}</TruncateMiddle>
@@ -94,7 +95,7 @@ function WalletAddress({ address }: { address: string }) {
             <Clipboard
                 value={address}
                 noStyling
-                className="transition-default ml-2 flex h-auto w-auto items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
+                className="transition-default ml-2 flex h-auto w-auto shrink-0 items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
                 tooltipContent={t("pages.wallet.address_copied")}
                 checkmarksClass=""
             />
@@ -126,7 +127,9 @@ export function TopAccountsTable({
                     <WalletAddress address={wallet.address} />
                 </TableCell>
 
-                <TableCell>{wallet.hasUsername ? wallet.username : null}</TableCell>
+                <TableCell>
+                    <span className="leading-4.25">{wallet.hasUsername ? wallet.username : null}</span>
+                </TableCell>
 
                 <TableCell className="text-center" breakpoint="md-lg" responsive>
                     <WalletTypeIcons wallet={wallet} />
@@ -137,9 +140,9 @@ export function TopAccountsTable({
                 </TableCell>
 
                 <TableCell className="text-right" lastOn="lg">
-                    <div className="flex flex-col font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                    <div className="flex flex-col font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
                         <Tooltip content={wallet.fiatValue} disabled={!network?.canBeExchanged}>
-                            <span>{wallet.formattedBalanceFull}</span>
+                            <span>{wallet.formattedBalanceFullWithoutSuffix}</span>
                         </Tooltip>
 
                         <span className="mt-1 text-xs font-semibold leading-3.75 text-theme-secondary-500 md-lg:hidden">
@@ -149,7 +152,7 @@ export function TopAccountsTable({
                 </TableCell>
 
                 <TableCell className="text-right" breakpoint="md-lg" responsive>
-                    <div className="flex font-semibold">
+                    <div className="flex font-semibold leading-4.25">
                         <Percentage>{wallet.balancePercentage}</Percentage>
                     </div>
                 </TableCell>
@@ -159,7 +162,6 @@ export function TopAccountsTable({
 
     return (
         <Table
-            withHeader
             withFooter
             paginator={wallets}
             rowComponent={Row}
@@ -193,6 +195,7 @@ export function TopAccountsTable({
                         className="text-right"
                         breakpoint="md-lg"
                         responsive
+                        type="number"
                         tooltip={t("pages.wallets.supply_tooltip", {
                             symbol: network!.currency,
                         })}

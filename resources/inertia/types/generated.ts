@@ -249,6 +249,7 @@ export type IWallet = {
     balancePercentage: number;
     formattedBalanceTwoDecimals: string;
     formattedBalanceFull: string;
+    formattedBalanceFullWithoutSuffix: string;
     fiatValue: string;
     totalForged: string;
     attributes: Record<string, any>;
