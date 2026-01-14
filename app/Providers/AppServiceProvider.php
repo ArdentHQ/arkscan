@@ -18,8 +18,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Inertia\ResponseFactory as InertiaResponseFactory;
 use Inertia\Response as InertiaResponse;
+use Inertia\ResponseFactory as InertiaResponseFactory;
 use Laravel\Fortify\Fortify;
 
 final class AppServiceProvider extends ServiceProvider
