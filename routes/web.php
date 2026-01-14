@@ -14,7 +14,7 @@ use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController as LegacyShowBlockController;
-use App\Http\Controllers\ShowTransactionController;
+use App\Http\Controllers\Inertia\ShowTransactionController;
 use App\Http\Controllers\ShowTransactionController as LegacyShowTransactionController;
 use App\Http\Controllers\SupportController as LegacySupportController;
 use App\Http\Controllers\ThemeController;
