@@ -63,14 +63,17 @@ export default function TransactionCodeBlock({ payload }: { payload: Transaction
                 <pre>{content}</pre>
             </div>
 
-            <Clipboard
-                value={content}
-                noStyling
-                className="button button-secondary mt-4 flex h-8 w-full items-center justify-center space-x-2 px-4 text-base sm:w-auto"
-                checkmarksClass=""
-            >
-                <div>{t("pages.transaction.code-block.copy_code")}</div>
-            </Clipboard>
+            <div className="inline-flex">
+                <Clipboard
+                    value={content}
+                    noStyling
+                    className="button button-secondary mt-4 flex h-8 w-full items-center justify-center space-x-2 px-4 text-base sm:w-auto"
+                    checkmarksClass=""
+                    tooltipContent={t("tooltips.copied")}
+                >
+                    <div>{t("pages.transaction.code-block.copy_code")}</div>
+                </Clipboard>
+            </div>
         </div>
     );
 }
