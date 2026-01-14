@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function LearnMore({
+    url,
     icon,
     title,
     titleExtra,
@@ -17,6 +18,7 @@ export default function LearnMore({
     subtitleColor = "text-theme-secondary-700 dark:text-theme-dark-blue-400 dim:text-theme-dark-blue-600",
     buttonColor = "dark:!bg-theme-dark-blue-500 dark:hover:!bg-theme-dark-blue-600 dim:!bg-theme-dark-blue-600 dim:hover:!bg-theme-dark-blue-700",
 }: {
+    url: string;
     icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     title: string;
     titleExtra?: string;
@@ -54,7 +56,7 @@ export default function LearnMore({
                 <div className="ml-3 flex flex-col justify-center space-y-2">
                     <span
                         className={classNames([
-                            "text-lg font-semibold leading-5.25 leading-6",
+                            "space-x-1 text-lg font-semibold leading-5.25 leading-6",
                             mobileTall && "mt-3 flex flex-col sm:mt-0 sm:flex-row sm:space-x-1",
                             titleColor,
                         ])}
@@ -74,7 +76,7 @@ export default function LearnMore({
 
             <div className="mt-4 flex items-center sm:mt-0 sm:h-auto">
                 <a
-                    href="{{ $url }}"
+                    href={url}
                     target="_blank"
                     rel="noopener nofollow noreferrer"
                     className={classNames([
