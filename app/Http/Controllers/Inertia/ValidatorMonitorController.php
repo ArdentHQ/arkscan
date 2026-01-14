@@ -24,7 +24,7 @@ final class ValidatorMonitorController
 
     public function __invoke(): Response
     {
-        return Inertia::render('Validators/Monitor', [
+        return Inertia::renderWithMeta('Validators/Monitor', 'validator-monitor', [
             'rowCount' => Network::validatorCount(),
 
             // Deferred properties
@@ -44,8 +44,6 @@ final class ValidatorMonitorController
                     'statistics'         => $this->statistics,
                 ];
             }),
-        ])->withMeta('validator-monitor', [
-            'name' => Network::currency(),
         ]);
     }
 }

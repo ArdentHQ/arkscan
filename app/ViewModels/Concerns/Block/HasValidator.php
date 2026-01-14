@@ -13,16 +13,6 @@ trait HasValidator
         return MemoryWallet::fromAddress($this->block->proposer);
     }
 
-    public function address(): string
-    {
-        return $this->validator()->address() ?? 'Genesis';
-    }
-
-    public function hasUsername(): bool
-    {
-        return $this->validator()->hasUsername();
-    }
-
     public function username(): string
     {
         return $this->validator()->username() ?? 'Genesis';

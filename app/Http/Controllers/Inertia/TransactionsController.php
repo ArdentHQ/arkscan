@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\Transaction as TransactionDTO;
-use App\Facades\Network;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Scopes\OrderByTimestampScope;
@@ -35,7 +34,7 @@ final class TransactionsController
 
     public function __invoke(): Response
     {
-        return Inertia::render('Transactions/List', [
+        return Inertia::renderWithMeta('Transactions/List', 'transactions', [
             'filters'          => fn () => $this->filters(),
             'statistics'       => function () {
                 $data = (new StatisticsCache())->getTransactionData();
@@ -57,8 +56,6 @@ final class TransactionsController
                     'noResultsMessage' => $this->getNoResultsMessageProperty($paginator->count()),
                 ];
             }),
-        ])->withMeta('transactions', [
-            'name' => Network::currency(),
         ]);
     }
 

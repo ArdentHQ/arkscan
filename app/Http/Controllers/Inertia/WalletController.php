@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Inertia;
 use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
-use App\Facades\Network;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
@@ -50,7 +49,7 @@ final class WalletController
     {
         $this->view = $view;
 
-        return Inertia::render('Wallet/Wallet', [
+        return Inertia::renderWithMeta('Wallet/Wallet', 'wallet', [
             'wallet'       => WalletDTO::fromModel($wallet),
             'filters'      => fn () => $this->getFilters(),
             'baseUrl'      => route('wallet', $wallet->address, false),
@@ -89,8 +88,7 @@ final class WalletController
             }),
 
             'rates' => fn () => ExchangeRate::rates()->toArray(),
-        ])->withMeta('wallet', [
-            'name'    => Network::currency(),
+        ], [
             'address' => $wallet->address,
         ]);
     }

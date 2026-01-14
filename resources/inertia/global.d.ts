@@ -7,6 +7,13 @@ type ValidationErrors = Record<string, string>;
 
 declare module "@inertiajs/core" {
     export interface PageProps<T extends object = {}> extends IRequestData, T {
+        honeypot?: {
+            enabled: boolean;
+            nameFieldName: string;
+            validFromFieldName: string;
+            encryptedValidFrom: string;
+        };
+
         errors: ValidationErrors;
         metaPage?: string;
         metaDetail?: Record<string, string | number>;
