@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Contracts\MarketDataProvider;
 use App\Contracts\Services\GasTracker as GasTrackerContract;
 use App\Contracts\Services\Monitor\MissedBlocksCalculator as MissedBlocksCalculatorContract;
+use App\Facades\Network;
 use App\Services\BigNumber;
 use App\Services\GasTracker;
 use App\Services\Monitor\MissedBlocksCalculator;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Response as InertiaResponse;
+use Inertia\ResponseFactory as InertiaResponseFactory;
 use Laravel\Fortify\Fortify;
 
 final class AppServiceProvider extends ServiceProvider
@@ -94,6 +96,16 @@ final class AppServiceProvider extends ServiceProvider
             ]);
 
             return $this;
+        });
+
+        InertiaResponseFactory::macro('renderWithMeta', function (string $component, string $pageName, array $props = [], array $detail = []) {
+            /** @var InertiaResponseFactory $this */
+            return $this->render($component, $props)
+                ->withMeta($pageName, [
+                    'name' => Network::currency(),
+
+                    ...$detail,
+                ]);
         });
     }
 

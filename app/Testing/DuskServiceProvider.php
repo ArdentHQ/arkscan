@@ -74,5 +74,19 @@ class DuskServiceProvider extends ServiceProvider
                 return true;
             }, $message);
         });
+
+        Browser::macro('waitForValue', function ($selector, $value, $seconds = null) {
+            $message = $this->formatTimeOutMessage('Waited %s seconds for value of element', $selector);
+
+            return $this->waitUsing($seconds, 100, function () use ($selector, $value) {
+                try {
+                    $this->assertValue($selector, $value);
+                } catch (\Throwable) {
+                    return false;
+                }
+
+                return true;
+            }, $message);
+        });
     }
 }

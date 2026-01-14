@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\Block as BlockDTO;
-use App\Facades\Network;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
 use App\Models\ForgingStats;
@@ -30,7 +29,7 @@ final class BlocksListController
     {
         $data = $this->blockData();
 
-        return Inertia::render('Blocks/List', [
+        return Inertia::renderWithMeta('Blocks/List', 'blocks', [
             'statistics' => [
                 'forgedCount'     => $data['block_count'],
                 'missedCount'     => $data['missed_count'],
@@ -48,8 +47,6 @@ final class BlocksListController
                     'noResultsMessage' => $this->noResultsMessage($paginator->count()),
                 ];
             }),
-        ])->withMeta('blocks', [
-            'name' => Network::currency(),
         ]);
     }
 

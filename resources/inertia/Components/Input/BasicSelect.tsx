@@ -1,9 +1,9 @@
 import { createRef, InputHTMLAttributes } from "react";
 import InputErrorTooltip from "./Includes/InputErrorTooltip";
-import InputField from "./Includes/InputField";
 import InputLabel from "./Includes/InputLabel";
+import SelectField from "./Includes/SelectField";
 
-export default function Input({
+export default function BasicSelect({
     id,
     name,
     label,
@@ -19,7 +19,7 @@ export default function Input({
     testId,
 
     ...props
-}: InputHTMLAttributes<HTMLInputElement> & {
+}: InputHTMLAttributes<HTMLSelectElement> & {
     id?: string;
     name: string;
     label?: string | React.ReactNode;
@@ -34,7 +34,7 @@ export default function Input({
     error?: string;
     testId?: string;
 }) {
-    const inputRef = createRef<HTMLInputElement>();
+    const selectRef = createRef<HTMLSelectElement>();
 
     return (
         <div className={className} data-testid={testId}>
@@ -54,8 +54,8 @@ export default function Input({
                 )}
 
                 <div className="input-wrapper">
-                    <InputField
-                        ref={inputRef}
+                    <SelectField
+                        ref={selectRef}
                         name={name}
                         error={error}
                         id={id ?? name}
@@ -63,7 +63,7 @@ export default function Input({
                         {...props}
                     />
 
-                    {error && <InputErrorTooltip inputRef={inputRef} error={error} />}
+                    {error && <InputErrorTooltip inputRef={selectRef} error={error} />}
                 </div>
             </div>
         </div>

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
-use App\Facades\Network;
 use App\Http\Controllers\Inertia\Concerns\MissedBlocksTab;
 use App\Http\Controllers\Inertia\Concerns\RecentVotesTab;
 use App\Http\Controllers\Inertia\Concerns\ValidatorsTab;
@@ -42,7 +41,7 @@ final class ValidatorsController
 
     public function __invoke(): Response
     {
-        return Inertia::render('Validators/Validators', [
+        return Inertia::renderWithMeta('Validators/Validators', 'validators', [
             'filters'      => fn () => $this->filters(),
             'baseUrl'      => route('validators', absolute: false),
             'validators'   => Inertia::optional(function () {
@@ -81,8 +80,6 @@ final class ValidatorsController
 
             'statistics' => fn () => $this->getStatistics(),
 
-        ])->withMeta('validators', [
-            'name' => Network::currency(),
         ]);
     }
 

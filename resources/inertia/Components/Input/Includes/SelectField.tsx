@@ -1,35 +1,36 @@
 import classNames from "classnames";
 import { InputHTMLAttributes } from "react";
 
-export default function InputField({
+export default function SelectField({
     ref,
     id,
     name,
     inputClass = "",
-    inputTypeClass = "input-text",
-    errorClass = "input-text--error",
+    inputTypeClass = "form-select block w-full pl-4 pr-8 py-3 h-14",
+    errorClass = "form-select--error",
     error,
 
     ...props
-}: InputHTMLAttributes<HTMLInputElement> & {
-    ref: React.RefObject<HTMLInputElement | null>;
+}: InputHTMLAttributes<HTMLSelectElement> & {
+    ref: React.RefObject<HTMLSelectElement | null>;
     inputClass?: string;
     inputTypeClass?: string;
     errorClass?: string;
     error?: string;
 }) {
     return (
-        <input
+        <select
             ref={ref}
             className={classNames({
                 [inputClass]: !!inputClass,
                 [inputTypeClass]: !!inputTypeClass,
                 [errorClass]: !!error,
             })}
-            autoCapitalize="none"
             name={name}
             id={id ?? name}
             {...props}
-        />
+        >
+            {props.children}
+        </select>
     );
 }

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { InputHTMLAttributes } from "react";
 
-export default function InputField({
+export default function TextAreaField({
     ref,
     id,
     name,
@@ -11,22 +11,21 @@ export default function InputField({
     error,
 
     ...props
-}: InputHTMLAttributes<HTMLInputElement> & {
-    ref: React.RefObject<HTMLInputElement | null>;
+}: InputHTMLAttributes<HTMLTextAreaElement> & {
+    ref: React.RefObject<HTMLTextAreaElement | null>;
     inputClass?: string;
     inputTypeClass?: string;
     errorClass?: string;
     error?: string;
 }) {
     return (
-        <input
+        <textarea
             ref={ref}
             className={classNames({
                 [inputClass]: !!inputClass,
                 [inputTypeClass]: !!inputTypeClass,
                 [errorClass]: !!error,
             })}
-            autoCapitalize="none"
             name={name}
             id={id ?? name}
             {...props}
