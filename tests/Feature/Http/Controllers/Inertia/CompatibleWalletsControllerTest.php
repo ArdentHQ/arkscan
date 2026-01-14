@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
-use Huddle\Zendesk\Facades\Zendesk;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Testing\AssertableInertia as Assert;
-use Zendesk\API\Exceptions\ApiResponseException;
 
 it('should render the page without any errors', function () {
     $this->withoutExceptionHandling();
@@ -16,7 +12,7 @@ it('should render the page without any errors', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Resources/CompatibleWallets')
-            ->where('wallets', array_values(trans("pages.compatible-wallets.wallets"))));
+            ->where('wallets', array_values(trans('pages.compatible-wallets.wallets'))));
 });
 
 it('should be possible to successfully send the form', function () {
