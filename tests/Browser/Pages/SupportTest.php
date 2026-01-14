@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Inertia\SupportController;
-use Huddle\Zendesk\Facades\Zendesk;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Route;
 use Laravel\Dusk\Browser;
 
 beforeEach(function () {
