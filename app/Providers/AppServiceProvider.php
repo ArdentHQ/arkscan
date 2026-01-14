@@ -18,7 +18,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
+use Inertia\ResponseFactory as InertiaResponseFactory;
 use Inertia\Response as InertiaResponse;
 use Laravel\Fortify\Fortify;
 
@@ -98,8 +98,8 @@ final class AppServiceProvider extends ServiceProvider
             return $this;
         });
 
-        Inertia::macro('renderWithMeta', function (string $component, string $pageName, array $props = [], array $detail = []) {
-            /** @var InertiaResponse $this */
+        InertiaResponseFactory::macro('renderWithMeta', function (string $component, string $pageName, array $props = [], array $detail = []) {
+            /** @var InertiaResponseFactory $this */
             return $this->render($component, $props)
                 ->withMeta($pageName, [
                     'name' => Network::currency(),
