@@ -35,7 +35,7 @@ final class TransactionsController
 
     public function __invoke(): Response
     {
-        return Inertia::render('Transactions/List', [
+        return Inertia::renderWithMeta('Transactions/List', 'transactions', [
             'filters'          => fn () => $this->filters(),
             'statistics'       => function () {
                 $data = (new StatisticsCache())->getTransactionData();
@@ -57,8 +57,6 @@ final class TransactionsController
                     'noResultsMessage' => $this->getNoResultsMessageProperty($paginator->count()),
                 ];
             }),
-        ])->withMeta('transactions', [
-            'name' => Network::currency(),
         ]);
     }
 

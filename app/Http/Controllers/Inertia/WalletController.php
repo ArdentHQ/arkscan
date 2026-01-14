@@ -50,7 +50,7 @@ final class WalletController
     {
         $this->view = $view;
 
-        return Inertia::render('Wallet/Wallet', [
+        return Inertia::renderWithMeta('Wallet/Wallet', 'wallet', [
             'wallet'       => WalletDTO::fromModel($wallet),
             'filters'      => fn () => $this->getFilters(),
             'baseUrl'      => route('wallet', $wallet->address, false),
@@ -89,8 +89,7 @@ final class WalletController
             }),
 
             'rates' => fn () => ExchangeRate::rates()->toArray(),
-        ])->withMeta('wallet', [
-            'name'    => Network::currency(),
+        ], [
             'address' => $wallet->address,
         ]);
     }

@@ -42,7 +42,7 @@ final class ValidatorsController
 
     public function __invoke(): Response
     {
-        return Inertia::render('Validators/Validators', [
+        return Inertia::renderWithMeta('Validators/Validators', 'validators', [
             'filters'      => fn () => $this->filters(),
             'baseUrl'      => route('validators', absolute: false),
             'validators'   => Inertia::optional(function () {
@@ -81,8 +81,6 @@ final class ValidatorsController
 
             'statistics' => fn () => $this->getStatistics(),
 
-        ])->withMeta('validators', [
-            'name' => Network::currency(),
         ]);
     }
 

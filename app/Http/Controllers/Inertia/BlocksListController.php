@@ -30,7 +30,7 @@ final class BlocksListController
     {
         $data = $this->blockData();
 
-        return Inertia::render('Blocks/List', [
+        return Inertia::renderWithMeta('Blocks/List', 'blocks', [
             'statistics' => [
                 'forgedCount'     => $data['block_count'],
                 'missedCount'     => $data['missed_count'],
@@ -48,8 +48,6 @@ final class BlocksListController
                     'noResultsMessage' => $this->noResultsMessage($paginator->count()),
                 ];
             }),
-        ])->withMeta('blocks', [
-            'name' => Network::currency(),
         ]);
     }
 
