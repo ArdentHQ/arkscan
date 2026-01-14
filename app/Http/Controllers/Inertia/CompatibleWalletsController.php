@@ -16,7 +16,7 @@ final class CompatibleWalletsController
     public function __invoke(): Response
     {
         return Inertia::renderWithMeta('Resources/CompatibleWallets', 'compatible-wallets', [
-            'wallets' => array_values(trans("pages.compatible-wallets.wallets")),
+            'wallets' => array_values(trans('pages.compatible-wallets.wallets')),
         ]);
     }
 
