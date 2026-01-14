@@ -1,17 +1,14 @@
-import ArkVaultCTA from "@/Components/Home/ArkVaultCTA";
-import { HomeProps } from "@/Pages/Home.contracts";
 import Layout from "@/Layout";
-import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import { PageProps } from "@inertiajs/core";
-import Statistics from "@/Components/Home/Statistics";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import { useTranslation } from "react-i18next";
-import Card from "@/Components/General/Card";
 import ArkVault from "@/Components/CompatibleWallets/ArkVault";
 import ArkConnectLearnMore from "@/Components/CompatibleWallets/ArkConnectLearnMore";
 import MobileDivider from "@/Components/General/MobileDivider";
+import WalletGrid from "@/Components/CompatibleWallets/WalletGrid";
+import { CompatibleWalletsProps } from "../CompatibleWallets.contracts";
 
-export default function CompatibleWallets({}: PageProps<HomeProps>) {
+export default function CompatibleWallets({ wallets }: PageProps<CompatibleWalletsProps>) {
     const { t } = useTranslation();
 
     return (
@@ -24,6 +21,10 @@ export default function CompatibleWallets({}: PageProps<HomeProps>) {
                 <MobileDivider />
 
                 <ArkConnectLearnMore />
+
+                <MobileDivider />
+
+                <WalletGrid wallets={wallets} />
             </div>
         </Layout>
     );
