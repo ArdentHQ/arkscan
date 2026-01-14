@@ -35,7 +35,6 @@ final class CompatibleWalletsController
             'message' => $data['message'] ?? null,
         ]));
 
-        return redirect()->route('compatible-wallets')
-            ->with('success', trans('pages.compatible-wallets.submit-modal.success_toast'));
+        return redirect()->route('compatible-wallets');
     }
 }
