@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
-use App\Http\Controllers\HomeController as LegacyHomeController;
 use App\Http\Controllers\Inertia\BlocksListController;
 use App\Http\Controllers\Inertia\HomeController;
 use App\Http\Controllers\Inertia\ShowBlockController;
@@ -37,7 +36,6 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::get('/home-old', LegacyHomeController::class)->name('home-old');
 Route::get('/validators/{view?}', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
