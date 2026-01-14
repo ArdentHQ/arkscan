@@ -1,9 +1,10 @@
-import { createRef, InputHTMLAttributes } from "react";
+import { createRef, TextareaHTMLAttributes } from "react";
 import InputErrorTooltip from "./Includes/InputErrorTooltip";
 import InputField from "./Includes/InputField";
 import InputLabel from "./Includes/InputLabel";
+import TextAreaField from "./Includes/TextAreaField";
 
-export default function Input({
+export default function TextArea({
     id,
     name,
     label,
@@ -19,7 +20,7 @@ export default function Input({
     testId,
 
     ...props
-}: InputHTMLAttributes<HTMLInputElement> & {
+}: TextareaHTMLAttributes<HTMLTextAreaElement> & {
     id?: string;
     name: string;
     label?: string | React.ReactNode;
@@ -34,7 +35,7 @@ export default function Input({
     error?: string;
     testId?: string;
 }) {
-    const inputRef = createRef<HTMLInputElement>();
+    const inputRef = createRef<HTMLTextAreaElement>();
 
     return (
         <div className={className} data-testid={testId}>
@@ -54,7 +55,7 @@ export default function Input({
                 )}
 
                 <div className="input-wrapper">
-                    <InputField
+                    <TextAreaField
                         ref={inputRef}
                         name={name}
                         error={error}
@@ -62,9 +63,9 @@ export default function Input({
                         inputClass={inputClass}
                         {...props}
                     />
-
-                    {error && <InputErrorTooltip inputRef={inputRef} error={error} />}
                 </div>
+
+                {error && <p className="input-help--error">The message field is required.</p>}
             </div>
         </div>
     );

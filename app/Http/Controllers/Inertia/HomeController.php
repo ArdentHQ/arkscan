@@ -36,7 +36,7 @@ final class HomeController
 
     public function __invoke(Request $request): Response
     {
-        return Inertia::render('Home/Index', [
+        return Inertia::renderWithMeta('Home/Index', 'home', [
             'statistics' => $this->statistics(),
 
             'transactions' => Inertia::optional(function () {
@@ -64,8 +64,6 @@ final class HomeController
             }),
 
             'baseUrl' => route('home', absolute: false),
-        ])->withMeta('home', [
-            'name' => Network::currency(),
         ]);
     }
 

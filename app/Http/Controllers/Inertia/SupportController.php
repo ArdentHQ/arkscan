@@ -2,25 +2,34 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Inertia;
 
-use ARKEcosystem\Foundation\UserInterface\Http\Controllers\Controller;
 use Huddle\Zendesk\Facades\Zendesk;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 use Zendesk\API\Exceptions\ApiResponseException;
 
-final class SupportController extends Controller
+final class SupportController
 {
-    public function index(Request $request): View
+    public function __invoke(\Spatie\Honeypot\Honeypot $honeypot): Response
     {
-        return view('app.support');
+        return Inertia::renderWithMeta('Support/Index', 'support', [
+            'socialNetworkUrls' => [
+                'twitter' => config('social.networks.twitter.url'),
+                'github'  => config('social.networks.github.url'),
+            ],
+
+            'subjects' => config('web.contact.subjects'),
+
+            'honeypot' => $honeypot,
+        ]);
     }
 
-    public function handle(Request $request): RedirectResponse
+    public function submit(Request $request): RedirectResponse
     {
         /** @phpstan-ignore-next-line */
         $data = $request->validate([
@@ -47,13 +56,14 @@ final class SupportController extends Controller
             /* @phpstan-ignore-next-line */
             flash()->error(trans('messages.contact_error'));
 
-            return redirect()->route('contact-old');
+            return redirect()->route('contact');
         }
 
+        // TODO: implement Inertia flash/toast messages
         /* @phpstan-ignore-next-line */
         flash()->success(trans('messages.contact'));
 
-        return redirect()->route('contact-old');
+        return redirect()->route('contact');
     }
 
     private function getSubjects(): Collection

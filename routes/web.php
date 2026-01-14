@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
-use App\Http\Controllers\HomeController as LegacyHomeController;
 use App\Http\Controllers\Inertia\BlocksListController;
 use App\Http\Controllers\Inertia\HomeController;
 use App\Http\Controllers\Inertia\ShowBlockController;
 use App\Http\Controllers\Inertia\ShowTransactionController;
 use App\Http\Controllers\Inertia\TopAccountsController;
+use App\Http\Controllers\Inertia\SupportController;
 use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
@@ -17,7 +17,7 @@ use App\Http\Controllers\Inertia\WalletController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ShowBlockController as LegacyShowBlockController;
 use App\Http\Controllers\ShowTransactionController as LegacyShowTransactionController;
-use App\Http\Controllers\SupportController;
+use App\Http\Controllers\SupportController as LegacySupportController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -39,7 +39,6 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::get('/home-old', LegacyHomeController::class)->name('home-old');
 Route::get('/validators/{view?}', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
@@ -68,8 +67,14 @@ Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
 Route::view('/statistics', 'app.statistics')->name('statistics');
 
 // Keep the route name as contact for use with the foundation component
-Route::get('/support', [SupportController::class, 'index'])->name('contact');
-Route::post('support', [SupportController::class, 'handle'])
+Route::get('/support', SupportController::class)->name('contact');
+Route::get('/support-old', [LegacySupportController::class, 'index'])->name('contact-old');
+Route::post('support', [SupportController::class, 'submit'])
+    ->middleware([
+        ProtectAgainstSpam::class,
+        'throttle:5,60',
+    ]);
+Route::post('support-old', [LegacySupportController::class, 'handle'])
     ->middleware([
         ProtectAgainstSpam::class,
         'throttle:5,60',
