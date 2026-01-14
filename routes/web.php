@@ -85,6 +85,10 @@ Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redire
 Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
 
 Route::get('/compatible-wallets', CompatibleWalletsController::class)->name('compatible-wallets');
+Route::post('/compatible-wallets', [CompatibleWalletsController::class, 'submit'])
+    ->middleware(['throttle:3,3600'])
+    ->name('compatible-wallets.submit');
+
 Route::view('/compatible-wallets-old', 'app.compatible-wallets')->name('compatible-wallets-old');
 
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
