@@ -16,6 +16,7 @@ export default function Input({
     inputClass = "",
     auxiliaryTitle = "",
     error,
+    testId,
 
     ...props
 }: InputHTMLAttributes<HTMLInputElement> & {
@@ -31,11 +32,12 @@ export default function Input({
     inputClass?: string;
     auxiliaryTitle?: string;
     error?: string;
+    testId?: string;
 }) {
     const inputRef = createRef<HTMLInputElement>();
 
     return (
-        <div className={className}>
+        <div className={className} data-testid={testId}>
             <div className="input-group">
                 {!hideLabel && (
                     <InputLabel
