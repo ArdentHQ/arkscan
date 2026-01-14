@@ -8,12 +8,13 @@ use App\Http\Controllers\HomeController as LegacyHomeController;
 use App\Http\Controllers\Inertia\BlocksListController;
 use App\Http\Controllers\Inertia\HomeController;
 use App\Http\Controllers\Inertia\SupportController;
+use App\Http\Controllers\Inertia\ShowBlockController;
 use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\ShowBlockController;
+use App\Http\Controllers\ShowBlockController as LegacyShowBlockController;
 use App\Http\Controllers\ShowTransactionController;
 use App\Http\Controllers\SupportController as LegacySupportController;
 use App\Http\Controllers\ThemeController;
@@ -43,6 +44,7 @@ Route::get('/validator-monitor', ValidatorMonitorController::class)->name('valid
 
 Route::get('/blocks', BlocksListController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
+Route::get('/old-blocks/{block}', LegacyShowBlockController::class)->name('old-block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
