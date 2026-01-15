@@ -8,7 +8,9 @@ export default function ValidatorRowDesktop({ row }: { row: StatisticsValidatorR
     const { t } = useTranslation();
 
     const title = t(`pages.statistics.insights.validators.header.${row.key}`);
-    const valueLabel = t(`pages.statistics.insights.validators.header.${row.key.includes("active_validator") ? "registered" : row.key === "most_blocks_forged" ? "blocks" : "voters"}`);
+    const valueLabel = t(
+        `pages.statistics.insights.validators.header.${row.key.includes("active_validator") ? "registered" : row.key === "most_blocks_forged" ? "blocks" : "voters"}`,
+    );
 
     return (
         <div className="hidden w-full justify-between md:flex xl:w-[770px]">
@@ -31,7 +33,7 @@ export default function ValidatorRowDesktop({ row }: { row: StatisticsValidatorR
                 <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">
                     <div>{valueLabel}:</div>
                     <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                        {typeof row.value === "number" ? <Number>{row.value}</Number> : row.value ?? t("general.na")}
+                        {typeof row.value === "number" ? <Number>{row.value}</Number> : (row.value ?? t("general.na"))}
                     </div>
                 </div>
             </div>

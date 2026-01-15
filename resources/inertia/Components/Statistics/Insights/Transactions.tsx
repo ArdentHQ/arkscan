@@ -24,10 +24,7 @@ export default function TransactionInsights({
             <div>
                 <InsightsContainer title={t("pages.statistics.insights.transactions.all_time")} applySpacing>
                     {Object.entries(data.details).map(([key, detail]) => (
-                        <InsightsRow
-                            key={key}
-                            title={t(`pages.statistics.insights.transactions.header.${key}`)}
-                        >
+                        <InsightsRow key={key} title={t(`pages.statistics.insights.transactions.header.${key}`)}>
                             <Number>{detail}</Number>
                         </InsightsRow>
                     ))}

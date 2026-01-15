@@ -26,7 +26,12 @@ export default function InsightsRow({
         return (
             <div className="flex flex-col space-y-2 pt-3 first:pt-0 md:flex-row md:items-center md:space-x-4 md:space-y-0 md:pt-0">
                 <div className={classNames("whitespace-nowrap", headerWidthClass)}>{title}</div>
-                <div className={classNames("flex-1 space-y-3 text-theme-secondary-900 dark:text-theme-dark-50 md:text-right", valueClass)}>
+                <div
+                    className={classNames(
+                        "flex-1 space-y-3 text-theme-secondary-900 dark:text-theme-dark-50 md:text-right",
+                        valueClass,
+                    )}
+                >
                     {t("general.na")}
                 </div>
             </div>
@@ -38,8 +43,19 @@ export default function InsightsRow({
     return (
         <div className="flex flex-col space-y-2 pt-3 first:pt-0 md:flex-row md:items-center md:space-x-4 md:space-y-0 md:pt-0">
             <div className={classNames("whitespace-nowrap", headerWidthClass)}>{title}</div>
-            <div className={classNames("flex-1 space-y-3 text-theme-secondary-900 dark:text-theme-dark-50 md:text-right", valueClass)}>
-                {tooltip ? <Tooltip content={tooltip}><span>{content}</span></Tooltip> : content}
+            <div
+                className={classNames(
+                    "flex-1 space-y-3 text-theme-secondary-900 dark:text-theme-dark-50 md:text-right",
+                    valueClass,
+                )}
+            >
+                {tooltip ? (
+                    <Tooltip content={tooltip}>
+                        <span>{content}</span>
+                    </Tooltip>
+                ) : (
+                    content
+                )}
             </div>
         </div>
     );

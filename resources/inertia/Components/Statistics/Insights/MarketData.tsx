@@ -51,7 +51,7 @@ export default function MarketDataInsights({
                                         {item === "daily" ? (
                                             <RangeValue low={data.prices.daily.low} high={data.prices.daily.high} />
                                         ) : (
-                                            data.prices[item].value ?? t("general.na")
+                                            (data.prices[item].value ?? t("general.na"))
                                         )}
                                     </span>
                                 </div>
@@ -90,7 +90,7 @@ export default function MarketDataInsights({
                             <div
                                 className={classNames(
                                     "flex",
-                                    isFiatCurrency ? "flex-1" : "flex-1 md-lg:flex-none md-lg:w-[150px]",
+                                    isFiatCurrency ? "flex-1" : "flex-1 md-lg:w-[150px] md-lg:flex-none",
                                 )}
                             >
                                 {t(`pages.statistics.insights.market_data.header.${item}`)}
@@ -101,7 +101,9 @@ export default function MarketDataInsights({
                                     {item === "daily" && (
                                         <RangeValue low={data.prices.daily.low} high={data.prices.daily.high} />
                                     )}
-                                    {item === "year" && <RangeValue low={data.prices.year.low} high={data.prices.year.high} />}
+                                    {item === "year" && (
+                                        <RangeValue low={data.prices.year.low} high={data.prices.year.high} />
+                                    )}
                                     {(item === "atl" || item === "ath") && (data.prices[item].value ?? t("general.na"))}
                                 </div>
 
@@ -154,7 +156,7 @@ export default function MarketDataInsights({
                                 <div
                                     className={classNames(
                                         "flex",
-                                        isFiatCurrency ? "flex-1" : "flex-1 md-lg:flex-none md-lg:w-[150px]",
+                                        isFiatCurrency ? "flex-1" : "flex-1 md-lg:w-[150px] md-lg:flex-none",
                                     )}
                                 >
                                     {t(`pages.statistics.insights.market_data.header.${item}`)}
@@ -215,7 +217,7 @@ export default function MarketDataInsights({
                                 <div
                                     className={classNames(
                                         "flex",
-                                        isFiatCurrency ? "flex-1" : "flex-1 md-lg:flex-none md-lg:w-[150px]",
+                                        isFiatCurrency ? "flex-1" : "flex-1 md-lg:w-[150px] md-lg:flex-none",
                                     )}
                                 >
                                     {t(`pages.statistics.insights.market_data.header.${item}`)}

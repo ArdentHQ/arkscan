@@ -28,9 +28,12 @@ export default function MobileDropdown({
                         <div className="flex w-full items-center justify-between">
                             <span>{activeLabel}</span>
                             <ChevronDownSmallIcon
-                                className={classNames("h-3 w-3 text-theme-secondary-700 transition-default dark:text-theme-dark-200", {
-                                    "rotate-180": isOpen,
-                                })}
+                                className={classNames(
+                                    "transition-default h-3 w-3 text-theme-secondary-700 dark:text-theme-dark-200",
+                                    {
+                                        "rotate-180": isOpen,
+                                    },
+                                )}
                             />
                         </div>
                     )}

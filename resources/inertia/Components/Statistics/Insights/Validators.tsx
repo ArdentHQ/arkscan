@@ -4,13 +4,7 @@ import { StatisticsValidatorRow } from "@/Pages/Statistics.contracts";
 import ValidatorRowMobile from "./ValidatorRowMobile";
 import ValidatorRowDesktop from "./ValidatorRowDesktop";
 
-export default function ValidatorInsights({
-    rows,
-    activeTab,
-}: {
-    rows: StatisticsValidatorRow[];
-    activeTab: string;
-}) {
+export default function ValidatorInsights({ rows, activeTab }: { rows: StatisticsValidatorRow[]; activeTab: string }) {
     const { t } = useTranslation();
 
     return (
