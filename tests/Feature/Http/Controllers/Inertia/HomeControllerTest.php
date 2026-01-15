@@ -54,6 +54,7 @@ it('should have statistics', function () {
     });
 
     $cache->setVotesPercentage('123.45');
+    $cache->setHeight(fn () => 123456);
 
     (new ValidatorCache())->setTotalBalanceVoted(4567.2345);
     (new MainsailCache())->setFees([
@@ -67,7 +68,7 @@ it('should have statistics', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
-            ->where('statistics.addresses', '11')
+            ->where('statistics.blockHeight', '123,456')
             ->where('statistics.totalSupply', '12K')
             ->where('statistics.voting.percentage', '123.45%')
             ->where('statistics.voting.amount', '4K')
