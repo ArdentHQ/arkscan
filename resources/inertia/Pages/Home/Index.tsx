@@ -1,4 +1,3 @@
-import HomeChartCard from "@/Components/Home/Chart/ChartCard";
 import ArkVaultCTA from "@/Components/Home/ArkVaultCTA";
 import HomeBlocksTableWrapper from "@/Components/Home/BlocksTable";
 import { HomeProps } from "@/Pages/Home.contracts";

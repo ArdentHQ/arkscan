@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\ExchangesController;
 use App\Http\Controllers\Inertia\BlocksListController;
+use App\Http\Controllers\Inertia\CompatibleWalletsController;
 use App\Http\Controllers\Inertia\HomeController;
 use App\Http\Controllers\Inertia\ShowBlockController;
 use App\Http\Controllers\Inertia\ShowTransactionController;
@@ -87,7 +88,13 @@ Route::get('/block/{block}', fn (Block $block) => redirect()->route('block', ['b
 Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redirect()->route('transaction', ['transaction' => $transaction->hash]));
 Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
 
-Route::view('/compatible-wallets', 'app.compatible-wallets')->name('compatible-wallets');
+Route::get('/compatible-wallets', CompatibleWalletsController::class)->name('compatible-wallets');
+Route::post('/compatible-wallets', [CompatibleWalletsController::class, 'submit'])
+    ->middleware(['throttle:3,3600'])
+    ->name('compatible-wallets.submit');
+
+Route::view('/compatible-wallets-old', 'app.compatible-wallets')->name('compatible-wallets-old');
+
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 
 Route::post('/webhooks', WebhooksController::class)
