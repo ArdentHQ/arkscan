@@ -149,13 +149,13 @@ export default function InformationCard({
             </div>
 
             <div className="-mx-4 -mb-4 rounded-b bg-theme-secondary-100 p-4 dark:bg-theme-dark-950 md:-mx-6 md:-my-4 md:w-auto md:rounded-b-xl md:rounded-tr-none md:px-6">
-                <div className="mb-4">
+                <div>
                     <PeriodSelect options={options} selected={selectedPeriod} onSelect={setSelectedPeriod} />
                     <PeriodTabs options={options} selected={selectedPeriod} onSelect={setSelectedPeriod} />
                 </div>
 
                 <div className="flex items-end justify-between gap-4 md:w-full">
-                    <div>
+                    <div className="mt-4">
                         <div className="mb-0 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
                             {secondaryTitle}
                         </div>
