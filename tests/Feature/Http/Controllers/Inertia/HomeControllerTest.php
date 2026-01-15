@@ -68,7 +68,7 @@ it('should have statistics', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
-            ->where('statistics.blockHeight', '123,456')
+            ->where('statistics.blockHeight', 123456)
             ->where('statistics.totalSupply', '12K')
             ->where('statistics.voting.percentage', '123.45%')
             ->where('statistics.voting.amount', '4K')
