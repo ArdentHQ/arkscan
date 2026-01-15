@@ -200,16 +200,16 @@ final class StatisticsController
 
     private function convertFeesChart(array $chartData): array
     {
-        $datasets = collect($chartData['datasets'] ?? [])
-            ->map(function ($value) {
+        $datasets = array_map(
+            static function ($value): float {
                 return BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of($value), false))->toFloat();
-            })
-            ->values()
-            ->all();
+            },
+            $chartData['datasets'] ?? [],
+        );
 
         return [
             'labels'   => $chartData['labels'] ?? [],
-            'datasets' => $datasets,
+            'datasets' => array_values($datasets),
         ];
     }
 
@@ -416,7 +416,7 @@ final class StatisticsController
         return array_values($rows);
     }
 
-    private function validatorRow(string $key, ?Wallet $wallet, callable $valueResolver): ?array
+    private function validatorRow(string $key, ?Wallet $wallet, callable $valueResolver): array
     {
         if ($wallet === null) {
             return [
@@ -518,7 +518,7 @@ final class StatisticsController
                 continue;
             }
 
-            $fees = (float) $data['fees'];
+            $fees = $data['fees'];
 
             $yearData[] = [
                 'year'         => $data['year'],
