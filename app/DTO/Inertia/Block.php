@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DTO\Inertia;
 
-use App\Models\Block as Model;
 use App\DTO\Inertia\MemoryWallet as MemoryWalletDTO;
+use App\Models\Block as Model;
 use App\ViewModels\BlockViewModel;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
