@@ -21,13 +21,14 @@ export interface HomeChartData {
     period: HomeChartPeriod;
     refreshInterval: number;
 }
+
 export interface IHomeStatistics {
     totalSupply: number;
     voting: {
         percentage: number;
         amount: number;
     };
-    addresses: number;
+    blockHeight: number;
     gas: {
         low: {
             value: number;
