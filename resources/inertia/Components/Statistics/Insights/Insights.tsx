@@ -16,9 +16,7 @@ export default function Insights({ data }: { data: StatisticsInsights }) {
     const [activeTab, setActiveTab] = useState("transactions");
 
     const tabItems = useMemo(() => {
-        const items = [
-            { value: "transactions", label: t("pages.statistics.insights.dropdown.transactions") },
-        ];
+        const items = [{ value: "transactions", label: t("pages.statistics.insights.dropdown.transactions") }];
 
         if (network.canBeExchanged && data.marketData) {
             items.push({ value: "market_data", label: t("pages.statistics.insights.dropdown.market_data") });

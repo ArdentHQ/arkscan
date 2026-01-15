@@ -26,14 +26,18 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
 
                                 <div className="flex w-full flex-col space-y-2 pt-3 sm:w-[170px] sm:pt-0">
                                     <span>{t("pages.statistics.insights.annual.header.volume")}</span>
-                                    <span className="text-theme-secondary-900 dark:text-theme-dark-50">{year.volume}</span>
+                                    <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                        {year.volume}
+                                    </span>
                                 </div>
                             </div>
 
                             <div className="flex w-full flex-1 flex-col justify-between space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-700 sm:flex-row sm:space-y-0 sm:divide-none">
                                 <div className="flex flex-col space-y-2">
                                     <span>{t("pages.statistics.insights.annual.header.fees")}</span>
-                                    <span className="text-theme-secondary-900 dark:text-theme-dark-50">{year.fees}</span>
+                                    <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                        {year.fees}
+                                    </span>
                                 </div>
 
                                 <div className="flex w-full flex-col space-y-2 pt-3 sm:w-[170px] sm:pt-0">
@@ -52,7 +56,9 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
                         <div className="flex flex-col space-y-4 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-700">
                             {years.map((year, index) => (
                                 <div key={year.year} className={index > 0 ? "flex pt-4" : "flex"}>
-                                    <div className="flex flex-1 text-theme-secondary-900 dark:text-theme-dark-50">{year.year}</div>
+                                    <div className="flex flex-1 text-theme-secondary-900 dark:text-theme-dark-50">
+                                        {year.year}
+                                    </div>
                                     <div className="flex flex-1 flex-col space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                                         <div className="flex flex-1 flex-col space-y-3">
                                             <div className="flex justify-between space-x-3">
@@ -71,11 +77,15 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
                                         <div className="flex flex-1 flex-col space-y-3 md-lg:pl-16">
                                             <div className="flex justify-between space-x-3">
                                                 <span>{t("pages.statistics.insights.annual.header.volume")}:</span>
-                                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">{year.volume}</span>
+                                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                                    {year.volume}
+                                                </span>
                                             </div>
                                             <div className="flex justify-between space-x-3">
                                                 <span>{t("pages.statistics.insights.annual.header.fees")}:</span>
-                                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">{year.fees}</span>
+                                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                                    {year.fees}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -107,13 +117,17 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
                                         <td>
                                             <div className="flex justify-between space-x-3 px-8">
                                                 <span>{t("pages.statistics.insights.annual.header.volume")}:</span>
-                                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">{year.volume}</span>
+                                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                                    {year.volume}
+                                                </span>
                                             </div>
                                         </td>
                                         <td>
                                             <div className="flex justify-between space-x-3 px-8">
                                                 <span>{t("pages.statistics.insights.annual.header.fees")}:</span>
-                                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">{year.fees}</span>
+                                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                                    {year.fees}
+                                                </span>
                                             </div>
                                         </td>
                                         <td>

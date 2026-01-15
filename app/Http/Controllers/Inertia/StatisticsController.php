@@ -152,8 +152,8 @@ final class StatisticsController
     {
         $periods = collect(self::PERIODS)
             ->mapWithKeys(function (string $period): array {
-                $chartData  = $this->chartData(FeeCache::class, $period);
-                $periodTotal = $this->totalFromChart($chartData);
+                $chartData      = $this->chartData(FeeCache::class, $period);
+                $periodTotal    = $this->totalFromChart($chartData);
                 $aboveThreshold = $periodTotal > 10000 * 1e18;
 
                 return [
@@ -242,7 +242,7 @@ final class StatisticsController
 
     private function insights(): array
     {
-        $statisticsCache = new StatisticsCache();
+        $statisticsCache  = new StatisticsCache();
         $transactionCache = new TransactionCache();
 
         return [
@@ -493,10 +493,10 @@ final class StatisticsController
         $largest = $uniqueAddresses->largest;
 
         return [
-            'genesis'          => $uniqueAddresses->genesis,
-            'newest'           => $uniqueAddresses->newest,
+            'genesis'           => $uniqueAddresses->genesis,
+            'newest'            => $uniqueAddresses->newest,
             'most_transactions' => $uniqueAddresses->mostTransactions,
-            'largest'          => $largest !== null
+            'largest'           => $largest !== null
                 ? [
                     ...$largest,
                     'valueShort' => NumberFormatter::currencyShort($largest['value'], Network::currency()),

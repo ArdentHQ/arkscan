@@ -8,7 +8,9 @@ export default function ValidatorRowMobile({ row }: { row: StatisticsValidatorRo
     const { t } = useTranslation();
 
     const title = t(`pages.statistics.insights.validators.header.${row.key}`);
-    const valueLabel = t(`pages.statistics.insights.validators.header.${row.key.includes("active_validator") ? "registered" : row.key === "most_blocks_forged" ? "blocks" : "voters"}`);
+    const valueLabel = t(
+        `pages.statistics.insights.validators.header.${row.key.includes("active_validator") ? "registered" : row.key === "most_blocks_forged" ? "blocks" : "voters"}`,
+    );
 
     return (
         <div className="flex md:hidden">
@@ -33,7 +35,7 @@ export default function ValidatorRowMobile({ row }: { row: StatisticsValidatorRo
                 <div className="flex w-[90px] flex-col space-y-2">
                     <div>{valueLabel}</div>
                     <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                        {typeof row.value === "number" ? <Number>{row.value}</Number> : row.value ?? t("general.na")}
+                        {typeof row.value === "number" ? <Number>{row.value}</Number> : (row.value ?? t("general.na"))}
                     </div>
                 </div>
             </div>

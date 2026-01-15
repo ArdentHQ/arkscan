@@ -6,13 +6,7 @@ import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import useSharedData from "@/hooks/use-shared-data";
 import { StatisticsAddressInsights } from "@/Pages/Statistics.contracts";
 
-export default function AddressInsights({
-    data,
-    activeTab,
-}: {
-    data: StatisticsAddressInsights;
-    activeTab: string;
-}) {
+export default function AddressInsights({ data, activeTab }: { data: StatisticsAddressInsights; activeTab: string }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
 
@@ -71,22 +65,30 @@ export default function AddressInsights({
                                   : t("pages.statistics.insights.addresses.header.date");
 
                         const value =
-                            key === "most_transactions"
-                                ? <Number>{entry.value}</Number>
-                                : key === "largest"
-                                  ? "valueShort" in entry
-                                        ? entry.valueShort
-                                        : entry.value
-                                  : entry.value;
+                            key === "most_transactions" ? (
+                                <Number>{entry.value}</Number>
+                            ) : key === "largest" ? (
+                                "valueShort" in entry ? (
+                                    entry.valueShort
+                                ) : (
+                                    entry.value
+                                )
+                            ) : (
+                                entry.value
+                            );
 
                         const desktopValue =
-                            key === "most_transactions"
-                                ? <Number>{entry.value}</Number>
-                                : key === "largest"
-                                  ? "valueFull" in entry
-                                        ? entry.valueFull
-                                        : entry.value
-                                  : entry.value;
+                            key === "most_transactions" ? (
+                                <Number>{entry.value}</Number>
+                            ) : key === "largest" ? (
+                                "valueFull" in entry ? (
+                                    entry.valueFull
+                                ) : (
+                                    entry.value
+                                )
+                            ) : (
+                                entry.value
+                            );
 
                         return (
                             <div key={key}>
