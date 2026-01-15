@@ -61,7 +61,7 @@ it('should include highlights and gas tracker data', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Statistics/Index')
-            ->where('highlights.totalSupply', '12,345.68')
+            ->where('highlights.totalSupply', '12,345.679')
             ->where('highlights.voting.percentage', '42.50%')
             ->where('highlights.validators', '12')
             ->where('highlights.wallets', '5')

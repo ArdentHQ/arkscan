@@ -162,12 +162,12 @@ export default function InformationCard({
 
                         {periodData.tooltip ? (
                             <Tooltip content={periodData.tooltip}>
-                                <div className="mt-2 text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-base md:leading-5">
+                                <div className="mt-2 whitespace-nowrap text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-base md:leading-5">
                                     {periodData.value}
                                 </div>
                             </Tooltip>
                         ) : (
-                            <div className="mt-2 text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-base md:leading-5">
+                            <div className="mt-2 whitespace-nowrap text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-base md:leading-5">
                                 {periodData.value}
                             </div>
                         )}
