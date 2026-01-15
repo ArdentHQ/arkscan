@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\Models\Block as Model;
+use App\DTO\Inertia\MemoryWallet as MemoryWalletDTO;
 use App\ViewModels\BlockViewModel;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -20,7 +21,7 @@ class Block extends Data
         public float $totalReward,
         public string $totalRewardFiat,
         public string $rewardFiat,
-        public string $proposer,
+        public MemoryWalletDTO $proposer,
     ) {
     }
 
@@ -36,7 +37,7 @@ class Block extends Data
             totalReward: $viewModel->totalReward(),
             totalRewardFiat: $viewModel->totalRewardFiat(),
             rewardFiat: $viewModel->rewardFiat(),
-            proposer: $block->proposer,
+            proposer: MemoryWalletDTO::fromBase($viewModel->validator()),
         );
     }
 }
