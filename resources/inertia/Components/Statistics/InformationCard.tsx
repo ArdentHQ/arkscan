@@ -62,9 +62,10 @@ function PeriodSelect({
     return (
         <div className="lg:hidden">
             <Select value={selected} onValueChange={(value) => onSelect(value as StatisticsPeriod)}>
-                <Select.Trigger className="h-10 w-full !px-3 !py-2 text-left text-sm font-semibold transition-default dark:border-theme-dark-700 dark:bg-theme-dark-900 md:inline-block">
-                    {options.find((option) => option.value === selected)?.label}
-                </Select.Trigger>
+                <Select.Trigger
+                    className="h-10 w-full !px-3 !py-2 text-left text-sm font-semibold transition-default dark:border-theme-dark-700 dark:bg-theme-dark-900 md:inline-block"
+                    placeholder={options.find((option) => option.value === selected)?.label}
+                />
                 <Select.Content className="mt-1 origin-top-left">
                     {options.map((option) => (
                         <Select.Item key={option.value} value={option.value}>
