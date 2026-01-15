@@ -695,6 +695,9 @@ return [
 
         'get_listed' => "Don't see a wallet listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
 
+        'dont_see_a_wallet' => 'Don\'t see a wallet listed?',
+        'let_us_know'       => 'Let us know!',
+
         'submit-modal' => [
             'title'               => 'Submit a Listing',
             'name'                => 'Wallet Name',
