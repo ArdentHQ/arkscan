@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Enums\StatsPeriods;
-use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\FeeCache;
@@ -72,7 +71,7 @@ it('should include highlights and gas tracker data', function () {
 
 it('should include information card data', function () {
     $transactionCache = new TransactionCache();
-    $feeCache = new FeeCache();
+    $feeCache         = new FeeCache();
 
     foreach ([
         StatsPeriods::DAY,
@@ -105,7 +104,7 @@ it('should include information card data', function () {
 it('should include insights data', function () {
     $transaction = Transaction::factory()->create([
         'timestamp' => Carbon::parse('2024-01-01 00:00:00')->getTimestampMs(),
-        'value' => 2 * 1e18,
+        'value'     => 2 * 1e18,
     ]);
 
     $transactionCache = new TransactionCache();
