@@ -3,7 +3,7 @@ import Navbar from "./Components/General/Navbar/Navbar";
 import useShareData from "./hooks/use-shared-data";
 import { useTranslation } from "react-i18next";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const Layout = ({ children, className = "py-8" }: { children: React.ReactNode; className?: string }) => {
     const { metaPage, metaDetail = {} } = useShareData();
     const { t } = useTranslation();
 
@@ -13,7 +13,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
             <Navbar />
 
-            <div className="py-8">{children}</div>
+            <div className={className}>{children}</div>
         </>
     );
 };

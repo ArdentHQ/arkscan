@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { IBlockDetails } from "@/types/generated";
 import { Link } from "@inertiajs/react";
-import PageSection from "./PageSection";
-import SectionDetailRow from "./SectionDetailRow";
+import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 
 export default function GeneratedBy({ block }: { block: IBlockDetails }) {

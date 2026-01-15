@@ -14,11 +14,11 @@ export default function Method({ transaction }: { transaction: ITransaction }) {
                         validator: transaction.votedFor,
                     })}
                 >
-                    <Badge className="encapsulated-badge">Vote</Badge>
+                    <Badge className="encapsulated-badge inline">Vote</Badge>
                 </Tooltip>
             );
         }
     }
 
-    return <Badge className="encapsulated-badge">{transaction.type}</Badge>;
+    return <Badge className="encapsulated-badge inline">{transaction.type}</Badge>;
 }

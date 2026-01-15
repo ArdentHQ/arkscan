@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { IPaginatedResponse } from "@/types";
 import { ITransaction } from "@/types/generated";
-import PageSection from "./PageSection";
+import { PageSection } from "@/Components/PageSection";
 import { TransactionsTable, TransactionsListLoadingState } from "@/Components/Tables/Desktop/Transactions/Transactions";
 import { TransactionsMobileTable } from "@/Components/Tables/Mobile/Transactions/Transactions";
 import { MobileTransactionsSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Transactions/Transactions";

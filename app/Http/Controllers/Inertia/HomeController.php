@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
+use App\Actions\CacheNetworkHeight;
 use App\Actions\CacheNetworkSupply;
 use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
@@ -104,6 +105,11 @@ final class HomeController
         return NumberFormatter::currencyShortNotation($supply);
     }
 
+    protected function getBlockHeight(): int
+    {
+        return CacheNetworkHeight::execute();
+    }
+
     private function statistics(): array
     {
         $gasLow     = (string) GasTracker::low();
@@ -121,7 +127,7 @@ final class HomeController
         }
 
         return [
-            'addresses'   => $this->getWallets(),
+            'blockHeight' => $this->getBlockHeight(),
             'totalSupply' => $this->getTotalSupply(),
             'voting'      => [
                 'percentage' => $this->getVotingPercent(),
