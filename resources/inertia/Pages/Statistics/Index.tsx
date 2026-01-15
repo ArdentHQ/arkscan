@@ -65,10 +65,7 @@ export default function StatisticsIndex({
 
     return (
         <Layout>
-            <PageHeader
-                title={t("pages.statistics.title")}
-                subtitle={t("pages.statistics.subtitle")}
-            />
+            <PageHeader title={t("pages.statistics.title")} subtitle={t("pages.statistics.subtitle")} />
 
             <div className="pb-6 md:mx-auto md:max-w-7xl md:px-10">
                 <GasTracker data={gasTracker} />

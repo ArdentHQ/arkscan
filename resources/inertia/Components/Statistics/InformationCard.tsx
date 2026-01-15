@@ -24,14 +24,14 @@ function PeriodTabs({
                         <button
                             key={option.value}
                             type="button"
-                            className="group/tab relative flex cursor-pointer items-center text-theme-secondary-700 transition-default hover:text-theme-secondary-900 dark:text-theme-dark-200 dark:hover:text-theme-secondary-200"
+                            className="group/tab transition-default relative flex cursor-pointer items-center text-theme-secondary-700 hover:text-theme-secondary-900 dark:text-theme-dark-200 dark:hover:text-theme-secondary-200"
                             onClick={() => onSelect(option.value)}
                             role="tab"
                             aria-selected={selected === option.value}
                         >
                             <span
                                 className={classNames(
-                                    "block w-full whitespace-nowrap rounded px-3 py-1.5 font-semibold transition-default sm:rounded-lg",
+                                    "transition-default block w-full whitespace-nowrap rounded px-3 py-1.5 font-semibold sm:rounded-lg",
                                     {
                                         "bg-white text-theme-secondary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50":
                                             selected === option.value,
@@ -63,7 +63,7 @@ function PeriodSelect({
         <div className="lg:hidden">
             <Select value={selected} onValueChange={(value) => onSelect(value as StatisticsPeriod)}>
                 <Select.Trigger
-                    className="h-10 w-full !px-3 !py-2 text-left text-sm font-semibold transition-default dark:border-theme-dark-700 dark:bg-theme-dark-900 md:inline-block"
+                    className="transition-default h-10 w-full !px-3 !py-2 text-left text-sm font-semibold dark:border-theme-dark-700 dark:bg-theme-dark-900 md:inline-block"
                     placeholder={options.find((option) => option.value === selected)?.label}
                 />
                 <Select.Content className="mt-1 origin-top-left">
