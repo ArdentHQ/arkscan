@@ -16,7 +16,7 @@ function HighlightStat({
     return (
         <HeaderItem title={label}>
             <div className="flex flex-grow flex-col justify-between space-y-2">
-            <span className="flex whitespace-nowrap text-sm font-semibold !leading-4.25 text-theme-secondary-900 divide-x divide-theme-secondary-300 dark:text-theme-dark-50 dark:divide-theme-dark-700 md:!leading-5 md:text-base space-x-3">
+                <span className="flex space-x-3 divide-x divide-theme-secondary-300 whitespace-nowrap text-sm font-semibold !leading-4.25 text-theme-secondary-900 dark:divide-theme-dark-700 dark:text-theme-dark-50 md:text-base md:!leading-5">
                     <span>{value}</span>
 
                     {link && (
