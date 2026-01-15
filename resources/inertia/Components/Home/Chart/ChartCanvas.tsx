@@ -44,7 +44,10 @@ export default function ChartCanvas({
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const chartRef = useRef<ReturnType<typeof CustomChart> | null>(null);
 
-    const chartLabels = useMemo(() => labels.map((label) => new Date(Number(label) * 1000)), [labels]);
+    const chartLabels = useMemo(
+        () => (hasDateTimeLabels ? labels.map((label) => new Date(Number(label) * 1000)) : labels),
+        [labels, hasDateTimeLabels],
+    );
 
     useEffect(() => {
         if (!canvasRef.current) {
