@@ -48,7 +48,8 @@ export default function Insights({ data }: { data: StatisticsInsights }) {
             </div>
 
             <MobileDropdown items={tabItems} active={activeTab} onSelect={setActiveTab} />
-            <div className="space-y-8">
+
+            <div className="md:space-y-8">
                 <TransactionInsights data={data.transactions} activeTab={activeTab} />
 
                 {data.marketData && network.canBeExchanged && (

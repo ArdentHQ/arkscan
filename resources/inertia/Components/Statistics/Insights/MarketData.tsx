@@ -37,7 +37,7 @@ export default function MarketDataInsights({
             <div>
                 <InsightsContainer title={t("pages.statistics.insights.market_data.price")} fullWidth>
                     {(["daily", "atl", "ath"] as const).map((item) => (
-                        <div key={item} className="flex md:hidden">
+                        <div key={item} className="flex first:-mt-3 md:hidden">
                             <div
                                 className={classNames(
                                     "flex w-full flex-col justify-between space-y-3 pt-3",
@@ -124,7 +124,7 @@ export default function MarketDataInsights({
 
                 <InsightsContainer title={t("pages.statistics.insights.market_data.exchanges_volume")} fullWidth>
                     {(["today_volume", "atl", "ath"] as const).map((item) => (
-                        <div key={item}>
+                        <div key={item} className="first:-mt-3 md:hidden">
                             <div className="flex md:hidden">
                                 <div className="flex w-full flex-col justify-between space-y-3 pt-3 sm:flex-row sm:space-y-0">
                                     <div className="flex flex-col space-y-2">
@@ -185,7 +185,7 @@ export default function MarketDataInsights({
 
                 <InsightsContainer title={t("pages.statistics.insights.market_data.market_cap")} fullWidth>
                     {(["today_value", "atl", "ath"] as const).map((item) => (
-                        <div key={item}>
+                        <div key={item} className="first:-mt-3 md:first:mt-0">
                             <div className="flex md:hidden">
                                 <div className="flex w-full flex-col justify-between space-y-3 pt-3 sm:flex-row sm:space-y-0">
                                     <div className="flex flex-col space-y-2">

@@ -19,7 +19,7 @@ export default function AddressInsights({ data, activeTab }: { data: StatisticsA
             <div>
                 <InsightsContainer title={t("pages.statistics.insights.addresses.holdings")} fullWidth>
                     {data.holdings.map((row) => (
-                        <div key={row.grouped}>
+                        <div key={row.grouped} className="first:-mt-3 md:first:mt-0">
                             <div className="flex md:hidden">
                                 <div className="flex flex-col space-y-2 pt-3">
                                     <span>
@@ -91,7 +91,7 @@ export default function AddressInsights({ data, activeTab }: { data: StatisticsA
                             );
 
                         return (
-                            <div key={key}>
+                            <div key={key} className="first:-mt-3 md:first:mt-0">
                                 <div className="flex md:hidden">
                                     <div className="flex w-full flex-col justify-between space-y-3 pt-3 sm:flex-row sm:space-y-0">
                                         <div className="flex flex-col space-y-2">

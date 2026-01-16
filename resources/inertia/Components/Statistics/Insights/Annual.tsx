@@ -13,7 +13,7 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
             </div>
 
             <div>
-                <div className="flex flex-col md:hidden">
+                <div className="-mt-2 flex flex-col md:hidden">
                     {years.map((year) => (
                         <InsightsContainer key={year.year} title={String(year.year)} fullWidth>
                             <div className="flex w-full flex-1 flex-col justify-between space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-700 sm:flex-row sm:space-y-0 sm:divide-none">
