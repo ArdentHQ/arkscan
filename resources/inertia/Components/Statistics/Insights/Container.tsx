@@ -4,12 +4,10 @@ import Badge from "@/Components/General/Badge";
 export default function InsightsContainer({
     title,
     fullWidth = false,
-    applySpacing = false,
     children,
 }: React.PropsWithChildren<{
     title?: string | null;
     fullWidth?: boolean;
-    applySpacing?: boolean;
 }>) {
     return (
         <div className="group/stats mt-3 px-6 first:mt-2 last:mb-8 dark:text-theme-dark-200 md:mx-auto md:max-w-7xl md:px-10">
@@ -30,10 +28,12 @@ export default function InsightsContainer({
                     )}
 
                     <div
-                        className={classNames("flex flex-col px-4 text-sm md:px-6 md:py-4 md:text-base md:leading-5", {
-                            "md-lg:w-2/3 md-lg:pr-10 xl:w-[524px] xl:pr-5": !fullWidth,
-                            "space-y-3": applySpacing,
-                        })}
+                        className={classNames(
+                            "flex flex-col px-4 text-sm md:space-y-3 md:px-6 md:py-4 md:text-base md:leading-5",
+                            {
+                                "md-lg:w-2/3 md-lg:pr-10 xl:w-[524px] xl:pr-5": !fullWidth,
+                            },
+                        )}
                     >
                         {title && (
                             <div className="hidden md:inline-flex">

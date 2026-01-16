@@ -22,7 +22,7 @@ export default function TransactionInsights({
             </div>
 
             <div>
-                <InsightsContainer title={t("pages.statistics.insights.transactions.all_time")} applySpacing>
+                <InsightsContainer title={t("pages.statistics.insights.transactions.all_time")}>
                     {Object.entries(data.details).map(([key, detail]) => (
                         <InsightsRow key={key} title={t(`pages.statistics.insights.transactions.header.${key}`)}>
                             <Number>{detail}</Number>
@@ -30,7 +30,7 @@ export default function TransactionInsights({
                     ))}
                 </InsightsContainer>
 
-                <InsightsContainer title={t("pages.statistics.insights.transactions.daily_averages")} applySpacing>
+                <InsightsContainer title={t("pages.statistics.insights.transactions.daily_averages")}>
                     {(["transactions", "transaction_volume", "transaction_fees"] as const).map((key) => {
                         const value = data.averages[key];
                         const content = key === "transactions" ? <Number>{value}</Number> : value;
@@ -45,7 +45,7 @@ export default function TransactionInsights({
 
                 <InsightsContainer title={t("pages.statistics.insights.transactions.records")} fullWidth>
                     {Object.entries(data.records).map(([key, record]) => (
-                        <div key={key}>
+                        <div key={key} className="first:-mt-3 md:first:mt-0">
                             <TransactionRecordMobileRow recordKey={key} record={record} />
                             <TransactionRecordDesktopRow recordKey={key} record={record} />
                         </div>

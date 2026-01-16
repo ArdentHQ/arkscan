@@ -15,12 +15,10 @@ export default function TransactionRecordMobileRow({
 
     if (!record) {
         return (
-            <div className="flex md:hidden">
-                <div className="flex w-full flex-col justify-between space-y-3 pt-3 sm:flex-row sm:space-y-0">
-                    <div className="flex flex-col space-y-2">
-                        <span>{title}</span>
-                        <div className="md:w-50">{t("general.na")}</div>
-                    </div>
+            <div className="flex w-full flex-col justify-between space-y-3 pt-3 sm:flex-row sm:space-y-0 md:hidden">
+                <div className="flex flex-col space-y-2">
+                    <span>{title}</span>
+                    <div className="md:w-50">{t("general.na")}</div>
                 </div>
             </div>
         );
@@ -46,19 +44,17 @@ export default function TransactionRecordMobileRow({
     })();
 
     return (
-        <div className="flex md:hidden">
-            <div className="flex w-full flex-col justify-between space-y-3 pt-3 sm:flex-row sm:space-y-0">
-                <div className="flex flex-col space-y-2">
-                    <span>{title}</span>
-                    <Link href={record.url} className="link">
-                        {mainValue}
-                    </Link>
-                </div>
+        <div className="flex w-full flex-col justify-between space-y-3 pt-3 sm:flex-row sm:space-y-0 md:hidden">
+            <div className="flex flex-col space-y-2">
+                <span>{title}</span>
+                <Link href={record.url} className="link">
+                    {mainValue}
+                </Link>
+            </div>
 
-                <div className="flex w-[90px] flex-col space-y-2">
-                    <div>{t("pages.statistics.insights.transactions.header.date")}</div>
-                    <div className="text-theme-secondary-900 dark:text-theme-dark-50">{record.date}</div>
-                </div>
+            <div className="flex w-[90px] flex-col space-y-2">
+                <div>{t("pages.statistics.insights.transactions.header.date")}</div>
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50">{record.date}</div>
             </div>
         </div>
     );
