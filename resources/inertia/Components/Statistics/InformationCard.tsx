@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import classNames from "classnames";
 import Select from "@/Components/General/Select";
 import ChartCanvas from "@/Components/Home/Chart/ChartCanvas";
 import { InformationCardData, StatisticsChartData, StatisticsPeriod } from "@/Pages/Statistics.contracts";
