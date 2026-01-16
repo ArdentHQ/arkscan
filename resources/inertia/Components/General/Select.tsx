@@ -26,9 +26,10 @@ const SelectRoot = ({
 
 interface SelectTriggerProps extends React.ComponentProps<typeof SelectPrimitive.Trigger> {
     placeholder?: string;
+    iconClassName?: string;
 }
 
-const SelectTrigger = ({ children, placeholder, className, ...props }: SelectTriggerProps) => {
+const SelectTrigger = ({ children, placeholder, className, iconClassName, ...props }: SelectTriggerProps) => {
     return (
         <SelectPrimitive.Trigger
             className={twMerge(
@@ -43,7 +44,9 @@ const SelectTrigger = ({ children, placeholder, className, ...props }: SelectTri
             <SelectPrimitive.Value placeholder={placeholder} />
 
             <SelectPrimitive.Icon className="transition-default group-data-[state=open]:rotate-180">
-                <ChevronDownIcon className="h-3 w-3 text-theme-secondary-700 dark:text-theme-dark-200" />
+                <ChevronDownIcon
+                    className={twMerge("h-3 w-3 text-theme-secondary-700 dark:text-theme-dark-200", iconClassName)}
+                />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );
