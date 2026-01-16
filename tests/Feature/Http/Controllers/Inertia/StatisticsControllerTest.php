@@ -20,12 +20,12 @@ use App\Services\Cache\TransactionCache;
 use App\Services\Cache\ValidatorCache;
 use App\Services\Cache\WalletCache;
 use App\Services\NumberFormatter;
+use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
-use InvalidArgumentException;
 
 beforeEach(function () {
     Cache::tags('block')->flush();
@@ -145,11 +145,12 @@ it('should include insights data', function () {
 it('should throw when chart cache is invalid', function () {
     $controller = new StatisticsController();
 
-    $call = \Closure::bind(static function () {
+    // Access private chartData to assert invalid cache handling.
+    $call = \Closure::bind(function () {
         return $this->chartData('invalid-cache', StatsPeriods::DAY);
     }, $controller, StatisticsController::class);
 
-    expect(fn () => $call())->toThrow(InvalidArgumentException::class);
+    expect(fn () => $call())->toThrow(\InvalidArgumentException::class);
 });
 
 it('should format fee cards above threshold and convert chart datasets', function () {
@@ -185,7 +186,7 @@ it('should format fee cards above threshold and convert chart datasets', functio
             ->component('Statistics/Index')
             ->where('informationCards.fees.periods.day.value', $expectedValue)
             ->where('informationCards.fees.periods.day.tooltip', $expectedTooltip)
-            ->where('informationCards.fees.periods.day.chart.datasets.0', $expectedDataset));
+            ->where('informationCards.fees.periods.day.chart.datasets.0', fn ($value) => (float) $value === $expectedDataset));
 });
 
 it('should include market data, validators, addresses, annual data, and block records', function () {
@@ -221,11 +222,11 @@ it('should include market data, validators, addresses, annual data, and block re
 
     $statisticsCache->setGenesisAddress([
         'address' => $mostUniqueVoters->address,
-        'value'   => Carbon::parse('2024-01-01')->format('d M Y'),
+        'value'   => Carbon::parse('2024-01-01')->format(DateFormat::DATE),
     ]);
     $statisticsCache->setNewestAddress([
         'address' => $leastUniqueVoters->address,
-        'value'   => Carbon::parse('2024-01-02')->format('d M Y'),
+        'value'   => Carbon::parse('2024-01-02')->format(DateFormat::DATE),
     ]);
     $statisticsCache->setMostTransactions([
         'address' => $mostBlocksForged->address,
@@ -299,7 +300,7 @@ it('should include market data, validators, addresses, annual data, and block re
             ->where('insights.validators.0.key', 'most_unique_voters')
             ->where('insights.validators.0.value', 15)
             ->where('insights.validators.2.key', 'oldest_active_validator')
-            ->where('insights.validators.2.value', Carbon::parse('2020-01-01')->format('d M Y'))
+            ->where('insights.validators.2.value', Carbon::parse('2020-01-01')->format(DateFormat::DATE))
             ->where('insights.validators.4.key', 'most_blocks_forged')
             ->where('insights.validators.4.value', 77)
             ->where('insights.transactions.records.highest_fee.fee', $expectedHighestFee)
