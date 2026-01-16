@@ -145,7 +145,7 @@ it('should include insights data', function () {
 it('should throw when chart cache is invalid', function () {
     $controller = new StatisticsController();
 
-    $call = \Closure::bind(static function () {
+    $call = Closure::bind(static function () {
         return $this->chartData('invalid-cache', StatsPeriods::DAY);
     }, $controller, StatisticsController::class);
 
