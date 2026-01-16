@@ -192,7 +192,7 @@ it('should format fee cards above threshold and convert chart datasets', functio
 it('should return null when wallet details are missing in validator records', function () {
     $controller = new StatisticsController();
 
-    $call = \Closure::bind(function (array $data) {
+    $call = Closure::bind(function (array $data) {
         return $this->walletWithValue('oldest_active_validator', $data);
     }, $controller, StatisticsController::class);
 
