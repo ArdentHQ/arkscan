@@ -1,6 +1,5 @@
 import { router } from "@inertiajs/react";
 import Layout from "@/Layout";
-import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import HeaderStats from "@/Components/Validator/HeaderStats";
 import { ValidatorsProps } from "../Validators.contracts";
@@ -16,29 +15,10 @@ import useSharedData from "@/hooks/use-shared-data";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 
-const ValidatorsTabsWrapper = ({
-    missedBlocks,
-    validators,
-    filters,
-    recentVotes,
-}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters" | "recentVotes">) => {
-    return (
-        <ValidatorsTabs
-            missedBlocks={missedBlocks}
-            validators={validators}
-            filters={filters}
-            recentVotes={recentVotes}
-        />
-    );
-};
-
-const ValidatorsTabs = ({
-    missedBlocks,
-    validators,
-    filters,
-    recentVotes,
-}: Pick<ValidatorsProps, "missedBlocks" | "validators" | "filters" | "recentVotes">) => {
+const ValidatorsTabs = () => {
     const { currentTab } = useTabs();
+
+    const { missedBlocks, validators, filters, recentVotes } = useSharedData<ValidatorsProps>();
 
     useTabPolling((tab: string, callback?: CallableFunction) => {
         let pollParameters: string[] = [];
@@ -109,19 +89,15 @@ function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
     );
 }
 
-export default function Validators({ missedBlocks, validators, filters, recentVotes }: PageProps<ValidatorsProps>) {
+export default function Validators() {
     const { t } = useTranslation();
+
     return (
         <Layout>
             <PageHeader title={t("pages.validators.title")} subtitle={t("pages.validators.subtitle")} />
 
             <ValidatorsPageHandlerProvider>
-                <ValidatorsTabsWrapper
-                    missedBlocks={missedBlocks}
-                    validators={validators}
-                    filters={filters}
-                    recentVotes={recentVotes}
-                />
+                <ValidatorsTabs />
             </ValidatorsPageHandlerProvider>
         </Layout>
     );
