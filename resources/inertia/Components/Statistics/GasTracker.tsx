@@ -34,7 +34,7 @@ function GasTrackerCard({
         <div className="flex flex-1 flex-col rounded border border-white bg-white px-4 py-3 font-semibold dark:border-theme-dark-900 dark:bg-theme-dark-900 dark:text-theme-dark-200 md:rounded-lg">
             <div className="flex flex-1 items-center justify-between pb-3">
                 <div className="mb-0 flex items-center space-x-1.5 text-sm text-theme-secondary-900 dark:text-theme-dark-50">
-                    <Icon className="h-4 w-4" />
+                    <Icon className="h-5 w-5" />
 
                     <span>{title}</span>
                 </div>
