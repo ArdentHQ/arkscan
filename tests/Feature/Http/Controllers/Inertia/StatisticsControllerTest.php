@@ -146,11 +146,11 @@ it('should throw when chart cache is invalid', function () {
     $controller = new StatisticsController();
 
     // Access private chartData to assert invalid cache handling.
-    $call = \Closure::bind(function () {
+    $call = Closure::bind(function () {
         return $this->chartData('invalid-cache', StatsPeriods::DAY);
     }, $controller, StatisticsController::class);
 
-    expect(fn () => $call())->toThrow(\InvalidArgumentException::class);
+    expect(fn () => $call())->toThrow(InvalidArgumentException::class);
 });
 
 it('should format fee cards above threshold and convert chart datasets', function () {
