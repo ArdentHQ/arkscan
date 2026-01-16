@@ -10,7 +10,7 @@ export default function InsightsContainer({
     fullWidth?: boolean;
 }>) {
     return (
-        <div className="group/stats mt-3 px-6 first:mt-2 last:mb-8 dark:text-theme-dark-200 md:mx-auto md:max-w-7xl md:px-10">
+        <div className="group/stats mt-3 px-6 first:mt-2 dark:text-theme-dark-200 md:mx-auto md:max-w-7xl md:px-10">
             <div className="flex md:mt-0 md:space-x-3">
                 <div className="ml-3 hidden w-[1.625rem] flex-col md:flex">
                     <div className="hidden h-[30px] w-full border-l-2 border-theme-secondary-300 group-first/stats:h-[18px] dark:border-theme-dark-700 md:-mt-3 md:block group-first/stats:md:-mt-0 group-first/stats:md:block" />

@@ -48,18 +48,19 @@ export default function Insights({ data }: { data: StatisticsInsights }) {
             </div>
 
             <MobileDropdown items={tabItems} active={activeTab} onSelect={setActiveTab} />
+            <div className="space-y-8">
+                <TransactionInsights data={data.transactions} activeTab={activeTab} />
 
-            <TransactionInsights data={data.transactions} activeTab={activeTab} />
+                {data.marketData && network.canBeExchanged && (
+                    <MarketDataInsights data={data.marketData} activeTab={activeTab} />
+                )}
 
-            {data.marketData && network.canBeExchanged && (
-                <MarketDataInsights data={data.marketData} activeTab={activeTab} />
-            )}
+                <ValidatorInsights rows={data.validators} activeTab={activeTab} />
 
-            <ValidatorInsights rows={data.validators} activeTab={activeTab} />
+                <AddressInsights data={data.addresses} activeTab={activeTab} />
 
-            <AddressInsights data={data.addresses} activeTab={activeTab} />
-
-            <AnnualInsights years={data.annual} activeTab={activeTab} />
+                <AnnualInsights years={data.annual} activeTab={activeTab} />
+            </div>
         </div>
     );
 }
