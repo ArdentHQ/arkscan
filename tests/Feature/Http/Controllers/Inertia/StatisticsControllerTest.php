@@ -189,6 +189,29 @@ it('should format fee cards above threshold and convert chart datasets', functio
             ->where('informationCards.fees.periods.day.chart.datasets.0', fn ($value) => (float) $value === $expectedDataset));
 });
 
+it('should return null when wallet details are missing in validator records', function () {
+    $controller = new StatisticsController();
+
+    $call = \Closure::bind(function (array $data) {
+        return $this->walletWithValue('oldest_active_validator', $data);
+    }, $controller, StatisticsController::class);
+
+    $missingWallet = $call([
+        'address'   => 'missing-wallet',
+        'timestamp' => Carbon::parse('2020-01-01')->timestamp,
+    ]);
+
+    expect($missingWallet)->toBeNull();
+
+    $wallet = Wallet::factory()->create();
+
+    $missingTimestamp = $call([
+        'address' => $wallet->address,
+    ]);
+
+    expect($missingTimestamp)->toBeNull();
+});
+
 it('should include market data, validators, addresses, annual data, and block records', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 
