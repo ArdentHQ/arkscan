@@ -11,6 +11,7 @@ use App\Http\Controllers\Inertia\ShowBlockController;
 use App\Http\Controllers\Inertia\ShowTransactionController;
 use App\Http\Controllers\Inertia\StatisticsController;
 use App\Http\Controllers\Inertia\SupportController;
+use App\Http\Controllers\Inertia\TopAccountsController;
 use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
@@ -51,7 +52,8 @@ Route::get('/transactions', TransactionsController::class)->name('transactions')
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 Route::get('/old-transactions/{transaction}', LegacyShowTransactionController::class)->name('old-transaction');
 
-Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
+Route::get('/top-accounts', TopAccountsController::class)->name('top-accounts');
+Route::view('/old-top-accounts', 'app.top-accounts')->name('old-top-accounts');
 Route::get('/addresses/{wallet}/{view?}', WalletController::class)->name('wallet');
 
 Route::get('/wallets/{wallet}/', function (Wallet $wallet) {
