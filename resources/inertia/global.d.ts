@@ -14,6 +14,11 @@ declare module "@inertiajs/core" {
             encryptedValidFrom: string;
         };
 
+        flash?: {
+            message: string;
+            type?: string;
+        } | null;
+
         errors: ValidationErrors;
         metaPage?: string;
         metaDetail?: Record<string, string | number>;
