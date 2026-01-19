@@ -76,6 +76,12 @@ class HandleInertiaRequests extends Middleware
                 'navbarName'           => fn () => config('app.navbar_name'),
 
             ])->toArray(),
+            'flash' => fn () => flash()->message
+                ? [
+                    'message' => flash()->message,
+                    'type'    => flash()->level,
+                ]
+                : null,
             ...parent::share($request),
         ];
     }

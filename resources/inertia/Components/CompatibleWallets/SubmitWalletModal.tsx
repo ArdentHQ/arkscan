@@ -5,6 +5,7 @@ import TextArea from "../Input/TextArea";
 import { router } from "@inertiajs/react";
 import useSharedData from "@/hooks/use-shared-data";
 import { useRef, useState } from "react";
+import useToast from "@/Providers/Toast/useToast";
 
 interface SubmitWalletModalProps {
     isOpen: boolean;
@@ -19,6 +20,7 @@ export default function SubmitWalletModal({ isOpen, onClose, close }: SubmitWall
 
     const { errors } = useSharedData();
     const [isFormValid, setIsFormValid] = useState(false);
+    const { addToast } = useToast();
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,7 +34,9 @@ export default function SubmitWalletModal({ isOpen, onClose, close }: SubmitWall
                 "Content-Type": "application/json",
             },
             onSuccess: () => {
-                // TODO: implement Inertia flash/toast messages
+                addToast(t("pages.compatible-wallets.submit-modal.success_toast"), {
+                    type: "success",
+                });
 
                 formRef.current?.reset();
 

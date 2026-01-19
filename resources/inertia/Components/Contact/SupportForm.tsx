@@ -21,12 +21,7 @@ export default function SupportForm({ subjects }: { subjects: SubjectOption[] })
         router.post(route("contact"), new FormData(formRef.current!), {
             showProgress: false,
             onSuccess: () => {
-                // TODO: implement Inertia flash/toast messages
-
                 formRef.current?.reset();
-            },
-            onError: () => {
-                // TODO: implement Inertia flash/toast messages
             },
         });
     };

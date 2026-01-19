@@ -59,7 +59,6 @@ final class SupportController
             return redirect()->route('contact');
         }
 
-        // TODO: implement Inertia flash/toast messages
         /* @phpstan-ignore-next-line */
         flash()->success(trans('messages.contact'));
 
