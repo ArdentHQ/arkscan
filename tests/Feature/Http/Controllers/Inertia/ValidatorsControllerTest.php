@@ -94,20 +94,20 @@ it('should expose filters and statistics data', function () {
 
     ForgingStats::factory()->create([
         'timestamp' => now()->subMinutes(12)->getTimestamp(),
-        'address' => $walletA->address,
-        'forged'  => false,
+        'address'   => $walletA->address,
+        'forged'    => false,
     ]);
 
     ForgingStats::factory()->create([
         'timestamp' => now()->subMinutes(11)->getTimestamp(),
-        'address' => $walletA->address,
-        'forged'  => false,
+        'address'   => $walletA->address,
+        'forged'    => false,
     ]);
 
     ForgingStats::factory()->create([
         'timestamp' => now()->subMinutes(10)->getTimestamp(),
-        'address' => $walletB->address,
-        'forged'  => false,
+        'address'   => $walletB->address,
+        'forged'    => false,
     ]);
 
     $validatorCache = new ValidatorCache();
