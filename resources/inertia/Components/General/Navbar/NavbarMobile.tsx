@@ -46,7 +46,7 @@ const NavbarMobileItem = ({
 }: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & { routeName?: string; url?: string }) => {
     const { currentRoute } = useShareData();
 
-    const link = routeName ? route(routeName) : url ?? "#";
+    const link = routeName ? route(routeName) : (url ?? "#");
     const isActive = currentRoute === link;
 
     if (routeName) {
@@ -113,7 +113,7 @@ const NavbarMobileListItem = ({
 }: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & { routeName?: string; url?: string }) => {
     const { currentRoute } = useShareData();
 
-    const link = routeName ? route(routeName) : url ?? "#";
+    const link = routeName ? route(routeName) : (url ?? "#");
     const isActive = currentRoute === link;
 
     if (routeName) {
