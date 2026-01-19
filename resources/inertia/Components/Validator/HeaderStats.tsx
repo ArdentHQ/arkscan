@@ -17,6 +17,7 @@ import headerBgMobileDark from "@images/validators/header-bg-mobile-dark.svg";
 import headerBgDim from "@images/validators/header-bg-dim.svg";
 import headerBgMobileDim from "@images/validators/header-bg-mobile-dim.svg";
 import { Link } from "@inertiajs/react";
+import { formattedNumber } from "../General/Number";
 
 function ExploreHeaderStat() {
     const { t } = useTranslation();
@@ -91,7 +92,7 @@ export default function HeaderStats({ statistics }: { statistics: IValidatorsSta
                                         ? "pages.validators.x_validators_singular"
                                         : "pages.validators.x_validators_plural",
                                     {
-                                        count: statistics?.validatorsMissed,
+                                        value: statistics?.validatorsMissed,
                                     },
                                 )}
                             </Badge>
@@ -108,7 +109,9 @@ export default function HeaderStats({ statistics }: { statistics: IValidatorsSta
 
                 <Card className="flex-1">
                     <Detail
-                        title={t("pages.validators.voting_x_addresses", { count: statistics.voterCount })}
+                        title={t("pages.validators.voting_x_addresses", {
+                            value: formattedNumber(statistics.voterCount),
+                        })}
                         className="flex items-center space-x-2"
                     >
                         <span>

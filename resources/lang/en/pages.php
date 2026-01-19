@@ -384,10 +384,9 @@ return [
     'validators'        => [
         'title'                 => 'Validators',
         'subtitle'              => 'List of validators registered on the network.',
-        'x_validators'          => '{1} 1 Validator|:count Validators',
-        'x_validators_singular' => ':count Validator',
-        'x_validators_plural'   => ':count Validators',
-        'voting_x_addresses'    => 'Voting (:count Addresses)',
+        'x_validators_singular' => ':value Validator',
+        'x_validators_plural'   => ':value Validators',
+        'voting_x_addresses'    => 'Voting (:value Addresses)',
 
         'missed-blocks'         => [
             'title'          => 'Missed Blocks (30 Days)',
