@@ -93,16 +93,19 @@ it('should expose filters and statistics data', function () {
     $walletB = Wallet::factory()->create();
 
     ForgingStats::factory()->create([
+        'timestamp' => now()->subMinutes(12)->getTimestamp(),
         'address' => $walletA->address,
         'forged'  => false,
     ]);
 
     ForgingStats::factory()->create([
+        'timestamp' => now()->subMinutes(11)->getTimestamp(),
         'address' => $walletA->address,
         'forged'  => false,
     ]);
 
     ForgingStats::factory()->create([
+        'timestamp' => now()->subMinutes(10)->getTimestamp(),
         'address' => $walletB->address,
         'forged'  => false,
     ]);
