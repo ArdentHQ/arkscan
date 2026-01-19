@@ -76,7 +76,7 @@ class HandleInertiaRequests extends Middleware
                 'navbarName'           => fn () => config('app.navbar_name'),
 
             ])->toArray(),
-            'flash' => fn () => flash()->message
+            'flash' => fn () => flash()->message !== null
                 ? [
                     'message' => flash()->message,
                     'type'    => flash()->level,
