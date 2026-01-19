@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Facades\Network;
 use App\Facades\Services\Monitor\MissedBlocksCalculator;
 use App\Models\Block;
 use App\Models\ForgingStats;
@@ -42,17 +43,29 @@ final class BuildForgingStats implements ShouldQueue
 
         $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($startHeight, $height);
 
+        /** @var \Illuminate\Support\Collection $blockNumbers */
+        $blockNumbers = Block::select('number', 'timestamp')
+            ->withCasts(['number' => 'int'])
+            ->withScope(OrderByTimestampScope::class)
+            ->where('number', '>=', $startHeight - Network::validatorCount())
+            ->where('number', '<=', $height)
+            ->get()
+            ->keyBy('timestamp');
+
         $data = [];
         foreach ($forgingStats as $timestamp => $statsForTimestamp) {
             $missedHeight = null;
             if ($statsForTimestamp['forged'] === false) {
-                /** @var array $missedBlock */
-                $missedBlock = Block::select('number')
-                    ->withCasts(['number' => 'int'])
-                    ->withScope(OrderByTimestampScope::class)
-                    ->where('timestamp', '<=', $timestamp * 1000)
-                    ->limit(1)
-                    ->first();
+                $missedBlock = null;
+                foreach ($blockNumbers as $blockTimestamp => $blockData) {
+                    if ($blockTimestamp > $timestamp) {
+                        continue;
+                    }
+
+                    $missedBlock = $blockData;
+
+                    break;
+                }
 
                 $missedHeight = $missedBlock['number'] + 1;
             }
@@ -136,6 +149,6 @@ final class BuildForgingStats implements ShouldQueue
 
     private function getTimestampForHeight(int $height): int
     {
-        return (int) (Block::where('number', $height)->firstOrFail()->timestamp / 1000);
+        return Block::where('number', $height)->firstOrFail()->timestamp;
     }
 }

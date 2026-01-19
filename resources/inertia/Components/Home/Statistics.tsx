@@ -6,6 +6,7 @@ import { HomeProps, IHomeStatistics } from "@/Pages/Home.contracts";
 import Tooltip from "../General/Tooltip";
 import Info from "../General/Info";
 import ChartContent from "@/Components/Home/Chart/ChartContent";
+import Number from "../General/Number";
 function StatEntry({
     label,
     value,
@@ -130,7 +131,10 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                                 value={`${statistics.voting.amount} ${network.currency}`}
                             />
 
-                            <StatEntry label={t("pages.home.statistics.addresses")} value={statistics.addresses} />
+                            <StatEntry
+                                label={t("pages.home.statistics.block_height")}
+                                value={<Number>{statistics.blockHeight}</Number>}
+                            />
                         </StatRow>
 
                         <StatRow className="hidden sm:grid">

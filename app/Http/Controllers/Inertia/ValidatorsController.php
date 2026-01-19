@@ -14,6 +14,7 @@ use App\Models\ForgingStats;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\ValidatorCache;
 use ARKEcosystem\Foundation\UserInterface\UI;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -110,11 +111,15 @@ final class ValidatorsController
 
     private function missedBlocks(): array
     {
-        $stats = ForgingStats::where('forged', false)->get();
+        $stats = ForgingStats::select([DB::raw('COUNT(*) as total_missed'), 'address'])
+            ->where('forged', false)
+            ->where('timestamp', '>=', now()->subDays(30)->getTimestamp())
+            ->groupBy('address')
+            ->get();
 
         return [
+            $stats->sum('total_missed'),
             $stats->count(),
-            $stats->unique('address')->count(),
         ];
     }
 }

@@ -17,8 +17,6 @@ use Laravel\Dusk\Browser;
 
 describe('Statistics', function () {
     it('should have statistics', function ($resolution) {
-        Config::set('arkscan.networks.development.canBeExchanged', false);
-
         Wallet::factory()->count(11)->create();
 
         $cache = new NetworkCache();
@@ -28,6 +26,7 @@ describe('Statistics', function () {
         });
 
         $cache->setVotesPercentage('123.45');
+        $cache->setHeight(fn () => 123456);
 
         (new ValidatorCache())->setTotalBalanceVoted(4567.2345);
         (new MainsailCache())->setFees([
@@ -44,8 +43,8 @@ describe('Statistics', function () {
                 '12K DARK',
                 trans('pages.home.statistics.voting', ['percentage' => '123.45%']),
                 '4K DARK',
-                trans('pages.home.statistics.addresses'),
-                '11',
+                trans('pages.home.statistics.block_height'),
+                '123,456',
             ];
 
             if ($resolution['width'] >= 640) {
@@ -85,10 +84,6 @@ describe('Statistics', function () {
     })->with('resolutions');
 
     it('should calculate gas statistics with value', function ($resolution) {
-        Config::set('arkscan.networks.development.canBeExchanged', true);
-        config('arkscan.networks.development.canBeExchanged', true);
-        Env('ARKSCAN_NETWORK_CAN_BE_EXCHANGED', true);
-
         Wallet::factory()->count(11)->create();
 
         $cache = new NetworkCache();
@@ -98,6 +93,7 @@ describe('Statistics', function () {
         });
 
         $cache->setVotesPercentage('123.45');
+        $cache->setHeight(fn () => 123456);
 
         (new ValidatorCache())->setTotalBalanceVoted(4567.2345);
         (new MainsailCache())->setFees([
@@ -116,8 +112,8 @@ describe('Statistics', function () {
                 '12K DARK',
                 trans('pages.home.statistics.voting', ['percentage' => '123.45%']),
                 '4K DARK',
-                trans('pages.home.statistics.addresses'),
-                '11',
+                trans('pages.home.statistics.block_height'),
+                '123,456',
             ];
 
             if ($resolution['width'] >= 640) {
