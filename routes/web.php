@@ -9,6 +9,7 @@ use App\Http\Controllers\Inertia\CompatibleWalletsController;
 use App\Http\Controllers\Inertia\HomeController;
 use App\Http\Controllers\Inertia\ShowBlockController;
 use App\Http\Controllers\Inertia\ShowTransactionController;
+use App\Http\Controllers\Inertia\StatisticsController;
 use App\Http\Controllers\Inertia\SupportController;
 use App\Http\Controllers\Inertia\TopAccountsController;
 use App\Http\Controllers\Inertia\TransactionsController;
@@ -65,7 +66,8 @@ Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
     return redirect()->route('wallet', ['wallet' => $wallet, 'view' => 'blocks']);
 });
 
-Route::view('/statistics', 'app.statistics')->name('statistics');
+Route::get('/statistics', StatisticsController::class)->name('statistics');
+Route::view('/old-statistics', 'app.statistics')->name('old-statistics');
 
 // Keep the route name as contact for use with the foundation component
 Route::get('/support', SupportController::class)->name('contact');
