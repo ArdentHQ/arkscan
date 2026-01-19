@@ -1,11 +1,14 @@
 import { IMonitorValidator } from "@/types";
+import { Link } from "@inertiajs/react";
 
 export default function BlockHeight({ validator }: { validator: IMonitorValidator }) {
-    if (validator.wallet?.hasForged && validator.lastBlock?.number !== undefined) {
+    const lastBlock = validator.lastBlock;
+
+    if (validator.wallet?.hasForged && lastBlock?.number !== undefined && lastBlock?.hash) {
         return (
-            <a href={`/blocks/${validator?.lastBlock?.hash}`} className="link">
-                {validator.lastBlock?.number.toLocaleString()}
-            </a>
+            <Link href={route("block", lastBlock.hash)} className="link">
+                {lastBlock.number.toLocaleString()}
+            </Link>
         );
     }
 

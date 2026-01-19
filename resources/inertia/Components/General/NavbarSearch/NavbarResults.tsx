@@ -14,6 +14,7 @@ import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react
 import CrossIcon from "@ui/icons/cross.svg?react";
 import { useEffect, useRef, useState } from "react";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
+import { Link, router } from "@inertiajs/react";
 
 type SearchResultData =
     | INavbarSearchWalletResultData
@@ -181,9 +182,16 @@ export function NavbarResultsMobile() {
         }
 
         const firstResult = results[0];
-        if (firstResult?.url) {
-            window.location.assign(firstResult.url);
+        if (!firstResult) {
+            return;
         }
+
+        const href = getResultHref(firstResult);
+        if (href === "#") {
+            return;
+        }
+
+        router.visit(href);
     };
 
     useEffect(() => {
@@ -255,16 +263,16 @@ function ResultLink({
     children: React.ReactNode;
     onBlur: (event: React.FocusEvent<HTMLElement>) => void;
 }) {
-    const href = result.url ?? "#";
+    const href = getResultHref(result);
 
     return (
-        <a
+        <Link
             href={href}
             className="group/result transition-default -mx-3 block min-w-0 cursor-pointer rounded-[10px] p-3 hover:bg-theme-secondary-200 dark:hover:bg-black"
             onBlur={onBlur}
         >
             {children}
-        </a>
+        </Link>
     );
 }
 
@@ -280,6 +288,25 @@ function renderResult(result: SearchResult) {
     if (result.type === "transaction") {
         return <TransactionResult result={result as SearchResult<INavbarSearchTransactionResultData>} />;
     }
+}
+
+export function getResultHref(result: SearchResult) {
+    if (result.type === "wallet") {
+        const data = result.data as INavbarSearchWalletResultData;
+        return route("wallet", data.address);
+    }
+
+    if (result.type === "block") {
+        const data = result.data as INavbarSearchBlockResultData;
+        return route("block", data.hash);
+    }
+
+    if (result.type === "transaction") {
+        const data = result.data as INavbarSearchTransactionResultData;
+        return route("transaction", data.hash);
+    }
+
+    return result.url ?? "#";
 }
 
 function MobileResult({ header, children }: { header: React.ReactNode; children: React.ReactNode }) {

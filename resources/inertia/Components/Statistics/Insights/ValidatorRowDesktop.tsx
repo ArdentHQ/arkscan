@@ -18,7 +18,7 @@ export default function ValidatorRowDesktop({ row }: { row: StatisticsValidatorR
             <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                 <div className="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
                     {row.wallet ? (
-                        <Link href={row.wallet.url} className="link">
+                        <Link href={route("wallet", row.wallet.address)} className="link">
                             {row.wallet.hasUsername ? (
                                 row.wallet.username
                             ) : (

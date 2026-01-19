@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { ITransaction } from "@/types/generated";
 import CircleMinusSmallIcon from "@ui/icons/circle/minus-small.svg?react";
 import Age from "../Model/Age";
+import { Link } from "@inertiajs/react";
 
 export default function ID({ transaction, withoutAge = false }: { transaction: ITransaction; withoutAge?: boolean }) {
     return (
@@ -14,15 +15,15 @@ export default function ID({ transaction, withoutAge = false }: { transaction: I
                         transaction.hasFailedStatus,
                 })}
             >
-                <a
-                    href={transaction.url}
+                <Link
+                    href={route("transaction", transaction.hash)}
                     className={classNames({
                         "link mx-auto whitespace-nowrap text-sm font-semibold leading-4.25": true,
                         "!text-theme-danger-700 dark:!text-theme-failed-state-text": transaction.hasFailedStatus,
                     })}
                 >
                     <TruncateMiddle>{transaction.hash}</TruncateMiddle>
-                </a>
+                </Link>
 
                 {transaction.hasFailedStatus && (
                     <div>
