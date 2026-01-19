@@ -7,6 +7,7 @@ namespace App\DTO\Inertia;
 use App\Facades\Network;
 use App\Models\Wallet as Model;
 use App\Services\ExchangeRate;
+use App\Services\NumberFormatter as ExplorerNumberFormatter;
 use App\ViewModels\WalletViewModel;
 use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter;
 use Spatie\LaravelData\Data;
@@ -30,10 +31,15 @@ class Wallet extends Data
         public ?string $legacyAddress,
         public ?string $username,
         public bool $hasUsername,
+        public bool $isKnown,
+        public bool $isOwnedByExchange,
+        public bool $hasSecondSignature,
         public string $votes,
         public float $productivity,
+        public float $balancePercentage,
         public string $formattedBalanceTwoDecimals,
         public string $formattedBalanceFull,
+        public string $formattedBalanceFullWithoutSuffix,
         public string $fiatValue,
         public string $totalForged,
         // TODO: Consider using another data object for the attributes
@@ -77,10 +83,15 @@ class Wallet extends Data
             legacyAddress: $viewModel->legacyAddress(),
             username: $viewModel->username(),
             hasUsername: $viewModel->hasUsername(),
+            isKnown: $viewModel->isKnown(),
+            isOwnedByExchange: $viewModel->isOwnedByExchange(),
+            hasSecondSignature: $viewModel->hasSecondSignature(),
             votes: (string) $viewModel->votes(),
             productivity: $viewModel->productivity(),
+            balancePercentage: $viewModel->balancePercentage(),
             formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), 2),
             formattedBalanceFull: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), null),
+            formattedBalanceFullWithoutSuffix: ExplorerNumberFormatter::currencyWithoutSuffix($viewModel->balance(), Network::currency()),
             fiatValue: ExchangeRate::convert($wallet->balance, null),
             totalForged: (string) $viewModel->totalForged(),
             vote: $votedWallet,
