@@ -115,6 +115,40 @@ it('should calculate gas statistics with value', function () {
             ->where('statistics.gas.high.value', '$7.00'));
 });
 
+it('should format small gas values for fiat currencies', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    Wallet::factory()->count(11)->create();
+
+    $cache = new NetworkCache();
+
+    $cache->setSupply(function (): float {
+        return 12345.6789 * 1e18;
+    });
+
+    $cache->setVotesPercentage('123.45');
+
+    (new ValidatorCache())->setTotalBalanceVoted(4567.2345);
+    (new MainsailCache())->setFees([
+        'min' => '1000000000000000',
+        'avg' => '1000000000000000',
+        'max' => '1000000000000000',
+    ]);
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1.0);
+
+    $expectedValue = sprintf('< %s', NumberFormatter::currency(0.01, Settings::currency()));
+
+    $this
+        ->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Home/Index')
+            ->where('statistics.gas.low.value', $expectedValue)
+            ->where('statistics.gas.average.value', $expectedValue)
+            ->where('statistics.gas.high.value', $expectedValue));
+});
+
 it('should show the no-results message when no transactions exist', function () {
     $this
         ->get(route('home'))
