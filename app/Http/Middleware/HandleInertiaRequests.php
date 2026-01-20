@@ -78,6 +78,7 @@ class HandleInertiaRequests extends Middleware
             ])->toArray(),
             'flash' => function () {
                 $message = flash()->getMessage();
+
                 return $message !== null
                     ? [
                         'message' => $message->message,
