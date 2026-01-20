@@ -732,7 +732,11 @@ export default function ArkConnectProvider({
     const isArkConnectEnabled = useMemo(() => Boolean(state.arkconnectConfig?.enabled), [state.arkconnectConfig]);
 
     const addressUrl = useMemo(() => {
-        return `/addresses/${state.address}`;
+        if (!state.address) {
+            return "";
+        }
+
+        return route("wallet", state.address);
     }, [state.address]);
 
     const contextValue = useMemo<IArkConnectContextType>(

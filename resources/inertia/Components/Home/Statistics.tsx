@@ -7,6 +7,7 @@ import Tooltip from "../General/Tooltip";
 import Info from "../General/Info";
 import ChartContent from "@/Components/Home/Chart/ChartContent";
 import Number from "../General/Number";
+import { Link } from "@inertiajs/react";
 function StatEntry({
     label,
     value,
@@ -107,7 +108,7 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                             <span className="leading-5.25 sm:hidden">{t("pages.home.statistics.title_mobile")}</span>
                         </h2>
 
-                        <a
+                        <Link
                             href={route("statistics")}
                             className="link rounded px-2 py-1.5 font-semibold hover:bg-theme-primary-200 hover:text-theme-primary-700 dark:hover:bg-theme-dark-700 dark:hover:text-theme-dark-50"
                         >
@@ -116,7 +117,7 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
 
                                 <ChevronRightSmallIcon className="h-3 w-3" />
                             </div>
-                        </a>
+                        </Link>
                     </div>
 
                     <div className="space-y-3">
