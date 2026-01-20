@@ -2,9 +2,10 @@ import { useTranslation } from "react-i18next";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import SquareReturnArrowIcon from "@ui/icons/square-return-arrow.svg?react";
-import NavbarResults from "./NavbarResults";
+import NavbarResults, { getResultHref } from "./NavbarResults";
 import { type KeyboardEvent, useRef } from "react";
 import { useNavbar } from "@/Components/General/Navbar/NavbarContext";
+import { router } from "@inertiajs/react";
 
 export default function NavbarSearch() {
     const { t } = useTranslation();
@@ -27,9 +28,16 @@ export default function NavbarSearch() {
         }
 
         const firstResult = results[0];
-        if (firstResult?.url) {
-            window.location.assign(firstResult.url);
+        if (!firstResult) {
+            return;
         }
+
+        const href = getResultHref(firstResult);
+        if (href === "#") {
+            return;
+        }
+
+        router.visit(href);
     };
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {

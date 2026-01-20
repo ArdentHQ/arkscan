@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import ChevronRightSmallIcon from "@ui/icons/arrows/chevron-right-small.svg?react";
+import { Link } from "@inertiajs/react";
 
 export default function MarketOverviewHeader({ showExchanges }: { showExchanges: boolean }) {
     const { t } = useTranslation();
@@ -11,7 +12,7 @@ export default function MarketOverviewHeader({ showExchanges }: { showExchanges:
             </h2>
 
             {showExchanges && (
-                <a
+                <Link
                     href={route("exchanges")}
                     className="link rounded px-2 py-1.5 font-semibold hover:bg-theme-primary-200 hover:text-theme-primary-700 dark:hover:bg-theme-dark-700 dark:hover:text-theme-dark-50"
                 >
@@ -20,7 +21,7 @@ export default function MarketOverviewHeader({ showExchanges }: { showExchanges:
 
                         <ChevronRightSmallIcon className="h-3 w-3" />
                     </div>
-                </a>
+                </Link>
             )}
         </div>
     );

@@ -55,6 +55,8 @@ export default function TransactionRecordDesktopRow({
         return t("general.na");
     })();
 
+    const recordUrl = record.type === "transaction" ? route("transaction", record.hash) : record.url;
+
     return (
         <div className="hidden w-full min-w-0 pt-1 md:flex xl:pt-0">
             <div className="flex w-full justify-between xl:w-[770px]">
@@ -62,7 +64,7 @@ export default function TransactionRecordDesktopRow({
                 <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                     <div className="flex flex-1 justify-between">
                         <span>{titleLabel}:</span>
-                        <Link href={record.url} className="link">
+                        <Link href={recordUrl} className="link">
                             {isTransaction ? (
                                 <TruncateMiddle>{record.hash}</TruncateMiddle>
                             ) : (
