@@ -717,7 +717,7 @@ return [
         'type' => [
             'title'       => 'Type',
             'exchanges'   => 'Exchanges',
-            'agreggators' => 'Agreggators',
+            'aggregators' => 'Aggregators',
         ],
 
         'pair' => [
