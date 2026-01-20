@@ -76,17 +76,17 @@ export default function StatisticsIndex({
 
             <div className="pb-6 md:mx-auto md:max-w-7xl md:px-10">
                 <GasTracker data={gasTracker} />
-
-
             </div>
 
-            <div className="md:mx-auto md:max-w-7xl px-6 md:px-10 pb-3">
-                <div className="text-sm leading-[17px] flex items-start space-x-2 rounded-xl px-6 py-6 md:py-3 bg-theme-primary-100 dark:bg-theme-dark-800 dim:bg-theme-dim-800 text-theme-primary-900 dark:text-theme-dark-50 dim:text-theme-dim-500">
-                    <CircleInfoIcon className="h-4 w-4 shrink-0 text-theme-primary-700 dark:text-theme-dark-blue-400 dim:text-theme-dim-600" />
+            <div className="px-6 pb-3 md:mx-auto md:max-w-7xl md:px-10">
+                <div className="dim:bg-theme-dim-800 dim:text-theme-dim-500 flex items-start space-x-2 rounded-xl bg-theme-primary-100 px-6 py-6 text-sm leading-[17px] text-theme-primary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50 md:py-3">
+                    <CircleInfoIcon className="dim:text-theme-dim-600 h-4 w-4 shrink-0 text-theme-primary-700 dark:text-theme-dark-blue-400" />
 
-                    <span>{t("pages.statistics.mainsail_notice", {
-                        blockHeight: mainsailHardforkHeightLabel,
-                    })}</span>
+                    <span>
+                        {t("pages.statistics.mainsail_notice", {
+                            blockHeight: mainsailHardforkHeightLabel,
+                        })}
+                    </span>
                 </div>
             </div>
 
