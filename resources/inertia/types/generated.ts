@@ -6,7 +6,7 @@ export type IBlock = {
     totalReward: number;
     totalRewardFiat: string;
     rewardFiat: string;
-    proposer: string;
+    proposer: IMemoryWallet;
 };
 export type IBlockDetails = {
     hash: string;
@@ -66,6 +66,14 @@ export type IForgingStats = {
     voterCount: number | null;
     votesPercentage: number | null;
     votes: number | null;
+};
+export type IMemoryWallet = {
+    address: string;
+    publicKey: string | null;
+    isContract: boolean;
+    hasUsername: boolean;
+    username: string | null;
+    isValidator: boolean;
 };
 export type INavbarSearchBlockResultData = {
     hash: string;

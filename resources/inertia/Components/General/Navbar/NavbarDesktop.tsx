@@ -6,6 +6,7 @@ import DropdownProvider from "@/Providers/Dropdown/DropdownProvider";
 import Dropdown from "@/Components/General/Dropdown/Dropdown";
 import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
+import { Link } from "@inertiajs/react";
 
 const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) => {
     const { currentRoute } = useShareData();
@@ -14,7 +15,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
     const isActive = currentRoute === link;
 
     return (
-        <a
+        <Link
             href={link}
             className={classNames({
                 "group relative mx-4 inline-flex h-full rounded border-t-2 border-transparent px-2 font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none focus:ring-inset": true,
@@ -33,7 +34,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
             >
                 <span>{label}</span>
             </span>
-        </a>
+        </Link>
     );
 };
 
@@ -43,9 +44,9 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
             <div className="content-container flex w-full items-center justify-between">
                 <div className="flex items-center">
                     <div className="flex flex-shrink-0 items-center">
-                        <a className="flex items-center" href={route("home")}>
+                        <Link className="flex items-center" href={route("home")}>
                             <NavbarLogo />
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
@@ -97,14 +98,14 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                     )}
                                                 >
                                                     {navItem.children.map((child, index) => (
-                                                        <DropdownItem asChild key={index}>
-                                                            <a
-                                                                key={child.url ?? route(child.route!)}
-                                                                href={child.url ?? route(child.route!)}
-                                                                target={child.url ? "_blank" : "_self"}
-                                                            >
-                                                                {child.label}
-                                                            </a>
+                                                        <DropdownItem asChild key={child.url ?? child.route ?? index}>
+                                                            {child.url ? (
+                                                                <a href={child.url} target="_blank">
+                                                                    {child.label}
+                                                                </a>
+                                                            ) : (
+                                                                <Link href={route(child.route!)}>{child.label}</Link>
+                                                            )}
                                                         </DropdownItem>
                                                     ))}
                                                 </Dropdown>

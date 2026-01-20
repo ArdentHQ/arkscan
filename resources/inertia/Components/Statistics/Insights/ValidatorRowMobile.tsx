@@ -19,7 +19,7 @@ export default function ValidatorRowMobile({ row }: { row: StatisticsValidatorRo
                     <span>{title}</span>
                     <span className="text-theme-secondary-900 dark:text-theme-dark-50">
                         {row.wallet ? (
-                            <Link href={row.wallet.url} className="link">
+                            <Link href={route("wallet", row.wallet.address)} className="link">
                                 {row.wallet.hasUsername ? (
                                     row.wallet.username
                                 ) : (

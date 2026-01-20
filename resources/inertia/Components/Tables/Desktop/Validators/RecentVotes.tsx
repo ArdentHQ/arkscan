@@ -40,7 +40,7 @@ export function Row({ row: vote }: { row: ITransaction }) {
 
             <TableCell>
                 {votedFor && (
-                    <Link href={`/wallet/${votedFor}`} className="link text-sm font-semibold">
+                    <Link href={route("wallet", votedFor)} className="link text-sm font-semibold">
                         {vote.votedForUsername ? vote.votedForUsername : <TruncateMiddle>{votedFor}</TruncateMiddle>}
                     </Link>
                 )}
