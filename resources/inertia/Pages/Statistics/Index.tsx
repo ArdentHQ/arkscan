@@ -11,9 +11,14 @@ import Insights from "@/Components/Statistics/Insights/Insights";
 import { StatisticsProps } from "@/Pages/Statistics.contracts";
 import useSettings from "@/Providers/Settings/useSettings";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
+import Alert from "@/Components/General/Alert";
+import { formattedNumber } from "@/Components/General/Number";
+import Badge from "@/Components/General/Badge";
+import CircleInfoIcon from "@ui/icons/circle/info.svg?react";
 
 export default function StatisticsIndex({
     refreshInterval,
+    mainsailHardforkStartHeight,
     gasTracker,
     highlights,
     informationCards,
@@ -63,12 +68,26 @@ export default function StatisticsIndex({
         };
     }, [listen]);
 
+    const mainsailHardforkHeightLabel = formattedNumber(mainsailHardforkStartHeight);
+
     return (
         <Layout>
             <PageHeader title={t("pages.statistics.title")} subtitle={t("pages.statistics.subtitle")} />
 
             <div className="pb-6 md:mx-auto md:max-w-7xl md:px-10">
                 <GasTracker data={gasTracker} />
+
+
+            </div>
+
+            <div className="md:mx-auto md:max-w-7xl px-6 md:px-10 pb-3">
+                <div className="text-sm leading-[17px] flex items-start space-x-2 rounded-xl px-6 py-6 md:py-3 bg-theme-primary-100 dark:bg-theme-dark-800 dim:bg-theme-dim-800 text-theme-primary-900 dark:text-theme-dark-50 dim:text-theme-dim-500">
+                    <CircleInfoIcon className="h-4 w-4 shrink-0 text-theme-primary-700 dark:text-theme-dark-blue-400 dim:text-theme-dim-600" />
+
+                    <span>{t("pages.statistics.mainsail_notice", {
+                        blockHeight: mainsailHardforkHeightLabel,
+                    })}</span>
+                </div>
             </div>
 
             <Highlights data={highlights} />

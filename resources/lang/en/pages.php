@@ -493,6 +493,7 @@ return [
     'statistics'       => [
         'title'     => 'Statistics',
         'subtitle'  => 'Explore information on blockchain data and fees categorized by type.',
+        'mainsail_notice' => 'Statistics shown here include only transactions from the Mainsail hardfork onward (starting at block #:blockHeight). Earlier network activity is not included.',
 
         'highlights' => [
             'total_supply'  => 'Total Supply',

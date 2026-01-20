@@ -63,9 +63,12 @@ final class StatisticsController
     public function __invoke(): Response
     {
         $refreshInterval = (int) config('arkscan.statistics.refreshInterval', 60);
+        $snapshotLastBlockHeight = (int) config('arkscan.statistics.snapshotLastBlockHeight', 0);
+        $mainsailHardforkStartHeight = $snapshotLastBlockHeight > 0 ? $snapshotLastBlockHeight + 1 : 0;
 
         return Inertia::renderWithMeta('Statistics/Index', 'statistics', [
             'refreshInterval'   => $refreshInterval,
+            'mainsailHardforkStartHeight' => $mainsailHardforkStartHeight,
             'gasTracker'        => $this->gasTracker(),
             'highlights'        => $this->highlights(),
             'informationCards'  => $this->informationCards($refreshInterval),
