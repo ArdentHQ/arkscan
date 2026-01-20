@@ -43,11 +43,13 @@ export default function TransactionRecordMobileRow({
         return t("general.na");
     })();
 
+    const recordUrl = record.type === "transaction" ? route("transaction", record.hash) : record.url;
+
     return (
         <div className="flex w-full flex-col justify-between space-y-3 pt-3 sm:flex-row sm:space-y-0 md:hidden">
             <div className="flex flex-col space-y-2">
                 <span>{title}</span>
-                <Link href={record.url} className="link">
+                <Link href={recordUrl} className="link">
                     {mainValue}
                 </Link>
             </div>

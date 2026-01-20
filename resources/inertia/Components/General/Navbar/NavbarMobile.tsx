@@ -16,6 +16,7 @@ import NavbarArkConnect from "../NavbarArkConnect/NavbarArkConnect";
 import { useNavbar } from "./NavbarContext";
 import { NavbarResultsMobile } from "@/Components/General/NavbarSearch/NavbarResults";
 import { isIosSafari } from "@/utils/is-ios-safari";
+import { Link } from "@inertiajs/react";
 
 const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
@@ -42,16 +43,44 @@ const NavbarMobileItem = ({
     url,
     children,
     ...props
-}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { routeName?: string; url?: string }) => {
+}: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & { routeName?: string; url?: string }) => {
     const { currentRoute } = useShareData();
 
-    const link = routeName ? route(routeName) : url;
+    const link = routeName ? route(routeName) : (url ?? "#");
     const isActive = currentRoute === link;
+
+    if (routeName) {
+        return (
+            <Link
+                href={link}
+                className={classNames(
+                    "group relative inline-flex h-full w-full py-3 font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none",
+                    {
+                        "w-full border-l-4 border-theme-primary-600 bg-theme-primary-50 text-theme-secondary-900 dark:border-theme-dark-blue-500 dark:bg-theme-dark-950 dark:text-theme-dark-50":
+                            isActive,
+                        "hover:background-theme-secondary-200 text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 dark:hover:text-theme-secondary-400":
+                            !isActive,
+                    },
+                    className,
+                )}
+                {...props}
+            >
+                <span
+                    className={classNames("flex h-full w-full items-center", {
+                        "pl-5": isActive,
+                        "pl-6": !isActive,
+                    })}
+                >
+                    <span>{children}</span>
+                </span>
+            </Link>
+        );
+    }
 
     return (
         <a
             href={link}
-            target={routeName ? "_self" : "_blank"}
+            target="_blank"
             className={classNames(
                 "group relative inline-flex h-full w-full py-3 font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none",
                 {
@@ -81,11 +110,33 @@ const NavbarMobileListItem = ({
     url,
     children,
     ...props
-}: React.AnchorHTMLAttributes<HTMLAnchorElement> & { routeName?: string; url?: string }) => {
+}: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & { routeName?: string; url?: string }) => {
     const { currentRoute } = useShareData();
 
-    const link = routeName ? route(routeName) : url;
+    const link = routeName ? route(routeName) : (url ?? "#");
     const isActive = currentRoute === link;
+
+    if (routeName) {
+        return (
+            <Link
+                href={link}
+                className={classNames(
+                    "transition-default group relative ml-6 inline-flex h-full w-full border-l border-theme-secondary-300 px-6 py-3 font-semibold leading-5 hover:bg-theme-secondary-200 focus:outline-none dark:border-theme-dark-500 dark:hover:bg-theme-dark-900",
+                    {
+                        "text-theme-secondary-900 dark:text-theme-dark-50": isActive,
+                        "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 dark:hover:text-theme-secondary-50":
+                            !isActive,
+                    },
+                    className,
+                )}
+                {...props}
+            >
+                <span className="transition-default flex h-full w-full items-center text-theme-secondary-700 group-hover:text-theme-secondary-900 dark:text-theme-dark-50 dark:group-hover:text-white">
+                    <span>{children}</span>
+                </span>
+            </Link>
+        );
+    }
 
     return (
         <a
@@ -173,9 +224,9 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                 >
                     <div className="content-container relative flex h-[3.25rem] w-full justify-between sm:h-16">
                         <div className="flex flex-shrink-0 items-center">
-                            <a className="flex items-center" href={route("home")}>
+                            <Link className="flex items-center" href={route("home")}>
                                 <NavbarLogo />
-                            </a>
+                            </Link>
                         </div>
 
                         <div className="flex justify-end">

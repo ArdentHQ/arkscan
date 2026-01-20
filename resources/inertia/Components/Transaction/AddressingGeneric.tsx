@@ -34,9 +34,9 @@ export default function AddressingGeneric({
                 <Badge className="encapsulated-badge w-[39px] text-center">{t("tables.transactions.from")}</Badge>
 
                 <Tooltip content={senderUsername} disabled={!senderHasUsername} dynamic className="min-w-0 truncate">
-                    <a className="link whitespace-nowrap" href={route("wallet", sender?.address ?? "")}>
+                    <Link className="link whitespace-nowrap" href={route("wallet", sender?.address ?? "")}>
                         {senderHasUsername ? senderUsername : <TruncateMiddle>{sender?.address}</TruncateMiddle>}
-                    </a>
+                    </Link>
                 </Tooltip>
             </div>
 
