@@ -13,11 +13,9 @@ import { ExchangesProps } from "../Exchanges.contracts";
 
 function TableWrapper({ exchanges }: Pick<ExchangesProps, "exchanges">) {
     const updateTable = () => {
-        // setTimeout(() => {
         router.reload({
             only: ["exchanges"],
         });
-        // }, 100);
     };
 
     useEffect(() => {
@@ -34,17 +32,19 @@ export default function Exchanges({ exchanges }: ExchangesProps) {
 
     return (
         <Layout className="pb-6 pt-8">
-            {/* <PageHeader
+            <PageHeader
                 title={t("pages.exchanges.title")}
                 subtitle={t("pages.exchanges.subtitle")}
                 right={<ExchangeTableFilters />}
-            /> */}
+            />
 
             <PageHandlerProvider>
                 <TableWrapper exchanges={exchanges} />
             </PageHandlerProvider>
 
-            <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">{/* <ExchangesSubmitCTA /> */}</div>
+            <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
+                <ExchangesSubmitCTA />
+            </div>
         </Layout>
     );
 }
