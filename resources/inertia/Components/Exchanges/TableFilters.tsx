@@ -15,29 +15,47 @@ export default function ExchangeTableFilters() {
     const [selectedType, setSelectedType] = useState<string>("all");
     const [selectedPair, setSelectedPair] = useState<string>("all");
 
-    const updateData = () => {
+    const updateData = (type: string, pair: string) => {
+        const urlParams: Record<string, string | undefined> = {
+            type: undefined,
+            pair: undefined,
+        };
+
+        if (type !== "all") {
+            urlParams["type"] = type;
+        }
+
+        if (pair !== "all") {
+            urlParams["pair"] = pair;
+        }
+
         router.reload({
             only: ["exchanges"],
-            data: {
-                type: selectedType,
-                pair: selectedPair,
-            },
+            data: urlParams,
         });
     };
 
-    const updateType = (type: string, reloadData: boolean = true) => {
+    const updateType = (type: string, reload: boolean = true) => {
+        if (!typeOptions.map((option) => option.value).includes(type)) {
+            type = "all";
+        }
+
         setSelectedType(type);
 
-        if (reloadData) {
-            updateData();
+        if (reload) {
+            updateData(type, selectedPair);
         }
     };
 
-    const updatePair = (pair: string, reloadData: boolean = true) => {
+    const updatePair = (pair: string, reload: boolean = true) => {
+        if (!pairOptions.map((option) => option.value).includes(pair)) {
+            pair = "all";
+        }
+
         setSelectedPair(pair);
 
-        if (reloadData) {
-            updateData();
+        if (reload) {
+            updateData(selectedType, pair);
         }
     };
 
