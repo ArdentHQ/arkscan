@@ -716,7 +716,7 @@ return [
         'live_price_chart' => 'Live Price Chart',
 
         'dont_see_an_exchange' => 'Don\'t see an exchange listed?',
-        'let_us_know'       => 'Let us know!',
+        'let_us_know'          => 'Let us know!',
 
         'type' => [
             'title'       => 'Type',
