@@ -53,7 +53,7 @@ class BlockDetails extends Data
             totalReward: $viewModel->totalReward(),
             totalRewardFiat: $viewModel->totalRewardFiat(),
             confirmations: abs(CacheNetworkHeight::execute() - $block->number->toNumber()),
-            validatorAddress: $validator->address() ?? 'Genesis',
+            validatorAddress: $validator->address(),
             validatorUsername: $validator->username(),
             validatorHasUsername: $validator->hasUsername(),
         );

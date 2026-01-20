@@ -1,4 +1,5 @@
 import { IBlock, IForgingStats } from "@/types/generated";
+import { Link } from "@inertiajs/react";
 import Age from "../Model/Age";
 
 export default function Height({
@@ -15,9 +16,9 @@ export default function Height({
             {withoutLink ? (
                 <span>{formattedBlockHeight}</span>
             ) : (
-                <a href={`/blocks/${block.hash}`} className="link">
+                <Link href={route("block", block.hash)} className="link">
                     {formattedBlockHeight}
-                </a>
+                </Link>
             )}
 
             <Age

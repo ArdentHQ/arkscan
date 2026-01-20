@@ -53,6 +53,8 @@ it('should execute the command with data', function () {
         'attributes->vote' => 'some_vote_value',
     ]);
 
+    Wallet::factory(2)->activeValidator()->create();
+
     Block::factory(10)->create([
         'timestamp' => Carbon::now()->getTimestampMs(),
         'fee'       => BigNumber::new(12 * 1e18),

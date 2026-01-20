@@ -66,7 +66,7 @@ export function RecentVotesMobileTable({ recentVotes }: Pick<ValidatorsProps, "r
                         }
                     >
                         {vote.votedFor && (
-                            <Link href={`/wallet/${vote.votedFor}`} className="link text-sm font-semibold">
+                            <Link href={route("wallet", vote.votedFor)} className="link text-sm font-semibold">
                                 {vote.votedForUsername ? (
                                     vote.votedForUsername
                                 ) : (
