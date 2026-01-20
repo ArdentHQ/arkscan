@@ -1,5 +1,5 @@
-import { IExchange } from '../types/generated';
-import { IPaginatedResponse } from '../types';
+import { IExchange } from "../types/generated";
+import { IPaginatedResponse } from "../types";
 
 export interface ExchangeDropdownItem {
     title: string;
