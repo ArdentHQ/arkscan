@@ -712,16 +712,22 @@ return [
         'title'            => 'Exchange Listings',
         'subtitle'         => 'A listing of active exchanges and their ARK pairs.',
         'get_listed'       => "Don't see an exchange listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
+
         'live_price_chart' => 'Live Price Chart',
+
+        'dont_see_an_exchange' => 'Don\'t see an exchange listed?',
+        'let_us_know'       => 'Let us know!',
 
         'type' => [
             'title'       => 'Type',
+            'all'         => 'All',
             'exchanges'   => 'Exchanges',
             'aggregators' => 'Aggregators',
         ],
 
         'pair' => [
             'title'       => 'Pair',
+            'all'         => 'All',
             'btc'         => 'BTC',
             'eth'         => 'ETH',
             'stablecoins' => 'Stablecoins',
