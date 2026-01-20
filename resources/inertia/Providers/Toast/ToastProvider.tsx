@@ -27,8 +27,6 @@ const toastIconMap: Record<ToastType, React.FC<React.SVGProps<SVGSVGElement>>> =
     hint: CircleQuestionMarkIcon,
 };
 
-const defaultDuration = 5000;
-
 const ToastItem = ({ toast, onDismiss }: { toast: ToastMessage; onDismiss: (id: string) => void }) => {
     const { t } = useTranslation();
 
@@ -108,9 +106,10 @@ export default function ToastProvider({ children }: { children: React.ReactNode 
         const toast: ToastMessage = {
             id,
             message,
-            type: options?.type ?? "info",
-            duration: options?.duration ?? defaultDuration,
-            html: options?.html ?? false,
+            type: "info",
+            duration: 5000,
+            html: false,
+            ...options,
         };
 
         setToasts((current) => [...current, toast]);
