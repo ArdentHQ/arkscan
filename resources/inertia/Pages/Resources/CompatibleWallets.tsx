@@ -7,7 +7,7 @@ import ArkConnectLearnMore from "@/Components/CompatibleWallets/ArkConnectLearnM
 import MobileDivider from "@/Components/General/MobileDivider";
 import WalletGrid from "@/Components/CompatibleWallets/WalletGrid";
 import { CompatibleWalletsProps } from "../CompatibleWallets.contracts";
-import SubmitWallet from "@/Components/CompatibleWallets/SubmitWallet";
+import CompatibleWalletsSubmitCTA from "@/Components/CompatibleWallets/SubmitCTA";
 
 export default function CompatibleWallets({ wallets }: PageProps<CompatibleWalletsProps>) {
     const { t } = useTranslation();
@@ -27,7 +27,7 @@ export default function CompatibleWallets({ wallets }: PageProps<CompatibleWalle
 
                 <WalletGrid wallets={wallets} />
 
-                <SubmitWallet />
+                <CompatibleWalletsSubmitCTA />
             </div>
         </Layout>
     );
