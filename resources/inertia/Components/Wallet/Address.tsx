@@ -1,17 +1,23 @@
 import { Link } from "@inertiajs/react";
 import TruncateMiddle from "../General/TruncateMiddle";
 import classNames from "classnames";
+import { IMemoryWallet, IWallet } from "@/types/generated";
 
 export default function Address({
     wallet,
     truncate = false,
     className = "",
 }: {
-    wallet: any;
+    wallet: IWallet | IMemoryWallet;
     truncate?: boolean | number;
     className?: string;
 }) {
-    const name = wallet?.attributes?.username;
+    let name: string | undefined;
+    if ("attributes" in wallet) {
+        name = wallet?.attributes?.username;
+    } else {
+        name = wallet?.username || undefined;
+    }
 
     return (
         <div
