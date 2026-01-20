@@ -12,6 +12,7 @@ import CopyIcon from "@ui/icons/copy.svg?react";
 import ArrowRightBracketIcon from "@ui/icons/arrows/arrow-right-bracket.svg?react";
 import InstallWalletModal from "./InstallWalletModal";
 import UnsupportedWalletModal from "./UnsupportedWalletModal";
+import { Link } from "@inertiajs/react";
 
 export default function NavbarArkConnect() {
     const { t } = useTranslation();
@@ -62,9 +63,9 @@ export default function NavbarArkConnect() {
                         <span className="whitespace-nowrap">{t("general.navbar.arkconnect.my_address")}:</span>
 
                         {isOnSameNetwork ? (
-                            <a href={addressUrl} className="link min-w-0 flex-1">
+                            <Link href={addressUrl} className="link min-w-0 flex-1">
                                 <TruncateMiddle>{address ?? ""}</TruncateMiddle>
-                            </a>
+                            </Link>
                         ) : (
                             <Tooltip content={t(`general.arkconnect.wrong_network.${network!.alias}`)}>
                                 <a className="min-w-0 flex-1 text-theme-secondary-500 dark:text-theme-dark-500">
@@ -110,7 +111,7 @@ export default function NavbarArkConnect() {
                             >
                                 {isOnSameNetwork && (
                                     <DropdownItem asChild>
-                                        <a href={addressUrl}>{t("general.navbar.arkconnect.my_address")}</a>
+                                        <Link href={addressUrl}>{t("general.navbar.arkconnect.my_address")}</Link>
                                     </DropdownItem>
                                 )}
 
