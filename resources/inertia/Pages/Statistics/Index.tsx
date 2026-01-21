@@ -77,8 +77,8 @@ export default function StatisticsIndex({
             </div>
 
             <div className="px-6 pb-3 md:mx-auto md:max-w-7xl md:px-10">
-                <div className="dim:bg-theme-dim-800 dim:text-theme-dim-500 flex items-start space-x-2 rounded md:rounded-xl bg-theme-primary-100 px-6 py-6 text-sm leading-[17px] text-theme-primary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50 md:py-3">
-                    <CircleInfoIcon className="dim:text-theme-dim-600 h-4 w-4 shrink-0 text-theme-primary-700 dark:text-theme-dark-blue-400 mt-px" />
+                <div className="dim:bg-theme-dim-800 dim:text-theme-dim-500 flex items-start space-x-2 rounded bg-theme-primary-100 px-6 py-6 text-sm leading-[17px] text-theme-primary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50 md:rounded-xl md:py-3">
+                    <CircleInfoIcon className="dim:text-theme-dim-600 mt-px h-4 w-4 shrink-0 text-theme-primary-700 dark:text-theme-dark-blue-400" />
 
                     <span>
                         {t("pages.statistics.mainsail_notice", {
