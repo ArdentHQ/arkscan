@@ -43,7 +43,6 @@
         "laravel/dusk": "^8.2",
         "phpdocumentor/reflection-docblock": "^5.4",
         "spatie/laravel-ignition": "^2.8",
-        "spatie/pest-plugin-snapshots": "^2.2",
         "wnx/laravel-stats": "^2.13"
     },
     "config": {
