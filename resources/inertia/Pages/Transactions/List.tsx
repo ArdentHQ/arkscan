@@ -22,11 +22,15 @@ export default function TransactionsList({ network, statistics, filters, transac
         });
     }, []);
 
-    usePoll(30 * 1000, {
-        only: ["transactions"],
-    }, {
-        autoStart: !usesBroadcasting,
-    });
+    usePoll(
+        30 * 1000,
+        {
+            only: ["transactions"],
+        },
+        {
+            autoStart: !usesBroadcasting,
+        },
+    );
 
     return (
         <Layout>

@@ -57,12 +57,16 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
         });
     }, []);
 
-    // secs: 
-    usePoll(30 * 1000, {
-        only: ["blocks"],
-    }, {
-        autoStart: !usesBroadcasting,
-    });
+    // secs:
+    usePoll(
+        30 * 1000,
+        {
+            only: ["blocks"],
+        },
+        {
+            autoStart: !usesBroadcasting,
+        },
+    );
 
     return (
         <Layout>
