@@ -17,14 +17,14 @@ trait WithFilters
 
     protected function defaultFilters(?string $group = null): array
     {
-        if (!defined('self::FILTERS')) {
+        if (! defined('self::FILTERS')) {
             return [];
         }
 
         $filters = constant('self::FILTERS');
 
         if ($group !== null) {
-            if (!array_key_exists($group, $filters)) {
+            if (! array_key_exists($group, $filters)) {
                 return [];
             }
 

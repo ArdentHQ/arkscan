@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Exchange;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Request;
-use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Stubs\WithFiltersStub;
 use Tests\Stubs\WithFiltersWithoutConstantStub;
 
@@ -25,8 +22,8 @@ describe('with FILTERS constant', function () {
 
     it('should get default filters', function () {
         app()->instance('request', Request::create('my_url', 'GET', parameters: [
-            'filter_one' => 'true',
-            'filter_two' => 'false',
+            'filter_one'   => 'true',
+            'filter_two'   => 'false',
             'filter_three' => 'true',
         ]));
 
@@ -47,8 +44,8 @@ describe('with FILTERS constant', function () {
 
     it('should handle default filters with invalid group', function () {
         app()->instance('request', Request::create('my_url', 'GET', parameters: [
-            'filter_one' => 'true',
-            'filter_two' => 'false',
+            'filter_one'   => 'true',
+            'filter_two'   => 'false',
             'filter_three' => 'true',
         ]));
 
@@ -59,8 +56,8 @@ describe('with FILTERS constant', function () {
 
     it('should get applied filters from request', function () {
         app()->instance('request', Request::create('my_url', 'GET', parameters: [
-            'filter_one' => 'false',
-            'filter_two' => 'true',
+            'filter_one'   => 'false',
+            'filter_two'   => 'true',
             'filter_three' => 'true',
         ]));
 
@@ -74,8 +71,8 @@ describe('with FILTERS constant', function () {
 
     it('should determine if any filters are active', function () {
         app()->instance('request', Request::create('my_url', 'GET', parameters: [
-            'filter_one' => 'false',
-            'filter_two' => 'false',
+            'filter_one'   => 'false',
+            'filter_two'   => 'false',
             'filter_three' => 'true',
         ]));
 
@@ -110,8 +107,8 @@ describe('without FILTERS constant', function () {
 
     it('should get default filters', function () {
         app()->instance('request', Request::create('my_url', 'GET', parameters: [
-            'filter_one' => 'true',
-            'filter_two' => 'false',
+            'filter_one'   => 'true',
+            'filter_two'   => 'false',
             'filter_three' => 'true',
         ]));
 
@@ -123,8 +120,8 @@ describe('without FILTERS constant', function () {
 
     it('should handle default filters with invalid group', function () {
         app()->instance('request', Request::create('my_url', 'GET', parameters: [
-            'filter_one' => 'true',
-            'filter_two' => 'false',
+            'filter_one'   => 'true',
+            'filter_two'   => 'false',
             'filter_three' => 'true',
         ]));
 
@@ -135,8 +132,8 @@ describe('without FILTERS constant', function () {
 
     it('should get applied filters from request', function () {
         app()->instance('request', Request::create('my_url', 'GET', parameters: [
-            'filter_one' => 'false',
-            'filter_two' => 'true',
+            'filter_one'   => 'false',
+            'filter_two'   => 'true',
             'filter_three' => 'true',
         ]));
 
@@ -147,8 +144,8 @@ describe('without FILTERS constant', function () {
 
     it('should determine if any filters are active', function () {
         app()->instance('request', Request::create('my_url', 'GET', parameters: [
-            'filter_one' => 'false',
-            'filter_two' => 'false',
+            'filter_one'   => 'false',
+            'filter_two'   => 'false',
             'filter_three' => 'true',
         ]));
 

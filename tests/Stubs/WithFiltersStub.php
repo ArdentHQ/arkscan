@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Stubs;
 
-use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
-use App\Events\NewBlock;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
 
 class WithFiltersStub
