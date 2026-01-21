@@ -104,7 +104,7 @@ it('should sort by name', function ($direction, $order) {
                 });
         });
 })->with([
-    'ascending' => ['asc', [2, 3, 1]],
+    'ascending'  => ['asc', [2, 3, 1]],
     'descending' => ['desc', [1, 3, 2]],
 ]);
 
@@ -127,7 +127,7 @@ it('should sort by price', function ($direction, $order) {
                 });
         });
 })->with([
-    'ascending' => ['asc', [1, 2, 3]],
+    'ascending'  => ['asc', [1, 2, 3]],
     'descending' => ['desc', [3, 2, 1]],
 ]);
 
@@ -150,7 +150,7 @@ it('should sort by pairs', function ($direction, $order) {
                 });
         });
 })->with([
-    'ascending' => ['asc', [1, 2, 3]],
+    'ascending'  => ['asc', [1, 2, 3]],
     'descending' => ['desc', [3, 2, 1]],
 ]);
 
@@ -173,7 +173,7 @@ it('should sort by volume', function ($direction, $order) {
                 });
         });
 })->with([
-    'ascending' => ['asc', [1, 3, 2]],
+    'ascending'  => ['asc', [1, 3, 2]],
     'descending' => ['desc', [2, 3, 1]],
 ]);
 
@@ -196,7 +196,7 @@ it('should sort by volume as a fallback', function ($direction, $order) {
                 });
         });
 })->with([
-    'ascending' => ['asc', [1, 3, 2]],
+    'ascending'  => ['asc', [1, 3, 2]],
     'descending' => ['desc', [2, 3, 1]],
 ]);
 

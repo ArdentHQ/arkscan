@@ -103,11 +103,11 @@ final class ExchangesController
         $type = request()->get('type');
         $pair = request()->get('pair');
 
-        $sort = request()->get('sort', 'volume');
+        $sort          = request()->get('sort', 'volume');
         $sortDirection = request()->get('sort-direction', 'desc');
 
-        if (!in_array($sort, ['name', 'top_pairs', 'volume', 'price'], true)) {
-            $sort = 'volume';
+        if (! in_array($sort, ['name', 'top_pairs', 'volume', 'price'], true)) {
+            $sort          = 'volume';
             $sortDirection = 'desc';
         }
 
