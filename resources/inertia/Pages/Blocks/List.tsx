@@ -13,6 +13,7 @@ import BlocksListMobileTableWrapper from "@/Components/Tables/Mobile/Blocks/List
 import MobileDivider from "@/Components/General/MobileDivider";
 import { useEffect } from "react";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 
 function TableWrapper() {
     const { setRefreshPage } = usePageHandler();
@@ -42,10 +43,17 @@ function TableWrapper() {
 export default function List({ statistics }: PageProps<BlocksListProps>) {
     const { t } = useTranslation();
     const { network } = useShareData();
+    const { listen } = useWebhooks();
 
     useEffect(() => {
         router.reload({
             only: ["blocks"],
+        });
+
+        return listen('blocks', "NewBlock", () => {
+            router.reload({
+                only: ["blocks"],
+            });
         });
     }, []);
 
