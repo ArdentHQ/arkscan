@@ -1,4 +1,4 @@
-import { router } from "@inertiajs/react";
+import { router, usePoll } from "@inertiajs/react";
 
 import Layout from "@/Layout";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
@@ -43,7 +43,7 @@ function TableWrapper() {
 export default function List({ statistics }: PageProps<BlocksListProps>) {
     const { t } = useTranslation();
     const { network } = useShareData();
-    const { listen } = useWebhooks();
+    const { listen, enabled: usesBroadcasting } = useWebhooks();
 
     useEffect(() => {
         router.reload({
@@ -56,6 +56,13 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
             });
         });
     }, []);
+
+    // secs: 
+    usePoll(30 * 1000, {
+        only: ["blocks"],
+    }, {
+        autoStart: !usesBroadcasting,
+    });
 
     return (
         <Layout>
