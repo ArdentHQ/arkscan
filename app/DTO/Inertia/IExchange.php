@@ -26,9 +26,9 @@ class IExchange extends Data
         public string $icon,
         public string $iconUrl,
         public ?string $coingecko_id,
-        public ?string $price,
+        public ?float $price,
         public ?string $priceFiat,
-        public ?string $volume,
+        public ?float $volume,
         public ?string $volumeFiat,
     ) {
     }

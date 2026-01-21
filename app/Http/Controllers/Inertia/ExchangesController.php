@@ -119,6 +119,13 @@ final class ExchangesController
             })
             ->values();
 
+        if ($exchanges->isEmpty()) {
+            return new LengthAwarePaginator([], 0, 15, 1, [
+                'path'     => route('exchanges'),
+                'pageName' => 'page',
+            ]);
+        }
+
         return (new LengthAwarePaginator($exchanges, $exchanges->count(), $exchanges->count(), 1, [
             'path'     => route('exchanges'),
             'pageName' => 'page',

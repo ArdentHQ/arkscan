@@ -8,9 +8,23 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property float|null $price
+ * @property float|null $volume
+ */
 final class Exchange extends Model
 {
     use HasFactory;
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'price' => 'float',
+        'volume' => 'float',
+    ];
 
     public function scopeCoingecko(Builder $query): Builder
     {
