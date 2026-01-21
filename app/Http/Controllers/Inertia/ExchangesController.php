@@ -153,11 +153,11 @@ final class ExchangesController
                     $bPairsTypes = [];
 
                     foreach (['btc', 'eth', 'stablecoins', 'other'] as $pairType) {
-                        if ($a->{$pairType}) {
+                        if ($a->getAttributes()[$pairType]) {
                             $aPairsTypes[] = $pairType;
                         }
 
-                        if ($b->{$pairType}) {
+                        if ($b->getAttributes()[$pairType]) {
                             $bPairsTypes[] = $pairType;
                         }
                     }
