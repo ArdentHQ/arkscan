@@ -119,17 +119,15 @@ export function ExchangesLoadingState({ mobile, rowCount = 20 }: { mobile?: Reac
 }
 
 export default function ExchangesTableWrapper({
-    exchanges,
     mobile,
     rowCount = 20,
 }: {
     mobile?: React.ReactNode;
     rowCount?: number;
-} & Pick<ExchangesProps, "exchanges">) {
+}) {
     const { isLoading } = usePageHandler();
-    const { exchanges: bro } = useSharedData<ExchangesProps>();
+    const { exchanges } = useSharedData<ExchangesProps>();
 
-    console.log({ exchanges, isLoading, bro });
     if (!exchanges || isLoading) {
         return <ExchangesLoadingState mobile={mobile} rowCount={rowCount} />;
     }

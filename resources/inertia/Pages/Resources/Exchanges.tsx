@@ -4,31 +4,39 @@ import { useTranslation } from "react-i18next";
 import ExchangesTableWrapper from "@/Components/Tables/Desktop/Exchanges/Exchanges";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import ExchangesMobileTableWrapper from "@/Components/Tables/Mobile/Exchanges/Exchanges";
-import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { router } from "@inertiajs/react";
 import { useEffect } from "react";
 import ExchangeTableFilters from "@/Components/Exchanges/TableFilters";
 import ExchangesSubmitCTA from "@/Components/Exchanges/SubmitCTA";
-import { ExchangesProps } from "../Exchanges.contracts";
+import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 
-function TableWrapper({ exchanges }: Pick<ExchangesProps, "exchanges">) {
-    const updateTable = () => {
+function TableWrapper() {
+    const { setRefreshPage } = usePageHandler();
+
+    const updateTable = (callback?: CallableFunction) => {
         router.reload({
             only: ["exchanges"],
+            onSuccess: () => {
+                if (callback) {
+                    callback();
+                }
+            },
         });
     };
 
     useEffect(() => {
         updateTable();
+
+        setRefreshPage((callback: CallableFunction) => {
+            updateTable(callback);
+        });
     }, []);
 
-    return <ExchangesTableWrapper exchanges={exchanges} mobile={<ExchangesMobileTableWrapper />} />;
+    return <ExchangesTableWrapper mobile={<ExchangesMobileTableWrapper />} />;
 }
 
-export default function Exchanges({ exchanges }: ExchangesProps) {
+export default function Exchanges() {
     const { t } = useTranslation();
-
-    console.log({ exchanges });
 
     return (
         <Layout className="pb-6 pt-8">
@@ -39,7 +47,7 @@ export default function Exchanges({ exchanges }: ExchangesProps) {
             />
 
             <PageHandlerProvider>
-                <TableWrapper exchanges={exchanges} />
+                <TableWrapper />
             </PageHandlerProvider>
 
             <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
