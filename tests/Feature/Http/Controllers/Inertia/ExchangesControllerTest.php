@@ -91,7 +91,7 @@ it('should be possible to successfully send the form', function () {
     $this->post(route('exchanges.submit'), [
         'name'    => 'test',
         'website' => 'http://www.ardenthq.com',
-        'pairs' => 'BTC, ETH, etc',
+        'pairs'   => 'BTC, ETH, etc',
         'subject' => 'general',
         'message' => 'test',
     ])->assertRedirect(route('exchanges'));
@@ -101,7 +101,7 @@ it('should show validation error if validation fails', function () {
     $this->post(route('exchanges.submit'), [
         'name'    => 'test',
         'website' => 'test',
-        'pairs' => '',
+        'pairs'   => '',
         'subject' => 'general',
         'message' => 'test',
     ])->assertSessionHasErrors(['website', 'pairs']);
