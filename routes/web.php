@@ -100,7 +100,7 @@ Route::view('/compatible-wallets-old', 'app.compatible-wallets')->name('compatib
 
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 Route::post('/exchanges', [ExchangesController::class, 'submit'])
-    // ->middleware(['throttle:3,3600'])
+    ->middleware(['throttle:3,3600'])
     ->name('exchanges.submit');
 
 Route::get('/exchanges-old', LegacyExchangesController::class)->name('exchanges-old');
