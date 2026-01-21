@@ -57,23 +57,33 @@ const ValidatorsTabs = () => {
 };
 
 function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
-    const { baseUrl, statistics } = useSharedData<ValidatorsProps>();
+    const { baseUrl, filters, statistics } = useSharedData<ValidatorsProps>();
 
     return (
         <TabsProvider
             defaultSelected="validators"
             queryStringDefaults={{
                 validators: {
+                    ...filters["validators"],
+
                     page: 1,
                     "per-page": 25,
+                    sort: "rank",
+                    "sort-direction": "asc",
                 },
                 "missed-blocks": {
                     page: 1,
                     "per-page": 25,
+                    sort: "age",
+                    "sort-direction": "desc",
                 },
                 "recent-votes": {
+                    ...filters["recent-votes"],
+
                     page: 1,
                     "per-page": 25,
+                    sort: "age",
+                    "sort-direction": "desc",
                 },
             }}
             tabs={[

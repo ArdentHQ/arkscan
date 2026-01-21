@@ -24,7 +24,12 @@ function getFilterValuesFromOptions(initialOptions: IFilterEntry[], withQueryStr
             return acc;
         }
 
-        acc[option.value] = option.selected;
+        const queryStringParamValue = urlParams.get(option.value);
+        if (withQueryStringValue && queryStringParamValue !== null) {
+            acc[option.value] = queryStringParamValue === "true" ? true : false;
+        } else {
+            acc[option.value] = option.selected;
+        }
 
         return acc;
     }, {} as IFilters);

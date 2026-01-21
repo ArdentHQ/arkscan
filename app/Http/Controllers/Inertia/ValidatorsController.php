@@ -43,7 +43,7 @@ final class ValidatorsController
     public function __invoke(): Response
     {
         return Inertia::renderWithMeta('Validators/Validators', 'validators', [
-            'filters'      => fn () => $this->filters(),
+            'filters'      => self::FILTERS,
             'baseUrl'      => route('validators', absolute: false),
             'validators'   => Inertia::optional(function () {
                 $paginator = $this->getValidators();
@@ -80,16 +80,7 @@ final class ValidatorsController
             }),
 
             'statistics' => fn () => $this->getStatistics(),
-
         ]);
-    }
-
-    private function filters(): array
-    {
-        return collect(self::FILTERS)
-            ->keys()
-            ->mapWithKeys(fn ($groupName) => [$groupName => collect(self::FILTERS[$groupName])->keys()->mapWithKeys(fn ($filterName) => [$filterName => $this->hasFilter($filterName, self::FILTERS[$groupName][$filterName])])])
-            ->toArray();
     }
 
     private function getStatistics(): array

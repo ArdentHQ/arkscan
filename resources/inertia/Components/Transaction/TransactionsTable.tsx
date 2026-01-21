@@ -6,13 +6,12 @@ import TransactionsMobileTableWrapper from "@/Components/Tables/Mobile/Transacti
 import { router } from "@inertiajs/react";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { useEffect } from "react";
+import useSharedData from "@/hooks/use-shared-data";
 
-export default function TransactionsTable({
-    transactions,
-    filters,
-}: Pick<TransactionsProps, "transactions" | "filters">) {
+export default function TransactionsTable() {
     const { t } = useTranslation();
     const { setRefreshPage } = usePageHandler();
+    const { transactions, filters } = useSharedData<TransactionsProps>();
 
     const updateTable = (callback?: CallableFunction) => {
         router.reload({
