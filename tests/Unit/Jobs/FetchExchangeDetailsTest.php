@@ -32,7 +32,7 @@ it('should fetch exchange details and update the exchange model', function () {
     $exchange->refresh();
 
     expect($exchange->price)->toBe(10.5);
-    expect($exchange->volume)->toBe(1000);
+    expect($exchange->volume)->toBe(1000.0);
 });
 
 it('should keep exchange details when no information is available for the exchange', function () {
@@ -51,7 +51,7 @@ it('should keep exchange details when no information is available for the exchan
     $exchange->refresh();
 
     expect($exchange->price)->toBe(10.5);
-    expect($exchange->volume)->toBe(1000);
+    expect($exchange->volume)->toBe(1000.0);
 });
 
 it('should release the job again if throttled exception', function () {
