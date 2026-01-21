@@ -21,7 +21,6 @@ trait WithFilters
             return [];
         }
 
-        /** @var array<string, bool> $filters */
         $filters = constant('self::FILTERS');
 
         if ($group !== null) {
@@ -32,6 +31,7 @@ trait WithFilters
             $filters = $filters[$group];
         }
 
+        /** @var array<string, bool> $filters */
         return $filters;
     }
 
