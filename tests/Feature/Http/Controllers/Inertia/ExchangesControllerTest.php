@@ -85,6 +85,121 @@ it('should handle no exchanges', function () {
         });
 });
 
+it('should sort by name', function ($direction, $order) {
+    $this->withoutExceptionHandling();
+
+    Exchange::factory()->create(['id' => 1, 'name' => 'Z Exchange', 'volume' => 100]);
+    Exchange::factory()->create(['id' => 2, 'name' => 'A Exchange', 'volume' => 200]);
+    Exchange::factory()->create(['id' => 3, 'name' => 'M Exchange', 'volume' => 150]);
+
+    $this->get(route('exchanges', ['sort' => 'name', 'sort-direction' => $direction]))
+        ->assertOk()
+        ->assertInertia(function (Assert $page) use ($order) {
+            $page->component('Resources/Exchanges')
+                ->missing('exchanges')
+                ->reloadOnly('exchanges', function (Assert $reload) use ($order) {
+                    $reload->where('exchanges.data.0.id', $order[0])
+                        ->where('exchanges.data.1.id', $order[1])
+                        ->where('exchanges.data.2.id', $order[2]);
+                });
+        });
+})->with([
+    'ascending' => ['asc', [2, 3, 1]],
+    'descending' => ['desc', [1, 3, 2]],
+]);
+
+it('should sort by price', function ($direction, $order) {
+    $this->withoutExceptionHandling();
+
+    Exchange::factory()->create(['id' => 1, 'price' => 1.15, 'volume' => 100]);
+    Exchange::factory()->create(['id' => 2, 'price' => 2.15, 'volume' => 200]);
+    Exchange::factory()->create(['id' => 3, 'price' => 3.15, 'volume' => 150]);
+
+    $this->get(route('exchanges', ['sort' => 'price', 'sort-direction' => $direction]))
+        ->assertOk()
+        ->assertInertia(function (Assert $page) use ($order) {
+            $page->component('Resources/Exchanges')
+                ->missing('exchanges')
+                ->reloadOnly('exchanges', function (Assert $reload) use ($order) {
+                    $reload->where('exchanges.data.0.id', $order[0])
+                        ->where('exchanges.data.1.id', $order[1])
+                        ->where('exchanges.data.2.id', $order[2]);
+                });
+        });
+})->with([
+    'ascending' => ['asc', [1, 2, 3]],
+    'descending' => ['desc', [3, 2, 1]],
+]);
+
+it('should sort by pairs', function ($direction, $order) {
+    $this->withoutExceptionHandling();
+
+    Exchange::factory()->create(['id' => 1, 'btc' => true, 'eth' => false, 'stablecoins' => false, 'other' => false, 'volume' => 100]);
+    Exchange::factory()->create(['id' => 2, 'btc' => false, 'eth' => true, 'stablecoins' => true, 'other' => false, 'volume' => 200]);
+    Exchange::factory()->create(['id' => 3, 'btc' => false, 'eth' => false, 'stablecoins' => true, 'other' => false, 'volume' => 150]);
+
+    $this->get(route('exchanges', ['sort' => 'top_pairs', 'sort-direction' => $direction]))
+        ->assertOk()
+        ->assertInertia(function (Assert $page) use ($order) {
+            $page->component('Resources/Exchanges')
+                ->missing('exchanges')
+                ->reloadOnly('exchanges', function (Assert $reload) use ($order) {
+                    $reload->where('exchanges.data.0.id', $order[0])
+                        ->where('exchanges.data.1.id', $order[1])
+                        ->where('exchanges.data.2.id', $order[2]);
+                });
+        });
+})->with([
+    'ascending' => ['asc', [1, 2, 3]],
+    'descending' => ['desc', [3, 2, 1]],
+]);
+
+it('should sort by volume', function ($direction, $order) {
+    $this->withoutExceptionHandling();
+
+    Exchange::factory()->create(['id' => 1, 'volume' => 100]);
+    Exchange::factory()->create(['id' => 2, 'volume' => 200]);
+    Exchange::factory()->create(['id' => 3, 'volume' => 150]);
+
+    $this->get(route('exchanges', ['sort' => 'volume', 'sort-direction' => $direction]))
+        ->assertOk()
+        ->assertInertia(function (Assert $page) use ($order) {
+            $page->component('Resources/Exchanges')
+                ->missing('exchanges')
+                ->reloadOnly('exchanges', function (Assert $reload) use ($order) {
+                    $reload->where('exchanges.data.0.id', $order[0])
+                        ->where('exchanges.data.1.id', $order[1])
+                        ->where('exchanges.data.2.id', $order[2]);
+                });
+        });
+})->with([
+    'ascending' => ['asc', [1, 3, 2]],
+    'descending' => ['desc', [2, 3, 1]],
+]);
+
+it('should sort by volume as a fallback', function ($direction, $order) {
+    $this->withoutExceptionHandling();
+
+    Exchange::factory()->create(['id' => 1, 'price' => 1.15, 'volume' => 100]);
+    Exchange::factory()->create(['id' => 2, 'price' => 1.15, 'volume' => 200]);
+    Exchange::factory()->create(['id' => 3, 'price' => 1.15, 'volume' => 150]);
+
+    $this->get(route('exchanges', ['sort' => 'price', 'sort-direction' => $direction]))
+        ->assertOk()
+        ->assertInertia(function (Assert $page) use ($order) {
+            $page->component('Resources/Exchanges')
+                ->missing('exchanges')
+                ->reloadOnly('exchanges', function (Assert $reload) use ($order) {
+                    $reload->where('exchanges.data.0.id', $order[0])
+                        ->where('exchanges.data.1.id', $order[1])
+                        ->where('exchanges.data.2.id', $order[2]);
+                });
+        });
+})->with([
+    'ascending' => ['asc', [1, 3, 2]],
+    'descending' => ['desc', [2, 3, 1]],
+]);
+
 it('should be possible to successfully send the form', function () {
     Mail::fake();
 

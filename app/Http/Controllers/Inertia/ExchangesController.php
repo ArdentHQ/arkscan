@@ -103,19 +103,76 @@ final class ExchangesController
         $type = request()->get('type');
         $pair = request()->get('pair');
 
+        $sort = request()->get('sort', 'volume');
+        $sortDirection = request()->get('sort-direction', 'desc');
+
+        if (!in_array($sort, ['name', 'top_pairs', 'volume', 'price'], true)) {
+            $sort = 'volume';
+            $sortDirection = 'desc';
+        }
+
         $exchanges = Exchange::filterByType($type)
             ->filterByPair($pair)
             ->get()
-            ->sort(function ($a, $b) {
-                if ($b->volume === null) {
-                    return -1;
-                }
-
+            ->sort(function ($a, $b) use ($sort, $sortDirection) {
+                $volumeSort = 0;
                 if ($a->volume === null) {
-                    return 1;
+                    $volumeSort = 1;
                 }
 
-                return intval($b->volume) - intval($a->volume);
+                if ($b->volume === null) {
+                    $volumeSort = -1;
+                }
+
+                if ($volumeSort === 0) {
+                    $volumeSort = ($sortDirection === 'asc' ? 1 : -1) * (intval($a->volume ?? 0) - intval($b->volume ?? 0));
+                }
+
+                if ($sort === 'volume') {
+                    return $volumeSort;
+                }
+
+                if ($sort === 'price') {
+                    if ($a->price === null) {
+                        return 1;
+                    }
+
+                    if ($b->price === null) {
+                        return -1;
+                    }
+
+                    if (floatval($a->price) === floatval($b->price)) {
+                        return $volumeSort;
+                    }
+
+                    return ($sortDirection === 'asc' ? 1 : -1) * (floatval($a->price) <=> floatval($b->price));
+                }
+
+                if ($sort === 'top_pairs') {
+                    $aPairsTypes = [];
+                    $bPairsTypes = [];
+
+                    foreach (['btc', 'eth', 'stablecoins', 'other'] as $pairType) {
+                        if ($a->{$pairType}) {
+                            $aPairsTypes[] = $pairType;
+                        }
+
+                        if ($b->{$pairType}) {
+                            $bPairsTypes[] = $pairType;
+                        }
+                    }
+
+                    $aPairs = implode(', ', $aPairsTypes);
+                    $bPairs = implode(', ', $bPairsTypes);
+
+                    if (strcmp($aPairs, $bPairs) === 0) {
+                        return $volumeSort;
+                    }
+
+                    return ($sortDirection === 'asc' ? 1 : -1) * strcmp($aPairs, $bPairs);
+                }
+
+                return ($sortDirection === 'asc' ? 1 : -1) * strcmp($a->name, $b->name);
             })
             ->values();
 
