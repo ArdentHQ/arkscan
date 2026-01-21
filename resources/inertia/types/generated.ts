@@ -136,7 +136,7 @@ export type IRequestData = {
     settings: ISettings;
     arkconnectConfig: IConfigArkconnect;
     pagination: IConfigPagination;
-    broadcasting: string;
+    usesBroadcasting: boolean;
     networkName: string;
     isDownForMaintenance: boolean;
     isProduction: boolean;

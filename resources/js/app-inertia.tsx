@@ -30,7 +30,7 @@ createInertiaApp({
         }
 
         root.render(
-            <WebhooksProvider broadcasting={props.initialPage.props.broadcasting as string}>
+            <WebhooksProvider usesBroadcasting={props.initialPage.props.usesBroadcasting as boolean}>
                 <SettingsProvider
                     tickerData={props.initialPage.props.priceTickerData as IPriceTickerData}
                     theme={theme}

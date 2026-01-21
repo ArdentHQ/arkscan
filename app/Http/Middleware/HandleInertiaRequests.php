@@ -60,7 +60,7 @@ class HandleInertiaRequests extends Middleware
                 'supportEnabled'       => fn () => config('arkscan.support.enabled'),
                 'currencies'           => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
                 'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
-                'broadcasting'         => config('broadcasting.default'),
+                'usesBroadcasting'     => config('broadcasting.default') === 'reverb',
                 'networkName'          => fn () => config('arkscan.network'),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
                 'isProduction'         => fn () => config('arkscan.network') === 'production',
