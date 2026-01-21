@@ -15,7 +15,7 @@ export default function TransactionsList({ network, statistics, filters, transac
     const { listen } = useWebhooks();
 
     useEffect(() => {
-        return listen('transactions', "NewTransaction", () => {
+        return listen("transactions", "NewTransaction", () => {
             router.reload({
                 only: ["transactions"],
             });

@@ -50,7 +50,7 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
             only: ["blocks"],
         });
 
-        return listen('blocks', "NewBlock", () => {
+        return listen("blocks", "NewBlock", () => {
             router.reload({
                 only: ["blocks"],
             });
