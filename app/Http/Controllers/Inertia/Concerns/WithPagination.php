@@ -10,7 +10,7 @@ trait WithPagination
 {
     protected function page(): int
     {
-        return (int) request()->get('page', 1);
+        return (int) request()->query('page', 1);
     }
 
     protected function perPage(string $name = 'default'): int
@@ -23,6 +23,6 @@ trait WithPagination
             $perPage = constant(static::class.'::'.$constantName);
         }
 
-        return (int) request()->get('per-page', $perPage);
+        return (int) request()->query('per-page', $perPage);
     }
 }

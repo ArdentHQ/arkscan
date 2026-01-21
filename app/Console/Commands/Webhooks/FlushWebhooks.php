@@ -20,7 +20,7 @@ final class FlushWebhooks extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Remove all webhooks';
 
