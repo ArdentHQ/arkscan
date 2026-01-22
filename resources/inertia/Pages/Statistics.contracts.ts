@@ -162,7 +162,7 @@ export interface StatisticsInsights {
 
 export interface StatisticsProps {
     refreshInterval: number;
-    mainsailHardforkStartHeight: number;
+    snapshotBlockHeight: number;
     gasTracker: GasTrackerData;
     highlights: HighlightsData;
     informationCards: InformationCardsData;

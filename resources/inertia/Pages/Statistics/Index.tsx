@@ -16,7 +16,7 @@ import CircleInfoIcon from "@ui/icons/circle/info.svg?react";
 
 export default function StatisticsIndex({
     refreshInterval,
-    mainsailHardforkStartHeight,
+    snapshotBlockHeight,
     gasTracker,
     highlights,
     informationCards,
@@ -66,7 +66,7 @@ export default function StatisticsIndex({
         };
     }, [listen]);
 
-    const mainsailHardforkHeightLabel = formattedNumber(mainsailHardforkStartHeight);
+    const snapshotBlockHeightLabel = formattedNumber(snapshotBlockHeight);
 
     return (
         <Layout>
@@ -82,7 +82,7 @@ export default function StatisticsIndex({
 
                     <span>
                         {t("pages.statistics.mainsail_notice", {
-                            blockHeight: mainsailHardforkHeightLabel,
+                            blockHeight: snapshotBlockHeightLabel,
                         })}
                     </span>
                 </div>
