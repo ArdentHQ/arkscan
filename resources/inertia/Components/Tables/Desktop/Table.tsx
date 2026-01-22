@@ -36,7 +36,8 @@ export function TableHeaderWrapper({
         <div
             data-test-id="table-header"
             className={classNames({
-                "flex md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:px-6 md:dark:border-theme-dark-700": true,
+                "flex md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:px-6 md:dark:border-theme-dark-700":
+                    true,
                 "pb-4 md:pt-4": children !== undefined,
                 "pb-5 md:pt-5": children === undefined,
                 [breakpointClass]: true,
@@ -82,7 +83,7 @@ export function Table({
     resultSuffix?: string;
     paginator: IPaginatedResponse<any>;
     hidePagination?: boolean;
-    rowComponent: React.ComponentType<{ row: any; key?: React.Key }>;
+    rowComponent: React.ComponentType<{ row: any; key: React.Key }>;
     mobile?: React.ReactNode;
     headerActions?: React.ReactNode;
     noResultsMessage?: React.ReactNode;
@@ -109,7 +110,8 @@ export function Table({
 
             <div
                 className={classNames({
-                    "hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block":
+                        true,
                     "rounded-t-xl": !withHeader,
                     "rounded-b-xl": !showFooter && !hidePagination,
                 })}
