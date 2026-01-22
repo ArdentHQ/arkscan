@@ -206,7 +206,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                     </div>
                 </div>
 
-                <div className="mt-4 border-theme-secondary-300 dark:border-theme-dark-800 sm:border-t sm:pt-4 md:mt-6 md:pt-6 lg:w-full">
+                <div className="mt-4 border-theme-secondary-300 dark:border-theme-dark-800 sm:border-t sm:pt-4 md:mt-6 md:pt-6 lg:w-full p-px">
                     <div className="sm:flex sm:items-end sm:justify-between lg:items-center">
                         <div className="w-full sm:flex sm:pt-0 lg:mt-0 lg:flex-1">
                             <div className="mt-3 hidden sm:mt-0 sm:block">
@@ -264,7 +264,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                         </div>
                     </div>
 
-                    <div className="-mx-4 -mb-4 mt-6 hidden rounded-b border border-t-0 border-theme-secondary-300 bg-theme-secondary-100 p-3 dark:border-theme-dark-800 dark:bg-theme-dark-950 sm:block md:-mx-6 md:-mb-6 md:rounded-b-xl">
+                    <div className="-mx-4 -mb-4 mt-6 hidden bg-theme-secondary-100 p-3 dark:border-theme-dark-800 dark:bg-theme-dark-950 sm:block md:-mx-6 md:-mb-6 md:rounded-b-xl">
                         <ChartCanvas
                             id="exchanges-chart"
                             className="h-auto w-full"
