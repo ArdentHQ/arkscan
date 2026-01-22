@@ -121,9 +121,9 @@ final class HomeController
         $gasHighValue    = null;
 
         if (Network::canBeExchanged()) {
-            $gasLowValue     = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasLow, 'gwei')), null, true);
-            $gasAverageValue = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasAverage, 'gwei')), null, true);
-            $gasHighValue    = ExchangeRate::convert(BigNumber::new((string) UnitConverter::parseUnits($gasHigh, 'gwei')), null, true);
+            $gasLowValue     = $this->formatGasValue($gasLow);
+            $gasAverageValue = $this->formatGasValue($gasAverage);
+            $gasHighValue    = $this->formatGasValue($gasHigh);
         }
 
         return [
@@ -149,6 +149,23 @@ final class HomeController
                 ],
             ],
         ];
+    }
+
+    private function formatGasValue(string $gas): string
+    {
+        $amount    = BigNumber::new((string) UnitConverter::parseUnits($gas, 'gwei'));
+        $currency  = Settings::currency();
+        $converted = ExchangeRate::convertNumerical($amount->toFloat());
+
+        if (! NumberFormatter::isFiat($currency)) {
+            return NumberFormatter::currency($converted, $currency, true);
+        }
+
+        if ($converted > 0 && $converted < 0.01) {
+            return sprintf('< %s', NumberFormatter::currency(0.01, $currency));
+        }
+
+        return NumberFormatter::currency($converted, $currency);
     }
 
     private function getChartData(Request $request): array

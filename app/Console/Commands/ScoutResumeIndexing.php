@@ -20,7 +20,7 @@ final class ScoutResumeIndexing extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Resume laravel scout indexing';
 

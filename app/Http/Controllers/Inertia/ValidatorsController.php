@@ -79,7 +79,7 @@ final class ValidatorsController
                 ];
             }),
 
-            'statistics' => fn () => $this->getStatistics(),
+            'statistics' => Inertia::lazy(fn () => $this->getStatistics()),
 
         ]);
     }

@@ -21,7 +21,7 @@ final class CacheValidatorWallets extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache all validators by their public key to avoid expensive database queries.';
 
