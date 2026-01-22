@@ -57,7 +57,6 @@ export default function List({ statistics }: PageProps<BlocksListProps>) {
         });
     }, []);
 
-    // secs:
     usePoll(
         30 * 1000,
         {
