@@ -206,7 +206,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                     </div>
                 </div>
 
-                <div className="mt-4 border-theme-secondary-300 dark:border-theme-dark-800 sm:border-t sm:pt-4 md:mt-6 md:pt-6 lg:w-full p-px">
+                <div className="mt-4 border-theme-secondary-300 p-px dark:border-theme-dark-800 sm:border-t sm:pt-4 md:mt-6 md:pt-6 lg:w-full">
                     <div className="sm:flex sm:items-end sm:justify-between lg:items-center">
                         <div className="w-full sm:flex sm:pt-0 lg:mt-0 lg:flex-1">
                             <div className="mt-3 hidden sm:mt-0 sm:block">
