@@ -9,6 +9,10 @@ import { useEffect } from "react";
 import ExchangeTableFilters from "@/Components/Exchanges/TableFilters";
 import ExchangesSubmitCTA from "@/Components/Exchanges/SubmitCTA";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
+import ExchangesChart from "@/Components/Exchanges/Chart";
+import MobileDivider from "@/Components/General/MobileDivider";
+import useSharedData from "@/hooks/use-shared-data";
+import { ExchangesProps } from "@/Pages/Exchanges.contracts";
 
 function TableWrapper() {
     const { setRefreshPage } = usePageHandler();
@@ -37,9 +41,28 @@ function TableWrapper() {
 
 export default function Exchanges() {
     const { t } = useTranslation();
+    const { chart, network } = useSharedData<ExchangesProps>();
 
     return (
         <Layout className="pb-6 pt-8">
+            {chart && network?.canBeExchanged && (
+                <>
+                    <div className="hidden flex-col px-6 sm:flex md:mx-auto md:max-w-7xl md:px-10">
+                        <div className="text-lg font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl">
+                            {t("pages.exchanges.live_price_chart")}
+                        </div>
+
+                        <ExchangesChart chart={chart} />
+                    </div>
+
+                    <MobileDivider className="hidden my-6 sm:block" />
+
+                    <div className="hidden flex-col px-6 sm:flex md:mx-auto md:max-w-7xl md:px-10">
+                        <hr className="my-8 hidden h-px text-theme-secondary-300 dark:text-theme-dark-700 md:block" />
+                    </div>
+                </>
+            )}
+
             <PageHeader
                 title={t("pages.exchanges.title")}
                 subtitle={t("pages.exchanges.subtitle")}
