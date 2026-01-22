@@ -34,7 +34,7 @@ export function LoadingTableWrapper({
     rowCount: number;
     indicatorHeight?: string;
     withPagination?: boolean;
-    header?: React.ReactNode;
+    header?: React.ReactNode | boolean;
     noMargins?: boolean;
 }) {
     return (
@@ -43,11 +43,14 @@ export function LoadingTableWrapper({
                 "px-6 pt-6 md:mx-auto md:max-w-7xl md:px-10 md:pt-0": !noMargins,
             })}
         >
-            {!!header && <TableHeaderWrapper resultCount={0}>{header}</TableHeaderWrapper>}
+            {!!header && (
+                <TableHeaderWrapper resultCount={0}>{header === true ? undefined : header}</TableHeaderWrapper>
+            )}
 
             <div
                 className={classNames({
-                    "validator-monitor hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "validator-monitor hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block":
+                        true,
                     "rounded-t-xl": !header,
                     "rounded-b-xl": !withPagination,
                 })}
@@ -173,7 +176,7 @@ export default function LoadingTable({
     mobile?: React.ReactNode;
     paginator?: IPaginatedResponse<any>;
     indicatorHeight?: string;
-    header?: React.ReactNode;
+    header?: React.ReactNode | boolean;
     noMargins?: boolean;
 }) {
     let isLoading = false;
