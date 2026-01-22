@@ -43,6 +43,6 @@ final class BlockSearch implements Search
         return (new SearchQuery())
             ->setFilter(['hash = '.sprintf('"%s"', addslashes($query))])
             ->setIndexUid('blocks')
-            ->setLimit($limit);
+            ->setLimit(max($limit, 0));
     }
 }

@@ -26,7 +26,7 @@ final class CacheKnownWallets extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache all known wallets by their address.';
 

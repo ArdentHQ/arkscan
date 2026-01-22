@@ -133,7 +133,7 @@ final class WalletController
     private function filter(string $key): bool
     {
         if (request()->has($key)) {
-            return request()->get($key) === 'true';
+            return request()->query($key) === 'true';
         }
 
         $currentTab = $this->view;

@@ -1,6 +1,7 @@
 import Card from "@/Components/General/Card";
 import Detail from "@/Components/General/Detail";
 import Number from "@/Components/General/Number";
+import LoadingText from "@/Components/Loading/Text";
 import { useTranslation } from "react-i18next";
 import Badge from "../General/Badge";
 import Currency from "../General/Currency";
@@ -16,8 +17,9 @@ import headerBgDark from "@images/validators/header-bg-dark.svg";
 import headerBgMobileDark from "@images/validators/header-bg-mobile-dark.svg";
 import headerBgDim from "@images/validators/header-bg-dim.svg";
 import headerBgMobileDim from "@images/validators/header-bg-mobile-dim.svg";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { formattedNumber } from "../General/Number";
+import { useEffect } from "react";
 
 function ExploreHeaderStat() {
     const { t } = useTranslation();
@@ -69,9 +71,25 @@ function ExploreHeaderStat() {
     );
 }
 
-export default function HeaderStats({ statistics }: { statistics: IValidatorsStatistics }) {
+export default function HeaderStats({ statistics }: { statistics?: IValidatorsStatistics }) {
     const { t } = useTranslation();
     const { network } = useShareData();
+    const isLoading = !statistics;
+    const missedBlocks = statistics?.missedBlocks ?? 0;
+    const validatorsMissed = statistics?.validatorsMissed ?? 0;
+    const votesPercentage = statistics?.votesPercentage ?? 0;
+    const voterCountLabel = statistics ? formattedNumber(statistics.voterCount) : "...";
+    const totalVoted = statistics?.totalVoted ?? 0;
+
+    useEffect(() => {
+        if (statistics) {
+            return;
+        }
+
+        router.reload({
+            only: ["statistics"],
+        });
+    }, [statistics]);
 
     return (
         <div className="flex flex-col space-y-2 px-6 pb-6 sm:space-y-3 md:mx-auto md:max-w-7xl md:px-10 xl:flex-row xl:space-x-3 xl:space-y-0">
@@ -82,20 +100,28 @@ export default function HeaderStats({ statistics }: { statistics: IValidatorsSta
                         className="flex space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700"
                     >
                         <div className="flex items-center space-x-2">
-                            <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                {statistics.missedBlocks === 0 ? "-" : <Number>{statistics.missedBlocks}</Number>}
-                            </span>
+                            {isLoading ? (
+                                <LoadingText width="w-[48px]" height="h-5" />
+                            ) : (
+                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    {missedBlocks === 0 ? "-" : <Number>{missedBlocks}</Number>}
+                                </span>
+                            )}
 
-                            <Badge className="py-px">
-                                {t(
-                                    statistics.validatorsMissed === 1
-                                        ? "pages.validators.x_validators_singular"
-                                        : "pages.validators.x_validators_plural",
-                                    {
-                                        value: statistics?.validatorsMissed,
-                                    },
-                                )}
-                            </Badge>
+                            {isLoading ? (
+                                <LoadingText width="w-[92px]" height="h-5" />
+                            ) : (
+                                <Badge className="py-px">
+                                    {t(
+                                        validatorsMissed === 1
+                                            ? "pages.validators.x_validators_singular"
+                                            : "pages.validators.x_validators_plural",
+                                        {
+                                            value: validatorsMissed,
+                                        },
+                                    )}
+                                </Badge>
+                            )}
                         </div>
 
                         <Link
@@ -110,15 +136,23 @@ export default function HeaderStats({ statistics }: { statistics: IValidatorsSta
                 <Card className="flex-1">
                     <Detail
                         title={t("pages.validators.voting_x_addresses", {
-                            value: formattedNumber(statistics.voterCount),
+                            value: voterCountLabel,
                         })}
                         className="flex items-center space-x-2"
                     >
-                        <span>
-                            <Currency currency={network!.currency} decimals={0} value={statistics.totalVoted} />
-                        </span>
+                        {isLoading ? (
+                            <LoadingText width="w-[110px]" height="h-5" />
+                        ) : (
+                            <span>
+                                <Currency currency={network!.currency} decimals={0} value={totalVoted} />
+                            </span>
+                        )}
 
-                        <Badge className="py-px">{statistics.votesPercentage.toFixed(2)}%</Badge>
+                        {isLoading ? (
+                            <LoadingText width="w-[52px]" height="h-5" />
+                        ) : (
+                            <Badge className="py-px">{votesPercentage.toFixed(2)}%</Badge>
+                        )}
                     </Detail>
                 </Card>
             </div>

@@ -20,7 +20,7 @@ final class CacheValidatorsWithVoters extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache wallets that have been voted for to avoid duplicate queries.';
 
