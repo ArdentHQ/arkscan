@@ -115,6 +115,84 @@ it('should calculate gas statistics with value', function () {
             ->where('statistics.gas.high.value', '$7.00'));
 });
 
+it('should format small gas values for fiat currencies', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    Wallet::factory()->count(11)->create();
+
+    $cache = new NetworkCache();
+
+    $cache->setSupply(function (): float {
+        return 12345.6789 * 1e18;
+    });
+
+    $cache->setVotesPercentage('123.45');
+
+    (new ValidatorCache())->setTotalBalanceVoted(4567.2345);
+    (new MainsailCache())->setFees([
+        'min' => '1000000000000000',
+        'avg' => '1000000000000000',
+        'max' => '1000000000000000',
+    ]);
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1.0);
+
+    $expectedValue = sprintf('< %s', NumberFormatter::currency(0.01, Settings::currency()));
+
+    $this
+        ->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Home/Index')
+            ->where('statistics.gas.low.value', $expectedValue)
+            ->where('statistics.gas.average.value', $expectedValue)
+            ->where('statistics.gas.high.value', $expectedValue));
+});
+
+it('should format gas values for crypto currencies', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    $settings = [
+        'currency'   => 'ARK',
+        'priceChart' => true,
+        'feeChart'   => true,
+        'theme'      => null,
+    ];
+
+    Wallet::factory()->count(11)->create();
+
+    $cache = new NetworkCache();
+
+    $cache->setSupply(function (): float {
+        return 12345.6789 * 1e18;
+    });
+
+    $cache->setVotesPercentage('123.45');
+
+    (new ValidatorCache())->setTotalBalanceVoted(4567.2345);
+    (new MainsailCache())->setFees([
+        'min' => (string) BigNumber::new(1.5 * 1e18),
+        'avg' => (string) BigNumber::new(2.5 * 1e18),
+        'max' => (string) BigNumber::new(3.5 * 1e18),
+    ]);
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'ARK', 2.0);
+
+    $expectedLowValue     = NumberFormatter::currency(3, 'ARK', true);
+    $expectedAverageValue = NumberFormatter::currency(5, 'ARK', true);
+    $expectedHighValue    = NumberFormatter::currency(7, 'ARK', true);
+
+    $this
+        ->withCookie('settings', json_encode($settings))
+        ->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Home/Index')
+            ->where('statistics.gas.low.value', $expectedLowValue)
+            ->where('statistics.gas.average.value', $expectedAverageValue)
+            ->where('statistics.gas.high.value', $expectedHighValue));
+});
+
 it('should show the no-results message when no transactions exist', function () {
     $this
         ->get(route('home'))

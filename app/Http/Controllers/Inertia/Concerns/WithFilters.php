@@ -9,7 +9,7 @@ trait WithFilters
     protected function hasFilter(string $name, bool $defaultValue): bool
     {
         if (request()->has($name)) {
-            return request()->boolean($name);
+            return request()->query($name) === 'true';
         }
 
         return $defaultValue;

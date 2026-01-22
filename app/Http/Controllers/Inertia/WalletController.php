@@ -22,6 +22,7 @@ use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 

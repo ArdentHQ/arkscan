@@ -22,7 +22,7 @@ final class LoadExchanges extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Load ark exchanges';
 
