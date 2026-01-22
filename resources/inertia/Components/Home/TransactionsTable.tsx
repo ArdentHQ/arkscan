@@ -3,7 +3,7 @@ import { ITransaction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
 import { TransactionsListLoadingState, TransactionsTable } from "@/Components/Tables/Desktop/Transactions/Transactions";
-import { TransactionsMobileTable } from "@/Components/Tables/Mobile/Transactions/Transactions";
+import TransactionsMobileTableWrapper from "@/Components/Tables/Mobile/Transactions/Transactions";
 import { MobileTransactionsSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Transactions/Transactions";
 import ViewAllFooter from "./ViewAllFooter";
 
@@ -29,7 +29,7 @@ export default function HomeTransactionsTableWrapper({
         <>
             <TransactionsTable
                 transactions={transactions}
-                mobile={<TransactionsMobileTable transactions={transactions} />}
+                mobile={<TransactionsMobileTableWrapper transactions={transactions} />}
                 withHeader={false}
                 hidePagination={true}
             />

@@ -26,7 +26,7 @@ final class CacheValidatorStatistics extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache expensive validator aggregates.';
 

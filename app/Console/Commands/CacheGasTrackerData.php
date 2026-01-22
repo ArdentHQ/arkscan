@@ -19,7 +19,7 @@ final class CacheGasTrackerData extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Fetch data from the Gas Tracker API and update the cache';
 

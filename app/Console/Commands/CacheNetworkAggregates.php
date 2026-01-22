@@ -25,7 +25,7 @@ final class CacheNetworkAggregates extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache expensive network aggregates.';
 
