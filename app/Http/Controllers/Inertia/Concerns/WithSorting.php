@@ -11,7 +11,7 @@ trait WithSorting
 {
     private function sortDirection(string $name = 'default'): SortDirection
     {
-        $sortDirection = request()->get('sort-direction');
+        $sortDirection = request()->query('sort-direction');
 
         if (in_array($sortDirection, [SortDirection::ASC->value, SortDirection::DESC->value], true)) {
             return SortDirection::from($sortDirection);
@@ -32,6 +32,6 @@ trait WithSorting
             $defaultSortKey = constant(static::class.'::'.$constantName);
         }
 
-        return request()->get('sort', $defaultSortKey);
+        return request()->query('sort', $defaultSortKey);
     }
 }

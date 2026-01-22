@@ -21,7 +21,7 @@ final class DeleteWebhook extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Delete ARK webhook';
 

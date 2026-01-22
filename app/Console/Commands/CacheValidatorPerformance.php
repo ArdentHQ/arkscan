@@ -24,7 +24,7 @@ final class CacheValidatorPerformance extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache the past performance for each active validator in the current round.';
 

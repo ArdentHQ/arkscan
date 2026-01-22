@@ -120,15 +120,18 @@ it('should expose filters and statistics data', function () {
         $this,
         pageCallback: function (Assert $page) {
             $page->where('filters', ValidatorsController::FILTERS)
-                ->where('statistics', [
-                    'voterCount'       => 42,
-                    'totalVoted'       => 123.45,
-                    'votesPercentage'  => 67.5,
-                    'missedBlocks'     => 3,
-                    'validatorsMissed' => 2,
-                ]);
+                ->missing('statistics');
         },
-        withReload: false,
+        reloadCallback: function (Assert $reload) {
+            $reload->where('statistics', [
+                'voterCount'       => 42,
+                'totalVoted'       => 123.45,
+                'votesPercentage'  => 67.5,
+                'missedBlocks'     => 3,
+                'validatorsMissed' => 2,
+            ]);
+        },
+        reloadProps: 'statistics',
     );
 });
 
