@@ -60,6 +60,6 @@ final class WalletSearch implements Search
         return (new SearchQuery())
             ->setQuery($query)
             ->setIndexUid('wallets')
-            ->setLimit($limit);
+            ->setLimit(max($limit, 0));
     }
 }

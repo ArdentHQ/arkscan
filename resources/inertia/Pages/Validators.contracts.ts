@@ -32,7 +32,7 @@ export interface IValidatorsStatistics {
 }
 
 export interface ValidatorsProps {
-    statistics: IValidatorsStatistics;
+    statistics?: IValidatorsStatistics;
     validators: IPaginatedResponse<IValidator>;
     filters: {
         validators: {

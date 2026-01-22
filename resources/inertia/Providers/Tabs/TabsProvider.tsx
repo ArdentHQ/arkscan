@@ -99,8 +99,17 @@ export default function TabsProvider({
 
         if (!useQueryParam) {
             const currentBaseUrl = `/${location.pathname.replace(/^\//, "")}`;
-            if (currentBaseUrl !== baseUrl) {
-                tab = currentBaseUrl.replace(baseUrl + "/", "");
+            const normalizedCurrentBaseUrl = currentBaseUrl.toLowerCase();
+            const normalizedBaseUrl = baseUrl.toLowerCase();
+
+            if (normalizedCurrentBaseUrl !== normalizedBaseUrl) {
+                const normalizedBaseWithSlash = normalizedBaseUrl.endsWith("/")
+                    ? normalizedBaseUrl
+                    : `${normalizedBaseUrl}/`;
+
+                if (normalizedCurrentBaseUrl.startsWith(normalizedBaseWithSlash)) {
+                    tab = currentBaseUrl.slice(normalizedBaseWithSlash.length);
+                }
             }
         }
 

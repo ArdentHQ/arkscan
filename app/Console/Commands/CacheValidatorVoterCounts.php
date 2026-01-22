@@ -24,7 +24,7 @@ final class CacheValidatorVoterCounts extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache the voter count for each validator.';
 

@@ -31,7 +31,7 @@ final class CacheAnnualStatistics extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache expensive annual statistics, use --all for the first run';
 
