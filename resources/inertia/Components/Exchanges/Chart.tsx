@@ -34,7 +34,11 @@ function PeriodSelect({
                 className="form-input transition-default h-10 w-full bg-white !px-3 !py-2 text-left !text-sm font-semibold dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200"
                 placeholder={selectedOption?.label}
             />
-            <Select.Content align="start" sideOffset={4} className="mt-1 w-[var(--radix-select-trigger-width)] origin-top-left">
+            <Select.Content
+                align="start"
+                sideOffset={4}
+                className="mt-1 w-[var(--radix-select-trigger-width)] origin-top-left"
+            >
                 {options.map((option) => (
                     <Select.Item key={option.value} value={option.value}>
                         {option.label}
@@ -68,12 +72,12 @@ function PeriodTabs({
                                 role="tab"
                                 aria-selected={isSelected}
                                 tabIndex={isSelected ? 0 : -1}
-                                className="group/tab relative flex cursor-pointer items-center text-theme-secondary-700 transition-default hover:text-theme-secondary-900 dark:text-theme-dark-200 dark:hover:text-theme-secondary-200"
+                                className="group/tab transition-default relative flex cursor-pointer items-center text-theme-secondary-700 hover:text-theme-secondary-900 dark:text-theme-dark-200 dark:hover:text-theme-secondary-200"
                                 onClick={() => onSelect(option.value)}
                             >
                                 <span
                                     className={classNames(
-                                        "block h-full w-full whitespace-nowrap rounded font-semibold transition-default sm:rounded-lg",
+                                        "transition-default block h-full w-full whitespace-nowrap rounded font-semibold sm:rounded-lg",
                                         "px-3 py-1.5",
                                         isSelected &&
                                             "bg-white text-theme-secondary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50",
@@ -170,7 +174,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                                 {t("pages.exchanges.chart.current_price")}
                             </div>
 
-                            <span className="text-lg font-semibold leading-5.25 text-theme-secondary-900 dark:text-theme-dark-50 md:!leading-[29px] md:text-2xl">
+                            <span className="text-lg font-semibold leading-5.25 text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl md:!leading-[29px]">
                                 {chart.mainValueFiat}
                             </span>
                         </div>
@@ -200,10 +204,10 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                     </div>
                 </div>
 
-                <div className="mt-4 border-theme-secondary-300 dark:border-theme-dark-800 sm:pt-4 sm:border-t md:mt-6 md:pt-6 lg:w-full">
+                <div className="mt-4 border-theme-secondary-300 dark:border-theme-dark-800 sm:border-t sm:pt-4 md:mt-6 md:pt-6 lg:w-full">
                     <div className="sm:flex sm:items-end sm:justify-between lg:items-center">
                         <div className="w-full sm:flex sm:pt-0 lg:mt-0 lg:flex-1">
-                            <div className="mt-3 hidden sm:block sm:mt-0">
+                            <div className="mt-3 hidden sm:mt-0 sm:block">
                                 <h3 className="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
                                     {t("pages.exchanges.chart.market-cap")}
                                 </h3>
@@ -222,7 +226,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                                 </p>
                             </div>
 
-                            <div className="mt-4 hidden sm:ml-6 sm:block sm:mt-0 sm:border-l sm:border-theme-secondary-300 sm:pl-6 dark:border-theme-dark-800">
+                            <div className="mt-4 hidden dark:border-theme-dark-800 sm:ml-6 sm:mt-0 sm:block sm:border-l sm:border-theme-secondary-300 sm:pl-6">
                                 <h3 className="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
                                     {t("pages.exchanges.chart.min-price")}
                                 </h3>
@@ -232,7 +236,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                                 </p>
                             </div>
 
-                            <div className="mt-4 hidden sm:ml-6 sm:block sm:mt-0 sm:border-l sm:border-theme-secondary-300 sm:pl-6 dark:border-theme-dark-800">
+                            <div className="mt-4 hidden dark:border-theme-dark-800 sm:ml-6 sm:mt-0 sm:block sm:border-l sm:border-theme-secondary-300 sm:pl-6">
                                 <h3 className="mb-0 text-sm font-semibold leading-none text-theme-secondary-700 dark:text-theme-dark-200">
                                     {t("pages.exchanges.chart.max-price")}
                                 </h3>

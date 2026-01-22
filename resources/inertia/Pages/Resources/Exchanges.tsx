@@ -55,7 +55,7 @@ export default function Exchanges() {
                         <ExchangesChart chart={chart} />
                     </div>
 
-                    <MobileDivider className="hidden my-6 sm:block" />
+                    <MobileDivider className="my-6 hidden sm:block" />
 
                     <div className="hidden flex-col px-6 sm:flex md:mx-auto md:max-w-7xl md:px-10">
                         <hr className="my-8 hidden h-px text-theme-secondary-300 dark:text-theme-dark-700 md:block" />
