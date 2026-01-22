@@ -29,23 +29,25 @@ function PeriodSelect({
     const selectedOption = options.find((option) => option.value === selected);
 
     return (
-        <Select value={selected} onValueChange={(value) => onSelect(value as ExchangeChartPeriod)}>
-            <Select.Trigger
-                className="form-input transition-default h-10 w-full bg-white !px-3 !py-2 text-left !text-sm font-semibold dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200"
-                placeholder={selectedOption?.label}
-            />
-            <Select.Content
-                align="start"
-                sideOffset={4}
-                className="mt-1 w-[var(--radix-select-trigger-width)] origin-top-left"
-            >
-                {options.map((option) => (
-                    <Select.Item key={option.value} value={option.value}>
-                        {option.label}
-                    </Select.Item>
-                ))}
-            </Select.Content>
-        </Select>
+        <div className="w-full sm:w-[150px]">
+            <Select value={selected} onValueChange={(value) => onSelect(value as ExchangeChartPeriod)}>
+                <Select.Trigger
+                    className="form-input transition-default h-10 w-full bg-white !px-3 !py-2 text-left !text-sm font-semibold dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200"
+                    placeholder={selectedOption?.label}
+                />
+                <Select.Content
+                    align="start"
+                    sideOffset={4}
+                    className="mt-1 w-[var(--radix-select-trigger-width)] origin-top-left"
+                >
+                    {options.map((option) => (
+                        <Select.Item key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Item>
+                    ))}
+                </Select.Content>
+            </Select>
+        </div>
     );
 }
 
@@ -262,7 +264,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                         </div>
                     </div>
 
-                    <div className="-mx-4 -mb-4 mt-6 hidden rounded-b bg-theme-secondary-100 p-3 dark:bg-theme-dark-950 sm:block md:-mx-6 md:-mb-6 md:rounded-b-xl">
+                    <div className="-mx-4 -mb-4 mt-6 hidden rounded-b border border-t-0 border-theme-secondary-300 bg-theme-secondary-100 p-3 dark:border-theme-dark-800 dark:bg-theme-dark-950 sm:block md:-mx-6 md:-mb-6 md:rounded-b-xl">
                         <ChartCanvas
                             id="exchanges-chart"
                             className="h-auto w-full"
