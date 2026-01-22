@@ -304,7 +304,7 @@ final class ExchangesController
         $currentValue = $this->getPrice($currency);
 
         if ($currentValue === 0.0) {
-            return 0;
+            return 0.0;
         }
 
         return (1 - ($initialValue / $currentValue)) * 100;
