@@ -43,6 +43,6 @@ final class TransactionSearch implements Search
         return (new SearchQuery())
             ->setFilter(['hash = '.sprintf('"%s"', addslashes($query))])
             ->setIndexUid('transactions')
-            ->setLimit($limit);
+            ->setLimit(max($limit, 0));
     }
 }
