@@ -27,7 +27,7 @@ export function MissedBlocksMobileTable({ blocks }: { blocks: IPaginatedResponse
                     header={
                         <div className="flex w-full items-center justify-between space-x-4">
                             <div className="sm:flex sm:flex-1">
-                                <Height block={block} />
+                                <Height block={block} withoutLink />
                             </div>
 
                             <div className="justify-end sm:flex sm:flex-1">
