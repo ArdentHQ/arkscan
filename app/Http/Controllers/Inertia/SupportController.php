@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use Huddle\Zendesk\Facades\Zendesk;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
@@ -29,7 +29,7 @@ final class SupportController
         ]);
     }
 
-    public function submit(Request $request): RedirectResponse
+    public function submit(Request $request): JsonResponse
     {
         /** @phpstan-ignore-next-line */
         $data = $request->validate([
@@ -53,16 +53,15 @@ final class SupportController
                 'tags'      => [strtolower(config('web.contact.source'))],
             ]);
         } catch (ApiResponseException $exception) {
-            /* @phpstan-ignore-next-line */
-            flash()->error(trans('messages.contact_error'));
-
-            return redirect()->route('contact');
+            return response()->json([
+                'message' => trans('messages.contact_error'),
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         /* @phpstan-ignore-next-line */
         flash()->success(trans('messages.contact'));
 
-        return redirect()->route('contact');
+        return response()->json();
     }
 
     private function getSubjects(): Collection

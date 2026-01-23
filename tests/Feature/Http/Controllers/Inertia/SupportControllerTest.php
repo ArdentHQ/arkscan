@@ -28,7 +28,7 @@ it('should be possible to successfully send the form', function () {
         'email'   => 'test@ardenthq.com',
         'subject' => 'general',
         'message' => 'test',
-    ])->assertRedirect(route('contact'));
+    ])->assertOk();
 });
 
 it('should show validation error if validation fails', function () {
@@ -49,6 +49,6 @@ it('should show an error when something goes wrong', function () {
         'email'   => 'test@ardenthq.com',
         'subject' => 'general',
         'message' => 'test',
-    ])->assertRedirect(route('contact'))
-    ->assertSessionHas('laravel_flash_message');
+    ])->assertInternalServerError()
+    ->assertJson(['message' => trans('messages.contact_error')]);
 });

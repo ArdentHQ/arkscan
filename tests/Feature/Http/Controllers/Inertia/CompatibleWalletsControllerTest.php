@@ -23,7 +23,7 @@ it('should be possible to successfully send the form', function () {
         'website' => 'http://www.ardenthq.com',
         'subject' => 'general',
         'message' => 'test',
-    ])->assertRedirect(route('compatible-wallets'));
+    ])->assertOk();
 });
 
 it('should show validation error if validation fails', function () {

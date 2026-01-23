@@ -1,27 +1,38 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Input from "../Input/Input";
 import BasicSelect from "../Input/BasicSelect";
 import TextArea from "../Input/TextArea";
 import { SubjectOption } from "@/Pages/Support.contracts";
-import { router } from "@inertiajs/react";
 import useSharedData from "@/hooks/use-shared-data";
 import Honeypot from "../Input/Includes/Honeypot";
+import useToast from "@/Providers/Toast/useToast";
+import submitForm from "@/utils/submit-form";
 
 export default function SupportForm({ subjects }: { subjects: SubjectOption[] }) {
     const { t } = useTranslation();
 
     const formRef = useRef<HTMLFormElement>(null);
 
-    const { errors } = useSharedData();
+    const { errors: pageErrors } = useSharedData();
+    const [errors, setErrors] = useState<Record<string, string>>(pageErrors);
+    const [canSubmit, setCanSubmit] = useState(true);
+
+    const { addToast } = useToast();
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        router.post(route("contact"), new FormData(formRef.current!), {
-            showProgress: false,
-            onSuccess: () => {
-                formRef.current?.reset();
+        setErrors({});
+        setCanSubmit(false);
+
+        submitForm({
+            route: route("contact"),
+            formRef,
+            setErrors,
+            addToast,
+            onFinish: () => {
+                setCanSubmit(true);
             },
         });
     };
@@ -87,7 +98,7 @@ export default function SupportForm({ subjects }: { subjects: SubjectOption[] })
                 />
 
                 <div className="relative flex flex-1 flex-col justify-end pt-1">
-                    <button type="submit" className="button-primary">
+                    <button type="submit" className="button-primary" disabled={!canSubmit}>
                         {t("actions.send", { ns: "ui" })}
                     </button>
                 </div>
