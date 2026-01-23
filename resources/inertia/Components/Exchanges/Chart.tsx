@@ -267,13 +267,12 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                     <div className="-mx-4 -mb-4 mt-6 hidden bg-theme-secondary-100 p-3 dark:border-theme-dark-800 dark:bg-theme-dark-950 sm:block md:-mx-6 md:-mb-6 md:rounded-b-xl">
                         <ChartCanvas
                             id="exchanges-chart"
-                            className="h-auto w-full"
+                            className="w-full aspect-[4/1]"
                             canvasClassName="max-w-full"
                             datasets={chart.datasets}
                             labels={chart.labels}
                             theme={chartTheme}
                             currency={selectedCurrency}
-                            height={266}
                             grid
                             tooltips
                             showCrosshair
