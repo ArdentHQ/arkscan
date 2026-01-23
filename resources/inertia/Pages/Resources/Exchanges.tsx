@@ -44,11 +44,11 @@ export default function Exchanges() {
     const { chart, network } = useSharedData<ExchangesProps>();
 
     return (
-        <Layout className="pb-6 pt-8">
+        <Layout className="pb-8 pt-8 md:pb-6">
             {chart && network?.canBeExchanged && (
                 <>
                     <div className="hidden flex-col px-6 sm:flex md:mx-auto md:max-w-7xl md:px-10">
-                        <div className="text-lg font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl">
+                        <div className="text-lg font-semibold md:text-2xl text-theme-secondary-900 dark:text-theme-dark-50">
                             {t("pages.exchanges.live_price_chart")}
                         </div>
 
