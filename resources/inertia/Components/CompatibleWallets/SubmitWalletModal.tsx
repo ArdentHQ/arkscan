@@ -2,9 +2,10 @@ import Modal from "@/Components/General/Modal";
 import { useTranslation } from "react-i18next";
 import Input from "../Input/Input";
 import TextArea from "../Input/TextArea";
-import { router } from "@inertiajs/react";
 import useSharedData from "@/hooks/use-shared-data";
 import { useRef, useState } from "react";
+import useToast from "@/Providers/Toast/useToast";
+import submitForm from "@/utils/submit-form";
 
 interface SubmitWalletModalProps {
     isOpen: boolean;
@@ -17,28 +18,26 @@ export default function SubmitWalletModal({ isOpen, onClose, close }: SubmitWall
 
     const formRef = useRef<HTMLFormElement>(null);
 
-    const { errors } = useSharedData();
+    const { errors: pageErrors } = useSharedData();
+    const [errors, setErrors] = useState<Record<string, string>>(pageErrors);
+
     const [isFormValid, setIsFormValid] = useState(false);
+    const { addToast } = useToast();
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         setIsFormValid(false);
+        setErrors({});
 
-        router.post(route("compatible-wallets.submit"), new FormData(formRef.current!), {
-            showProgress: false,
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
+        submitForm({
+            route: route("compatible-wallets.submit"),
+            formRef,
+            setErrors,
+            addToast,
             onSuccess: () => {
-                // TODO: implement Inertia flash/toast messages
-
-                formRef.current?.reset();
-
                 close();
-            },
-            onFinish: () => {
+
                 validateFields();
             },
         });
