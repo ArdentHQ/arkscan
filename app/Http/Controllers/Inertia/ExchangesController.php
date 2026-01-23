@@ -100,11 +100,11 @@ final class ExchangesController
 
     private function getExchanges(): LengthAwarePaginator
     {
-        $type = request()->get('type');
-        $pair = request()->get('pair');
+        $type = request()->query('type');
+        $pair = request()->query('pair');
 
-        $sort          = request()->get('sort', 'volume');
-        $sortDirection = request()->get('sort-direction', 'desc');
+        $sort          = request()->query('sort', 'volume');
+        $sortDirection = request()->query('sort-direction', 'desc');
 
         if (! in_array($sort, ['name', 'top_pairs', 'volume', 'price'], true)) {
             $sort          = 'volume';
