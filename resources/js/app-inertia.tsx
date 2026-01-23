@@ -5,6 +5,7 @@ import loadI18n from "../inertia/i18n";
 import ArkConnectProvider from "@/Providers/ArkConnect/ArkConnectProvider";
 import WebhooksProvider from "@/Providers/Webhooks/WebhooksProvider";
 import SettingsProvider from "@/Providers/Settings/SettingsProvider";
+import ToastProvider from "@/Providers/Toast/ToastProvider";
 import { IConfigArkconnect, INetwork, IPriceTickerData } from "@/types/generated";
 import { ArkConnectConfiguration } from "@/Providers/ArkConnect/types";
 
@@ -36,7 +37,9 @@ createInertiaApp({
                     theme={theme}
                 >
                     <ArkConnectProvider configuration={configuration}>
-                        <App {...props} />
+                        <ToastProvider>
+                            <App {...props} />
+                        </ToastProvider>
                     </ArkConnectProvider>
                 </SettingsProvider>
             </WebhooksProvider>,

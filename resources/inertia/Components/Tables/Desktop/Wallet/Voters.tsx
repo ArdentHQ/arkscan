@@ -91,7 +91,7 @@ export default function VotersTableWrapper({
         return (
             <>
                 <div className="hidden md:block">
-                    <LoadingTable rowCount={rowCount} columns={columns} />
+                    <LoadingTable rowCount={rowCount} columns={columns} header />
                 </div>
 
                 {!!mobile && <div className="px-6 md:hidden md:px-10">{mobile}</div>}
