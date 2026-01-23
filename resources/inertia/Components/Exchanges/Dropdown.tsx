@@ -3,7 +3,7 @@ import Dropdown from "../General/Dropdown/Dropdown";
 import classNames from "classnames";
 import ChevronDownSmallIcon from "@ui/icons/arrows/chevron-down-small.svg?react";
 import DropdownItem from "../General/Dropdown/DropdownItem";
-import React, { createElement, useState } from "react";
+import React, { createElement } from "react";
 import { ExchangeDropdownItem } from "@/Pages/Exchanges.contracts";
 
 export default function ExchangeDropdown({
@@ -20,9 +20,10 @@ export default function ExchangeDropdown({
     return (
         <DropdownProvider>
             <Dropdown
-                wrapperClass="relative h-full md-lg:w-50"
+                wrapperClass="relative h-full flex-1 md:w-50"
                 buttonClass="inline-flex h-full bg-white rounded border border-theme-secondary-300 dark:bg-theme-dark-900 dark:border-theme-dark-700 py-3 px-4 w-full"
-                dropdownClasses="w-auto"
+                dropdownClasses="w-full md:w-auto"
+                popupStyles={{ width: "100%" }}
                 placement="bottom-start"
                 button={({ isOpen }) => (
                     <div

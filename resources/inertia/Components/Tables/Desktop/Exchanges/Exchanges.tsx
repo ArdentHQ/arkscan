@@ -34,7 +34,7 @@ export function Row({ row: exchange }: { row: IExchange }) {
                 </div>
             </TableCell>
 
-            <TableCell breakpoint="md-lg" responsive>
+            <TableCell>
                 <ExchangePair exchange={exchange} />
             </TableCell>
 

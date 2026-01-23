@@ -39,7 +39,7 @@ export default function Exchanges() {
     const { t } = useTranslation();
 
     return (
-        <Layout className="pb-6 pt-8">
+        <Layout className="pb-8 pt-8 md:pb-6">
             <PageHeader
                 title={t("pages.exchanges.title")}
                 subtitle={t("pages.exchanges.subtitle")}

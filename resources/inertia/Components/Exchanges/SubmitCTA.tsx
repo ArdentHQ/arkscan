@@ -38,6 +38,8 @@ export default function ExchangesSubmitCTA() {
                 subtitle={t("pages.exchanges.let_us_know")}
                 button={t("actions.submit_exchange")}
                 onClick={() => setIsModalOpen(true)}
+                className="mt-8 md:mx-auto md:mt-6"
+                titleClassName="md:text-lg"
             />
 
             <SubmitModal
