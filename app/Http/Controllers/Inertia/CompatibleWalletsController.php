@@ -36,7 +36,7 @@ final class CompatibleWalletsController
         ]));
 
         /* @phpstan-ignore-next-line */
-        flash()->success(trans("pages.compatible-wallets.submit-modal.success_toast"));
+        flash()->success(trans('pages.compatible-wallets.submit-modal.success_toast'));
 
         return response()->json();
     }
