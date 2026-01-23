@@ -137,16 +137,17 @@ export default function AmountFiatTooltip({
                 </Tooltip>
             )}
 
-            {!fiat || !network.canBeExchanged && (
-                <AmountOutput
-                    transaction={transaction}
-                    isSent={isSent}
-                    isReceived={isReceived}
-                    isSentToSelf={isSentToSelf}
-                    amount={amount}
-                    hideCurrency={hideCurrency}
-                />
-            )}
+            {!fiat ||
+                (!network.canBeExchanged && (
+                    <AmountOutput
+                        transaction={transaction}
+                        isSent={isSent}
+                        isReceived={isReceived}
+                        isSentToSelf={isSentToSelf}
+                        amount={amount}
+                        hideCurrency={hideCurrency}
+                    />
+                ))}
         </span>
     );
 }
