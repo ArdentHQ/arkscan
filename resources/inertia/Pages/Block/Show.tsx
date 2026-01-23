@@ -12,6 +12,7 @@ import {
     Confirmations,
     TransactionList,
 } from "@/Components/Block/Page";
+import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 
 export default function Show({ block, transactions }: PageProps<BlockShowProps>) {
     useEffect(() => {
@@ -35,7 +36,11 @@ export default function Show({ block, transactions }: PageProps<BlockShowProps>)
 
                 <Confirmations block={block} />
 
-                {block.transactionCount > 0 && <TransactionList noMargins transactions={transactions} />}
+                {block.transactionCount > 0 && (
+                    <PageHandlerProvider>
+                        <TransactionList noMargins transactions={transactions} />
+                    </PageHandlerProvider>
+                )}
             </div>
         </Layout>
     );
