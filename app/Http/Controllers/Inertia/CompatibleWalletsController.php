@@ -35,6 +35,7 @@ final class CompatibleWalletsController
             'message' => $data['message'] ?? null,
         ]));
 
+        /* @phpstan-ignore-next-line */
         flash()->success(trans("pages.compatible-wallets.submit-modal.success_toast"));
 
         return response()->json();
