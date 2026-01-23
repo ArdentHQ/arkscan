@@ -48,7 +48,7 @@ export default function Exchanges() {
             {chart && network?.canBeExchanged && (
                 <>
                     <div className="hidden flex-col px-6 sm:flex md:mx-auto md:max-w-7xl md:px-10">
-                        <div className="text-lg font-semibold md:text-2xl text-theme-secondary-900 dark:text-theme-dark-50">
+                        <div className="text-lg font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl">
                             {t("pages.exchanges.live_price_chart")}
                         </div>
 

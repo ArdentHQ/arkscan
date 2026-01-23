@@ -169,7 +169,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
     return (
         <div className="mt-2 space-y-2 md:mt-6">
             <Card className="flex flex-col py-4 md:pb-6">
-                <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0 border-x border-t border-transparent">
+                <div className="flex flex-col space-y-3 border-x border-t border-transparent sm:flex-row sm:justify-between sm:space-y-0">
                     <div className="inline-flex items-center space-x-2 sm:space-x-3 md:items-end">
                         <div className="flex flex-col">
                             <div className="mb-2 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200 sm:hidden">
@@ -267,7 +267,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                     <div className="-mx-4 -mb-4 mt-6 hidden bg-theme-secondary-100 p-3 dark:border-theme-dark-800 dark:bg-theme-dark-950 sm:block md:-mx-6 md:-mb-6 md:rounded-b-xl">
                         <ChartCanvas
                             id="exchanges-chart"
-                            className="w-full aspect-[4/1]"
+                            className="aspect-[4/1] w-full"
                             canvasClassName="max-w-full"
                             datasets={chart.datasets}
                             labels={chart.labels}
