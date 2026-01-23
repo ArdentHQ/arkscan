@@ -169,7 +169,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
     return (
         <div className="mt-2 space-y-2 md:mt-6">
             <Card className="flex flex-col py-4 md:pb-6">
-                <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
+                <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0 border-x border-t border-transparent">
                     <div className="inline-flex items-center space-x-2 sm:space-x-3 md:items-end">
                         <div className="flex flex-col">
                             <div className="mb-2 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200 sm:hidden">
@@ -273,7 +273,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                             labels={chart.labels}
                             theme={chartTheme}
                             currency={selectedCurrency}
-                            height={288}
+                            height={266}
                             grid
                             tooltips
                             showCrosshair
