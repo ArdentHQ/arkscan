@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\Mail\WalletFormSubmitted;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
@@ -20,7 +20,7 @@ final class CompatibleWalletsController
         ]);
     }
 
-    public function submit(Request $request): RedirectResponse
+    public function submit(Request $request): JsonResponse
     {
         /** @phpstan-ignore-next-line */
         $data = $request->validate([
@@ -35,6 +35,8 @@ final class CompatibleWalletsController
             'message' => $data['message'] ?? null,
         ]));
 
-        return redirect()->route('compatible-wallets');
+        flash()->success(trans("pages.compatible-wallets.submit-modal.success_toast"));
+
+        return response()->json();
     }
 }
