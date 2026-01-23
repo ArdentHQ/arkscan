@@ -94,7 +94,7 @@ final class ExchangesController
     private function noExchangesResultsMessage(int $total): ?string
     {
         return $total === 0
-            ? (string) trans('tables.exchanges.no_results.no_results')
+            ? (string) trans('tables.exchanges.no_results')
             : null;
     }
 

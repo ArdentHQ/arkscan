@@ -80,7 +80,7 @@ it('should handle no exchanges', function () {
                 ->missing('exchanges')
                 ->reloadOnly('exchanges', function (Assert $reload) {
                     $reload->has('exchanges.data', 0)
-                        ->where('exchanges.noResultsMessage', trans('tables.exchanges.no_results.no_results'));
+                        ->where('exchanges.noResultsMessage', trans('tables.exchanges.no_results'));
                 });
         });
 });
