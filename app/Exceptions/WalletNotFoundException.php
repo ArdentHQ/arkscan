@@ -25,8 +25,8 @@ final class WalletNotFoundException extends ModelNotFoundException implements En
         ]);
 
         $message = trans('errors.wallet_not_found', [
-            'truncatedWalletID' => $truncatedWalletID,
-            'walletID'          => $walletID,
+            'truncatedWalletID' => e($truncatedWalletID),
+            'walletID'          => e($walletID),
         ]);
 
         return new HtmlString($message);

@@ -22,7 +22,7 @@ final class TransactionNotFoundException extends ModelNotFoundException implemen
             'attributes' => ['length' => 17],
         ]);
 
-        $message = trans('errors.transaction_not_found', ['transactionID' => $truncatedTransactionID]);
+        $message = trans('errors.transaction_not_found', ['transactionID' => e($truncatedTransactionID)]);
 
         return new HtmlString($message);
     }
