@@ -5,7 +5,13 @@ import { CancelToken } from "@inertiajs/core";
 import { router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 
-export function useTabPolling(pollCurrentTab: (tab: string, callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => void) {
+export function useTabPolling(
+    pollCurrentTab: (
+        tab: string,
+        callback?: CallableFunction,
+        onCancelToken?: (onCancelToken: CancelToken) => void,
+    ) => void,
+) {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { setRefreshPage } = usePageHandler();
