@@ -12,7 +12,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
     const { currentRoute } = useShareData();
 
     const link = route(routeName);
-    const isActive = currentRoute === link;
+    const isActive = currentRoute === routeName;
 
     return (
         <Link

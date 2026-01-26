@@ -11,7 +11,8 @@ export default function ExchangesSubmitCTA() {
     const { t } = useTranslation();
     const formRef = useRef<HTMLFormElement>(null);
 
-    const { errors } = useSharedData<ExchangesProps>();
+    const { errors: pageErrors } = useSharedData<ExchangesProps>();
+    const [errors, setErrors] = useState<Record<string, string>>(pageErrors);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
@@ -50,6 +51,7 @@ export default function ExchangesSubmitCTA() {
                 onSubmit={() => setIsFormValid(false)}
                 validateFields={validateFields}
                 disabled={!isFormValid}
+                setErrors={setErrors}
             >
                 <Input
                     label={t("pages.exchanges.submit-modal.name")}

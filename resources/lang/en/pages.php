@@ -491,8 +491,10 @@ return [
     ],
 
     'statistics'       => [
-        'title'     => 'Statistics',
-        'subtitle'  => 'Explore information on blockchain data and fees categorized by type.',
+        'title'           => 'Statistics',
+        'subtitle'        => 'Explore information on blockchain data and fees categorized by type.',
+
+        'mainsail_notice' => 'Statistics shown do not include past transactions from before the snapshot (taken at block #:blockHeight).',
 
         'highlights' => [
             'total_supply'  => 'Total Supply',

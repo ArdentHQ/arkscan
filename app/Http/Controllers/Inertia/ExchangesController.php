@@ -8,7 +8,7 @@ use App\DTO\Inertia\IExchange;
 use App\Mail\ExchangeFormSubmitted;
 use App\Models\Exchange;
 use ARKEcosystem\Foundation\UserInterface\UI;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Mail;
@@ -71,7 +71,7 @@ final class ExchangesController
         ]);
     }
 
-    public function submit(Request $request): RedirectResponse
+    public function submit(Request $request): JsonResponse
     {
         /** @phpstan-ignore-next-line */
         $data = $request->validate([
@@ -88,7 +88,10 @@ final class ExchangesController
             'message' => $data['message'] ?? null,
         ]));
 
-        return redirect()->route('exchanges');
+        /* @phpstan-ignore-next-line */
+        flash()->success(trans('pages.exchanges.submit-modal.success_toast'));
+
+        return response()->json();
     }
 
     private function noExchangesResultsMessage(int $total): ?string

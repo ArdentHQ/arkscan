@@ -11,9 +11,12 @@ import Insights from "@/Components/Statistics/Insights/Insights";
 import { StatisticsProps } from "@/Pages/Statistics.contracts";
 import useSettings from "@/Providers/Settings/useSettings";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
+import { formattedNumber } from "@/Components/General/Number";
+import CircleInfoIcon from "@ui/icons/circle/info.svg?react";
 
 export default function StatisticsIndex({
     refreshInterval,
+    snapshotBlockHeight,
     gasTracker,
     highlights,
     informationCards,
@@ -63,12 +66,26 @@ export default function StatisticsIndex({
         };
     }, [listen]);
 
+    const snapshotBlockHeightLabel = formattedNumber(snapshotBlockHeight);
+
     return (
         <Layout>
             <PageHeader title={t("pages.statistics.title")} subtitle={t("pages.statistics.subtitle")} />
 
             <div className="pb-6 md:mx-auto md:max-w-7xl md:px-10">
                 <GasTracker data={gasTracker} />
+            </div>
+
+            <div className="px-6 pb-3 md:mx-auto md:max-w-7xl md:px-10">
+                <div className="dim:bg-theme-dim-800 dim:text-theme-dim-500 flex items-start space-x-2 rounded bg-theme-primary-100 px-6 py-6 text-sm leading-[17px] dark:bg-theme-dark-800 md:rounded-xl md:py-3">
+                    <CircleInfoIcon className="dim:text-theme-dim-600 mt-0.5 h-4 w-4 shrink-0 text-theme-primary-700 dark:text-theme-dark-blue-400" />
+
+                    <span className="leading-[21px] text-theme-primary-900 dark:text-theme-dark-50 md:leading-[17px]">
+                        {t("pages.statistics.mainsail_notice", {
+                            blockHeight: snapshotBlockHeightLabel,
+                        })}
+                    </span>
+                </div>
             </div>
 
             <Highlights data={highlights} />

@@ -82,7 +82,7 @@ export function Table({
     resultSuffix?: string;
     paginator: IPaginatedResponse<any>;
     hidePagination?: boolean;
-    rowComponent: React.ComponentType<{ row: any; key?: React.Key }>;
+    rowComponent: React.ComponentType<{ row: any; key: React.Key }>;
     mobile?: React.ReactNode;
     headerActions?: React.ReactNode;
     noResultsMessage?: React.ReactNode;
