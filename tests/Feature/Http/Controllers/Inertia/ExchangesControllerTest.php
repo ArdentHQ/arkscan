@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Models\Exchange;
 use App\Enums\StatsPeriods;
 use App\Facades\Network;
+use App\Models\Exchange;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
