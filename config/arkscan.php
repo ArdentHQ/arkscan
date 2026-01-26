@@ -101,7 +101,8 @@ return [
         /*
          * Number of seconds to wait before refreshing the page.
          */
-        'refreshInterval' => env('ARKSCAN_STATISTICS_REFRESH_INTERVAL', '60'),
+        'refreshInterval'         => env('ARKSCAN_STATISTICS_REFRESH_INTERVAL', '60'),
+        'snapshotLastBlockHeight' => (int) env('ARKSCAN_SNAPSHOT_LAST_BLOCK_HEIGHT', 22763437),
     ],
 
     'support'                           => [
