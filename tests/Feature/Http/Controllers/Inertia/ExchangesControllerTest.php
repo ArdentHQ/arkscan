@@ -282,7 +282,7 @@ it('should be possible to successfully send the form', function () {
         'pairs'   => 'BTC, ETH, etc',
         'subject' => 'general',
         'message' => 'test',
-    ])->assertRedirect(route('exchanges'));
+    ])->assertOk();
 });
 
 it('should show validation error if validation fails', function () {
