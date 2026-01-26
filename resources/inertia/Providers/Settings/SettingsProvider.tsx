@@ -101,7 +101,7 @@ export default function SettingsProvider({
                     onError: (error) => {
                         setCurrentTheme(currentTheme);
                         localStorage.theme = currentTheme;
-                        
+
                         // Re-enable transitions on error
                         setIsThemeTransitioning(false);
                         document.documentElement.classList.remove("theme-transitioning");
