@@ -1,10 +1,11 @@
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { ITab } from "@/Providers/Tabs/types";
+import { CancelToken } from "@inertiajs/core";
 import { router } from "@inertiajs/react";
 import { useEffect, useRef } from "react";
 
-export function useTabPolling(pollCurrentTab: (tab: string, callback?: CallableFunction) => void) {
+export function useTabPolling(pollCurrentTab: (tab: string, callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => void) {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const { setRefreshPage } = usePageHandler();
@@ -41,8 +42,8 @@ export function useTabPolling(pollCurrentTab: (tab: string, callback?: CallableF
             }
         });
 
-        setRefreshPage((callback?: CallableFunction) => {
-            pollCurrentTab(currentTab, callback);
+        setRefreshPage((callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => {
+            pollCurrentTab(currentTab, callback, onCancelToken);
         });
 
         return () => {

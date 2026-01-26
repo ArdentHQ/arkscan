@@ -4,6 +4,7 @@ import { IFilterContextType, IFilterEntry } from "./types";
 import { IFilters } from "@/types";
 import { router } from "@inertiajs/react";
 import { usePageHandler } from "../PageHandler/PageHandlerContext";
+import { CancelToken } from "@inertiajs/core";
 
 function getFilterValuesFromOptions(initialOptions: IFilterEntry[], withQueryStringValue: boolean = false): IFilters {
     const urlParams = new URLSearchParams(location.search);
@@ -75,16 +76,27 @@ export default function FilterProvider({
 
         updatedUrl.searchParams.delete("page");
 
+        let baseCancelToken: CancelToken | undefined = undefined;
+
         router.push({
             url: updatedUrl.toString(),
             preserveState: true,
             preserveScroll: true,
             onSuccess: () => {
-                refreshPage(() => {
-                    onChange?.(selectedFilters);
-                });
+                refreshPage(
+                    () => {
+                        onChange?.(selectedFilters);
+                    },
+                    (onCancelToken) => {
+                        baseCancelToken = onCancelToken;
+                    },
+                );
             },
         });
+
+        return () => {
+            baseCancelToken?.cancel();
+        };
     }, [selectedFilters]);
 
     const setFilter = (key: string, checked: boolean) => {

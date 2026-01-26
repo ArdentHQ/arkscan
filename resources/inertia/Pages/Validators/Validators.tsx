@@ -14,13 +14,14 @@ import RecentVotesTab from "./tabs/RecentVotes";
 import useSharedData from "@/hooks/use-shared-data";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
+import { CancelToken } from "@inertiajs/core";
 
 const ValidatorsTabs = () => {
     const { currentTab } = useTabs();
 
     const { missedBlocks, validators, filters, recentVotes } = useSharedData<ValidatorsProps>();
 
-    useTabPolling((tab: string, callback?: CallableFunction) => {
+    useTabPolling((tab: string, callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => {
         let pollParameters: string[] = [];
         if (tab === "validators") {
             pollParameters = ["validators"];
@@ -32,6 +33,7 @@ const ValidatorsTabs = () => {
 
         router.reload({
             only: pollParameters,
+            onCancelToken,
             onSuccess: () => {
                 if (callback) {
                     callback();
