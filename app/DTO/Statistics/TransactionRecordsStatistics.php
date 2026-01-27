@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\DTO\Statistics;
 
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\ViewModels\BlockViewModel;
-use App\ViewModels\TransactionViewModel;
 
 final class TransactionRecordsStatistics
 {
-    public ?TransactionViewModel $largestTransaction = null;
+    public ?TransactionDTO $largestTransaction = null;
 
     public ?BlockViewModel $blockWithHighestFees = null;
 
@@ -23,7 +23,7 @@ final class TransactionRecordsStatistics
         ?Block $blockWithMostTransactions = null,
     ) {
         if ($largestTransaction !== null) {
-            $this->largestTransaction = new TransactionViewModel($largestTransaction);
+            $this->largestTransaction = TransactionDTO::fromModel($largestTransaction);
         }
 
         if ($blockWithHighestFees !== null) {

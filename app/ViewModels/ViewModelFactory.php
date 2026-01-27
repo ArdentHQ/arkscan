@@ -8,6 +8,7 @@ use App\Contracts\ViewModel;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -28,7 +29,7 @@ final class ViewModelFactory
         }
 
         if ($model instanceof Transaction) {
-            return new TransactionViewModel($model);
+            return TransactionDTO::fromModel($model);
         }
 
         if ($model instanceof Wallet) {

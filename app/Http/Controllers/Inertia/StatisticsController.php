@@ -33,8 +33,8 @@ use App\Services\ExchangeRate;
 use App\Services\MainsailApi;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter;
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\ViewModels\BlockViewModel;
-use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Brick\Math\BigDecimal;
@@ -299,7 +299,7 @@ final class StatisticsController
             return null;
         }
 
-        $viewModel = new TransactionViewModel($transaction);
+        $viewModel = TransactionDTO::fromModel($transaction);
 
         return [
             'type'   => 'transaction',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Search;
 
-use App\ViewModels\TransactionViewModel;
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -25,7 +25,7 @@ final class NavbarSearchTransactionResultData extends Data
     ) {
     }
 
-    public static function fromViewModel(TransactionViewModel $transaction): self
+    public static function fromViewModel(TransactionDTO $transaction): self
     {
         $votedValidatorLabel = null;
 

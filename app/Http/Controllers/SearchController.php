@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Contracts\ViewModel;
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Search\NavbarSearchBlockResultData;
 use App\DTO\Search\NavbarSearchTransactionResultData;
 use App\DTO\Search\NavbarSearchWalletResultData;
 use App\Http\Livewire\Concerns\ManagesSearch;
 use App\ViewModels\BlockViewModel;
-use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -52,7 +52,7 @@ final class SearchController
     private function serializeResult(ViewModel $result): array
     {
         /**
-         * @var WalletViewModel|BlockViewModel|TransactionViewModel $result
+         * @var WalletViewModel|BlockViewModel|TransactionDTO $result
          */
         return [
             'type'       => $this->determineType($result),
@@ -65,9 +65,9 @@ final class SearchController
     private function determineType(ViewModel $result): string
     {
         return match (true) {
-            $result instanceof WalletViewModel      => 'wallet',
-            $result instanceof BlockViewModel       => 'block',
-            $result instanceof TransactionViewModel => 'transaction',
+            $result instanceof WalletViewModel => 'wallet',
+            $result instanceof BlockViewModel => 'block',
+            $result instanceof TransactionDTO => 'transaction',
             default                                 => throw new \Exception('Invalid result type: '.get_class($result)),
         };
     }
@@ -85,7 +85,7 @@ final class SearchController
             return NavbarSearchBlockResultData::fromViewModel($result)->toArray();
         }
 
-        if ($result instanceof TransactionViewModel) {
+        if ($result instanceof TransactionDTO) {
             return NavbarSearchTransactionResultData::fromViewModel($result)->toArray();
         }
 

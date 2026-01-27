@@ -3,7 +3,7 @@
     'model',
 ])
 
-@php ($isTransaction = is_a($model, \App\ViewModels\TransactionViewModel::class))
+@php ($isTransaction = is_a($model, \App\DTO\Inertia\Transaction::class))
 @php ($isBlock = is_a($model, \App\ViewModels\BlockViewModel::class))
 
 <div class="hidden pt-1 w-full min-w-0 md:flex xl:pt-0">
