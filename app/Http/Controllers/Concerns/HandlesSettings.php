@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Livewire\Concerns;
+namespace App\Http\Controllers\Concerns;
 
 use App\Facades\Settings;
 use Illuminate\Support\Facades\Cookie;

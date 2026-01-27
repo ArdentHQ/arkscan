@@ -68,11 +68,6 @@ final class WalletViewModel implements ViewModel
         return $this->wallet->balance->toFloat(scale: $scale);
     }
 
-    public function balanceFiat(): string
-    {
-        return ExchangeRate::convert($this->balance());
-    }
-
     public function balancePercentage(): float
     {
         $networkSupply = CacheNetworkSupply::execute();

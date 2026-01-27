@@ -100,11 +100,6 @@ final class TransactionViewModel implements ViewModel
         return UnitConverter::formatUnits((string) $this->transaction->gas_used, 'wei');
     }
 
-    public function transactionIndex(): int
-    {
-        return $this->transaction->transaction_index;
-    }
-
     public function fee(): float
     {
         return UnitConverter::formatUnits((string) $this->transaction->fee(), 'ark');
