@@ -60,6 +60,7 @@ return [
         'volume'          => 'Volume',
         'price_currency'  => 'Price (:currency)',
         'volume_currency' => 'Volume (:currency)',
+        'no_results'      => 'There are currently no exchanges to display.',
     ],
 
     'validators' => [
