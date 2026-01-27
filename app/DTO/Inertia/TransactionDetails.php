@@ -169,12 +169,10 @@ class TransactionDetails extends Data
 
     private static function recipientIsContract(Model $transaction): bool
     {
-        $recipient = self::resolveRecipient($transaction);
-
-        return $recipient?->isContract() ?? false;
+        return self::resolveRecipient($transaction)->isContract();
     }
 
-    private static function resolveRecipient(Model $transaction): ?MemoryWallet
+    private static function resolveRecipient(Model $transaction): MemoryWallet
     {
         if (is_null($transaction->to)) {
             if ($transaction->deployed_contract_address !== null) {

@@ -707,13 +707,11 @@ class Transaction extends Data implements ViewModel
             ? Identity::address($transaction->sender_public_key)
             : $transaction->from;
 
-        if ($senderAddress === null || $senderAddress === '') {
+        if ($senderAddress === '') {
             return null;
         }
 
-        $senderWallet = Wallets::findByAddress($senderAddress);
-
-        return $senderWallet !== null ? WalletDTO::fromModel($senderWallet) : null;
+        return WalletDTO::fromModel(Wallets::findByAddress($senderAddress));
     }
 
     private static function resolveRecipientWallet(Model $transaction, bool $isTransfer, bool $isTokenTransfer): ?WalletDTO
@@ -723,16 +721,14 @@ class Transaction extends Data implements ViewModel
         }
 
         $recipientAddress = self::resolveRecipientAddress($transaction);
-        if ($recipientAddress === null) {
+        if ($recipientAddress === '') {
             return null;
         }
 
-        $recipientWallet = Wallets::findByAddress($recipientAddress);
-
-        return $recipientWallet !== null ? WalletDTO::fromModel($recipientWallet) : null;
+        return WalletDTO::fromModel(Wallets::findByAddress($recipientAddress));
     }
 
-    private static function resolveRecipientAddress(Model $transaction): ?string
+    private static function resolveRecipientAddress(Model $transaction): string
     {
         if ($transaction->to === null) {
             if ($transaction->deployed_contract_address !== null) {
