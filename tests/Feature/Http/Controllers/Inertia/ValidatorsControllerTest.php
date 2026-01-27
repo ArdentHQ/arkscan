@@ -342,8 +342,8 @@ describe('Recent Votes', function () {
                     ->where('recentVotes.data.0.hash', $vote->hash);
             },
             queryString: [
-                'vote'   => 1,
-                'unvote' => 0,
+                'vote'   => 'true',
+                'unvote' => 'false',
             ],
             reloadProps: 'recentVotes',
         );
@@ -356,8 +356,8 @@ describe('Recent Votes', function () {
                     ->where('recentVotes.data.0.hash', $unvote->hash);
             },
             queryString: [
-                'vote'   => 0,
-                'unvote' => 1,
+                'vote'   => 'false',
+                'unvote' => 'true',
             ],
             reloadProps: 'recentVotes',
         );
@@ -1865,10 +1865,10 @@ describe('Validators', function () {
                     ->where('validators.noResultsMessage', trans('tables.validators.no_results.no_filters'));
             },
             queryString: [
-                'active'   => 0,
-                'standby'  => 0,
-                'dormant'  => 0,
-                'resigned' => 0,
+                'active'   => 'false',
+                'standby'  => 'false',
+                'dormant'  => 'false',
+                'resigned' => 'false',
             ],
             reloadProps: 'validators',
         );
@@ -1888,10 +1888,10 @@ describe('Validators', function () {
                     ->where('validators.data.0.address', $standby->address);
             },
             queryString: [
-                'active'   => 0,
-                'standby'  => 1,
-                'dormant'  => 0,
-                'resigned' => 0,
+                'active'   => 'false',
+                'standby'  => 'true',
+                'dormant'  => 'false',
+                'resigned' => 'false',
             ],
             reloadProps: 'validators',
         );
@@ -1912,10 +1912,10 @@ describe('Validators', function () {
                     ->where('validators.data.0.address', $dormant->address);
             },
             queryString: [
-                'active'   => 0,
-                'standby'  => 0,
-                'dormant'  => 1,
-                'resigned' => 0,
+                'active'   => 'false',
+                'standby'  => 'false',
+                'dormant'  => 'true',
+                'resigned' => 'false',
             ],
             reloadProps: 'validators',
         );
@@ -1936,10 +1936,10 @@ describe('Validators', function () {
                     ->where('validators.data.0.address', $resigned->address);
             },
             queryString: [
-                'active'   => 0,
-                'standby'  => 0,
-                'dormant'  => 0,
-                'resigned' => 1,
+                'active'   => 'false',
+                'standby'  => 'false',
+                'dormant'  => 'false',
+                'resigned' => 'true',
             ],
             reloadProps: 'validators',
         );

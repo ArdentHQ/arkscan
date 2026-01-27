@@ -7,7 +7,7 @@ import HeaderStats from "@/Components/Transaction/HeaderStats";
 import TransactionsTable from "@/Components/Transaction/TransactionsTable";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 
-export default function TransactionsList({ network, statistics, filters, transactions }: PageProps<TransactionsProps>) {
+export default function TransactionsList({ network, statistics }: PageProps<TransactionsProps>) {
     const { t } = useTranslation();
 
     return (
@@ -20,7 +20,7 @@ export default function TransactionsList({ network, statistics, filters, transac
             <HeaderStats {...statistics} />
 
             <PageHandlerProvider>
-                <TransactionsTable transactions={transactions} filters={filters} />
+                <TransactionsTable />
             </PageHandlerProvider>
         </Layout>
     );
