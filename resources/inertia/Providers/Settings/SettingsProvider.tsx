@@ -41,7 +41,7 @@ export default function SettingsProvider({
     };
 
     router.on("success", (event) => {
-        setCurrentTickerData(event.detail.page.props.priceTickerData as IPriceTickerData);        
+        setCurrentTickerData(event.detail.page.props.priceTickerData as IPriceTickerData);
     });
 
     useEffect(() => {
