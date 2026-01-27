@@ -18,7 +18,6 @@ const WalletIcons: Record<string, React.FC<React.SVGProps<SVGSVGElement>>> = {
 };
 
 export default function WalletGrid({ wallets }: { wallets: CompatibleWallet[] }) {
-    console.log(wallets);
     return (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-6 md:grid-cols-3 md-lg:grid-cols-4 xl:grid-cols-5">
             {wallets.map((wallet, index) => (

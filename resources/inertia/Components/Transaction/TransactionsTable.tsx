@@ -6,17 +6,18 @@ import TransactionsMobileTableWrapper from "@/Components/Tables/Mobile/Transacti
 import { router } from "@inertiajs/react";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { useEffect } from "react";
+import useSharedData from "@/hooks/use-shared-data";
+import { CancelToken } from "@inertiajs/core";
 
-export default function TransactionsTable({
-    transactions,
-    filters,
-}: Pick<TransactionsProps, "transactions" | "filters">) {
+export default function TransactionsTable() {
     const { t } = useTranslation();
     const { setRefreshPage } = usePageHandler();
+    const { transactions, filters } = useSharedData<TransactionsProps>();
 
-    const updateTable = (callback?: CallableFunction) => {
+    const updateTable = (callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => {
         router.reload({
             only: ["transactions", "filters"],
+            onCancelToken,
             onSuccess: () => {
                 if (callback) {
                     callback();
@@ -28,8 +29,8 @@ export default function TransactionsTable({
     useEffect(() => {
         updateTable();
 
-        setRefreshPage((callback: CallableFunction) => {
-            updateTable(callback);
+        setRefreshPage((callback: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => {
+            updateTable(callback, onCancelToken);
         });
     }, []);
 
