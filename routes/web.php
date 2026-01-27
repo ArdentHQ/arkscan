@@ -3,9 +3,10 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CurrencyController;
-use App\Http\Controllers\ExchangesController;
+use App\Http\Controllers\ExchangesController as LegacyExchangesController;
 use App\Http\Controllers\Inertia\BlocksListController;
 use App\Http\Controllers\Inertia\CompatibleWalletsController;
+use App\Http\Controllers\Inertia\ExchangesController;
 use App\Http\Controllers\Inertia\HomeController;
 use App\Http\Controllers\Inertia\ShowBlockController;
 use App\Http\Controllers\Inertia\ShowTransactionController;
@@ -83,6 +84,11 @@ Route::post('/compatible-wallets', [CompatibleWalletsController::class, 'submit'
     ->name('compatible-wallets.submit');
 
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
+Route::post('/exchanges', [ExchangesController::class, 'submit'])
+    ->middleware(['throttle:3,3600'])
+    ->name('exchanges.submit');
+
+Route::get('/exchanges-old', LegacyExchangesController::class)->name('exchanges-old');
 
 Route::post('/webhooks', WebhooksController::class)
     ->withoutMiddleware([VerifyCsrfToken::class])
