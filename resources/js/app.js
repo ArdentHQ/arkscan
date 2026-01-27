@@ -2,6 +2,9 @@ import "focus-visible";
 import "@ui/js/clipboard.js";
 import "@ui/js/tippy.js";
 
+// Load images into the vite build
+import.meta.glob(["../images/**"]);
+
 import Echo from "laravel-echo";
 
 if (import.meta.env.VITE_BROADCAST_DRIVER === "reverb") {
