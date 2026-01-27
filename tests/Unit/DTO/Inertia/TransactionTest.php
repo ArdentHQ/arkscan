@@ -9,7 +9,6 @@ use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
-use App\ViewModels\TransactionViewModel;
 use Carbon\Carbon;
 
 it('should make an instance', function () {
@@ -51,11 +50,9 @@ it('should make an instance', function () {
             'timestamp'         => 1603083256000,
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
-
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+        Carbon::createFromTimestamp($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);
@@ -212,11 +209,9 @@ it('should make an instance for a vote transaction', function () {
             'timestamp'         => 1603083256000,
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
-
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+        Carbon::createFromTimestamp($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);
@@ -353,11 +348,9 @@ it('should make an instance for a validator resignation transaction', function (
             'timestamp'         => 1603083256000,
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
-
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+        Carbon::createFromTimestamp($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);

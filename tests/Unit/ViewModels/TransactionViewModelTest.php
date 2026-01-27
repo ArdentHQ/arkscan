@@ -10,7 +10,7 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
-use App\ViewModels\TransactionViewModel;
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -24,7 +24,7 @@ beforeEach(function () {
     (new NetworkCache())->setHeight(fn () => 5000000);
 
     $this->sender  = Wallet::factory()->create();
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $this->subject = TransactionDTO::fromModel(Transaction::factory()->create([
         'block_hash'               => $this->block->hash,
         'block_number'             => 1,
         'gas_price'                => 1,
@@ -52,7 +52,7 @@ it('should determine if the transaction is outgoing', function () {
 });
 
 it('should determine if transfer transaction is sent to self', function () {
-    $transaction = new TransactionViewModel(Transaction::factory()
+    $transaction = TransactionDTO::fromModel(Transaction::factory()
         ->create([
             'sender_public_key' => $this->sender->public_key,
             'to'                => $this->sender->address,
@@ -112,7 +112,7 @@ it('should get the amount for itself', function () {
             'amount' => BigNumber::new(30 * 1e18),
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->amountForItself())->toBe(30.0);
 });
@@ -149,7 +149,7 @@ it('should get the amount excluding itself', function () {
             'amount' => BigNumber::new(30 * 1e18),
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->amount())->toBe(60.0);
     expect($viewModel->amountReceived($this->sender->address))->toBe(30.0);
@@ -212,7 +212,7 @@ it('should get the amount excluding self as fiat', function () {
             'amount' => BigNumber::new(30 * 1e18),
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->amountFiatExcludingItself())->toBe('$'.number_format(30 * 0.2907, 2));
 });
@@ -261,11 +261,11 @@ it('should determine the transaction type', function (string $type, ?string $wal
     }
 
     $transaction = Transaction::factory()->{$type}(...$arguments)->create();
-    $subject     = new TransactionViewModel($transaction);
+    $subject     = TransactionDTO::fromModel($transaction);
 
     expect($subject->{'is'.ucfirst($type)}())->toBeTrue();
 
-    $subject = new TransactionViewModel(Transaction::factory()->withPayload('123456')->create());
+    $subject = TransactionDTO::fromModel(Transaction::factory()->withPayload('123456')->create());
 
     expect($subject->{'is'.ucfirst($type)}())->toBeFalse();
 })->with([
@@ -288,11 +288,11 @@ it('should determine if the transaction is self-receiving', function (string $ty
     }
 
     $transaction = Transaction::factory()->{$type}(...$arguments)->create();
-    $subject     = new TransactionViewModel($transaction);
+    $subject     = TransactionDTO::fromModel($transaction);
 
     expect($subject->isSelfReceiving())->toBeTrue();
 
-    $subject = new TransactionViewModel(Transaction::factory()->create());
+    $subject = TransactionDTO::fromModel(Transaction::factory()->create());
 
     expect($subject->isSelfReceiving())->toBeFalse();
 })->with([
@@ -304,7 +304,7 @@ it('should determine if the transaction is self-receiving', function (string $ty
 ]);
 
 it('should fallback to the sender if no recipient address exists', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $this->subject = TransactionDTO::fromModel(Transaction::factory()->create([
         'to'                        => null,
         'deployed_contract_address' => null,
     ]));
@@ -315,7 +315,7 @@ it('should fallback to the sender if no recipient address exists', function () {
 it('should fallback to receipt deployed contract address if set', function () {
     $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
 
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $this->subject = TransactionDTO::fromModel(Transaction::factory()->create([
         'deployed_contract_address' => $wallet->address,
         'to'                        => null,
     ]));
@@ -328,9 +328,18 @@ it('should get the voted validator', function () {
 
     $validator = Wallet::factory()->activeValidator()->create();
 
-    $subject = new TransactionViewModel(Transaction::factory()->vote($validator->address)->create());
+    $subject = TransactionDTO::fromModel(Transaction::factory()->vote($validator->address)->create());
 
     expect($subject->voted())->toBeInstanceOf(WalletViewModel::class);
+});
+
+it('should get the voted validator via unvoted helper', function () {
+    $validator = Wallet::factory()->activeValidator()->create();
+
+    $subject = TransactionDTO::fromModel(Transaction::factory()->vote($validator->address)->create());
+
+    expect($subject->unvoted())->toBeInstanceOf(WalletViewModel::class);
+    expect($subject->unvoted()?->address())->toBe($validator->address);
 });
 
 it('should fail to get the voted validator for unknown wallet', function () {
@@ -340,13 +349,13 @@ it('should fail to get the voted validator for unknown wallet', function () {
         ->vote('0x'.str_repeat('0', 64))
         ->create();
 
-    $subject = new TransactionViewModel($transaction);
+    $subject = TransactionDTO::fromModel($transaction);
 
     expect($subject->voted())->toBeNull();
 });
 
 it('should fail to get the voted validator if the transaction is not an unvote', function () {
-    $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
+    $subject = TransactionDTO::fromModel(Transaction::factory()->unvote()->create());
 
     expect($subject->voted())->toBeNull();
 });
@@ -361,7 +370,7 @@ it('should get the gas', function () {
 
 describe('HasPayload trait', function () {
     it('should determine if a transaction has a payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->withPayload('1234567890')
             ->create());
 
@@ -369,7 +378,7 @@ describe('HasPayload trait', function () {
     });
 
     it('should get raw payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->withPayload('1234567890')
             ->create());
 
@@ -377,7 +386,7 @@ describe('HasPayload trait', function () {
     });
 
     it('should get utf-8 formatted payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->withPayload('74657374696e67')
             ->create());
 
@@ -385,7 +394,7 @@ describe('HasPayload trait', function () {
     });
 
     it('should get null for utf-8 formatted payload if raw payload is null', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->withPayload('')
             ->create());
 
@@ -393,7 +402,7 @@ describe('HasPayload trait', function () {
     });
 
     it('should get formatted payload', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->withPayload('6dd7d8ea00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de00000000000000000000000044083669cf29374d548b71c558ebd1e2f5dcc4de')
             ->create());
 
@@ -404,7 +413,7 @@ MethodID: 0x6dd7d8ea
     });
 
     it('should fail to get formatted payload if no method data', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->withPayload('')
             ->create());
 
@@ -412,7 +421,7 @@ MethodID: 0x6dd7d8ea
     });
 
     it('should get formatted payload without arguments', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->withPayload('6dd7d8ea')
             ->create());
 
@@ -422,7 +431,7 @@ MethodID: 0x6dd7d8ea');
     });
 
     it('should get formatted payload without a valid function name', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->withPayload('12341234')
             ->create());
 
@@ -430,7 +439,7 @@ MethodID: 0x6dd7d8ea');
     });
 
     it('should get formatted multi payment receipts', function () {
-        $transaction = new TransactionViewModel(Transaction::factory()
+        $transaction = TransactionDTO::fromModel(Transaction::factory()
             ->multiPayment([
                 '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
                 '0xb693449AdDa7EFc015D87944EAE8b7C37EB1690A',
@@ -487,7 +496,7 @@ it('should calculate fee with receipt', function () {
         'gas_used'  => 21000,
     ]);
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->fee())->toEqual(0.001134);
 });
@@ -497,7 +506,7 @@ it('should should determine if transaction failed', function () {
         'status' => false,
     ]);
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->hasFailedStatus())->toBeTrue();
 });
@@ -507,7 +516,7 @@ it('should should determine transaction has not failed', function () {
         'status' => true,
     ]);
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->hasFailedStatus())->toBeFalse();
 });
@@ -517,7 +526,7 @@ it('should get the gas used', function () {
         'gas_used' => 8,
     ]);
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->gasUsed())->toEqual(8);
 });
@@ -528,7 +537,7 @@ it('should get the username if set', function () {
         ->withPayload('36a941340000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000e7068705f73646b5f746573746572000000000000000000000000000000000000')
         ->create();
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->username())->toBe('php_sdk_tester');
 });
@@ -537,7 +546,7 @@ it('should get null username if not set', function () {
     $transaction = Transaction::factory()
         ->create();
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->username())->toBeNull();
 });
@@ -547,7 +556,7 @@ it('has a validator public key', function () {
         ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
         ->create();
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->validatorPublicKey())->toBe('000000000000000000000000c5a19e23e99bdfb7aae4301a009763adc01c1b5b');
 });
@@ -557,7 +566,7 @@ it('has a validator public key for validator update', function () {
         ->validatorUpdate('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
         ->create();
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->validatorPublicKey())->toBe('000000000000000000000000c5a19e23e99bdfb7aae4301a009763adc01c1b5b');
 });
@@ -567,7 +576,7 @@ it('does not have a validator public key if is not validator registration', func
         ->transfer()
         ->create();
 
-    $viewModel = new TransactionViewModel($transaction->fresh());
+    $viewModel = TransactionDTO::fromModel($transaction->fresh());
 
     expect($viewModel->validatorPublicKey())->toBeNull();
 });
@@ -577,7 +586,7 @@ it('should determine if is certain transaction type', function (string $type, ar
         ->{Str::camel($type)}(...$params)
         ->create();
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->{'is'.Str::camel($type)}())->toBeTrue();
 })->with([
@@ -619,7 +628,7 @@ it('should get the correct amount for a given wallet address in multipayment', f
             'hash'   => $transaction->hash,
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->amount())->toEqual(3.0);
     expect($viewModel->amountReceived($walletAddress1))->toEqual(1.0);
@@ -659,7 +668,7 @@ it('should get the correct amount for many wallet addresses in multipayment', fu
             'amount' => BigNumber::new(10000 * 1e18),
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     foreach ($wallets as $walletAddress => $amount) {
         expect($viewModel->amount())->toEqual(60000);
@@ -672,7 +681,7 @@ it('should get a corresponding validator registration', function () {
         ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
         ->create();
 
-    $validatorResignationViewModel = new TransactionViewModel(
+    $validatorResignationViewModel = TransactionDTO::fromModel(
         Transaction::factory()
             ->validatorResignation()
             ->create([
@@ -684,7 +693,7 @@ it('should get a corresponding validator registration', function () {
 });
 
 it('should return null if no corresponding validator registration', function () {
-    $validatorResignationViewModel = new TransactionViewModel(
+    $validatorResignationViewModel = TransactionDTO::fromModel(
         Transaction::factory()
             ->validatorResignation()
             ->create()
@@ -698,7 +707,7 @@ it('should return null corresponding validator registration if not resignation',
         ->validatorRegistration('C5a19e23E99bdFb7aae4301A009763AdC01c1b5B')
         ->create();
 
-    $validatorResignationViewModel = new TransactionViewModel(
+    $validatorResignationViewModel = TransactionDTO::fromModel(
         Transaction::factory()
             ->transfer()
             ->create([
@@ -715,7 +724,7 @@ it('should return receipt error', function () {
         'decoded_error' => 'CallerIsNotValidator',
     ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->transactionError())->toBe('Caller Is Not Validator');
 });
@@ -725,7 +734,7 @@ it('should return null if no receipt error', function () {
         'status' => false,
     ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->transactionError())->toBeNull();
 });
@@ -738,7 +747,7 @@ it('should return receipt error for insufficient gas', function () {
         'decoded_error' => 'execution reverted',
     ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->transactionError())->toBe('Out of gas?');
 });
@@ -750,7 +759,7 @@ it('should not return receipt error for insufficient gas if receipt did not fail
         'status'   => true,
     ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->transactionError())->toBeNull();
 });
@@ -764,7 +773,7 @@ it('should not modify gas used instance when getting receipt error', function ()
         'decoded_error' => 'execution reverted',
     ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->transactionError())->toBe('Out of gas?');
     expect($transaction->gas_used)->toEqual($gasUsed);
@@ -776,7 +785,7 @@ it('should not format errors with a space', function () {
         'decoded_error' => 'Error (Must send exactly 0.001 ETH to set message)',
     ]);
 
-    $viewModel = new TransactionViewModel($transaction);
+    $viewModel = TransactionDTO::fromModel($transaction);
 
     expect($viewModel->transactionError())->toBe('Error (Must send exactly 0.001 ETH to set message)');
 });

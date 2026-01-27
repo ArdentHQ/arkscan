@@ -10,7 +10,7 @@ use App\Models\Wallet;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\ForgingStatsViewModel;
 use App\ViewModels\RoundViewModel;
-use App\ViewModels\TransactionViewModel;
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
@@ -22,7 +22,7 @@ it('should make a view model', function ($modelClass, $viewModel) {
 })->with([
     [Block::class, BlockViewModel::class],
     [Round::class, RoundViewModel::class],
-    [Transaction::class, TransactionViewModel::class],
+    [Transaction::class, TransactionDTO::class],
     [Wallet::class, WalletViewModel::class],
     [ForgingStats::class, ForgingStatsViewModel::class],
 ]);
@@ -47,7 +47,7 @@ it('should make a view model collection', function ($modelClass, $viewModel) {
 })->with([
     [Block::class, BlockViewModel::class],
     [Round::class, RoundViewModel::class],
-    [Transaction::class, TransactionViewModel::class],
+    [Transaction::class, TransactionDTO::class],
     [Wallet::class, WalletViewModel::class],
     [ForgingStats::class, ForgingStatsViewModel::class],
 ]);
