@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Contracts\ViewModel;
-use App\Facades\Network;
 use App\DTO\Search\NavbarSearchBlockResultData;
 use App\DTO\Search\NavbarSearchTransactionResultData;
 use App\DTO\Search\NavbarSearchWalletResultData;
+use App\Facades\Network;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
@@ -42,51 +42,6 @@ final class SearchController
             ->toArray(),
             'hasResults' => $results->isNotEmpty(),
         ]);
-    }
-
-    private function serializeResult(ViewModel $result): array
-    {
-        /**
-         * @var WalletViewModel|BlockViewModel|TransactionViewModel $result
-         */
-        return [
-            'type'       => $this->determineType($result),
-            'url'        => $result->url(),
-            'identifier' => method_exists($result, 'id') ? $result->id() : (method_exists($result, 'hash') ? $result->hash() : null),
-            'data'       => $this->toArray($result),
-        ];
-    }
-
-    private function determineType(ViewModel $result): string
-    {
-        return match (true) {
-            $result instanceof WalletViewModel      => 'wallet',
-            $result instanceof BlockViewModel       => 'block',
-            $result instanceof TransactionViewModel => 'transaction',
-            default                                 => throw new \Exception('Invalid result type: '.get_class($result)),
-        };
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function toArray(ViewModel $result): array
-    {
-        if ($result instanceof WalletViewModel) {
-            return NavbarSearchWalletResultData::fromViewModel($result)->toArray();
-        }
-
-        if ($result instanceof BlockViewModel) {
-            return NavbarSearchBlockResultData::fromViewModel($result)->toArray();
-        }
-
-        if ($result instanceof TransactionViewModel) {
-            return NavbarSearchTransactionResultData::fromViewModel($result)->toArray();
-        }
-
-        // @codeCoverageIgnoreStart
-        throw new \Exception('Invalid result type: '.get_class($result));
-        // @codeCoverageIgnoreEnd
     }
 
     public function results(): Collection
@@ -169,6 +124,51 @@ final class SearchController
             });
 
         return ViewModelFactory::collection($results);
+    }
+
+    private function serializeResult(ViewModel $result): array
+    {
+        /**
+         * @var WalletViewModel|BlockViewModel|TransactionViewModel $result
+         */
+        return [
+            'type'       => $this->determineType($result),
+            'url'        => $result->url(),
+            'identifier' => method_exists($result, 'id') ? $result->id() : (method_exists($result, 'hash') ? $result->hash() : null),
+            'data'       => $this->toArray($result),
+        ];
+    }
+
+    private function determineType(ViewModel $result): string
+    {
+        return match (true) {
+            $result instanceof WalletViewModel      => 'wallet',
+            $result instanceof BlockViewModel       => 'block',
+            $result instanceof TransactionViewModel => 'transaction',
+            default                                 => throw new \Exception('Invalid result type: '.get_class($result)),
+        };
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function toArray(ViewModel $result): array
+    {
+        if ($result instanceof WalletViewModel) {
+            return NavbarSearchWalletResultData::fromViewModel($result)->toArray();
+        }
+
+        if ($result instanceof BlockViewModel) {
+            return NavbarSearchBlockResultData::fromViewModel($result)->toArray();
+        }
+
+        if ($result instanceof TransactionViewModel) {
+            return NavbarSearchTransactionResultData::fromViewModel($result)->toArray();
+        }
+
+        // @codeCoverageIgnoreStart
+        throw new \Exception('Invalid result type: '.get_class($result));
+        // @codeCoverageIgnoreEnd
     }
 
     private function parseQuery(string $query): string
