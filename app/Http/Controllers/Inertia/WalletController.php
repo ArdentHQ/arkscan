@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Inertia;
 use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
@@ -21,12 +22,12 @@ use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Arr;
 use Inertia\Inertia;
 use Inertia\Response;
 
 final class WalletController
 {
+    use WithFilters;
     use WithPagination;
 
     public const FILTERS = [
@@ -51,7 +52,7 @@ final class WalletController
 
         return Inertia::renderWithMeta('Wallet/Wallet', 'wallet', [
             'wallet'       => WalletDTO::fromModel($wallet),
-            'filters'      => fn () => $this->getFilters(),
+            'filters'      => self::FILTERS,
             'baseUrl'      => route('wallet', $wallet->address, false),
 
             'transactions' => Inertia::optional(function () use ($wallet) {
@@ -130,39 +131,18 @@ final class WalletController
             ->through(fn (Wallet $voter) => WalletDTO::fromModel($voter));
     }
 
-    private function filter(string $key): bool
-    {
-        if (request()->has($key)) {
-            return request()->query($key) === 'true';
-        }
-
-        $currentTab = $this->view;
-
-        return Arr::get(self::FILTERS, $currentTab.'.'.$key, false);
-    }
-
-    private function filters(): array
-    {
-        $currentTab = $this->view;
-
-        $filters = Arr::get(self::FILTERS, $currentTab, []);
-        foreach ($filters as $key => $value) {
-            $filters[$key] = $this->filter($key);
-        }
-
-        return $filters;
-    }
-
     private function getTransactionsQuery(Wallet $wallet): Builder
     {
+        $filters = $this->filters($this->view);
+
         return Transaction::query()
-            ->withTypeFilter($this->filters())
+            ->withTypeFilter($this->filters($this->view))
             ->with('votedFor')
-            ->where(function ($query) use ($wallet) {
-                $query->where(fn ($query) => $query->when($this->filter('outgoing'), fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
-                    ->orWhere(fn ($query) => $query->when($this->filter('incoming'), fn ($query) => $query->where('to', $wallet->address)))
-                    ->orWhere(function ($query) use ($wallet) {
-                        $query->when($this->filter('multipayments'), function ($query) use ($wallet) {
+            ->where(function ($query) use ($wallet, $filters) {
+                $query->where(fn ($query) => $query->when($filters['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
+                    ->orWhere(fn ($query) => $query->when($filters['incoming'], fn ($query) => $query->where('to', $wallet->address)))
+                    ->orWhere(function ($query) use ($wallet, $filters) {
+                        $query->when($filters['multipayments'], function ($query) use ($wallet) {
                             $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address);
                         });
                     });
@@ -171,49 +151,52 @@ final class WalletController
 
     private function hasAddressingFilters(): bool
     {
-        if ($this->filter('incoming') === true) {
+        $filters = $this->filters('transactions');
+        if ($filters['incoming'] === true) {
             return true;
         }
 
-        return $this->filter('outgoing') === true;
+        return $filters['outgoing'] === true;
     }
 
     private function hasTransactionTypeFilters(): bool
     {
-        if ($this->filter('transfers') === true) {
+        $filters = $this->filters('transactions');
+        if ($filters['transfers'] === true) {
             return true;
         }
 
-        if ($this->filter('multipayments') === true) {
+        if ($filters['multipayments'] === true) {
             return true;
         }
 
-        if ($this->filter('votes') === true) {
+        if ($filters['votes'] === true) {
             return true;
         }
 
-        if ($this->filter('validator') === true) {
+        if ($filters['validator'] === true) {
             return true;
         }
 
-        if ($this->filter('username') === true) {
+        if ($filters['username'] === true) {
             return true;
         }
 
-        if ($this->filter('contract_deployment') === true) {
+        if ($filters['contract_deployment'] === true) {
             return true;
         }
 
-        return $this->filter('others') === true;
+        return $filters['others'] === true;
     }
 
     private function getTransactionsNoResultsMessageProperty(int $count): null|string
     {
-        if (! $this->hasAddressingFilters() && ! $this->hasTransactionTypeFilters()) {
+        $hasAddressingFilters = $this->hasAddressingFilters();
+        if (! $hasAddressingFilters && ! $this->hasTransactionTypeFilters()) {
             return trans('tables.transactions.no_results.no_filters');
         }
 
-        if (! $this->hasAddressingFilters()) {
+        if (! $hasAddressingFilters) {
             return trans('tables.transactions.no_results.no_addressing_filters');
         }
 
@@ -240,15 +223,5 @@ final class WalletController
         }
 
         return null;
-    }
-
-    private function getFilters(): array
-    {
-        return [
-            'transactions' => collect(self::FILTERS['transactions'])
-            ->keys()
-            ->mapWithKeys(fn ($filterName) => [$filterName => $this->filter($filterName) === true])
-            ->toArray(),
-        ];
     }
 }
