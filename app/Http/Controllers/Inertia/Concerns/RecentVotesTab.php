@@ -19,14 +19,6 @@ trait RecentVotesTab
 
     public const RECENT_VOTES_INITIAL_SORT_DIRECTION = SortDirection::DESC;
 
-    /** @var array<string, array<string, bool>> */
-    protected array $recentVotesFilters = [
-       'recent-votes' => [
-           'vote'   => true,
-           'unvote' => true,
-       ],
-    ];
-
     protected ?bool $recentVotesHasFilters = null;
 
     public function getRecentVotesNoResultsMessageProperty(int $count): null|string
@@ -61,9 +53,7 @@ trait RecentVotesTab
             return $this->recentVotesHasFilters;
         }
 
-        $recentVotesHasFilters = collect($this->recentVotesFilters['recent-votes'])->keys()->some(fn ($key) => $this->hasFilter($key, $this->recentVotesFilters['recent-votes'][$key]));
-
-        $this->recentVotesHasFilters = $recentVotesHasFilters;
+        $this->recentVotesHasFilters = $this->hasFilters('recent-votes');
 
         return $this->recentVotesHasFilters;
     }
@@ -75,15 +65,18 @@ trait RecentVotesTab
             $sortDirection = SortDirection::DESC;
         }
 
+        /** @var array<string, bool> $defaultFilters */
+        $defaultFilters = $this->defaultFilters('recent-votes');
+
         return Transaction::query()
             ->with('votedFor')
             ->where('status', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
-            ->where(function ($query) {
-                $query->where(fn ($query) => $query->when($this->hasFilter('vote', $this->recentVotesFilters['recent-votes']['vote']), function ($query) {
+            ->where(function ($query) use ($defaultFilters) {
+                $query->where(fn ($query) => $query->when($this->hasFilter('vote', $defaultFilters['vote']), function ($query) {
                     $query->withScope(VoteScope::class);
                 }))
-                ->orWhere(fn ($query) => $query->when($this->hasFilter('unvote', $this->recentVotesFilters['recent-votes']['unvote']), function ($query) {
+                ->orWhere(fn ($query) => $query->when($this->hasFilter('unvote', $defaultFilters['unvote']), function ($query) {
                     $query->withScope(UnvoteScope::class);
                 }));
             })

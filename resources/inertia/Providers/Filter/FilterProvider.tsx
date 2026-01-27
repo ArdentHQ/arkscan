@@ -4,6 +4,7 @@ import { IFilterContextType, IFilterEntry } from "./types";
 import { IFilters } from "@/types";
 import { router } from "@inertiajs/react";
 import { usePageHandler } from "../PageHandler/PageHandlerContext";
+import { CancelToken } from "@inertiajs/core";
 
 function getFilterValuesFromOptions(initialOptions: IFilterEntry[], withQueryStringValue: boolean = false): IFilters {
     const urlParams = new URLSearchParams(location.search);
@@ -24,7 +25,12 @@ function getFilterValuesFromOptions(initialOptions: IFilterEntry[], withQueryStr
             return acc;
         }
 
-        acc[option.value] = option.selected;
+        const queryStringParamValue = urlParams.get(option.value);
+        if (withQueryStringValue && queryStringParamValue !== null) {
+            acc[option.value] = queryStringParamValue === "true" ? true : false;
+        } else {
+            acc[option.value] = option.selected;
+        }
 
         return acc;
     }, {} as IFilters);
@@ -70,16 +76,27 @@ export default function FilterProvider({
 
         updatedUrl.searchParams.delete("page");
 
+        let baseCancelToken: CancelToken | undefined = undefined;
+
         router.push({
             url: updatedUrl.toString(),
             preserveState: true,
             preserveScroll: true,
             onSuccess: () => {
-                refreshPage(() => {
-                    onChange?.(selectedFilters);
-                });
+                refreshPage(
+                    () => {
+                        onChange?.(selectedFilters);
+                    },
+                    (onCancelToken) => {
+                        baseCancelToken = onCancelToken;
+                    },
+                );
             },
         });
+
+        return () => {
+            baseCancelToken?.cancel();
+        };
     }, [selectedFilters]);
 
     const setFilter = (key: string, checked: boolean) => {
