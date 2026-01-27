@@ -39,7 +39,7 @@ export default function SectionDetailRow({
 
             <div
                 className={classNames(
-                    "flex-1 space-y-3 text-right sm:flex text-theme-secondary-900 dark:text-theme-dark-50 sm:text-left",
+                    "flex-1 space-y-3 text-right text-theme-secondary-900 dark:text-theme-dark-50 sm:flex sm:text-left",
                     valueClassName,
                 )}
             >
