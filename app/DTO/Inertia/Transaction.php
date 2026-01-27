@@ -93,6 +93,13 @@ class Transaction extends Data implements ViewModel
 
     public static function fromModel(Model $transaction, ?string $address = null): self
     {
+        if (! $transaction->exists) {
+            $fresh = Model::query()->where('hash', $transaction->hash)->first();
+            if ($fresh !== null) {
+                $transaction = $fresh;
+            }
+        }
+
         $method          = new TransactionMethod($transaction);
         $methodArguments = $method->arguments();
 
@@ -145,20 +152,20 @@ class Transaction extends Data implements ViewModel
 
         $dto = new self(
             hash: $transaction->hash,
-            block_hash: $transaction->block_hash,
-            block_number: $transaction->block_number,
-            transaction_index: $transaction->transaction_index,
+            block_hash: $transaction->block_hash ?? '',
+            block_number: $transaction->block_number ?? 0,
+            transaction_index: $transaction->transaction_index ?? 0,
             timestamp: $transaction->timestamp,
-            nonce: $transaction->nonce,
-            sender_public_key: $transaction->sender_public_key,
-            from: $transaction->from,
+            nonce: $transaction->nonce ?? 0,
+            sender_public_key: $transaction->sender_public_key ?? '',
+            from: $transaction->from ?? '',
             to: $transaction->to,
             value: (string) $transaction->value,
-            gas_price: (string) $transaction->gas_price,
-            gas: (string) $transaction->gas,
-            status: $transaction->status,
-            gas_used: (string) $transaction->gas_used,
-            gas_refunded: (string) $transaction->gas_refunded,
+            gas_price: (string) ($transaction->gas_price ?? 0),
+            gas: (string) ($transaction->gas ?? 0),
+            status: $transaction->status ?? false,
+            gas_used: (string) ($transaction->gas_used ?? 0),
+            gas_refunded: (string) ($transaction->gas_refunded ?? 0),
             deployed_contract_address: $transaction->deployed_contract_address,
             decoded_error: $transaction->decoded_error,
             multi_payment_recipients: $transaction->multi_payment_recipients,
