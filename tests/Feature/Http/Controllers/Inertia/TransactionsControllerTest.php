@@ -178,13 +178,13 @@ it('should show the no-filters message when all filters are disabled', function 
 it('should show the no-results message when filters are enabled but no results exist', function () {
     $this
         ->get(route('transactions', [
-            'transfers'           => true,
-            'multipayments'       => false,
-            'votes'               => false,
-            'validator'           => false,
-            'username'            => false,
-            'contract_deployment' => false,
-            'others'              => false,
+            'transfers'           => 'true',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
+            'contract_deployment' => 'false',
+            'others'              => 'false',
         ]), [
             'X-Inertia-Partial-Component' => 'Transactions/List',
             'X-Inertia-Partial-Data'      => 'transactions',
@@ -199,18 +199,19 @@ it('should show the no-results message when filters are enabled but no results e
 
 it('should return transactions and no message when results exist', function () {
     $transaction = Transaction::factory()->transfer()->create();
+
     Wallet::factory()->create(['address' => $transaction->from]);
     Wallet::factory()->create(['address' => $transaction->to]);
 
     $this
         ->get(route('transactions', [
-            'transfers'           => true,
-            'multipayments'       => false,
-            'votes'               => false,
-            'validator'           => false,
-            'username'            => false,
-            'contract_deployment' => false,
-            'others'              => false,
+            'transfers'           => 'true',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
+            'contract_deployment' => 'false',
+            'others'              => 'false',
             'per-page'            => 10,
             'page'                => 1,
         ]), [

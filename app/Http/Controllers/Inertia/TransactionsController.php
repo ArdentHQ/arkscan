@@ -35,7 +35,7 @@ final class TransactionsController
     public function __invoke(): Response
     {
         return Inertia::renderWithMeta('Transactions/List', 'transactions', [
-            'filters'          => fn () => $this->filters(),
+            'filters'          => self::FILTERS,
             'statistics'       => function () {
                 $data = (new StatisticsCache())->getTransactionData();
 
@@ -86,20 +86,5 @@ final class TransactionsController
             ->with('votedFor')
             ->paginate($this->perPage('transactions'))
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
-    }
-
-    private function filters(): array
-    {
-        return collect(self::FILTERS)
-            ->keys()
-            ->mapWithKeys(fn ($filterName) => [$filterName => $this->hasFilter($filterName, self::FILTERS[$filterName])])
-            ->toArray();
-    }
-
-    private function hasFilters(): bool
-    {
-        return collect(self::FILTERS)
-            ->keys()
-            ->some(fn ($filterName) => $this->hasFilter($filterName, self::FILTERS[$filterName]));
     }
 }
