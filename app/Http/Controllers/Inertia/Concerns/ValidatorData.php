@@ -15,7 +15,6 @@ use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use App\Services\Monitor\ValidatorTracker;
 use App\Services\Timestamp;
-use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -228,7 +227,7 @@ trait ValidatorData
             }
 
             /** @var WalletViewModel $walletViewModel */
-            $walletViewModel = ViewModelFactory::make($validatorWallet);
+            $walletViewModel = new WalletViewModel($validatorWallet);
 
             $validators[] = new Slot(
                 address: $validator['address'],

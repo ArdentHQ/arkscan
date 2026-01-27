@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire;
 
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Http\Livewire\Concerns\HasLazyLoadingPagination;
 use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\ViewModels\BlockViewModel;
-use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Livewire\Component;
@@ -38,7 +38,7 @@ final class BlockTransactionsTable extends Component
     public function render(): View
     {
         return view('livewire.block-transactions-table', [
-            'transactions' => ViewModelFactory::collection($this->lazyLoadedData),
+            'transactions' => $this->lazyLoadedData->map(fn ($transaction) => TransactionDTO::fromModel($transaction)),
         ]);
     }
 

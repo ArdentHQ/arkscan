@@ -13,7 +13,6 @@ use App\Models\Wallet;
 use App\Services\Cache\MonitorCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
-use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 
 trait HandlesMonitorDataBoxes
@@ -53,7 +52,7 @@ trait HandlesMonitorDataBoxes
         $validatorWallet = (new WalletCache())->getValidator($address);
 
         /** @var WalletViewModel $validator */
-        $validator = ViewModelFactory::make($validatorWallet);
+        $validator = new WalletViewModel($validatorWallet);
 
         if ($validator->hasForged()) {
             return ValidatorForgingStatus::forging;

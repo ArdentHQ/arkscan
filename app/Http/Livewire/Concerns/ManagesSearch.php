@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Livewire\Concerns;
 
+use App\Contracts\ViewModel;
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Facades\Network;
+use App\Models\Block;
+use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
-use App\ViewModels\ViewModelFactory;
+use App\ViewModels\BlockViewModel;
+use App\ViewModels\WalletViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
+use InvalidArgumentException;
 use Laravel\Scout\Engines\MeilisearchEngine;
 use Meilisearch\Contracts\SearchQuery;
 
@@ -56,7 +63,7 @@ trait ManagesSearch
         $results = $results->concat((new TransactionSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE));
         $results = $results->concat((new BlockSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE));
 
-        return ViewModelFactory::collection($results);
+        return $this->mapResults($results);
     }
 
     /**
@@ -109,7 +116,7 @@ trait ManagesSearch
                 }
             });
 
-        return ViewModelFactory::collection($results);
+        return $this->mapResults($results);
     }
 
     public function goToFirstResult(): null|Redirector|RedirectResponse
@@ -152,5 +159,18 @@ trait ManagesSearch
         }
 
         return WalletSearch::buildSearchQueryForIndex($query, RESULT_LIMIT_PER_TYPE);
+    }
+
+    private function mapResults(Collection $results): Collection
+    {
+        return $results->map(function ($result) {
+            return match (true) {
+                $result instanceof Wallet      => new WalletViewModel($result),
+                $result instanceof Transaction => TransactionDTO::fromModel($result),
+                $result instanceof Block       => new BlockViewModel($result),
+                $result instanceof ViewModel   => $result,
+                default                        => throw new InvalidArgumentException('Invalid search result type.'),
+            };
+        });
     }
 }
