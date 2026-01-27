@@ -193,7 +193,7 @@ export function BlocksListLoadingState({
 
     return (
         <>
-            <LoadingTable mobile={mobile} paginator={blocks} rowCount={rowCount} columns={columns} />
+            <LoadingTable mobile={mobile} paginator={blocks} rowCount={rowCount} columns={columns} header />
         </>
     );
 }

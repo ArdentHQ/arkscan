@@ -57,6 +57,7 @@ export default function SettingsProvider({
                 { currency: newCurrency },
                 {
                     only: ["priceTickerData"],
+                    preserveScroll: true,
                     showProgress: false,
                     onSuccess: () => {
                         resolve();
@@ -86,6 +87,7 @@ export default function SettingsProvider({
                 { theme: newTheme },
                 {
                     only: ["theme"],
+                    preserveScroll: true,
                     showProgress: false,
                     onSuccess: () => {
                         resolve();

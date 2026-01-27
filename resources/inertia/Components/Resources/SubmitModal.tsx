@@ -1,7 +1,8 @@
 import Modal from "@/Components/General/Modal";
 import { useTranslation } from "react-i18next";
-import { router } from "@inertiajs/react";
-import React, { RefObject, useState } from "react";
+import React, { RefObject } from "react";
+import useToast from "@/Providers/Toast/useToast";
+import submitForm from "@/utils/submit-form";
 
 interface SubmitModalProps {
     ref: RefObject<HTMLFormElement | null>;
@@ -10,6 +11,7 @@ interface SubmitModalProps {
     onClose: () => void;
     onSubmit: (e: React.FormEvent) => void;
     validateFields: () => void;
+    setErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
     children: React.ReactNode;
     disabled: boolean;
 }
@@ -21,27 +23,24 @@ export default function SubmitModal({
     onClose,
     onSubmit,
     validateFields,
+    setErrors,
     children,
     disabled = false,
 }: SubmitModalProps) {
     const { t } = useTranslation();
+    const { addToast } = useToast();
 
     const onFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         onSubmit(e);
 
-        router.post(route, new FormData(ref.current!), {
-            showProgress: false,
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
+        submitForm({
+            route,
+            formRef: ref,
+            setErrors,
+            addToast,
             onSuccess: () => {
-                // TODO: implement Inertia flash/toast messages
-
-                ref.current?.reset();
-
                 onClose();
             },
             onFinish: () => {

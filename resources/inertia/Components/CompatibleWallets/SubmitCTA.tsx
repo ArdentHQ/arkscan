@@ -11,7 +11,8 @@ export default function CompatibleWalletsSubmitCTA() {
     const { t } = useTranslation();
     const formRef = useRef<HTMLFormElement>(null);
 
-    const { errors } = useSharedData<CompatibleWalletsProps>();
+    const { errors: pageErrors } = useSharedData<CompatibleWalletsProps>();
+    const [errors, setErrors] = useState<Record<string, string>>(pageErrors);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFormValid, setIsFormValid] = useState(false);
@@ -47,6 +48,7 @@ export default function CompatibleWalletsSubmitCTA() {
                 onSubmit={() => setIsFormValid(false)}
                 validateFields={validateFields}
                 disabled={!isFormValid}
+                setErrors={setErrors}
             >
                 <Input
                     label={t("pages.compatible-wallets.submit-modal.name")}
