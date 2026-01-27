@@ -7,7 +7,7 @@ use App\Http\Livewire\TopAccountsTable;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
-use App\ViewModels\ViewModelFactory;
+use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
 
 it('should list the first page of records', function () {
@@ -18,7 +18,8 @@ it('should list the first page of records', function () {
     $component = Livewire::test(TopAccountsTable::class)
         ->call('setIsReady');
 
-    foreach (ViewModelFactory::paginate(Wallet::withScope(OrderByBalanceScope::class)->paginate())->items() as $wallet) {
+    foreach (Wallet::withScope(OrderByBalanceScope::class)->paginate()->items() as $walletModel) {
+        $wallet = new WalletViewModel($walletModel);
         $component->assertSee($wallet->address());
         $component->assertSeeInOrder([
             Network::currency(),

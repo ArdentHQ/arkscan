@@ -10,7 +10,6 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
 use App\Services\Timestamp;
-use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 
@@ -81,7 +80,7 @@ it('should not be marked as missing if it never had a block', function () {
     $subject = new Slot(
         address: $wallet->address,
         order: 1,
-        wallet: ViewModelFactory::make($wallet),
+        wallet: new WalletViewModel($wallet),
         forgingAt: Timestamp::fromGenesis(1),
         lastBlock: [],
         status: 'done',
@@ -111,7 +110,7 @@ it('should show the correct missed blocks amount when spanning multiple rounds',
     $subject = new Slot(
         address: $wallet->address,
         order: 1,
-        wallet: ViewModelFactory::make($wallet),
+        wallet: new WalletViewModel($wallet),
         forgingAt: Timestamp::fromGenesis(1),
         lastBlock: [
             'address'   => $wallet->address,
@@ -171,7 +170,7 @@ it('should convert to array', function () {
     $subject = new Slot(
         address: $wallet->address,
         order: 1,
-        wallet: ViewModelFactory::make($wallet),
+        wallet: new WalletViewModel($wallet),
         forgingAt: Timestamp::fromGenesis(1),
         lastBlock: [
             'address'   => $wallet->address,

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Http\Livewire\BlockTransactionsTable;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Services\NumberFormatter;
 use App\Services\Timestamp;
 use App\ViewModels\BlockViewModel;
-use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
 
 it('should list the first transactions for the giving block id', function () {
@@ -17,7 +17,8 @@ it('should list the first transactions for the giving block id', function () {
 
     $component = Livewire::test(BlockTransactionsTable::class, ['block' => new BlockViewModel($block)]);
 
-    foreach (ViewModelFactory::paginate($block->transactions()->paginate(25))->items() as $transaction) {
+    foreach ($block->transactions()->paginate(25)->items() as $transactionModel) {
+        $transaction = TransactionDTO::fromModel($transactionModel);
         $component->assertSee($transaction->hash());
         $component->assertSee($transaction->sender()->address());
         $component->assertSee($transaction->recipient()->address());
