@@ -8,7 +8,6 @@ use App\Actions\CacheNetworkSupply;
 use App\Contracts\ViewModel;
 use App\Models\Wallet;
 use App\Services\ArkVaultUrlBuilder;
-use App\Services\ExchangeRate;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
 use App\ViewModels\Concerns\Wallet\CanBeKnownWallet;
 use App\ViewModels\Concerns\Wallet\CanBeLegacy;
