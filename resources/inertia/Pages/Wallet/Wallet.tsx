@@ -8,7 +8,7 @@ import { IWallet } from "@/types/generated";
 import Layout from "@/Layout";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
-import { PageProps } from "@inertiajs/core";
+import { CancelToken, PageProps } from "@inertiajs/core";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import ValidatedBlocksMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/ValidatedBlocks";
 import ValidatedBlocksTableWrapper from "@/Components/Tables/Desktop/Wallet/ValidatedBlocks";
@@ -51,7 +51,7 @@ const WalletTabs = ({
 
     const { currentTab } = useTabs();
 
-    useTabPolling((tab: string, callback?: CallableFunction) => {
+    useTabPolling((tab: string, callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => {
         let pollParameters: string[] = [];
         if (tab === "transactions") {
             pollParameters = ["transactions"];
@@ -63,6 +63,7 @@ const WalletTabs = ({
 
         router.reload({
             only: pollParameters,
+            onCancelToken,
             onSuccess: () => {
                 if (callback) {
                     callback();

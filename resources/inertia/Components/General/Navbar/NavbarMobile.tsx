@@ -188,7 +188,6 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
 
         if (open) {
             if (shouldLockBody) {
-                console.log("disableBodyScroll", navbarRef.current);
                 disableBodyScroll(navbarRef.current);
             }
         } else {

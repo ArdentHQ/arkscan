@@ -10,7 +10,7 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import { useEffect } from "react";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 
-export default function TransactionsList({ network, statistics, filters, transactions }: PageProps<TransactionsProps>) {
+export default function TransactionsList({ network, statistics }: PageProps<TransactionsProps>) {
     const { t } = useTranslation();
     const { listen, enabled: usesBroadcasting } = useWebhooks();
 
@@ -42,7 +42,7 @@ export default function TransactionsList({ network, statistics, filters, transac
             <HeaderStats {...statistics} />
 
             <PageHandlerProvider>
-                <TransactionsTable transactions={transactions} filters={filters} />
+                <TransactionsTable />
             </PageHandlerProvider>
         </Layout>
     );
