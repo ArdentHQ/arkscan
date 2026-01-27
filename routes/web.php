@@ -17,6 +17,8 @@ use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
 use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\WebhooksController;
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -85,6 +87,10 @@ Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 Route::post('/exchanges', [ExchangesController::class, 'submit'])
     ->middleware(['throttle:3,3600'])
     ->name('exchanges.submit');
+
+Route::post('/webhooks', WebhooksController::class)
+    ->withoutMiddleware([VerifyCsrfToken::class])
+    ->name('webhooks');
 
 Route::post('/theme/update', [ThemeController::class, 'update'])
     ->name('theme.update');
