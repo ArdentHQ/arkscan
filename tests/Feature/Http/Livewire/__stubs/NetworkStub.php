@@ -51,4 +51,9 @@ class NetworkStub
     {
         return Arr::get($this->knownContracts(), $name);
     }
+
+    public function knownWallets(): array
+    {
+        return config('arkscan.networks.development.knownWallets') ?? [];
+    }
 }
