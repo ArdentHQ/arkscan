@@ -11,6 +11,6 @@ it('should render the page without any errors', function () {
     fakeCryptoCompare();
 
     $this
-        ->get(route('old-transaction', Transaction::factory()->create()->hash))
+        ->get(route('transaction', Transaction::factory()->create()))
         ->assertOk();
 });

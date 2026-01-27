@@ -56,4 +56,9 @@ class NetworkStub
     {
         return config('arkscan.networks.development.knownWallets') ?? [];
     }
+
+    public function blockTime(): int
+    {
+        return (int) config('arkscan.networks.development.blockTime', 8);
+    }
 }
