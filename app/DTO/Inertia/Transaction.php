@@ -121,7 +121,7 @@ class Transaction extends Data implements ViewModel
         $fee                 = self::calculateFee($transaction);
         $amountWithFee       = self::calculateAmountWithFee($transaction, $fee);
 
-        $address = $address ?? $transaction->from;
+        $address = $address ?? $transaction->from ?? Identity::address($transaction->sender_public_key);
 
         $amountReceived = self::calculateAmountReceived($transaction, $isMultiPayment, $address, $amount);
         $isSent         = self::calculateIsSent($transaction, $address);
@@ -454,7 +454,11 @@ class Transaction extends Data implements ViewModel
      */
     public function multiPaymentRecipients(): Collection
     {
-        return $this->model?->multiPaymentRecipients ?? collect();
+        if ($this->model === null) {
+            return collect();
+        }
+
+        return $this->model->multiPaymentRecipients()->get();
     }
 
     public function isConfirmed(): bool
