@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
-use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

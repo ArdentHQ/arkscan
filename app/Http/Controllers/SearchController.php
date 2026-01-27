@@ -65,9 +65,9 @@ final class SearchController
     private function determineType(ViewModel $result): string
     {
         return match (true) {
-            $result instanceof WalletViewModel => 'wallet',
-            $result instanceof BlockViewModel => 'block',
-            $result instanceof TransactionDTO => 'transaction',
+            $result instanceof WalletViewModel      => 'wallet',
+            $result instanceof BlockViewModel       => 'block',
+            $result instanceof TransactionDTO       => 'transaction',
             default                                 => throw new \Exception('Invalid result type: '.get_class($result)),
         };
     }

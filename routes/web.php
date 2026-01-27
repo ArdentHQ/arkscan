@@ -82,7 +82,6 @@ Route::post('/compatible-wallets', [CompatibleWalletsController::class, 'submit'
     ->middleware(['throttle:3,3600'])
     ->name('compatible-wallets.submit');
 
-
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 
 Route::post('/webhooks', WebhooksController::class)

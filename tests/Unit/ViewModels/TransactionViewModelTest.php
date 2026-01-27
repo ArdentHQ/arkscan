@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Facades\Settings;
 use App\Models\Block;
 use App\Models\MultiPayment;
@@ -10,7 +11,6 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
-use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;

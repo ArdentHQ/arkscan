@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Statistics\AddressHoldingStatistics;
 use App\DTO\Statistics\LowHighValue;
 use App\DTO\Statistics\MarketDataPriceStatistics;
@@ -33,7 +34,6 @@ use App\Services\ExchangeRate;
 use App\Services\MainsailApi;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter;
-use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\WalletViewModel;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;

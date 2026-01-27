@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Models\Block;
 use App\Models\ForgingStats;
 use App\Models\Round;
@@ -10,7 +11,6 @@ use App\Models\Wallet;
 use App\ViewModels\BlockViewModel;
 use App\ViewModels\ForgingStatsViewModel;
 use App\ViewModels\RoundViewModel;
-use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
