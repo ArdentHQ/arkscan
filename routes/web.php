@@ -16,6 +16,7 @@ use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
 use App\Http\Controllers\Inertia\ValidatorsController;
 use App\Http\Controllers\Inertia\WalletController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -97,3 +98,6 @@ Route::post('/theme/update', [ThemeController::class, 'update'])
 
 Route::post('/currency/update', [CurrencyController::class, 'update'])
     ->name('currency.update');
+
+Route::get('/navbar/search', [SearchController::class, 'index'])
+    ->name('navbar-search.index');
