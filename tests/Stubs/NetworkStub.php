@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Http\Livewire\__stubs;
+namespace Tests\Stubs;
 
 use Carbon\Carbon;
 use Illuminate\Support\Arr;

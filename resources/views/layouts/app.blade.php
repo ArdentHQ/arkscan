@@ -40,13 +40,9 @@
                 </span>
             </x-ark-footer>
 
-            {{-- <x-webhooks.currency-update :currency="Settings::currency()" /> --}}
-
             @if (config('arkscan.arkconnect.enabled'))
                 {{-- <x-arkconnect.validator-toasts /> --}}
             @endif
-
-            {{-- <livewire:search-modal /> --}}
 
             <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
             <script async src="https://scripts.simpleanalyticscdn.com/auto-events.js"></script>

@@ -15,7 +15,6 @@
         "arkecosystem/foundation": "^19.16",
         "blade-ui-kit/blade-icons": "^1.7",
         "brick/math": "^0.12",
-        "danharrin/livewire-rate-limiting": "^1.3",
         "doctrine/dbal": "^3.0",
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "^3.9",
