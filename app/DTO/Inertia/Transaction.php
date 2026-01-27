@@ -776,7 +776,7 @@ class Transaction extends Data implements ViewModel
 
         if (! $method->isMultiPayment()) {
             $recipientAddress = self::resolveRecipientAddress($transaction);
-            if ($recipientAddress !== null && $address !== $recipientAddress) {
+            if ($address !== $recipientAddress) {
                 return false;
             }
         }
