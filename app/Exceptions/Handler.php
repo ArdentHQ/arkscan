@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Collection;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -75,6 +76,10 @@ final class Handler extends ExceptionHandler
     {
         $this->registerErrorViewPaths();
 
+        if ($request->header('X-Inertia')) {
+            return parent::render($request, $exception);
+        }
+
         if ($this->shouldShowEntity404Page($request, $exception)) {
             return $this->getNotFoundEntityResponse($exception);
         }
@@ -126,9 +131,15 @@ final class Handler extends ExceptionHandler
     {
         $expectedException = $this->prepareException($this->mapException($exception));
 
-        return response()->view('ark::errors.404', [
-            'exception' => $expectedException,
-        ], 404);
+        return Inertia::renderWithMeta('Error/Show', 404, [
+            'exception' => [
+                'message' => $expectedException->getMessage(),
+            ],
+            'status' => 404,
+        ], [
+            'error' => trans('ui::errors.404'),
+        ])
+        ->rootView('layouts.inertia')->toResponse(request());
     }
 
     private function isARegularGetRequest(Request $request): bool
