@@ -11,7 +11,7 @@ import DropdownItem from "@/Components/General/Dropdown/DropdownItem";
 import { usePoll } from "@inertiajs/react";
 
 export default function PriceTicker() {
-    const { isDownForMaintenance, network, networkName, currencies, broadcasting } = useShareData();
+    const { isDownForMaintenance, network, networkName, currencies, usesBroadcasting } = useShareData();
 
     const { currency, updateCurrency, isUpdatingCurrency, isPriceAvailable, priceExchangeRate } = useSettings();
 
@@ -27,7 +27,7 @@ export default function PriceTicker() {
             only: ["priceTickerData"],
         },
         {
-            autoStart: !isDisabled && broadcasting !== "reverb",
+            autoStart: !usesBroadcasting && !isDisabled,
         },
     );
 
