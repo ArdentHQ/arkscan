@@ -14,7 +14,7 @@ it('renders the component', function () {
     Livewire::test(ExchangeTableFilter::class)
         ->assertSee(trans('general.all'))
         ->assertSee(trans('pages.exchanges.type.exchanges'))
-        ->assertSee(trans('pages.exchanges.type.agreggators'))
+        ->assertSee(trans('pages.exchanges.type.aggregators'))
         ->assertSee(trans('pages.exchanges.pair.btc'))
         ->assertSee(trans('pages.exchanges.pair.eth'))
         ->assertSee(trans('pages.exchanges.pair.stablecoins'))
