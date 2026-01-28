@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import Layout from "@/Layout";
 import { PageProps } from "@inertiajs/core";
-import { router } from "@inertiajs/react";
+import { router, usePoll } from "@inertiajs/react";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import { TransactionsProps } from "../Transactions.contracts";
 import HeaderStats from "@/Components/Transaction/HeaderStats";
@@ -12,7 +12,7 @@ import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 
 export default function TransactionsList({ network, statistics }: PageProps<TransactionsProps>) {
     const { t } = useTranslation();
-    const { listen } = useWebhooks();
+    const { listen, enabled: usesBroadcasting } = useWebhooks();
 
     useEffect(() => {
         return listen("transactions", "NewTransaction", () => {
@@ -21,6 +21,16 @@ export default function TransactionsList({ network, statistics }: PageProps<Tran
             });
         });
     }, []);
+
+    usePoll(
+        30 * 1000,
+        {
+            only: ["transactions"],
+        },
+        {
+            autoStart: !usesBroadcasting,
+        },
+    );
 
     return (
         <Layout>
