@@ -191,8 +191,8 @@ describe('Validators Tab', function () {
                 ->waitForText('63 results', ignoreCase: true)
                 ->assertSee('Page 2 of 2')
                 ->click('[data-testid="pagination:per-page-dropdown:button"]')
-                ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
-                ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//span[.//text()="10"]')
+                ->waitFor('[data-testid="pagination:per-page-dropdown:item-10"]')
+                ->click('[data-testid="pagination:per-page-dropdown:item-10"]')
                 ->waitForText('Page 1 of 7');
 
             foreach ($activeWallets as $wallet) {
@@ -558,8 +558,8 @@ describe('Missed Blocks Tab', function () {
                 ->waitForText('30 results', ignoreCase: true)
                 ->assertSee('Page 2 of 2')
                 ->click('[data-testid="pagination:per-page-dropdown:button"]')
-                ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
-                ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//span[.//text()="10"]')
+                ->waitFor('[data-testid="pagination:per-page-dropdown:item-10"]')
+                ->click('[data-testid="pagination:per-page-dropdown:item-10"]')
                 ->waitForText('Page 1 of 3');
 
             foreach ($sortedBlocks->take(10)->get() as $block) {
