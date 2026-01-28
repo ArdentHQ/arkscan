@@ -61,8 +61,8 @@ it('should update exchange details for coingecko exchanges once per hour', funct
 
     $this->artisan('exchanges:fetch-details');
 
-    expect($coingeckoExchange->fresh()->price)->toBe('123');
-    expect($coingeckoExchange->fresh()->volume)->toBe('456');
+    expect($coingeckoExchange->fresh()->price)->toBe(123.0);
+    expect($coingeckoExchange->fresh()->volume)->toBe(456.0);
 
     expect($genericExchange->fresh()->price)->toBeNull();
     expect($genericExchange->fresh()->volume)->toBeNull();

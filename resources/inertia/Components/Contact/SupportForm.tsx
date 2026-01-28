@@ -23,7 +23,6 @@ export default function SupportForm({ subjects }: { subjects: SubjectOption[] })
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        setErrors({});
         setCanSubmit(false);
 
         submitForm({
