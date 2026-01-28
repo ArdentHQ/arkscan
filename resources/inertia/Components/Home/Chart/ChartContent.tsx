@@ -12,7 +12,7 @@ import ChevronRightSmallIcon from "@ui/icons/arrows/chevron-right-small.svg?reac
 
 export default function ChartContent({ chart, canBeExchanged }: { chart: HomeChartData; canBeExchanged: boolean }) {
     const { t } = useTranslation();
-    const { broadcasting, network } = useSharedData<HomeProps>();
+    const { usesBroadcasting, network } = useSharedData<HomeProps>();
     const { currency: selectedCurrency, theme, isPriceAvailable, priceExchangeRate } = useSettings();
     const previousCurrencyRef = useRef(selectedCurrency);
 
@@ -40,7 +40,7 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
             only: ["chart"],
         },
         {
-            autoStart: broadcasting !== "reverb" && canBeExchanged,
+            autoStart: !usesBroadcasting && canBeExchanged,
         },
     );
 

@@ -19,7 +19,7 @@ final class ExchangeTableFilter extends Component
     public array $types = [
         'all'         => 'general.all',
         'exchanges'   => 'pages.exchanges.type.exchanges',
-        'aggregators' => 'pages.exchanges.type.agreggators',
+        'aggregators' => 'pages.exchanges.type.aggregators',
     ];
 
     /**
