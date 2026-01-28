@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,6 +52,10 @@ $app->singleton(
 $app->afterResolving(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     function ($handler) {
+        if (! $handler instanceof Handler) {
+            return;
+        }
+
         (new Exceptions($handler))->respond(function (Response $response, Throwable $exception, Request $request) {
             if (! app()->environment(['local', 'testing'])) {
                 return Inertia::renderWithMeta(
