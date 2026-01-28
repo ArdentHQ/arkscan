@@ -17,6 +17,8 @@ export default function submitForm({
     onSuccess?: (response: AxiosResponse) => void;
     onFinish?: () => void;
 }) {
+    setErrors({});
+
     axios
         .post(
             route,
@@ -38,7 +40,9 @@ export default function submitForm({
         .then((response) => {
             formRef.current?.reset();
 
-            router.reload();
+            router.reload({
+                only: ["flash"],
+            });
 
             onSuccess?.(response);
         })
@@ -59,7 +63,9 @@ export default function submitForm({
                 type: "error",
             });
 
-            router.reload();
+            router.reload({
+                only: ["flash"],
+            });
         })
         .finally(() => {
             onFinish?.();
