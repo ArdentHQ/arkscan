@@ -41,6 +41,24 @@ export type ICurrency = {
     locale: string | null;
     symbol: string | null;
 };
+export type IExchange = {
+    id: number;
+    name: string;
+    url: string;
+    is_exchange: boolean;
+    is_aggregator: boolean;
+    btc: boolean;
+    eth: boolean;
+    stablecoins: boolean;
+    other: boolean;
+    icon: string;
+    iconUrl: string;
+    coingecko_id: string | null;
+    price: string | null;
+    priceFiat: string | null;
+    volume: string | null;
+    volumeFiat: string | null;
+};
 export type IForgingStats = {
     number: number;
     timestamp: number;
@@ -136,7 +154,7 @@ export type IRequestData = {
     settings: ISettings;
     arkconnectConfig: IConfigArkconnect;
     pagination: IConfigPagination;
-    broadcasting: string;
+    usesBroadcasting: boolean;
     networkName: string;
     isDownForMaintenance: boolean;
     isProduction: boolean;
