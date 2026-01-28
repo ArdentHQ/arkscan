@@ -31,3 +31,11 @@
     --theme-failed-state-bg: #ab8282;
     --theme-failed-state-text: #caa0a0;
 }
+
+/* Disable transitions during theme change */
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+    transition: none !important;
+    animation: none !important;
+}

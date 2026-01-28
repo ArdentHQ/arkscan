@@ -17,6 +17,7 @@ export default function SettingsProvider({
     const [isUpdatingCurrency, setIsUpdatingCurrency] = useState(false);
 
     const [currentTheme, setCurrentTheme] = useState(theme);
+    const [isThemeTransitioning, setIsThemeTransitioning] = useState(false);
 
     const resolvedTheme = useMemo(() => {
         if (currentTheme === "auto" || !currentTheme) {
@@ -41,8 +42,6 @@ export default function SettingsProvider({
 
     router.on("success", (event) => {
         setCurrentTickerData(event.detail.page.props.priceTickerData as IPriceTickerData);
-
-        setCurrentTheme(event.detail.page.props.theme as string);
     });
 
     useEffect(() => {
@@ -78,6 +77,10 @@ export default function SettingsProvider({
             return Promise.resolve();
         }
 
+        // Temporarily disable transitions
+        setIsThemeTransitioning(true);
+        document.documentElement.classList.add("theme-transitioning");
+
         setCurrentTheme(newTheme);
         localStorage.theme = newTheme;
 
@@ -90,11 +93,16 @@ export default function SettingsProvider({
                     preserveScroll: true,
                     showProgress: false,
                     onSuccess: () => {
+                        // Transitions will be re-enabled in the useEffect when currentTheme updates
                         resolve();
                     },
                     onError: (error) => {
                         setCurrentTheme(currentTheme);
                         localStorage.theme = currentTheme;
+
+                        // Re-enable transitions on error
+                        setIsThemeTransitioning(false);
+                        document.documentElement.classList.remove("theme-transitioning");
 
                         reject(error);
                     },
@@ -116,7 +124,20 @@ export default function SettingsProvider({
             document.documentElement.classList.remove("dark");
             document.documentElement.classList.remove("dim");
         }
-    }, [currentTheme]);
+
+        // If we're transitioning themes, re-enable transitions after changes are applied
+        if (isThemeTransitioning) {
+            // Use requestAnimationFrame to ensure the DOM has been updated
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        setIsThemeTransitioning(false);
+                        document.documentElement.classList.remove("theme-transitioning");
+                    }, 50);
+                });
+            });
+        }
+    }, [currentTheme, isThemeTransitioning]);
 
     return (
         <SettingsContext.Provider
