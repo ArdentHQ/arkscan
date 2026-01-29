@@ -178,7 +178,6 @@ jobs:
 
     browser:
         needs: [conflicts, analyse, format]
-        if: github.event_name != 'pull_request'
 
         runs-on: ubuntu-latest
 
