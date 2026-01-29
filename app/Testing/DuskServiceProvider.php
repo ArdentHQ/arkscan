@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Testing;
 
-use Illuminate\Support\ServiceProvider;
 use Laravel\Dusk\Browser;
+use App\Testing\FakeZendesk;
+use Huddle\Zendesk\Facades\Zendesk;
+use Illuminate\Support\ServiceProvider;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class DuskServiceProvider extends ServiceProvider
@@ -15,6 +17,10 @@ class DuskServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (! $this->app->environment('dusk')) {
+            return;
+        }
+
         Browser::macro('assertEquals', function ($selector, $text, $ignoreCase = false) {
             $element = $this->resolver->findOrFail($selector);
 
@@ -88,5 +94,7 @@ class DuskServiceProvider extends ServiceProvider
                 return true;
             }, $message);
         });
+
+        Zendesk::swap(new FakeZendesk());
     }
 }
