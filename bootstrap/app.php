@@ -57,18 +57,16 @@ $app->afterResolving(
         }
 
         (new Exceptions($handler))->respond(function (Response $response, Throwable $exception, Request $request) {
-            if (! app()->environment(['local', 'testing'])) {
-                return Inertia::renderWithMeta(
-                    'Error/Show',
-                    $response->getStatusCode(),
-                    [
-                        'status' => $response->getStatusCode(),
-                        'error' => $exception->getMessage(),
-                    ],
-                )
-                ->toResponse($request)
-                ->setStatusCode($response->getStatusCode());
-            }
+            return Inertia::renderWithMeta(
+                'Error/Show',
+                $response->getStatusCode(),
+                [
+                    'status' => $response->getStatusCode(),
+                    'error' => $exception->getMessage(),
+                ],
+            )
+            ->toResponse($request)
+            ->setStatusCode($response->getStatusCode());
 
             return $response;
         });

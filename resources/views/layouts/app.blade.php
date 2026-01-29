@@ -11,7 +11,7 @@
         mask-icon-color="#de5846"
         microsoft-tile-color="#de5846"
         theme-color="#ffffff"
-        :inertia="true"
+        inertia
     >
         @if (isset($metaPage))
             <x-metadata :page="$metaPage" :detail="isset($metaDetail) ? $metaDetail : []" />
@@ -22,7 +22,7 @@
         @routes
     </x-ark-pages-includes-layout-head>
 
-    <x-ark-pages-includes-layout-body class="table-compact">
+    <x-ark-pages-includes-layout-body class="table-compact" inertia>
         <x-slot name="content">
             @inertia('inertia-body')
         </x-slot>

@@ -1,6 +1,6 @@
 import useShareData from "@/hooks/use-shared-data";
 import Layout from "@/Layout";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import Image401 from "@ui/images/errors/401.svg?react";
 import Image403 from "@ui/images/errors/403.svg?react";
 import Image404 from "@ui/images/errors/404.svg?react";
@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 
 export default function ErrorShow({ error, status }: { error?: string; status: number }) {
     const { t } = useTranslation();
-    const { isDownForMaintenance } = useShareData();
+    const { isDownForMaintenance, contactEmail } = useShareData();
 
     const image: FunctionComponent<SVGProps<SVGSVGElement>> =
         {
@@ -55,11 +55,17 @@ export default function ErrorShow({ error, status }: { error?: string; status: n
                         <p className="mt-4 leading-loose dark:text-theme-secondary-500">{message}</p>
 
                         <div className="mt-8 flex flex-col space-y-3 sm:flex-row sm:justify-center sm:space-x-3 sm:space-y-0">
-                            <Link className="button button-secondary" href="mailto:{{ config('mail.contact_email') }}">
-                                {t("actions.contact", { ns: "ui" })}
-                            </Link>
+                            {route().has("contact") ? (
+                                <Link className="button button-secondary" href={route("contact")}>
+                                    {t("actions.contact", { ns: "ui" })}
+                                </Link>
+                            ) : (
+                                <a className="button button-secondary" href={`mailto:${contactEmail}`}>
+                                    {t("actions.contact", { ns: "ui" })}
+                                </a>
+                            )}
 
-                            <Link href="{{ route('home') }}" className="button button-primary">
+                            <Link href={route("home")} className="button button-primary">
                                 {t("general.home", { ns: "ui" })}
                             </Link>
                         </div>

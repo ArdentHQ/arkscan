@@ -7,7 +7,8 @@ namespace App\Exceptions;
 use App\Exceptions\Contracts\EntityNotFoundInterface;
 use App\Http\Kernel;
 use App\Http\Middleware\SubstituteBindings;
-use ARKEcosystem\Foundation\UserInterface\Exceptions\Handler as ExceptionHandler;
+use ARKEcosystem\Foundation\UserInterface\Exceptions\Concerns\OverridesExceptionView;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
@@ -20,6 +21,8 @@ use Throwable;
 
 final class Handler extends ExceptionHandler
 {
+    use OverridesExceptionView;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -76,10 +79,6 @@ final class Handler extends ExceptionHandler
     {
         $this->registerErrorViewPaths();
 
-        if ($request->header('X-Inertia')) {
-            return parent::render($request, $exception);
-        }
-
         if ($this->shouldShowEntity404Page($request, $exception)) {
             return $this->getNotFoundEntityResponse($exception);
         }
@@ -131,15 +130,23 @@ final class Handler extends ExceptionHandler
     {
         $expectedException = $this->prepareException($this->mapException($exception));
 
-        return Inertia::renderWithMeta('Error/Show', 404, [
-            'exception' => [
-                'message' => $expectedException->getMessage(),
-            ],
-            'status' => 404,
+        $type = 'wallet';
+        if (is_a($expectedException->getPrevious(), \App\Exceptions\TransactionNotFoundException::class)) {
+            $type = 'transaction';
+        } elseif (is_a($expectedException->getPrevious(), \App\Exceptions\BlockNotFoundException::class)) {
+            $type = 'block';
+        }
+
+        /** @var EntityNotFoundInterface $previousException */
+        $previousException = $expectedException->getPrevious();
+
+        return Inertia::renderWithMeta('Error/NotFound', 404, [
+            'error' => (string) $previousException->getCustomMessage(),
+            'id' => collect($previousException->getIds())->first(),
+            'type' => $type,
         ], [
             'error' => trans('ui::errors.404'),
-        ])
-        ->rootView('layouts.inertia')->toResponse(request());
+        ])->toResponse(request());
     }
 
     private function isARegularGetRequest(Request $request): bool
