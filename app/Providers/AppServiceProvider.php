@@ -11,7 +11,9 @@ use App\Facades\Network;
 use App\Services\BigNumber;
 use App\Services\GasTracker;
 use App\Services\Monitor\MissedBlocksCalculator;
+use App\Testing\FakeZendesk;
 use ARKEcosystem\Foundation\DataBags\DataBag;
+use Huddle\Zendesk\Facades\Zendesk;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -47,6 +49,11 @@ final class AppServiceProvider extends ServiceProvider
             GasTrackerContract::class,
             fn () => new (GasTracker::class)()
         );
+
+        // Mock Zendesk in Dusk tests
+        if ($this->app->environment('dusk')) {
+            Zendesk::swap(new FakeZendesk());
+        }
     }
 
     /**
