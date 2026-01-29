@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Testing;
 
-use Laravel\Dusk\Browser;
-use App\Testing\FakeZendesk;
 use Huddle\Zendesk\Facades\Zendesk;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Dusk\Browser;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class DuskServiceProvider extends ServiceProvider
