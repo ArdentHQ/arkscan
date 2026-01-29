@@ -15,5 +15,5 @@ interface EntityNotFoundInterface
      *
      * @return array<int, int|string>
      */
-    public function getIds(): array;
+    public function getIds();
 }
