@@ -50,6 +50,88 @@ it('should display block details', function ($resolution) {
     });
 })->with('resolutions');
 
+it('should copy block id to clipboard', function ($resolution) {
+    $validator = Wallet::factory()->create();
+
+    $block = Block::factory()->create([
+        'proposer' => $validator->address,
+    ]);
+
+    $this->browse(function (Browser $browser) use ($block, $resolution) {
+        $this->grantPermission($browser, ['clipboardReadWrite', 'clipboardSanitizedWrite']);
+
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('block', $block)
+            ->waitForText(substr($block->hash, 0, 7))
+            ->click('[data-testid="block:copy-id"] button')
+            ->waitForText(trans('pages.block.block_id_copied'));
+
+        $browser->assertScript('navigator.clipboard.readText()', $block->hash);
+    });
+})->with('resolutions');
+
+it('should display validator address when no username', function ($resolution) {
+    $validator = Wallet::factory()->create();
+
+    $block = Block::factory()->create([
+        'proposer' => $validator->address,
+    ]);
+
+    $this->browse(function (Browser $browser) use ($block, $validator, $resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('block', $block)
+            ->waitForText(substr($block->hash, 0, 7));
+
+        // On mobile (<768px) address is truncated in middle, on desktop it's shown in full
+        if ($resolution['width'] >= 768) {
+            $browser->assertSee(substr($validator->address, 0, 10));
+        } else {
+            // TruncateMiddle shows: 0xB32...0778c format
+            $browser->assertSee(substr($validator->address, 0, 5).'…'.substr($validator->address, -5));
+        }
+    });
+})->with('resolutions');
+
+it('should not display transactions section when block has no transactions', function ($resolution) {
+    $validator = Wallet::factory()->create();
+
+    $block = Block::factory()->create([
+        'transactions_count' => 0,
+        'proposer'           => $validator->address,
+    ]);
+
+    $this->browse(function (Browser $browser) use ($block, $resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('block', $block)
+            ->waitForText(substr($block->hash, 0, 7))
+            ->assertSee('0')
+            ->assertDontSee('Tx ID');
+    });
+})->with('resolutions');
+
+it('should navigate to validator wallet when clicking validator link', function ($resolution) {
+    $validator = Wallet::factory()->create();
+
+    (new WalletCache())->setWalletNameByAddress($validator->address, 'click-validator');
+
+    $block = Block::factory()->create([
+        'proposer' => $validator->address,
+    ]);
+
+    $this->browse(function (Browser $browser) use ($block, $validator, $resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('block', $block)
+            ->waitForText(substr($block->hash, 0, 7))
+            ->clickLink('click-validator')
+            ->waitForText(substr($validator->address, 0, 7))
+            ->assertPathIs('/addresses/'.$validator->address);
+    });
+})->with('resolutions');
+
 dataset('resolutions', [
     'desktop' => [['width' => 1280, 'height' => 1024]],
     'lg'      => [['width' => 1024, 'height' => 768]],
