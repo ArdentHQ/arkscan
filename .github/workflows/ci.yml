@@ -178,7 +178,7 @@ jobs:
 
     browser:
         needs: [conflicts, analyse, format]
-        if: github.event_name != 'pull_request'
+        # if: github.event_name != 'pull_request'
 
         runs-on: ubuntu-latest
 
@@ -265,7 +265,7 @@ jobs:
               run: php artisan serve --no-reload &
 
             - name: Run Tests
-              run: composer test:browser -- --stop-on-failure --stop-on-error
+              run: composer test:browser
               env:
                   # Main database
                   DB_CONNECTION: pgsql
