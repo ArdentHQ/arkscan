@@ -51,6 +51,60 @@ it('should display highlights', function ($resolution) {
     });
 })->with('resolutions');
 
+it('should display gas tracker with fees', function ($resolution) {
+    Wallet::factory()->create();
+
+    $networkCache = new NetworkCache();
+    $networkCache->setSupply(fn () => 100000 * 1e18);
+    $networkCache->setVotesPercentage('50');
+    $networkCache->setValidatorRegistrationCount(1);
+
+    (new ValidatorCache())->setTotalBalanceVoted(50000);
+    (new MainsailCache())->setFees([
+        'min' => '1500000000',
+        'avg' => '2500000000',
+        'max' => '5000000000',
+    ]);
+
+    $this->browse(function (Browser $browser) use ($resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('statistics')
+            ->waitForText('Current Gas Prices')
+            ->assertSee('Low')
+            ->assertSee('1.5 Gwei')
+            ->assertSee('Average')
+            ->assertSee('2.5 Gwei')
+            ->assertSee('High')
+            ->assertSee('5 Gwei');
+    });
+})->with('resolutions');
+
+it('should navigate to validators page from highlights', function ($resolution) {
+    Wallet::factory()->count(5)->create();
+
+    $networkCache = new NetworkCache();
+    $networkCache->setSupply(fn () => 100000 * 1e18);
+    $networkCache->setVotesPercentage('50');
+    $networkCache->setValidatorRegistrationCount(5);
+
+    (new ValidatorCache())->setTotalBalanceVoted(50000);
+    (new MainsailCache())->setFees([
+        'min' => '1000000000',
+        'avg' => '2000000000',
+        'max' => '3000000000',
+    ]);
+
+    $this->browse(function (Browser $browser) use ($resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('statistics')
+            ->waitForText('Validators')
+            ->clickLink('View All')
+            ->waitForRoute('validators');
+    });
+})->with('resolutions');
+
 dataset('resolutions', [
     'desktop' => [['width' => 1280, 'height' => 1024]],
     'lg'      => [['width' => 1024, 'height' => 768]],
