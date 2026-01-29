@@ -105,6 +105,31 @@ it('should navigate to validators page from highlights', function ($resolution) 
     });
 })->with('resolutions');
 
+it('should navigate to top accounts page from highlights', function ($resolution) {
+    Wallet::factory()->count(5)->create();
+
+    $networkCache = new NetworkCache();
+    $networkCache->setSupply(fn () => 100000 * 1e18);
+    $networkCache->setVotesPercentage('50');
+    $networkCache->setValidatorRegistrationCount(1);
+
+    (new ValidatorCache())->setTotalBalanceVoted(50000);
+    (new MainsailCache())->setFees([
+        'min' => '1000000000',
+        'avg' => '2000000000',
+        'max' => '3000000000',
+    ]);
+
+    $this->browse(function (Browser $browser) use ($resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('statistics')
+            ->waitForText('Addresses')
+            ->click('[href="' . route('top-accounts') . '"]')
+            ->waitForRoute('top-accounts');
+    });
+})->with('resolutions');
+
 dataset('resolutions', [
     'desktop' => [['width' => 1280, 'height' => 1024]],
     'lg'      => [['width' => 1024, 'height' => 768]],
