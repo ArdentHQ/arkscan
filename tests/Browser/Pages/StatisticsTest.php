@@ -125,7 +125,7 @@ it('should navigate to top accounts page from highlights', function ($resolution
 
         $browser->visitRoute('statistics')
             ->waitForText('Addresses')
-            ->click('[href="' . route('top-accounts') . '"]')
+            ->click('[href="'.route('top-accounts').'"]')
             ->waitForRoute('top-accounts');
     });
 })->with('resolutions');
