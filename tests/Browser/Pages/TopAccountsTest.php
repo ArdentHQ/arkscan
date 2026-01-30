@@ -90,6 +90,25 @@ it('should paginate wallets', function ($resolution) {
     });
 })->with('resolutions');
 
+it('should navigate to next page', function ($resolution) {
+    // Create 30 wallets to trigger pagination
+    Wallet::factory()->count(30)->create();
+
+    $networkCache = new NetworkCache();
+    $networkCache->setSupply(fn () => 100000 * 1e18);
+
+    $this->browse(function (Browser $browser) use ($resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('top-accounts')
+            ->waitForText('Top Accounts')
+            ->waitForText('Page 1 of 2')
+            ->click('[data-testid="pagination:next-page"] button')
+            ->waitForText('Page 2 of 2')
+            ->assertSee('Page 2 of 2');
+    });
+})->with('resolutions');
+
 it('should display balance percentage', function ($resolution) {
     Wallet::factory()->create(['balance' => 1000 * 1e18]);
 
