@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use App\Exceptions\Contracts\EntityNotFoundInterface;
-use App\Exceptions\TransactionNotFoundException;
-use App\Exceptions\BlockNotFoundException;
 use App\Http\Kernel;
 use App\Http\Middleware\SubstituteBindings;
 use ARKEcosystem\Foundation\UserInterface\Exceptions\Concerns\OverridesExceptionView;
