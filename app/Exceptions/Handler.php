@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use App\Exceptions\Contracts\EntityNotFoundInterface;
+use App\Exceptions\TransactionNotFoundException;
+use App\Exceptions\BlockNotFoundException;
 use App\Http\Kernel;
 use App\Http\Middleware\SubstituteBindings;
 use ARKEcosystem\Foundation\UserInterface\Exceptions\Concerns\OverridesExceptionView;
@@ -131,16 +133,16 @@ final class Handler extends ExceptionHandler
         $expectedException = $this->prepareException($this->mapException($exception));
 
         $type = 'wallet';
-        if (is_a($expectedException->getPrevious(), \App\Exceptions\TransactionNotFoundException::class)) {
+        if ($expectedException->getPrevious() instanceof TransactionNotFoundException) {
             $type = 'transaction';
-        } elseif (is_a($expectedException->getPrevious(), \App\Exceptions\BlockNotFoundException::class)) {
+        } elseif ($expectedException->getPrevious() instanceof BlockNotFoundException) {
             $type = 'block';
         }
 
         /** @var EntityNotFoundInterface $previousException */
         $previousException = $expectedException->getPrevious();
 
-        return Inertia::renderWithMeta('Error/NotFound', 404, [
+        return Inertia::renderWithMeta('Error/NotFound', '404', [
             'error' => (string) $previousException->getCustomMessage(),
             'id' => collect($previousException->getIds())->first(),
             'type' => $type,
