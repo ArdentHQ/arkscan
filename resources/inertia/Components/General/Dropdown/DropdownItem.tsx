@@ -9,14 +9,12 @@ export default function DropdownItem({
     selected = false,
     disabled = false,
     asChild = false,
-    testId,
 }: {
     children: React.ReactNode;
     onClick?: () => void;
     selected?: boolean;
     disabled?: boolean;
     asChild?: boolean;
-    testId?: string;
 }) {
     const itemClassName = classNames({
         "transition-default my-1 w-full cursor-pointer whitespace-nowrap rounded-lg px-5 py-[0.875rem] font-semibold leading-5 flex items-center justify-between": true,
@@ -44,7 +42,6 @@ export default function DropdownItem({
         <Comp
             className={itemClassName}
             onClick={handleClick}
-            data-testid={testId}
             aria-disabled={disabled || undefined}
             tabIndex={disabled ? -1 : undefined}
         >
