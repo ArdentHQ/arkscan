@@ -10,9 +10,9 @@ use App\Exceptions\BlockNotFoundException;
 use App\Http\Kernel;
 use App\Http\Middleware\SubstituteBindings;
 use ARKEcosystem\Foundation\UserInterface\Exceptions\Concerns\OverridesExceptionView;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Closure;
 use Exception;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Session\SessionManager;
@@ -144,8 +144,8 @@ final class Handler extends ExceptionHandler
 
         return Inertia::renderWithMeta('Error/NotFound', '404', [
             'error' => (string) $previousException->getCustomMessage(),
-            'id' => collect($previousException->getIds())->first(),
-            'type' => $type,
+            'id'    => collect($previousException->getIds())->first(),
+            'type'  => $type,
         ], [
             'error' => trans('ui::errors.404'),
         ])->toResponse(request());
