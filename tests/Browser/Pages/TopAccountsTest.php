@@ -125,6 +125,31 @@ it('should display balance percentage', function ($resolution) {
     });
 })->with('resolutions');
 
+it('should display mobile cards on small screens', function ($resolution) {
+    $wallet = Wallet::factory()->create([
+        'balance'    => 1000 * 1e18,
+        'attributes' => ['username' => 'testuser'],
+    ]);
+
+    $networkCache = new NetworkCache();
+    $networkCache->setSupply(fn () => 10000 * 1e18);
+
+    $this->browse(function (Browser $browser) use ($resolution) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $browser->visitRoute('top-accounts')
+            ->waitForText('Top Accounts')
+            ->waitForText('1,000')
+            ->assertSee('testuser')
+            ->assertSee('10.00%');
+    });
+})->with('mobile_resolutions');
+
+dataset('mobile_resolutions', [
+    'sm' => [['width' => 640, 'height' => 960]],
+    'xs' => [['width' => 370, 'height' => 844]],
+]);
+
 dataset('resolutions', [
     'desktop' => [['width' => 1280, 'height' => 1024]],
     'lg'      => [['width' => 1024, 'height' => 768]],
