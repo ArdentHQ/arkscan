@@ -24,6 +24,7 @@ export default function ChartCanvas({
     hasDateTimeLabels = true,
     yPadding = 10,
     xPadding = 0,
+    dateUnitOverride = null,
 }: {
     id: string;
     datasets: number[];
@@ -40,6 +41,7 @@ export default function ChartCanvas({
     hasDateTimeLabels?: boolean;
     yPadding?: number;
     xPadding?: number;
+    dateUnitOverride?: string | null;
 }) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const chartRef = useRef<ReturnType<typeof CustomChart> | null>(null);
@@ -69,7 +71,7 @@ export default function ChartCanvas({
             showCrosshair,
             tooltipHandler,
             hasDateTimeLabels,
-            null,
+            dateUnitOverride,
         );
 
         chart.$refs = { [id]: canvasRef.current };
@@ -95,6 +97,7 @@ export default function ChartCanvas({
         xPadding,
         showCrosshair,
         hasDateTimeLabels,
+        dateUnitOverride,
     ]);
 
     return (
