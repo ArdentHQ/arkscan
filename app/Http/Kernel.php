@@ -63,9 +63,9 @@ final class Kernel extends HttpKernel
             AuthenticateSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
+            HandleInertiaRequests::class,
             SubstituteBindings::class,
             CacheResponse::class,
-            HandleInertiaRequests::class,
         ],
 
         'api' => [
