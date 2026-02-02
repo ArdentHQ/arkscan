@@ -55,7 +55,7 @@ it('should submit', function ($resolution) {
             ->assertValue('select[name="subject"]', 'general')
             ->assertValue('textarea[name="message"]', '');
     });
-})->with('resolutions')->skip('Cannot mock \Huddle\Zendesk\Facades\Zendesk.');
+})->with('resolutions');
 
 dataset('resolutions', [
     'desktop' => [['width' => 1280, 'height' => 1024]],
