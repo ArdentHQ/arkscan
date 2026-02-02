@@ -92,7 +92,7 @@ it('should show basic transaction details', function ($resolution) {
                 '0.000021 DARK',
                 'Status',
                 'Success',
-                (432-12).' Confirmations',
+                (432 - 12).' Confirmations',
                 'More Details',
                 'Gas Information',
                 'Gas Limit',
