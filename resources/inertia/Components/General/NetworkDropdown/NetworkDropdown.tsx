@@ -16,7 +16,7 @@ export default function NetworkDropdown() {
                 useDefaultButtonClasses={false}
                 buttonClass={classNames(
                     "dropdown-button",
-                    "flex items-center justify-center h-8 p-2 space-x-1.5",
+                    "flex items-center justify-center h-8 px-3 py-2 space-x-2",
                     "text-sm font-semibold",
                     "rounded md:border md:border-theme-secondary-300",
                     "bg-theme-secondary-200 text-theme-secondary-700 text-theme-primary-500 hover:bg-theme-secondary-200 md:bg-white md:hover:text-theme-secondary-900",
@@ -29,7 +29,7 @@ export default function NetworkDropdown() {
                         <span>{isProduction ? t("general.navbar.mainnet") : t("general.navbar.testnet")}</span>
 
                         <span className={classNames("transition-default", { "rotate-180": isOpen })}>
-                            <ChevronDownSmallIcon className="h-2.5 w-2.5 md:h-3 md:w-3" />
+                            <ChevronDownSmallIcon className="h-2.5 w-2.5" />
                         </span>
                     </>
                 )}

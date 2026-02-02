@@ -78,8 +78,8 @@ it('should reset to page 1 on per-page change', function ($resolution) {
         }
 
         $browser->click('[data-testid="pagination:per-page-dropdown:button"]')
-            ->waitFor('[data-testid="pagination:per-page-dropdown:item-10"]')
-            ->click('[data-testid="pagination:per-page-dropdown:item-10"]')
+            ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
+            ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//div[normalize-space(text())="10"]')
             ->waitForText('Page 1 of 5');
 
         foreach ($blocks->take(10) as $block) {

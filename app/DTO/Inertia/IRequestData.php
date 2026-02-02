@@ -20,7 +20,7 @@ class IRequestData extends Data
         public ISettings $settings,
         public IConfigArkconnect $arkconnectConfig,
         public IConfigPagination $pagination,
-        public string $broadcasting,
+        public bool $usesBroadcasting,
         #[LiteralTypeScriptType('string')]
         public Closure $networkName,
         #[LiteralTypeScriptType('boolean')]

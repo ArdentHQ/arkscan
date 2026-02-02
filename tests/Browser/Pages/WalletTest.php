@@ -634,8 +634,8 @@ describe('Transactions Tab', function () {
                 ->waitForText('30 results', ignoreCase: true)
                 ->assertSee('Page 2 of 2')
                 ->click('[data-testid="pagination:per-page-dropdown:button"]')
-                ->waitFor('[data-testid="pagination:per-page-dropdown:item-10"]')
-                ->click('[data-testid="pagination:per-page-dropdown:item-10"]')
+                ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
+                ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//div[normalize-space(text())="10"]')
                 ->waitForText('Page 1 of 3');
 
             foreach ($sortedTransactions->take(10)->get() as $transaction) {

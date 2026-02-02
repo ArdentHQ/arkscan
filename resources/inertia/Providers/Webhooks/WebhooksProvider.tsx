@@ -5,12 +5,11 @@ type ListenerRegistry = Record<string, Record<string, Set<WebhookHandler>>>;
 
 export default function WebhooksProvider({
     children,
-    broadcasting,
+    usesBroadcasting,
 }: {
     children: React.ReactNode;
-    broadcasting: string;
+    usesBroadcasting: boolean;
 }) {
-    const enabled = broadcasting === "reverb";
     const listenersRef = useRef<ListenerRegistry>({});
 
     const getEcho = () => {
@@ -48,7 +47,7 @@ export default function WebhooksProvider({
 
     const listen = useCallback<IWebhooksContext["listen"]>(
         (channel, event, handler) => {
-            if (!enabled) {
+            if (!usesBroadcasting) {
                 return (): void => undefined;
             }
 
@@ -81,7 +80,7 @@ export default function WebhooksProvider({
         () => ({
             listen,
             remove,
-            enabled,
+            enabled: usesBroadcasting,
         }),
         [listen, remove],
     );
