@@ -18,8 +18,6 @@
     />
 
     <x-ark-pages-includes-layout-body class="table-compact">
-        {{-- <x-navbar.navbar /> --}}
-
         <x-slot name="footer">
             <x-ark-footer
                 :creator="[
@@ -39,10 +37,6 @@
                     </a>
                 </span>
             </x-ark-footer>
-
-            @if (config('arkscan.arkconnect.enabled'))
-                {{-- <x-arkconnect.validator-toasts /> --}}
-            @endif
 
             <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
             <script async src="https://scripts.simpleanalyticscdn.com/auto-events.js"></script>
