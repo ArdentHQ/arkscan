@@ -10,13 +10,13 @@
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
         microsoft-tile-color="#de5846"
-        theme-color="#ffffff" 
+        theme-color="#ffffff"
         :inertia="true"
     >
         @if (isset($metaPage))
             <x-metadata :page="$metaPage" :detail="isset($metaDetail) ? $metaDetail : []" />
         @endif
-    
+
         @vite('resources/js/app-inertia.tsx')
         @inertiaHead
         @routes
@@ -47,10 +47,6 @@
                 </span>
             </x-ark-footer>
 
-            @if (config('arkscan.arkconnect.enabled'))
-                <x-arkconnect.validator-toasts />
-            @endif
-            
             <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
             <script async src="https://scripts.simpleanalyticscdn.com/auto-events.js"></script>
         </x-slot>
