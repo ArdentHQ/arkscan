@@ -14,10 +14,6 @@ window.Webhook = {
             return;
         }
 
-        const emitter = () => {
-            Livewire.emit(emit);
-        };
-
         Echo.channel(channel).subscribe();
         Echo.channel(channel).listen(event, emitter);
 

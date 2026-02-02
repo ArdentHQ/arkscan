@@ -24,11 +24,6 @@ declare global {
     var route: typeof routeFn;
 
     interface Window {
-        Livewire: {
-            emit: (event: string) => void;
-            on: (event: string, callback: (...args: any[]) => void) => void;
-        };
-
         Echo?: {
             channel: (channel: string) => {
                 listen: (event: string, callback: WebhookHandler) => void;

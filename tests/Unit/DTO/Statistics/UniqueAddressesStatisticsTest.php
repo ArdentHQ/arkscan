@@ -6,7 +6,7 @@ use App\DTO\Statistics\UniqueAddressesStatistics;
 use App\Models\Wallet;
 use Carbon\Carbon;
 
-it('should convert to and from wireable array', function () {
+it('should create statistics object correctly', function () {
     $genesis          = Wallet::factory()->create();
     $newest           = Wallet::factory()->create();
     $mostTransactions = Wallet::factory()->create();
@@ -39,15 +39,6 @@ it('should convert to and from wireable array', function () {
         $mostTransactions,
         $largestData,
     );
-
-    expect($subject->toLivewire())->toBe([
-        'genesis'          => $genesisData,
-        'newest'           => $newestData,
-        'mostTransactions' => $mostTransactions,
-        'largest'          => $largestData,
-    ]);
-
-    $subject = UniqueAddressesStatistics::fromLivewire($subject->toLivewire());
 
     expect($subject->genesis)->toBe($genesisData);
     expect($subject->newest)->toBe($newestData);

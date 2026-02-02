@@ -29,11 +29,6 @@ final class BlockViewModel implements ViewModel
         return route('block', $this->hash());
     }
 
-    public function model(): Block
-    {
-        return $this->block;
-    }
-
     public function hash(): string
     {
         return $this->block->hash;
