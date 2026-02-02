@@ -44,6 +44,8 @@ class IRequestData extends Data
         public ?string $currentRoute,
         #[LiteralTypeScriptType('string')]
         public Closure $contactEmail,
+        #[LiteralTypeScriptType('IArkscanUrls') ]
+        public Closure $urls,
     ) {
     }
 }
