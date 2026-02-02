@@ -6,18 +6,27 @@
     @endif
     class="env-{{ app()->environment() }}"
 >
-    @push('scripts')
-        @vite('resources/js/webhooks.js')
-    @endpush
-
     <x-ark-pages-includes-layout-head
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
         microsoft-tile-color="#de5846"
         theme-color="#ffffff"
-    />
+        inertia
+    >
+        @if (isset($metaPage))
+            <x-metadata :page="$metaPage" :detail="isset($metaDetail) ? $metaDetail : []" />
+        @endif
 
-    <x-ark-pages-includes-layout-body class="table-compact">
+        @vite('resources/js/app-inertia.tsx')
+        @inertiaHead
+        @routes
+    </x-ark-pages-includes-layout-head>
+
+    <x-ark-pages-includes-layout-body class="table-compact" inertia>
+        <x-slot name="content">
+            @inertia('inertia-body')
+        </x-slot>
+
         <x-slot name="footer">
             <x-ark-footer
                 :creator="[
