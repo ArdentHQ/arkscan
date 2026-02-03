@@ -24,8 +24,6 @@ abstract class DuskTestCase extends BaseTestCase
 {
     use DatabaseTruncation;
 
-    protected $connectionsToTruncate = ['pgsql', 'explorer'];
-
     public array $resolutions = [
         'desktop' => ['width' => 1280, 'height' => 1024],
         'lg'      => ['width' => 1024, 'height' => 768],
@@ -34,6 +32,8 @@ abstract class DuskTestCase extends BaseTestCase
         'sm'      => ['width' => 640, 'height' => 960],
         'xs'      => ['width' => 370, 'height' => 844],
     ];
+
+    protected $connectionsToTruncate = ['pgsql', 'explorer'];
 
     /**
      * Setup the test environment.
