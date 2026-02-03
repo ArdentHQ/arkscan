@@ -71,7 +71,7 @@ function ArkVaultButton({
                     <ExternalLink
                         url={walletUri}
                         className="button-secondary mt-2 w-full"
-                        iconClass="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-500"
+                        iconClass="inline relative -top-1 w-3 h-3 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dark-300 dark:text-theme-dark-500"
                     >
                         {t("brands.arkvault")}
                     </ExternalLink>
@@ -83,7 +83,7 @@ function ArkVaultButton({
                     <ExternalLink
                         url={walletUri}
                         className="button-primary w-full"
-                        iconClass="inline relative -top-1 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dim-blue-300 dark:text-theme-dark-blue-300 w-3 h-3"
+                        iconClass="inline relative -top-1 w-3 h-3 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dark-300 dark:text-theme-dark-blue-300 w-3 h-3"
                     >
                         {t("brands.arkvault")}
                     </ExternalLink>
