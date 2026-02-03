@@ -1,14 +1,17 @@
 name: UI
 
 on:
-    pull_request:
-        paths:
-            - "**.css"
-            - "**.js"
-            - "**.ts"
-            - "**.tsx"
-            - "**.php"
-            - "**.svg"
+    push:
+        branches:
+            - "none"
+    # pull_request:
+    #     paths:
+    #         - "**.css"
+    #         - "**.js"
+    #         - "**.ts"
+    #         - "**.tsx"
+    #         - "**.php"
+    #         - "**.svg"
 
 jobs:
     prettier:
