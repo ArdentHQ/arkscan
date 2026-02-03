@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Cache;
 use Laravel\Dusk\Browser;
 
 beforeEach(function () {
     $this->withoutExceptionHandling();
+
+    Cache::flush();
 });
 
 it('should show the page', function ($resolution) {
