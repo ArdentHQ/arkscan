@@ -42,22 +42,16 @@ export default function TransactionAddress({
                     {hasUsername ? username : <TruncateDynamic value={resolvedAddress} />}
                 </div>
 
-                <div className={classNames({
-                    "hidden sm:block md:hidden": isContract,
-                    "block md:hidden": !isContract,
-                })}>
-                    {hasUsername ? (
-                        username
-                    ) :  (
-                        <TruncateMiddle>{resolvedAddress}</TruncateMiddle>
-                    ) }
+                <div
+                    className={classNames({
+                        "hidden sm:block md:hidden": isContract,
+                        "block md:hidden": !isContract,
+                    })}
+                >
+                    {hasUsername ? username : <TruncateMiddle>{resolvedAddress}</TruncateMiddle>}
                 </div>
 
-                {isContract && (
-                <div className="sm:hidden">
-                   {t("general.contract")}
-                </div>
-                )}
+                {isContract && <div className="sm:hidden">{t("general.contract")}</div>}
             </Link>
 
             {isContract && (

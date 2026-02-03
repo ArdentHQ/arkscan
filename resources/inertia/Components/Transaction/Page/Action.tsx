@@ -54,7 +54,9 @@ export default function TransactionAction({
                     valueClassName="min-w-0 overflow-auto max-w-full"
                     headerWidthClass={headerWidthClass}
                 >
-                    <span className="hidden sm:inline overflow-auto"><TruncateDynamic value={details.validatorPublicKey} /></span>
+                    <span className="hidden overflow-auto sm:inline">
+                        <TruncateDynamic value={details.validatorPublicKey} />
+                    </span>
                     <span className="sm:hidden">
                         <TruncateMiddle>{details.validatorPublicKey}</TruncateMiddle>
                     </span>
