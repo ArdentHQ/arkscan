@@ -42,19 +42,26 @@ export default function TransactionAddress({
                     {hasUsername ? username : <TruncateDynamic value={resolvedAddress} />}
                 </div>
 
-                <div className="md:hidden">
+                <div className={classNames({
+                    "hidden sm:block md:hidden": isContract,
+                    "block md:hidden": !isContract,
+                })}>
                     {hasUsername ? (
                         username
-                    ) : !isContract ? (
+                    ) :  (
                         <TruncateMiddle>{resolvedAddress}</TruncateMiddle>
-                    ) : (
-                        t("general.contract")
-                    )}
+                    ) }
                 </div>
+
+                {isContract && (
+                <div className="sm:hidden">
+                   {t("general.contract")}
+                </div>
+                )}
             </Link>
 
             {isContract && (
-                <div className="ml-3 h-5 w-5 md:hidden">
+                <div className="ml-3 h-5 w-5 sm:hidden">
                     <Info tooltip={resolvedAddress} type="info" />
                 </div>
             )}
@@ -69,7 +76,7 @@ export default function TransactionAddress({
             />
 
             {isContract && (
-                <div className="hidden items-center md:flex">
+                <div className="hidden items-center sm:flex">
                     <div className="mx-2 h-[17px] border-l border-theme-secondary-300 dark:border-theme-dark-700" />
 
                     <Badge className="inline flex items-center space-x-1.5 border-transparent bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:text-theme-dark-200">
