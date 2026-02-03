@@ -88,14 +88,34 @@ return [
         'image'       => 'metadata/wallets.png',
     ],
 
+    '401'           => [
+        'title'       => '401 Unauthorized | :name Blockchain Explorer',
+    ],
+
+    '403'           => [
+        'title'       => '403 Forbidden | :name Blockchain Explorer',
+    ],
+
     '404'           => [
         'title'       => '404 :error | :name Blockchain Explorer',
         'description' => '404 :error',
         'image'       => 'metadata/404.png',
     ],
 
+    '419'           => [
+        'title'       => '419 Page Expired | :name Blockchain Explorer',
+    ],
+
+    '429'           => [
+        'title'       => '429 Too Many Requests | :name Blockchain Explorer',
+    ],
+
     '500'           => [
         'title'       => '500 Internal Server Error | :name Blockchain Explorer',
+    ],
+
+    '503'           => [
+        'title'       => '503 Service Unavailable | :name Blockchain Explorer',
     ],
 
     'support'       => [

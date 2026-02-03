@@ -22,10 +22,13 @@ export default function TransactionRecipients({ recipients }: { recipients: Tran
                             </tr>
                         </thead>
                         <tbody>
-                            {recipients.map((recipient) => (
+                            {recipients.map((recipient, index) => (
                                 <tr className="text-sm font-semibold" key={`${recipient.address}-${recipient.amount}`}>
                                     <TableCell>
-                                        <TransactionAddress address={recipient.address} />
+                                        <TransactionAddress
+                                            address={recipient.address}
+                                            testId={`transaction:recipient:${index}`}
+                                        />
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <AmountSmall amount={Number(weiToArk(recipient.amount))} />

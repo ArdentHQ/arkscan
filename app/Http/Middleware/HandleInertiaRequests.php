@@ -26,7 +26,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
-    protected $rootView = 'layouts.inertia';
+    protected $rootView = 'layouts.app';
 
     /**
      * Determines the current asset version.
@@ -74,6 +74,8 @@ class HandleInertiaRequests extends Middleware
                 'testnetExplorerUrl'   => fn () => Network::testnetExplorerUrl(),
                 'navbarTag'            => fn () => config('arkscan.navbar.tag'),
                 'navbarName'           => fn () => config('app.navbar_name'),
+                'contactEmail'         => fn () => config('mail.contact_email'),
+                'urls'                 => fn () => config('arkscan.urls'),
 
             ])->toArray(),
             'flash' => function () {

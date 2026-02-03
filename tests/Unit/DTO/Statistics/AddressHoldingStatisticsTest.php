@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\DTO\Statistics\AddressHoldingStatistics;
 
-it('should convert to and from wireable array', function () {
+it('should create statistics object correctly', function () {
     $subject = AddressHoldingStatistics::make([
         [
             'count'   => 2,
@@ -27,16 +27,6 @@ it('should convert to and from wireable array', function () {
             'grouped' => 1000000,
         ],
     ]);
-
-    expect($subject->toLivewire())->toBe([
-        1       => 2,
-        1000    => 2000,
-        10000   => 20000,
-        100000  => 200000,
-        1000000 => 2000000,
-    ]);
-
-    $subject = AddressHoldingStatistics::fromLivewire($subject->toLivewire());
 
     expect($subject->greaterThanOne)->toBe(2);
     expect($subject->greaterThanOneThousand)->toBe(2000);

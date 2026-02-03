@@ -6,19 +6,27 @@
     @endif
     class="env-{{ app()->environment() }}"
 >
-    @push('scripts')
-        @vite('resources/js/webhooks.js')
-    @endpush
-
     <x-ark-pages-includes-layout-head
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
         microsoft-tile-color="#de5846"
         theme-color="#ffffff"
-    />
+        :uses-livewire="false"
+        :uses-inertia="true"
+    >
+        @if (isset($metaPage))
+            <x-metadata :page="$metaPage" :detail="isset($metaDetail) ? $metaDetail : []" />
+        @endif
 
-    <x-ark-pages-includes-layout-body class="table-compact">
-        <x-navbar.navbar />
+        @vite('resources/js/app-inertia.tsx')
+        @inertiaHead
+        @routes
+    </x-ark-pages-includes-layout-head>
+
+    <x-ark-pages-includes-layout-body class="table-compact" :uses-livewire="false">
+        <x-slot name="content">
+            @inertia('inertia-body')
+        </x-slot>
 
         <x-slot name="footer">
             <x-ark-footer
@@ -39,14 +47,6 @@
                     </a>
                 </span>
             </x-ark-footer>
-
-            <x-webhooks.currency-update :currency="Settings::currency()" />
-
-            @if (config('arkscan.arkconnect.enabled'))
-                <x-arkconnect.validator-toasts />
-            @endif
-
-            <livewire:search-modal />
 
             <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
             <script async src="https://scripts.simpleanalyticscdn.com/auto-events.js"></script>

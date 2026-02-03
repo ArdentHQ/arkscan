@@ -1,13 +1,15 @@
 import { useTranslation } from "react-i18next";
 import LearnMore from "../General/LearnMore";
 import ArkConnectIcon from "@icons/wallets/arkconnect.svg?react";
+import useSharedData from "@/hooks/use-shared-data";
 
 export default function ArkConnectLearnMore() {
     const { t } = useTranslation();
+    const { urls } = useSharedData();
 
     return (
         <LearnMore
-            url={t("urls.arkconnect")}
+            url={urls.public.arkconnect}
             icon={ArkConnectIcon}
             title={t("pages.compatible-wallets.arkconnect.title")}
             titleExtra={t("pages.compatible-wallets.arkconnect.title_extra")}
