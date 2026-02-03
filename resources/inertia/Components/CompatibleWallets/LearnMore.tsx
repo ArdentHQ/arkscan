@@ -1,13 +1,15 @@
 import { useTranslation } from "react-i18next";
 import LearnMore from "../General/LearnMore";
 import ArkVaultIcon from "@icons/wallets/arkvault.svg?react";
+import useSharedData from "@/hooks/use-shared-data";
 
 export default function CompatibleWalletsLearnMore() {
     const { t } = useTranslation();
+    const { urls } = useSharedData();
 
     return (
         <LearnMore
-            url={t("urls.arkvault")}
+            url={urls.public.arkvault}
             icon={ArkVaultIcon}
             title={t("brands.arkvault")}
             subtitle={t("pages.compatible-wallets.arkvault.subtitle")}
