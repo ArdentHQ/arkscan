@@ -34,7 +34,7 @@ Route::get('/validators/{address}/blocks', function ($address) {
     return response()->json($response);
 });
 
-Route::get('/exchanges/testing-can-be-exchanged', fn (Request $request) => (new ExchangesController)($request))
+Route::get('/exchanges/testing-can-be-exchanged', fn (Request $request) => (new ExchangesController())($request))
     ->middleware([
         HandleInertiaRequestsCanBeExchanged::class,
         'web',

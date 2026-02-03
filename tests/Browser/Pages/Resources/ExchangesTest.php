@@ -83,11 +83,11 @@ it('should show chart and switch between tabs', function ($resolution, $period, 
         }
     });
 })->with('resolutions')->with([
-    'day' => [StatsPeriods::DAY, [123.0, 541.5, 331.2], '$123.00', '$541.50'],
-    'week' => [StatsPeriods::WEEK, [23.0, 541.5, 4431.2], '$23.00', '$4,431.20'],
-    'month' => [StatsPeriods::MONTH, [0.23, 8473.5, 331.2], '$0.23', '$8,473.50'],
+    'day'     => [StatsPeriods::DAY, [123.0, 541.5, 331.2], '$123.00', '$541.50'],
+    'week'    => [StatsPeriods::WEEK, [23.0, 541.5, 4431.2], '$23.00', '$4,431.20'],
+    'month'   => [StatsPeriods::MONTH, [0.23, 8473.5, 331.2], '$0.23', '$8,473.50'],
     'quarter' => [StatsPeriods::QUARTER, [0.23, 8473.5, 331.2], '$0.23', '$8,473.50'],
-    'all' => [StatsPeriods::ALL, [14230.0, 541.5, 0.01], '$0.01', '$14,230.00'],
+    'all'     => [StatsPeriods::ALL, [14230.0, 541.5, 0.01], '$0.01', '$14,230.00'],
 ]);
 
 it('should list exchanges', function ($resolution) {
