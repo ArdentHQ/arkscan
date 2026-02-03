@@ -176,10 +176,37 @@ jobs:
                   ARKSCAN_DB_USERNAME: arkscan_test_db
                   ARKSCAN_DB_PASSWORD: password
 
-    browser:
+    determine-browser-tests-matrix:
         needs: [conflicts, analyse, format]
 
         runs-on: ubuntu-latest
+
+        outputs:
+            test_files: ${{ steps.test_files.outputs.test_files }}
+
+        steps:
+            - name: Define Test Files
+              id: test_files
+              run: |
+                  test_files=$(find tests/Browser/Pages -name "*Test.php" | jq -Rn '[inputs]')
+                  echo "test_files=$test_files" >> "$GITHUB_OUTPUT"
+
+    browser:
+        needs: determine-browser-tests-matrix
+
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                test_file: ${{ fromJson(needs.determine-browser-tests-matrix.outputs.test_files) }}
+
+                    # - tests/Browser/Pages/Blocks/ListTest.php
+                    # - tests/Browser/Pages/Transaction/ShowTest.php
+                    # - tests/Browser/Pages/Validators/MonitorTest.php
+                    # - tests/Browser/Pages/Validators/ValidatorsTest.php
+                    # - tests/Browser/Pages/HomeTest.php
+                    # - tests/Browser/Pages/SupportTest.php
+                    # - tests/Browser/Pages/WalletTest.php
 
         services:
             postgres:
@@ -264,7 +291,7 @@ jobs:
               run: php artisan serve --no-reload &
 
             - name: Run Tests
-              run: composer test:browser -- --stop-on-failure --stop-on-error
+              run: composer test:browser -- --stop-on-failure --stop-on-error ${{ matrix.test_file }}
               env:
                   # Main database
                   DB_CONNECTION: pgsql
