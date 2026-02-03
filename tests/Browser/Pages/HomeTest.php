@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Laravel\Dusk\Browser;
 
 describe('Statistics', function () {
-    it('should have statistics', function ($resolution) {
+    it('should have statistics', function () {
         Wallet::factory()->count(11)->create();
 
         $cache = new NetworkCache();
@@ -35,53 +35,56 @@ describe('Statistics', function () {
             'max' => '3500000000',
         ]);
 
-        $this->browse(function (Browser $browser) use ($resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
-
-            $outputInOrder = [
-                trans('pages.home.statistics.total_supply'),
-                '12K DARK',
-                trans('pages.home.statistics.voting', ['percentage' => '123.45%']),
-                '4K DARK',
-                trans('pages.home.statistics.block_height'),
-                '123,456',
-            ];
-
-            if ($resolution['width'] >= 640) {
-                $outputInOrder = [
-                    ...$outputInOrder,
-
-                    trans('pages.home.statistics.gas_low'),
-                    '1.5 Gwei',
-                    trans('pages.home.statistics.gas_average'),
-                    '2.5 Gwei',
-                    trans('pages.home.statistics.gas_high'),
-                    '3.5 Gwei',
-                ];
-            } else {
-                $outputInOrder[] = trans('pages.home.statistics.gas_average_value', ['value' => '2.5 Gwei']);
-            }
-
+        $this->browse(function (Browser $browser) {
             $browser->visitRoute('home')
-                ->waitForText(trans('pages.home.statistics.title_mobile'), ignoreCase: true)
-                ->assertSeeInOrder($outputInOrder);
+                ->waitForText(trans('pages.home.statistics.title_mobile'), ignoreCase: true);
 
-            if ($resolution['width'] < 640) {
-                $browser->mouseover('[data-testid="statistics:gas-tracker"]')
-                    ->assertSeeInOrder([
-                        'Low:',
-                        '~30 sec',
+            foreach ($this->resolutions as $resolution) {
+                $outputInOrder = [
+                    trans('pages.home.statistics.total_supply'),
+                    '12K DARK',
+                    trans('pages.home.statistics.voting', ['percentage' => '123.45%']),
+                    '4K DARK',
+                    trans('pages.home.statistics.block_height'),
+                    '123,456',
+                ];
+
+                if ($resolution['width'] >= 640) {
+                    $outputInOrder = [
+                        ...$outputInOrder,
+
+                        trans('pages.home.statistics.gas_low'),
                         '1.5 Gwei',
-                        'Average:',
-                        '~30 sec',
+                        trans('pages.home.statistics.gas_average'),
                         '2.5 Gwei',
-                        'High:',
-                        '~30 sec',
+                        trans('pages.home.statistics.gas_high'),
                         '3.5 Gwei',
-                    ]);
+                    ];
+                } else {
+                    $outputInOrder[] = trans('pages.home.statistics.gas_average_value', ['value' => '2.5 Gwei']);
+                }
+
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->moveMouse(50, 50)
+                    ->assertSeeInOrder($outputInOrder);
+
+                if ($resolution['width'] < 640) {
+                    $browser->mouseover('[data-testid="statistics:gas-tracker"]')
+                        ->assertSeeInOrder([
+                            'Low:',
+                            '~30 sec',
+                            '1.5 Gwei',
+                            'Average:',
+                            '~30 sec',
+                            '2.5 Gwei',
+                            'High:',
+                            '~30 sec',
+                            '3.5 Gwei',
+                        ]);
+                }
             }
         });
-    })->with('resolutions');
+    });
 
     it('should calculate gas statistics with value', function ($resolution) {
         Wallet::factory()->count(11)->create();
