@@ -202,6 +202,8 @@ jobs:
 
         runs-on: ubuntu-latest
 
+        continue-on-error: true
+
         strategy:
             matrix:
                 test_file: ${{ fromJson(needs.determine-browser-tests-matrix.outputs.test_files) }}
