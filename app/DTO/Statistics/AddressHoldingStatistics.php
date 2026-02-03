@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\DTO\Statistics;
 
 use Illuminate\Support\Collection;
-use Livewire\Wireable;
 
-final class AddressHoldingStatistics implements Wireable
+final class AddressHoldingStatistics
 {
     public int $greaterThanOne;
 
@@ -44,28 +43,5 @@ final class AddressHoldingStatistics implements Wireable
             100000  => $this->greaterThanOneHundredThousand,
             1000000 => $this->greaterThanOneMillion,
         ];
-    }
-
-    public function toLivewire(): array
-    {
-        return $this->toArray();
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return self
-     */
-    public static function fromLivewire($value)
-    {
-        $self = new self([]);
-
-        $self->greaterThanOne                = $value[1];
-        $self->greaterThanOneThousand        = $value[1000];
-        $self->greaterThanTenThousand        = $value[10000];
-        $self->greaterThanOneHundredThousand = $value[100000];
-        $self->greaterThanOneMillion         = $value[1000000];
-
-        return $self;
     }
 }

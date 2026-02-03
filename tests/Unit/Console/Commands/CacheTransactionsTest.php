@@ -14,7 +14,7 @@ use App\Services\Cache\TransactionCache;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Event;
-use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
+use Tests\Stubs\NetworkStub;
 
 function stubNetwork(): void
 {

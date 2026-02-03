@@ -13,7 +13,6 @@ use App\Http\Middleware\SubstituteBindings;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
-use ARKEcosystem\Foundation\UserInterface\Http\Middlewares\DropInvalidLivewireRequests;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
@@ -64,10 +63,9 @@ final class Kernel extends HttpKernel
             AuthenticateSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
+            HandleInertiaRequests::class,
             SubstituteBindings::class,
             CacheResponse::class,
-            DropInvalidLivewireRequests::class,
-            HandleInertiaRequests::class,
         ],
 
         'api' => [
