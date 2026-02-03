@@ -193,7 +193,8 @@ jobs:
             - name: Define Test Files
               id: test_files
               run: |
-                  test_files=$(find tests/Browser/Pages -name "*Test.php" | jq -Rn '[inputs]')
+                  test_files=$(find tests/Browser/Pages -name "*Test.php" | jq -Rn --indent 0 '[inputs]')
+                  echo "$test_files"
                   echo "test_files=$test_files" >> "$GITHUB_OUTPUT"
 
     browser:
