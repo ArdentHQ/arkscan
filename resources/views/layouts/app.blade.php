@@ -23,7 +23,7 @@
         @routes
     </x-ark-pages-includes-layout-head>
 
-    <x-ark-pages-includes-layout-body class="table-compact" :uses-livewire="false">
+    <x-ark-pages-includes-layout-body class="table-compact" wrapper-class="bg-white dark:bg-theme-secondary-900" :uses-livewire="false">
         <x-slot name="content">
             @inertia('inertia-body')
         </x-slot>
