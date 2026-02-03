@@ -177,7 +177,6 @@ describe('Transactions Tab', function () {
             ]);
 
         $this->browse(function (Browser $browser) use ($transactions) {
-
             $browser->visitRoute('home');
 
             foreach ($this->resolutions as $resolution) {
