@@ -54,9 +54,9 @@ export type IExchange = {
     icon: string;
     iconUrl: string;
     coingecko_id: string | null;
-    price: string | null;
+    price: number | null;
     priceFiat: string | null;
-    volume: string | null;
+    volume: number | null;
     volumeFiat: string | null;
 };
 export type IForgingStats = {
@@ -166,6 +166,8 @@ export type IRequestData = {
     navbarTag: string | null;
     navbarName: string | null;
     currentRoute: string | null;
+    contactEmail: string;
+    urls: IArkscanUrls;
 };
 export type ISettings = {
     currency: string;

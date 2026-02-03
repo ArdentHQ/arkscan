@@ -72,6 +72,23 @@ it('should execute the command', function (string $network) {
     expect($chartsCache->getHistorical('USD', 'year'))->toBeArray();
 })->with(['arkscan.networks.development', 'arkscan.networks.production']);
 
+it('should not update prices if canBeExchanged is false', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', false);
+
+    $cryptoCache = app(CryptoDataCache::class);
+    $chartsCache = app(PriceChartCache::class);
+    $priceCache  = app(CommandsCache::class);
+
+    $cryptoCache->getCache()->flush();
+    $chartsCache->getCache()->flush();
+    $priceCache->getCache()->flush();
+
+    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+
+    expect($cryptoCache->getPrices('USD.day'))->toEqual(collect([]));
+    expect($chartsCache->getHistorical('USD', 'day'))->toEqual([]);
+});
+
 it('should not update prices if coingecko returns an empty response', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 

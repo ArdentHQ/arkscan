@@ -62,6 +62,7 @@ function PerPageComponent({
                     key={option}
                     onClick={() => setPerPage(option)}
                     selected={(paginator.per_page ?? perPage) === option}
+                    testId={`pagination:per-page-dropdown:item-${option}`}
                 >
                     {option}
                 </DropdownItem>

@@ -2,6 +2,12 @@
 
 declare(strict_types=1);
 
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Response;
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -41,6 +47,30 @@ $app->singleton(
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
+);
+
+$app->afterResolving(
+    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    function ($handler) {
+        if (! $handler instanceof Handler) {
+            return;
+        }
+
+        (new Exceptions($handler))->respond(function (Response $response, Throwable $exception, Request $request) {
+            return Inertia::renderWithMeta(
+                'Error/Show',
+                $response->getStatusCode(),
+                [
+                    'status' => $response->getStatusCode(),
+                    'error' => $exception->getMessage(),
+                ],
+            )
+            ->toResponse($request)
+            ->setStatusCode($response->getStatusCode());
+
+            return $response;
+        });
+    }
 );
 
 /*

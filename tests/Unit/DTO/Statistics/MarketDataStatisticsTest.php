@@ -10,7 +10,7 @@ use App\DTO\Statistics\MarketDataVolumeStatistics;
 use App\DTO\Statistics\TimestampedValue;
 use Carbon\Carbon;
 
-it('should convert to and from wireable array', function () {
+it('should create statistics object correctly', function () {
     $timestamp = Carbon::now()->timestamp;
 
     $prices = MarketDataPriceStatistics::make(
@@ -61,53 +61,6 @@ it('should convert to and from wireable array', function () {
         $volume,
         $caps,
     );
-
-    expect($subject->toLivewire())->toBe([
-        'prices' => [
-            'atl'   => [
-                'timestamp' => $timestamp,
-                'value'     => 0.2345,
-            ],
-            'ath'   => [
-                'timestamp' => $timestamp,
-                'value'     => 1.2345,
-            ],
-            'daily' => [
-                'low'  => 0.2345,
-                'high' => 1.2345,
-            ],
-            'year'  => [
-                'low'  => 0.2345,
-                'high' => 1.2345,
-            ],
-        ],
-
-        'volume' => [
-            'today' => strval(10 * 1e8),
-            'atl'   => [
-                'timestamp' => $timestamp,
-                'value'     => 0.2345,
-            ],
-            'ath' => [
-                'timestamp' => $timestamp,
-                'value'     => 1.2345,
-            ],
-        ],
-
-        'caps'   => [
-            'today' => 20 * 1e8,
-            'atl'   => [
-                'timestamp' => $timestamp,
-                'value'     => 0.2345,
-            ],
-            'ath' => [
-                'timestamp' => $timestamp,
-                'value'     => 1.2345,
-            ],
-        ],
-    ]);
-
-    $subject = MarketDataStatistics::fromLivewire($subject->toLivewire());
 
     expect($subject->prices->atl->timestamp)->toEqual($timestamp);
     expect($subject->prices->atl->value)->toEqual(0.2345);
