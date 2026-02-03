@@ -48,7 +48,7 @@ export default function SectionDetailRow({
                 {(hasValue || hasChildren || allowEmpty) && (
                     <>
                         {!!tooltip && <Tooltip content={tooltip}>{content}</Tooltip>}
-                        {!tooltip && <span>{content}</span>}
+                        {!tooltip && <div className="overflow-auto">{content}</div>}
                     </>
                 )}
             </div>
