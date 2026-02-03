@@ -7,7 +7,7 @@ import.meta.glob(["../images/**"]);
 
 import Echo from "laravel-echo";
 
-import Pusher from 'pusher-js';
+import Pusher from "pusher-js";
 window.Pusher = Pusher;
 
 if (import.meta.env.VITE_BROADCAST_DRIVER === "reverb") {
