@@ -14,10 +14,12 @@ export default function TransactionAddress({
     address,
     isContract = false,
     className,
+    testId,
 }: React.HTMLAttributes<HTMLDivElement> & {
     wallet?: IWallet | null;
     address?: string | null;
     isContract?: boolean;
+    testId?: string;
 }) {
     const { t } = useTranslation();
 
@@ -63,6 +65,7 @@ export default function TransactionAddress({
                 className="transition-default ml-2 flex h-auto w-auto items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
                 tooltipContent={t("pages.wallet.address_copied")}
                 checkmarksClass=""
+                testId={testId ? `${testId}:address` : undefined}
             />
 
             {isContract && (
