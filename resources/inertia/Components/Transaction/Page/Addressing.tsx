@@ -24,7 +24,11 @@ export default function TransactionAddressing({
     return (
         <PageSection title={t("pages.transaction.addressing")}>
             <SectionDetailRow title={t("pages.transaction.header.from")} headerWidthClass={headerWidthClass}>
-                <TransactionAddress wallet={transaction.sender} address={transaction.from} />
+                <TransactionAddress
+                    wallet={transaction.sender}
+                    address={transaction.from}
+                    testId="transaction:copy-from"
+                />
             </SectionDetailRow>
 
             <SectionDetailRow title={recipientLabel} valueClassName="min-w-0" headerWidthClass={headerWidthClass}>
@@ -32,6 +36,7 @@ export default function TransactionAddressing({
                     wallet={transaction.recipient}
                     address={recipientAddress}
                     isContract={details.recipientIsContract}
+                    testId="transaction:copy-to"
                 />
             </SectionDetailRow>
         </PageSection>
