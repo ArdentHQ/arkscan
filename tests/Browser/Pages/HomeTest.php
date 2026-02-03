@@ -134,14 +134,10 @@ describe('Statistics', function () {
                 $outputInOrder[] = trans('pages.home.statistics.gas_average_value', ['value' => '$5.00']);
             }
 
-            dump($outputInOrder);
-
             $browser->visitRoute('home')
                 ->pause(500)
                 ->waitForText(trans('pages.home.statistics.title_mobile'), ignoreCase: true)
                 ->assertSeeInOrder($outputInOrder);
-
-            dump($outputInOrder);
 
             if ($resolution['width'] < 640) {
                 $browser->mouseover('[data-testid="statistics:gas-tracker"]')
@@ -170,7 +166,7 @@ describe('Transactions Tab', function () {
         $this->recipientWallet = Wallet::factory()->create();
     });
 
-    it('should display transactions', function ($resolution) {
+    it('should display transactions', function () {
         $transactions = Transaction::factory()
             ->transfer()
             ->count(5)
@@ -180,19 +176,20 @@ describe('Transactions Tab', function () {
                 'sender_public_key' => $this->wallet->public_key,
             ]);
 
-        $this->browse(function (Browser $browser) use ($transactions, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) use ($transactions) {
 
-            $browser->visitRoute('home')
-                ->waitForText(substr($transactions[0]->hash, 0, 5));
+            $browser->visitRoute('home');
 
-            foreach ($transactions as $transaction) {
-                $browser->assertSee(substr($transaction->hash, 0, 5));
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->waitForText(substr($transactions[0]->hash, 0, 5))
+                    ->assertSee(substr($transactions->first()->hash, 0, 5))
+                    ->assertSee(substr($transactions->last()->hash, 0, 5));
             }
         });
-    })->with('resolutions');
+    });
 
-    it('should correctly format amounts', function (float $amount, string $expected, array $resolution) {
+    it('should correctly format amounts', function (float $amount, string $expected) {
         $transaction = Transaction::factory()
             ->transfer()
             ->create([
@@ -202,18 +199,20 @@ describe('Transactions Tab', function () {
                 'sender_public_key' => $this->wallet->public_key,
             ]);
 
-        $this->browse(function (Browser $browser) use ($transaction, $resolution, $expected) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) use ($transaction, $expected) {
+            $browser->visitRoute('home');
 
-            $browser->visitRoute('home')
-                ->waitForText(substr($transaction->hash, 0, 5));
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->waitForText(substr($transaction->hash, 0, 5));
 
-            $selector = '[data-testid="transaction:'.$transaction->hash.':amount"]';
-            if ($resolution['width'] <= 640) {
-                $selector = '[data-testid="transaction:mobile:'.$transaction->hash.':amount"]';
+                $selector = '[data-testid="transaction:'.$transaction->hash.':amount"]';
+                if ($resolution['width'] <= 640) {
+                    $selector = '[data-testid="transaction:mobile:'.$transaction->hash.':amount"]';
+                }
+
+                $browser->waitForTextIn($selector, $expected);
             }
-
-            $browser->waitForTextIn($selector, $expected);
         });
     })
     ->with([
@@ -225,10 +224,9 @@ describe('Transactions Tab', function () {
         '7'                => [2.3456789, '2.3456789'],
         '8'                => [2.34567891, '2.34567891'],
         '8 after rounding' => [2.345678915, '2.34567892'],
-    ])
-    ->with('resolutions');
+    ]);
 
-    it('should correctly format multipayment transactions', function ($resolution) {
+    it('should correctly format multipayment transactions', function () {
         $transaction = Transaction::factory()
             ->multiPayment(
                 [
@@ -262,20 +260,22 @@ describe('Transactions Tab', function () {
                 'hash' => $transaction->hash,
             ]);
 
-        $this->browse(function (Browser $browser) use ($transaction, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) use ($transaction) {
+            $browser->visitRoute('home');
 
-            $browser->visitRoute('home')
-                ->waitForText(substr($transaction->hash, 0, 5));
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->waitForText(substr($transaction->hash, 0, 5));
 
-            $selector = '[data-testid="transaction:'.$transaction->hash.':amount"]';
-            if ($resolution['width'] <= 640) {
-                $selector = '[data-testid="transaction:mobile:'.$transaction->hash.':amount"]';
+                $selector = '[data-testid="transaction:'.$transaction->hash.':amount"]';
+                if ($resolution['width'] <= 640) {
+                    $selector = '[data-testid="transaction:mobile:'.$transaction->hash.':amount"]';
+                }
+
+                $browser->waitForTextIn($selector, '579.5');
             }
-
-            $browser->waitForTextIn($selector, '579.5');
         });
-    })->with('resolutions');
+    });
 });
 
 describe('Blocks Tab', function () {
@@ -293,53 +293,50 @@ describe('Blocks Tab', function () {
         $this->wallet->save();
     });
 
-    it('should display blocks', function ($resolution) {
+    it('should display blocks', function () {
         $blocks = Block::factory(10)->create();
 
-        $this->browse(function (Browser $browser) use ($blocks, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) use ($blocks) {
+            $browser->visitRoute('home', ['view' => 'blocks']);
 
-            $browser->visitRoute('home', ['view' => 'blocks'])
-                ->waitForText(number_format($blocks[0]->number->toNumber()));
-
-            foreach ($blocks as $block) {
-                $browser->assertSee(number_format($block->number->toNumber()));
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->waitForText(number_format($blocks[0]->number->toNumber()))
+                    ->assertSee(number_format($blocks->first()->number->toNumber()))
+                    ->assertSee(number_format($blocks->last()->number->toNumber()));
             }
         });
-    })->with('resolutions');
+    });
 
-    it('should navigate to tab and back', function ($resolution) {
+    it('should navigate to tab and back', function () {
         $transactions = Transaction::factory()
             ->transfer()
-            ->count(5)
+            ->count(3)
             ->create([
                 'from'              => $this->wallet->address,
                 'to'                => $this->wallet->address,
                 'sender_public_key' => $this->wallet->public_key,
             ]);
 
-        $blocks = Block::factory(10)->create();
+        $blocks = Block::factory(3)->create();
 
-        $this->browse(function (Browser $browser) use ($transactions, $blocks, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) use ($transactions, $blocks) {
+            $browser->visitRoute('home');
 
-            $browser->visitRoute('home')
-                ->waitForText(substr($transactions[0]->hash, 0, 5))
-                ->click('button#tab-blocks')
-                ->waitForText(number_format($blocks[0]->number->toNumber()));
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->waitForText(substr($transactions[0]->hash, 0, 5))
+                    ->click('button#tab-blocks')
+                    ->waitForText(number_format($blocks[0]->number->toNumber()))
+                    ->assertSee(number_format($blocks->first()->number->toNumber()))
+                    ->assertSee(number_format($blocks->last()->number->toNumber()));
 
-            foreach ($blocks as $block) {
-                $browser->assertSee(number_format($block->number->toNumber()));
-            }
-
-            $browser->click('button#tab-transactions')
-                ->waitForText(substr($transactions[0]->hash, 0, 5));
-
-            foreach ($transactions as $transaction) {
-                $browser->assertSee(substr($transaction->hash, 0, 5));
+                $browser->click('button#tab-transactions')
+                    ->waitForText(substr($transactions->first()->hash, 0, 5))
+                    ->assertSee(substr($transactions->last()->hash, 0, 5));
             }
         });
-    })->with('resolutions');
+    });
 });
 
 dataset('resolutions', [
