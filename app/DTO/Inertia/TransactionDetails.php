@@ -80,13 +80,13 @@ class TransactionDetails extends Data
         }
 
         $recipientWallet     = Wallets::findByAddress($recipient);
-        $recipientWalletData = $recipientWallet ? WalletDTO::fromModel($recipientWallet) : null;
+        $recipientWalletData = WalletDTO::fromModel($recipientWallet);
 
         return [
             'recipient'            => $recipient,
             'amount'               => $amount,
-            'recipientUsername'    => $recipientWalletData?->username,
-            'recipientHasUsername' => $recipientWalletData?->hasUsername ?? false,
+            'recipientUsername'    => $recipientWalletData->username,
+            'recipientHasUsername' => $recipientWalletData->hasUsername,
         ];
     }
 
