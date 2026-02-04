@@ -6,6 +6,7 @@ use App\Console\Commands\CacheTokens;
 use App\DTO\Inertia\TransactionDetails;
 use App\Models\Token;
 use App\Models\Transaction;
+use App\Services\BigNumber;
 use App\Services\Cache\NetworkCache;
 use function Tests\fakeCryptoCompare;
 
@@ -37,7 +38,7 @@ it('should include token data', function () {
     (new NetworkCache())->setHeight(fn () => 1000);
 
     $transaction = Transaction::factory()
-        ->tokenTransfer('0x1234567890abcdef1234567890abcdef12345678', 1000)
+        ->tokenTransfer('0x1234567890abcdef1234567890abcdef12345678', BigNumber::new(1000))
         ->create([
             'block_number' => 900,
             'status'       => true,

@@ -37,7 +37,7 @@ it('should use lowercase addresses for keys', function () {
     ]);
 
     $lowercaseToken = Token::factory()->create([
-        'address' => '0xabcdef1234567890abcdef1234567890abcdef12',
+        'address' => '0x1bcdef1234567890abcdef1234567890abcdef12',
     ]);
 
     (new CacheTokens())->handle();
