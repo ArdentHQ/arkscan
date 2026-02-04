@@ -1,11 +1,8 @@
 name: Labels
 
 on:
-    push:
-        branches:
-            - "none"
-    # pull_request:
-    #     types: [ready_for_review, synchronize, opened]
+    pull_request:
+        types: [ready_for_review, synchronize, opened]
 
 jobs:
     assign:
