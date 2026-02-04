@@ -22,7 +22,7 @@ describe('Monitor', function () {
         $this->activeValidators = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
     });
 
-    it('should show warning icon for validators missing blocks - minutes', function ($resolution) {
+    it('should show warning icon for validators missing blocks - minutes', function () {
         $this->freezeTime();
 
         [0 => $validators] = createRealisticRound([
@@ -58,28 +58,31 @@ describe('Monitor', function () {
 
         expect($validator->performance())->toBe([false, false]);
 
-        $this->browse(function (Browser $browser) use ($validator, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
-
+        $this->browse(function (Browser $browser) use ($validator) {
             $browser->visitRoute('validator-monitor');
 
-            $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
-            if ($resolution['width'] <= 640) {
-                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100);
+
+                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
+                if ($resolution['width'] <= 640) {
+                    $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
+                }
+
+                $browser->waitFor($missedWarningSelector);
+
+                $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+                $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+                $browser->script('window.scrollBy(0, -200)');
+
+                $browser->mouseOver($missedWarningSelector)
+                    ->waitForText('Validator last forged 207 blocks ago (~ 28 min)');
             }
-
-            $browser->waitFor($missedWarningSelector);
-
-            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
-            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
-            $browser->script('window.scrollBy(0, -200)');
-
-            $browser->mouseOver($missedWarningSelector)
-                ->waitForText('Validator last forged 207 blocks ago (~ 28 min)');
         });
-    })->with('resolutions');
+    });
 
-    it('should show warning icon for validators missing blocks - hours', function ($resolution) {
+    it('should show warning icon for validators missing blocks - hours', function () {
         $this->travelTo(Carbon::now()->subHours(1));
 
         $this->freezeTime();
@@ -117,28 +120,31 @@ describe('Monitor', function () {
 
         expect($validator->performance())->toBe([false, false]);
 
-        $this->browse(function (Browser $browser) use ($validator, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
-
+        $this->browse(function (Browser $browser) use ($validator) {
             $browser->visitRoute('validator-monitor');
 
-            $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
-            if ($resolution['width'] <= 640) {
-                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100);
+
+                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
+                if ($resolution['width'] <= 640) {
+                    $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
+                }
+
+                $browser->waitFor($missedWarningSelector);
+
+                $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+                $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+                $browser->script('window.scrollBy(0, -200)');
+
+                $browser->mouseOver($missedWarningSelector)
+                    ->waitForText('Validator last forged 207 blocks ago (~ 1h 28 min)', 20);
             }
-
-            $browser->waitFor($missedWarningSelector);
-
-            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
-            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
-            $browser->script('window.scrollBy(0, -200)');
-
-            $browser->mouseOver($missedWarningSelector)
-                ->waitForText('Validator last forged 207 blocks ago (~ 1h 28 min)', 20);
         });
-    })->with('resolutions');
+    });
 
-    it('should show warning icon for validators missing blocks - days', function ($resolution) {
+    it('should show warning icon for validators missing blocks - days', function () {
         $this->travelTo(Carbon::now()->subDays(2));
 
         $this->freezeTime();
@@ -176,26 +182,29 @@ describe('Monitor', function () {
 
         expect($validator->performance())->toBe([false, false]);
 
-        $this->browse(function (Browser $browser) use ($validator, $resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
-
+        $this->browse(function (Browser $browser) use ($validator) {
             $browser->visitRoute('validator-monitor');
 
-            $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
-            if ($resolution['width'] <= 640) {
-                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100);
+
+                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
+                if ($resolution['width'] <= 640) {
+                    $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
+                }
+
+                $browser->waitFor($missedWarningSelector);
+
+                $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+                $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+                $browser->script('window.scrollBy(0, -200)');
+
+                $browser->mouseOver($missedWarningSelector)
+                    ->waitForText('Validator last forged 207 blocks ago (more than a day)', 20);
             }
-
-            $browser->waitFor($missedWarningSelector);
-
-            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
-            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
-            $browser->script('window.scrollBy(0, -200)');
-
-            $browser->mouseOver($missedWarningSelector)
-                ->waitForText('Validator last forged 207 blocks ago (more than a day)', 20);
         });
-    })->with('resolutions');
+    });
 });
 
 describe('Data Boxes', function () {
@@ -208,7 +217,7 @@ describe('Data Boxes', function () {
         $this->freezeTime();
     });
 
-    it('should calculate forged correctly with current round', function ($resolution) {
+    it('should calculate forged correctly with current round', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
         $this->freezeTime();
@@ -255,18 +264,21 @@ describe('Data Boxes', function () {
             ]);
         }
 
-        $this->browse(function (Browser $browser) use ($resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor');
 
-            $browser->visitRoute('validator-monitor')
-                ->waitForText(' / 53 Blocks', 10)
-                ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '53')
-                ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
-                ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '0');
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText(' / 53 Blocks', 10)
+                    ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '53')
+                    ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
+                    ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '0');
+            }
         });
-    })->with('resolutions');
+    });
 
-    it('should calculate forged correctly for previous rounds', function ($resolution) {
+    it('should calculate forged correctly for previous rounds', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
         $this->freezeTime();
@@ -283,18 +295,21 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, true]);
 
-        $this->browse(function (Browser $browser) use ($resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor');
 
-            $browser->visitRoute('validator-monitor')
-                ->waitForText(' / 53 Blocks', 10)
-                ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '53')
-                ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
-                ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '0');
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText(' / 53 Blocks', 10)
+                    ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '53')
+                    ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
+                    ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '0');
+            }
         });
-    })->with('resolutions');
+    });
 
-    it('should calculate missed correctly with current round', function ($resolution) {
+    it('should calculate missed correctly with current round', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
         $this->freezeTime();
@@ -322,18 +337,21 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
 
-        $this->browse(function (Browser $browser) use ($resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor');
 
-            $browser->visitRoute('validator-monitor')
-                ->waitForText(' / 53 Blocks', 10)
-                ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
-                ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '1')
-                ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '0');
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText(' / 53 Blocks', 10)
+                    ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
+                    ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '1')
+                    ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '0');
+            }
         });
-    })->with('resolutions');
+    });
 
-    it('should calculate missed correctly for previous rounds', function ($resolution) {
+    it('should calculate missed correctly for previous rounds', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
         $this->freezeTime();
@@ -350,18 +368,21 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([true, false]);
 
-        $this->browse(function (Browser $browser) use ($resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor');
 
-            $browser->visitRoute('validator-monitor')
-                ->waitForText(' / 53 Blocks', 10)
-                ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
-                ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '1')
-                ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '0');
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText(' / 53 Blocks', 10)
+                    ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
+                    ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '1')
+                    ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '0');
+            }
         });
-    })->with('resolutions');
+    });
 
-    it('should calculate not forging correctly with current round', function ($resolution) {
+    it('should calculate not forging correctly with current round', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
         $this->freezeTime();
@@ -405,18 +426,21 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
 
-        $this->browse(function (Browser $browser) use ($resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor');
 
-            $browser->visitRoute('validator-monitor')
-                ->waitForText(' / 53 Blocks', 10)
-                ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
-                ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
-                ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '1');
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText(' / 53 Blocks', 10)
+                    ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
+                    ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
+                    ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '1');
+            }
         });
-    })->with('resolutions');
+    });
 
-    it('should calculate not forging correctly for previous rounds', function ($resolution) {
+    it('should calculate not forging correctly for previous rounds', function () {
         $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
 
         $this->freezeTime();
@@ -441,16 +465,19 @@ describe('Data Boxes', function () {
 
         expect((new WalletViewModel($validators->get(4)))->performance())->toBe([false, false]);
 
-        $this->browse(function (Browser $browser) use ($resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        $this->browse(function (Browser $browser) {
+            $browser->visitRoute('validator-monitor');
 
-            $browser->visitRoute('validator-monitor')
-                ->waitForText(' / 53 Blocks', 10)
-                ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
-                ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
-                ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '1');
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText(' / 53 Blocks', 10)
+                    ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
+                    ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
+                    ->assertEquals('[data-testid="validator-monitor:not-forging-count"] span', '1');
+            }
         });
-    })->with('resolutions');
+    });
 });
 
 dataset('resolutions', [

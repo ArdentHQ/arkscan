@@ -39,11 +39,14 @@ export function formatUnits(
             throw new Error(`Unsupported unit: ${unit}. Supported units are 'wei', 'gwei', and 'ark'.`);
     }
 
+    const result = val.dividedBy(divisor);
+
     if (decimals !== undefined) {
-        return val.dividedBy(divisor).toFixed(decimals);
+        return result.toFixed(decimals);
     }
 
-    return val.dividedBy(divisor).toString();
+    // Use toFixed() to avoid scientific notation, then remove trailing zeros
+    return result.toFixed(result.decimalPlaces() ?? 0);
 }
 
 export function weiToArk(value: string | number | BigNumber, suffix?: string, decimals?: number): string {
