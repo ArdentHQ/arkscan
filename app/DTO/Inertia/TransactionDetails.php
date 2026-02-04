@@ -44,7 +44,7 @@ class TransactionDetails extends Data
         $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
 
         $recipient = $viewModel->recipient();
-        $token = $recipient !== null ? (new WalletCache)->getToken($recipient->address()) : null;
+        $token     = $recipient !== null ? (new WalletCache())->getToken($recipient->address()) : null;
         if ($token !== null) {
             $token = Token::fromModel($token);
         }

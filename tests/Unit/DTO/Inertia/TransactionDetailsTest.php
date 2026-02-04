@@ -7,8 +7,6 @@ use App\DTO\Inertia\TransactionDetails;
 use App\Models\Token;
 use App\Models\Transaction;
 use App\Services\Cache\NetworkCache;
-use App\Services\Cache\WalletCache;
-
 use function Tests\fakeCryptoCompare;
 
 it('normalizes invalid utf8 payloads for the dto', function () {

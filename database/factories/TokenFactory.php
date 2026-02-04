@@ -17,7 +17,7 @@ final class TokenFactory extends Factory
         return [
             'address'         => $this->faker->address,
             'symbol'          => strtoupper($this->faker->lexify('???')),
-            'name'            => $this->faker->company . ' Token',
+            'name'            => $this->faker->company.' Token',
             'decimals'        => $this->faker->numberBetween(6, 18),
             'total_supply'    => (string) BigNumber::new($this->faker->numberBetween(1_000_000, 1_000_000_000))->multipliedBy(1e18),
             'deployment_hash' => $this->faker->transactionHash,

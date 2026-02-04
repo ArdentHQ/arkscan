@@ -29,6 +29,13 @@ final class Token extends Model
     public $timestamps = false;
 
     /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
      * The connection name for the model.
      *
      * @var string|null
@@ -43,13 +50,6 @@ final class Token extends Model
     protected $primaryKey = 'address';
 
     /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
@@ -57,5 +57,4 @@ final class Token extends Model
     protected $casts = [
         'total_supply' => BigInteger::class,
     ];
-
 }

@@ -342,7 +342,7 @@ it('should copy data to the clipboard', function ($resolution) {
 
 it('should show token transfer symbol', function ($resolution) {
     $contractWallet = Wallet::factory()->create(['attributes' => []]);
-    $transaction = Transaction::factory()
+    $transaction    = Transaction::factory()
         ->tokenTransfer($this->recipientWallet->address, BigNumber::new(1234.56 * 1e18))
         ->create([
             'from'              => $this->wallet->address,

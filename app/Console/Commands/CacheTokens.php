@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Token;
-use App\Models\Transaction;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
 
