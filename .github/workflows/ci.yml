@@ -179,9 +179,9 @@ jobs:
     browser:
         needs: [conflicts, analyse, format]
 
-        runs-on: ubuntu-latest
-
         if: github.event_name != 'pull_request'
+
+        runs-on: ubuntu-latest
 
         services:
             postgres:
