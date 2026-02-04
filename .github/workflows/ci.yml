@@ -323,9 +323,16 @@ jobs:
                   mv "$file" "${file//\"/}"
                 done
 
+            - name: Generate Safe Artifact Name
+              if: failure()
+              run: |
+                # CLEAN_FILENAME=$(echo "${{ matrix.test_file }}" | sed 's/[^a-zA-Z0-9]/-/g')
+
+                echo "SAFE_ARTIFACT_NAME=screenshots-${CLEAN_FILENAME}" >> $GITHUB_ENV
+
             - name: Upload Screenshots
               if: failure()
               uses: actions/upload-artifact@v4
               with:
-                name: screenshots
+                name: ${{ env.SAFE_ARTIFACT_NAME }}
                 path: tests/Browser/screenshots
