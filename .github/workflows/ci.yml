@@ -181,7 +181,7 @@ jobs:
 
         runs-on: ubuntu-latest
 
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/mainsail-develop' || github.ref == 'refs/heads/inertia-migration'
+        if: github.event_name != 'pull_request'
 
         services:
             postgres:
