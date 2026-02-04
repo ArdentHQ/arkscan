@@ -35,7 +35,7 @@ final class MemoryWallet
             return true;
         }
 
-        return in_array($this->address(), (new WalletCache())->getContractAddresses(), true);
+        return (new WalletCache())->getToken($this->address()) !== null;
     }
 
     public function publicKey(): ?string
