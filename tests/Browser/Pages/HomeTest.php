@@ -65,6 +65,7 @@ describe('Statistics', function () {
                 }
 
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->moveMouse(50, 50)
                     ->assertSeeInOrder($outputInOrder);
 
@@ -181,6 +182,7 @@ describe('Transactions Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($transactions[0]->hash, 0, 5))
                     ->assertSee(substr($transactions->first()->hash, 0, 5))
                     ->assertSee(substr($transactions->last()->hash, 0, 5));
@@ -203,6 +205,7 @@ describe('Transactions Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($transaction->hash, 0, 5));
 
                 $selector = '[data-testid="transaction:'.$transaction->hash.':amount"]';
@@ -264,6 +267,7 @@ describe('Transactions Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($transaction->hash, 0, 5));
 
                 $selector = '[data-testid="transaction:'.$transaction->hash.':amount"]';
@@ -300,6 +304,7 @@ describe('Blocks Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(number_format($blocks[0]->number->toNumber()))
                     ->assertSee(number_format($blocks->first()->number->toNumber()))
                     ->assertSee(number_format($blocks->last()->number->toNumber()));
@@ -324,6 +329,7 @@ describe('Blocks Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($transactions[0]->hash, 0, 5))
                     ->click('button#tab-blocks')
                     ->waitForText(number_format($blocks[0]->number->toNumber()))

@@ -48,6 +48,7 @@ describe('Overview', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($wallet->address, 0, 7))
                     ->assertSee('joe.blogs')
                     ->assertSee('32,423 DARK')
@@ -67,6 +68,7 @@ describe('Overview', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($wallet->address, 0, 7));
 
                 if ($resolution['width'] >= 640) {
@@ -88,6 +90,7 @@ describe('Overview', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->script('navigator.clipboard.writeText("")');
 
                 $browser->waitForText(substr($wallet->address, 0, 7))
@@ -108,6 +111,7 @@ describe('Overview', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->script('navigator.clipboard.writeText("")');
 
                 $browser->waitForText(substr($wallet->address, 0, 7))
@@ -139,6 +143,7 @@ describe('Overview', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->script('navigator.clipboard.writeText("")');
 
                 $browser->waitForText(substr($wallet->address, 0, 7))
@@ -161,6 +166,7 @@ describe('Overview', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($wallet->address, 0, 7))
                     ->click('[data-testid="wallet:show-qr-code-modal:button"]')
                     ->waitForText(trans('pages.wallet.qrcode.title'))
@@ -182,6 +188,7 @@ describe('Overview', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($wallet->address, 0, 7))
                     ->assertSee(trans('pages.validators.'.$status));
             }
@@ -502,6 +509,7 @@ describe('Transactions Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText('5 results', ignoreCase: true);
 
                 foreach ($transactions as $transaction) {
@@ -526,6 +534,7 @@ describe('Transactions Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText('1 result', ignoreCase: true)
                     ->assertSee(substr($transaction->hash, 0, 5));
 
@@ -755,7 +764,8 @@ describe('Transactions Tab', function () {
                 ->waitForText('Select All');
 
             foreach ($this->resolutions as $resolution) {
-                $browser->resize($resolution['width'], $resolution['height']);
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100);
 
                 expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Select All"]')))->toHaveCount(1);
                 expect($browser->driver->findElements(WebDriverBy::xpath('//div[contains(@class, "dropdown")]//label[text()="Outgoing"]')))->toHaveCount(1);
@@ -838,6 +848,7 @@ describe('Blocks Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($nonValidatorWallet->address, 0, 7))
                     ->assertMissing('button#tab-blocks');
             }
@@ -865,6 +876,7 @@ describe('Blocks Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText('5 results', ignoreCase: true)
                     ->click('button#tab-blocks')
                     ->waitForText('6 results', ignoreCase: true);
@@ -1044,6 +1056,7 @@ describe('Voters Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(substr($nonValidatorWallet->address, 0, 7))
                     ->assertMissing('button#tab-voters');
             }
@@ -1073,6 +1086,7 @@ describe('Voters Tab', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText('5 results', ignoreCase: true)
                     ->click('button#tab-voters')
                     ->waitForText('10 results', ignoreCase: true);

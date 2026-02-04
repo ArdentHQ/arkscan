@@ -62,7 +62,8 @@ describe('Monitor', function () {
             $browser->visitRoute('validator-monitor');
 
             foreach ($this->resolutions as $resolution) {
-                $browser->resize($resolution['width'], $resolution['height']);
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100);
 
                 $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
                 if ($resolution['width'] <= 640) {
@@ -123,7 +124,8 @@ describe('Monitor', function () {
             $browser->visitRoute('validator-monitor');
 
             foreach ($this->resolutions as $resolution) {
-                $browser->resize($resolution['width'], $resolution['height']);
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100);
 
                 $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
                 if ($resolution['width'] <= 640) {
@@ -184,7 +186,8 @@ describe('Monitor', function () {
             $browser->visitRoute('validator-monitor');
 
             foreach ($this->resolutions as $resolution) {
-                $browser->resize($resolution['width'], $resolution['height']);
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100);
 
                 $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
                 if ($resolution['width'] <= 640) {
@@ -266,6 +269,7 @@ describe('Data Boxes', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(' / 53 Blocks', 10)
                     ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '53')
                     ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
@@ -296,6 +300,7 @@ describe('Data Boxes', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(' / 53 Blocks', 10)
                     ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '53')
                     ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
@@ -337,6 +342,7 @@ describe('Data Boxes', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(' / 53 Blocks', 10)
                     ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
                     ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '1')
@@ -367,6 +373,7 @@ describe('Data Boxes', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(' / 53 Blocks', 10)
                     ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
                     ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '1')
@@ -424,6 +431,7 @@ describe('Data Boxes', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(' / 53 Blocks', 10)
                     ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
                     ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')
@@ -462,6 +470,7 @@ describe('Data Boxes', function () {
 
             foreach ($this->resolutions as $resolution) {
                 $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
                     ->waitForText(' / 53 Blocks', 10)
                     ->assertEquals('[data-testid="validator-monitor:forging-count"] span', '52')
                     ->assertEquals('[data-testid="validator-monitor:missed-count"] span', '0')

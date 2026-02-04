@@ -38,6 +38,7 @@ it('should go to page 2', function () {
     $this->browse(function (Browser $browser) use ($blocks) {
         foreach ($this->resolutions as $resolution) {
             $browser->resize($resolution['width'], $resolution['height'])
+                ->pause(100)
                 ->visitRoute('blocks')
                 ->waitForText('50 results', ignoreCase: true)
                 ->assertSee('Page 1 of 2')
@@ -65,6 +66,7 @@ it('should reset to page 1 on per-page change', function () {
     $this->browse(function (Browser $browser) use ($blocks) {
         foreach ($this->resolutions as $resolution) {
             $browser->resize($resolution['width'], $resolution['height'])
+                ->pause(100)
                 ->visitRoute('blocks', ['page' => 2])
                 ->waitForText('50 results', ignoreCase: true)
                 ->assertSee('Page 2 of 2')
