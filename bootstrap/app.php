@@ -57,6 +57,10 @@ $app->afterResolving(
         }
 
         (new Exceptions($handler))->respond(function (Response $response, Throwable $exception, Request $request) {
+            if ($request->header('X-Inertia') !== 'true') {
+                return $response;
+            }
+
             return Inertia::renderWithMeta(
                 'Error/Show',
                 $response->getStatusCode(),
@@ -67,8 +71,6 @@ $app->afterResolving(
             )
             ->toResponse($request)
             ->setStatusCode($response->getStatusCode());
-
-            return $response;
         });
     }
 );

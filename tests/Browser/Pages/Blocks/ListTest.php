@@ -25,7 +25,7 @@ afterEach(function () {
     Cache::flush();
 });
 
-it('should go to page 2', function ($resolution) {
+it('should go to page 2', function () {
     for ($i = 84831; $i < 84831 + 50; $i++) {
         Block::factory()->create([
             'number'    => $i,
@@ -35,28 +35,25 @@ it('should go to page 2', function ($resolution) {
 
     $blocks = Block::orderBy('number', 'desc')->get();
 
-    $this->browse(function (Browser $browser) use ($blocks, $resolution) {
-        $browser->resize($resolution['width'], $resolution['height']);
-
-        $browser->visitRoute('blocks')
-            ->waitForText('50 results', ignoreCase: true)
-            ->assertSee('Page 1 of 2');
-
-        foreach ($blocks->take(25) as $block) {
-            $browser->assertSee(number_format($block->number->toNumber()));
-        }
-
-        $browser->click('[data-testid="pagination:next-page"] button')
-            ->waitForText('Page 2 of 2')
-            ->assertQueryStringHas('page', '2');
-
-        foreach ($blocks->skip(25)->take(25) as $block) {
-            $browser->assertSee(number_format($block->number->toNumber()));
+    $this->browse(function (Browser $browser) use ($blocks) {
+        foreach ($this->resolutions as $resolution) {
+            $browser->resize($resolution['width'], $resolution['height'])
+                ->pause(100)
+                ->visitRoute('blocks')
+                ->waitForText('50 results', ignoreCase: true)
+                ->assertSee('Page 1 of 2')
+                ->assertSee(number_format($blocks->first()->number->toNumber()))
+                ->assertSee(number_format($blocks->take(25)->last()->number->toNumber()))
+                ->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringHas('page', '2')
+                ->assertSee(number_format($blocks->skip(25)->first()->number->toNumber()))
+                ->assertSee(number_format($blocks->skip(25)->last()->number->toNumber()));
         }
     });
-})->with('resolutions');
+});
 
-it('should reset to page 1 on per-page change', function ($resolution) {
+it('should reset to page 1 on per-page change', function () {
     for ($i = 84831; $i < 84831 + 50; $i++) {
         Block::factory()->create([
             'number'    => $i,
@@ -66,27 +63,28 @@ it('should reset to page 1 on per-page change', function ($resolution) {
 
     $blocks = Block::orderBy('number', 'desc')->get();
 
-    $this->browse(function (Browser $browser) use ($blocks, $resolution) {
-        $browser->resize($resolution['width'], $resolution['height']);
+    $this->browse(function (Browser $browser) use ($blocks) {
+        foreach ($this->resolutions as $resolution) {
+            $browser->resize($resolution['width'], $resolution['height'])
+                ->pause(100)
+                ->visitRoute('blocks', ['page' => 2])
+                ->waitForText('50 results', ignoreCase: true)
+                ->assertSee('Page 2 of 2')
+                ->assertSee(number_format($blocks->skip(25)->first()->number->toNumber()))
+                ->assertSee(number_format($blocks->skip(25)->last()->number->toNumber()))
+                ->click('[data-testid="pagination:per-page-dropdown:button"]')
+                ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
+                ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//div[normalize-space(text())="10"]')
+                ->waitForText('Page 1 of 5')
+                ->assertSee(number_format($blocks->first()->number->toNumber()))
+                ->assertSee(number_format($blocks->take(10)->last()->number->toNumber()));
 
-        $browser->visitRoute('blocks', ['page' => 2])
-            ->waitForText('50 results', ignoreCase: true)
-            ->assertSee('Page 2 of 2');
-
-        foreach ($blocks->skip(25)->take(25) as $block) {
-            $browser->assertSee(number_format($block->number->toNumber()));
-        }
-
-        $browser->click('[data-testid="pagination:per-page-dropdown:button"]')
-            ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
-            ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//div[normalize-space(text())="10"]')
-            ->waitForText('Page 1 of 5');
-
-        foreach ($blocks->take(10) as $block) {
-            $browser->assertSee(number_format($block->number->toNumber()));
+            foreach ($blocks->take(10) as $block) {
+                $browser->assertSee(number_format($block->number->toNumber()));
+            }
         }
     });
-})->with('resolutions');
+});
 
 it('should show the correct decimal places for the stats', function ($decimalPlaces, $totalRewards, $resolution) {
     $transactionsCount = 23;

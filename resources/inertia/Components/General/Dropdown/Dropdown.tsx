@@ -97,6 +97,10 @@ export default function Dropdown({
             onOpened();
         }
 
+        if (!isDropdownOpen && onClosed !== undefined) {
+            setTimeout(() => onClosed(), 250);
+        }
+
         return;
     };
 

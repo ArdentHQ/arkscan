@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Facades\Network;
+use App\Models\Block;
 use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -39,6 +40,7 @@ it('should show basic transaction details', function ($resolution) {
     $transaction = Transaction::factory()
         ->transfer()
         ->create([
+            'block_hash'        => Block::factory()->create(['number' => 432])->hash,
             'from'              => $this->wallet->address,
             'to'                => $this->recipientWallet->address,
             'sender_public_key' => $this->wallet->public_key,
