@@ -50,6 +50,10 @@ export default function DropdownPopup({
                         className="button button-generic flex h-6 w-6 items-center justify-center p-0 hover:bg-theme-primary-700 hover:text-white dark:text-theme-dark-600 dark:hover:text-white"
                         onClick={() => {
                             setIsOpen(false);
+
+                            if (onClosed) {
+                                setTimeout(() => onClosed(), 250);
+                            }
                         }}
                         data-testid={testId ? `${testId}:close` : undefined}
                     >

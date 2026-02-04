@@ -178,7 +178,8 @@ jobs:
 
     browser:
         needs: [conflicts, analyse, format]
-        if: github.event_name != 'pull_request' # TODO: Look at speed improvements to run on PRs - https://app.clickup.com/t/86dzhdmnw
+
+        if: github.event_name != 'pull_request'
 
         runs-on: ubuntu-latest
 
@@ -281,3 +282,10 @@ jobs:
                   ARKSCAN_DB_USERNAME: arkscan_test_db
                   ARKSCAN_DB_PASSWORD: password
                   APP_ENV: testing
+
+            - name: Upload Screenshots
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                name: dusk-screenshots
+                path: tests/Browser/screenshots
