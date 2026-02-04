@@ -315,3 +315,10 @@ jobs:
                   ARKSCAN_DB_USERNAME: arkscan_test_db
                   ARKSCAN_DB_PASSWORD: password
                   APP_ENV: testing
+
+            - name: Upload Screenshots
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                name: screenshots
+                path: tests/Browser/screenshots
