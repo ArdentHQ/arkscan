@@ -167,7 +167,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
     }
 
     return (
-        <div className="mt-2 space-y-2 md:mt-6">
+        <div className="mt-2 space-y-2 md:mt-6" data-testid="exchanges:chart">
             <Card className="flex flex-col py-4 md:pb-6">
                 <div className="flex flex-col space-y-3 border-x border-t border-transparent sm:flex-row sm:justify-between sm:space-y-0">
                     <div className="inline-flex items-center space-x-2 sm:space-x-3 md:items-end">
