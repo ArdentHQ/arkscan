@@ -51,10 +51,10 @@ export default function TransactionAction({
             {(transaction.isValidatorRegistration || transaction.isValidatorUpdate) && details.validatorPublicKey && (
                 <SectionDetailRow
                     title={t("pages.transaction.header.validator")}
-                    valueClassName="min-w-0 overflow-auto max-w-full"
+                    valueClassName="min-w-0 overflow-x-auto max-w-full"
                     headerWidthClass={headerWidthClass}
                 >
-                    <span className="hidden overflow-auto sm:inline">
+                    <span className="hidden overflow-x-auto sm:inline">
                         <TruncateDynamic value={details.validatorPublicKey} />
                     </span>
                     <span className="sm:hidden">
