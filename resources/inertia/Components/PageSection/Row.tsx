@@ -48,7 +48,7 @@ export default function SectionDetailRow({
                 {(hasValue || hasChildren || allowEmpty) && (
                     <>
                         {!!tooltip && <Tooltip content={tooltip}>{content}</Tooltip>}
-                        {!tooltip && <div className="inline max-w-full">{content}</div>}
+                        {!tooltip && <div className="inline-block max-w-full">{content}</div>}
                     </>
                 )}
             </div>
