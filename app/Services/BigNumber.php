@@ -87,6 +87,11 @@ final class BigNumber implements Stringable
         return intval($this->toFloat());
     }
 
+    public function toHex(): string
+    {
+        return $this->value->toBigInteger()->toBase(16);
+    }
+
     /**
      * @param float|null $divisor Defaults to 1e18 if not provided
      *

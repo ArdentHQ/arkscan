@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Console\Commands\CacheTokens;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\MultiPayment;
+use App\Models\Token;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -335,6 +337,69 @@ it('should copy data to the clipboard', function ($resolution) {
             ->waitForText(trans('pages.wallet.address_copied'));
 
         $browser->assertScript('navigator.clipboard.readText()', $transaction->to);
+    });
+})->with('resolutions');
+
+it('should show token transfer symbol', function ($resolution) {
+    $contractWallet = Wallet::factory()->create(['attributes' => []]);
+    $transaction = Transaction::factory()
+        ->tokenTransfer($this->recipientWallet->address, BigNumber::new(1234.56 * 1e18))
+        ->create([
+            'from'              => $this->wallet->address,
+            'sender_public_key' => $this->wallet->public_key,
+            'to'                => $contractWallet->address,
+            'value'             => 123.45 * 1e18,
+            'gas'               => 12000,
+            'gas_price'         => 1e9,
+            'gas_used'          => 21000,
+            'gas_refunded'      => 10000,
+        ]);
+
+    Token::factory()->create([
+        'address' => $transaction->to,
+        'symbol'  => 'TESTINGSYMBOL',
+    ]);
+
+    (new CacheTokens())->handle();
+
+    (new NetworkCache())->setHeight(fn (): int => 432);
+
+    $this->browse(function (Browser $browser) use ($transaction, $resolution, $contractWallet) {
+        $browser->resize($resolution['width'], $resolution['height']);
+
+        $transactionIdPart1 = substr($transaction->hash, 0, 6);
+        $transactionIdPart2 = substr($transaction->hash, 6, 6);
+
+        $senderAddress = $resolution['width'] < 768
+            ? substr($this->wallet->address, 0, 5).'…'.substr($this->wallet->address, -5)
+            : $this->wallet->address;
+
+        $recipientAddress = $resolution['width'] < 768
+            ? substr($this->recipientWallet->address, 0, 5).'…'.substr($this->recipientWallet->address, -5)
+            : $this->recipientWallet->address;
+
+        $contractAddress = $resolution['width'] < 768 ? 'Contract' : $contractWallet->address;
+
+        $browser->visit('/transactions/'.$transaction->hash)
+            ->waitForText($transactionIdPart1)
+            ->assertSee($transactionIdPart2)
+            ->assertSeeInOrder([
+                'Addressing',
+                'From',
+                $senderAddress,
+                'Interacted With',
+                $contractAddress,
+                'Tokens Transferred',
+                'To',
+                $recipientAddress,
+                'Amount',
+                '1234.56 TESTINGSYMBOL',
+                'Transaction Summary',
+                'Amount',
+                '123.45 DARK',
+                'Fee',
+                '0.000021 DARK',
+            ]);
     });
 })->with('resolutions');
 
