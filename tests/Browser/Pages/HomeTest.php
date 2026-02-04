@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Block;
 use App\Models\MultiPayment;
+use App\Models\State;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -26,7 +27,10 @@ describe('Statistics', function () {
         });
 
         $cache->setVotesPercentage('123.45');
-        $cache->setHeight(fn () => 123456);
+        Block::factory()->create(['number' => 123456]);
+        State::factory()->create([
+            'supply' => 12345.6789 * 1e18,
+        ]);
 
         (new ValidatorCache())->setTotalBalanceVoted(4567.2345);
         (new MainsailCache())->setFees([
@@ -97,7 +101,10 @@ describe('Statistics', function () {
         });
 
         $cache->setVotesPercentage('123.45');
-        $cache->setHeight(fn () => 123456);
+        Block::factory()->create(['number' => 123456]);
+        State::factory()->create([
+            'supply' => 12345.6789 * 1e18,
+        ]);
 
         (new ValidatorCache())->setTotalBalanceVoted(4567.2345);
         (new MainsailCache())->setFees([
