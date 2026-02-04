@@ -79,7 +79,7 @@ class TransactionDetails extends Data
             $amount = (new ArgumentDecoder($arguments[TokenTransferArgument::AMOUNT]))->decodeUnsignedInt();
         }
 
-        $recipientWallet = Wallets::findByAddress($recipient);
+        $recipientWallet     = Wallets::findByAddress($recipient);
         $recipientWalletData = $recipientWallet ? WalletDTO::fromModel($recipientWallet) : null;
 
         return [
