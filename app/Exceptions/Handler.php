@@ -11,6 +11,7 @@ use ARKEcosystem\Foundation\UserInterface\Exceptions\Concerns\OverridesException
 use Closure;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Session\SessionManager;
@@ -126,7 +127,7 @@ final class Handler extends ExceptionHandler
             && is_a($mainNotFoundException, EntityNotFoundInterface::class);
     }
 
-    private function getNotFoundEntityResponse(Throwable $exception): HttpResponse
+    private function getNotFoundEntityResponse(Throwable $exception): HttpResponse|JsonResponse
     {
         $expectedException = $this->prepareException($this->mapException($exception));
 
