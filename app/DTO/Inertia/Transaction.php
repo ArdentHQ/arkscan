@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Enums\TokenTransferArgument;
 use App\Facades\Wallets;
 use App\Models\Transaction as Model;
+use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
 use App\ViewModels\TransactionViewModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
@@ -94,8 +96,19 @@ class Transaction extends Data
 
         $recipient = null;
 
-        if ($viewModel->isTransfer() || $viewModel->isTokenTransfer()) {
+        if ($viewModel->isTransfer()) {
             $recipientAddress = $viewModel->recipient()?->address();
+
+            if ($recipientAddress !== null) {
+                try {
+                    $recipientWallet = Wallets::findByAddress($recipientAddress);
+                    $recipient       = WalletDTO::fromModel($recipientWallet);
+                } catch (ModelNotFoundException) {
+                    $recipient = WalletDTO::stub($recipientAddress);
+                }
+            }
+        } elseif ($viewModel->isTokenTransfer()) {
+            $recipientAddress = self::getTokenTransferRecipient($viewModel);
 
             if ($recipientAddress !== null) {
                 try {
@@ -169,5 +182,16 @@ class Transaction extends Data
             sender: $sender,
             recipient: $recipient,
         );
+    }
+
+    private static function getTokenTransferRecipient(TransactionViewModel $viewModel): ?string
+    {
+        $arguments = $viewModel->methodArguments();
+
+        if (count($arguments) === 0 || ! array_key_exists(TokenTransferArgument::RECIPIENT, $arguments)) {
+            return null;
+        }
+
+        return (new ArgumentDecoder($arguments[TokenTransferArgument::RECIPIENT]))->decodeAddress();
     }
 }
