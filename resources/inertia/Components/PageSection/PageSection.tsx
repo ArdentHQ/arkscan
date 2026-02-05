@@ -17,7 +17,7 @@ export default function PageSection({
     wrapperContainerClass = "",
     borderClass = "sm:border-theme-secondary-300 dark:border-theme-dark-700",
     className = "",
-    wrapperClass = "flex flex-1 flex-col space-y-3 whitespace-nowrap",
+    wrapperClass = "flex flex-1 flex-col space-y-3 whitespace-nowrap sm:overflow-x-auto",
 }: PageSectionProps) {
     return (
         <div
