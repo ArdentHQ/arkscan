@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 use App\Console\Commands\CacheTokens;
 use App\DTO\Inertia\TransactionDetails;
-use App\Facades\Network;
 use App\Models\Token;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\NetworkCache;
-use App\Services\Cache\WalletCache;
-
 use function Tests\fakeCryptoCompare;
 
 it('normalizes invalid utf8 payloads for the dto', function () {
