@@ -573,3 +573,52 @@ it('should handle token transfer with non-existent recipient wallet', function (
     expect($subject->recipient->address)->toBe($nonExistentRecipientAddress);
     expect($subject->sender)->not->toBeNull();
 });
+
+it('should handle transfer with non-existent recipient wallet', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $walletFrom = Wallet::factory()
+        ->create([
+            'balance'    => 100.34123 * 1e18,
+            'attributes' => [
+                'username' => 'joe.blogs',
+            ],
+        ]);
+
+    // Use an address that does NOT exist in the wallets table
+    $nonExistentRecipientAddress = '0x448c9672dc0DD62188064360c704822eCB6b9Fb4';
+
+    $transaction = Transaction::factory()
+        ->create([
+            'nonce'             => 123,
+            'value'             => 10 * 1e18,
+            'transaction_index' => 13,
+            'sender_public_key' => $walletFrom->public_key,
+            'from'              => $walletFrom->address,
+            'to'                => $nonExistentRecipientAddress,
+            'gas_price'         => 20,
+            'gas'               => 21000,
+            'gas_used'          => 21000,
+            'gas_refunded'      => 0,
+            'status'            => true,
+            'block_number'      => 54321,
+            'block_hash'        => '0000000000000000000000000000000000000000000000000000000000054321',
+            'timestamp'         => 1603083256000,
+        ]);
+
+    $viewModel = new TransactionViewModel($transaction);
+
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+    ]));
+
+    // Should not throw an exception
+    $subject = TransactionDTO::fromModel($transaction);
+
+    expect($subject->isTransfer)->toBeTrue();
+    expect($subject->recipient)->not->toBeNull();
+    expect($subject->recipient->address)->toBe($nonExistentRecipientAddress);
+    expect($subject->sender)->not->toBeNull();
+});
