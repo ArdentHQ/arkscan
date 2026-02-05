@@ -242,7 +242,12 @@ export type ITransactionDetails = {
     recipientIsContract: boolean;
     validatorPublicKey: string | null;
     username: string | null;
-    tokenTransfer: { recipient: string; amount: string | null } | null;
+    tokenTransfer: {
+        recipient: string;
+        amount: string | null;
+        recipientUsername: string | null;
+        recipientHasUsername: boolean;
+    } | null;
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
     multiPaymentRecipients: { address: string; amount: string }[];
