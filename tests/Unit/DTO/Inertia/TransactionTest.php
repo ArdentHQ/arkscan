@@ -569,6 +569,7 @@ it('should handle token transfer with non-existent recipient wallet', function (
     $subject = TransactionDTO::fromModel($transaction);
 
     expect($subject->isTokenTransfer)->toBeTrue();
-    expect($subject->recipient)->toBeNull();
+    expect($subject->recipient)->not->toBeNull();
+    expect($subject->recipient->address)->toBe($nonExistentRecipientAddress);
     expect($subject->sender)->not->toBeNull();
 });
