@@ -19,13 +19,21 @@ export default function TransactionToken({
         return null;
     }
 
-    const amount =
-        details.tokenTransfer.amount !== null ? weiToArk(details.tokenTransfer.amount, network?.currency) : null;
+    const tokenTransfer = details.tokenTransfer;
+
+    const amount = tokenTransfer.amount !== null ? weiToArk(tokenTransfer.amount, network?.currency) : null;
 
     return (
         <PageSection title={t("pages.transaction.tokens_transferred")}>
             <SectionDetailRow title={t("pages.transaction.header.to")} headerWidthClass={headerWidthClass}>
-                <TransactionAddress address={details.tokenTransfer.recipient} />
+                <TransactionAddress
+                    address={tokenTransfer.recipient}
+                    wallet={{
+                        address: tokenTransfer.recipient,
+                        hasUsername: tokenTransfer.recipientHasUsername,
+                        username: tokenTransfer.recipientUsername,
+                    }}
+                />
             </SectionDetailRow>
 
             {amount !== null && (

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\DTO\Inertia;
 
+use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Enums\TokenTransferArgument;
+use App\Facades\Wallets;
 use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
 use App\Services\ExchangeRate;
@@ -25,7 +27,7 @@ class TransactionDetails extends Data
         public bool $recipientIsContract,
         public ?string $validatorPublicKey,
         public ?string $username,
-        #[LiteralTypeScriptType('{recipient: string; amount: string | null} | null')]
+        #[LiteralTypeScriptType('{recipient: string; amount: string | null; recipientUsername: string | null; recipientHasUsername: boolean} | null')]
         public ?array $tokenTransfer,
         #[LiteralTypeScriptType('{formatted: string | null; utf8: string | null; raw: string | null} | null')]
         public ?array $payload,
@@ -57,7 +59,7 @@ class TransactionDetails extends Data
     }
 
     /**
-     * @return array{recipient: string, amount: string|null}|null
+     * @return array{recipient: string, amount: string|null, recipientUsername: string|null, recipientHasUsername: bool}|null
      */
     private static function tokenTransferDetails(TransactionViewModel $transaction): ?array
     {
@@ -77,9 +79,14 @@ class TransactionDetails extends Data
             $amount = (new ArgumentDecoder($arguments[TokenTransferArgument::AMOUNT]))->decodeUnsignedInt();
         }
 
+        $recipientWallet     = Wallets::findByAddress($recipient);
+        $recipientWalletData = WalletDTO::fromModel($recipientWallet);
+
         return [
-            'recipient' => $recipient,
-            'amount'    => $amount,
+            'recipient'            => $recipient,
+            'amount'               => $amount,
+            'recipientUsername'    => $recipientWalletData->username,
+            'recipientHasUsername' => $recipientWalletData->hasUsername,
         ];
     }
 

@@ -16,7 +16,7 @@ export default function TransactionAddress({
     className,
     testId,
 }: React.HTMLAttributes<HTMLDivElement> & {
-    wallet?: IWallet | null;
+    wallet?: Pick<IWallet, "address" | "hasUsername" | "username"> | null;
     address?: string | null;
     isContract?: boolean;
     testId?: string;
