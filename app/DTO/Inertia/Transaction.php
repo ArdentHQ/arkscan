@@ -85,7 +85,7 @@ class Transaction extends Data
             }
         }
 
-        $sender      = null;
+        $sender       = null;
         $senderWallet = $transaction->relationLoaded('sender') ? $transaction->sender : null;
         if ($senderWallet === null) {
             $senderAddress = $viewModel->sender()?->address();
@@ -93,7 +93,7 @@ class Transaction extends Data
                 $senderWallet = Wallets::findByAddress($senderAddress);
             }
         }
-        
+
         if ($senderWallet !== null) {
             $sender = WalletDTO::fromModel($senderWallet);
         }
@@ -108,7 +108,7 @@ class Transaction extends Data
                     $recipientWallet = Wallets::findByAddress($recipientAddress);
                 }
             }
-            
+
             if ($recipientWallet !== null) {
                 $recipient = WalletDTO::fromModel($recipientWallet);
             }
