@@ -38,8 +38,8 @@ final class SearchController
 
         return response()->json([
             'results'    => $results
-            ->map(fn (ViewModel $result) => $this->serializeResult($result))
-            ->toArray(),
+                ->map(fn (ViewModel $result) => $this->serializeResult($result))
+                ->toArray(),
             'hasResults' => $results->isNotEmpty(),
         ]);
     }

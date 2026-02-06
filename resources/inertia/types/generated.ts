@@ -175,6 +175,14 @@ export type ISettings = {
     feeChart: boolean;
     theme: string | null;
 };
+export type IToken = {
+    address: string;
+    name: string;
+    symbol: string;
+    decimals: number;
+    totalSupply: string;
+    deploymentHash: string;
+};
 export type ITransaction = {
     hash: string;
     block_hash: string;
@@ -240,6 +248,7 @@ export type ITransactionDetails = {
         recipientUsername: string | null;
         recipientHasUsername: boolean;
     } | null;
+    token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
     multiPaymentRecipients: { address: string; amount: string }[];
     totalFiat: string;
