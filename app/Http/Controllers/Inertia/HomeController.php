@@ -85,7 +85,7 @@ final class HomeController
     public function getTransactions(): Paginator
     {
         return Transaction::query()
-            ->with('votedFor')
+            ->with(['votedFor', 'sender', 'recipientWallet'])
             ->withScope(OrderByTimestampScope::class)
             ->simplePaginate((int) config('arkscan.pagination.per_page'))
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
