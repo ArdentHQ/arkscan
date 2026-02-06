@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Contracts\RoundRepository as ContractsRoundRepository;
 use App\Facades\Network;
 use App\Models\Block;
+use App\Models\State;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Services\Cache\WalletCache;
@@ -657,6 +658,8 @@ describe('Data Boxes', function () {
 
         createRoundEntry(112167, 5944852 - Network::validatorCount(), $wallets); // create previous round
         createRoundEntry(112168, 5944852, $wallets);
+
+        State::factory()->create(['block_number' => $addBlockForNextRound ? 5944852 : 5944848]);
 
         $wallets->each(function ($wallet, $index) use ($performances, $addBlockForNextRound, $baseIndex) {
             $timestamp = Carbon::now()->add(($baseIndex + $index) * 8, 'seconds')->timestamp;
