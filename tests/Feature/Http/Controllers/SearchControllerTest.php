@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Block;
+use App\Models\Token;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
@@ -47,9 +48,13 @@ it('returns block results including validator wallet metadata', function () {
         'address' => '0x'.str_repeat('1', 40),
     ]);
 
+    $token = Token::factory()->create([
+        'address' => $validator->address,
+    ]);
+
     $walletCache = new WalletCache();
     $walletCache->setWalletNameByAddress($validator->address, 'Validator One');
-    $walletCache->setContractAddresses([$validator->address]);
+    $walletCache->setTokens(collect([strtolower($validator->address) => $token]));
 
     $block = Block::factory()->create([
         'hash'               => str_repeat('a', 64),
@@ -84,10 +89,14 @@ it('returns transaction results including vote metadata', function () {
     $recipient = Wallet::factory()->create();
     $delegate  = Wallet::factory()->create();
 
+    $token = Token::factory()->create([
+        'address' => $recipient->address,
+    ]);
+
     $senderAddress = Identity::address($sender->public_key);
     $walletCache->setWalletNameByAddress($senderAddress, 'Sender Wallet');
     $walletCache->setWalletNameByAddress($recipient->address, 'Recipient Wallet');
-    $walletCache->setContractAddresses([$recipient->address]);
+    $walletCache->setTokens(collect([strtolower($recipient->address) => $token]));
 
     $transaction = Transaction::factory()
         ->vote($delegate->address)
