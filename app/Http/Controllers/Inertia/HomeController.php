@@ -38,7 +38,7 @@ final class HomeController
     public function __invoke(Request $request): Response
     {
         return Inertia::renderWithMeta('Home/Index', 'home', [
-            'statistics' => $this->statistics(),
+            'statistics' => fn () => $this->statistics(),
 
             'transactions' => Inertia::optional(function () {
                 $paginator = $this->getTransactions();
