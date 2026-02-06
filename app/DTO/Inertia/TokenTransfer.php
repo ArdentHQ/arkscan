@@ -36,7 +36,7 @@ class TokenTransfer extends Data
             block_number: $transfer->block_number,
             index: $transfer->index,
             token: Token::fromModel($transfer->token),
-            transaction: $transfer->transaction ? Transaction::fromModel($transfer->transaction, $transfer->to) : null,
+            transaction: $transfer->transaction !== null ? Transaction::fromModel($transfer->transaction, $transfer->to) : null,
         );
     }
 }

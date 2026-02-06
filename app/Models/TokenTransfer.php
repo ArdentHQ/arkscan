@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $from
  * @property string $to
  * @property BigNumber $value
+ * @property Token $token
  */
 final class TokenTransfer extends Model
 {
