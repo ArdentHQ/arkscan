@@ -755,4 +755,11 @@ return [
             'max-price'     => 'Max Price',
         ],
     ],
+
+    'tokens' => [
+        'transfers' => [
+            'title'    => 'Token Transfers',
+            'subtitle' => 'List of token transfers on :network',
+        ],
+    ]
 ];

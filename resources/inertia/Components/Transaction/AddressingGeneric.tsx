@@ -9,9 +9,11 @@ import Tooltip from "@/Components/General/Tooltip";
 export default function AddressingGeneric({
     transaction,
     className,
+    hideTo = false,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
     transaction: ITransaction;
+    hideTo?: boolean;
 }) {
     const { t } = useTranslation();
 
@@ -40,34 +42,36 @@ export default function AddressingGeneric({
                 </Tooltip>
             </div>
 
-            <div className="flex items-center space-x-2">
-                <Badge className="encapsulated-badge w-[39px] text-center">{t("tables.transactions.to")}</Badge>
+            {!hideTo && (
+                <div className="flex items-center space-x-2">
+                    <Badge className="encapsulated-badge w-[39px] text-center">{t("tables.transactions.to")}</Badge>
 
-                <Tooltip
-                    content={recipient?.username}
-                    disabled={!recipientHasUsername || !transaction.isTransfer}
-                    dynamic
-                    className="min-w-0 truncate"
-                >
-                    {transaction.isTransfer || transaction.isTokenTransfer ? (
-                        <Link className="link whitespace-nowrap" href={route("wallet", recipient?.address ?? "")}>
-                            {recipientHasUsername ? (
-                                recipient?.username
-                            ) : (
-                                <TruncateMiddle>{recipient?.address}</TruncateMiddle>
-                            )}
-                        </Link>
-                    ) : contractAddress ? (
-                        <Link className="link whitespace-nowrap" href={route("wallet", contractAddress)}>
-                            {t("tables.transactions.contract")}
-                        </Link>
-                    ) : (
-                        <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                            {t("tables.transactions.contract")}
-                        </span>
-                    )}
-                </Tooltip>
-            </div>
+                    <Tooltip
+                        content={recipient?.username}
+                        disabled={!recipientHasUsername || !transaction.isTransfer}
+                        dynamic
+                        className="min-w-0 truncate"
+                    >
+                        {transaction.isTransfer || transaction.isTokenTransfer ? (
+                            <Link className="link whitespace-nowrap" href={route("wallet", recipient?.address ?? "")}>
+                                {recipientHasUsername ? (
+                                    recipient?.username
+                                ) : (
+                                    <TruncateMiddle>{recipient?.address}</TruncateMiddle>
+                                )}
+                            </Link>
+                        ) : contractAddress ? (
+                            <Link className="link whitespace-nowrap" href={route("wallet", contractAddress)}>
+                                {t("tables.transactions.contract")}
+                            </Link>
+                        ) : (
+                            <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                {t("tables.transactions.contract")}
+                            </span>
+                        )}
+                    </Tooltip>
+                </div>
+            )}
         </div>
     );
 }

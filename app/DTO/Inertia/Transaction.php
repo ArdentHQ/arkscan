@@ -7,7 +7,6 @@ namespace App\DTO\Inertia;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Facades\Wallets;
 use App\Models\Transaction as Model;
-// use App\Models\Wallet;
 use App\ViewModels\TransactionViewModel;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;

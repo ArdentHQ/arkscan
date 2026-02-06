@@ -183,6 +183,17 @@ export type IToken = {
     totalSupply: string;
     deploymentHash: string;
 };
+export type ITokenTransfer = {
+    transaction_hash: string;
+    from: string;
+    to: string;
+    amount: number;
+    value: string;
+    block_number: number;
+    index: number;
+    token: IToken;
+    transaction: ITransaction | null;
+};
 export type ITransaction = {
     hash: string;
     block_hash: string;
