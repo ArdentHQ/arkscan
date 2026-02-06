@@ -20,13 +20,13 @@ final class TokenTransferFactory extends Factory
         $transaction = Transaction::factory()->create();
 
         return [
-            'address' => fn () => Token::factory()->create()->address,
-            'block_number' => $transaction->block_number,
-            'index' => $this->faker->numberBetween(0, 100),
+            'address'          => fn () => Token::factory()->create()->address,
+            'block_number'     => $transaction->block_number,
+            'index'            => $this->faker->numberBetween(0, 100),
             'transaction_hash' => $transaction->hash,
-            'from' => fn () => Wallet::factory()->create()->address,
-            'to' => fn () => Wallet::factory()->create()->address,
-            'value' => (string) BigNumber::new($this->faker->numberBetween(1, 1000))->multipliedBy(1e18),
+            'from'             => fn () => Wallet::factory()->create()->address,
+            'to'               => fn () => Wallet::factory()->create()->address,
+            'value'            => (string) BigNumber::new($this->faker->numberBetween(1, 1000))->multipliedBy(1e18),
         ];
     }
 }
