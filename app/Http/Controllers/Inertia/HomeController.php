@@ -27,7 +27,7 @@ use App\Services\NumberFormatter;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -47,7 +47,7 @@ final class HomeController
                     ...$paginator->toArray(),
 
                     'meta'             => UI::getPaginationData($paginator),
-                    'noResultsMessage' => $this->noTransactionsResultsMessage($paginator->total()),
+                    'noResultsMessage' => $this->noTransactionsResultsMessage(isEmpty: $paginator->isEmpty()),
                 ];
             }),
 
@@ -60,7 +60,7 @@ final class HomeController
                     ...$paginator->toArray(),
 
                     'meta'             => UI::getPaginationData($paginator),
-                    'noResultsMessage' => $this->noBlocksResultsMessage($paginator->total()),
+                    'noResultsMessage' => $this->noBlocksResultsMessage($paginator->isEmpty()),
                 ];
             }),
 
@@ -68,33 +68,33 @@ final class HomeController
         ]);
     }
 
-    public function noTransactionsResultsMessage(int $total): ?string
+    public function noTransactionsResultsMessage(bool $isEmpty): ?string
     {
-        return $total === 0
+        return $isEmpty
             ? (string) trans('tables.transactions.no_results.no_results')
             : null;
     }
 
-    public function noBlocksResultsMessage(int $total): ?string
+    public function noBlocksResultsMessage(bool $isEmpty): ?string
     {
-        return $total === 0
+        return $isEmpty
             ? (string) trans('tables.blocks.no_results')
             : null;
     }
 
-    public function getTransactions(): LengthAwarePaginator
+    public function getTransactions(): Paginator
     {
         return Transaction::query()
             ->with('votedFor')
             ->withScope(OrderByTimestampScope::class)
-            ->paginate((int) config('arkscan.pagination.per_page'))
+            ->simplePaginate((int) config('arkscan.pagination.per_page'))
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
     }
 
-    public function getBlocks(): LengthAwarePaginator
+    public function getBlocks(): Paginator
     {
         return Block::withScope(OrderByHeightScope::class)
-            ->paginate((int) config('arkscan.pagination.per_page'))
+            ->simplePaginate((int) config('arkscan.pagination.per_page'))
             ->through(fn (Block $block) => BlockDTO::fromModel($block));
     }
 
