@@ -11,6 +11,6 @@ final class CacheNetworkHeight
 {
     public static function execute(): int
     {
-        return (new NetworkCache())->setHeight(fn (): int => State::where('id', 1)->first()?->block_number->toNumber() ?? 0);
+        return (new NetworkCache())->setHeight(fn (): int => State::latest()->block_number->toNumber());
     }
 }
