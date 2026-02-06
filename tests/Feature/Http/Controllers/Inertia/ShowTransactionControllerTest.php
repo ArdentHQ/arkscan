@@ -49,7 +49,7 @@ it('should return decoded token transfer details', function () {
     Wallet::factory()->create(['address' => Network::knownContract('consensus')]);
 
     $transaction = Transaction::factory()
-        ->tokenTransfer($recipient->address, 1)
+        ->tokenTransfer($recipient->address, BigNumber::new('1'))
         ->create([
             'block_number' => 995,
             'status'       => true,

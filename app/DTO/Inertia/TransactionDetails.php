@@ -9,6 +9,7 @@ use App\Enums\TokenTransferArgument;
 use App\Facades\Wallets;
 use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
+use App\Services\Cache\WalletCache;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\ViewModels\TransactionViewModel;
@@ -29,6 +30,7 @@ class TransactionDetails extends Data
         public ?string $username,
         #[LiteralTypeScriptType('{recipient: string; amount: string | null; recipientUsername: string | null; recipientHasUsername: boolean} | null')]
         public ?array $tokenTransfer,
+        public ?Token $token,
         #[LiteralTypeScriptType('{formatted: string | null; utf8: string | null; raw: string | null} | null')]
         public ?array $payload,
         #[LiteralTypeScriptType('{address: string; amount: string}[]')]
@@ -43,14 +45,21 @@ class TransactionDetails extends Data
         $viewModel = new TransactionViewModel($transaction);
         $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
 
+        $recipient = $viewModel->recipient();
+        $token     = $recipient !== null ? (new WalletCache())->getToken($recipient->address()) : null;
+        if ($token !== null) {
+            $token = Token::fromModel($token);
+        }
+
         return new self(
             timestampFormatted: Timestamp::fromUnixHuman($transaction->timestamp),
             confirmations: $viewModel->confirmations(),
             transactionError: $viewModel->transactionError(),
-            recipientIsContract: $viewModel->recipient()?->isContract() ?? false,
+            recipientIsContract: $recipient?->isContract() ?? false,
             validatorPublicKey: $viewModel->validatorPublicKey(),
             username: $username,
             tokenTransfer: self::tokenTransferDetails($viewModel),
+            token: $token,
             payload: self::payloadDetails($viewModel),
             multiPaymentRecipients: self::multiPaymentRecipients($viewModel),
             totalFiat: $viewModel->totalFiat(true),

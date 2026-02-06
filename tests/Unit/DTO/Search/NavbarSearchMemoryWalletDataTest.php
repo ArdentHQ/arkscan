@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\DTO\MemoryWallet;
 use App\DTO\Search\NavbarSearchMemoryWalletData;
+use App\Models\Token;
 use App\Services\Cache\WalletCache;
 use Illuminate\Support\Facades\Cache;
 
@@ -16,9 +17,13 @@ it('maps cached metadata from a memory wallet instance', function () {
 
     $address = '0x'.str_repeat('2', 40);
 
+    $token = Token::factory()->create([
+        'address' => $address,
+    ]);
+
     $walletCache = new WalletCache();
     $walletCache->setWalletNameByAddress($address, 'Cached Username');
-    $walletCache->setContractAddresses([$address]);
+    $walletCache->setTokens(collect([$address => $token]));
 
     $wallet = MemoryWallet::fromAddress($address);
 

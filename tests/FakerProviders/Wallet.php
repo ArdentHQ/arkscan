@@ -31,6 +31,11 @@ final class Wallet extends Base
         return $this->availableWallets->shift();
     }
 
+    public function address(): string
+    {
+        return $this->wallet()['address'];
+    }
+
     public function publicKey(): string
     {
         return Str::limit(hash('sha512', Str::random(8)), 66);
