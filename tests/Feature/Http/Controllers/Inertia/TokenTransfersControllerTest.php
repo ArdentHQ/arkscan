@@ -42,22 +42,7 @@ function performRequest($context, $withReload = true, $pageCallback = null, $rel
 }
 
 it('should render the page without any errors', function () {
-    $recipientWallet = Wallet::factory()->create();
-
-    Wallet::factory()->create([
-        'address' => Network::knownContract('consensus'),
-    ]);
-
-    $transaction = Transaction::factory()
-        ->tokenTransfer(
-            $recipientWallet->address,
-            BigNumber::new(100)->multipliedBy(1e18),
-        )
-        ->create();
-
-    TokenTransfer::factory(3)->create([
-        'transaction_hash' => $transaction->hash,
-    ]);
+    TokenTransfer::factory(3)->create();
 
     performRequest($this, reloadCallback: function (Assert $page) {
         $page->has('transfers.data', 3)
@@ -76,22 +61,7 @@ it('should provide the no results message if no transfers exist', function () {
 });
 
 it('should not include contract deployment transactions', function () {
-    $recipientWallet = Wallet::factory()->create();
-
-    Wallet::factory()->create([
-        'address' => Network::knownContract('consensus'),
-    ]);
-
-    $transaction = Transaction::factory()
-        ->tokenTransfer(
-            $recipientWallet->address,
-            BigNumber::new(100)->multipliedBy(1e18),
-        )
-        ->create();
-
-    TokenTransfer::factory(3)->create([
-        'transaction_hash' => $transaction->hash,
-    ]);
+    TokenTransfer::factory(3)->create();
 
     $contractDeployment = Transaction::factory()->contractDeployment()->create();
 

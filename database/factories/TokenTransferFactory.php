@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Facades\Network;
 use App\Models\Token;
 use App\Models\TokenTransfer;
 use App\Models\Transaction;
@@ -17,7 +18,18 @@ final class TokenTransferFactory extends Factory
 
     public function definition()
     {
-        $transaction = Transaction::factory()->create();
+        Wallet::factory()->create([
+            'address' => Network::knownContract('consensus'),
+        ]);
+
+        $transaction = Transaction::factory()
+            ->tokenTransfer(
+                Wallet::factory()->create()->address,
+                BigNumber::new($this->faker->numberBetween(1, 1000))->multipliedBy(1e18),
+            )
+            ->create([
+                'status' => true,
+            ]);
 
         return [
             'address' => fn () => Token::factory()->create()->address,
