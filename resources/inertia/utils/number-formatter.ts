@@ -143,7 +143,12 @@ function stripTrailingZeros(str: string): string {
     return `${parts[0]}.${fractional}`;
 }
 
-export function networkCurrency(value: number | string, decimals = 8, withSuffix = false, currency: string | undefined = undefined): string {
+export function networkCurrency(
+    value: number | string,
+    decimals = 8,
+    withSuffix = false,
+    currency: string | undefined = undefined,
+): string {
     const numeric = Number(value) || 0;
 
     // Workaround similar to PHP/other formatters:
