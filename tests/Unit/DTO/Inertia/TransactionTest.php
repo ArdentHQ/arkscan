@@ -11,6 +11,7 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\ViewModels\TransactionViewModel;
 use Carbon\Carbon;
+use App\Services\BigNumber;
 
 it('should make an instance', function () {
     $this->freezeTime();
@@ -541,7 +542,7 @@ it('should handle token transfer with non-existent recipient wallet', function (
     $nonExistentRecipientAddress = '0x448c9672dc0DD62188064360c704822eCB6b9Fb4';
 
     $transaction = Transaction::factory()
-        ->tokenTransfer($nonExistentRecipientAddress, 1000)
+        ->tokenTransfer($nonExistentRecipientAddress, BigNumber::new(1000))
         ->create([
             'nonce'             => 123,
             'value'             => 0,
