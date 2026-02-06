@@ -7,11 +7,11 @@ use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
+use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\ViewModels\TransactionViewModel;
 use Carbon\Carbon;
-use App\Services\BigNumber;
 
 it('should make an instance', function () {
     $this->freezeTime();
