@@ -761,5 +761,5 @@ return [
             'title'    => 'Token Transfers',
             'subtitle' => 'List of token transfers on :network',
         ],
-    ]
+    ],
 ];

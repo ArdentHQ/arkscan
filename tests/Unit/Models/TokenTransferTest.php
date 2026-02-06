@@ -7,11 +7,11 @@ use App\Models\TokenTransfer;
 use App\Models\Transaction;
 
 beforeEach(function () {
-    $this->transaction = Transaction::factory()->create();
-    $this->token = Token::factory()->create();
+    $this->transaction   = Transaction::factory()->create();
+    $this->token         = Token::factory()->create();
     $this->tokenTransfer = TokenTransfer::factory()->create([
         'transaction_hash' => $this->transaction->hash,
-        'address' => $this->token->address,
+        'address'          => $this->token->address,
     ]);
 });
 
