@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use App\Actions\CacheNetworkHeight;
-use App\Models\Block;
+use App\Models\State;
 use App\Services\Cache\NetworkCache;
 
 it('should execute the command', function () {
-    Block::factory()->create(['number' => 1000]);
+    State::factory()->create(['block_number' => 1000]);
 
     CacheNetworkHeight::execute();
 
