@@ -13,7 +13,6 @@ function AmountOutput({
     isSentToSelf,
     amount,
     hideCurrency = false,
-    currency,
 }: {
     transaction?: ITransaction;
     isSent: boolean;
@@ -21,7 +20,6 @@ function AmountOutput({
     isSentToSelf: boolean;
     amount: string | number;
     hideCurrency?: boolean;
-    currency?: string;
 }) {
     const { network } = useSharedData();
 
@@ -31,15 +29,15 @@ function AmountOutput({
 
             {typeof amount === "number" ? (
                 transaction ? (
-                    <AmountSmall amount={amount} hideTooltip hideCurrency={hideCurrency} currency={currency} />
+                    <AmountSmall amount={amount} hideTooltip hideCurrency={hideCurrency} />
                 ) : (
-                    <span>{networkCurrency(amount, 8, !hideCurrency, currency)}</span>
+                    <span>{networkCurrency(amount, 8, !hideCurrency)}</span>
                 )
             ) : (
                 <div className="inline-flex space-x-1">
                     <span>{amount}</span>
 
-                    {!hideCurrency && <span>{currency || network.currency}</span>}
+                    {!hideCurrency && <span>{network.currency}</span>}
                 </div>
             )}
         </span>
@@ -56,7 +54,6 @@ export default function AmountFiatTooltip({
     className = "text-sm",
     withoutStyling = false,
     hideCurrency = false,
-    currency,
 }: {
     transaction?: ITransaction;
     isSent?: boolean;
@@ -67,7 +64,6 @@ export default function AmountFiatTooltip({
     className?: string;
     withoutStyling?: boolean;
     hideCurrency?: boolean;
-    currency?: string;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
@@ -125,7 +121,7 @@ export default function AmountFiatTooltip({
             {amountForItself !== undefined && amountForItself > 0 && (
                 <Tooltip
                     content={t("general.fiat_excluding_self", {
-                        amount: formatCurrency(amountForItself, currency || network!.currency),
+                        amount: formatCurrency(amountForItself, network!.currency),
                     })}
                 >
                     <div className="mr-1.5 flex h-full items-center bg-[#F6DFB5] px-1.5 py-[4.5px] text-theme-orange-dark dim:bg-theme-failed-state-bg dark:bg-theme-failed-state-bg dark:text-theme-dark-50">
@@ -143,12 +139,11 @@ export default function AmountFiatTooltip({
                         isSentToSelf={isSentToSelf}
                         amount={amount}
                         hideCurrency={hideCurrency}
-                        currency={currency}
                     />
                 </Tooltip>
             )}
 
-            {(!fiat || !network.canBeExchanged) && (
+            {!fiat && (
                 <AmountOutput
                     transaction={transaction}
                     isSent={isSent}
@@ -156,7 +151,6 @@ export default function AmountFiatTooltip({
                     isSentToSelf={isSentToSelf}
                     amount={amount}
                     hideCurrency={hideCurrency}
-                    currency={currency}
                 />
             )}
         </span>
