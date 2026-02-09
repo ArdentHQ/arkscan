@@ -137,7 +137,7 @@ final class WalletController
 
         return Transaction::query()
             ->withTypeFilter($this->filters($this->view))
-            ->with('votedFor')
+            ->with(['votedFor', 'sender', 'recipientWallet'])
             ->where(function ($query) use ($wallet, $filters) {
                 $query->where(fn ($query) => $query->when($filters['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
                     ->orWhere(fn ($query) => $query->when($filters['incoming'], fn ($query) => $query->where('to', $wallet->address)))
