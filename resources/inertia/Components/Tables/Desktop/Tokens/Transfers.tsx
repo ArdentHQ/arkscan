@@ -10,11 +10,11 @@ import Method from "@/Components/Transaction/Method";
 import TableHeader from "../TableHeader";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import LoadingText from "@/Components/Loading/Text";
-import Addressing from "@/Components/Transaction/Addressing";
 import Amount from "@/Components/Tokens/Amount";
+import AddressingGeneric from "@/Components/Tokens/AddressingGeneric";
+import Token from "@/Components/Tokens/Token";
 
 export function Row({ row }: { row: ITokenTransfer }) {
-    console.log(row);
     return (
         <tr className="text-sm font-semibold">
             <TableCell className="w-[60px]">
@@ -30,11 +30,15 @@ export function Row({ row }: { row: ITokenTransfer }) {
             </TableCell>
 
             <TableCell>
-                <Addressing transaction={row.transaction!} isReceived />
+                <AddressingGeneric transfer={row} />
             </TableCell>
 
             <TableCell className="text-right" lastOn="lg">
                 <Amount testId={`transaction:${row.transaction_hash}:amount`} tokenTransfer={row} breakpoint="lg" />
+            </TableCell>
+
+            <TableCell breakpoint="xl" responsive>
+                <Token token={row.token} className="w-[120px]" />
             </TableCell>
         </tr>
     );
@@ -71,6 +75,10 @@ export function TransfersTable({
 
                     <TableHeader className="last-until-lg text-right" last-on="lg">
                         {t("tables.tokens.amount_generic")}
+                    </TableHeader>
+
+                    <TableHeader className="w-[120px]" breakpoint="xl" responsive>
+                        {t("tables.tokens.token")}
                     </TableHeader>
                 </>
             }
@@ -132,6 +140,12 @@ export default function TransfersTableWrapper({
                         name: t("tables.tokens.amount_generic"),
                         className: "text-right w-[100px]",
                         lastOn: "lg",
+                    },
+                    {
+                        name: t("tables.tokens.token"),
+                        className: "w-[120px]",
+                        breakpoint: "xl",
+                        responsive: true,
                     },
                 ]}
             />

@@ -32,6 +32,7 @@ return [
 
     'tokens' => [
         'amount_generic' => 'Amount',
+        'token' => 'Token',
 
         'transfers' => [
             'no_results' => 'No token transfers could be found.',

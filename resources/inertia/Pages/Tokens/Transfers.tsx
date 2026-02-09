@@ -9,7 +9,7 @@ import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import { useEffect } from "react";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 
-export default function TransactionsList({ network, statistics }: PageProps<TransactionsProps>) {
+export default function TransactionsList({ network }: PageProps<TransactionsProps>) {
     const { t } = useTranslation();
     const { listen, enabled: usesBroadcasting } = useWebhooks();
 

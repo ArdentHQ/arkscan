@@ -10,7 +10,8 @@ import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Tokens/Amount";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
-import Addressing from "@/Components/Transaction/Addressing";
+import AddressingGeneric from "@/Components/Tokens/AddressingGeneric";
+import Token from "@/Components/Tokens/Token";
 
 export function TransfersMobileTable({
     transfers,
@@ -40,14 +41,18 @@ export function TransfersMobileTable({
                     }
                 >
                     <TableCell label={transfer.transaction!.type} className="sm:flex-1">
-                        <Addressing transaction={transfer.transaction!} isReceived={true} />
+                        <AddressingGeneric transfer={transfer} />
                     </TableCell>
 
-                    <TableCell label={t("tables.tokens.amount_generic")}>
+                    <TableCell label={t("tables.tokens.amount_generic")} className="sm:flex-1">
                         <Amount
                             testId={`transaction:mobile:${transfer.transaction!.hash}:amount`}
                             tokenTransfer={transfer}
                         />
+                    </TableCell>
+
+                    <TableCell label={t("tables.tokens.token")}>
+                        <Token token={transfer.token} className="w-full sm:w-[120px]" />
                     </TableCell>
                 </MobileTableRow>
             ))}

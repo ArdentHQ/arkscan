@@ -187,6 +187,7 @@ export type ITokenTransfer = {
     transaction_hash: string;
     from: string;
     to: string;
+    toUsername: string;
     amount: number;
     value: string;
     block_number: number;

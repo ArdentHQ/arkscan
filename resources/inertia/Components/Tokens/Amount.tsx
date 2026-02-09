@@ -1,7 +1,6 @@
-import useSharedData from "@/hooks/use-shared-data";
 import { ITokenTransfer } from "@/types/generated";
 import classNames from "classnames";
-import AmountFiatTooltip from "../General/AmountFiatTooltip";
+import AmountSmall from "../General/AmountSmall";
 
 export default function Amount({
     tokenTransfer,
@@ -31,13 +30,12 @@ export default function Amount({
             })}
             data-testid={testId}
         >
-            <div className="inline-block leading-4.25">
-                <AmountFiatTooltip
-                    amount={tokenTransfer.amount}
-                    isReceived={true}
-                    hideCurrency={hideCurrency}
-                    currency={tokenTransfer.token.symbol}
-                />
+            <div className="inline-block space-x-1 leading-4.25">
+                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                    <AmountSmall amount={tokenTransfer.amount} hideTooltip hideCurrency={true} />
+                </span>
+
+                {!hideCurrency && <span>{tokenTransfer.token.symbol}</span>}
             </div>
         </div>
     );
