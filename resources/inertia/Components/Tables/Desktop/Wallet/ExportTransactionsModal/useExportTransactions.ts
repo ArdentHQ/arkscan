@@ -344,6 +344,10 @@ export default function useExportTransactions({
         selectedTypes.forEach((type) => {
             if (type === "transfers") {
                 dataFilters.push("0x");
+
+                if (contractMethods?.transfer) {
+                    dataFilters.push(contractMethods.transfer);
+                }
             }
 
             if (type === "votes") {
