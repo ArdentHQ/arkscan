@@ -21,15 +21,15 @@ class Token extends Data
     ) {
     }
 
-    public static function fromModel(Model $exchange): self
+    public static function fromModel(Model $token): self
     {
         return new self(
-            address: $exchange->address,
-            name: $exchange->name,
-            symbol: $exchange->symbol,
-            decimals: $exchange->decimals,
-            totalSupply: (string) $exchange->total_supply,
-            deploymentHash: $exchange->deployment_hash,
+            address: $token->address,
+            name: $token->name,
+            symbol: $token->symbol,
+            decimals: $token->decimals,
+            totalSupply: (string) $token->total_supply,
+            deploymentHash: $token->deployment_hash,
         );
     }
 }

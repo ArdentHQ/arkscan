@@ -143,7 +143,12 @@ function stripTrailingZeros(str: string): string {
     return `${parts[0]}.${fractional}`;
 }
 
-export function networkCurrency(value: number | string, decimals = 8, withSuffix = false): string {
+export function networkCurrency(
+    value: number | string,
+    decimals = 8,
+    withSuffix = false,
+    currency: string | undefined = undefined,
+): string {
     const numeric = Number(value) || 0;
 
     // Workaround similar to PHP/other formatters:
@@ -164,6 +169,7 @@ export function networkCurrency(value: number | string, decimals = 8, withSuffix
     const cfg = useSharedData();
     const networkCurrency =
         // common possible shapes:
+        currency ??
         // { network: { currency: 'ARK' } }
         cfg.network?.currency ??
         // { networkCurrency: 'ARK' }

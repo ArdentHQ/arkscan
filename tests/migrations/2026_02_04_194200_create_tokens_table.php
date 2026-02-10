@@ -15,7 +15,7 @@ return new class() extends Migration {
             $table->string('name');
             $table->unsignedTinyInteger('decimals');
             $table->addColumn('numeric', 'total_supply');
-            $table->string('deployment_hash');
+            $table->string('deployment_hash')->nullable();
         });
     }
 };

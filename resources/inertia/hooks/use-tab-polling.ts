@@ -22,7 +22,7 @@ export function useTabPolling(
             return;
         }
 
-        router.on("success", () => {
+        const removeSuccessListener = router.on("success", () => {
             if (pollingTimerRef.current) {
                 clearTimeout(pollingTimerRef.current);
             }
@@ -53,11 +53,11 @@ export function useTabPolling(
         });
 
         return () => {
-            if (!pollingTimerRef.current) {
-                return;
-            }
+            removeSuccessListener();
 
-            clearTimeout(pollingTimerRef.current);
+            if (pollingTimerRef.current) {
+                clearTimeout(pollingTimerRef.current);
+            }
         };
     }, [currentTab]);
 }

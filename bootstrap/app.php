@@ -57,6 +57,10 @@ $app->afterResolving(
         }
 
         (new Exceptions($handler))->respond(function (Response $response, Throwable $exception, Request $request) {
+            if (! app()->environment('production') || config('app.debug')) {
+                return $response;
+            }
+
             if ($request->header('X-Inertia') !== 'true') {
                 return $response;
             }
