@@ -26,8 +26,8 @@ use App\Services\MarketCap;
 use App\Services\NumberFormatter;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\UserInterface\UI;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -82,19 +82,19 @@ final class HomeController
             : null;
     }
 
-    public function getTransactions(): Paginator
+    public function getTransactions(): LengthAwarePaginator
     {
         return Transaction::query()
             ->with(['votedFor', 'sender', 'recipientWallet', 'multiPaymentRecipients'])
             ->withScope(OrderByTimestampScope::class)
-            ->simplePaginate((int) config('arkscan.pagination.per_page'))
+            ->paginate((int) config('arkscan.pagination.per_page'))
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
     }
 
-    public function getBlocks(): Paginator
+    public function getBlocks(): LengthAwarePaginator
     {
         return Block::withScope(OrderByHeightScope::class)
-            ->simplePaginate((int) config('arkscan.pagination.per_page'))
+            ->paginate((int) config('arkscan.pagination.per_page'))
             ->through(fn (Block $block) => BlockDTO::fromModel($block));
     }
 
