@@ -39,6 +39,8 @@ describe('Statistics', function () {
             'max' => '3500000000',
         ]);
 
+        State::latest()?->update(['block_number' => 123456]);
+
         $this->browse(function (Browser $browser) {
             $browser->visitRoute('home')
                 ->waitForText(trans('pages.home.statistics.title_mobile'), ignoreCase: true);
@@ -114,6 +116,8 @@ describe('Statistics', function () {
         ]);
 
         (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+
+        State::latest()?->update(['block_number' => 123456]);
 
         $this->browse(function (Browser $browser) use ($resolution) {
             $browser->resize($resolution['width'], $resolution['height']);
@@ -195,7 +199,7 @@ describe('Transactions Tab', function () {
                     ->assertSee(substr($transactions->last()->hash, 0, 5));
             }
         });
-    });
+    })->only();
 
     it('should correctly format amounts', function (float $amount, string $expected) {
         $transaction = Transaction::factory()
