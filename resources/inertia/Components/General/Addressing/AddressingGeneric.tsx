@@ -19,7 +19,7 @@ export function AddressingGeneric({
     sender: string;
     senderUsername?: string;
     recipient: string;
-    recipientUsername?: string;
+    recipientUsername?: string | null;
     contractAddress: string;
     withTruncate?: boolean;
     disableTooltip?: boolean;
