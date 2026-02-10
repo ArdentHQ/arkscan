@@ -10,7 +10,6 @@ export default function MobileTableRow({
     contentClass = "",
     className = "",
     children,
-    ...props
 }: React.PropsWithChildren<{
     header: React.ReactNode;
     expandable?: boolean;
@@ -18,7 +17,6 @@ export default function MobileTableRow({
     expandDisabled?: boolean;
     contentClass?: string;
     className?: string;
-    
 }>) {
     const [isExpanded, setIsExpanded] = useState(expandable ? false : true);
 
@@ -28,7 +26,6 @@ export default function MobileTableRow({
                 "rounded border border-theme-secondary-300 text-sm dark:border-theme-dark-700": true,
                 [className]: true,
             })}
-            {...props}
         >
             <div
                 className={classNames({
