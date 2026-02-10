@@ -199,7 +199,7 @@ describe('Transactions Tab', function () {
                     ->assertSee(substr($transactions->last()->hash, 0, 5));
             }
         });
-    })->only();
+    });
 
     it('should correctly format amounts', function (float $amount, string $expected) {
         $transaction = Transaction::factory()
