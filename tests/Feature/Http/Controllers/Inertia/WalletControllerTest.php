@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Console\Commands\CacheValidatorsWithVoters;
 use App\Facades\Network;
 use App\Models\Block;
+use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -44,6 +45,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                     ],
                 ])
                 ->missing('transactions')
+                ->missing('tokenTransfers')
                 ->missing('blocks')
                 ->missing('voters')
                 ->component('Wallet/Wallet');
@@ -56,7 +58,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                 return;
             }
 
-            $page->reloadOnly('wallet,transactions,blocks,voters', function (Assert $reload) use ($reloadCallback) {
+            $page->reloadOnly('wallet,transactions,tokenTransfers,blocks,voters', function (Assert $reload) use ($reloadCallback) {
                 if (is_callable($reloadCallback)) {
                     $reloadCallback($reload);
                 }
@@ -102,6 +104,58 @@ it('should have transactions', function () {
                 ])
                 ->where('transactions.data', function ($transactions) use ($sent, $received) {
                     $transactionIds = collect($transactions)->pluck('hash');
+
+                    return $transactionIds->contains($sent->hash) && $transactionIds->contains($received->hash);
+                });
+        },
+    );
+});
+
+it('should have token transfers', function () {
+    $altWallet = Wallet::factory()->create();
+
+    $sent = Transaction::factory()
+        ->tokenTransfer($altWallet->address, BigNumber::new(1 * 1e18))
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'from'              => $this->subject->address,
+        ])
+        ->fresh();
+
+    $received = Transaction::factory()
+        ->tokenTransfer($this->subject->address, BigNumber::new(1 * 1e18))
+        ->create([
+            'sender_public_key' => $altWallet->public_key,
+            'from'              => $altWallet->address,
+        ])
+        ->fresh();
+
+    TokenTransfer::factory()->create([
+        'transaction_hash' => $sent->hash,
+        'from'             => $this->subject->address,
+        'to'               => $altWallet->address,
+    ]);
+
+    TokenTransfer::factory()->create([
+        'transaction_hash' => $received->hash,
+        'from'             => $altWallet->address,
+        'to'               => $this->subject->address,
+    ]);
+
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) use ($sent, $received) {
+            $reload->has('tokenTransfers.data', 2)
+                ->where('tokenTransfers.total', 2)
+                ->where('tokenTransfers.current_page', 1)
+                ->where('tokenTransfers.last_page', 1)
+                ->where('tokenTransfers.meta', [
+                    'pageName'  => 'page',
+                    'urlParams' => [],
+                ])
+                ->where('tokenTransfers.data', function ($transactions) use ($sent, $received) {
+                    $transactionIds = collect($transactions)->pluck('transaction_hash');
 
                     return $transactionIds->contains($sent->hash) && $transactionIds->contains($received->hash);
                 });
@@ -756,6 +810,18 @@ it('should show no results message if no transactions matching filter', function
             $reload->has('transactions.data', 0)
                 ->where('transactions.total', 0)
                 ->where('transactions.noResultsMessage', trans('tables.transactions.no_results.no_results'));
+        },
+    );
+});
+
+it('should show no results message if no token transfers', function () {
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) {
+            $reload->has('tokenTransfers.data', 0)
+                ->where('tokenTransfers.total', 0)
+                ->where('tokenTransfers.noResultsMessage', trans('tables.tokens.transfers.no_results'));
         },
     );
 });
