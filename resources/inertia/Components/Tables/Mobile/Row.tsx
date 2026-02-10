@@ -18,7 +18,6 @@ export default function MobileTableRow({
     expandDisabled?: boolean;
     contentClass?: string;
     className?: string;
-    
 }>) {
     const [isExpanded, setIsExpanded] = useState(expandable ? false : true);
 
