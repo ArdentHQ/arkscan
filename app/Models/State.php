@@ -48,11 +48,8 @@ final class State extends Model
      */
     protected $table = 'state';
 
-    /**
-     * @return State
-     */
-    public static function latest(): self
+    public static function latest(): ?self
     {
-        return self::where('id', 1)->firstOrFail();
+        return self::where('id', 1)->first();
     }
 }

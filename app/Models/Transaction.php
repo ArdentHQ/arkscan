@@ -225,6 +225,11 @@ final class Transaction extends Model
         return null;
     }
 
+    public function recipientWallet(): BelongsTo
+    {
+        return $this->belongsTo(Wallet::class, 'to', 'address');
+    }
+
     /**
      * A receipt belongs to a transaction.
      *

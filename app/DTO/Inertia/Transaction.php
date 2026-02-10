@@ -84,22 +84,31 @@ class Transaction extends Data
             }
         }
 
-        $sender        = null;
-        $senderAddress = $viewModel->sender()?->address();
-        if ($senderAddress !== null) {
-            $senderWallet = Wallets::findByAddress($senderAddress);
+        $sender       = null;
+        $senderWallet = $transaction->relationLoaded('sender') ? $transaction->sender : null;
+        if ($senderWallet === null) {
+            $senderAddress = $viewModel->sender()?->address();
+            if ($senderAddress !== null) {
+                $senderWallet = Wallets::findByAddress($senderAddress);
+            }
+        }
 
+        if ($senderWallet !== null) {
             $sender = WalletDTO::fromModel($senderWallet);
         }
 
         $recipient = null;
 
         if ($viewModel->isTransfer() || $viewModel->isTokenTransfer()) {
-            $recipientAddress = $viewModel->recipient()?->address();
+            $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
+            if ($recipientWallet === null) {
+                $recipientAddress = $viewModel->recipient()?->address();
+                if ($recipientAddress !== null) {
+                    $recipientWallet = Wallets::findByAddress($recipientAddress);
+                }
+            }
 
-            if ($recipientAddress !== null) {
-                $recipientWallet = Wallets::findByAddress($recipientAddress);
-
+            if ($recipientWallet !== null) {
                 $recipient = WalletDTO::fromModel($recipientWallet);
             }
         }
