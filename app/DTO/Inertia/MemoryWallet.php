@@ -33,14 +33,8 @@ class MemoryWallet extends Data
         );
     }
 
-    public static function fromAddress(string $address, ?string $publicKey = null): self
+    public static function fromAddress(string $address): self
     {
-        if ($publicKey !== null) {
-            $memoryWallet = Base::fromPublicKey($address, $publicKey);
-        } else {
-            $memoryWallet = Base::fromAddress($address, null);
-        }
-
-        return self::fromBase($memoryWallet);
+        return self::fromBase(Base::fromAddress($address));
     }
 }
