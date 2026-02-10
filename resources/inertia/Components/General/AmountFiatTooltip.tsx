@@ -143,7 +143,7 @@ export default function AmountFiatTooltip({
                 </Tooltip>
             )}
 
-            {!fiat && (
+            {(!fiat || !network.canBeExchanged) && (
                 <AmountOutput
                     transaction={transaction}
                     isSent={isSent}
