@@ -1,6 +1,7 @@
 name: CI
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - "master"
@@ -179,7 +180,7 @@ jobs:
     browser:
         needs: [conflicts, analyse, format]
 
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' || github.event_name == 'workflow_dispatch'
 
         runs-on: ubuntu-latest
 
@@ -287,5 +288,5 @@ jobs:
               if: failure()
               uses: actions/upload-artifact@v4
               with:
-                name: dusk-screenshots
-                path: tests/Browser/screenshots
+                  name: dusk-screenshots
+                  path: tests/Browser/screenshots
