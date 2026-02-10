@@ -32,4 +32,15 @@ class MemoryWallet extends Data
             isValidator: $wallet->isValidator(),
         );
     }
+
+    public static function fromAddress(string $address, ?string $publicKey = null): self
+    {
+        if ($publicKey !== null) {
+            $memoryWallet = Base::fromPublicKey($address, $publicKey);
+        } else {
+            $memoryWallet = Base::fromAddress($address, null);
+        }
+
+        return self::fromBase($memoryWallet);
+    }
 }

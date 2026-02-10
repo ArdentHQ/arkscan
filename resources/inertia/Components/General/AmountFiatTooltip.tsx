@@ -48,6 +48,7 @@ export default function AmountFiatTooltip({
     transaction,
     isSent = false,
     isReceived = false,
+    isSentToSelf = false,
     amount,
     amountForItself,
     fiat,
@@ -58,6 +59,7 @@ export default function AmountFiatTooltip({
     transaction?: ITransaction;
     isSent?: boolean;
     isReceived?: boolean;
+    isSentToSelf?: boolean;
     amount: string | number;
     amountForItself?: number;
     fiat?: string | number;
@@ -70,7 +72,7 @@ export default function AmountFiatTooltip({
 
     const classes: string[] = ["inline-flex items-center font-semibold", className];
 
-    let isSentToSelf = typeof amountForItself === "number" && amountForItself > 0;
+    const hasAmountForSelf = typeof amountForItself === "number" && amountForItself > 0;
 
     let sent = isSent;
 
@@ -82,14 +84,14 @@ export default function AmountFiatTooltip({
         if (sent || isReceived) {
             classes.push("flex whitespace-nowrap rounded border");
 
-            if (isSentToSelf) {
+            if (hasAmountForSelf) {
                 classes.push("pr-1.5");
             } else {
                 classes.push("px-1.5 py-0.5");
             }
         }
 
-        if (transaction && transaction.isSentToSelf) {
+        if ((transaction && transaction.isSentToSelf) || isSentToSelf) {
             classes.push(
                 "fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent",
                 "dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200 encapsulated-badge",
@@ -118,7 +120,7 @@ export default function AmountFiatTooltip({
 
     return (
         <span className={classes.join(" ")}>
-            {amountForItself !== undefined && amountForItself > 0 && (
+            {hasAmountForSelf && (
                 <Tooltip
                     content={t("general.fiat_excluding_self", {
                         amount: formatCurrency(amountForItself, network!.currency),

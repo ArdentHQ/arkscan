@@ -185,9 +185,8 @@ export type IToken = {
 };
 export type ITokenTransfer = {
     transaction_hash: string;
-    from: string;
-    to: string;
-    toUsername: string | null;
+    from: IMemoryWallet;
+    to: IMemoryWallet;
     amount: number;
     value: string;
     block_number: number;
