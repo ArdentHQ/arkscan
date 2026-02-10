@@ -51,6 +51,40 @@ class Wallet extends Data
     ) {
     }
 
+    public static function stub(string $address): self
+    {
+        return new self(
+            address: $address,
+            balance: '0',
+            nonce: '0',
+            public_key: null,
+            attributes: null,
+            isActive: false,
+            isCold: false,
+            isValidator: false,
+            isLegacy: false,
+            isDormant: false,
+            isResigned: false,
+            legacyAddress: null,
+            username: null,
+            hasUsername: false,
+            isKnown: false,
+            isOwnedByExchange: false,
+            hasSecondSignature: false,
+            votes: '0',
+            productivity: 0.0,
+            balancePercentage: 0.0,
+            formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom(0, Network::currency(), 2),
+            formattedBalanceFull: NumberFormatter::new()->formatWithCurrencyCustom(0, Network::currency(), null),
+            formattedBalanceFullWithoutSuffix: '0',
+            fiatValue: ExchangeRate::convert(0, null),
+            totalForged: '0',
+            vote: null,
+            voteUrl: null,
+            votePercentage: null,
+        );
+    }
+
     public static function fromModel(Model $wallet, bool $isVote = false): self
     {
         $viewModel   = new WalletViewModel($wallet);

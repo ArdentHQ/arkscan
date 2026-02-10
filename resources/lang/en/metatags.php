@@ -28,6 +28,12 @@ return [
         'image'       => 'metadata/validator-monitor.png',
     ],
 
+    'token-transfers'  => [
+        'title'       => 'Token Transfers | :name Blockchain Explorer',
+        'description' => 'View token transfer details from the :name Blockchain.',
+        'image'       => 'metadata/transactions.png',
+    ],
+
     'transactions'  => [
         'title'       => 'Transactions | :name Blockchain Explorer',
         'description' => 'View transaction details from the :name Blockchain.',

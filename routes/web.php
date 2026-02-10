@@ -11,6 +11,7 @@ use App\Http\Controllers\Inertia\ShowBlockController;
 use App\Http\Controllers\Inertia\ShowTransactionController;
 use App\Http\Controllers\Inertia\StatisticsController;
 use App\Http\Controllers\Inertia\SupportController;
+use App\Http\Controllers\Inertia\TokenTransfersController;
 use App\Http\Controllers\Inertia\TopAccountsController;
 use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
@@ -46,6 +47,8 @@ Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
+
+Route::get('/tokens/transfers', TokenTransfersController::class)->name('tokens.transfers');
 
 Route::get('/top-accounts', TopAccountsController::class)->name('top-accounts');
 Route::get('/addresses/{wallet}/{view?}', WalletController::class)->name('wallet');

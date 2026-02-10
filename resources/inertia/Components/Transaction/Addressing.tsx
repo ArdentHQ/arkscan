@@ -13,6 +13,7 @@ export default function Addressing({
     isGeneric = false,
     className,
     forWallet = false,
+    isReceived = false,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
     transaction: ITransaction;
@@ -21,6 +22,7 @@ export default function Addressing({
     withoutTruncate?: boolean;
     isGeneric?: boolean;
     forWallet?: Boolean;
+    isReceived?: boolean;
 }) {
     const { t } = useTranslation();
 
@@ -60,7 +62,7 @@ export default function Addressing({
                     "encapsulated-badge border-theme-secondary-200 bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200":
                         transaction.isSentToSelf,
                     "border-theme-success-100 bg-theme-success-100 text-theme-success-700 dark:border-theme-success-700 dark:bg-transparent dark:text-theme-success-500":
-                        !transaction.isSent && !isGeneric && !transaction.isSentToSelf,
+                        (!transaction.isSent && !isGeneric && !transaction.isSentToSelf) || isReceived,
                     "border-theme-orange-light bg-theme-orange-light text-theme-orange-dark dim:border-theme-failed-state-bg dim:text-theme-failed-state-text dark:border-theme-failed-state-bg dark:bg-transparent dark:text-theme-failed-state-text":
                         transaction.isSent && !isGeneric && !transaction.isSentToSelf,
                     "border-theme-secondary-200 bg-theme-secondary-200 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200":
