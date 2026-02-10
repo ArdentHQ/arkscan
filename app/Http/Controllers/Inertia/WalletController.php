@@ -158,6 +158,13 @@ final class WalletController
             ->through(fn (TokenTransfer $transaction) => TokenTransferDTO::fromModel($transaction));
     }
 
+    public function getTokenTransfersNoResultsMessageProperty(int $count): null|string
+    {
+        return $count === 0
+            ? (string) trans('tables.tokens.transfers.no_results')
+            : null;
+    }
+
     private function getTransactionsQuery(Wallet $wallet): Builder
     {
         $filters = $this->filters($this->view);
@@ -250,12 +257,5 @@ final class WalletController
         }
 
         return null;
-    }
-
-    public function getTokenTransfersNoResultsMessageProperty(int $count): null|string
-    {
-        return $count === 0
-            ? (string) trans('tables.tokens.transfers.no_results')
-            : null;
     }
 }
