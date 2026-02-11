@@ -115,6 +115,24 @@ it('should detect unlimited approve', function () {
     expect($details->tokenApproval['isUnlimited'])->toBeTrue();
 });
 
+it('should return null token approval for approve without valid arguments', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    // Approve method hash but no arguments
+    $transaction = Transaction::factory()
+        ->withPayload('095ea7b3')
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenApproval)->toBeNull();
+});
+
 it('should return null token approval for non-approve transaction', function () {
     fakeCryptoCompare();
 
