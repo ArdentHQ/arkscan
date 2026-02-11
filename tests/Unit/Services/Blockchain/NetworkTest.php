@@ -99,3 +99,56 @@ it('should return 0 as supply if no state', function () {
 
     expect($subject->supply()->toInt())->toBe(0);
 });
+
+it('should return network data as an array', function (array $config) {
+    fakeKnownWallets();
+
+    $nethash = config('arkscan.networks.production.nethash');
+    if ($config['alias'] === 'devnet') {
+        $nethash = config('arkscan.networks.development.nethash');
+    }
+
+    $config['nethash'] = $nethash;
+
+    $subject = new Network($config);
+
+    expect($subject->toArray())->toEqual($config);
+})->with([
+    [[
+        'name'                => 'ARK Public Network',
+        'alias'               => 'mainnet',
+        'currency'            => 'ARK',
+        'api'                 => 'https://wallets.ark.io/api',
+        'currencySymbol'      => 'Ѧ',
+        'confirmations'       => 51,
+        'knownWallets'        => 'https://raw.githubusercontent.com/ArkEcosystem/common/master/mainnet/known-wallets-extended.json',
+        'canBeExchanged'      => true,
+        'epoch'               => Mainnet::new()->epoch(),
+        'validatorCount'      => 51,
+        'blockTime'           => 8,
+        'blockReward'         => 2,
+        'base58Prefix'        => 23,
+        'mainnetExplorerUrl'  => 'https://mainnet.ark.io/',
+        'testnetExplorerUrl'  => 'https://testnet.ark.io/',
+        'legacyExplorerUrl'   => 'https://legacy.ark.io/',
+        'contract_addresses'  => [],
+    ]],
+    [[
+        'name'                => 'ARK Development Network',
+        'alias'               => 'devnet',
+        'api'                 => 'https://dwallets.ark.io/api',
+        'currency'            => 'DARK',
+        'currencySymbol'      => 'DѦ',
+        'confirmations'       => 51,
+        'canBeExchanged'      => false,
+        'epoch'               => Testnet::new()->epoch(),
+        'validatorCount'      => 51,
+        'blockTime'           => 8,
+        'blockReward'         => 2,
+        'base58Prefix'        => 30,
+        'mainnetExplorerUrl'  => 'https://mainnet.dark.io/',
+        'testnetExplorerUrl'  => 'https://testnet.dark.io/',
+        'legacyExplorerUrl'   => 'https://legacy.dark.io/',
+        'contract_addresses'  => [],
+    ]],
+]);

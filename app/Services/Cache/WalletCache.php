@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Services\Cache;
 
 use App\Contracts\Cache as Contract;
+use App\Models\Token;
 use App\Models\Wallet;
 use App\Services\Cache\Concerns\ManagesCache;
 use Closure;
 use Illuminate\Cache\TaggedCache;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 final class WalletCache implements Contract
@@ -124,14 +126,19 @@ final class WalletCache implements Contract
         $this->put(sprintf('missed_blocks/%s', $address), $value);
     }
 
-    public function getContractAddresses(): array
+    public function getTokens(): Collection
     {
-        return $this->get('contract_addresses', []);
+        return $this->get('tokens', collect());
     }
 
-    public function setContractAddresses(array $addresses): void
+    public function setTokens(Collection $addresses): void
     {
-        $this->put('contract_addresses', $addresses);
+        $this->put('tokens', $addresses);
+    }
+
+    public function getToken(string $address): ?Token
+    {
+        return $this->getTokens()->get(strtolower($address));
     }
 
     public function getCache(): TaggedCache

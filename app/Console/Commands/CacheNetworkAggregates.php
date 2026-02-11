@@ -9,8 +9,7 @@ use App\Aggregates\TransactionCountAggregate;
 use App\Aggregates\TransactionVolumeAggregate;
 use App\Aggregates\VoteCountAggregate;
 use App\Aggregates\VotePercentageAggregate;
-use App\Models\Scopes\ValidatorRegistrationScope;
-use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use Illuminate\Console\Command;
 
@@ -26,7 +25,7 @@ final class CacheNetworkAggregates extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Cache expensive network aggregates.';
 
@@ -41,8 +40,8 @@ final class CacheNetworkAggregates extends Command
         $cache->setVotesPercentage((new VotePercentageAggregate())->aggregate());
 
         $cache->setValidatorRegistrationCount(
-            Transaction::query()
-                ->withScope(ValidatorRegistrationScope::class)
+            Wallet::query()
+                ->whereNotNull('attributes->validatorPublicKey')
                 ->count()
         );
 

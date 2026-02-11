@@ -9,7 +9,7 @@ use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Transactions\Aggregates\Historical\AveragesAggregate;
 use Carbon\Carbon;
-use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
+use Tests\Stubs\NetworkStub;
 
 it('should return count for non-multipayment', function () {
     $daysSinceEpoch = 2;

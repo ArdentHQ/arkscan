@@ -1,6 +1,6 @@
 /* Container */
 .pika-single {
-    @apply rounded mt-2 border-0;
+    @apply mt-2 rounded border-0;
 }
 .dark .pika-single {
     @apply bg-theme-dark-950;
@@ -22,12 +22,12 @@ html:not(.dark) .pika-single .pika-next {
 
 /* Month and Year */
 .dark .pika-single .pika-label {
-    @apply text-theme-dark-50 bg-theme-dark-950;
+    @apply bg-theme-dark-950 text-theme-dark-50;
 }
 
 /* Day of Week */
 .pika-single table thead abbr {
-    @apply no-underline cursor-default bg-theme-dark-950;
+    @apply cursor-default bg-theme-dark-950 no-underline;
 }
 .dark .pika-single table thead abbr {
     @apply text-theme-dark-200;
@@ -53,11 +53,11 @@ html:not(.dark) .pika-single .pika-next {
 
 /* Available Date */
 .pika-single table td button {
-    @apply !rounded-none transition-default;
+    @apply transition-default !rounded-none;
 }
 .dark .pika-single table td button {
     @apply bg-theme-dark-600 text-theme-dark-50;
 }
 .dark .pika-single table td button:hover {
-    @apply text-theme-dark-50 bg-theme-dark-blue-400;
+    @apply bg-theme-dark-blue-400 text-theme-dark-50;
 }

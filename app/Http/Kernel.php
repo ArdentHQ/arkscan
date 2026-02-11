@@ -11,7 +11,6 @@ use App\Http\Middleware\SubstituteBindings;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
-use ARKEcosystem\Foundation\UserInterface\Http\Middlewares\DropInvalidLivewireRequests;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
@@ -56,10 +55,9 @@ final class Kernel extends HttpKernel
             StartSession::class,
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
+            HandleInertiaRequests::class,
             SubstituteBindings::class,
             CacheResponse::class,
-            DropInvalidLivewireRequests::class,
-            HandleInertiaRequests::class,
         ],
 
         'api' => [

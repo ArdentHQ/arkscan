@@ -24,7 +24,7 @@ final class MemoryWallet
         return new static(Identity::address($publicKey), $publicKey);
     }
 
-    public function address(): ?string
+    public function address(): string
     {
         return $this->address;
     }
@@ -35,7 +35,7 @@ final class MemoryWallet
             return true;
         }
 
-        return in_array($this->address(), (new WalletCache())->getContractAddresses(), true);
+        return (new WalletCache())->getToken($this->address()) !== null;
     }
 
     public function publicKey(): ?string

@@ -54,7 +54,7 @@ final class TransactionMethod
             $methodName = preg_replace('/\(.+\)$/', '', trans('contracts.'.$this->methodHash));
 
             if ($methodName !== null) {
-                return $methodName;
+                return Str::ucfirst($methodName);
             }
         }
 

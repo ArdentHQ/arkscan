@@ -58,7 +58,7 @@ it('should determine the name from the contracts if unhandled type', function ()
 
     $transactionMethod = new TransactionMethod($transaction);
 
-    expect($transactionMethod->name())->toBe('getRounds');
+    expect($transactionMethod->name())->toBe('GetRounds');
 });
 
 it('should return raw methodHash if no type matches and translation is missing', function () {

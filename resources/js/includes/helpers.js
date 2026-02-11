@@ -68,14 +68,7 @@ export const DateFilters = {
     all: null,
 };
 
-export const generateCsv = (
-    data,
-    columns,
-    columnTitles,
-    columnMapping,
-    delimiter,
-    includeHeaderRow
-) => {
+export const generateCsv = (data, columns, columnTitles, columnMapping, delimiter, includeHeaderRow) => {
     const formatCsvNumber = (value) => {
         if (typeof value === "number") {
             return new Decimal(value).toFixed();
@@ -111,10 +104,7 @@ export const generateCsv = (
     }
 
     return encodeURI(
-        "data:text/csv;charset=utf-8," +
-            csvRows
-                .map((row) => row.join(delimiters[delimiter] || ","))
-                .join("\n")
+        "data:text/csv;charset=utf-8," + csvRows.map((row) => row.join(delimiters[delimiter] || ",")).join("\n"),
     );
 };
 

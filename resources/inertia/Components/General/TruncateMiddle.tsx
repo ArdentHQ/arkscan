@@ -1,15 +1,27 @@
-export default function TruncateMiddle({ length = 10, children }: React.PropsWithChildren<{
+export default function TruncateMiddle({
+    length = 10,
+    children,
+    className,
+}: {
     length?: number;
-}>) {
+    children: React.ReactNode;
+    className?: string;
+}) {
     const text = children as string;
     const maxLength = length;
 
     if (text.length <= maxLength) {
-        return <span>{text}</span>;
+        return <span className={className}>{text}</span>;
     }
 
-    const start = text.slice(0, length);
-    const end = text.slice(-length);
+    const partLength = Math.floor(maxLength / 2);
 
-    return <span>{start}…{end}</span>;
+    const start = text.slice(0, partLength);
+    const end = text.slice(-partLength);
+
+    return (
+        <span className={className}>
+            {start}…{end}
+        </span>
+    );
 }

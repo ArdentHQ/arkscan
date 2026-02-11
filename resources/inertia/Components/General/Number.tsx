@@ -1,12 +1,13 @@
-export default function Number({ children }: React.PropsWithChildren) {
-    const formattedNumber = new Intl.NumberFormat('en-US', {
-        style: 'decimal',
+export function formattedNumber(value: string | number): string {
+    return new Intl.NumberFormat("en-US", {
+        style: "decimal",
         maximumFractionDigits: 2,
-    }).format(parseFloat(children as string));
+    }).format(parseFloat(value as string));
+}
 
-    return (
-        <span>
-            {formattedNumber}
-        </span>
-    );
+export default function Number({
+    children,
+    ...props
+}: React.HTMLAttributes<HTMLSpanElement> & { children: string | number }) {
+    return <span {...props}>{formattedNumber(children)}</span>;
 }

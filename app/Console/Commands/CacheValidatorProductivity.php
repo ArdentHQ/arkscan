@@ -20,7 +20,7 @@ final class CacheValidatorProductivity extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Calculate and cache the productivity for each active validator.';
 

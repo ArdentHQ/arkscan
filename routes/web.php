@@ -2,15 +2,23 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\BlocksController;
-use App\Http\Controllers\ExchangesController;
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\Inertia\BlocksListController;
+use App\Http\Controllers\Inertia\CompatibleWalletsController;
+use App\Http\Controllers\Inertia\ExchangesController;
+use App\Http\Controllers\Inertia\HomeController;
+use App\Http\Controllers\Inertia\ShowBlockController;
+use App\Http\Controllers\Inertia\ShowTransactionController;
+use App\Http\Controllers\Inertia\StatisticsController;
+use App\Http\Controllers\Inertia\SupportController;
+use App\Http\Controllers\Inertia\TokenTransfersController;
+use App\Http\Controllers\Inertia\TopAccountsController;
+use App\Http\Controllers\Inertia\TransactionsController;
 use App\Http\Controllers\Inertia\ValidatorMonitorController;
-use App\Http\Controllers\ShowBlockController;
-use App\Http\Controllers\ShowTransactionController;
-use App\Http\Controllers\ShowWalletController;
-use App\Http\Controllers\SupportController;
-use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\Inertia\ValidatorsController;
+use App\Http\Controllers\Inertia\WalletController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\WebhooksController;
 use App\Http\Middleware\VerifyCsrfToken;
 use App\Models\Block;
@@ -31,40 +39,40 @@ use Spatie\Honeypot\ProtectAgainstSpam;
 */
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/validators', 'app.validators')->name('validators');
+Route::get('/validators/{view?}', ValidatorsController::class)->name('validators');
 Route::get('/validator-monitor', ValidatorMonitorController::class)->name('validator-monitor');
 
-Route::get('/blocks', BlocksController::class)->name('blocks');
+Route::get('/blocks', BlocksListController::class)->name('blocks');
 Route::get('/blocks/{block}', ShowBlockController::class)->name('block');
 
 Route::get('/transactions', TransactionsController::class)->name('transactions');
 Route::get('/transactions/{transaction}', ShowTransactionController::class)->name('transaction');
 
-Route::view('/top-accounts', 'app.top-accounts')->name('top-accounts');
-Route::get('/addresses/{wallet}', ShowWalletController::class)->name('wallet');
-Route::get('/addresses/{wallet}?view=voters', ShowWalletController::class)->name('wallet.voters');
-Route::get('/addresses/{wallet}?view=blocks', ShowWalletController::class)->name('wallet.blocks');
+Route::get('/tokens/transfers', TokenTransfersController::class)->name('tokens.transfers');
 
-Route::get('/wallets/{wallet}', function (Wallet $wallet) {
+Route::get('/top-accounts', TopAccountsController::class)->name('top-accounts');
+Route::get('/addresses/{wallet}/{view?}', WalletController::class)->name('wallet');
+
+Route::get('/wallets/{wallet}/', function (Wallet $wallet) {
     return redirect()->route('wallet', $wallet);
 });
 Route::get('/wallets/{wallet}/voters', function (Wallet $wallet) {
-    return redirect()->route('wallet.voters', $wallet);
+    return redirect()->route('wallet', ['wallet' => $wallet, 'view' => 'voters']);
 });
 Route::get('/wallets/{wallet}/blocks', function (Wallet $wallet) {
-    return redirect()->route('wallet.blocks', $wallet);
+    return redirect()->route('wallet', ['wallet' => $wallet, 'view' => 'blocks']);
 });
 
-Route::view('/statistics', 'app.statistics')->name('statistics');
+Route::get('/statistics', StatisticsController::class)->name('statistics');
+Route::view('/old-statistics', 'app.statistics')->name('old-statistics');
 
 // Keep the route name as contact for use with the foundation component
-Route::get('/support', [SupportController::class, 'index'])->name('contact');
-Route::post('support', [SupportController::class, 'handle'])
+Route::get('/support', SupportController::class)->name('contact');
+Route::post('support', [SupportController::class, 'submit'])
     ->middleware([
         ProtectAgainstSpam::class,
         'throttle:5,60',
     ]);
-
 // Explorer 3.0 BC - Remove after some time!
 Route::redirect('/top-wallets', '/top-accounts');
 Route::redirect('/wallets', '/top-accounts');
@@ -72,9 +80,27 @@ Route::get('/block/{block}', fn (Block $block) => redirect()->route('block', ['b
 Route::get('/transaction/{transaction}', fn (Transaction $transaction) => redirect()->route('transaction', ['transaction' => $transaction->hash]));
 Route::get('/wallet/{wallet}', fn (Wallet $wallet) => redirect()->route('wallet', ['wallet' => $wallet]));
 
-Route::view('/compatible-wallets', 'app.compatible-wallets')->name('compatible-wallets');
+Route::get('/compatible-wallets', CompatibleWalletsController::class)->name('compatible-wallets');
+Route::post('/compatible-wallets', [CompatibleWalletsController::class, 'submit'])
+    ->middleware(['throttle:3,3600'])
+    ->name('compatible-wallets.submit');
+
+Route::view('/compatible-wallets-old', 'app.compatible-wallets')->name('compatible-wallets-old');
+
 Route::get('/exchanges', ExchangesController::class)->name('exchanges');
+Route::post('/exchanges', [ExchangesController::class, 'submit'])
+    ->middleware(['throttle:3,3600'])
+    ->name('exchanges.submit');
 
 Route::post('/webhooks', WebhooksController::class)
     ->withoutMiddleware([VerifyCsrfToken::class])
     ->name('webhooks');
+
+Route::post('/theme/update', [ThemeController::class, 'update'])
+    ->name('theme.update');
+
+Route::post('/currency/update', [CurrencyController::class, 'update'])
+    ->name('currency.update');
+
+Route::get('/navbar/search', [SearchController::class, 'index'])
+    ->name('navbar-search.index');

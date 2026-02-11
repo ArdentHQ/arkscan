@@ -20,7 +20,7 @@ final class ScoutPauseIndexing extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Pause laravel scout indexing';
 

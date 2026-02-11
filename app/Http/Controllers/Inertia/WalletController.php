@@ -1,0 +1,227 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Inertia;
+
+use App\DTO\Inertia\Block as BlockDTO;
+use App\DTO\Inertia\Transaction as TransactionDTO;
+use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Http\Controllers\Inertia\Concerns\WithFilters;
+use App\Http\Controllers\Inertia\Concerns\WithPagination;
+use App\Models\Block;
+use App\Models\Scopes\HasMultiPaymentRecipientScope;
+use App\Models\Scopes\OrderByBalanceScope;
+use App\Models\Scopes\OrderByHeightScope;
+use App\Models\Scopes\OrderByTimestampScope;
+use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\Transaction;
+use App\Models\Wallet;
+use App\Services\ExchangeRate;
+use ARKEcosystem\Foundation\UserInterface\UI;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Inertia\Inertia;
+use Inertia\Response;
+
+final class WalletController
+{
+    use WithFilters;
+    use WithPagination;
+
+    public const FILTERS = [
+        'transactions' => [
+            'outgoing'            => true,
+            'incoming'            => true,
+            'transfers'           => true,
+            'multipayments'       => true,
+            'votes'               => true,
+            'validator'           => true,
+            'username'            => true,
+            'contract_deployment' => true,
+            'others'              => true,
+        ],
+    ];
+
+    private string $view = 'transactions';
+
+    public function __invoke(Wallet $wallet, string $view = 'transactions'): Response
+    {
+        $this->view = $view;
+
+        return Inertia::renderWithMeta('Wallet/Wallet', 'wallet', [
+            'wallet'       => WalletDTO::fromModel($wallet),
+            'filters'      => self::FILTERS,
+            'baseUrl'      => route('wallet', $wallet->address, false),
+
+            'transactions' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getTransactions($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getTransactionsNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+
+            'blocks' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getBlocks($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getValidatedBlocksNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+
+            'voters' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getVoters($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getVotersNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+
+            'rates' => fn () => ExchangeRate::rates()->toArray(),
+        ], [
+            'address' => $wallet->address,
+        ]);
+    }
+
+    public function getTransactions(Wallet $wallet): AbstractPaginator
+    {
+        $emptyResults = new LengthAwarePaginator([], 0, $this->perPage(), $this->page(), [
+            'pageName' => 'page',
+        ]);
+
+        if (! $this->hasAddressingFilters()) {
+            return $emptyResults;
+        }
+
+        if (! $this->hasTransactionTypeFilters()) {
+            return $emptyResults;
+        }
+
+        return $this->getTransactionsQuery($wallet)
+            ->withScope(OrderByTimestampScope::class)
+            ->withScope(OrderByTransactionIndexScope::class)
+            ->paginate($this->perPage(), page: $this->page())
+            ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address));
+    }
+
+    public function getBlocks(Wallet $wallet): AbstractPaginator
+    {
+        return Block::where('proposer', $wallet->address)
+            ->withScope(OrderByHeightScope::class)
+            ->paginate($this->perPage(), page: $this->page())
+            ->through(fn (Block $block) => BlockDTO::fromModel($block));
+    }
+
+    public function getVoters(Wallet $wallet): AbstractPaginator
+    {
+        return Wallet::where('attributes->vote', $wallet->address)
+            ->withScope(OrderByBalanceScope::class)
+            ->paginate($this->perPage(), page: $this->page())
+            ->through(fn (Wallet $voter) => WalletDTO::fromModel($voter));
+    }
+
+    private function getTransactionsQuery(Wallet $wallet): Builder
+    {
+        $filters = $this->filters($this->view);
+
+        return Transaction::query()
+            ->withTypeFilter($this->filters($this->view))
+            ->with(['votedFor', 'sender', 'recipientWallet'])
+            ->where(function ($query) use ($wallet, $filters) {
+                $query->where(fn ($query) => $query->when($filters['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
+                    ->orWhere(fn ($query) => $query->when($filters['incoming'], fn ($query) => $query->where('to', $wallet->address)))
+                    ->orWhere(function ($query) use ($wallet, $filters) {
+                        $query->when($filters['multipayments'], function ($query) use ($wallet) {
+                            $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address);
+                        });
+                    });
+            });
+    }
+
+    private function hasAddressingFilters(): bool
+    {
+        $filters = $this->filters('transactions');
+        if ($filters['incoming'] === true) {
+            return true;
+        }
+
+        return $filters['outgoing'] === true;
+    }
+
+    private function hasTransactionTypeFilters(): bool
+    {
+        $filters = $this->filters('transactions');
+        if ($filters['transfers'] === true) {
+            return true;
+        }
+
+        if ($filters['multipayments'] === true) {
+            return true;
+        }
+
+        if ($filters['votes'] === true) {
+            return true;
+        }
+
+        if ($filters['validator'] === true) {
+            return true;
+        }
+
+        if ($filters['username'] === true) {
+            return true;
+        }
+
+        if ($filters['contract_deployment'] === true) {
+            return true;
+        }
+
+        return $filters['others'] === true;
+    }
+
+    private function getTransactionsNoResultsMessageProperty(int $count): null|string
+    {
+        $hasAddressingFilters = $this->hasAddressingFilters();
+        if (! $hasAddressingFilters && ! $this->hasTransactionTypeFilters()) {
+            return trans('tables.transactions.no_results.no_filters');
+        }
+
+        if (! $hasAddressingFilters) {
+            return trans('tables.transactions.no_results.no_addressing_filters');
+        }
+
+        if ($count === 0) {
+            return trans('tables.transactions.no_results.no_results');
+        }
+
+        return null;
+    }
+
+    private function getValidatedBlocksNoResultsMessageProperty(int $count): null|string
+    {
+        if ($count === 0) {
+            return trans('tables.wallet.blocks.no_results');
+        }
+
+        return null;
+    }
+
+    private function getVotersNoResultsMessageProperty(int $count): null|string
+    {
+        if ($count === 0) {
+            return trans('tables.wallets.no_results');
+        }
+
+        return null;
+    }
+}

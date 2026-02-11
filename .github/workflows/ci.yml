@@ -1,10 +1,13 @@
 name: CI
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - "master"
             - "develop"
+            - "mainsail-develop"
+            - "inertia-migration"
     pull_request:
         types: [ready_for_review, synchronize, opened]
 
@@ -31,7 +34,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -65,7 +68,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -109,7 +112,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -175,7 +178,9 @@ jobs:
                   ARKSCAN_DB_PASSWORD: password
 
     browser:
-        needs: [unit]
+        needs: [conflicts, analyse, format]
+
+        if: github.event_name != 'pull_request' || github.event_name == 'workflow_dispatch'
 
         runs-on: ubuntu-latest
 
@@ -203,7 +208,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -262,7 +267,7 @@ jobs:
               run: php artisan serve --no-reload &
 
             - name: Run Tests
-              run: composer test:browser
+              run: composer test:browser -- --stop-on-failure --stop-on-error
               env:
                   # Main database
                   DB_CONNECTION: pgsql
@@ -278,3 +283,10 @@ jobs:
                   ARKSCAN_DB_USERNAME: arkscan_test_db
                   ARKSCAN_DB_PASSWORD: password
                   APP_ENV: testing
+
+            - name: Upload Screenshots
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: dusk-screenshots
+                  path: tests/Browser/screenshots

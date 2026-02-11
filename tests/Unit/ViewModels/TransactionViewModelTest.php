@@ -582,7 +582,7 @@ it('should determine if is certain transaction type', function (string $type, ar
     expect($viewModel->{'is'.Str::camel($type)}())->toBeTrue();
 })->with([
     ['transfer'],
-    ['tokenTransfer', ['0x0', 0]],
+    ['tokenTransfer', ['0x0', BigNumber::zero()]],
     ['vote', ['0x0']],
     ['unvote'],
     ['validatorRegistration'],

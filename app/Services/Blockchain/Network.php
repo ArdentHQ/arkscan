@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\Blockchain;
 
 use App\Contracts\Network as Contract;
+use App\DTO\Inertia\INetwork;
 use App\Models\State;
 use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
@@ -78,7 +79,7 @@ final class Network implements Contract
         return $this->config['confirmations'];
     }
 
-    public function knownWalletsUrl(): string
+    public function knownWalletsUrl(): string | null
     {
         return $this->config['knownWallets'];
     }
@@ -160,5 +161,32 @@ final class Network implements Contract
     public function toArray(): array
     {
         return $this->config;
+    }
+
+    public function data(): INetwork
+    {
+        return new INetwork(
+            coin: $this->coin(),
+            name: $this->name(),
+            api: $this->api(),
+            alias: $this->alias(),
+            nethash: $this->nethash(),
+            mainnetExplorerUrl: $this->mainnetExplorerUrl(),
+            testnetExplorerUrl: $this->testnetExplorerUrl(),
+            legacyExplorerUrl: $this->legacyExplorerUrl(),
+            currency: $this->currency(),
+            currencySymbol: $this->currencySymbol(),
+            confirmations: $this->confirmations(),
+            knownWallets: $this->knownWallets(),
+            knownWalletsUrl: $this->knownWalletsUrl() ?? '',
+            canBeExchanged: $this->canBeExchanged(),
+            epoch: $this->epoch()->toIso8601String(),
+            validatorCount: $this->validatorCount(),
+            blockTime: $this->blockTime(),
+            blockReward: $this->blockReward(),
+            base58Prefix: $this->base58Prefix(),
+            contractAddresses: $this->knownContracts(),
+            contractMethods: $this->config['contract_methods'],
+        );
     }
 }

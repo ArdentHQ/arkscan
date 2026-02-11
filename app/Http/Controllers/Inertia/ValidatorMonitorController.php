@@ -6,8 +6,8 @@ namespace App\Http\Controllers\Inertia;
 
 use App\Actions\CacheNetworkHeight;
 use App\Facades\Network;
-use App\Http\Livewire\Concerns\ValidatorData;
-use App\Http\Livewire\Validators\Concerns\HandlesMonitorDataBoxes;
+use App\Http\Controllers\Inertia\Concerns\HandlesMonitorDataBoxes;
+use App\Http\Controllers\Inertia\Concerns\ValidatorData;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,14 +24,14 @@ final class ValidatorMonitorController
 
     public function __invoke(): Response
     {
-        return Inertia::render('Validators/Monitor', [
+        return Inertia::renderWithMeta('Validators/Monitor', 'validator-monitor', [
             'rowCount' => Network::validatorCount(),
 
             // Deferred properties
             'height'        => Inertia::optional(fn () => CacheNetworkHeight::execute()),
             'validatorData' => Inertia::optional(function () {
                 $this->pollValidators();
-                $this->overflowValidators = $this->getOverflowValidatorsProperty();
+                $this->overflowValidators = $this->overflowValidators();
                 $this->pollStatistics();
 
                 if ($this->statistics['nextValidator'] !== null) {
