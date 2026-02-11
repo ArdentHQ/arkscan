@@ -58,11 +58,11 @@ function ApproveActionRow({
                             {tokenApproval.spenderHasUsername ? (
                                 tokenApproval.spenderUsername
                             ) : (
-                                <TruncateMiddle>{tokenApproval.spender}</TruncateMiddle>
+                                <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
                             )}
                         </span>
                         <span className="md:hidden">
-                            <TruncateMiddle>{tokenApproval.spender}</TruncateMiddle>
+                            <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
                         </span>
                     </Link>
 
