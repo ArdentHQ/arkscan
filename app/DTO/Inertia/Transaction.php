@@ -101,35 +101,18 @@ class Transaction extends Data
             $sender = WalletDTO::fromModel($senderWallet);
         }
 
-        $recipient = null;
+        $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
 
-        if ($viewModel->isTransfer()) {
-            $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
-
-            if ($recipientWallet !== null) {
-                $recipient = WalletDTO::fromModel($recipientWallet);
-            } else {
-                $recipientAddress = $viewModel->recipient()?->address();
-
-                if ($recipientAddress !== null) {
-                    try {
-                        $recipientWallet = Wallets::findByAddress($recipientAddress);
-                        $recipient       = WalletDTO::fromModel($recipientWallet);
-                    } catch (ModelNotFoundException) {
-                        $recipient = WalletDTO::stub($recipientAddress);
-                    }
-                }
-            }
-        } elseif ($viewModel->isTokenTransfer()) {
-            $recipientAddress = self::getTokenTransferRecipient($viewModel);
+        if ($recipientWallet !== null) {
+            $recipient = WalletDTO::fromModel($recipientWallet);
+        } else {
+            $recipientAddress = $viewModel->recipient()?->address();
 
             if ($recipientAddress !== null) {
                 try {
                     $recipientWallet = Wallets::findByAddress($recipientAddress);
                     $recipient       = WalletDTO::fromModel($recipientWallet);
                 } catch (ModelNotFoundException) {
-                    // Recipient wallet may not exist in DB for token transfers
-                    // when the recipient address has never had native transactions
                     $recipient = WalletDTO::stub($recipientAddress);
                 }
             }
