@@ -50,6 +50,8 @@ function ApproveActionRow({
 
                 <span className="whitespace-nowrap">{t("pages.transaction.approve.for_trade")}</span>
 
+                <span>{t("pages.transaction.approve.on")}</span>
+
                 <span className="inline-flex items-center">
                     <Link href={route("wallet", tokenApproval.spender)} className="link">
                         <span className="hidden md:inline">
