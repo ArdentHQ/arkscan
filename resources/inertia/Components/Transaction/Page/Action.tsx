@@ -41,9 +41,10 @@ function ApproveActionRow({
     const amount = !isUnlimited && tokenApproval.amount !== null ? weiToArk(tokenApproval.amount, tokenSymbol) : null;
 
     const rowTitle = isUnlimited ? `${transaction.type} ${t("general.unlimited")}` : transaction.type;
+    const approveHeaderWidth = isUnlimited ? "sm:w-[144px]" : headerWidthClass;
 
     return (
-        <SectionDetailRow title={rowTitle} headerWidthClass={headerWidthClass}>
+        <SectionDetailRow title={rowTitle} headerWidthClass={approveHeaderWidth}>
             <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
                 {amount !== null && <span>{amount}</span>}
 
