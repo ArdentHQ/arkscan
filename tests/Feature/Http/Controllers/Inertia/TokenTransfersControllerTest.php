@@ -64,7 +64,7 @@ it('should not include contract deployment transactions', function () {
     ]);
 
     performRequest($this, reloadCallback: function (Assert $page) {
-        $page->has('transfers.data', 3)
+        $page->has('transfers.data', 5)
             ->where('transfers.noResultsMessage', null);
     });
 });
