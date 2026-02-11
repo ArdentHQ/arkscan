@@ -25,6 +25,7 @@ final class TransactionMethod
         'isValidatorUpdate'       => 'validator-update',
         'isUsernameRegistration'  => 'username-registration',
         'isUsernameResignation'   => 'username-resignation',
+        'isApprove'               => 'approve',
         'isContractDeployment'    => 'contract-deployment',
     ];
 
@@ -113,6 +114,11 @@ final class TransactionMethod
     public function isUsernameResignation(): bool
     {
         return $this->methodHash === ContractMethod::usernameResignation();
+    }
+
+    public function isApprove(): bool
+    {
+        return $this->methodHash === ContractMethod::approve();
     }
 
     public function isContractDeployment(): bool

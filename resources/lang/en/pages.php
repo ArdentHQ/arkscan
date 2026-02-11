@@ -114,6 +114,7 @@ return [
         'other_attributes'            => 'Other Attributes',
         'input_data'                  => 'Input Data',
         'tokens_transferred'          => 'Tokens Transferred',
+        'token_approval'              => 'Token Approval',
         'locked_amount_tooltip'       => 'Locked amount while the validator remains registered.',
         'unlocked_amount_tooltip'     => 'Amount returned by resigning validator.',
         'legacy_registration_tooltip' => 'This validator was registered without locking any funds.',
@@ -141,6 +142,7 @@ return [
             'gas_limit'            => 'Gas Limit',
             'usage_by_transaction' => 'Usage By Txn',
             'position_in_block'    => 'Position In Block',
+            'spender'              => 'Spender',
         ],
 
         'code-block' => [

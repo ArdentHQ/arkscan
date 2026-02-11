@@ -52,4 +52,9 @@ final class ContractMethod
     {
         return Network::contractMethod('username_resignation', 'ebed6dab');
     }
+
+    public static function approve(): string
+    {
+        return Network::contractMethod('approve', '095ea7b3');
+    }
 }
