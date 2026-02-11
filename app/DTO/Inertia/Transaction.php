@@ -101,8 +101,9 @@ class Transaction extends Data
             $sender = WalletDTO::fromModel($senderWallet);
         }
 
-        $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
+        $recipient = null;
 
+        $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
         if ($recipientWallet !== null) {
             $recipient = WalletDTO::fromModel($recipientWallet);
         } else {
@@ -178,16 +179,5 @@ class Transaction extends Data
             sender: $sender,
             recipient: $recipient,
         );
-    }
-
-    private static function getTokenTransferRecipient(TransactionViewModel $viewModel): ?string
-    {
-        $arguments = $viewModel->methodArguments();
-
-        if (count($arguments) === 0 || ! array_key_exists(TokenTransferArgument::RECIPIENT, $arguments)) {
-            return null;
-        }
-
-        return (new ArgumentDecoder($arguments[TokenTransferArgument::RECIPIENT]))->decodeAddress();
     }
 }
