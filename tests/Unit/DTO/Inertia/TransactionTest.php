@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\DTO\Inertia\Transaction as TransactionDTO;
+use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -300,7 +301,7 @@ it('should make an instance for a vote transaction', function () {
             'voteUrl'                           => null,
             'votePercentage'                    => null,
         ],
-        'recipient'                       => null,
+        'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => 'bill.ding',
     ]);
 });
@@ -487,7 +488,7 @@ it('should make an instance for a validator resignation transaction', function (
                 'voteUrl'                           => null,
                 'votePercentage'                    => null,
             ],
-            'recipient'                       => null,
+            'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
             'votedForUsername'                => null,
         ],
         'votedFor' => null,
@@ -521,7 +522,7 @@ it('should make an instance for a validator resignation transaction', function (
             'voteUrl'                           => null,
             'votePercentage'                    => null,
         ],
-        'recipient'                       => null,
+        'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => null,
     ]);
 });
