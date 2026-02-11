@@ -75,10 +75,16 @@ it('should show chart and switch between tabs', function ($resolution, $period, 
 
             $browser->driver->getMouse()->mouseMove($coordinates);
 
+            $browserTimezone = $browser->driver->executeScript('return Intl.DateTimeFormat().resolvedOptions().timeZone;');
+
+            $expectedTime = Carbon::createFromTimestamp(1_700_003_600)
+                ->setTimezone($browserTimezone ?? 'UTC')
+                ->format('d M Y H:i:s');
+
             $browser->waitForSeeInOrder([
                 'Price:',
                 '$'.number_format($prices[1], 2),
-                Carbon::createFromTimestamp(1_700_003_600)->format('d M Y H:i:s'),
+                $expectedTime,
             ]);
         }
     });
