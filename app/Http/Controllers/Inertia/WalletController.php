@@ -16,7 +16,6 @@ use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
-use App\Models\Scopes\TokenTransferScope;
 use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -152,7 +151,6 @@ final class WalletController
             ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
             ->where('token_transfers.to', $wallet->address)
             ->orWhere('token_transfers.from', $wallet->address)
-            ->withScope(TokenTransferScope::class)
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage())
             ->through(fn (TokenTransfer $transaction) => TokenTransferDTO::fromModel($transaction));

@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Inertia;
 use App\DTO\Inertia\TokenTransfer as TokenTransferDTO;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Scopes\OrderByTimestampScope;
-use App\Models\Scopes\TokenTransferScope;
 use App\Models\TokenTransfer;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -46,7 +45,6 @@ final class TokenTransfersController
         return TokenTransfer::select('token_transfers.*')
             ->with(['transaction'])
             ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
-            ->withScope(TokenTransferScope::class)
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage())
             ->through(fn (TokenTransfer $transaction) => TokenTransferDTO::fromModel($transaction));
