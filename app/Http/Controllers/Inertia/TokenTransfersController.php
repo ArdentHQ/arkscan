@@ -43,7 +43,7 @@ final class TokenTransfersController
     public function getTransactions(): LengthAwarePaginator
     {
         return TokenTransfer::select('token_transfers.*')
-            ->with(['transaction'])
+            ->with(['token', 'transaction.sender', 'transaction.recipientWallet'])
             ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage())
