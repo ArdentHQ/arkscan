@@ -102,7 +102,7 @@ return [
     ],
 
     'transaction'      => [
-        'action'                      => 'Action',
+        'action'                      => 'Transaction Action',
         'transaction_id'              => 'Transaction ID',
         'transaction_id_copied'       => 'Transaction ID Copied',
         'transaction_details'         => 'Transaction Details',
