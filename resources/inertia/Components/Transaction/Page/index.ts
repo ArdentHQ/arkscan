@@ -3,7 +3,6 @@ export { default as TransactionDetails } from "./Details";
 export { default as TransactionAction } from "./Action";
 export { default as TransactionAddressing } from "./Addressing";
 export { default as TransactionToken } from "./Token";
-export { default as TransactionTokenApproval } from "./TokenApproval";
 export { default as TransactionSummary } from "./Summary";
 export { default as TransactionStatus } from "./Status";
 export { default as TransactionRecipients } from "./Recipients";

@@ -3,9 +3,81 @@ import { Link } from "@inertiajs/react";
 import { ITransaction } from "@/types/generated";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import Method from "@/Components/Transaction/Method";
+import Badge from "@/Components/General/Badge";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
+import Clipboard from "@/Components/General/Clipboard";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
+import useSharedData from "@/hooks/use-shared-data";
+import { weiToArk } from "@/utils/UnitConverter";
+
+function ApproveAction({ transaction, details }: { transaction: ITransaction; details: TransactionDetails }) {
+    const { t } = useTranslation();
+    const { network } = useSharedData();
+
+    const tokenApproval = details.tokenApproval;
+    if (!tokenApproval) {
+        return <Method transaction={transaction} />;
+    }
+
+    const tokenSymbol = details.token?.symbol ?? network?.currency;
+
+    const amountLabel = tokenApproval.isUnlimited
+        ? t("general.unlimited")
+        : tokenApproval.amount !== null
+          ? weiToArk(tokenApproval.amount, tokenSymbol)
+          : null;
+
+    const badgeText = amountLabel ? `${transaction.type} ${amountLabel}` : transaction.type;
+
+    return (
+        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+            <Badge className="encapsulated-badge">{badgeText}</Badge>
+
+            <span className="whitespace-nowrap">{t("pages.transaction.approve.for_trade")}</span>
+
+            <span className="whitespace-nowrap">{t("pages.transaction.approve.on")}</span>
+
+            <span className="inline-flex items-center">
+                <Link href={route("wallet", tokenApproval.spender)} className="link">
+                    <span className="hidden md:inline">
+                        {tokenApproval.spenderHasUsername ? (
+                            tokenApproval.spenderUsername
+                        ) : (
+                            <TruncateMiddle>{tokenApproval.spender}</TruncateMiddle>
+                        )}
+                    </span>
+                    <span className="md:hidden">
+                        <TruncateMiddle>{tokenApproval.spender}</TruncateMiddle>
+                    </span>
+                </Link>
+
+                <Clipboard
+                    value={tokenApproval.spender}
+                    noStyling
+                    className="transition-default ml-1 flex h-auto w-auto items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
+                    tooltipContent={t("pages.wallet.address_copied")}
+                    checkmarksClass=""
+                />
+            </span>
+
+            <span className="whitespace-nowrap">{t("pages.transaction.approve.by")}</span>
+
+            <Link href={route("wallet", transaction.from)} className="link">
+                <span className="hidden md:inline">
+                    {transaction.sender?.hasUsername ? (
+                        transaction.sender.username
+                    ) : (
+                        <TruncateMiddle>{transaction.from}</TruncateMiddle>
+                    )}
+                </span>
+                <span className="md:hidden">
+                    <TruncateMiddle>{transaction.from}</TruncateMiddle>
+                </span>
+            </Link>
+        </div>
+    );
+}
 
 export default function TransactionAction({
     transaction,
@@ -28,7 +100,11 @@ export default function TransactionAction({
                 valueClassName="inline"
                 headerWidthClass={headerWidthClass}
             >
-                <Method transaction={transaction} />
+                {transaction.isApprove ? (
+                    <ApproveAction transaction={transaction} details={details} />
+                ) : (
+                    <Method transaction={transaction} />
+                )}
             </SectionDetailRow>
 
             {transaction.isVote && votedValidator && (

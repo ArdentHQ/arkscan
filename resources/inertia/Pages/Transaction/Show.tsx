@@ -7,7 +7,6 @@ import {
     TransactionAction,
     TransactionAddressing,
     TransactionToken,
-    TransactionTokenApproval,
     TransactionSummary,
     TransactionStatus,
     TransactionRecipients,
@@ -34,10 +33,6 @@ export default function Show({ transaction, details }: PageProps<TransactionShow
 
                 {transaction.isTokenTransfer && details.tokenTransfer && (
                     <TransactionToken details={details} headerWidthClass={headerWidthClass} />
-                )}
-
-                {transaction.isApprove && details.tokenApproval && (
-                    <TransactionTokenApproval details={details} headerWidthClass={headerWidthClass} />
                 )}
 
                 <TransactionSummary transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
