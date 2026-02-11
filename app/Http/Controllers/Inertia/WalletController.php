@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\Block as BlockDTO;
+use App\DTO\Inertia\TokenTransfer as TokenTransferDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
@@ -15,6 +16,7 @@ use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\ExchangeRate;
@@ -63,6 +65,17 @@ final class WalletController
 
                     'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getTransactionsNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+
+            'tokenTransfers' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getTokenTransfers($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getTokenTransfersNoResultsMessageProperty($paginator->count()),
                 ];
             }),
 
@@ -129,6 +142,25 @@ final class WalletController
             ->withScope(OrderByBalanceScope::class)
             ->paginate($this->perPage(), page: $this->page())
             ->through(fn (Wallet $voter) => WalletDTO::fromModel($voter));
+    }
+
+    public function getTokenTransfers(Wallet $wallet): LengthAwarePaginator
+    {
+        return TokenTransfer::select('token_transfers.*')
+            ->with(['transaction'])
+            ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
+            ->where('token_transfers.to', $wallet->address)
+            ->orWhere('token_transfers.from', $wallet->address)
+            ->withScope(OrderByTimestampScope::class)
+            ->paginate($this->perPage())
+            ->through(fn (TokenTransfer $transaction) => TokenTransferDTO::fromModel($transaction));
+    }
+
+    public function getTokenTransfersNoResultsMessageProperty(int $count): null|string
+    {
+        return $count === 0
+            ? (string) trans('tables.tokens.transfers.no_results')
+            : null;
     }
 
     private function getTransactionsQuery(Wallet $wallet): Builder

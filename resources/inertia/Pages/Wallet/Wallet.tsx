@@ -20,6 +20,8 @@ import useSharedData from "@/hooks/use-shared-data";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
+import TokenTransfersTableWrapper from "@/Components/Tables/Desktop/Wallet/TokenTransfers";
+import TokenTransfersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/TokenTransfers";
 
 const WalletTabsWrapper = ({
     transactions,
@@ -55,6 +57,8 @@ const WalletTabs = ({
         let pollParameters: string[] = [];
         if (tab === "transactions") {
             pollParameters = ["transactions"];
+        } else if (tab === "token-transfers") {
+            pollParameters = ["tokenTransfers"];
         } else if (tab === "blocks") {
             pollParameters = ["blocks"];
         } else if (tab === "voters") {
@@ -124,6 +128,12 @@ const WalletTabs = ({
                 <WalletTransactionsTab transactions={transactions} filters={filters.transactions} />
             )}
 
+            {currentTab === "token-transfers" && (
+                <>
+                    <TokenTransfersTableWrapper mobile={<TokenTransfersMobileTableWrapper />} />
+                </>
+            )}
+
             {currentTab === "blocks" && (
                 <>
                     <ValidatedBlocksTableWrapper
@@ -144,7 +154,10 @@ const WalletTabs = ({
 
 function WalletPageHandlerProvider({ children }: PropsWithChildren) {
     const { baseUrl, wallet } = useSharedData<WalletProps>();
-    const tabs = [{ text: "Transactions", value: "transactions" }];
+    const tabs = [
+        { text: "Transactions", value: "transactions" },
+        { text: "Token Transfers", value: "token-transfers" },
+    ];
     const queryStringDefaults: ITabsQueryString = {
         transactions: {
             page: 1,
@@ -158,6 +171,11 @@ function WalletPageHandlerProvider({ children }: PropsWithChildren) {
             username: true,
             contract_deployment: true,
             others: true,
+        },
+
+        "token-transfers": {
+            page: 1,
+            "per-page": 25,
         },
     };
 

@@ -1,5 +1,5 @@
 import { ITokenTransfer } from "@/types/generated";
-import { AddressingGeneric } from "../General/Addressing/AddressingGeneric";
+import { AddressingGeneric } from "@/Components/General/Addressing/AddressingGeneric";
 
 export default function AddressingForTransfer({
     transfer,
@@ -11,14 +11,14 @@ export default function AddressingForTransfer({
     const sender = transfer.transaction!.sender;
     const recipient = transfer.to;
     const contractAddress =
-        transfer.transaction!.deployed_contract_address ?? transfer.transaction!.to ?? recipient ?? "";
+        transfer.transaction!.deployed_contract_address ?? transfer.transaction!.to ?? recipient.address ?? "";
 
     return (
         <AddressingGeneric
             sender={sender!.address}
             senderUsername={sender?.hasUsername && sender?.username ? sender?.username : undefined}
-            recipient={recipient}
-            recipientUsername={transfer.toUsername}
+            recipient={recipient.address}
+            recipientUsername={transfer.to.username}
             contractAddress={contractAddress}
             withTruncate={true}
             className={className}

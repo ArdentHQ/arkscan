@@ -21,6 +21,10 @@ return [
     'api'               => 'API',
     'github'            => 'GitHub',
 
+    'tokens' => [
+        'transfers' => 'Token Transfers',
+    ],
+
     'network-select'   => [
         'main' => [
             'label'        => 'Main Network',
