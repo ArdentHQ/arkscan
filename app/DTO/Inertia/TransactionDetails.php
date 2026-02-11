@@ -121,6 +121,7 @@ class TransactionDetails extends Data
         if (array_key_exists(ApproveArgument::VALUE, $arguments)) {
             $amount = (new ArgumentDecoder($arguments[ApproveArgument::VALUE]))->decodeUnsignedInt();
 
+            // Max uint256 (2^256 - 1). ERC20 approve uses this value to represent unlimited allowance.
             if ($amount === '115792089237316195423570985008687907853269984665640564039457584007913129639935') {
                 $isUnlimited = true;
             }
