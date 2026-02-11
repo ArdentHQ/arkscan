@@ -147,7 +147,7 @@ final class WalletController
     public function getTokenTransfers(Wallet $wallet): LengthAwarePaginator
     {
         return TokenTransfer::select('token_transfers.*')
-            ->with(['token', 'transaction'])
+            ->with(['token', 'transaction.sender', 'transaction.recipientWallet'])
             ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
             ->where('token_transfers.to', $wallet->address)
             ->orWhere('token_transfers.from', $wallet->address)
