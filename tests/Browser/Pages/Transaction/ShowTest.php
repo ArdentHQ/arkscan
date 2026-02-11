@@ -7,6 +7,7 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Models\MultiPayment;
 use App\Models\Token;
+use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -38,7 +39,7 @@ function safeUtf8(string $value): string
     return $converted;
 }
 
-it('should show basic transaction details', function ($resolution) {
+it('should show basic transaction details', function () {
     $transaction = Transaction::factory()
         ->transfer()
         ->create([
@@ -57,61 +58,68 @@ it('should show basic transaction details', function ($resolution) {
 
     (new NetworkCache())->setHeight(fn (): int => 432);
 
-    $this->browse(function (Browser $browser) use ($transaction, $resolution) {
-        $browser->resize($resolution['width'], $resolution['height']);
-
+    $this->browse(function (Browser $browser) use ($transaction) {
         $transactionIdPart1 = substr($transaction->hash, 0, 6);
         $transactionIdPart2 = substr($transaction->hash, 6, 6);
 
-        $senderAddress = $resolution['width'] < 768
-            ? substr($this->wallet->address, 0, 5).'…'.substr($this->wallet->address, -5)
-            : $this->wallet->address;
-
-        $recipientAddress = $resolution['width'] < 768
-            ? substr($this->recipientWallet->address, 0, 5).'…'.substr($this->recipientWallet->address, -5)
-            : $this->recipientWallet->address;
-
         $browser->visit('/transactions/'.$transaction->hash)
-            ->waitForText($transactionIdPart1)
-            ->assertSee($transactionIdPart2)
-            ->assertSeeInOrder([
-                'Timestamp',
-                Carbon::createFromTimestamp($transaction->timestamp)->format('d M Y H:i:s'),
-                'Block',
-                number_format($transaction->block_number),
-                'Nonce',
-                $transaction->nonce,
-                'Action',
-                'Method',
-                'Transfer',
-                'Addressing',
-                'From',
-                $senderAddress,
-                'To',
-                $recipientAddress,
-                'Transaction Summary',
-                'Amount',
-                '123.45 DARK',
-                'Fee',
-                '0.000021 DARK',
-                'Status',
-                'Success',
-                (432 - 12).' Confirmations',
-                'More Details',
-                'Gas Information',
-                'Gas Limit',
-                '12,000',
-                'Usage By Txn',
-                '21,000',
-                'Other Attributes',
-                'Position In Block',
-                $transaction->transaction_index,
-            ]);
+            ->waitForText($transactionIdPart1);
+
+        foreach ($this->resolutions as $resolution) {
+            $senderAddress = $resolution['width'] < 768
+                ? substr($this->wallet->address, 0, 5).'…'.substr($this->wallet->address, -5)
+                : $this->wallet->address;
+
+            $recipientAddress = $resolution['width'] < 768
+                ? substr($this->recipientWallet->address, 0, 5).'…'.substr($this->recipientWallet->address, -5)
+                : $this->recipientWallet->address;
+
+            $browser->resize($resolution['width'], $resolution['height'])
+                ->assertSee($transactionIdPart2)
+                ->assertSeeInOrder([
+                    'Timestamp',
+                    Carbon::createFromTimestamp($transaction->timestamp)->format('d M Y H:i:s'),
+                    'Block',
+                    number_format($transaction->block_number),
+                    'Nonce',
+                    $transaction->nonce,
+                    'Action',
+                    'Method',
+                    'Transfer',
+                    'Addressing',
+                    'From',
+                    $senderAddress,
+                    'To',
+                    $recipientAddress,
+                    'Transaction Summary',
+                    'Amount',
+                    '123.45 DARK',
+                    'Fee',
+                    '0.000021 DARK',
+                    'Status',
+                    'Success',
+                    (432 - 12).' Confirmations',
+                    'More Details',
+                    'Gas Information',
+                    'Gas Limit',
+                    '12,000',
+                    'Usage By Txn',
+                    '21,000',
+                    'Other Attributes',
+                    'Position In Block',
+                    $transaction->transaction_index,
+                ]);
+        }
     });
-})->with('resolutions');
+});
 
 it('should show input data', function ($resolution) {
     $blsPublicKey = 'ef41bc3a8f1dfe662847604c04aa5e5e80c23df2ed657d687149b964a8a8f3a0';
+
+    $contractWallet = Wallet::factory()->create([
+        'address' => Network::knownContract('consensus'),
+        'attributes' => [],
+    ]);
 
     $transaction = Transaction::factory()
         ->validatorRegistration($blsPublicKey)
@@ -129,7 +137,7 @@ it('should show input data', function ($resolution) {
 
     (new NetworkCache())->setHeight(fn (): int => 432);
 
-    $this->browse(function (Browser $browser) use ($transaction, $resolution, $blsPublicKey) {
+    $this->browse(function (Browser $browser) use ($transaction, $resolution, $blsPublicKey, $contractWallet) {
         $browser->resize($resolution['width'], $resolution['height']);
 
         $transactionIdPart1 = substr($transaction->hash, 0, 6);
@@ -139,7 +147,12 @@ it('should show input data', function ($resolution) {
             ? substr($this->wallet->address, 0, 5).'…'.substr($this->wallet->address, -5)
             : $this->wallet->address;
 
-        $recipientAddress = $resolution['width'] < 768 ? '' : $transaction->to;
+        $contractAddress = [$contractWallet->address];
+        if ($resolution['width'] < 768) {
+            $contractAddress = ['Contract'];
+        } else if ($resolution['width'] < 960) {
+            $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
+        }
 
         $browser->visit('/transactions/'.$transaction->hash)
             ->waitForText($transactionIdPart1)
@@ -154,8 +167,7 @@ it('should show input data', function ($resolution) {
                 'From',
                 $senderAddress,
                 'Interacted With',
-                $recipientAddress,
-                'Contract',
+                ...$contractAddress,
                 'Transaction Summary',
             ]);
 
@@ -340,7 +352,7 @@ it('should copy data to the clipboard', function ($resolution) {
     });
 })->with('resolutions');
 
-it('should show token transfer symbol', function ($resolution) {
+it('should show token transfer symbol', function () {
     $contractWallet = Wallet::factory()->create(['attributes' => []]);
     $transaction    = Transaction::factory()
         ->tokenTransfer($this->recipientWallet->address, BigNumber::new(1234.56 * 1e18))
@@ -364,44 +376,120 @@ it('should show token transfer symbol', function ($resolution) {
 
     (new NetworkCache())->setHeight(fn (): int => 432);
 
-    $this->browse(function (Browser $browser) use ($transaction, $resolution, $contractWallet) {
-        $browser->resize($resolution['width'], $resolution['height']);
-
+    $this->browse(function (Browser $browser) use ($transaction, $contractWallet) {
         $transactionIdPart1 = substr($transaction->hash, 0, 6);
         $transactionIdPart2 = substr($transaction->hash, 6, 6);
 
-        $senderAddress = $resolution['width'] < 768
-            ? substr($this->wallet->address, 0, 5).'…'.substr($this->wallet->address, -5)
-            : $this->wallet->address;
+        $browser->visit('/transactions/'.$transaction->hash)
+            ->waitForText($transactionIdPart1);
 
-        $recipientAddress = $resolution['width'] < 768
-            ? substr($this->recipientWallet->address, 0, 5).'…'.substr($this->recipientWallet->address, -5)
-            : $this->recipientWallet->address;
+        foreach ($this->resolutions as $resolution) {
+            $senderAddress = $resolution['width'] < 768
+                ? substr($this->wallet->address, 0, 5).'…'.substr($this->wallet->address, -5)
+                : $this->wallet->address;
 
-        $contractAddress = $resolution['width'] < 768 ? 'Contract' : $contractWallet->address;
+            $recipientAddress = $resolution['width'] < 768
+                ? substr($this->recipientWallet->address, 0, 5).'…'.substr($this->recipientWallet->address, -5)
+                : $this->recipientWallet->address;
+
+            $contractAddress = [$contractWallet->address];
+            if ($resolution['width'] < 768) {
+                $contractAddress = ['Contract'];
+            } else if ($resolution['width'] < 960) {
+                $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
+            }
+
+            $browser->resize($resolution['width'], $resolution['height'])
+                ->assertSee($transactionIdPart2)
+                ->assertSeeInOrder([
+                    'Addressing',
+                    'From',
+                    $senderAddress,
+                    'Interacted With',
+                    ...$contractAddress,
+                    'Tokens Transferred',
+                    'To',
+                    $recipientAddress,
+                    'Amount',
+                    '1234.56 TESTINGSYMBOL',
+                    'Transaction Summary',
+                    'Amount',
+                    '123.45 DARK',
+                    'Fee',
+                    '0.000021 DARK',
+                ]);
+        }
+    });
+});
+
+it('should not show recipient username for "to" address', function () {
+    $contractWallet = Wallet::factory()->create([
+        'address' => Network::knownContract('consensus'),
+        'attributes' => [],
+    ]);
+
+    $senderWallet = Wallet::factory()->create();
+    $recipientWallet = Wallet::factory()->create();
+
+    $transaction    = Transaction::factory()
+        ->tokenTransfer($recipientWallet->address, BigNumber::new(1234.56 * 1e18))
+        ->create([
+            'from'              => $senderWallet->address,
+            'sender_public_key' => $senderWallet->public_key,
+            'to'                => $contractWallet->address,
+            'value'             => 123.45 * 1e18,
+            'gas'               => 12000,
+            'gas_price'         => 1e9,
+            'gas_used'          => 21000,
+            'gas_refunded'      => 10000,
+        ]);
+
+    Token::factory()->create([
+        'address' => $transaction->to,
+        'symbol'  => 'TESTINGSYMBOL',
+    ]);
+
+    (new CacheTokens())->handle();
+
+    (new NetworkCache())->setHeight(fn (): int => 432);
+
+    $this->browse(function (Browser $browser) use ($senderWallet, $recipientWallet, $transaction, $contractWallet) {
+        $transactionIdPart1 = substr($transaction->hash, 0, 6);
+        $transactionIdPart2 = substr($transaction->hash, 6, 6);
 
         $browser->visit('/transactions/'.$transaction->hash)
-            ->waitForText($transactionIdPart1)
-            ->assertSee($transactionIdPart2)
-            ->assertSeeInOrder([
-                'Addressing',
-                'From',
-                $senderAddress,
-                'Interacted With',
-                $contractAddress,
-                'Tokens Transferred',
-                'To',
-                $recipientAddress,
-                'Amount',
-                '1234.56 TESTINGSYMBOL',
-                'Transaction Summary',
-                'Amount',
-                '123.45 DARK',
-                'Fee',
-                '0.000021 DARK',
-            ]);
+            ->waitForText($transactionIdPart1);
+
+        foreach ($this->resolutions as $resolution) {
+            $contractAddress = [$contractWallet->address];
+            if ($resolution['width'] < 768) {
+                $contractAddress = ['Contract'];
+            } else if ($resolution['width'] < 960) {
+                $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
+            }
+
+            $browser->resize($resolution['width'], $resolution['height'])
+                ->assertSee($transactionIdPart2)
+                ->assertSeeInOrder([
+                    'Addressing',
+                    'From',
+                    $senderWallet->attributes['username'],
+                    'Interacted With',
+                    ...$contractAddress,
+                    'Tokens Transferred',
+                    'To',
+                    $recipientWallet->attributes['username'],
+                    'Amount',
+                    '1234.56 TESTINGSYMBOL',
+                    'Transaction Summary',
+                    'Amount',
+                    '123.45 DARK',
+                    'Fee',
+                    '0.000021 DARK',
+                ]);
+        }
     });
-})->with('resolutions');
+});
 
 dataset('resolutions', [
     'desktop' => [['width' => 1280, 'height' => 1024]],
