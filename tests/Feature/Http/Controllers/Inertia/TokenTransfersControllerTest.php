@@ -54,7 +54,7 @@ it('should provide the no results message if no transfers exist', function () {
     );
 });
 
-it('should not include contract deployment transactions', function () {
+it('should include contract deployment transactions', function () {
     TokenTransfer::factory(3)->create();
 
     $contractDeployment = Transaction::factory()->contractDeployment()->create();
