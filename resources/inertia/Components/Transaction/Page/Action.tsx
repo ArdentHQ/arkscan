@@ -45,46 +45,51 @@ function ApproveActionRow({
 
     return (
         <SectionDetailRow title={rowTitle} headerWidthClass={headerWidthClass}>
-            <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
-                {amount !== null && <span>{amount}</span>}
+            <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5 sm:gap-y-1">
+                <div className="flex items-center gap-x-1.5">
+                    {amount !== null && <span>{amount}</span>}
+                    <span className="whitespace-nowrap">{t("pages.transaction.approve.for_trade")}</span>
+                </div>
 
-                <span className="whitespace-nowrap">{t("pages.transaction.approve.for_trade")}</span>
+                <div className="flex items-center gap-x-1.5">
+                    <span>{t("pages.transaction.approve.on")}</span>
 
-                <span>{t("pages.transaction.approve.on")}</span>
-
-                <span className="inline-flex items-center">
-                    <Link href={route("wallet", tokenApproval.spender)} className="link">
-                        <span className="hidden md:inline">
-                            {tokenApproval.spenderHasUsername ? (
-                                tokenApproval.spenderUsername
-                            ) : (
+                    <span className="inline-flex items-center">
+                        <Link href={route("wallet", tokenApproval.spender)} className="link">
+                            <span className="hidden md:inline">
+                                {tokenApproval.spenderHasUsername ? (
+                                    tokenApproval.spenderUsername
+                                ) : (
+                                    <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
+                                )}
+                            </span>
+                            <span className="md:hidden">
                                 <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
+                            </span>
+                        </Link>
+
+                        <Badge className="ml-1.5 inline-flex items-center">
+                            <ContractIcon className="h-3 w-3" />
+                        </Badge>
+                    </span>
+                </div>
+
+                <div className="flex items-center gap-x-1.5">
+                    <span className="whitespace-nowrap">{t("pages.transaction.approve.by")}</span>
+
+                    <Link href={route("wallet", transaction.from)} className="link">
+                        <span className="hidden md:inline">
+                            {transaction.sender?.hasUsername ? (
+                                transaction.sender.username
+                            ) : (
+                                <TruncateMiddle>{transaction.from}</TruncateMiddle>
                             )}
                         </span>
                         <span className="md:hidden">
-                            <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
+                            <TruncateMiddle>{transaction.from}</TruncateMiddle>
                         </span>
                     </Link>
-
-                    <Badge className="ml-1.5 inline-flex items-center">
-                        <ContractIcon className="h-3 w-3" />
-                    </Badge>
-                </span>
-
-                <span className="whitespace-nowrap">{t("pages.transaction.approve.by")}</span>
-
-                <Link href={route("wallet", transaction.from)} className="link">
-                    <span className="hidden md:inline">
-                        {transaction.sender?.hasUsername ? (
-                            transaction.sender.username
-                        ) : (
-                            <TruncateMiddle>{transaction.from}</TruncateMiddle>
-                        )}
-                    </span>
-                    <span className="md:hidden">
-                        <TruncateMiddle>{transaction.from}</TruncateMiddle>
-                    </span>
-                </Link>
+                </div>
             </div>
         </SectionDetailRow>
     );
