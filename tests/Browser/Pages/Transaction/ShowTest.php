@@ -7,7 +7,6 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Models\MultiPayment;
 use App\Models\Token;
-use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -117,7 +116,7 @@ it('should show input data', function ($resolution) {
     $blsPublicKey = 'ef41bc3a8f1dfe662847604c04aa5e5e80c23df2ed657d687149b964a8a8f3a0';
 
     $contractWallet = Wallet::factory()->create([
-        'address' => Network::knownContract('consensus'),
+        'address'    => Network::knownContract('consensus'),
         'attributes' => [],
     ]);
 
@@ -150,7 +149,7 @@ it('should show input data', function ($resolution) {
         $contractAddress = [$contractWallet->address];
         if ($resolution['width'] < 768) {
             $contractAddress = ['Contract'];
-        } else if ($resolution['width'] < 960) {
+        } elseif ($resolution['width'] < 960) {
             $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
         }
 
@@ -395,7 +394,7 @@ it('should show token transfer symbol', function () {
             $contractAddress = [$contractWallet->address];
             if ($resolution['width'] < 768) {
                 $contractAddress = ['Contract'];
-            } else if ($resolution['width'] < 960) {
+            } elseif ($resolution['width'] < 960) {
                 $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
             }
 
@@ -424,11 +423,11 @@ it('should show token transfer symbol', function () {
 
 it('should not show recipient username for "to" address', function () {
     $contractWallet = Wallet::factory()->create([
-        'address' => Network::knownContract('consensus'),
+        'address'    => Network::knownContract('consensus'),
         'attributes' => [],
     ]);
 
-    $senderWallet = Wallet::factory()->create();
+    $senderWallet    = Wallet::factory()->create();
     $recipientWallet = Wallet::factory()->create();
 
     $transaction    = Transaction::factory()
@@ -464,7 +463,7 @@ it('should not show recipient username for "to" address', function () {
             $contractAddress = [$contractWallet->address];
             if ($resolution['width'] < 768) {
                 $contractAddress = ['Contract'];
-            } else if ($resolution['width'] < 960) {
+            } elseif ($resolution['width'] < 960) {
                 $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
             }
 

@@ -541,7 +541,7 @@ it('should handle token transfer with non-existent recipient wallet', function (
 
     // Use an address that does NOT exist in the wallets table
     $nonExistentRecipientAddress = '0x448c9672dc0DD62188064360c704822eCB6b9Fb4';
-    $nonExistentContractAddress = '0xTokenContractAddress000000000000000000000000';
+    $nonExistentContractAddress  = '0xTokenContractAddress000000000000000000000000';
 
     $transaction = Transaction::factory()
         ->tokenTransfer($nonExistentRecipientAddress, BigNumber::new(1000))
