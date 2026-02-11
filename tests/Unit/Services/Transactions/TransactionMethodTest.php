@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Transactions\TransactionMethod;
 use Illuminate\Contracts\Translation\Translator;
 
@@ -48,6 +49,18 @@ it('should determine the type with vote', function () {
 
     expect($transactionMethod->isVote())->toBeTrue();
     expect($transactionMethod->name())->toBe('Vote');
+});
+
+it('should determine the type with approve', function () {
+    $spender     = Wallet::factory()->create();
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::new(1000))
+        ->create();
+
+    $transactionMethod = new TransactionMethod($transaction);
+
+    expect($transactionMethod->isApprove())->toBeTrue();
+    expect($transactionMethod->name())->toBe('Approve');
 });
 
 it('should determine the name from the contracts if unhandled type', function () {

@@ -171,6 +171,7 @@ it('should make an instance', function () {
             'votePercentage'                    => null,
         ],
         'votedForUsername'                => null,
+        'isApprove'                       => false,
     ]);
 });
 
@@ -303,6 +304,7 @@ it('should make an instance for a vote transaction', function () {
         ],
         'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => 'bill.ding',
+        'isApprove'                       => false,
     ]);
 });
 
@@ -490,6 +492,7 @@ it('should make an instance for a validator resignation transaction', function (
             ],
             'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
             'votedForUsername'                => null,
+            'isApprove'                       => false,
         ],
         'votedFor' => null,
         'sender'   => [
@@ -524,6 +527,7 @@ it('should make an instance for a validator resignation transaction', function (
         ],
         'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => null,
+        'isApprove'                       => false,
     ]);
 });
 

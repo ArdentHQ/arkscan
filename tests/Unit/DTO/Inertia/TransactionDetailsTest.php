@@ -65,3 +65,68 @@ it('should include token data', function () {
 
     expect($details->token->symbol)->toBe($token->symbol);
 });
+
+it('should include token approval details for approve transaction', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $spender = Wallet::factory()->create([
+        'attributes' => ['username' => 'spender.user'],
+    ]);
+
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenApproval)->not->toBeNull();
+    expect($details->tokenApproval['spender'])->toBe($spender->address);
+    expect($details->tokenApproval['amount'])->toBeString();
+    expect($details->tokenApproval['isUnlimited'])->toBeFalse();
+    expect($details->tokenApproval['spenderUsername'])->toBe('spender.user');
+    expect($details->tokenApproval['spenderHasUsername'])->toBeTrue();
+});
+
+it('should detect unlimited approve', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $spender = Wallet::factory()->create();
+
+    // Max uint256 (2^256 - 1)
+    $maxUint256 = BigNumber::new('115792089237316195423570985008687907853269984665640564039457584007913129639935');
+
+    $transaction = Transaction::factory()
+        ->approve($spender->address, $maxUint256)
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenApproval)->not->toBeNull();
+    expect($details->tokenApproval['isUnlimited'])->toBeTrue();
+});
+
+it('should return null token approval for non-approve transaction', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $transaction = Transaction::factory()
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenApproval)->toBeNull();
+});
