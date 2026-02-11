@@ -5,7 +5,8 @@ import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import Method from "@/Components/Transaction/Method";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
-import Clipboard from "@/Components/General/Clipboard";
+import Badge from "@/Components/General/Badge";
+import ContractIcon from "@ui/icons/transaction/contract.svg?react";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import useSharedData from "@/hooks/use-shared-data";
 import { weiToArk } from "@/utils/UnitConverter";
@@ -41,10 +42,9 @@ function ApproveActionRow({
     const amount = !isUnlimited && tokenApproval.amount !== null ? weiToArk(tokenApproval.amount, tokenSymbol) : null;
 
     const rowTitle = isUnlimited ? `${transaction.type} ${t("general.unlimited")}` : transaction.type;
-    const approveHeaderWidth = isUnlimited ? "sm:w-[144px]" : headerWidthClass;
 
     return (
-        <SectionDetailRow title={rowTitle} headerWidthClass={approveHeaderWidth}>
+        <SectionDetailRow title={rowTitle} headerWidthClass={headerWidthClass}>
             <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
                 {amount !== null && <span>{amount}</span>}
 
@@ -64,13 +64,9 @@ function ApproveActionRow({
                         </span>
                     </Link>
 
-                    <Clipboard
-                        value={tokenApproval.spender}
-                        noStyling
-                        className="transition-default ml-1 flex h-auto w-auto items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
-                        tooltipContent={t("pages.wallet.address_copied")}
-                        checkmarksClass=""
-                    />
+                    <Badge className="ml-1.5 inline-flex items-center">
+                        <ContractIcon className="h-3 w-3" />
+                    </Badge>
                 </span>
 
                 <span className="whitespace-nowrap">{t("pages.transaction.approve.by")}</span>
