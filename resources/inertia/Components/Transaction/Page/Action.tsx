@@ -44,7 +44,11 @@ function ApproveActionRow({
     const rowTitle = isUnlimited ? `${transaction.type} ${t("general.unlimited")}` : transaction.type;
 
     return (
-        <SectionDetailRow title={rowTitle} headerWidthClass={headerWidthClass}>
+        <SectionDetailRow
+            title={rowTitle}
+            headerWidthClass={headerWidthClass}
+            className="!items-start sm:!items-center"
+        >
             <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5 sm:gap-y-1">
                 <div className="flex items-center gap-x-1.5">
                     {amount !== null && <span>{amount}</span>}
