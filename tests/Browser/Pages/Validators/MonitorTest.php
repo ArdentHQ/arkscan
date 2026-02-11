@@ -22,7 +22,7 @@ describe('Monitor', function () {
         $this->activeValidators = require dirname(dirname(dirname(__DIR__))).'/fixtures/forgers.php';
     });
 
-    it('should show warning icon for validators missing blocks - minutes', function () {
+    it('should show warning icon for validators missing blocks - minutes', function ($resolution) {
         $this->freezeTime();
 
         [0 => $validators] = createRealisticRound([
@@ -58,31 +58,28 @@ describe('Monitor', function () {
 
         expect($validator->performance())->toBe([false, false]);
 
-        $this->browse(function (Browser $browser) use ($validator) {
-            $browser->visitRoute('validator-monitor');
+        $this->browse(function (Browser $browser) use ($validator, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height'])
+                ->visitRoute('validator-monitor')
+                ->pause(100);
 
-            foreach ($this->resolutions as $resolution) {
-                $browser->resize($resolution['width'], $resolution['height'])
-                    ->pause(100);
-
-                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
-                if ($resolution['width'] <= 640) {
-                    $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
-                }
-
-                $browser->waitFor($missedWarningSelector);
-
-                $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
-                $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
-                $browser->script('window.scrollBy(0, -200)');
-
-                $browser->mouseOver($missedWarningSelector)
-                    ->waitForText('Validator last forged 207 blocks ago (~ 28 min)');
+            $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
+            if ($resolution['width'] <= 640) {
+                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
             }
-        });
-    });
 
-    it('should show warning icon for validators missing blocks - hours', function () {
+            $browser->waitFor($missedWarningSelector);
+
+            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+            $browser->script('window.scrollBy(0, -200)');
+
+            $browser->mouseOver($missedWarningSelector)
+                ->waitForText('Validator last forged 207 blocks ago (~ 28 min)');
+        });
+    })->with('resolutions');
+
+    it('should show warning icon for validators missing blocks - hours', function ($resolution) {
         $this->travelTo(Carbon::now()->subHours(1));
 
         $this->freezeTime();
@@ -120,31 +117,28 @@ describe('Monitor', function () {
 
         expect($validator->performance())->toBe([false, false]);
 
-        $this->browse(function (Browser $browser) use ($validator) {
-            $browser->visitRoute('validator-monitor');
+        $this->browse(function (Browser $browser) use ($validator, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height'])
+                ->visitRoute('validator-monitor')
+                ->pause(500);
 
-            foreach ($this->resolutions as $resolution) {
-                $browser->resize($resolution['width'], $resolution['height'])
-                    ->pause(100);
-
-                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
-                if ($resolution['width'] <= 640) {
-                    $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
-                }
-
-                $browser->waitFor($missedWarningSelector);
-
-                $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
-                $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
-                $browser->script('window.scrollBy(0, -200)');
-
-                $browser->mouseOver($missedWarningSelector)
-                    ->waitForText('Validator last forged 207 blocks ago (~ 1h 28 min)', 20);
+            $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
+            if ($resolution['width'] <= 640) {
+                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
             }
-        });
-    });
 
-    it('should show warning icon for validators missing blocks - days', function () {
+            $browser->waitFor($missedWarningSelector);
+
+            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+            $browser->script('window.scrollBy(0, -200)');
+
+            $browser->mouseOver($missedWarningSelector)
+                ->waitForText('Validator last forged 207 blocks ago (~ 1h 28 min)', 20);
+        });
+    })->with('resolutions');
+
+    it('should show warning icon for validators missing blocks - days', function ($resolution) {
         $this->travelTo(Carbon::now()->subDays(2));
 
         $this->freezeTime();
@@ -182,29 +176,26 @@ describe('Monitor', function () {
 
         expect($validator->performance())->toBe([false, false]);
 
-        $this->browse(function (Browser $browser) use ($validator) {
-            $browser->visitRoute('validator-monitor');
+        $this->browse(function (Browser $browser) use ($validator, $resolution) {
+            $browser->resize($resolution['width'], $resolution['height'])
+                ->visitRoute('validator-monitor')
+                ->pause(500);
 
-            foreach ($this->resolutions as $resolution) {
-                $browser->resize($resolution['width'], $resolution['height'])
-                    ->pause(100);
-
-                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
-                if ($resolution['width'] <= 640) {
-                    $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
-                }
-
-                $browser->waitFor($missedWarningSelector);
-
-                $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
-                $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
-                $browser->script('window.scrollBy(0, -200)');
-
-                $browser->mouseOver($missedWarningSelector)
-                    ->waitForText('Validator last forged 207 blocks ago (more than a day)', 20);
+            $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().'"]';
+            if ($resolution['width'] <= 640) {
+                $missedWarningSelector = 'div[data-testid="validator-monitor:missed-warning-'.$validator->address().':mobile"]';
             }
+
+            $browser->waitFor($missedWarningSelector);
+
+            $missedWarningSelectorScrollSelector = addslashes($browser->resolver->format($missedWarningSelector));
+            $browser->script('document.querySelector("'.$missedWarningSelectorScrollSelector.'").scrollIntoView();');
+            $browser->script('window.scrollBy(0, -200)');
+
+            $browser->mouseOver($missedWarningSelector)
+                ->waitForText('Validator last forged 207 blocks ago (more than a day)', 20);
         });
-    });
+    })->with('resolutions');
 });
 
 describe('Data Boxes', function () {
