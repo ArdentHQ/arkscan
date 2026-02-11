@@ -15,8 +15,6 @@ export default function TransactionAddressing({
 }) {
     const { t } = useTranslation();
 
-    const recipientAddress = transaction.to ?? transaction.deployed_contract_address ?? transaction.from;
-
     const recipientLabel = details.recipientIsContract
         ? t("pages.transaction.header.interacted_with")
         : t("pages.transaction.header.to");
@@ -34,7 +32,6 @@ export default function TransactionAddressing({
             <SectionDetailRow title={recipientLabel} valueClassName="min-w-0" headerWidthClass={headerWidthClass}>
                 <TransactionAddress
                     wallet={transaction.recipient}
-                    address={recipientAddress}
                     isContract={details.recipientIsContract}
                     testId="transaction:copy-to"
                 />
