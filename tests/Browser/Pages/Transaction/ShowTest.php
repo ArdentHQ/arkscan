@@ -69,6 +69,7 @@ it('should show basic transaction details', function () {
             if ($resolution['width'] < 768) {
                 $senderAddress = [substr($this->wallet->address, 0, 5).'…'.substr($this->wallet->address, -5)];
             } elseif ($resolution['width'] < 960) {
+                // Handle dynamic truncation by checking for the start and end of the address separately.
                 $senderAddress = [substr($this->wallet->address, 0, 5), substr($this->wallet->address, -5)];
             }
 
@@ -76,6 +77,7 @@ it('should show basic transaction details', function () {
             if ($resolution['width'] < 768) {
                 $recipientAddress = [substr($this->recipientWallet->address, 0, 5).'…'.substr($this->recipientWallet->address, -5)];
             } elseif ($resolution['width'] < 960) {
+                // Handle dynamic truncation by checking for the start and end of the address separately.
                 $recipientAddress = [substr($this->recipientWallet->address, 0, 5), substr($this->recipientWallet->address, -5)];
             }
 
@@ -157,6 +159,7 @@ it('should show input data', function ($resolution) {
         if ($resolution['width'] < 768) {
             $contractAddress = ['Contract'];
         } elseif ($resolution['width'] < 960) {
+            // Handle dynamic truncation by checking for the start and end of the address separately.
             $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
         }
 
@@ -402,6 +405,7 @@ it('should show token transfer symbol', function () {
             if ($resolution['width'] < 768) {
                 $contractAddress = ['Contract'];
             } elseif ($resolution['width'] < 960) {
+                // Handle dynamic truncation by checking for the start and end of the address separately.
                 $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
             }
 
@@ -472,6 +476,7 @@ it('should not show recipient username for "to" address', function () {
             if ($resolution['width'] < 768) {
                 $contractAddress = ['Contract'];
             } elseif ($resolution['width'] < 960) {
+                // Handle dynamic truncation by checking for the start and end of the address separately.
                 $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
             }
 
