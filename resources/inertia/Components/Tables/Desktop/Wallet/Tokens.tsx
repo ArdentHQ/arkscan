@@ -15,9 +15,11 @@ export function Row({ row }: { row: ITokenHolder }) {
 
     return (
         <tr className="text-sm font-semibold">
-            <TableCell>
-                <div className="flex items-center space-x-1">
-                    <div className="text-theme-secondary-900 dark:text-theme-dark-50">{row.token.name}</div>
+            <TableCell className="max-w-[200px]">
+                <div className="flex w-full min-w-0 items-center space-x-1">
+                    <div className="min-w-0 truncate text-theme-secondary-900 dark:text-theme-dark-50">
+                        {row.token.name}
+                    </div>
 
                     <div className="md-lg:hidden">{row.token.symbol}</div>
                 </div>
@@ -54,7 +56,7 @@ export function TokensTable({ mobile }: { mobile?: React.ReactNode }) {
             noResultsMessage={tokens.noResultsMessage}
             columns={
                 <>
-                    <TableHeader>{t("tables.tokens.token")}</TableHeader>
+                    <TableHeader className="max-w-[200px]">{t("tables.tokens.token")}</TableHeader>
 
                     <TableHeader breakpoint="md-lg" responsive>
                         {t("tables.tokens.symbol")}

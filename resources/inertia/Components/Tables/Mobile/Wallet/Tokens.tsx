@@ -23,15 +23,15 @@ export function TokensMobileTable() {
                     key={index}
                     header={
                         <>
-                            <div className="flex items-center space-x-1">
-                                <div className="text-theme-secondary-900 dark:text-theme-dark-50">
+                            <div className="flex w-full items-center space-x-1">
+                                <div className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
                                     {token.token.name}
                                 </div>
 
                                 <div className="md-lg:hidden">{token.token.symbol}</div>
                             </div>
 
-                            <Address wallet={token.token.address} className="hidden sm:block" truncate />
+                            <Address wallet={token.token.address} truncate className="min-w-auto" />
                         </>
                     }
                 >
