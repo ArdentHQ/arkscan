@@ -29,8 +29,8 @@ class Token extends Data
     {
         return new self(
             address: $token->address,
-            name: static::normalizeString($token->name, self::MAX_NAME_LENGTH), // Truncate to prevent unnecessary long names
-            symbol: static::normalizeString($token->symbol, self::MAX_SYMBOL_LENGTH, '…'), // Truncate to prevent unnecessary long symbols
+            name: self::normalizeString($token->name, self::MAX_NAME_LENGTH), // Truncate to prevent unnecessary long names
+            symbol: self::normalizeString($token->symbol, self::MAX_SYMBOL_LENGTH, '…'), // Truncate to prevent unnecessary long symbols
             decimals: $token->decimals,
             totalSupply: (string) $token->total_supply,
             deploymentHash: $token->deployment_hash,
