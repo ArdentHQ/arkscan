@@ -73,14 +73,4 @@ final class TokenHolder extends Model
     {
         return $this->belongsTo(Token::class, 'token_address', 'address');
     }
-
-    /**
-     * A transaction belongs to a sender.
-     *
-     * @return BelongsTo
-     */
-    public function wallet(): BelongsTo
-    {
-        return $this->belongsTo(Wallet::class, 'address', 'address');
-    }
 }
