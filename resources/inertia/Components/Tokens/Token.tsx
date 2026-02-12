@@ -1,6 +1,7 @@
 import { IToken } from "@/types/generated";
 import { Link } from "@inertiajs/react";
 import classNames from "classnames";
+import TruncatedValue from "./TruncatedValue";
 
 export default function Token({ token, className }: { token: IToken; className?: string }) {
     return (
@@ -11,7 +12,7 @@ export default function Token({ token, className }: { token: IToken; className?:
             ])}
         >
             <Link href={route("wallet", { wallet: token.address })} className="link">
-                {token.name}
+                <TruncatedValue value={token.name} />
             </Link>
         </div>
     );

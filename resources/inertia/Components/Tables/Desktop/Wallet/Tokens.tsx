@@ -9,6 +9,7 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
 import Address from "@/Components/Wallet/Address";
 import AmountGeneric from "@/Components/Tokens/AmountGeneric";
+import TruncatedValue from "@/Components/Tokens/TruncatedValue";
 
 export function Row({ row }: { row: ITokenHolder }) {
     const { network } = useSharedData<WalletProps>();
@@ -18,15 +19,17 @@ export function Row({ row }: { row: ITokenHolder }) {
             <TableCell className="max-w-[200px]">
                 <div className="flex w-full min-w-0 items-center space-x-1">
                     <div className="min-w-0 truncate text-theme-secondary-900 dark:text-theme-dark-50">
-                        {row.token.name}
+                        <TruncatedValue value={row.token.name} />
                     </div>
 
-                    <div className="md-lg:hidden">{row.token.symbol}</div>
+                    <div className="md-lg:hidden">
+                        <TruncatedValue value={row.token.symbol} />
+                    </div>
                 </div>
             </TableCell>
 
             <TableCell breakpoint="md-lg" responsive>
-                {row.token.symbol}
+                <TruncatedValue value={row.token.symbol} />
             </TableCell>
 
             <TableCell>

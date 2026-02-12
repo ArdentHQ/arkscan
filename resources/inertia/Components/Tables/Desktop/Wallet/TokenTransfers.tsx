@@ -12,6 +12,7 @@ import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
 import Amount from "@/Components/Tokens/Amount";
+import TruncatedValue from "@/Components/Tokens/TruncatedValue";
 
 export function Row({ row }: { row: ITokenTransfer }) {
     const { wallet } = useSharedData<WalletProps>();
@@ -44,7 +45,7 @@ export function Row({ row }: { row: ITokenTransfer }) {
             </TableCell>
 
             <TableCell className="text-right" breakpoint="md-lg" responsive>
-                {row.token.symbol}
+                <TruncatedValue value={row.token.symbol} className="justify-end" />
             </TableCell>
         </tr>
     );

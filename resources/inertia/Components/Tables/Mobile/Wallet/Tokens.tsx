@@ -11,6 +11,7 @@ import useSharedData from "@/hooks/use-shared-data";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import Address from "@/Components/Wallet/Address";
 import AmountGeneric from "@/Components/Tokens/AmountGeneric";
+import TruncatedValue from "@/Components/Tokens/TruncatedValue";
 
 export function TokensMobileTable() {
     const { t } = useTranslation();
@@ -22,17 +23,19 @@ export function TokensMobileTable() {
                 <MobileTableRow
                     key={index}
                     header={
-                        <>
-                            <div className="flex w-full items-center space-x-1">
+                        <div className="flex min-w-0 items-center justify-between space-x-2">
+                            <div className="flex w-full min-w-0 items-center space-x-1">
                                 <div className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {token.token.name}
+                                    <TruncatedValue value={token.token.name} />
                                 </div>
 
-                                <div className="md-lg:hidden">{token.token.symbol}</div>
+                                <div className="md-lg:hidden">
+                                    <TruncatedValue value={token.token.symbol} />
+                                </div>
                             </div>
 
                             <Address wallet={token.token.address} truncate className="min-w-auto" />
-                        </>
+                        </div>
                     }
                 >
                     <TableCell label={t("tables.tokens.token_balance")} className="sm:flex-1">
