@@ -49,9 +49,9 @@ class Token extends Data
         }
 
         if ($suffix !== null) {
-            return $value . $suffix;
+            return Str::trim($value) . $suffix;
         }
 
-        return $value;
+        return Str::trim($value);
     }
 }
