@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Console\Commands\CacheValidatorsWithVoters;
 use App\Facades\Network;
 use App\Models\Block;
+use App\Models\TokenHolder;
 use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -46,6 +47,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                 ])
                 ->missing('transactions')
                 ->missing('tokenTransfers')
+                ->missing('tokens')
                 ->missing('blocks')
                 ->missing('voters')
                 ->component('Wallet/Wallet');
@@ -58,7 +60,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                 return;
             }
 
-            $page->reloadOnly('wallet,transactions,tokenTransfers,blocks,voters', function (Assert $reload) use ($reloadCallback) {
+            $page->reloadOnly('wallet,transactions,tokenTransfers,tokens,blocks,voters', function (Assert $reload) use ($reloadCallback) {
                 if (is_callable($reloadCallback)) {
                     $reloadCallback($reload);
                 }
@@ -158,6 +160,38 @@ it('should have token transfers', function () {
                     $transactionIds = collect($transactions)->pluck('transaction_hash');
 
                     return $transactionIds->contains($sent->hash) && $transactionIds->contains($received->hash);
+                });
+        },
+    );
+});
+
+it('should have tokens', function () {
+    $tokens = TokenHolder::factory(3)->create([
+        'address' => $this->subject->address,
+    ]);
+
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) use ($tokens) {
+            $reload->has('tokens.data', 3)
+                ->where('tokens.total', 3)
+                ->where('tokens.current_page', 1)
+                ->where('tokens.last_page', 1)
+                ->where('tokens.meta', [
+                    'pageName'  => 'page',
+                    'urlParams' => [],
+                ])
+                ->where('tokens.data', function ($tokenData) use ($tokens) {
+                    $tokenAddresses = collect($tokenData)->pluck('token.address');
+
+                    foreach ($tokens as $token) {
+                        if (! $tokenAddresses->contains($token->token_address)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
                 });
         },
     );
@@ -822,6 +856,18 @@ it('should show no results message if no token transfers', function () {
             $reload->has('tokenTransfers.data', 0)
                 ->where('tokenTransfers.total', 0)
                 ->where('tokenTransfers.noResultsMessage', trans('tables.tokens.transfers.no_results'));
+        },
+    );
+});
+
+it('should show no results message if no tokens', function () {
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) {
+            $reload->has('tokens.data', 0)
+                ->where('tokens.total', 0)
+                ->where('tokens.noResultsMessage', trans('tables.tokens.no_results'));
         },
     );
 });
