@@ -102,6 +102,7 @@ export default function TokenTransfersTableWrapper({
         return (
             <>
                 <LoadingTable
+                    header
                     mobile={mobile}
                     paginator={tokenTransfers}
                     rowCount={rowCount}

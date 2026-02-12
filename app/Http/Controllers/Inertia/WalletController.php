@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\Block as BlockDTO;
+use App\DTO\Inertia\TokenHolder as TokenHolderDTO;
 use App\DTO\Inertia\TokenTransfer as TokenTransferDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
@@ -16,6 +17,7 @@ use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\TokenHolder;
 use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -76,6 +78,17 @@ final class WalletController
 
                     'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getTokenTransfersNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+
+            'tokens' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getTokens($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getTokensNoResultsMessageProperty($paginator->count()),
                 ];
             }),
 
@@ -156,11 +169,13 @@ final class WalletController
             ->through(fn (TokenTransfer $transaction) => TokenTransferDTO::fromModel($transaction));
     }
 
-    public function getTokenTransfersNoResultsMessageProperty(int $count): null|string
+    public function getTokens(Wallet $wallet): LengthAwarePaginator
     {
-        return $count === 0
-            ? (string) trans('tables.tokens.transfers.no_results')
-            : null;
+        return TokenHolder::with(['token'])
+            ->where('address', $wallet->address)
+            ->orderBy('balance', 'desc')
+            ->paginate($this->perPage())
+            ->through(fn (TokenHolder $tokenHolder) => TokenHolderDTO::fromModel($tokenHolder));
     }
 
     private function getTransactionsQuery(Wallet $wallet): Builder
@@ -237,6 +252,20 @@ final class WalletController
         }
 
         return null;
+    }
+
+    public function getTokenTransfersNoResultsMessageProperty(int $count): null|string
+    {
+        return $count === 0
+            ? (string) trans('tables.tokens.transfers.no_results')
+            : null;
+    }
+
+    public function getTokensNoResultsMessageProperty(int $count): null|string
+    {
+        return $count === 0
+            ? (string) trans('tables.tokens.no_results')
+            : null;
     }
 
     private function getValidatedBlocksNoResultsMessageProperty(int $count): null|string

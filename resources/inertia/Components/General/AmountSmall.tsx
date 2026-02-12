@@ -85,12 +85,14 @@ export default function AmountSmall({
     hideTooltip = false,
     hideCurrency = false,
     currency,
+    suffix,
 }: {
     amount: number;
     smallAmount?: number;
     hideTooltip?: boolean;
     hideCurrency?: boolean;
     currency?: string;
+    suffix?: string;
 }) {
     const { network } = useSharedData();
 
@@ -115,6 +117,7 @@ export default function AmountSmall({
                             currency={currency}
                         />
                     )}
+                    {suffix && <span>{suffix}</span>}
                 </>
             )}
         </>

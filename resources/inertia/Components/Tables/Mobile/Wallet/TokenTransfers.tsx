@@ -8,7 +8,6 @@ import ID from "@/Components/Transaction/ID";
 import Age from "@/Components/Model/Age";
 import Amount from "@/Components/Tokens/Amount";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
-import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Wallet/Transactions";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import Token from "@/Components/Tokens/Token";
 import useSharedData from "@/hooks/use-shared-data";

@@ -13,6 +13,7 @@ function AmountOutput({
     isSentToSelf,
     amount,
     hideCurrency = false,
+    suffix,
 }: {
     transaction?: ITransaction;
     isSent: boolean;
@@ -20,6 +21,7 @@ function AmountOutput({
     isSentToSelf: boolean;
     amount: string | number;
     hideCurrency?: boolean;
+    suffix?: string;
 }) {
     const { network } = useSharedData();
 
@@ -29,13 +31,14 @@ function AmountOutput({
 
             {typeof amount === "number" ? (
                 transaction ? (
-                    <AmountSmall amount={amount} hideTooltip hideCurrency={hideCurrency} />
+                    <AmountSmall amount={amount} hideTooltip hideCurrency={hideCurrency} suffix={suffix} />
                 ) : (
-                    <span>{networkCurrency(amount, 8, !hideCurrency)}</span>
+                    <span>{networkCurrency(amount, 8, !hideCurrency, undefined, suffix)}</span>
                 )
             ) : (
                 <div className="inline-flex space-x-1">
                     <span>{amount}</span>
+                    {suffix && <span>{suffix}</span>}
 
                     {!hideCurrency && <span>{network.currency}</span>}
                 </div>
@@ -55,6 +58,7 @@ export default function AmountFiatTooltip({
     className = "text-sm",
     withoutStyling = false,
     hideCurrency = false,
+    suffix,
 }: {
     transaction?: ITransaction;
     isSent?: boolean;
@@ -66,6 +70,7 @@ export default function AmountFiatTooltip({
     className?: string;
     withoutStyling?: boolean;
     hideCurrency?: boolean;
+    suffix?: string;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
@@ -141,6 +146,7 @@ export default function AmountFiatTooltip({
                         isSentToSelf={isSentToSelf}
                         amount={amount}
                         hideCurrency={hideCurrency}
+                        suffix={suffix}
                     />
                 </Tooltip>
             )}
@@ -153,6 +159,7 @@ export default function AmountFiatTooltip({
                     isSentToSelf={isSentToSelf}
                     amount={amount}
                     hideCurrency={hideCurrency}
+                    suffix={suffix}
                 />
             )}
         </span>
