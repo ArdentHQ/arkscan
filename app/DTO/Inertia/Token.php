@@ -13,6 +13,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class Token extends Data
 {
     private const MAX_NAME_LENGTH = 20;
+
     private const MAX_SYMBOL_LENGTH = 5;
 
     public function __construct(
@@ -37,7 +38,8 @@ class Token extends Data
         );
     }
 
-    private static function normalizeString(string $value, int $maxLength, ?string $suffix = null): string {
+    private static function normalizeString(string $value, int $maxLength, ?string $suffix = null): string
+    {
         if (strlen($value) <= $maxLength) {
             return $value;
         }
@@ -49,7 +51,7 @@ class Token extends Data
         }
 
         if ($suffix !== null) {
-            return Str::trim($value) . $suffix;
+            return Str::trim($value).$suffix;
         }
 
         return Str::trim($value);
