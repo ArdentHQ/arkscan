@@ -49,8 +49,13 @@ function ApproveActionRow({
         >
             <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5 sm:gap-y-1">
                 <div className="flex items-center gap-x-1.5">
-                    {isUnlimited ? <span>{t("general.unlimited")}</span> : amount !== null && <span>{amount}</span>}
-                    <span>{tokenSymbol}</span>
+                    {isUnlimited ? (
+                        <span>
+                            {t("general.unlimited")} {tokenSymbol}
+                        </span>
+                    ) : (
+                        amount !== null && <span>{amount}</span>
+                    )}
                     <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
                 </div>
 
