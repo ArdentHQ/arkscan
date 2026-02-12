@@ -238,6 +238,7 @@ export type ITransaction = {
     isValidatorUpdate: boolean;
     isUsernameRegistration: boolean;
     isUsernameResignation: boolean;
+    isApprove: boolean;
     isContractDeployment: boolean;
     isMultiPayment: boolean;
     isSelfReceiving: boolean;
@@ -263,6 +264,13 @@ export type ITransactionDetails = {
         amount: string | null;
         recipientUsername: string | null;
         recipientHasUsername: boolean;
+    } | null;
+    tokenApproval: {
+        spender: string;
+        amount: string | null;
+        isUnlimited: boolean;
+        spenderUsername: string | null;
+        spenderHasUsername: boolean;
     } | null;
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
