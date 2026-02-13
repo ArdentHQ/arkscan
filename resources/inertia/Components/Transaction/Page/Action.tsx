@@ -41,23 +41,25 @@ function ApproveActionRow({
     const isUnlimited = tokenApproval.isUnlimited;
     const amount = !isUnlimited && tokenApproval.amount !== null ? weiToArk(tokenApproval.amount, tokenSymbol) : null;
 
-    const rowTitle = isUnlimited ? `${transaction.type} ${t("general.unlimited")}` : transaction.type;
-
     return (
         <SectionDetailRow
-            title={rowTitle}
+            title={transaction.type}
             headerWidthClass={headerWidthClass}
             className="!items-start sm:!items-center"
         >
             <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5 sm:gap-y-1">
                 <div className="flex items-center gap-x-1.5">
-                    {amount !== null && <span>{amount}</span>}
-                    <span className="whitespace-nowrap">{t("pages.transaction.approve.for_trade")}</span>
+                    {isUnlimited ? (
+                        <span>
+                            {t("general.unlimited")} {tokenSymbol}
+                        </span>
+                    ) : (
+                        amount !== null && <span>{amount}</span>
+                    )}
+                    <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
                 </div>
 
                 <div className="flex items-center gap-x-1.5">
-                    <span>{t("pages.transaction.approve.on")}</span>
-
                     <span className="inline-flex items-center">
                         <Link href={route("wallet", tokenApproval.spender)} className="link">
                             <span className="hidden md:inline">
@@ -79,7 +81,7 @@ function ApproveActionRow({
                 </div>
 
                 <div className="flex items-center gap-x-1.5">
-                    <span className="whitespace-nowrap">{t("pages.transaction.approve.by")}</span>
+                    <span className="whitespace-nowrap">{t("pages.transaction.approve.on_behalf_of")}</span>
 
                     <Link href={route("wallet", transaction.from)} className="link">
                         <span className="hidden md:inline">

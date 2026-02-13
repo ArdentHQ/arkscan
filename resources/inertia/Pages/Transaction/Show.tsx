@@ -14,12 +14,7 @@ import {
 } from "@/Components/Transaction/Page";
 
 export default function Show({ transaction, details }: PageProps<TransactionShowProps>) {
-    const headerWidthClass =
-        transaction.isApprove && details.tokenApproval?.isUnlimited
-            ? "sm:w-[144px]"
-            : details.recipientIsContract
-              ? "sm:w-[151px]"
-              : "sm:w-[132px]";
+    const headerWidthClass = details.recipientIsContract ? "sm:w-[151px]" : "sm:w-[132px]";
 
     return (
         <Layout>

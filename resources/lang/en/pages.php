@@ -161,9 +161,8 @@ return [
         ],
 
         'approve' => [
-            'for_trade' => 'for Trade',
-            'on'        => 'on',
-            'by'        => 'by',
+            'for_use_by'   => 'for use by',
+            'on_behalf_of' => 'on behalf of',
         ],
     ],
 
