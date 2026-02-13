@@ -10,7 +10,7 @@ use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
 
 trait WithTokenApproval
 {
-    private const UNLIMITED_APPROVAL_AMOUNT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
+    protected const UNLIMITED_APPROVAL_AMOUNT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
     protected static function tokenApprovalDetails(TransactionViewModel $transaction): ?array
     {
