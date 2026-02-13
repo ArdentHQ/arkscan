@@ -38,10 +38,15 @@ function ApproveActionRow({
 
     const tokenSymbol = details.token?.symbol ?? network?.currency;
 
-    const isUnlimited = tokenApproval.isUnlimited;
-    const amount = !isUnlimited && tokenApproval.amount !== null ? weiToArk(tokenApproval.amount, tokenSymbol) : null;
-
-    const rowTitle = isUnlimited ? `${transaction.type} ${t("general.unlimited")}` : transaction.type;
+    let amount: string | null = tokenApproval.amount !== null ? weiToArk(tokenApproval.amount) : null;
+    let rowTitle: string = transaction.type;
+    if (tokenApproval.isRevoke) {
+        rowTitle = t("pages.transaction.approve.revoke");
+        amount = null;
+    } else if (tokenApproval.isUnlimited) {
+        rowTitle = `${transaction.type} ${t("general.unlimited")}`;
+        amount = null;
+    }
 
     return (
         <SectionDetailRow
@@ -49,13 +54,16 @@ function ApproveActionRow({
             headerWidthClass={headerWidthClass}
             className="!items-start sm:!items-center"
         >
-            <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5 sm:gap-y-1">
-                <div className="flex items-center gap-x-1.5">
+            <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1 sm:gap-y-1">
+                <div className="flex items-center gap-x-1">
                     {amount !== null && <span>{amount}</span>}
+
+                    <span>{tokenSymbol}</span>
+
                     <span className="whitespace-nowrap">{t("pages.transaction.approve.for_trade")}</span>
                 </div>
 
-                <div className="flex items-center gap-x-1.5">
+                <div className="flex items-center gap-x-1">
                     <span>{t("pages.transaction.approve.on")}</span>
 
                     <span className="inline-flex items-center">
@@ -78,7 +86,7 @@ function ApproveActionRow({
                     </span>
                 </div>
 
-                <div className="flex items-center gap-x-1.5">
+                <div className="flex items-center gap-x-1">
                     <span className="whitespace-nowrap">{t("pages.transaction.approve.by")}</span>
 
                     <Link href={route("wallet", transaction.from)} className="link">

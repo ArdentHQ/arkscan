@@ -164,6 +164,7 @@ return [
             'for_trade' => 'for Trade',
             'on'        => 'on',
             'by'        => 'by',
+            'revoke'    => 'Revoke',
         ],
     ],
 

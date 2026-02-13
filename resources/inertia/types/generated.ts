@@ -234,6 +234,7 @@ export type ITransaction = {
     isUsernameRegistration: boolean;
     isUsernameResignation: boolean;
     isApprove: boolean;
+    isApprovalRevoke: boolean;
     isContractDeployment: boolean;
     isMultiPayment: boolean;
     isSelfReceiving: boolean;
@@ -264,6 +265,7 @@ export type ITransactionDetails = {
         spender: string;
         amount: string | null;
         isUnlimited: boolean;
+        isRevoke: boolean;
         spenderUsername: string | null;
         spenderHasUsername: boolean;
     } | null;
