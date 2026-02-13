@@ -253,10 +253,12 @@ final class Transaction extends Model
         return $query
             ->when($hasAdjustedFilters, function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
-                    $query->when($filter['transfers'] === true, function ($query) {
-                        $query->where(function ($query) {
+                    $query->where(function ($query) use ($filter) {
+                        $query->when($filter['transfers'] === true, function ($query) {
                             $query->withScope(TransferScope::class);
-                        })->orWhere(function ($query) {
+                        });
+                    })->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['transfers'] === true, function ($query) {
                             $query->withScope(TokenTransferScope::class);
                         });
                     })
