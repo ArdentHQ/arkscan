@@ -12,6 +12,7 @@ use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
+use App\Models\Scopes\HasTokenTransferRecipientScope;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
@@ -172,13 +173,20 @@ final class WalletController
             ->with(['votedFor', 'sender', 'recipientWallet'])
             ->where(function ($query) use ($wallet, $filters) {
                 $query->where(fn ($query) => $query->when($filters['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
-                    ->orWhere(fn ($query) => $query->when($filters['incoming'], fn ($query) => $query->where('to', $wallet->address)))
-                    ->orWhere(function ($query) use ($wallet, $filters) {
-                        $query->when($filters['multipayments'], function ($query) use ($wallet) {
-                            $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address);
+                    ->when($filters['incoming'], function ($query) use ($wallet, $filters) {
+                        $query->orWhere(fn ($query) => $query->where('to', $wallet->address))
+                            ->orWhere(function ($query) use ($wallet, $filters) {
+                                $query->when($filters['multipayments'], function ($query) use ($wallet) {
+                                    $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address);
+                                });
+                            })
+                            ->orWhere(function ($query) use ($wallet, $filters) {
+                                $query->when($filters['transfers'], function ($query) use ($wallet) {
+                                    $query->withScope(HasTokenTransferRecipientScope::class, $wallet->address);
+                                });
+                            });
                         });
                     });
-            });
     }
 
     private function hasAddressingFilters(): bool
