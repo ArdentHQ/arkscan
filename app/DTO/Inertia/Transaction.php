@@ -106,6 +106,8 @@ class Transaction extends Data
         $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
         if ($recipientWallet !== null) {
             $recipient = WalletDTO::fromModel($recipientWallet);
+        } elseif ($transaction->relationLoaded('recipientWallet') && $transaction->to !== null) {
+            $recipient = WalletDTO::stub($transaction->to);
         } else {
             $recipientAddress = $viewModel->recipient()?->address();
 
