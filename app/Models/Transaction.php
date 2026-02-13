@@ -226,6 +226,11 @@ final class Transaction extends Model
         return null;
     }
 
+    public function senderWallet(): BelongsTo
+    {
+        return $this->belongsTo(Wallet::class, 'from', 'address');
+    }
+
     public function recipientWallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'to', 'address');

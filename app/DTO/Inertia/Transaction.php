@@ -86,8 +86,9 @@ class Transaction extends Data
             }
         }
 
-        $sender        = null;
-        $senderWallet  = $transaction->relationLoaded('sender') ? $transaction->sender : null;
+        $sender       = null;
+        $senderWallet = $transaction->relationLoaded('senderWallet') ? $transaction->senderWallet : null;
+        $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
 
         if ($senderWallet === null) {
             $senderAddress = $viewModel->sender()?->address();
