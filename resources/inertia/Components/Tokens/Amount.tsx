@@ -2,6 +2,7 @@ import { ITokenTransfer, IWallet } from "@/types/generated";
 import classNames from "classnames";
 import AmountSmall from "../General/AmountSmall";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
+import { formatCompact } from "@/utils/number-formatter";
 
 export default function Amount({
     tokenTransfer,
@@ -21,6 +22,8 @@ export default function Amount({
     const isSentToSelf = wallet ? tokenTransfer.from.address === tokenTransfer.to.address : false;
 
     let amount = tokenTransfer.amount;
+
+    const { value, suffix } = formatCompact(amount);
 
     if (isSentToSelf) {
         isReceived = false;
@@ -45,7 +48,8 @@ export default function Amount({
             <div className="inline-block space-x-1 leading-4.25">
                 {wallet && (
                     <AmountFiatTooltip
-                        amount={amount}
+                        amount={value}
+                        suffix={suffix}
                         isSent={isSent}
                         isReceived={isReceived}
                         isSentToSelf={isSentToSelf}
@@ -56,7 +60,12 @@ export default function Amount({
                 {!wallet && (
                     <>
                         <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                            <AmountSmall amount={tokenTransfer.amount} hideTooltip hideCurrency={true} />
+                            <AmountSmall
+                                amount={tokenTransfer.amount}
+                                hideTooltip
+                                hideCurrency={true}
+                                suffix={suffix}
+                            />
                         </span>
 
                         {!hideCurrency && <span>{tokenTransfer.token.symbol}</span>}

@@ -90,6 +90,11 @@ module.exports = {
                 500: "500px",
             },
 
+            minWidth: {
+                ...defaultConfig.theme.extend.minWidth,
+                auto: "auto",
+            },
+
             backgroundColor: {
                 ...defaultConfig.theme.extend.backgroundColor,
                 "overlay": "rgba(33, 34, 37, 0.75)", // #212225 (--theme-color-secondary-900), 0.75 opacity

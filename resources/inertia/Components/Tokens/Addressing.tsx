@@ -68,7 +68,7 @@ export default function Addressing({
                     "border-theme-orange-light bg-theme-orange-light text-theme-orange-dark dim:border-theme-failed-state-bg dim:text-theme-failed-state-text dark:border-theme-failed-state-bg dark:bg-transparent dark:text-theme-failed-state-text":
                         isSent && !isSentToSelf,
                     "border-theme-secondary-200 bg-theme-secondary-200 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200":
-                        !isSentToSelf,
+                        !isSent && !isSentToSelf,
                 })}
             >
                 {direction}
