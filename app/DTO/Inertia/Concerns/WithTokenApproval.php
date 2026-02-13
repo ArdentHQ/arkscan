@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTO\Inertia\Concerns;
 
 use App\DTO\Inertia\Wallet as WalletDTO;
