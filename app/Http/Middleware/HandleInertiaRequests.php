@@ -75,7 +75,7 @@ class HandleInertiaRequests extends Middleware
                 'navbarTag'            => fn () => config('arkscan.navbar.tag'),
                 'navbarName'           => fn () => config('app.navbar_name'),
                 'contactEmail'         => fn () => config('mail.contact_email'),
-                'urls'                 => fn () => config('arkscan.urls'),
+                'urls'                 => fn () => config('arkscan.urls.public'),
 
             ])->toArray(),
             'flash' => function () {

@@ -167,7 +167,7 @@ export type IRequestData = {
     navbarName: string | null;
     currentRoute: string | null;
     contactEmail: string;
-    urls: IArkscanUrls;
+    urls: { arkvault: string; arkconnect: string };
 };
 export type ISettings = {
     currency: string;

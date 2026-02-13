@@ -9,7 +9,7 @@ export default function CompatibleWalletsLearnMore() {
 
     return (
         <LearnMore
-            url={urls.public.arkvault}
+            url={urls.arkvault}
             icon={ArkVaultIcon}
             title={t("brands.arkvault")}
             subtitle={t("pages.compatible-wallets.arkvault.subtitle")}
