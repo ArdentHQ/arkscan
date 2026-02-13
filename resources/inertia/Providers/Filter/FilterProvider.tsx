@@ -51,7 +51,7 @@ export default function FilterProvider({
         isMounting.current = true;
     }, []);
 
-    const { refreshPage } = usePageHandler();
+    const { refreshPage, cancelPolling } = usePageHandler();
 
     const [selectedFilters, setSelectedFilters] = useState<IFilters>(getFilterValuesFromOptions(initialOptions, true));
 
@@ -75,6 +75,8 @@ export default function FilterProvider({
         }
 
         updatedUrl.searchParams.delete("page");
+
+        cancelPolling();
 
         let baseCancelToken: CancelToken | undefined = undefined;
 

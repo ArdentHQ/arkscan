@@ -13,9 +13,31 @@ export function useTabPolling(
     ) => void,
 ) {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const pollingCancelTokenRef = useRef<CancelToken | null>(null);
 
-    const { setRefreshPage } = usePageHandler();
+    const { setRefreshPage, setCancelPolling } = usePageHandler();
     const { currentTab, onTabChange } = useTabs();
+
+    const pollWithCancelToken = (
+        tab: string,
+        callback?: CallableFunction,
+        onCancelToken?: (onCancelToken: CancelToken) => void,
+    ) => {
+        pollCurrentTab(tab, callback, (cancelToken) => {
+            pollingCancelTokenRef.current = cancelToken;
+            onCancelToken?.(cancelToken);
+        });
+    };
+
+    const cancelPolling = () => {
+        pollingCancelTokenRef.current?.cancel();
+        pollingCancelTokenRef.current = null;
+
+        if (pollingTimerRef.current) {
+            clearTimeout(pollingTimerRef.current);
+            pollingTimerRef.current = null;
+        }
+    };
 
     useEffect(() => {
         if (!currentTab) {
@@ -27,37 +49,34 @@ export function useTabPolling(
                 clearTimeout(pollingTimerRef.current);
             }
 
-            pollingTimerRef.current = setTimeout(() => pollCurrentTab(currentTab), 8000);
+            pollingTimerRef.current = setTimeout(() => pollWithCancelToken(currentTab), 8000);
         });
 
         if (!pollingTimerRef.current) {
-            pollingTimerRef.current = setTimeout(() => pollCurrentTab(currentTab), 8000);
+            pollingTimerRef.current = setTimeout(() => pollWithCancelToken(currentTab), 8000);
 
-            pollCurrentTab(currentTab);
+            pollWithCancelToken(currentTab);
         }
 
         onTabChange((tab: ITab, isFirstLoad: boolean) => {
-            if (pollingTimerRef.current) {
-                clearTimeout(pollingTimerRef.current);
-            }
+            cancelPolling();
 
-            pollingTimerRef.current = setTimeout(() => pollCurrentTab(tab.value), 8000);
+            pollingTimerRef.current = setTimeout(() => pollWithCancelToken(tab.value), 8000);
 
             if (isFirstLoad) {
-                pollCurrentTab(tab.value);
+                pollWithCancelToken(tab.value);
             }
         });
 
         setRefreshPage((callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => {
-            pollCurrentTab(currentTab, callback, onCancelToken);
+            pollWithCancelToken(currentTab, callback, onCancelToken);
         });
+
+        setCancelPolling(cancelPolling);
 
         return () => {
             removeSuccessListener();
-
-            if (pollingTimerRef.current) {
-                clearTimeout(pollingTimerRef.current);
-            }
+            cancelPolling();
         };
     }, [currentTab]);
 }
