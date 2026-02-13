@@ -347,6 +347,36 @@ it('should filter by incoming and outgoing transactions', function () {
         ])
         ->fresh();
 
+    $sentTokenTransfer = Transaction::factory()
+        ->tokenTransfer($altWallet->address, BigNumber::new(1 * 1e18))
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'from'              => $this->subject->address,
+            'status'            => true,
+        ])
+        ->fresh();
+
+    $receivedTokenTransfer = Transaction::factory()
+        ->tokenTransfer($this->subject->address, BigNumber::new(1 * 1e18))
+        ->create([
+            'sender_public_key' => $altWallet->public_key,
+            'from'              => $altWallet->address,
+            'status'            => true,
+        ])
+        ->fresh();
+
+    TokenTransfer::factory()->create([
+        'transaction_hash' => $sentTokenTransfer->hash,
+        'from' => $this->subject->address,
+        'to'   => $altWallet->address,
+    ]);
+
+    TokenTransfer::factory()->create([
+        'transaction_hash' => $receivedTokenTransfer->hash,
+        'from' => $altWallet->address,
+        'to'   => $this->subject->address,
+    ]);
+
     performWalletRequest(
         $this,
         wallet: $this->subject,
@@ -361,24 +391,44 @@ it('should filter by incoming and outgoing transactions', function () {
             'contract_deployment' => 'false',
             'others'              => 'false',
         ],
-        reloadCallback: function (Assert $reload) use ($sent, $received) {
-            $reload->has('transactions.data', 2)
-                ->where('transactions.total', 2)
-                ->where('transactions.data', function ($transactions) use ($sent, $received) {
+        reloadCallback: function (Assert $reload) use ($sent, $received, $sentTokenTransfer, $receivedTokenTransfer) {
+            $reload->has('transactions.data', 4)
+                ->where('transactions.total', 4)
+                ->where('transactions.data', function ($transactions) use ($sent, $received, $sentTokenTransfer, $receivedTokenTransfer) {
                     $transactionIds = collect($transactions)->pluck('hash');
 
-                    return $transactionIds->contains($sent->hash) && $transactionIds->contains($received->hash);
+                    if (! $transactionIds->contains($sent->hash)) {
+                        return false;
+                    }
+
+                    if (! $transactionIds->contains($received->hash)) {
+                        return false;
+                    }
+
+                    if (! $transactionIds->contains($sentTokenTransfer->hash)) {
+                        return false;
+                    }
+
+                    if (! $transactionIds->contains($receivedTokenTransfer->hash)) {
+                        return false;
+                    }
+
+                    return true;
                 });
         },
     );
 });
 
-it('should filter by multipayment transactions', function () {
+it('should filter outgoing multipayment transactions', function () {
     $transfer = Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
     ]);
 
-    $multiPayment = Transaction::factory()
+    $incomingMultiPayment = Transaction::factory()
+        ->multiPayment([$this->subject->address], [BigNumber::new(1 * 1e18)])
+        ->create();
+
+    $outgoingMultiPayment = Transaction::factory()
         ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
         ->create([
             'sender_public_key' => $this->subject->public_key,
@@ -398,13 +448,70 @@ it('should filter by multipayment transactions', function () {
             'contract_deployment' => 'false',
             'others'              => 'false',
         ],
-        reloadCallback: function (Assert $reload) use ($transfer, $multiPayment) {
+        reloadCallback: function (Assert $reload) use ($transfer, $incomingMultiPayment, $outgoingMultiPayment) {
             $reload->has('transactions.data', 1)
                 ->where('transactions.total', 1)
-                ->where('transactions.data', function ($transactions) use ($transfer, $multiPayment) {
+                ->where('transactions.data', function ($transactions) use ($transfer, $incomingMultiPayment, $outgoingMultiPayment) {
                     $transactionIds = collect($transactions)->pluck('hash');
 
-                    return ! $transactionIds->contains($transfer->hash) && $transactionIds->contains($multiPayment->hash);
+                    if ($transactionIds->contains($transfer->hash)) {
+                        return false;
+                    }
+
+                    if ($transactionIds->contains($incomingMultiPayment->hash)) {
+                        return false;
+                    }
+
+                    return $transactionIds->contains($outgoingMultiPayment->hash);
+                });
+        },
+    );
+});
+
+it('should filter incoming multipayment transactions', function () {
+    $transfer = Transaction::factory()->transfer()->create([
+        'to' => $this->subject->address,
+    ]);
+
+    $incomingMultiPayment = Transaction::factory()
+        ->multiPayment([$this->subject->address], [BigNumber::new(1 * 1e18)])
+        ->create();
+
+    $outgoingMultiPayment = Transaction::factory()
+        ->multiPayment([faker()->wallet['address']], [BigNumber::new(1 * 1e18)])
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+        ]);
+
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        queryString: [
+            'outgoing'            => 'false',
+            'incoming'            => 'true',
+            'transfers'           => 'false',
+            'multipayments'       => 'true',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
+            'contract_deployment' => 'false',
+            'others'              => 'false',
+        ],
+        reloadCallback: function (Assert $reload) use ($transfer, $incomingMultiPayment, $outgoingMultiPayment) {
+            $reload->has('transactions.data', 1)
+                ->where('transactions.total', 1)
+                ->where('transactions.data', function ($transactions) use ($transfer, $incomingMultiPayment, $outgoingMultiPayment) {
+                    $transactionIds = collect($transactions)->pluck('hash');
+
+                    if ($transactionIds->contains($transfer->hash)) {
+                        return false;
+                    }
+
+                    if ($transactionIds->contains($outgoingMultiPayment->hash)) {
+                        return false;
+                    }
+
+                    return $transactionIds->contains($incomingMultiPayment->hash);
                 });
         },
     );

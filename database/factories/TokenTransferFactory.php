@@ -18,9 +18,11 @@ final class TokenTransferFactory extends Factory
 
     public function definition()
     {
-        Wallet::factory()->create([
-            'address' => Network::knownContract('consensus'),
-        ]);
+        if (! Wallet::where('address', Network::knownContract('consensus'))->exists()) {
+            Wallet::factory()->create([
+                'address' => Network::knownContract('consensus'),
+            ]);
+        }
 
         $transaction = Transaction::factory()
             ->tokenTransfer(
