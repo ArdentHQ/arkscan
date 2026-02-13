@@ -14,6 +14,7 @@ use App\Models\Concerns\Transaction\HasPayload;
 use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
+use App\Models\Scopes\TokenTransferScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UnvoteScope;
 use App\Models\Scopes\UsernameRegistrationScope;
@@ -255,6 +256,10 @@ final class Transaction extends Model
                     $query->where(function ($query) use ($filter) {
                         $query->when($filter['transfers'] === true, function ($query) {
                             $query->withScope(TransferScope::class);
+                        });
+                    })->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['transfers'] === true, function ($query) {
+                            $query->withScope(TokenTransferScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
