@@ -6,7 +6,6 @@ namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Concerns\WithTokenApproval;
 use App\DTO\Inertia\Wallet as WalletDTO;
-use App\Enums\ApproveArgument;
 use App\Enums\TokenTransferArgument;
 use App\Facades\Wallets;
 use App\Models\MultiPayment;

@@ -130,7 +130,7 @@ class Transaction extends Data
 
         $address = $address ?? $transaction->from;
 
-        $isApprove = $viewModel->isApprove();
+        $isApprove        = $viewModel->isApprove();
         $isApprovalRevoke = false;
         if ($isApprove) {
             $approvalDetails = static::tokenApprovalDetails($viewModel);
