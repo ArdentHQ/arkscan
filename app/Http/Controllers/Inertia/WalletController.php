@@ -185,8 +185,8 @@ final class WalletController
                                     $query->withScope(HasTokenTransferRecipientScope::class, $wallet->address);
                                 });
                             });
-                        });
                     });
+            });
     }
 
     private function hasAddressingFilters(): bool

@@ -367,14 +367,14 @@ it('should filter by incoming and outgoing transactions', function () {
 
     TokenTransfer::factory()->create([
         'transaction_hash' => $sentTokenTransfer->hash,
-        'from' => $this->subject->address,
-        'to'   => $altWallet->address,
+        'from'             => $this->subject->address,
+        'to'               => $altWallet->address,
     ]);
 
     TokenTransfer::factory()->create([
         'transaction_hash' => $receivedTokenTransfer->hash,
-        'from' => $altWallet->address,
-        'to'   => $this->subject->address,
+        'from'             => $altWallet->address,
+        'to'               => $this->subject->address,
     ]);
 
     performWalletRequest(
