@@ -5,7 +5,7 @@ import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import { formatUnits, parseUnits } from "@/utils/UnitConverter";
 import AmountFiatTooltip from "@/Components/General/AmountFiatTooltip";
-import { formatCompact } from "@/utils/number-formatter";
+import { currency, formatCompact } from "@/utils/number-formatter";
 
 export default function TransactionToken({
     details,
@@ -15,7 +15,7 @@ export default function TransactionToken({
     headerWidthClass: string;
 }) {
     const { t } = useTranslation();
-    const { network } = useSharedData();
+    const { network, settings } = useSharedData();
 
     if (!details.tokenTransfer) {
         return null;
@@ -52,6 +52,14 @@ export default function TransactionToken({
                         </span>
                     </span>
                 </SectionDetailRow>
+            )}
+
+            {network?.canBeExchanged && (
+                <SectionDetailRow
+                    title={t("pages.transaction.header.value")}
+                    value={currency(0, settings!.currency)}
+                    headerWidthClass={headerWidthClass}
+                />
             )}
         </PageSection>
     );
