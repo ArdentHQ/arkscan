@@ -41,6 +41,8 @@ class TransactionDetails extends Data
         public ?array $payload,
         #[LiteralTypeScriptType('{address: string; amount: string}[]')]
         public array $multiPaymentRecipients,
+        #[LiteralTypeScriptType('{recipient: string; amount: string; recipientUsername: string | null; recipientHasUsername: boolean}[]')]
+        public array $batchTokenTransfers,
         public string $totalFiat,
         public float $totalFiatValue,
     ) {
@@ -55,13 +57,27 @@ class TransactionDetails extends Data
         $token     = $recipient !== null ? (new WalletCache())->getToken($recipient->address()) : null;
         if ($token !== null) {
             $token = Token::fromModel($token);
-        } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove()) {
+        } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove() || $viewModel->isBatchTransfer()) {
             $tokenTransferRecord = TokenTransferModel::with('token')
                 ->where('transaction_hash', $transaction->hash)
                 ->first();
 
             if ($tokenTransferRecord?->token !== null) {
                 $token = Token::fromModel($tokenTransferRecord->token);
+            }
+        }
+
+        $batchTokenTransfers = [];
+        if ($viewModel->isBatchTransfer()) {
+            $transfers = TokenTransferModel::where('transaction_hash', $transaction->hash)->get();
+            foreach ($transfers as $tf) {
+                $wallet              = WalletDTO::fromModel(Wallets::findByAddress($tf->to));
+                $batchTokenTransfers[] = [
+                    'recipient'            => $tf->to,
+                    'amount'               => (string) $tf->value,
+                    'recipientUsername'    => $wallet->username,
+                    'recipientHasUsername' => $wallet->hasUsername,
+                ];
             }
         }
 
@@ -77,6 +93,7 @@ class TransactionDetails extends Data
             token: $token,
             payload: self::payloadDetails($viewModel),
             multiPaymentRecipients: self::multiPaymentRecipients($viewModel),
+            batchTokenTransfers: $batchTokenTransfers,
             totalFiat: $viewModel->totalFiat(true),
             totalFiatValue: ExchangeRate::convertNumerical($viewModel->amountWithFee(), $transaction->timestamp),
         );

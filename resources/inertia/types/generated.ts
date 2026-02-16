@@ -242,6 +242,7 @@ export type ITransaction = {
     isApprovalRevoke: boolean;
     isContractDeployment: boolean;
     isMultiPayment: boolean;
+    isBatchTransfer: boolean;
     isSelfReceiving: boolean;
     isSent: boolean;
     isSentToSelf: boolean;
@@ -277,6 +278,12 @@ export type ITransactionDetails = {
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
     multiPaymentRecipients: { address: string; amount: string }[];
+    batchTokenTransfers: {
+        recipient: string;
+        amount: string;
+        recipientUsername: string | null;
+        recipientHasUsername: boolean;
+    }[];
     totalFiat: string;
     totalFiatValue: number;
 };
