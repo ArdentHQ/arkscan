@@ -680,3 +680,25 @@ it('should determine an approval revoke transaction', function () {
     expect($subject->isApprove)->toBeTrue();
     expect($subject->isApprovalRevoke)->toBeTrue();
 });
+
+it('should stub sender wallet when address is not in db', function () {
+    $senderWallet = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->create([
+            'from'              => $senderWallet->address,
+            'sender_public_key' => $senderWallet->public_key,
+        ]);
+
+    // Delete the wallet so findByAddress will throw ModelNotFoundException
+    $senderWallet->delete();
+
+    // Ensure sender relation is not loaded so it falls through to findByAddress
+    $transaction->unsetRelation('sender');
+
+    $subject = TransactionDTO::fromModel($transaction);
+
+    expect($subject->sender)->not->toBeNull();
+    expect(strtolower($subject->sender->address))->toBe(strtolower($senderWallet->address));
+    expect($subject->sender->hasUsername)->toBeFalse();
+});
