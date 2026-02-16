@@ -138,8 +138,11 @@ class TransactionDetails extends Data
             $amount = (new ArgumentDecoder($arguments[TokenTransferArgument::AMOUNT]))->decodeUnsignedInt();
         }
 
-        $recipientWallet     = Wallets::findByAddress($recipient);
-        $recipientWalletData = WalletDTO::fromModel($recipientWallet);
+        try {
+            $recipientWalletData = WalletDTO::fromModel(Wallets::findByAddress($recipient));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException) {
+            $recipientWalletData = WalletDTO::stub($recipient);
+        }
 
         return [
             'recipient'            => $recipient,
