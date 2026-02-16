@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Console\Commands\CacheTokens;
 use App\DTO\Inertia\TransactionDetails;
 use App\Models\Token;
+use App\Models\TokenTransfer as TokenTransferModel;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -134,6 +135,37 @@ it('should detect approval revoke', function () {
 
     expect($details->tokenApproval)->not->toBeNull();
     expect($details->tokenApproval['isRevoke'])->toBeTrue();
+});
+
+it('should resolve token from token_transfer record for approve transaction', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $token   = Token::factory()->create();
+    $spender = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    TokenTransferModel::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'block_number'     => $transaction->block_number,
+        'address'          => $token->address,
+        'from'             => $transaction->from,
+        'to'               => $spender->address,
+        'value'            => '5000',
+        'index'            => 0,
+    ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->token)->not->toBeNull();
+    expect($details->token->symbol)->toBe($token->symbol);
 });
 
 it('should return null token approval for approve without valid arguments', function () {
