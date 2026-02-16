@@ -3,7 +3,9 @@ import useSharedData from "@/hooks/use-shared-data";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
-import { weiToArk } from "@/utils/UnitConverter";
+import { formatUnits, parseUnits } from "@/utils/UnitConverter";
+import AmountFiatTooltip from "@/Components/General/AmountFiatTooltip";
+import { formatCompact } from "@/utils/number-formatter";
 
 export default function TransactionToken({
     details,
@@ -22,7 +24,10 @@ export default function TransactionToken({
     const tokenSymbol = details.token?.symbol ?? network?.currency;
     const tokenTransfer = details.tokenTransfer;
 
-    const amount = tokenTransfer.amount !== null ? weiToArk(tokenTransfer.amount, tokenSymbol) : null;
+    const rawAmount =
+        tokenTransfer.amount !== null ? Number(formatUnits(parseUnits(tokenTransfer.amount, "wei"), "ark")) : null;
+
+    const compact = rawAmount !== null ? formatCompact(rawAmount) : null;
 
     return (
         <PageSection title={t("pages.transaction.tokens_transferred")}>
@@ -37,9 +42,25 @@ export default function TransactionToken({
                 />
             </SectionDetailRow>
 
-            {amount !== null && (
+            {compact !== null && (
                 <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
-                    {amount}
+                    <span className="inline-flex items-center space-x-1">
+                        <AmountFiatTooltip amount={compact.value} suffix={compact.suffix} isSent hideCurrency />
+
+                        <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                            {tokenSymbol}
+                        </span>
+                    </span>
+                </SectionDetailRow>
+            )}
+
+            {/* TODO: How should we calculate the fiat value for token transfers?
+                The `totalFiat` on TransactionDetails reflects the native transaction value
+                (typically 0 for token transfers) + fee, not the token amount's fiat equivalent.
+                Do we have per-token price data available, or should we use a different approach? */}
+            {network?.canBeExchanged && (
+                <SectionDetailRow title={t("pages.transaction.header.value")} headerWidthClass={headerWidthClass}>
+                    <span className="text-sm text-theme-secondary-500 dark:text-theme-dark-300">-</span>
                 </SectionDetailRow>
             )}
         </PageSection>
