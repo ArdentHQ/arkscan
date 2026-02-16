@@ -53,16 +53,6 @@ export default function TransactionToken({
                     </span>
                 </SectionDetailRow>
             )}
-
-            {/* TODO: How should we calculate the fiat value for token transfers?
-                The `totalFiat` on TransactionDetails reflects the native transaction value
-                (typically 0 for token transfers) + fee, not the token amount's fiat equivalent.
-                Do we have per-token price data available, or should we use a different approach? */}
-            {network?.canBeExchanged && (
-                <SectionDetailRow title={t("pages.transaction.header.value")} headerWidthClass={headerWidthClass}>
-                    <span className="text-sm text-theme-secondary-500 dark:text-theme-dark-300">-</span>
-                </SectionDetailRow>
-            )}
         </PageSection>
     );
 }
