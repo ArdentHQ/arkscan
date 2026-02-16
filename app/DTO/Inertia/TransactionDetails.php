@@ -17,6 +17,7 @@ use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -140,7 +141,7 @@ class TransactionDetails extends Data
 
         try {
             $recipientWalletData = WalletDTO::fromModel(Wallets::findByAddress($recipient));
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException) {
+        } catch (ModelNotFoundException) {
             $recipientWalletData = WalletDTO::stub($recipient);
         }
 
