@@ -60,6 +60,6 @@ final class ContractMethod
 
     public static function batchTransfer(): string
     {
-        return Network::contractMethod('batch_transfer', '412f2a0f');
+        return Network::contractMethod('batch_transfer', '4885b254');
     }
 }
