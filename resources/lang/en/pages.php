@@ -161,9 +161,11 @@ return [
         ],
 
         'approve' => [
-            'for_use_by'   => 'for use by',
-            'on_behalf_of' => 'on behalf of',
-            'revoke'       => 'Revoke',
+            'for_use_by'             => 'for use by',
+            'on_behalf_of'           => 'on behalf of',
+            'removed_permission_for' => 'Removed permission for',
+            'revoke'                 => 'Revoke',
+            'use_by'                 => 'use by',
         ],
     ],
 
