@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Enums\ApproveArgument;
 use App\Enums\TokenTransferArgument;
 use App\Facades\Wallets;
 use App\Models\MultiPayment;
@@ -30,6 +31,8 @@ class TransactionDetails extends Data
         public ?string $username,
         #[LiteralTypeScriptType('{recipient: string; amount: string | null; recipientUsername: string | null; recipientHasUsername: boolean} | null')]
         public ?array $tokenTransfer,
+        #[LiteralTypeScriptType('{spender: string; amount: string | null; isUnlimited: boolean; spenderUsername: string | null; spenderHasUsername: boolean} | null')]
+        public ?array $tokenApproval,
         public ?Token $token,
         #[LiteralTypeScriptType('{formatted: string | null; utf8: string | null; raw: string | null} | null')]
         public ?array $payload,
@@ -59,6 +62,7 @@ class TransactionDetails extends Data
             validatorPublicKey: $viewModel->validatorPublicKey(),
             username: $username,
             tokenTransfer: self::tokenTransferDetails($viewModel),
+            tokenApproval: self::tokenApprovalDetails($viewModel),
             token: $token,
             payload: self::payloadDetails($viewModel),
             multiPaymentRecipients: self::multiPaymentRecipients($viewModel),
@@ -96,6 +100,42 @@ class TransactionDetails extends Data
             'amount'               => $amount,
             'recipientUsername'    => $recipientWalletData->username,
             'recipientHasUsername' => $recipientWalletData->hasUsername,
+        ];
+    }
+
+    private static function tokenApprovalDetails(TransactionViewModel $transaction): ?array
+    {
+        if (! $transaction->isApprove()) {
+            return null;
+        }
+
+        $arguments = $transaction->methodArguments();
+        if (count($arguments) === 0 || ! array_key_exists(ApproveArgument::SPENDER, $arguments)) {
+            return null;
+        }
+
+        $spender = (new ArgumentDecoder($arguments[ApproveArgument::SPENDER]))->decodeAddress();
+
+        $amount      = null;
+        $isUnlimited = false;
+        if (array_key_exists(ApproveArgument::VALUE, $arguments)) {
+            $amount = (new ArgumentDecoder($arguments[ApproveArgument::VALUE]))->decodeUnsignedInt();
+
+            // Max uint256 (2^256 - 1). ERC20 approve uses this value to represent unlimited allowance.
+            if ($amount === '115792089237316195423570985008687907853269984665640564039457584007913129639935') {
+                $isUnlimited = true;
+            }
+        }
+
+        $spenderWallet     = Wallets::findByAddress($spender);
+        $spenderWalletData = WalletDTO::fromModel($spenderWallet);
+
+        return [
+            'spender'            => $spender,
+            'amount'             => $amount,
+            'isUnlimited'        => $isUnlimited,
+            'spenderUsername'    => $spenderWalletData->username,
+            'spenderHasUsername' => $spenderWalletData->hasUsername,
         ];
     }
 

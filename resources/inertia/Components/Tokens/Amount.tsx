@@ -1,19 +1,34 @@
-import { ITokenTransfer } from "@/types/generated";
+import { ITokenTransfer, IWallet } from "@/types/generated";
 import classNames from "classnames";
 import AmountSmall from "../General/AmountSmall";
+import AmountFiatTooltip from "../General/AmountFiatTooltip";
+import { formatCompact } from "@/utils/number-formatter";
 
 export default function Amount({
     tokenTransfer,
     breakpoint = "md-lg",
     hideCurrency = false,
+    wallet,
     testId,
 }: {
     tokenTransfer: ITokenTransfer;
-    withCurrency?: boolean;
     breakpoint?: "md-lg" | "lg" | "xl";
     hideCurrency?: boolean;
+    wallet?: IWallet;
     testId?: string;
 }) {
+    let isReceived = wallet ? tokenTransfer.to.address === wallet.address : false;
+    let isSent = wallet ? tokenTransfer.from.address === wallet.address : false;
+    const isSentToSelf = wallet ? tokenTransfer.from.address === tokenTransfer.to.address : false;
+
+    let amount = tokenTransfer.amount;
+
+    const { value, suffix } = formatCompact(amount);
+
+    if (isSentToSelf) {
+        isReceived = false;
+    }
+
     const containerBreakpointClass = (
         {
             "md-lg": "md-lg:space-y-0",
@@ -31,11 +46,31 @@ export default function Amount({
             data-testid={testId}
         >
             <div className="inline-block space-x-1 leading-4.25">
-                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                    <AmountSmall amount={tokenTransfer.amount} hideTooltip hideCurrency={true} />
-                </span>
+                {wallet && (
+                    <AmountFiatTooltip
+                        amount={value}
+                        suffix={suffix}
+                        isSent={isSent}
+                        isReceived={isReceived}
+                        isSentToSelf={isSentToSelf}
+                        hideCurrency={hideCurrency}
+                    />
+                )}
 
-                {!hideCurrency && <span>{tokenTransfer.token.symbol}</span>}
+                {!wallet && (
+                    <>
+                        <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                            <AmountSmall
+                                amount={tokenTransfer.amount}
+                                hideTooltip
+                                hideCurrency={true}
+                                suffix={suffix}
+                            />
+                        </span>
+
+                        {!hideCurrency && <span>{tokenTransfer.token.symbol}</span>}
+                    </>
+                )}
             </div>
         </div>
     );

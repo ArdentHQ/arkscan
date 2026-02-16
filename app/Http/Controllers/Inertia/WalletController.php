@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\Block as BlockDTO;
+use App\DTO\Inertia\TokenHolder as TokenHolderDTO;
+use App\DTO\Inertia\TokenTransfer as TokenTransferDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
+use App\Models\Scopes\HasTokenTransferRecipientScope;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\TokenHolder;
+use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\ExchangeRate;
@@ -63,6 +68,28 @@ final class WalletController
 
                     'meta'             => UI::getPaginationData($paginator),
                     'noResultsMessage' => $this->getTransactionsNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+
+            'tokenTransfers' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getTokenTransfers($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getTokenTransfersNoResultsMessageProperty($paginator->count()),
+                ];
+            }),
+
+            'tokens' => Inertia::optional(function () use ($wallet) {
+                $paginator = $this->getTokens($wallet);
+
+                return [
+                    ...$paginator->toArray(),
+
+                    'meta'             => UI::getPaginationData($paginator),
+                    'noResultsMessage' => $this->getTokensNoResultsMessageProperty($paginator->count()),
                 ];
             }),
 
@@ -131,6 +158,41 @@ final class WalletController
             ->through(fn (Wallet $voter) => WalletDTO::fromModel($voter));
     }
 
+    public function getTokenTransfers(Wallet $wallet): LengthAwarePaginator
+    {
+        return TokenTransfer::select('token_transfers.*')
+            ->with(['token', 'transaction.sender', 'transaction.recipientWallet'])
+            ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
+            ->where('token_transfers.to', $wallet->address)
+            ->orWhere('token_transfers.from', $wallet->address)
+            ->withScope(OrderByTimestampScope::class)
+            ->paginate($this->perPage())
+            ->through(fn (TokenTransfer $transaction) => TokenTransferDTO::fromModel($transaction));
+    }
+
+    public function getTokens(Wallet $wallet): LengthAwarePaginator
+    {
+        return TokenHolder::with(['token'])
+            ->where('address', $wallet->address)
+            ->orderBy('balance', 'desc')
+            ->paginate($this->perPage())
+            ->through(fn (TokenHolder $tokenHolder) => TokenHolderDTO::fromModel($tokenHolder));
+    }
+
+    public function getTokenTransfersNoResultsMessageProperty(int $count): null|string
+    {
+        return $count === 0
+            ? (string) trans('tables.tokens.transfers.no_results')
+            : null;
+    }
+
+    public function getTokensNoResultsMessageProperty(int $count): null|string
+    {
+        return $count === 0
+            ? (string) trans('tables.tokens.no_results')
+            : null;
+    }
+
     private function getTransactionsQuery(Wallet $wallet): Builder
     {
         $filters = $this->filters($this->view);
@@ -140,11 +202,18 @@ final class WalletController
             ->with(['votedFor', 'sender', 'recipientWallet'])
             ->where(function ($query) use ($wallet, $filters) {
                 $query->where(fn ($query) => $query->when($filters['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
-                    ->orWhere(fn ($query) => $query->when($filters['incoming'], fn ($query) => $query->where('to', $wallet->address)))
-                    ->orWhere(function ($query) use ($wallet, $filters) {
-                        $query->when($filters['multipayments'], function ($query) use ($wallet) {
-                            $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address);
-                        });
+                    ->when($filters['incoming'], function ($query) use ($wallet, $filters) {
+                        $query->orWhere(fn ($query) => $query->where('to', $wallet->address))
+                            ->orWhere(function ($query) use ($wallet, $filters) {
+                                $query->when($filters['multipayments'], function ($query) use ($wallet) {
+                                    $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address);
+                                });
+                            })
+                            ->orWhere(function ($query) use ($wallet, $filters) {
+                                $query->when($filters['transfers'], function ($query) use ($wallet) {
+                                    $query->withScope(HasTokenTransferRecipientScope::class, $wallet->address);
+                                });
+                            });
                     });
             });
     }

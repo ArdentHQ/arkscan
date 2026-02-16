@@ -102,7 +102,7 @@ return [
     ],
 
     'transaction'      => [
-        'action'                      => 'Action',
+        'action'                      => 'Transaction Action',
         'transaction_id'              => 'Transaction ID',
         'transaction_id_copied'       => 'Transaction ID Copied',
         'transaction_details'         => 'Transaction Details',
@@ -141,6 +141,7 @@ return [
             'gas_limit'            => 'Gas Limit',
             'usage_by_transaction' => 'Usage By Txn',
             'position_in_block'    => 'Position In Block',
+            'spender'              => 'Spender',
         ],
 
         'code-block' => [
@@ -157,6 +158,11 @@ return [
             'header'            => 'Status',
             'failed_message'    => 'Error encountered during contract execution: :error',
             'failed_no_message' => 'Error encountered during contract execution.',
+        ],
+
+        'approve' => [
+            'for_use_by'   => 'for use by',
+            'on_behalf_of' => 'on behalf of',
         ],
     ],
 

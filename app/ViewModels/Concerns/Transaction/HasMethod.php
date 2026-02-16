@@ -58,6 +58,11 @@ trait HasMethod
         return $this->method->isUsernameResignation();
     }
 
+    public function isApprove(): bool
+    {
+        return $this->method->isApprove();
+    }
+
     public function isContractDeployment(): bool
     {
         return $this->method->isContractDeployment();

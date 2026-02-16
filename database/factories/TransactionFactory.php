@@ -187,6 +187,15 @@ final class TransactionFactory extends Factory
             ]);
     }
 
+    public function approve(string $spender, BigNumber $amount): Factory
+    {
+        $payload  = ContractMethod::approve();
+        $payload .= str_pad(preg_replace('/^0x/', '', $spender), 64, '0', STR_PAD_LEFT);
+        $payload .= str_pad($amount->toHex(), 64, '0', STR_PAD_LEFT);
+
+        return $this->withPayload($payload);
+    }
+
     public function contractDeployment(): Factory
     {
         return $this->state(fn () => [

@@ -5,7 +5,101 @@ import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import Method from "@/Components/Transaction/Method";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
+import Badge from "@/Components/General/Badge";
+import ContractIcon from "@ui/icons/transaction/contract.svg?react";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
+import useSharedData from "@/hooks/use-shared-data";
+import { weiToArk } from "@/utils/UnitConverter";
+
+function ApproveActionRow({
+    transaction,
+    details,
+    headerWidthClass,
+}: {
+    transaction: ITransaction;
+    details: TransactionDetails;
+    headerWidthClass: string;
+}) {
+    const { t } = useTranslation();
+    const { network } = useSharedData();
+
+    const tokenApproval = details.tokenApproval;
+    if (!tokenApproval) {
+        return (
+            <SectionDetailRow
+                title={t("pages.transaction.header.method")}
+                valueClassName="inline"
+                headerWidthClass={headerWidthClass}
+            >
+                <Method transaction={transaction} />
+            </SectionDetailRow>
+        );
+    }
+
+    const tokenSymbol = details.token?.symbol ?? network?.currency;
+
+    const isUnlimited = tokenApproval.isUnlimited;
+    const amount = !isUnlimited && tokenApproval.amount !== null ? weiToArk(tokenApproval.amount, tokenSymbol) : null;
+
+    return (
+        <SectionDetailRow
+            title={transaction.type}
+            headerWidthClass={headerWidthClass}
+            className="!items-start sm:!items-center"
+        >
+            <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5 sm:gap-y-1">
+                <div className="flex items-center gap-x-1.5">
+                    {isUnlimited ? (
+                        <span>
+                            {t("general.unlimited")} {tokenSymbol}
+                        </span>
+                    ) : (
+                        amount !== null && <span>{amount}</span>
+                    )}
+                    <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
+                </div>
+
+                <div className="flex items-center gap-x-1.5">
+                    <span className="inline-flex items-center">
+                        <Link href={route("wallet", tokenApproval.spender)} className="link">
+                            <span className="hidden md:inline">
+                                {tokenApproval.spenderHasUsername ? (
+                                    tokenApproval.spenderUsername
+                                ) : (
+                                    <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
+                                )}
+                            </span>
+                            <span className="md:hidden">
+                                <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
+                            </span>
+                        </Link>
+
+                        <Badge className="ml-1.5 inline-flex items-center">
+                            <ContractIcon className="h-3 w-3" />
+                        </Badge>
+                    </span>
+                </div>
+
+                <div className="flex items-center gap-x-1.5">
+                    <span className="whitespace-nowrap">{t("pages.transaction.approve.on_behalf_of")}</span>
+
+                    <Link href={route("wallet", transaction.from)} className="link">
+                        <span className="hidden md:inline">
+                            {transaction.sender?.hasUsername ? (
+                                transaction.sender.username
+                            ) : (
+                                <TruncateMiddle>{transaction.from}</TruncateMiddle>
+                            )}
+                        </span>
+                        <span className="md:hidden">
+                            <TruncateMiddle>{transaction.from}</TruncateMiddle>
+                        </span>
+                    </Link>
+                </div>
+            </div>
+        </SectionDetailRow>
+    );
+}
 
 export default function TransactionAction({
     transaction,
@@ -23,13 +117,17 @@ export default function TransactionAction({
 
     return (
         <PageSection title={t("pages.transaction.action")}>
-            <SectionDetailRow
-                title={t("pages.transaction.header.method")}
-                valueClassName="inline"
-                headerWidthClass={headerWidthClass}
-            >
-                <Method transaction={transaction} />
-            </SectionDetailRow>
+            {transaction.isApprove ? (
+                <ApproveActionRow transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
+            ) : (
+                <SectionDetailRow
+                    title={t("pages.transaction.header.method")}
+                    valueClassName="inline"
+                    headerWidthClass={headerWidthClass}
+                >
+                    <Method transaction={transaction} />
+                </SectionDetailRow>
+            )}
 
             {transaction.isVote && votedValidator && (
                 <SectionDetailRow title={t("pages.transaction.header.validator")} headerWidthClass={headerWidthClass}>

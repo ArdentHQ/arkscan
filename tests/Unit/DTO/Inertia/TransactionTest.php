@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\DTO\Inertia\Transaction as TransactionDTO;
+use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -170,6 +171,7 @@ it('should make an instance', function () {
             'votePercentage'                    => null,
         ],
         'votedForUsername'                => null,
+        'isApprove'                       => false,
     ]);
 });
 
@@ -300,8 +302,9 @@ it('should make an instance for a vote transaction', function () {
             'voteUrl'                           => null,
             'votePercentage'                    => null,
         ],
-        'recipient'                       => null,
+        'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => 'bill.ding',
+        'isApprove'                       => false,
     ]);
 });
 
@@ -487,8 +490,9 @@ it('should make an instance for a validator resignation transaction', function (
                 'voteUrl'                           => null,
                 'votePercentage'                    => null,
             ],
-            'recipient'                       => null,
+            'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
             'votedForUsername'                => null,
+            'isApprove'                       => false,
         ],
         'votedFor' => null,
         'sender'   => [
@@ -521,8 +525,9 @@ it('should make an instance for a validator resignation transaction', function (
             'voteUrl'                           => null,
             'votePercentage'                    => null,
         ],
-        'recipient'                       => null,
+        'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => null,
+        'isApprove'                       => false,
     ]);
 });
 
@@ -540,6 +545,7 @@ it('should handle token transfer with non-existent recipient wallet', function (
 
     // Use an address that does NOT exist in the wallets table
     $nonExistentRecipientAddress = '0x448c9672dc0DD62188064360c704822eCB6b9Fb4';
+    $nonExistentContractAddress  = '0xTokenContractAddress000000000000000000000000';
 
     $transaction = Transaction::factory()
         ->tokenTransfer($nonExistentRecipientAddress, BigNumber::new(1000))
@@ -549,6 +555,7 @@ it('should handle token transfer with non-existent recipient wallet', function (
             'transaction_index' => 13,
             'sender_public_key' => $walletFrom->public_key,
             'from'              => $walletFrom->address,
+            'to'                => $nonExistentContractAddress,
             'gas_price'         => 20,
             'gas'               => 21000,
             'gas_used'          => 21000,
@@ -571,7 +578,7 @@ it('should handle token transfer with non-existent recipient wallet', function (
 
     expect($subject->isTokenTransfer)->toBeTrue();
     expect($subject->recipient)->not->toBeNull();
-    expect($subject->recipient->address)->toBe($nonExistentRecipientAddress);
+    expect($subject->recipient->address)->toBe($nonExistentContractAddress);
     expect($subject->sender)->not->toBeNull();
 });
 

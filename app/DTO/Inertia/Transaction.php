@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Wallet as WalletDTO;
-use App\Enums\TokenTransferArgument;
 use App\Facades\Wallets;
 use App\Models\Transaction as Model;
 use App\ViewModels\TransactionViewModel;
-use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
@@ -58,6 +56,7 @@ class Transaction extends Data
         public bool $isValidatorUpdate,
         public bool $isUsernameRegistration,
         public bool $isUsernameResignation,
+        public bool $isApprove,
         public bool $isContractDeployment,
         public bool $isMultiPayment,
         public bool $isSelfReceiving,
@@ -103,33 +102,17 @@ class Transaction extends Data
 
         $recipient = null;
 
-        if ($viewModel->isTransfer()) {
-            $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
-
-            if ($recipientWallet !== null) {
-                $recipient = WalletDTO::fromModel($recipientWallet);
-            } else {
-                $recipientAddress = $viewModel->recipient()?->address();
-
-                if ($recipientAddress !== null) {
-                    try {
-                        $recipientWallet = Wallets::findByAddress($recipientAddress);
-                        $recipient       = WalletDTO::fromModel($recipientWallet);
-                    } catch (ModelNotFoundException) {
-                        $recipient = WalletDTO::stub($recipientAddress);
-                    }
-                }
-            }
-        } elseif ($viewModel->isTokenTransfer()) {
-            $recipientAddress = self::getTokenTransferRecipient($viewModel);
+        $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
+        if ($recipientWallet !== null) {
+            $recipient = WalletDTO::fromModel($recipientWallet);
+        } else {
+            $recipientAddress = $viewModel->recipient()?->address();
 
             if ($recipientAddress !== null) {
                 try {
                     $recipientWallet = Wallets::findByAddress($recipientAddress);
                     $recipient       = WalletDTO::fromModel($recipientWallet);
                 } catch (ModelNotFoundException) {
-                    // Recipient wallet may not exist in DB for token transfers
-                    // when the recipient address has never had native transactions
                     $recipient = WalletDTO::stub($recipientAddress);
                 }
             }
@@ -182,6 +165,7 @@ class Transaction extends Data
             isValidatorUpdate: $viewModel->isValidatorUpdate(),
             isUsernameRegistration: $viewModel->isUsernameRegistration(),
             isUsernameResignation: $viewModel->isUsernameResignation(),
+            isApprove: $viewModel->isApprove(),
             isContractDeployment: $viewModel->isContractDeployment(),
             isMultiPayment: $viewModel->isMultiPayment(),
             isSelfReceiving: $viewModel->isSelfReceiving(),
@@ -195,16 +179,5 @@ class Transaction extends Data
             sender: $sender,
             recipient: $recipient,
         );
-    }
-
-    private static function getTokenTransferRecipient(TransactionViewModel $viewModel): ?string
-    {
-        $arguments = $viewModel->methodArguments();
-
-        if (count($arguments) === 0 || ! array_key_exists(TokenTransferArgument::RECIPIENT, $arguments)) {
-            return null;
-        }
-
-        return (new ArgumentDecoder($arguments[TokenTransferArgument::RECIPIENT]))->decodeAddress();
     }
 }

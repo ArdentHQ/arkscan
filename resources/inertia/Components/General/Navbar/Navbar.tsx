@@ -23,6 +23,7 @@ export default function Navbar() {
                 children: [
                     { route: "blocks", label: t("menus.blocks") },
                     { route: "transactions", label: t("menus.transactions") },
+                    { route: "tokens.transfers", label: t("menus.tokens.transfers") },
                     { route: "validators", label: t("menus.validators") },
                     { route: "top-accounts", label: t("menus.top_accounts") },
                     { route: "statistics", label: t("menus.statistics") },

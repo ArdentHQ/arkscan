@@ -20,6 +20,10 @@ import useSharedData from "@/hooks/use-shared-data";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import useWebhooks from "@/Providers/Webhooks/useWebhooks";
+import TokenTransfersTableWrapper from "@/Components/Tables/Desktop/Wallet/TokenTransfers";
+import TokenTransfersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/TokenTransfers";
+import TokensTableWrapper from "@/Components/Tables/Desktop/Wallet/Tokens";
+import TokensMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Tokens";
 
 const WalletTabsWrapper = ({
     transactions,
@@ -55,6 +59,10 @@ const WalletTabs = ({
         let pollParameters: string[] = [];
         if (tab === "transactions") {
             pollParameters = ["transactions"];
+        } else if (tab === "token-transfers") {
+            pollParameters = ["tokenTransfers"];
+        } else if (tab === "tokens") {
+            pollParameters = ["tokens"];
         } else if (tab === "blocks") {
             pollParameters = ["blocks"];
         } else if (tab === "voters") {
@@ -72,26 +80,44 @@ const WalletTabs = ({
         });
     });
 
-    const reloadTransactions = () => {
+    const reloadData = (only: string) => {
         router.reload({
-            only: ["transactions"],
+            only: [only],
         });
     };
 
     useEffect(() => {
-        if (currentTab !== "transactions") {
+        let callback: (() => void) | null = null;
+        if (currentTab === "transactions") {
+            callback = () => reloadData("transactions");
+        } else if (currentTab === "tokens") {
+            callback = () => reloadData("tokens");
+        } else if (currentTab === "token-transfers") {
+            callback = () => reloadData("tokenTransfers");
+        }
+
+        if (!callback) {
             return;
         }
 
-        return listen(`transactions.${wallet.address}`, "NewTransaction", reloadTransactions);
+        return listen(`transactions.${wallet.address}`, "NewTransaction", callback);
     }, [wallet.address, currentTab]);
 
     useEffect(() => {
-        if (currentTab !== "transactions") {
+        let callback: (() => void) | null = null;
+        if (currentTab === "transactions") {
+            callback = () => reloadData("transactions");
+        } else if (currentTab === "tokens") {
+            callback = () => reloadData("tokens");
+        } else if (currentTab === "token-transfers") {
+            callback = () => reloadData("tokenTransfers");
+        }
+
+        if (!callback) {
             return;
         }
 
-        return listen(`transactions.${wallet.public_key}`, "NewTransaction", reloadTransactions);
+        return listen(`transactions.${wallet.public_key}`, "NewTransaction", callback);
     }, [wallet.public_key, currentTab]);
 
     useEffect(() => {
@@ -124,6 +150,18 @@ const WalletTabs = ({
                 <WalletTransactionsTab transactions={transactions} filters={filters.transactions} />
             )}
 
+            {currentTab === "token-transfers" && (
+                <>
+                    <TokenTransfersTableWrapper mobile={<TokenTransfersMobileTableWrapper />} />
+                </>
+            )}
+
+            {currentTab === "tokens" && (
+                <>
+                    <TokensTableWrapper mobile={<TokensMobileTableWrapper />} />
+                </>
+            )}
+
             {currentTab === "blocks" && (
                 <>
                     <ValidatedBlocksTableWrapper
@@ -144,7 +182,11 @@ const WalletTabs = ({
 
 function WalletPageHandlerProvider({ children }: PropsWithChildren) {
     const { baseUrl, wallet } = useSharedData<WalletProps>();
-    const tabs = [{ text: "Transactions", value: "transactions" }];
+    const tabs = [
+        { text: "Transactions", value: "transactions" },
+        { text: "Token Transfers", value: "token-transfers" },
+        { text: "Tokens", value: "tokens" },
+    ];
     const queryStringDefaults: ITabsQueryString = {
         transactions: {
             page: 1,
@@ -158,6 +200,16 @@ function WalletPageHandlerProvider({ children }: PropsWithChildren) {
             username: true,
             contract_deployment: true,
             others: true,
+        },
+
+        "token-transfers": {
+            page: 1,
+            "per-page": 25,
+        },
+
+        tokens: {
+            page: 1,
+            "per-page": 25,
         },
     };
 
