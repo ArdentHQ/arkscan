@@ -52,7 +52,6 @@ class TransactionDetails extends Data
     {
         $viewModel = new TransactionViewModel($transaction);
         $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
-
         $recipient = $viewModel->recipient();
         $token     = $recipient !== null ? (new WalletCache())->getToken($recipient->address()) : null;
         if ($token !== null) {
@@ -70,8 +69,14 @@ class TransactionDetails extends Data
         $batchTokenTransfers = [];
         if ($viewModel->isBatchTransfer()) {
             $transfers = TokenTransferModel::where('transaction_hash', $transaction->hash)->get();
+
             foreach ($transfers as $tf) {
-                $wallet                = WalletDTO::fromModel(Wallets::findByAddress($tf->to));
+                try {
+                    $wallet = WalletDTO::fromModel(Wallets::findByAddress($tf->to));
+                } catch (\Illuminate\Database\Eloquent\ModelNotFoundException) {
+                    $wallet = WalletDTO::stub($tf->to);
+                }
+
                 $batchTokenTransfers[] = [
                     'recipient'            => $tf->to,
                     'amount'               => (string) $tf->value,
