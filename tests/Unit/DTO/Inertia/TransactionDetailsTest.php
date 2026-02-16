@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Console\Commands\CacheTokens;
 use App\DTO\Inertia\TransactionDetails;
 use App\Models\Token;
+use App\Models\TokenTransfer as TokenTransferModel;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -168,4 +169,153 @@ it('should return null token approval for non-approve transaction', function () 
     $details = TransactionDetails::fromModel($transaction);
 
     expect($details->tokenApproval)->toBeNull();
+});
+
+it('should include batch token transfers', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $token = Token::factory()->create();
+
+    $recipient1 = Wallet::factory()->create([
+        'attributes' => ['username' => 'bob'],
+    ]);
+    $recipient2 = Wallet::factory()->create([
+        'attributes' => [],
+    ]);
+
+    $transaction = Transaction::factory()
+        ->batchTransfer(
+            $token->address,
+            [$recipient1->address, $recipient2->address],
+            [BigNumber::new(1000), BigNumber::new(2000)],
+        )
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    TokenTransferModel::factory()->count(2)->sequence(
+        [
+            'transaction_hash' => $transaction->hash,
+            'block_number'     => $transaction->block_number,
+            'address'          => $token->address,
+            'from'             => $transaction->from,
+            'to'               => $recipient1->address,
+            'value'            => '1000',
+            'index'            => 0,
+        ],
+        [
+            'transaction_hash' => $transaction->hash,
+            'block_number'     => $transaction->block_number,
+            'address'          => $token->address,
+            'from'             => $transaction->from,
+            'to'               => $recipient2->address,
+            'value'            => '2000',
+            'index'            => 1,
+        ],
+    )->create();
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->batchTokenTransfers)->toHaveCount(2);
+    expect($details->batchTokenTransfers[0]['recipient'])->toBe($recipient1->address);
+    expect($details->batchTokenTransfers[0]['amount'])->toBe('1000');
+    expect($details->batchTokenTransfers[0]['recipientUsername'])->toBe('bob');
+    expect($details->batchTokenTransfers[0]['recipientHasUsername'])->toBeTrue();
+    expect($details->batchTokenTransfers[1]['recipient'])->toBe($recipient2->address);
+    expect($details->batchTokenTransfers[1]['amount'])->toBe('2000');
+    expect($details->batchTokenTransfers[1]['recipientHasUsername'])->toBeFalse();
+    expect($details->token)->not->toBeNull();
+    expect($details->token->symbol)->toBe($token->symbol);
+});
+
+it('should handle batch transfer with unknown recipient wallet', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $token = Token::factory()->create();
+
+    $unknownAddress = '0x'.str_repeat('ab', 20);
+
+    $transaction = Transaction::factory()
+        ->batchTransfer(
+            $token->address,
+            [$unknownAddress],
+            [BigNumber::new(500)],
+        )
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    TokenTransferModel::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'block_number'     => $transaction->block_number,
+        'address'          => $token->address,
+        'from'             => $transaction->from,
+        'to'               => $unknownAddress,
+        'value'            => '500',
+        'index'            => 0,
+    ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->batchTokenTransfers)->toHaveCount(1);
+    expect($details->batchTokenTransfers[0]['recipient'])->toBe($unknownAddress);
+    expect($details->batchTokenTransfers[0]['recipientHasUsername'])->toBeFalse();
+});
+
+it('should resolve token from token_transfer record for token transfers', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $token     = Token::factory()->create();
+    $recipient = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->tokenTransfer($recipient->address, BigNumber::new(1000))
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    TokenTransferModel::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'block_number'     => $transaction->block_number,
+        'address'          => $token->address,
+        'from'             => $transaction->from,
+        'to'               => $recipient->address,
+        'value'            => '1000',
+        'index'            => 0,
+    ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->token)->not->toBeNull();
+    expect($details->token->symbol)->toBe($token->symbol);
+});
+
+it('should handle token transfer with unknown recipient wallet', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $unknownAddress = '0x'.str_repeat('cd', 20);
+
+    $transaction = Transaction::factory()
+        ->tokenTransfer($unknownAddress, BigNumber::new(1000))
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenTransfer)->not->toBeNull();
+    expect(strtolower($details->tokenTransfer['recipient']))->toBe(strtolower($unknownAddress));
+    expect($details->tokenTransfer['recipientHasUsername'])->toBeFalse();
 });
