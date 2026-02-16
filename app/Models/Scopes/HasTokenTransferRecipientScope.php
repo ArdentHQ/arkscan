@@ -17,11 +17,11 @@ final class HasTokenTransferRecipientScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where(function ($query) {
-            $query->select('to')
+        $builder->whereExists(function ($query) {
+            $query->selectRaw('1')
                 ->from('token_transfers')
                 ->whereColumn('token_transfers.transaction_hash', 'transactions.hash')
-                ->limit(1);
-        }, $this->address);
+                ->where('token_transfers.to', $this->address);
+        });
     }
 }
