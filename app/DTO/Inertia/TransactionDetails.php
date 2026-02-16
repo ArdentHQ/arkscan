@@ -11,6 +11,7 @@ use App\Facades\Wallets;
 use App\Models\MultiPayment;
 use App\Models\TokenTransfer as TokenTransferModel;
 use App\Models\Transaction as Model;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
@@ -56,7 +57,16 @@ class TransactionDetails extends Data
         $token     = $recipient !== null ? (new WalletCache())->getToken($recipient->address()) : null;
         if ($token !== null) {
             $token = Token::fromModel($token);
-        } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove() || $viewModel->isBatchTransfer()) {
+        } elseif ($viewModel->isBatchTransfer()) {
+            $tokenTransferRecords = TokenTransferModel::with('token')
+                ->where('transaction_hash', $transaction->hash)
+                ->get();
+
+            $firstRecord = $tokenTransferRecords->first();
+            if ($firstRecord?->token !== null) {
+                $token = Token::fromModel($firstRecord->token);
+            }
+        } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove()) {
             $tokenTransferRecord = TokenTransferModel::with('token')
                 ->where('transaction_hash', $transaction->hash)
                 ->first();
@@ -67,15 +77,18 @@ class TransactionDetails extends Data
         }
 
         $batchTokenTransfers = [];
-        if ($viewModel->isBatchTransfer()) {
-            $transfers = TokenTransferModel::where('transaction_hash', $transaction->hash)->get();
+        if ($viewModel->isBatchTransfer() && isset($tokenTransferRecords)) {
+            $addresses = $tokenTransferRecords->pluck('to')->unique()->values()->all();
 
-            foreach ($transfers as $tf) {
-                try {
-                    $wallet = WalletDTO::fromModel(Wallets::findByAddress($tf->to));
-                } catch (\Illuminate\Database\Eloquent\ModelNotFoundException) {
-                    $wallet = WalletDTO::stub($tf->to);
-                }
+            $wallets = Wallet::whereIn('address', $addresses)
+                ->get()
+                ->keyBy('address');
+
+            foreach ($tokenTransferRecords as $tf) {
+                $walletModel = $wallets->get($tf->to);
+                $wallet      = $walletModel !== null
+                    ? WalletDTO::fromModel($walletModel)
+                    : WalletDTO::stub($tf->to);
 
                 $batchTokenTransfers[] = [
                     'recipient'            => $tf->to,
