@@ -5,8 +5,7 @@ import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import { formatUnits, parseUnits, weiToArk } from "@/utils/UnitConverter";
 import AmountFiatTooltip from "@/Components/General/AmountFiatTooltip";
-import AmountSmall from "@/Components/General/AmountSmall";
-import { currency, formatCompact } from "@/utils/number-formatter";
+import { currency, formatCompact, networkCurrency } from "@/utils/number-formatter";
 import { ITransaction } from "@/types/generated";
 
 export default function TransactionToken({
@@ -32,7 +31,7 @@ export default function TransactionToken({
         return (
             <PageSection title={t("pages.transaction.tokens_transferred")}>
                 <SectionDetailRow title={t("pages.transaction.header.to")} headerWidthClass={headerWidthClass}>
-                    <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                    <span>
                         Multiple (
                         <a href="#transfer-details" className="link">
                             {transfers.length}
@@ -41,15 +40,11 @@ export default function TransactionToken({
                     </span>
                 </SectionDetailRow>
 
-                <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
-                    <span className="inline-flex items-center space-x-1">
-                        <AmountSmall amount={totalRaw} hideCurrency />
-
-                        <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
-                            {tokenSymbol}
-                        </span>
-                    </span>
-                </SectionDetailRow>
+                <SectionDetailRow
+                    title={t("pages.transaction.header.amount")}
+                    value={`${networkCurrency(totalRaw, 8)} ${tokenSymbol}`}
+                    headerWidthClass={headerWidthClass}
+                />
 
                 {network?.canBeExchanged && (
                     <SectionDetailRow
