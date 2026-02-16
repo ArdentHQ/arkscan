@@ -183,6 +183,11 @@ export type IToken = {
     totalSupply: string;
     deploymentHash: string;
 };
+export type ITokenHolder = {
+    wallet: IMemoryWallet;
+    token: IToken;
+    balance: number;
+};
 export type ITokenTransfer = {
     transaction_hash: string;
     from: IMemoryWallet;

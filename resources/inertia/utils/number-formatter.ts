@@ -1,4 +1,5 @@
 import useSharedData from "@/hooks/use-shared-data";
+import BigNumber from "bignumber.js";
 
 const FIAT_DECIMALS = 2;
 const FIAT_DECIMALS_SMALL = 4;
@@ -146,8 +147,9 @@ function stripTrailingZeros(str: string): string {
 export function networkCurrency(
     value: number | string,
     decimals = 8,
-    withSuffix = false,
+    withCurrency = false,
     currency: string | undefined = undefined,
+    suffix: string | undefined = undefined,
 ): string {
     const numeric = Number(value) || 0;
 
@@ -156,12 +158,16 @@ export function networkCurrency(
     // to avoid unexpected rounding behaviour.
     const rounded = Number(numeric.toFixed(decimals));
 
-    const formatted = new Intl.NumberFormat("en-US", {
+    let formatted = new Intl.NumberFormat("en-US", {
         minimumFractionDigits: Math.min(2, decimals),
         maximumFractionDigits: decimals,
     }).format(rounded);
 
-    if (!withSuffix) {
+    if (suffix) {
+        formatted = `${formatted}${suffix}`;
+    }
+
+    if (!withCurrency) {
         return formatted;
     }
 
@@ -187,4 +193,42 @@ export function decimalsFor(currency: string, isSmallValue = false): number {
         return isSmallValue ? FIAT_DECIMALS_SMALL : FIAT_DECIMALS;
     }
     return isSmallValue ? CRYPTO_DECIMALS_SMALL : CRYPTO_DECIMALS;
+}
+
+/**
+ * Formats a value in compact form with a suffix.
+ *
+ * Example: 1500 should return { value: 1.5, suffix: 'K' }
+ *
+ * Based on https://github.com/ArdentHQ/arkvault/blob/b8560d8f4a57fea4beab28c529a7699d245ae95f/src/app/lib/intl/numeral.ts#L86
+ *
+ * @param {BigNumber | number | string} value
+ * @returns { value: number; suffix: string | undefined }
+ */
+export function formatCompact(value: BigNumber | string | number): { value: number; suffix: string | undefined } {
+    const bnValue = new BigNumber(value);
+
+    const scales: Array<{ exp: number; suffix: string }> = [
+        { exp: 33, suffix: "D" }, // Decillion
+        { exp: 30, suffix: "No" }, // Nonillion
+        { exp: 27, suffix: "Oc" }, // Octillion
+        { exp: 24, suffix: "Sp" }, // Septillion
+        { exp: 21, suffix: "Sx" }, // Sextillion
+        { exp: 18, suffix: "Qt" }, // Quintillion
+        { exp: 15, suffix: "Qd" }, // Quadrillion
+        { exp: 12, suffix: "T" }, // Trillion
+        { exp: 9, suffix: "B" }, // Billion
+        { exp: 6, suffix: "M" }, // Million
+        { exp: 3, suffix: "K" }, // Thousand
+    ];
+
+    for (const { exp, suffix } of scales) {
+        const threshold = new BigNumber(10).pow(exp);
+        if (bnValue.isGreaterThanOrEqualTo(threshold)) {
+            const scaled = bnValue.dividedBy(threshold);
+            return { suffix, value: scaled.toNumber() };
+        }
+    }
+
+    return { suffix: undefined, value: bnValue.toNumber() };
 }

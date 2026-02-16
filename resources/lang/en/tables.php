@@ -33,6 +33,12 @@ return [
     'tokens' => [
         'amount_generic' => 'Amount',
         'token'          => 'Token',
+        'symbol'         => 'Symbol',
+        'contract'       => 'Contract',
+        'token_balance'  => 'Token Balance',
+        'value'          => 'Value',
+
+        'no_results' => 'No tokens to display for this address',
 
         'transfers' => [
             'no_results' => 'No token transfers could be found.',

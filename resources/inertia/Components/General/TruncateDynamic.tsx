@@ -1,6 +1,15 @@
+import classNames from "classnames";
 import { useEffect, useRef } from "react";
 
-export default function TruncateDynamic({ value }: { value: string }) {
+export default function TruncateDynamic({
+    value,
+    location = "middle",
+    className,
+}: {
+    value: string;
+    location?: "middle" | "end";
+    className?: string;
+}) {
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -30,9 +39,17 @@ export default function TruncateDynamic({ value }: { value: string }) {
             let length = baseLength;
 
             do {
-                const a = value.substring(0, length);
-                const b = value.substring(baseLength - length);
-                const truncated = a + "..." + b;
+                let truncated = value;
+                if (location === "middle") {
+                    const a = value.substring(0, length);
+                    const b = value.substring(baseLength - length);
+
+                    truncated = a + "..." + b;
+                } else if (location === "end") {
+                    const a = value.substring(0, length);
+
+                    truncated = a + "...";
+                }
 
                 ref.current.innerHTML = "";
                 ref.current.appendChild(document.createTextNode(truncated));
@@ -63,7 +80,10 @@ export default function TruncateDynamic({ value }: { value: string }) {
     }, [value, ref]);
 
     return (
-        <div ref={ref} className="inline-flex w-full max-w-full overflow-hidden whitespace-nowrap">
+        <div
+            ref={ref}
+            className={classNames(["inline-flex w-full max-w-full overflow-hidden whitespace-nowrap", className])}
+        >
             {value}
         </div>
     );

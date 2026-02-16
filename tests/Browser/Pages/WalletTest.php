@@ -7,6 +7,7 @@ use App\Models\Block;
 use App\Models\MultiPayment;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\TokenHolder;
 use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -1299,6 +1300,131 @@ describe('Token Transfers Tab', function () {
             foreach ($sortedTransfers->take(10)->get() as $transfer) {
                 $browser->assertSee(substr($transfer->transaction_hash, 0, 5).'…'.substr($transfer->transaction_hash, -5));
             }
+        });
+    })->with('desktop_mobile_resolutions');
+});
+
+describe('Tokens Tab', function () {
+    beforeEach(function () {
+        $this->wallet = Wallet::factory()->create();
+    });
+
+    it('should display tokens', function () {
+        foreach ([1, 2, 3, 4, 5] as $value) {
+            TokenHolder::factory()->create([
+                'address' => $this->wallet->address,
+                'balance' => BigNumber::new($value * 1.2343)->multipliedBy(1e18),
+            ]);
+        }
+
+        $tokenHolders = TokenHolder::where('address', $this->wallet->address)->get();
+
+        $this->browse(function (Browser $browser) use ($tokenHolders) {
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'tokens']);
+
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText('5 results', ignoreCase: true);
+
+                foreach ($tokenHolders as $tokenHolder) {
+                    $browser->assertSee($tokenHolder->token->name)
+                        ->assertSee($tokenHolder->token->symbol)
+                        ->assertSee(substr($tokenHolder->token_address, 0, 5).'…'.substr($tokenHolder->token_address, -5))
+                        ->assertSee(number_format($tokenHolder->balance->toFloat(), 4));
+                }
+            }
+        });
+    });
+
+    it('should correctly format decimal places', function (float $amount, string $expected) {
+        $tokenHolder = TokenHolder::factory()->create([
+            'address' => $this->wallet->address,
+            'balance' => (string) BigNumber::new($amount)->multipliedBy(1e18),
+        ]);
+
+        $this->browse(function (Browser $browser) use ($tokenHolder, $expected) {
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'tokens']);
+
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText('1 result', ignoreCase: true);
+
+                $browser->assertSee($tokenHolder->token->name)
+                    ->assertSee($tokenHolder->token->symbol)
+                    ->assertSee(substr($tokenHolder->token_address, 0, 5).'…'.substr($tokenHolder->token_address, -5));
+
+                $selector = '[data-testid="token:'.$tokenHolder->token->symbol.':amount"]';
+                if ($resolution['width'] <= 640) {
+                    $selector = '[data-testid="token:mobile:'.$tokenHolder->token->symbol.':amount"]';
+                }
+
+                $browser->assertSeeIn($selector, $expected);
+            }
+        });
+    })
+    ->with([
+        '2'                => [2.34, '2.34'],
+        '3'                => [2.345, '2.345'],
+        '4'                => [2.3456, '2.3456'],
+        '5'                => [2.34567, '2.34567'],
+        '6'                => [2.345678, '2.345678'],
+        '7'                => [2.3456789, '2.3456789'],
+        '8'                => [2.34567891, '2.34567891'],
+        '8 after rounding' => [2.345678915, '2.34567892'],
+    ]);
+
+    it('should go to page 2', function ($resolution) {
+        TokenHolder::factory(50)->create([
+            'address' => $this->wallet->address,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($resolution) {
+            $sortedTokens = TokenHolder::with('token')
+                ->where('address', $this->wallet->address)
+                ->orderBy('balance', 'desc')
+                ->get();
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'tokens'])
+                ->waitForText('50 results', ignoreCase: true)
+                ->assertSee($sortedTokens->first()->token->name)
+                ->assertSee($sortedTokens->take(25)->last()->token->name)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringHas('page', '2')
+                ->assertSee($sortedTokens->skip(25)->first()->token->name)
+                ->assertSee($sortedTokens->skip(25)->take(25)->last()->token->name);
+        });
+    })->with('desktop_mobile_resolutions');
+
+    it('should reset to page 1 on per-page change', function ($resolution) {
+        TokenHolder::factory(50)->create([
+            'address' => $this->wallet->address,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($resolution) {
+            $sortedTokens = TokenHolder::with('token')
+                ->where('address', $this->wallet->address)
+                ->orderBy('balance', 'desc')
+                ->get();
+
+            $browser->resize($resolution['width'], $resolution['height']);
+
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'tokens', 'page' => 2])
+                ->waitForText('50 results', ignoreCase: true)
+                ->assertSee('Page 2 of 2')
+                ->assertDontSee($sortedTokens->first()->token->name)
+                ->assertDontSee($sortedTokens->take(25)->last()->token->name)
+                ->click('[data-testid="pagination:per-page-dropdown:button"]')
+                ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
+                ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//div[normalize-space(text())="10"]')
+                ->waitForText('Page 1 of 5')
+                ->assertSee($sortedTokens->first()->token->name)
+                ->assertSee($sortedTokens->take(10)->last()->token->name)
+                ->assertDontSee($sortedTokens->take(11)->last()->token->name);
         });
     })->with('desktop_mobile_resolutions');
 });
