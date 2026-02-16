@@ -9,7 +9,7 @@ export default function ArkConnectLearnMore() {
 
     return (
         <LearnMore
-            url={urls.public.arkconnect}
+            url={urls.arkconnect}
             icon={ArkConnectIcon}
             title={t("pages.compatible-wallets.arkconnect.title")}
             titleExtra={t("pages.compatible-wallets.arkconnect.title_extra")}

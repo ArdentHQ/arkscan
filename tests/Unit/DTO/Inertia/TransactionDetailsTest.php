@@ -88,6 +88,7 @@ it('should include token approval details for approve transaction', function () 
     expect($details->tokenApproval['spender'])->toBe($spender->address);
     expect($details->tokenApproval['amount'])->toBeString();
     expect($details->tokenApproval['isUnlimited'])->toBeFalse();
+    expect($details->tokenApproval['isRevoke'])->toBeFalse();
     expect($details->tokenApproval['spenderUsername'])->toBe('spender.user');
     expect($details->tokenApproval['spenderHasUsername'])->toBeTrue();
 });
@@ -113,6 +114,26 @@ it('should detect unlimited approve', function () {
 
     expect($details->tokenApproval)->not->toBeNull();
     expect($details->tokenApproval['isUnlimited'])->toBeTrue();
+});
+
+it('should detect approval revoke', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $spender = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::zero())
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenApproval)->not->toBeNull();
+    expect($details->tokenApproval['isRevoke'])->toBeTrue();
 });
 
 it('should return null token approval for approve without valid arguments', function () {
