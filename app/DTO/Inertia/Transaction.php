@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Inertia;
 
+use App\DTO\Inertia\Concerns\WithTokenApproval;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Facades\Wallets;
 use App\Models\Transaction as Model;
@@ -16,6 +17,8 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 #[TypeScript('ITransaction')]
 class Transaction extends Data
 {
+    use WithTokenApproval;
+
     public function __construct(
         public string $hash,
         public string $block_hash,
@@ -57,6 +60,7 @@ class Transaction extends Data
         public bool $isUsernameRegistration,
         public bool $isUsernameResignation,
         public bool $isApprove,
+        public bool $isApprovalRevoke,
         public bool $isContractDeployment,
         public bool $isMultiPayment,
         public bool $isSelfReceiving,
@@ -126,6 +130,14 @@ class Transaction extends Data
 
         $address = $address ?? $transaction->from;
 
+        $isApprove        = $viewModel->isApprove();
+        $isApprovalRevoke = false;
+        if ($isApprove) {
+            $approvalDetails = static::tokenApprovalDetails($viewModel);
+
+            $isApprovalRevoke = $approvalDetails['isRevoke'] ?? false;
+        }
+
         return new self(
             hash: $transaction->hash,
             block_hash: $transaction->block_hash,
@@ -165,7 +177,8 @@ class Transaction extends Data
             isValidatorUpdate: $viewModel->isValidatorUpdate(),
             isUsernameRegistration: $viewModel->isUsernameRegistration(),
             isUsernameResignation: $viewModel->isUsernameResignation(),
-            isApprove: $viewModel->isApprove(),
+            isApprove: $isApprove,
+            isApprovalRevoke: $isApprovalRevoke,
             isContractDeployment: $viewModel->isContractDeployment(),
             isMultiPayment: $viewModel->isMultiPayment(),
             isSelfReceiving: $viewModel->isSelfReceiving(),

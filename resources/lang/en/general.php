@@ -139,6 +139,7 @@ return [
             'username-resignation'   => 'Username Resignation',
             'approve'                => 'Approve',
             'contract-deployment'    => 'Contract Deployment',
+            'revoke'                 => 'Revoke',
         ],
     ],
 

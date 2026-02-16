@@ -20,5 +20,9 @@ export default function Method({ transaction }: { transaction: ITransaction }) {
         }
     }
 
+    if (transaction.isApprovalRevoke) {
+        return <Badge className="encapsulated-badge">{t("general.transaction.types.revoke")}</Badge>;
+    }
+
     return <Badge className="encapsulated-badge">{transaction.type}</Badge>;
 }
