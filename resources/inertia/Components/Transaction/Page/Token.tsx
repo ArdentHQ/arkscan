@@ -3,8 +3,9 @@ import useSharedData from "@/hooks/use-shared-data";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
-import { formatUnits, parseUnits } from "@/utils/UnitConverter";
+import { formatUnits, parseUnits, weiToArk } from "@/utils/UnitConverter";
 import AmountFiatTooltip from "@/Components/General/AmountFiatTooltip";
+import AmountSmall from "@/Components/General/AmountSmall";
 import { currency, formatCompact } from "@/utils/number-formatter";
 import { ITransaction } from "@/types/generated";
 
@@ -25,25 +26,24 @@ export default function TransactionToken({
     if (transaction.isBatchTransfer) {
         const transfers = details.batchTokenTransfers;
         const totalRaw = transfers.reduce((sum, tf) => {
-            return sum + Number(formatUnits(parseUnits(tf.amount, "wei"), "ark"));
+            return sum + Number(weiToArk(tf.amount));
         }, 0);
-
-        const compact = formatCompact(totalRaw);
 
         return (
             <PageSection title={t("pages.transaction.tokens_transferred")}>
                 <SectionDetailRow title={t("pages.transaction.header.to")} headerWidthClass={headerWidthClass}>
-                    <a href="#transfer-details" className="link">
-                        {t("pages.transaction.multiple_count", { count: transfers.length })}
-                    </a>
+                    <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                        Multiple (
+                        <a href="#transfer-details" className="link">
+                            {transfers.length}
+                        </a>
+                        )
+                    </span>
                 </SectionDetailRow>
 
                 <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
                     <span className="inline-flex items-center space-x-1">
-                        <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
-                            {compact.value}
-                            {compact.suffix}
-                        </span>
+                        <AmountSmall amount={totalRaw} hideCurrency />
 
                         <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
                             {tokenSymbol}
