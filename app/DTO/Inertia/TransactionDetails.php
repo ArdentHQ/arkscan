@@ -9,6 +9,7 @@ use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Enums\TokenTransferArgument;
 use App\Facades\Wallets;
 use App\Models\MultiPayment;
+use App\Models\TokenTransfer as TokenTransferModel;
 use App\Models\Transaction as Model;
 use App\Services\Cache\WalletCache;
 use App\Services\ExchangeRate;
@@ -54,6 +55,14 @@ class TransactionDetails extends Data
         $token     = $recipient !== null ? (new WalletCache())->getToken($recipient->address()) : null;
         if ($token !== null) {
             $token = Token::fromModel($token);
+        } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove()) {
+            $tokenTransferRecord = TokenTransferModel::with('token')
+                ->where('transaction_hash', $transaction->hash)
+                ->first();
+
+            if ($tokenTransferRecord?->token !== null) {
+                $token = Token::fromModel($tokenTransferRecord->token);
+            }
         }
 
         return new self(
