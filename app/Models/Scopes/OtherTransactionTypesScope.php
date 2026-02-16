@@ -17,6 +17,7 @@ final class OtherTransactionTypesScope implements Scope
     {
         $builder
             ->whereRaw('SUBSTRING(data FROM 1 FOR 4) != \'\'')
+            ->whereRaw('encode(SUBSTRING(data FROM 1 FOR 4), \'hex\') != ?', [ContractMethod::transfer()])
             ->where(function ($query) {
                 $query->whereNotIn('to', Network::knownContracts())
                     ->orWhere(

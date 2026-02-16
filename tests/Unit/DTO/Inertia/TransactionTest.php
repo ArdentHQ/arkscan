@@ -172,6 +172,7 @@ it('should make an instance', function () {
         ],
         'votedForUsername'                => null,
         'isApprove'                       => false,
+        'isApprovalRevoke'                => false,
     ]);
 });
 
@@ -305,6 +306,7 @@ it('should make an instance for a vote transaction', function () {
         'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => 'bill.ding',
         'isApprove'                       => false,
+        'isApprovalRevoke'                => false,
     ]);
 });
 
@@ -493,6 +495,7 @@ it('should make an instance for a validator resignation transaction', function (
             'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
             'votedForUsername'                => null,
             'isApprove'                       => false,
+            'isApprovalRevoke'                => false,
         ],
         'votedFor' => null,
         'sender'   => [
@@ -528,6 +531,7 @@ it('should make an instance for a validator resignation transaction', function (
         'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => null,
         'isApprove'                       => false,
+        'isApprovalRevoke'                => false,
     ]);
 });
 
@@ -629,4 +633,50 @@ it('should handle transfer with non-existent recipient wallet', function () {
     expect($subject->recipient)->not->toBeNull();
     expect($subject->recipient->address)->toBe($nonExistentRecipientAddress);
     expect($subject->sender)->not->toBeNull();
+});
+
+it('should determine an approval transaction', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $wallet = Wallet::factory()
+        ->create([
+            'address'    => '0x448c9672dc0DD62188064360c704822eCB6b9Fb4',
+            'balance'    => 100.34123 * 1e18,
+            'attributes' => [
+                'username' => 'joe.blogs',
+            ],
+        ]);
+
+    $transaction = Transaction::factory()
+        ->approve($wallet->address, BigNumber::new(1000))
+        ->create();
+
+    $subject = TransactionDTO::fromModel($transaction);
+
+    expect($subject->isApprove)->toBeTrue();
+    expect($subject->isApprovalRevoke)->toBeFalse();
+});
+
+it('should determine an approval revoke transaction', function () {
+    $this->freezeTime();
+    $this->travelTo('2025-09-11 12:00:00');
+
+    $wallet = Wallet::factory()
+        ->create([
+            'address'    => '0x448c9672dc0DD62188064360c704822eCB6b9Fb4',
+            'balance'    => 100.34123 * 1e18,
+            'attributes' => [
+                'username' => 'joe.blogs',
+            ],
+        ]);
+
+    $transaction = Transaction::factory()
+        ->approve($wallet->address, BigNumber::zero())
+        ->create();
+
+    $subject = TransactionDTO::fromModel($transaction);
+
+    expect($subject->isApprove)->toBeTrue();
+    expect($subject->isApprovalRevoke)->toBeTrue();
 });

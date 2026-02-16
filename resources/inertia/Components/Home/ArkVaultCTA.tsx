@@ -69,7 +69,7 @@ export default function ArkVaultCTA() {
 
                         <div className="mt-4 flex items-center sm:mt-0 sm:h-auto">
                             <a
-                                href={urls.public.arkvault}
+                                href={urls.arkvault}
                                 target="_blank"
                                 rel="noopener nofollow noreferrer"
                                 className="button-primary flex w-full items-center rounded-lg py-3.5 dim:!bg-theme-dark-blue-600 dim:hover:!bg-theme-dark-blue-700 dark:!bg-theme-dark-blue-500 dark:hover:!bg-theme-dark-blue-600 sm:mt-0 sm:h-15 sm:w-auto md:mt-0 md:w-full lg:w-auto"

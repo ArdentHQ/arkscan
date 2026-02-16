@@ -22,7 +22,7 @@ export default function Pagination({
     tableRef?: React.RefObject<HTMLDivElement | null>;
 }) {
     const { t } = useTranslation();
-    const { refreshPage, setIsLoading, isLoading: disabled } = usePageHandler();
+    const { refreshPage, setIsLoading, isLoading: disabled, cancelPolling } = usePageHandler();
     const [scrollTop, setScrollTop] = useState(0);
 
     const { pageName, urlParams } = paginator.meta;
@@ -70,6 +70,8 @@ export default function Pagination({
         if (Object.keys(sanitizedParams).length > 0) {
             url += "?" + new URLSearchParams(sanitizedParams).toString();
         }
+
+        cancelPolling();
 
         router.push({
             url,

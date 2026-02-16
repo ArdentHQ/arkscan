@@ -5,4 +5,6 @@ export interface IPageHandlerContextType {
     setIsLoading: (loading: boolean) => void;
     refreshPage: (callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => void;
     setRefreshPage: CallableFunction;
+    cancelPolling: () => void;
+    setCancelPolling: (fn: () => void) => void;
 }

@@ -7,6 +7,7 @@ export default function PageHandlerProvider({ children }: { children: React.Reac
         useState<(callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => void>();
 
     const [isLoading, setIsLoading] = useState(false);
+    const [cancelPollingHandler, setCancelPollingHandler] = useState<() => void>(() => () => {});
 
     const value = {
         isLoading,
@@ -20,6 +21,10 @@ export default function PageHandlerProvider({ children }: { children: React.Reac
             }
 
             refreshPageHandler(callback, onCancelToken);
+        },
+        cancelPolling: () => cancelPollingHandler(),
+        setCancelPolling: (fn: () => void) => {
+            setCancelPollingHandler(() => fn);
         },
     };
 

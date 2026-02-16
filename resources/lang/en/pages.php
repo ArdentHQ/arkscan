@@ -163,6 +163,7 @@ return [
         'approve' => [
             'for_use_by'   => 'for use by',
             'on_behalf_of' => 'on behalf of',
+            'revoke'       => 'Revoke',
         ],
     ],
 

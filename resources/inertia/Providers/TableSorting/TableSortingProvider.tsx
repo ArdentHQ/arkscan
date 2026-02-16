@@ -24,7 +24,7 @@ export default function TableSortingProvider({
         isMounting.current = true;
     }, []);
 
-    const { refreshPage } = usePageHandler();
+    const { refreshPage, cancelPolling } = usePageHandler();
 
     const urlParams = new URLSearchParams(location.search);
     const initialSortByFromUrl = urlParams.get("sort") ?? initialSortBy;
@@ -54,6 +54,8 @@ export default function TableSortingProvider({
         }
 
         updatedUrl.searchParams.delete("page");
+
+        cancelPolling();
 
         router.push({
             url: updatedUrl.toString(),
