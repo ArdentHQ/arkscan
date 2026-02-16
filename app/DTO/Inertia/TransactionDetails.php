@@ -71,7 +71,7 @@ class TransactionDetails extends Data
         if ($viewModel->isBatchTransfer()) {
             $transfers = TokenTransferModel::where('transaction_hash', $transaction->hash)->get();
             foreach ($transfers as $tf) {
-                $wallet              = WalletDTO::fromModel(Wallets::findByAddress($tf->to));
+                $wallet                = WalletDTO::fromModel(Wallets::findByAddress($tf->to));
                 $batchTokenTransfers[] = [
                     'recipient'            => $tf->to,
                     'amount'               => (string) $tf->value,

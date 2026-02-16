@@ -7,3 +7,4 @@ export { default as TransactionSummary } from "./Summary";
 export { default as TransactionStatus } from "./Status";
 export { default as TransactionRecipients } from "./Recipients";
 export { default as TransactionMoreDetails } from "./MoreDetails";
+export { default as TransferDetails } from "./TransferDetails";
