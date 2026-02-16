@@ -173,6 +173,7 @@ it('should make an instance', function () {
         'votedForUsername'                => null,
         'isApprove'                       => false,
         'isApprovalRevoke'                => false,
+        'isBatchTransfer'                 => false,
     ]);
 });
 
@@ -307,6 +308,7 @@ it('should make an instance for a vote transaction', function () {
         'votedForUsername'                => 'bill.ding',
         'isApprove'                       => false,
         'isApprovalRevoke'                => false,
+        'isBatchTransfer'                 => false,
     ]);
 });
 
@@ -496,6 +498,7 @@ it('should make an instance for a validator resignation transaction', function (
             'votedForUsername'                => null,
             'isApprove'                       => false,
             'isApprovalRevoke'                => false,
+        'isBatchTransfer'                     => false,
         ],
         'votedFor' => null,
         'sender'   => [
@@ -532,6 +535,7 @@ it('should make an instance for a validator resignation transaction', function (
         'votedForUsername'                => null,
         'isApprove'                       => false,
         'isApprovalRevoke'                => false,
+        'isBatchTransfer'                 => false,
     ]);
 });
 
