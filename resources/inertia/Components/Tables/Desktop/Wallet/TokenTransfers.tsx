@@ -13,39 +13,42 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
 import Amount from "@/Components/Tokens/Amount";
 import TruncatedValue from "@/Components/Tokens/TruncatedValue";
+import { Transaction } from "@/models/Transaction";
+import { TokenTransfer } from "@/models/TokenTransfer";
 
 export function Row({ row }: { row: ITokenTransfer }) {
     const { wallet } = useSharedData<WalletProps>();
+    const transfer = TokenTransfer.from(row);
 
     return (
         <tr className="text-sm font-semibold">
             <TableCell className="w-[60px]">
-                <ID transaction={row.transaction!} />
+                <ID transaction={transfer.transaction} />
             </TableCell>
 
             <TableCell breakpoint="xl" responsive>
-                <Age timestamp={row.transaction!.timestamp} />
+                <Age timestamp={transfer.transaction.timestamp} />
             </TableCell>
 
             <TableCell>
-                <Method transaction={row.transaction!} />
+                <Method transaction={transfer.transaction} />
             </TableCell>
 
             <TableCell>
-                <Addressing tokenTransfer={row} wallet={wallet} />
+                <Addressing tokenTransfer={transfer} wallet={wallet} />
             </TableCell>
 
             <TableCell className="text-right" lastOn="md-lg">
                 <Amount
-                    testId={`transaction:${row.transaction!.hash}:amount`}
-                    tokenTransfer={row}
+                    testId={`transaction:${transfer.transaction.hash}:amount`}
+                    tokenTransfer={transfer}
                     hideCurrency
                     wallet={wallet}
                 />
             </TableCell>
 
             <TableCell className="text-right" breakpoint="md-lg" responsive>
-                <TruncatedValue value={row.token.symbol} className="justify-end" />
+                <TruncatedValue value={transfer.token.symbol} className="justify-end" />
             </TableCell>
         </tr>
     );

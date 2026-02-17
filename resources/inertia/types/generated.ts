@@ -139,7 +139,9 @@ export type INetwork = {
         validator_update: string;
         username_registration: string;
         username_resignation: string;
+        approve: string;
         contract_deployment: string;
+        batch_transfer: string;
     };
 };
 export type IPriceTickerData = {
@@ -227,27 +229,20 @@ export type ITransaction = {
     amountReceivedFiat: string | number;
     fee: number;
     feeFiat: string | number;
-    type: string;
     url: string;
-    isTransfer: boolean;
-    isTokenTransfer: boolean;
-    isVote: boolean;
-    isUnvote: boolean;
-    isValidatorRegistration: boolean;
-    isValidatorResignation: boolean;
-    isValidatorUpdate: boolean;
-    isUsernameRegistration: boolean;
-    isUsernameResignation: boolean;
-    isApprove: boolean;
-    isApprovalRevoke: boolean;
-    isContractDeployment: boolean;
-    isMultiPayment: boolean;
-    isBatchTransfer: boolean;
+    methodData: { functionName: string | null; methodId: string | null; arguments: Record<string, string> };
+    tokenApprovalDetails: {
+        spender: string;
+        amount: string | null;
+        isUnlimited: boolean;
+        isRevoke: boolean;
+        spenderUsername: string | null;
+        spenderHasUsername: boolean;
+    } | null;
     isSelfReceiving: boolean;
     isSent: boolean;
     isSentToSelf: boolean;
     isReceived: boolean;
-    hasFailedStatus: boolean;
     validatorRegistration: ITransaction | null;
     votedFor: string | null;
     votedForUsername: string | null;

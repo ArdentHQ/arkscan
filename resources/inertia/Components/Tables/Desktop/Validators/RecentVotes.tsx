@@ -14,8 +14,10 @@ import { Link } from "@inertiajs/react";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import Method from "@/Components/Transaction/Method";
 import TableSortingProvider from "@/Providers/TableSorting/TableSortingProvider";
+import { Transaction } from "@/models/Transaction";
 
-export function Row({ row: vote }: { row: ITransaction }) {
+export function Row({ row }: { row: ITransaction }) {
+    const vote = Transaction.from(row);
     const votedFor = vote.votedFor;
 
     return (

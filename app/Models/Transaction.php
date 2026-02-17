@@ -359,6 +359,19 @@ final class Transaction extends Model
         return trim($formatted);
     }
 
+    public function recipientAddress(): string
+    {
+        if (! is_null($this->to)) {
+            return $this->to;
+        }
+
+        if ($this->deployed_contract_address !== null) {
+            return $this->deployed_contract_address;
+        }
+
+        return $this->from;
+    }
+
     /**
      * Get the current connection name for the model.
      *

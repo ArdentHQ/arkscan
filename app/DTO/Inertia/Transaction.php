@@ -48,27 +48,22 @@ class Transaction extends Data
         public int | string $amountReceivedFiat,
         public float $fee,
         public int | string $feeFiat,
-        public string $type,
         public string $url,
-        public bool $isTransfer,
-        public bool $isTokenTransfer,
-        public bool $isVote,
-        public bool $isUnvote,
-        public bool $isValidatorRegistration,
-        public bool $isValidatorResignation,
-        public bool $isValidatorUpdate,
-        public bool $isUsernameRegistration,
-        public bool $isUsernameResignation,
-        public bool $isApprove,
-        public bool $isApprovalRevoke,
-        public bool $isContractDeployment,
-        public bool $isMultiPayment,
-        public bool $isBatchTransfer,
+        #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: Record<string, string> }')]
+        public array $methodData,
+        #[LiteralTypeScriptType('{
+            spender: string;
+            amount: string | null;
+            isUnlimited: boolean;
+            isRevoke: boolean;
+            spenderUsername: string | null;
+            spenderHasUsername: boolean;
+        } | null')]
+        public ?array $tokenApprovalDetails,
         public bool $isSelfReceiving,
         public bool $isSent,
         public bool $isSentToSelf,
         public bool $isReceived,
-        public bool $hasFailedStatus,
         public ?self $validatorRegistration,
         public ?string $votedFor,
         public ?string $votedForUsername,
@@ -79,6 +74,8 @@ class Transaction extends Data
 
     public static function fromModel(Model $transaction, ?string $address = null): self
     {
+        $address = $address ?? $transaction->from;
+
         $viewModel = new TransactionViewModel($transaction);
 
         $votedFor         = null;
@@ -96,7 +93,8 @@ class Transaction extends Data
         $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
 
         if ($senderWallet === null) {
-            $senderAddress = $viewModel->sender()?->address();
+            $senderAddress = $transaction->from;
+
             if ($senderAddress !== null) {
                 try {
                     $senderWallet = Wallets::findByAddress($senderAddress);
@@ -118,7 +116,7 @@ class Transaction extends Data
         } elseif ($transaction->relationLoaded('recipientWallet') && $transaction->to !== null) {
             $recipient = WalletDTO::stub($transaction->to);
         } else {
-            $recipientAddress = $viewModel->recipient()?->address();
+            $recipientAddress = $transaction->recipientAddress();
 
             if ($recipientAddress !== null) {
                 try {
@@ -136,14 +134,20 @@ class Transaction extends Data
             $validatorRegistration = self::fromModel($validatorRegistrationTransaction->model());
         }
 
-        $address = $address ?? $transaction->from;
-
-        $isApprove        = $viewModel->isApprove();
-        $isApprovalRevoke = false;
-        if ($isApprove) {
-            $approvalDetails = static::tokenApprovalDetails($viewModel);
-
-            $isApprovalRevoke = $approvalDetails['isRevoke'] ?? false;
+        $methodData = [
+            'functionName' => null,
+            'methodId' => null,
+            'arguments' => null,
+        ];
+        $methodDataRaw = $transaction->getMethodData(true);
+        if ($methodDataRaw !== null) {
+            $methodData = [
+                'functionName' => $methodDataRaw[0] ?? null,
+                'methodId' => $methodDataRaw[1] ?? null,
+                'arguments' => $methodDataRaw[2] ?? null,
+            ];
+        } else {
+            $methodData['methodId'] = $transaction->methodHash();
         }
 
         return new self(
@@ -174,27 +178,13 @@ class Transaction extends Data
             amountReceivedFiat: $viewModel->amountReceivedFiat($address),
             fee: $viewModel->fee(),
             feeFiat: $viewModel->feeFiat(true),
-            type: $viewModel->typeName(),
-            url: $viewModel->url(),
-            isTransfer: $viewModel->isTransfer(),
-            isTokenTransfer: $viewModel->isTokenTransfer(),
-            isVote: $viewModel->isVote(),
-            isUnvote: $viewModel->isUnvote(),
-            isValidatorRegistration: $viewModel->isValidatorRegistration(),
-            isValidatorResignation: $viewModel->isValidatorResignation(),
-            isValidatorUpdate: $viewModel->isValidatorUpdate(),
-            isUsernameRegistration: $viewModel->isUsernameRegistration(),
-            isUsernameResignation: $viewModel->isUsernameResignation(),
-            isApprove: $isApprove,
-            isApprovalRevoke: $isApprovalRevoke,
-            isContractDeployment: $viewModel->isContractDeployment(),
-            isMultiPayment: $viewModel->isMultiPayment(),
-            isBatchTransfer: $viewModel->isBatchTransfer(),
+            url: route('transaction', $transaction->hash),
+            methodData: $methodData,
+            tokenApprovalDetails: static::tokenApprovalDetails($viewModel),
             isSelfReceiving: $viewModel->isSelfReceiving(),
             isSent: $viewModel->isSent($address),
             isSentToSelf: $viewModel->isSentToSelf($address),
             isReceived: $viewModel->isReceived($address),
-            hasFailedStatus: $viewModel->hasFailedStatus(),
             validatorRegistration: $validatorRegistration,
             votedFor: $votedFor,
             votedForUsername: $votedForUsername,

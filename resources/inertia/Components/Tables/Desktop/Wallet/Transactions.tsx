@@ -18,12 +18,15 @@ import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Filter from "@/Components/Tables/Filter";
 import useSharedData from "@/hooks/use-shared-data";
+import { Transaction } from "@/models/Transaction";
 
 export function Row({ row }: { row: ITransaction }) {
+    const transaction = Transaction.from(row);
+
     return (
         <tr className="text-sm font-semibold">
             <TableCell className="w-[60px]">
-                <ID transaction={row} />
+                <ID transaction={transaction} />
             </TableCell>
 
             <TableCell breakpoint="xl" responsive>
@@ -31,19 +34,24 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell>
-                <Method transaction={row} />
+                <Method transaction={transaction} />
             </TableCell>
 
             <TableCell>
-                <Addressing transaction={row} withoutLink={row.isSentToSelf} forWallet />
+                <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} forWallet />
             </TableCell>
 
             <TableCell className="text-right" lastOn="md-lg">
-                <Amount testId={`transaction:${row.hash}:amount`} transaction={row} hideCurrency forWallet />
+                <Amount
+                    testId={`transaction:${transaction.hash}:amount`}
+                    transaction={transaction}
+                    hideCurrency
+                    forWallet
+                />
             </TableCell>
 
             <TableCell className="text-right" breakpoint="md-lg" responsive>
-                <Fee transaction={row} />
+                <Fee transaction={transaction} />
             </TableCell>
         </tr>
     );

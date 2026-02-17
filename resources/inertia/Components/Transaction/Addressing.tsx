@@ -1,9 +1,10 @@
-import { ITransaction, IWallet } from "@/types/generated";
+import { IWallet } from "@/types/generated";
 import classNames from "classnames";
 import TruncateMiddle from "../General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
 import { Link } from "@inertiajs/react";
 import { useMemo } from "react";
+import { Transaction } from "@/models/Transaction";
 
 export default function Addressing({
     transaction,
@@ -16,7 +17,7 @@ export default function Addressing({
     isReceived = false,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
-    transaction: ITransaction;
+    transaction: Transaction;
     withoutLink?: boolean;
     alwaysShowAddress?: boolean;
     withoutTruncate?: boolean;
@@ -36,7 +37,7 @@ export default function Addressing({
         return forWallet && transaction.isSentToSelf;
     }, [transaction.isSentToSelf, forWallet]);
 
-    if (transaction.isTransfer || transaction.isTokenTransfer || alwaysShowAddress) {
+    if (transaction.method.isTransfer || transaction.method.isTokenTransfer || alwaysShowAddress) {
         interactedWallet = transaction.sender;
 
         if (isSent) {

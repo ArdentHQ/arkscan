@@ -15,12 +15,15 @@ import Filter from "@/Components/Tables/Filter";
 import useSharedData from "@/hooks/use-shared-data";
 import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
 import LoadingText from "@/Components/Loading/Text";
+import { Transaction } from "@/models/Transaction";
 
 export function Row({ row, noAge }: { row: ITransaction; noAge?: boolean }) {
+    const transaction = Transaction.from(row);
+
     return (
         <tr className="text-sm font-semibold">
             <TableCell className="w-[60px]">
-                <ID transaction={row} />
+                <ID transaction={transaction} />
             </TableCell>
 
             {!noAge && (
@@ -30,19 +33,24 @@ export function Row({ row, noAge }: { row: ITransaction; noAge?: boolean }) {
             )}
 
             <TableCell>
-                <Method transaction={row} />
+                <Method transaction={transaction} />
             </TableCell>
 
             <TableCell>
-                <AddressingGeneric transaction={row} />
+                <AddressingGeneric transaction={transaction} />
             </TableCell>
 
             <TableCell className="text-right" lastOn="lg">
-                <Amount testId={`transaction:${row.hash}:amount`} transaction={row} breakpoint="lg" hideCurrency />
+                <Amount
+                    testId={`transaction:${transaction.hash}:amount`}
+                    transaction={transaction}
+                    breakpoint="lg"
+                    hideCurrency
+                />
             </TableCell>
 
             <TableCell className="text-right" breakpoint="lg" responsive>
-                <Fee transaction={row} hideCurrency />
+                <Fee transaction={transaction} hideCurrency />
             </TableCell>
         </tr>
     );
