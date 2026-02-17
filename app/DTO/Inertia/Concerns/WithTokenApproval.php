@@ -9,6 +9,7 @@ use App\Enums\ApproveArgument;
 use App\Facades\Wallets;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 trait WithTokenApproval
 {
@@ -41,8 +42,12 @@ trait WithTokenApproval
             }
         }
 
-        $spenderWallet     = Wallets::findByAddress($spender);
-        $spenderWalletData = WalletDTO::fromModel($spenderWallet);
+        try {
+            $spenderWallet     = Wallets::findByAddress($spender);
+            $spenderWalletData = WalletDTO::fromModel($spenderWallet);
+        } catch (ModelNotFoundException) {
+            $spenderWalletData = WalletDTO::stub($spender);
+        }
 
         return [
             'spender'            => $spender,

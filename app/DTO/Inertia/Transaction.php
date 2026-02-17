@@ -97,7 +97,11 @@ class Transaction extends Data
         if ($senderWallet === null) {
             $senderAddress = $viewModel->sender()?->address();
             if ($senderAddress !== null) {
-                $senderWallet = Wallets::findByAddress($senderAddress);
+                try {
+                    $senderWallet = Wallets::findByAddress($senderAddress);
+                } catch (ModelNotFoundException) {
+                    $sender = WalletDTO::stub($senderAddress);
+                }
             }
         }
 
