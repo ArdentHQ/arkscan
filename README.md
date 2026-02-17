@@ -15,7 +15,7 @@
 ### Requirements
 
 -   [Composer](https://getcomposer.org)
--   [Valet](https://laravel.com/docs/master/valet) or [Homestead](https://laravel.com/docs/master/homestead)
+-   [Valet](https://laravel.com/docs/12.x/valet) or [Homestead](https://laravel.com/docs/12.x/homestead)
 
 ### Websockets
 
@@ -30,9 +30,9 @@ You can read more about production instructions at our [Development Documentatio
 
 ### Laravel Boost
 
-The Laravel Boost dependency is already installed in this project. To take advantage of it, run `php artisan boost:install` and choose the relevant options for your local setup. Then simply [setup your agent](https://laravel.com/docs/master/boost#set-up-your-agents).
+The Laravel Boost dependency is already installed in this project. To take advantage of it, run `php artisan boost:install` and choose the relevant options for your local setup. Then simply [setup your agent](https://laravel.com/docs/12.x/boost#set-up-your-agents).
 
-Read the [documentation](https://laravel.com/docs/master/boost) directly for further information.
+Read the [documentation](https://laravel.com/docs/12.x/boost) directly for further information.
 
 ## Deployment
 
