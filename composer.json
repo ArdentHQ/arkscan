@@ -39,6 +39,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
         "furqansiddiqui/bip39-mnemonic-php": "^0.1",
+        "laravel/boost": "^2.1",
         "laravel/dusk": "^8.2",
         "phpdocumentor/reflection-docblock": "^5.4",
         "spatie/laravel-ignition": "^2.8",
@@ -95,6 +96,9 @@
             "@php artisan package:discover --ansi",
             "@php artisan vendor:publish --provider=\"ARKEcosystem\\Foundation\\Providers\\UserInterfaceServiceProvider\" --tag=\"pagination\" --force",
             "@php artisan horizon:publish --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan boost:update --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

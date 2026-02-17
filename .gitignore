@@ -23,3 +23,20 @@ TxtVoteReport.txt
 .env.dusk.*
 /.phpunit.cache
 /resources/lang/**/php_*.json
+
+# Ignore AI assistant data
+/.claude
+/.agents
+/.codex
+/.cursor
+/.gemini
+/.junie
+/.github/skills
+
+.mcp.json
+boost.json
+opencode.json
+
+AGENTS.md
+CLAUDE.md
+GEMINI.md
