@@ -90,8 +90,9 @@ class Transaction extends Data
             }
         }
 
-        $sender        = null;
-        $senderWallet  = $transaction->relationLoaded('sender') ? $transaction->sender : null;
+        $sender       = null;
+        $senderWallet = $transaction->relationLoaded('senderWallet') ? $transaction->senderWallet : null;
+        $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
 
         if ($senderWallet === null) {
             $senderAddress = $viewModel->sender()?->address();
@@ -109,6 +110,8 @@ class Transaction extends Data
         $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
         if ($recipientWallet !== null) {
             $recipient = WalletDTO::fromModel($recipientWallet);
+        } elseif ($transaction->relationLoaded('recipientWallet') && $transaction->to !== null) {
+            $recipient = WalletDTO::stub($transaction->to);
         } else {
             $recipientAddress = $viewModel->recipient()?->address();
 
