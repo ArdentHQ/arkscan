@@ -4,9 +4,8 @@ import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import { formatUnits, parseUnits, weiToArk } from "@/utils/UnitConverter";
-import AmountFiatTooltip from "@/Components/General/AmountFiatTooltip";
 import AmountSmall from "@/Components/General/AmountSmall";
-import { currency, formatCompact } from "@/utils/number-formatter";
+import { currency } from "@/utils/number-formatter";
 import { ITransaction } from "@/types/generated";
 
 export default function TransactionToken({
@@ -68,8 +67,6 @@ export default function TransactionToken({
     const rawAmount =
         tokenTransfer.amount !== null ? Number(formatUnits(parseUnits(tokenTransfer.amount, "wei"), "ark")) : null;
 
-    const compact = rawAmount !== null ? formatCompact(rawAmount) : null;
-
     return (
         <PageSection title={t("pages.transaction.tokens_transferred")}>
             <SectionDetailRow title={t("pages.transaction.header.to")} headerWidthClass={headerWidthClass}>
@@ -83,15 +80,9 @@ export default function TransactionToken({
                 />
             </SectionDetailRow>
 
-            {compact !== null && (
+            {rawAmount !== null && (
                 <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
-                    <span className="inline-flex items-center space-x-1">
-                        <AmountFiatTooltip amount={compact.value} suffix={compact.suffix} isSent hideCurrency />
-
-                        <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
-                            {tokenSymbol}
-                        </span>
-                    </span>
+                    <AmountSmall amount={rawAmount} currency={tokenSymbol} />
                 </SectionDetailRow>
             )}
 
