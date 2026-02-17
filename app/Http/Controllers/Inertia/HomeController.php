@@ -85,7 +85,7 @@ final class HomeController
     public function getTransactions(): LengthAwarePaginator
     {
         return Transaction::query()
-            ->with(['votedFor', 'sender', 'recipientWallet', 'multiPaymentRecipients'])
+            ->with(['votedFor', 'sender', 'senderWallet', 'recipientWallet', 'multiPaymentRecipients'])
             ->withScope(OrderByTimestampScope::class)
             ->paginate((int) config('arkscan.pagination.per_page'))
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
