@@ -15,7 +15,7 @@
 ### Requirements
 
 -   [Composer](https://getcomposer.org)
--   [Valet](https://laravel.com/docs/8.x/valet) or [Homestead](https://laravel.com/docs/8.x/homestead)
+-   [Valet](https://laravel.com/docs/master/valet) or [Homestead](https://laravel.com/docs/master/homestead)
 
 ### Websockets
 
@@ -27,6 +27,12 @@ Websockets and Webhooks are required in order for information to be updated with
 ## Development
 
 You can read more about production instructions at our [Development Documentation](https://arkscan.io/docs/setup/production).
+
+### Laravel Boost
+
+The Laravel Boost dependency is already installed in this project. To take advantage of it, run `php artisan boost:install` and choose the relevant options for your local setup. Then simply [setup your agent](https://laravel.com/docs/master/boost#set-up-your-agents).
+
+Read the [documentation](https://laravel.com/docs/master/boost) directly for further information.
 
 ## Deployment
 
