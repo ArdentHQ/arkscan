@@ -136,15 +136,15 @@ class Transaction extends Data
 
         $methodData = [
             'functionName' => null,
-            'methodId' => null,
-            'arguments' => null,
+            'methodId'     => null,
+            'arguments'    => null,
         ];
         $methodDataRaw = $transaction->getMethodData(true);
         if ($methodDataRaw !== null) {
             $methodData = [
                 'functionName' => $methodDataRaw[0] ?? null,
-                'methodId' => $methodDataRaw[1] ?? null,
-                'arguments' => $methodDataRaw[2] ?? null,
+                'methodId'     => $methodDataRaw[1] ?? null,
+                'arguments'    => $methodDataRaw[2] ?? null,
             ];
         } else {
             $methodData['methodId'] = $transaction->methodHash();
