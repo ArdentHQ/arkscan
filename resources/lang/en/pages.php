@@ -114,6 +114,8 @@ return [
         'other_attributes'            => 'Other Attributes',
         'input_data'                  => 'Input Data',
         'tokens_transferred'          => 'Tokens Transferred',
+        'multiple_count'              => 'Multiple (:count)',
+        'transfer_details'            => 'Transfer Details',
         'locked_amount_tooltip'       => 'Locked amount while the validator remains registered.',
         'unlocked_amount_tooltip'     => 'Amount returned by resigning validator.',
         'legacy_registration_tooltip' => 'This validator was registered without locking any funds.',

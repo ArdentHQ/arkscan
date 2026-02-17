@@ -196,6 +196,36 @@ final class TransactionFactory extends Factory
         return $this->withPayload($payload);
     }
 
+    /**
+     * @param array{string} $recipients
+     * @param array{BigNumber} $amounts
+     */
+    public function batchTransfer(string $tokenAddress, array $recipients, array $amounts): Factory
+    {
+        $payload  = ContractMethod::batchTransfer();
+        $payload .= str_pad(preg_replace('/^0x/', '', $tokenAddress), 64, '0', STR_PAD_LEFT);
+
+        // Encode offset for recipients array
+        $payload .= str_pad(dechex(96), 64, '0', STR_PAD_LEFT);
+        // Encode offset for amounts array
+        $count = count($recipients);
+        $payload .= str_pad(dechex(96 + 32 + $count * 32), 64, '0', STR_PAD_LEFT);
+
+        // Encode recipients array
+        $payload .= str_pad(dechex($count), 64, '0', STR_PAD_LEFT);
+        foreach ($recipients as $recipient) {
+            $payload .= str_pad(preg_replace('/^0x/', '', $recipient), 64, '0', STR_PAD_LEFT);
+        }
+
+        // Encode amounts array
+        $payload .= str_pad(dechex($count), 64, '0', STR_PAD_LEFT);
+        foreach ($amounts as $amount) {
+            $payload .= str_pad($amount->toHex(), 64, '0', STR_PAD_LEFT);
+        }
+
+        return $this->withPayload($payload);
+    }
+
     public function contractDeployment(): Factory
     {
         return $this->state(fn () => [

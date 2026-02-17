@@ -73,6 +73,11 @@ trait HasMethod
         return $this->method->isMultiPayment();
     }
 
+    public function isBatchTransfer(): bool
+    {
+        return $this->method->isBatchTransfer();
+    }
+
     public function isSelfReceiving(): bool
     {
         if ($this->isValidatorRegistration()) {
