@@ -19,7 +19,7 @@ export default function NotFound({ id, type }: { id: string; type: "transaction"
     }
 
     return (
-        <Layout>
+        <Layout className="px-6 mx:px-10 py-8">
             <div className="text-center">
                 <div className="mx-auto w-84">
                     <GenericErrorImage className="light-dark-icon h-full" />
