@@ -83,6 +83,8 @@ return [
                 'username_registration'  => env('ARKSCAN_CONTRACT_USERNAME_REGISTRATION_METHOD', '36a94134'),
                 'username_resignation'   => env('ARKSCAN_CONTRACT_USERNAME_RESIGNATION_METHOD', 'ebed6dab'),
                 'contract_deployment'    => env('ARKSCAN_CONTRACT_DEPLOYMENT_METHOD', '60806040'),
+                'approve'                => env('ARKSCAN_CONTRACT_APPROVE_METHOD', '095ea7b3'),
+                'batch_transfer'         => env('ARKSCAN_CONTRACT_BATCH_TRANSFER_METHOD', '4885b254')
             ],
         ],
     ],
