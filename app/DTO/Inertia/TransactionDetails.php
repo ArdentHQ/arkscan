@@ -11,11 +11,13 @@ use App\Facades\Wallets;
 use App\Models\MultiPayment;
 use App\Models\TokenTransfer as TokenTransferModel;
 use App\Models\Transaction as Model;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\ExchangeRate;
 use App\Services\Timestamp;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -41,6 +43,8 @@ class TransactionDetails extends Data
         public ?array $payload,
         #[LiteralTypeScriptType('{address: string; amount: string}[]')]
         public array $multiPaymentRecipients,
+        #[LiteralTypeScriptType('{recipient: string; amount: string; recipientUsername: string | null; recipientHasUsername: boolean}[]')]
+        public array $batchTokenTransfers,
         public string $totalFiat,
         public float $totalFiatValue,
     ) {
@@ -50,11 +54,19 @@ class TransactionDetails extends Data
     {
         $viewModel = new TransactionViewModel($transaction);
         $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
-
         $recipient = $viewModel->recipient();
         $token     = $recipient !== null ? (new WalletCache())->getToken($recipient->address()) : null;
         if ($token !== null) {
             $token = Token::fromModel($token);
+        } elseif ($viewModel->isBatchTransfer()) {
+            $tokenTransferRecords = TokenTransferModel::with('token')
+                ->where('transaction_hash', $transaction->hash)
+                ->get();
+
+            $firstRecord = $tokenTransferRecords->first();
+            if ($firstRecord?->token !== null) {
+                $token = Token::fromModel($firstRecord->token);
+            }
         } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove()) {
             $tokenTransferRecord = TokenTransferModel::with('token')
                 ->where('transaction_hash', $transaction->hash)
@@ -62,6 +74,29 @@ class TransactionDetails extends Data
 
             if ($tokenTransferRecord?->token !== null) {
                 $token = Token::fromModel($tokenTransferRecord->token);
+            }
+        }
+
+        $batchTokenTransfers = [];
+        if ($viewModel->isBatchTransfer() && isset($tokenTransferRecords)) {
+            $addresses = $tokenTransferRecords->pluck('to')->unique()->values()->all();
+
+            $wallets = Wallet::whereIn('address', $addresses)
+                ->get()
+                ->keyBy('address');
+
+            foreach ($tokenTransferRecords as $tf) {
+                $walletModel = $wallets->get($tf->to);
+                $wallet      = $walletModel !== null
+                    ? WalletDTO::fromModel($walletModel)
+                    : WalletDTO::stub($tf->to);
+
+                $batchTokenTransfers[] = [
+                    'recipient'            => $tf->to,
+                    'amount'               => (string) $tf->value,
+                    'recipientUsername'    => $wallet->username,
+                    'recipientHasUsername' => $wallet->hasUsername,
+                ];
             }
         }
 
@@ -77,6 +112,7 @@ class TransactionDetails extends Data
             token: $token,
             payload: self::payloadDetails($viewModel),
             multiPaymentRecipients: self::multiPaymentRecipients($viewModel),
+            batchTokenTransfers: $batchTokenTransfers,
             totalFiat: $viewModel->totalFiat(true),
             totalFiatValue: ExchangeRate::convertNumerical($viewModel->amountWithFee(), $transaction->timestamp),
         );
@@ -103,8 +139,11 @@ class TransactionDetails extends Data
             $amount = (new ArgumentDecoder($arguments[TokenTransferArgument::AMOUNT]))->decodeUnsignedInt();
         }
 
-        $recipientWallet     = Wallets::findByAddress($recipient);
-        $recipientWalletData = WalletDTO::fromModel($recipientWallet);
+        try {
+            $recipientWalletData = WalletDTO::fromModel(Wallets::findByAddress($recipient));
+        } catch (ModelNotFoundException) {
+            $recipientWalletData = WalletDTO::stub($recipient);
+        }
 
         return [
             'recipient'            => $recipient,

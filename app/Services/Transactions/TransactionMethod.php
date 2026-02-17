@@ -26,6 +26,7 @@ final class TransactionMethod
         'isUsernameRegistration'  => 'username-registration',
         'isUsernameResignation'   => 'username-resignation',
         'isApprove'               => 'approve',
+        'isBatchTransfer'         => 'batch-transfer',
         'isContractDeployment'    => 'contract-deployment',
     ];
 
@@ -119,6 +120,11 @@ final class TransactionMethod
     public function isApprove(): bool
     {
         return $this->methodHash === ContractMethod::approve();
+    }
+
+    public function isBatchTransfer(): bool
+    {
+        return $this->methodHash === ContractMethod::batchTransfer();
     }
 
     public function isContractDeployment(): bool

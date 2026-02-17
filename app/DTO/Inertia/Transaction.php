@@ -63,6 +63,7 @@ class Transaction extends Data
         public bool $isApprovalRevoke,
         public bool $isContractDeployment,
         public bool $isMultiPayment,
+        public bool $isBatchTransfer,
         public bool $isSelfReceiving,
         public bool $isSent,
         public bool $isSentToSelf,
@@ -90,13 +91,18 @@ class Transaction extends Data
             }
         }
 
-        $sender        = null;
-        $senderWallet  = $transaction->relationLoaded('sender') ? $transaction->sender : null;
+        $sender       = null;
+        $senderWallet = $transaction->relationLoaded('senderWallet') ? $transaction->senderWallet : null;
+        $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
 
         if ($senderWallet === null) {
             $senderAddress = $viewModel->sender()?->address();
             if ($senderAddress !== null) {
-                $senderWallet = Wallets::findByAddress($senderAddress);
+                try {
+                    $senderWallet = Wallets::findByAddress($senderAddress);
+                } catch (ModelNotFoundException) {
+                    $sender = WalletDTO::stub($senderAddress);
+                }
             }
         }
 
@@ -109,6 +115,8 @@ class Transaction extends Data
         $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
         if ($recipientWallet !== null) {
             $recipient = WalletDTO::fromModel($recipientWallet);
+        } elseif ($transaction->relationLoaded('recipientWallet') && $transaction->to !== null) {
+            $recipient = WalletDTO::stub($transaction->to);
         } else {
             $recipientAddress = $viewModel->recipient()?->address();
 
@@ -181,6 +189,7 @@ class Transaction extends Data
             isApprovalRevoke: $isApprovalRevoke,
             isContractDeployment: $viewModel->isContractDeployment(),
             isMultiPayment: $viewModel->isMultiPayment(),
+            isBatchTransfer: $viewModel->isBatchTransfer(),
             isSelfReceiving: $viewModel->isSelfReceiving(),
             isSent: $viewModel->isSent($address),
             isSentToSelf: $viewModel->isSentToSelf($address),

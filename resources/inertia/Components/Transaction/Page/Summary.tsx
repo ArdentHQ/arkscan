@@ -19,7 +19,8 @@ export default function TransactionSummary({
     const { t } = useTranslation();
     const { network, settings } = useSharedData();
 
-    const showAmountRow = transaction.isTransfer || transaction.isMultiPayment || transaction.isApprove;
+    const showAmountRow =
+        transaction.isTransfer || transaction.isMultiPayment || transaction.isApprove || transaction.isBatchTransfer;
     const showLockedAmount = transaction.isValidatorRegistration && transaction.amount > 0;
     const showUnlockedAmount = transaction.isValidatorResignation;
 

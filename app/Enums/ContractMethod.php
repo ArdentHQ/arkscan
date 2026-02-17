@@ -57,4 +57,9 @@ final class ContractMethod
     {
         return Network::contractMethod('approve', '095ea7b3');
     }
+
+    public static function batchTransfer(): string
+    {
+        return Network::contractMethod('batch_transfer', '4885b254');
+    }
 }

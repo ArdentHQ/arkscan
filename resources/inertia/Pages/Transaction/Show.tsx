@@ -11,10 +11,15 @@ import {
     TransactionStatus,
     TransactionRecipients,
     TransactionMoreDetails,
+    TransferDetails,
 } from "@/Components/Transaction/Page";
+import useSharedData from "@/hooks/use-shared-data";
 
 export default function Show({ transaction, details }: PageProps<TransactionShowProps>) {
     const headerWidthClass = details.recipientIsContract ? "sm:w-[151px]" : "sm:w-[132px]";
+    const { network } = useSharedData();
+
+    const tokenSymbol = details.token?.symbol ?? network?.currency ?? "";
 
     return (
         <Layout>
@@ -31,8 +36,8 @@ export default function Show({ transaction, details }: PageProps<TransactionShow
                     headerWidthClass={headerWidthClass}
                 />
 
-                {transaction.isTokenTransfer && details.tokenTransfer && (
-                    <TransactionToken details={details} headerWidthClass={headerWidthClass} />
+                {(transaction.isTokenTransfer || transaction.isBatchTransfer) && (
+                    <TransactionToken transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
                 )}
 
                 <TransactionSummary transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
@@ -41,6 +46,10 @@ export default function Show({ transaction, details }: PageProps<TransactionShow
 
                 {transaction.isMultiPayment && details.multiPaymentRecipients.length > 0 && (
                     <TransactionRecipients recipients={details.multiPaymentRecipients} />
+                )}
+
+                {transaction.isBatchTransfer && details.batchTokenTransfers.length > 0 && (
+                    <TransferDetails transfers={details.batchTokenTransfers} tokenSymbol={tokenSymbol} />
                 )}
             </div>
 

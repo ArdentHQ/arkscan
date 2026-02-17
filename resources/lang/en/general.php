@@ -138,6 +138,7 @@ return [
             'username-registration'  => 'Username Registration',
             'username-resignation'   => 'Username Resignation',
             'approve'                => 'Approve',
+            'batch-transfer'         => 'Batch Transfer',
             'contract-deployment'    => 'Contract Deployment',
             'revoke'                 => 'Revoke',
         ],
