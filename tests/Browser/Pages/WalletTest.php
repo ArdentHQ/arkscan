@@ -1251,6 +1251,55 @@ describe('Token Transfers Tab', function () {
         '8 after rounding' => [2.345678915, '2.34567892'],
     ]);
 
+    it('should correctly abbreviate large amounts', function (string $value, string $expected) {
+        $transfer = TokenTransfer::factory()->create([
+            'value' => $value,
+            'from'  => $this->wallet->address,
+            'to'    => $this->recipientWallet->address,
+        ]);
+
+        $this->browse(function (Browser $browser) use ($transfer, $expected) {
+            $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'token-transfers']);
+
+            foreach ($this->resolutions as $resolution) {
+                $browser->resize($resolution['width'], $resolution['height'])
+                    ->pause(100)
+                    ->waitForText('1 result', ignoreCase: true)
+                    ->assertSee(substr($transfer->transaction_hash, 0, 5));
+
+                $selector = '[data-testid="transaction:'.$transfer->transaction_hash.':amount"]';
+                if ($resolution['width'] <= 640) {
+                    $selector = '[data-testid="transaction:mobile:'.$transfer->transaction_hash.':amount"]';
+                }
+
+                $browser->assertSeeIn($selector, $expected);
+            }
+        });
+    })
+    ->with([
+        'K (Thousand)'            => ['15'.str_repeat('0', 20), '1.50K'],
+        'M (Million)'             => ['15'.str_repeat('0', 23), '1.50M'],
+        'B (Billion)'             => ['15'.str_repeat('0', 26), '1.50B'],
+        'T (Trillion)'            => ['15'.str_repeat('0', 29), '1.50T'],
+        'Qa (Quadrillion)'        => ['15'.str_repeat('0', 32), '1.50Qa'],
+        'Qi (Quintillion)'        => ['15'.str_repeat('0', 35), '1.50Qi'],
+        'Sx (Sextillion)'         => ['15'.str_repeat('0', 38), '1.50Sx'],
+        'Sp (Septillion)'         => ['15'.str_repeat('0', 41), '1.50Sp'],
+        'Oc (Octillion)'          => ['15'.str_repeat('0', 44), '1.50Oc'],
+        'No (Nonillion)'          => ['15'.str_repeat('0', 47), '1.50No'],
+        'D (Decillion)'           => ['15'.str_repeat('0', 50), '1.50D'],
+        'Ud (Undecillion)'        => ['15'.str_repeat('0', 53), '1.50Ud'],
+        'Dd (Duodecillion)'       => ['15'.str_repeat('0', 56), '1.50Dd'],
+        'Td (Tredecillion)'       => ['15'.str_repeat('0', 59), '1.50Td'],
+        'Qad (Quattuordecillion)' => ['15'.str_repeat('0', 62), '1.50Qad'],
+        'Qid (Quindecillion)'     => ['15'.str_repeat('0', 65), '1.50Qid'],
+        'Sxd (Sexdecillion)'      => ['15'.str_repeat('0', 68), '1.50Sxd'],
+        'Sd (Septendecillion)'    => ['15'.str_repeat('0', 71), '1.50Sd'],
+        'Od (Octodecillion)'      => ['15'.str_repeat('0', 74), '1.50Od'],
+        'Nd (Novemdecillion)'     => ['15'.str_repeat('0', 77), '1.50Nd'],
+        'Vg (Vigintillion)'       => ['15'.str_repeat('0', 80), '1.50Vg'],
+    ]);
+
     it('should go to page 2', function ($resolution) {
         TokenTransfer::factory(50)->create([
             'from' => $this->wallet->address,
@@ -1328,7 +1377,7 @@ describe('Tokens Tab', function () {
                     ->waitForText('5 results', ignoreCase: true);
 
                 foreach ($tokenHolders as $tokenHolder) {
-                    $browser->assertSee($tokenHolder->token->name)
+                    $browser->assertSee($tokenHolder->token->nameNormalized)
                         ->assertSee($tokenHolder->token->symbol)
                         ->assertSee(substr($tokenHolder->token_address, 0, 5).'…'.substr($tokenHolder->token_address, -5))
                         ->assertSee(number_format($tokenHolder->balance->toFloat(), 4));
@@ -1351,8 +1400,8 @@ describe('Tokens Tab', function () {
                     ->pause(100)
                     ->waitForText('1 result', ignoreCase: true);
 
-                $browser->assertSee($tokenHolder->token->name)
-                    ->assertSee($tokenHolder->token->symbol)
+                $browser->assertSee($tokenHolder->token->nameNormalized)
+                    ->assertSee($tokenHolder->token->symbolNormalized)
                     ->assertSee(substr($tokenHolder->token_address, 0, 5).'…'.substr($tokenHolder->token_address, -5));
 
                 $selector = '[data-testid="token:'.$tokenHolder->token->symbol.':amount"]';
@@ -1390,13 +1439,13 @@ describe('Tokens Tab', function () {
 
             $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'tokens'])
                 ->waitForText('50 results', ignoreCase: true)
-                ->assertSee($sortedTokens->first()->token->name)
-                ->assertSee($sortedTokens->take(25)->last()->token->name)
+                ->assertSee($sortedTokens->first()->token->nameNormalized)
+                ->assertSee($sortedTokens->take(25)->last()->token->nameNormalized)
                 ->click('[data-testid="pagination:next-page"] button')
                 ->waitForText('Page 2 of 2')
                 ->assertQueryStringHas('page', '2')
-                ->assertSee($sortedTokens->skip(25)->first()->token->name)
-                ->assertSee($sortedTokens->skip(25)->take(25)->last()->token->name);
+                ->assertSee($sortedTokens->skip(25)->first()->token->nameNormalized)
+                ->assertSee($sortedTokens->skip(25)->take(25)->last()->token->nameNormalized);
         });
     })->with('desktop_mobile_resolutions');
 
@@ -1416,15 +1465,15 @@ describe('Tokens Tab', function () {
             $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'tokens', 'page' => 2])
                 ->waitForText('50 results', ignoreCase: true)
                 ->assertSee('Page 2 of 2')
-                ->assertDontSee($sortedTokens->first()->token->name)
-                ->assertDontSee($sortedTokens->take(25)->last()->token->name)
+                ->assertDontSee($sortedTokens->first()->token->nameNormalized)
+                ->assertDontSee($sortedTokens->take(25)->last()->token->nameNormalized)
                 ->click('[data-testid="pagination:per-page-dropdown:button"]')
                 ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
                 ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//div[normalize-space(text())="10"]')
                 ->waitForText('Page 1 of 5')
-                ->assertSee($sortedTokens->first()->token->name)
-                ->assertSee($sortedTokens->take(10)->last()->token->name)
-                ->assertDontSee($sortedTokens->take(11)->last()->token->name);
+                ->assertSee($sortedTokens->first()->token->nameNormalized)
+                ->assertSee($sortedTokens->take(10)->last()->token->nameNormalized)
+                ->assertDontSee($sortedTokens->take(11)->last()->token->nameNormalized);
         });
     })->with('desktop_mobile_resolutions');
 });
