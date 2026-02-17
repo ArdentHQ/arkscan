@@ -44,7 +44,6 @@ function ApproveActionRow({
     let rowTitle = transaction.type;
     if (tokenApproval.isRevoke) {
         rowTitle = t("pages.transaction.approve.revoke");
-        amount = tokenSymbol;
     }
 
     return (
@@ -55,14 +54,23 @@ function ApproveActionRow({
         >
             <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1 sm:gap-y-1">
                 <div className="flex items-center gap-x-1">
-                    {isUnlimited ? (
-                        <span>
-                            {t("general.unlimited")} {tokenSymbol}
+                    {tokenApproval.isRevoke ? (
+                        <span className="whitespace-nowrap">
+                            {t("pages.transaction.approve.removed_permission_for")} {tokenSymbol}{" "}
+                            {t("pages.transaction.approve.use_by")}
                         </span>
                     ) : (
-                        amount !== null && <span>{amount}</span>
+                        <>
+                            {isUnlimited ? (
+                                <span>
+                                    {t("general.unlimited")} {tokenSymbol}
+                                </span>
+                            ) : (
+                                amount !== null && <span>{amount}</span>
+                            )}
+                            <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
+                        </>
                     )}
-                    <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
                 </div>
 
                 <div className="flex items-center gap-x-1">

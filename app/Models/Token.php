@@ -8,11 +8,14 @@ use App\Models\Casts\BigInteger;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 /**
  * @property string $address
  * @property string $symbol
  * @property string $name
+ * @property string $symbolNormalized
+ * @property string $nameNormalized
  * @property int $decimals
  * @property BigNumber $total_supply
  * @property string $deployment_hash
@@ -20,6 +23,10 @@ use Illuminate\Database\Eloquent\Model;
 final class Token extends Model
 {
     use HasFactory;
+
+    private const MAX_NAME_LENGTH = 20;
+
+    private const MAX_SYMBOL_LENGTH = 5;
 
     /**
      * Indicates if the model should be timestamped.
@@ -64,4 +71,33 @@ final class Token extends Model
     protected $casts = [
         'total_supply' => BigInteger::class,
     ];
+
+    public function getNameNormalizedAttribute(): string
+    {
+        return self::normalizeString($this->name, self::MAX_NAME_LENGTH);
+    }
+
+    public function getSymbolNormalizedAttribute(): string
+    {
+        return self::normalizeString($this->symbol, self::MAX_SYMBOL_LENGTH, '…');
+    }
+
+    private static function normalizeString(string $value, int $maxLength, ?string $suffix = null): string
+    {
+        if (strlen($value) <= $maxLength) {
+            return $value;
+        }
+
+        if (! Str::isAscii($value) && function_exists('mb_strimwidth')) {
+            $value = mb_strimwidth($value, 0, $maxLength, '', 'UTF-8');
+        } else {
+            $value = substr($value, 0, $maxLength);
+        }
+
+        if ($suffix !== null) {
+            return Str::trim($value).$suffix;
+        }
+
+        return Str::trim($value);
+    }
 }

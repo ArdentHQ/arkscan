@@ -168,6 +168,28 @@ it('should resolve token from token_transfer record for approve transaction', fu
     expect($details->token->symbol)->toBe($token->symbol);
 });
 
+it('should handle approve with unknown spender wallet', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $unknownSpender = '0x'.str_repeat('ab', 20);
+
+    $transaction = Transaction::factory()
+        ->approve($unknownSpender, BigNumber::new(5000))
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenApproval)->not->toBeNull();
+    expect(strtolower($details->tokenApproval['spender']))->toBe(strtolower($unknownSpender));
+    expect($details->tokenApproval['spenderHasUsername'])->toBeFalse();
+    expect($details->tokenApproval['spenderUsername'])->toBeNull();
+});
+
 it('should return null token approval for approve without valid arguments', function () {
     fakeCryptoCompare();
 

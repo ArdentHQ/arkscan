@@ -63,7 +63,7 @@ final class ShowBlockController
             ->transactions()
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
-            ->with(['votedFor', 'sender', 'recipientWallet'])
+            ->with(['votedFor', 'sender', 'senderWallet', 'recipientWallet'])
             ->forPage($this->page(), $this->perPage())
             ->get();
 

@@ -161,7 +161,7 @@ final class WalletController
     public function getTokenTransfers(Wallet $wallet): LengthAwarePaginator
     {
         return TokenTransfer::select('token_transfers.*')
-            ->with(['token', 'transaction.sender', 'transaction.recipientWallet'])
+            ->with(['token', 'transaction.sender', 'transaction.senderWallet', 'transaction.recipientWallet'])
             ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
             ->where('token_transfers.to', $wallet->address)
             ->orWhere('token_transfers.from', $wallet->address)
@@ -199,7 +199,7 @@ final class WalletController
 
         return Transaction::query()
             ->withTypeFilter($this->filters($this->view))
-            ->with(['votedFor', 'sender', 'recipientWallet'])
+            ->with(['votedFor', 'sender', 'senderWallet', 'recipientWallet'])
             ->where(function ($query) use ($wallet, $filters) {
                 $query->where(fn ($query) => $query->when($filters['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
                     ->when($filters['incoming'], function ($query) use ($wallet, $filters) {
