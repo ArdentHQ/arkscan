@@ -19,4 +19,4 @@ export class TokenTransfer {
     }
 }
 
-export interface TokenTransfer extends ITokenTransfer {};
+export interface TokenTransfer extends ITokenTransfer {}
