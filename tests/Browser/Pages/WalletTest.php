@@ -1377,8 +1377,12 @@ describe('Tokens Tab', function () {
                     ->waitForText('5 results', ignoreCase: true);
 
                 foreach ($tokenHolders as $tokenHolder) {
-                    $browser->assertSee($tokenHolder->token->nameNormalized)
-                        ->assertSee($tokenHolder->token->symbol)
+                    // Token name may be truncated by CSS on small viewports
+                    if ($resolution['width'] >= 768) {
+                        $browser->assertSee($tokenHolder->token->nameNormalized);
+                    }
+
+                    $browser->assertSee($tokenHolder->token->symbol)
                         ->assertSee(substr($tokenHolder->token_address, 0, 5).'…'.substr($tokenHolder->token_address, -5))
                         ->assertSee(number_format($tokenHolder->balance->toFloat(), 4));
                 }
@@ -1400,8 +1404,12 @@ describe('Tokens Tab', function () {
                     ->pause(100)
                     ->waitForText('1 result', ignoreCase: true);
 
-                $browser->assertSee($tokenHolder->token->nameNormalized)
-                    ->assertSee($tokenHolder->token->symbolNormalized)
+                // Token name may be truncated by CSS on small viewports
+                if ($resolution['width'] >= 768) {
+                    $browser->assertSee($tokenHolder->token->nameNormalized);
+                }
+
+                $browser->assertSee($tokenHolder->token->symbolNormalized)
                     ->assertSee(substr($tokenHolder->token_address, 0, 5).'…'.substr($tokenHolder->token_address, -5));
 
                 $selector = '[data-testid="token:'.$tokenHolder->token->symbol.':amount"]';
@@ -1439,13 +1447,13 @@ describe('Tokens Tab', function () {
 
             $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'tokens'])
                 ->waitForText('50 results', ignoreCase: true)
-                ->assertSee($sortedTokens->first()->token->nameNormalized)
-                ->assertSee($sortedTokens->take(25)->last()->token->nameNormalized)
+                ->assertSee($sortedTokens->first()->token->symbol)
+                ->assertSee($sortedTokens->take(25)->last()->token->symbol)
                 ->click('[data-testid="pagination:next-page"] button')
                 ->waitForText('Page 2 of 2')
                 ->assertQueryStringHas('page', '2')
-                ->assertSee($sortedTokens->skip(25)->first()->token->nameNormalized)
-                ->assertSee($sortedTokens->skip(25)->take(25)->last()->token->nameNormalized);
+                ->assertSee($sortedTokens->skip(25)->first()->token->symbol)
+                ->assertSee($sortedTokens->skip(25)->take(25)->last()->token->symbol);
         });
     })->with('desktop_mobile_resolutions');
 
@@ -1465,15 +1473,15 @@ describe('Tokens Tab', function () {
             $browser->visitRoute('wallet', ['wallet' => $this->wallet, 'view' => 'tokens', 'page' => 2])
                 ->waitForText('50 results', ignoreCase: true)
                 ->assertSee('Page 2 of 2')
-                ->assertDontSee($sortedTokens->first()->token->nameNormalized)
-                ->assertDontSee($sortedTokens->take(25)->last()->token->nameNormalized)
+                ->assertDontSee($sortedTokens->first()->token->symbol)
+                ->assertDontSee($sortedTokens->take(25)->last()->token->symbol)
                 ->click('[data-testid="pagination:per-page-dropdown:button"]')
                 ->waitForTextIn('[data-testid="pagination:per-page-dropdown:dropdown"]', '10')
                 ->clickAtXPath('//div[@data-testid="pagination:per-page-dropdown:dropdown"]//div[normalize-space(text())="10"]')
                 ->waitForText('Page 1 of 5')
-                ->assertSee($sortedTokens->first()->token->nameNormalized)
-                ->assertSee($sortedTokens->take(10)->last()->token->nameNormalized)
-                ->assertDontSee($sortedTokens->take(11)->last()->token->nameNormalized);
+                ->assertSee($sortedTokens->first()->token->symbol)
+                ->assertSee($sortedTokens->take(10)->last()->token->symbol)
+                ->assertDontSee($sortedTokens->take(11)->last()->token->symbol);
         });
     })->with('desktop_mobile_resolutions');
 });
