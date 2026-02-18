@@ -9,7 +9,8 @@ import Badge from "@/Components/General/Badge";
 import ContractIcon from "@ui/icons/transaction/contract.svg?react";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import useSharedData from "@/hooks/use-shared-data";
-import { weiToArk } from "@/utils/UnitConverter";
+import { formatUnits, parseUnits } from "@/utils/UnitConverter";
+import AmountSmall from "@/Components/General/AmountSmall";
 
 function ApproveActionRow({
     transaction,
@@ -39,7 +40,10 @@ function ApproveActionRow({
     const tokenSymbol = details.token?.symbol ?? network?.currency;
 
     const isUnlimited = tokenApproval.isUnlimited;
-    let amount = !isUnlimited && tokenApproval.amount !== null ? weiToArk(tokenApproval.amount, tokenSymbol) : null;
+    const rawAmount =
+        !isUnlimited && tokenApproval.amount !== null
+            ? Number(formatUnits(parseUnits(tokenApproval.amount, "wei"), "ark"))
+            : null;
 
     let rowTitle = transaction.type;
     if (tokenApproval.isRevoke) {
@@ -66,7 +70,11 @@ function ApproveActionRow({
                                     {t("general.unlimited")} {tokenSymbol}
                                 </span>
                             ) : (
-                                amount !== null && <span>{amount}</span>
+                                rawAmount !== null && (
+                                    <span>
+                                        <AmountSmall amount={rawAmount} currency={tokenSymbol} />
+                                    </span>
+                                )
                             )}
                             <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
                         </>
