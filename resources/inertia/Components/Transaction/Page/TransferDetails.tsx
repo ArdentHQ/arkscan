@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { PageSection } from "@/Components/PageSection";
 import AmountSmall from "@/Components/General/AmountSmall";
 import { weiToArk } from "@/utils/UnitConverter";
+import { formatCompact } from "@/utils/number-formatter";
 import TransactionAddress from "./Address";
 import TableHeader from "@/Components/Tables/Desktop/TableHeader";
 import TableCell from "@/Components/Tables/Desktop/TableCell";
@@ -50,12 +51,22 @@ export default function TransferDetails({
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <span className="inline-flex items-center space-x-1">
-                                            <AmountSmall amount={Number(weiToArk(transfer.amount))} hideCurrency />
-                                            <span className="whitespace-nowrap text-sm font-semibold text-theme-secondary-500 dark:text-theme-dark-300">
-                                                {tokenSymbol}
-                                            </span>
-                                        </span>
+                                        {(() => {
+                                            const { value, suffix } = formatCompact(Number(weiToArk(transfer.amount)));
+                                            return (
+                                                <span className="inline-flex items-center space-x-1">
+                                                    <AmountSmall
+                                                        amount={value}
+                                                        hideTooltip
+                                                        hideCurrency
+                                                        suffix={suffix}
+                                                    />
+                                                    <span className="whitespace-nowrap text-sm font-semibold text-theme-secondary-500 dark:text-theme-dark-300">
+                                                        {tokenSymbol}
+                                                    </span>
+                                                </span>
+                                            );
+                                        })()}
                                     </TableCell>
                                 </tr>
                             ))}

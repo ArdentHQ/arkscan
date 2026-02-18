@@ -10,6 +10,8 @@ import ContractIcon from "@ui/icons/transaction/contract.svg?react";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import useSharedData from "@/hooks/use-shared-data";
 import { weiToArk } from "@/utils/UnitConverter";
+import AmountSmall from "@/Components/General/AmountSmall";
+import { formatCompact } from "@/utils/number-formatter";
 
 function ApproveActionRow({
     transaction,
@@ -39,7 +41,9 @@ function ApproveActionRow({
     const tokenSymbol = details.token?.symbol ?? network?.currency;
 
     const isUnlimited = tokenApproval.isUnlimited;
-    let amount = !isUnlimited && tokenApproval.amount !== null ? weiToArk(tokenApproval.amount, tokenSymbol) : null;
+    const rawAmount = !isUnlimited && tokenApproval.amount !== null ? Number(weiToArk(tokenApproval.amount)) : null;
+    const { value: compactAmount, suffix: compactSuffix } =
+        rawAmount !== null ? formatCompact(rawAmount) : { value: 0, suffix: undefined };
 
     let rowTitle = transaction.type;
     if (tokenApproval.isRevoke) {
@@ -66,7 +70,17 @@ function ApproveActionRow({
                                     {t("general.unlimited")} {tokenSymbol}
                                 </span>
                             ) : (
-                                amount !== null && <span>{amount}</span>
+                                rawAmount !== null && (
+                                    <span className="inline-flex items-center space-x-1">
+                                        <AmountSmall
+                                            amount={compactAmount}
+                                            hideTooltip
+                                            hideCurrency
+                                            suffix={compactSuffix}
+                                        />
+                                        <span>{tokenSymbol}</span>
+                                    </span>
+                                )
                             )}
                             <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
                         </>
