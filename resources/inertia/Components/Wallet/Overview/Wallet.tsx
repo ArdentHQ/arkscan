@@ -50,7 +50,7 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                         <span>
                             {wallet.tokenHoldingsCount} {t("pages.wallet.tokens")}
                         </span>
-                        <button type="button" className="link text-sm font-semibold" onClick={() => select("tokens")}>
+                        <button type="button" className="link font-semibold" onClick={() => select("tokens")}>
                             {t("general.view")}
                         </button>
                     </span>
