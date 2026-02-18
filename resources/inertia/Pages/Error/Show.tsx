@@ -34,7 +34,7 @@ export default function ErrorShow({ error, status }: { error?: string; status: n
     }
 
     return (
-        <Layout>
+        <Layout className="mx:px-10 px-6 py-8">
             <div className="text-center">
                 <div className="mx-auto max-w-error-image">
                     {createElement(image, { className: "light-dark-icon h-full w-full" })}
