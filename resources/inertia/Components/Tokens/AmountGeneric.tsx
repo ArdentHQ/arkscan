@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import AmountSmall from "../General/AmountSmall";
 import { formatCompact, networkCurrency } from "@/utils/number-formatter";
-import Tooltip from "../General/Tooltip";
+import Tooltip from "@/Components/General/Tooltip";
 
 export default function AmountGeneric({
     amount,
