@@ -65,7 +65,7 @@ export default function Amount({
                 {!wallet && (
                     <>
                         {isCompact ? (
-                            <Tooltip content={fullFormatted}>
+                            <Tooltip content={fullFormatted} className="inline">
                                 <span className="text-theme-secondary-900 dark:text-theme-dark-50">
                                     <AmountSmall amount={value} hideTooltip hideCurrency={true} suffix={suffix} />
                                 </span>
