@@ -88,7 +88,7 @@ class Wallet extends Data
         );
     }
 
-    public static function fromModel(Model $wallet, bool $isVote = false): self
+    public static function fromModel(Model $wallet, bool $isVote = false, bool $withTokenHoldings = false): self
     {
         $viewModel   = new WalletViewModel($wallet);
         $votedWallet = null;
@@ -131,7 +131,7 @@ class Wallet extends Data
             formattedBalanceFullWithoutSuffix: ExplorerNumberFormatter::currencyWithoutSuffix($viewModel->balance(), Network::currency()),
             fiatValue: ExchangeRate::convert($wallet->balance, null),
             totalForged: (string) $viewModel->totalForged(),
-            tokenHoldingsCount: $isVote ? 0 : TokenHolder::where('address', $wallet->address)->count(),
+            tokenHoldingsCount: $withTokenHoldings ? TokenHolder::where('address', $wallet->address)->count() : 0,
             vote: $votedWallet,
             voteUrl: $voteUrl,
             votePercentage: $viewModel->votePercentage(),

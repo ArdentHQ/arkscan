@@ -56,7 +56,7 @@ final class WalletController
         $this->view = $view;
 
         return Inertia::renderWithMeta('Wallet/Wallet', 'wallet', [
-            'wallet'       => WalletDTO::fromModel($wallet),
+            'wallet'       => WalletDTO::fromModel($wallet, withTokenHoldings: true),
             'filters'      => self::FILTERS,
             'baseUrl'      => route('wallet', $wallet->address, false),
 
