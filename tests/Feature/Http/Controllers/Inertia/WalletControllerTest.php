@@ -912,6 +912,34 @@ it('should show no transactions if no addressing filter', function () {
     );
 });
 
+it('should show no outgoing transactions when wallet has no public key', function () {
+    $wallet = Wallet::factory()->create(['public_key' => null]);
+
+    Transaction::factory()->transfer()->create([
+        'to' => $wallet->address,
+    ]);
+
+    performWalletRequest(
+        $this,
+        wallet: $wallet,
+        queryString: [
+            'outgoing'            => 'true',
+            'incoming'            => 'false',
+            'transfers'           => 'true',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
+            'contract_deployment' => 'false',
+            'others'              => 'false',
+        ],
+        reloadCallback: function (Assert $reload) {
+            $reload->has('transactions.data', 0)
+                ->where('transactions.total', 0);
+        },
+    );
+});
+
 it('should show no transactions if no type filter', function () {
     Transaction::factory()->transfer()->create([
         'sender_public_key' => $this->subject->public_key,
