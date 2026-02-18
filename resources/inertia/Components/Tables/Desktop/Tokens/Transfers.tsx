@@ -34,7 +34,12 @@ export function Row({ row }: { row: ITokenTransfer }) {
             </TableCell>
 
             <TableCell className="text-right" lastOn="lg">
-                <Amount testId={`transaction:${row.transaction_hash}:amount`} tokenTransfer={row} breakpoint="lg" />
+                <Amount
+                    testId={`transaction:${row.transaction_hash}:amount`}
+                    tokenTransfer={row}
+                    breakpoint="lg"
+                    hideCurrency
+                />
             </TableCell>
 
             <TableCell breakpoint="xl" responsive>

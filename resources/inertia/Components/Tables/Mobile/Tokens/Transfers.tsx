@@ -48,6 +48,7 @@ export function TransfersMobileTable({
                         <Amount
                             testId={`transaction:mobile:${transfer.transaction!.hash}:amount`}
                             tokenTransfer={transfer}
+                            hideCurrency
                         />
                     </TableCell>
 
