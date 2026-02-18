@@ -60,12 +60,7 @@ export default function Amount({
                 {!wallet && (
                     <>
                         <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                            <AmountSmall
-                                amount={tokenTransfer.amount}
-                                hideTooltip
-                                hideCurrency={true}
-                                suffix={suffix}
-                            />
+                            <AmountSmall amount={value} hideTooltip hideCurrency={true} suffix={suffix} />
                         </span>
 
                         {!hideCurrency && <span>{tokenTransfer.token.symbol}</span>}
