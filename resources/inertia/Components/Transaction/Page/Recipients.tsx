@@ -3,6 +3,7 @@ import { PageSection } from "@/Components/PageSection";
 import AmountSmall from "@/Components/General/AmountSmall";
 import { TransactionRecipient } from "@/Pages/Transaction.contracts";
 import { weiToArk } from "@/utils/UnitConverter";
+import { formatCompact } from "@/utils/number-formatter";
 import TransactionAddress from "./Address";
 import TableHeader from "@/Components/Tables/Desktop/TableHeader";
 import TableCell from "@/Components/Tables/Desktop/TableCell";
@@ -31,7 +32,10 @@ export default function TransactionRecipients({ recipients }: { recipients: Tran
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <AmountSmall amount={Number(weiToArk(recipient.amount))} />
+                                        {(() => {
+                                            const { value, suffix } = formatCompact(Number(weiToArk(recipient.amount)));
+                                            return <AmountSmall amount={value} hideTooltip suffix={suffix} />;
+                                        })()}
                                     </TableCell>
                                 </tr>
                             ))}
