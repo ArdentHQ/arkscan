@@ -7,10 +7,11 @@ import Address from "../Address";
 import FiatValue from "@/Components/General/FiatValue";
 import Tooltip from "@/Components/General/Tooltip";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
+import { WalletProps } from "@/Pages/Wallet.contracts";
 
 export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
-    const { network } = useSharedData();
+    const { network, tokenHoldingsCount } = useSharedData<WalletProps>();
     const { select } = useTabs();
 
     const showTooltip = wallet.formattedBalanceTwoDecimals !== wallet.formattedBalanceFull;
@@ -48,7 +49,7 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                 value={
                     <span className="inline-flex items-center space-x-2">
                         <span>
-                            {wallet.tokenHoldingsCount} {t("pages.wallet.tokens")}
+                            {tokenHoldingsCount} {t("pages.wallet.tokens")}
                         </span>
                         <button type="button" className="link font-semibold" onClick={() => select("tokens")}>
                             {t("general.view")}

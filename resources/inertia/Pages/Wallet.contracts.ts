@@ -8,6 +8,7 @@ export interface WalletProps {
     blocks?: IPaginatedResponse<IBlock>;
     voters?: IPaginatedResponse<IWallet>;
     wallet: IWallet;
+    tokenHoldingsCount: number;
     rates: Record<string, number>;
     filters: ITabbedData<IFilters>;
     baseUrl: string;

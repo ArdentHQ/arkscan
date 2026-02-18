@@ -56,9 +56,10 @@ final class WalletController
         $this->view = $view;
 
         return Inertia::renderWithMeta('Wallet/Wallet', 'wallet', [
-            'wallet'       => WalletDTO::fromModel($wallet, withTokenHoldings: true),
-            'filters'      => self::FILTERS,
-            'baseUrl'      => route('wallet', $wallet->address, false),
+            'wallet'             => WalletDTO::fromModel($wallet),
+            'filters'            => self::FILTERS,
+            'tokenHoldingsCount' => TokenHolder::where('address', $wallet->address)->count(),
+            'baseUrl'            => route('wallet', $wallet->address, false),
 
             'transactions' => Inertia::optional(function () use ($wallet) {
                 $paginator = $this->getTransactions($wallet);
