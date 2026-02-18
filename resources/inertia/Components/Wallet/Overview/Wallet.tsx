@@ -6,10 +6,12 @@ import useSharedData from "@/hooks/use-shared-data";
 import Address from "../Address";
 import FiatValue from "@/Components/General/FiatValue";
 import Tooltip from "@/Components/General/Tooltip";
+import { useTabs } from "@/Providers/Tabs/TabsContext";
 
 export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
+    const { select } = useTabs();
 
     const showTooltip = wallet.formattedBalanceTwoDecimals !== wallet.formattedBalanceFull;
 
@@ -39,6 +41,20 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
             <WalletOverviewItemEntry
                 title={t("pages.wallet.value")}
                 value={network!.canBeExchanged ? <FiatValue value={wallet.fiatValue} /> : null}
+            />
+
+            <WalletOverviewItemEntry
+                title={t("pages.wallet.token_holdings")}
+                value={
+                    <span className="inline-flex items-center space-x-2">
+                        <span>
+                            {wallet.tokenHoldingsCount} {t("pages.wallet.tokens")}
+                        </span>
+                        <button type="button" className="link text-sm font-semibold" onClick={() => select("tokens")}>
+                            {t("general.view")}
+                        </button>
+                    </span>
+                }
             />
 
             <WalletOverviewItemEntry

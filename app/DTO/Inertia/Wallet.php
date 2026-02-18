@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\Facades\Network;
+use App\Models\TokenHolder;
 use App\Models\Wallet as Model;
 use App\Services\ExchangeRate;
 use App\Services\NumberFormatter as ExplorerNumberFormatter;
@@ -45,6 +46,7 @@ class Wallet extends Data
         // TODO: Consider using another data object for the attributes
         #[LiteralTypeScriptType('Record<string, any>')]
         public ?array $attributes,
+        public int $tokenHoldingsCount,
         public ?self $vote,
         public ?string $voteUrl,
         public ?float $votePercentage,
@@ -79,6 +81,7 @@ class Wallet extends Data
             formattedBalanceFullWithoutSuffix: '0',
             fiatValue: ExchangeRate::convert(0, null),
             totalForged: '0',
+            tokenHoldingsCount: 0,
             vote: null,
             voteUrl: null,
             votePercentage: null,
@@ -128,6 +131,7 @@ class Wallet extends Data
             formattedBalanceFullWithoutSuffix: ExplorerNumberFormatter::currencyWithoutSuffix($viewModel->balance(), Network::currency()),
             fiatValue: ExchangeRate::convert($wallet->balance, null),
             totalForged: (string) $viewModel->totalForged(),
+            tokenHoldingsCount: $isVote ? 0 : TokenHolder::where('address', $wallet->address)->count(),
             vote: $votedWallet,
             voteUrl: $voteUrl,
             votePercentage: $viewModel->votePercentage(),

@@ -328,6 +328,7 @@ export type IWallet = {
     fiatValue: string;
     totalForged: string;
     attributes: Record<string, any>;
+    tokenHoldingsCount: number;
     vote: IWallet | null;
     voteUrl: string | null;
     votePercentage: number | null;
