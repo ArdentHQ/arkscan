@@ -38,15 +38,15 @@ export class Transaction {
     }
 
     isSentToSelf(address: string): boolean {
-        if (! this.method.isTransfer && ! this.method.isTokenTransfer) {
+        if (!this.method.isTransfer && !this.method.isTokenTransfer) {
             return false;
         }
 
-        if (! this.isSent(address)) {
+        if (!this.isSent(address)) {
             return false;
         }
 
-        if (! this.method.isMultiPayment && address !== this.to) {
+        if (!this.method.isMultiPayment && address !== this.to) {
             return false;
         }
 
@@ -54,8 +54,8 @@ export class Transaction {
     }
 
     get amount(): number {
-        if (! this.method.isMultiPayment) {
-            return UnitConverter.formatUnits(this.value, 'ark');
+        if (!this.method.isMultiPayment) {
+            return UnitConverter.formatUnits(this.value, "ark");
         }
 
         let amount = new BigNumber(0);
@@ -67,7 +67,7 @@ export class Transaction {
     }
 
     get amountForItself(): number {
-        if (! this.method.isMultiPayment) {
+        if (!this.method.isMultiPayment) {
             return 0;
         }
 
@@ -85,7 +85,7 @@ export class Transaction {
     }
 
     get amountExcludingItself(): number {
-        if (! this.method.isMultiPayment) {
+        if (!this.method.isMultiPayment) {
             return 0;
         }
 
@@ -107,7 +107,7 @@ export class Transaction {
     }
 
     amountReceived(address?: string): number {
-        if (! this.method.isMultiPayment || ! address) {
+        if (!this.method.isMultiPayment || !address) {
             return this.amount;
         }
 
@@ -124,10 +124,9 @@ export class Transaction {
     }
 
     get fee(): number {
-        const gasPrice = new BigNumber(this.gas_price)
-            .multipliedBy(this.gas_used);
+        const gasPrice = new BigNumber(this.gas_price).multipliedBy(this.gas_used);
 
-        return UnitConverter.formatUnits(gasPrice.toString(), 'ark');
+        return UnitConverter.formatUnits(gasPrice.toString(), "ark");
     }
 }
 
