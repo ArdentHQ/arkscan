@@ -13,7 +13,6 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
 import Amount from "@/Components/Tokens/Amount";
 import TruncatedValue from "@/Components/Tokens/TruncatedValue";
-import { Transaction } from "@/models/Transaction";
 import { TokenTransfer } from "@/models/TokenTransfer";
 
 export function Row({ row }: { row: ITokenTransfer }) {

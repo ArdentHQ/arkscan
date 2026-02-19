@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import AmountSmall from "./AmountSmall";
 import Tooltip from "./Tooltip";
 import useSharedData from "@/hooks/use-shared-data";
+import { Transaction } from "@/models/Transaction";
 
 function AmountOutput({
     transaction,
@@ -60,7 +61,7 @@ export default function AmountFiatTooltip({
     hideCurrency = false,
     suffix,
 }: {
-    transaction?: ITransaction;
+    transaction?: Transaction;
     isSent?: boolean;
     isReceived?: boolean;
     isSentToSelf?: boolean;
@@ -96,14 +97,13 @@ export default function AmountFiatTooltip({
             }
         }
 
-        if ((transaction && transaction.isSentToSelf) || isSentToSelf) {
+        if (isSentToSelf) {
             classes.push(
                 "fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent",
                 "dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200 encapsulated-badge",
             );
 
             sent = false;
-            isSentToSelf = true;
         } else {
             if (sent) {
                 classes.push(

@@ -15,10 +15,11 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Wallet/Transactions";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import { Transaction } from "@/models/Transaction";
+import { WalletProps } from "@/Pages/Wallet.contracts";
 
 export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
     const { t } = useTranslation();
-    const { network } = useSharedData();
+    const { network, wallet } = useSharedData<WalletProps>();
 
     return (
         <MobileTable noResultsMessage={transactions.noResultsMessage} resultCount={transactions.total ?? 0}>
@@ -37,7 +38,11 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                         }
                     >
                         <TableCell label={transaction.method.name} className="sm:flex-1">
-                            <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} forWallet />
+                            <Addressing
+                                transaction={transaction}
+                                withoutLink={transaction.isSentToSelf(wallet.address)}
+                                wallet={wallet}
+                            />
                         </TableCell>
 
                         <TableCell
@@ -49,7 +54,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                                 testId={`transaction:mobile:${transaction.hash}:amount`}
                                 transaction={transaction}
                                 hideCurrency={true}
-                                forWallet
+                                wallet={wallet}
                             />
                         </TableCell>
 

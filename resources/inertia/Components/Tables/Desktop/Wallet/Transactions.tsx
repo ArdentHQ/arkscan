@@ -23,6 +23,8 @@ import { Transaction } from "@/models/Transaction";
 export function Row({ row }: { row: ITransaction }) {
     const transaction = Transaction.from(row);
 
+    const { wallet } = useSharedData<WalletProps>();
+
     return (
         <tr className="text-sm font-semibold">
             <TableCell className="w-[60px]">
@@ -38,7 +40,11 @@ export function Row({ row }: { row: ITransaction }) {
             </TableCell>
 
             <TableCell>
-                <Addressing transaction={transaction} withoutLink={transaction.isSentToSelf} forWallet />
+                <Addressing
+                    transaction={transaction}
+                    withoutLink={transaction.isSentToSelf(wallet.address)}
+                    wallet={wallet}
+                />
             </TableCell>
 
             <TableCell className="text-right" lastOn="md-lg">
@@ -46,7 +52,7 @@ export function Row({ row }: { row: ITransaction }) {
                     testId={`transaction:${transaction.hash}:amount`}
                     transaction={transaction}
                     hideCurrency
-                    forWallet
+                    wallet={wallet}
                 />
             </TableCell>
 

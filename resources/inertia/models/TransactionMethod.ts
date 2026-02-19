@@ -132,4 +132,28 @@ export class TransactionMethod {
     get isContractDeployment(): boolean {
         return this.transaction.to === null;
     }
+
+    get isSelfReceiving(): boolean {
+        if (this.isValidatorRegistration) {
+            return true;
+        }
+
+        if (this.isValidatorResignation) {
+            return true;
+        }
+
+        if (this.isValidatorUpdate) {
+            return true;
+        }
+
+        if (this.isVote) {
+            return true;
+        }
+
+        if (this.isUnvote) {
+            return true;
+        }
+
+        return false;
+    }
 }

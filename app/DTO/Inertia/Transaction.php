@@ -7,6 +7,7 @@ namespace App\DTO\Inertia;
 use App\DTO\Inertia\Concerns\WithTokenApproval;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Facades\Wallets;
+use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
 use App\ViewModels\TransactionViewModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,16 +38,10 @@ class Transaction extends Data
         public string $gas_refunded,
         public ?string $deployed_contract_address,
         public ?string $decoded_error,
-        #[LiteralTypeScriptType('string[]')]
-        public array $multi_payment_recipients,
-        public float $amount,
-        public float $amountForItself,
-        public float $amountExcludingItself,
-        public float $amountWithFee,
-        public float $amountReceived,
+        #[LiteralTypeScriptType('{address: string; amount: string}[]')]
+        public array $multiPaymentRecipients,
         public int | string $amountFiat,
         public int | string $amountReceivedFiat,
-        public float $fee,
         public int | string $feeFiat,
         public string $url,
         #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: Record<string, string> }')]
@@ -60,10 +55,6 @@ class Transaction extends Data
             spenderHasUsername: boolean;
         } | null')]
         public ?array $tokenApprovalDetails,
-        public bool $isSelfReceiving,
-        public bool $isSent,
-        public bool $isSentToSelf,
-        public bool $isReceived,
         public ?self $validatorRegistration,
         public ?string $votedFor,
         public ?string $votedForUsername,
@@ -93,14 +84,10 @@ class Transaction extends Data
         $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
 
         if ($senderWallet === null) {
-            $senderAddress = $transaction->from;
-
-            if ($senderAddress !== null) {
-                try {
-                    $senderWallet = Wallets::findByAddress($senderAddress);
-                } catch (ModelNotFoundException) {
-                    $sender = WalletDTO::stub($senderAddress);
-                }
+            try {
+                $senderWallet = Wallets::findByAddress($transaction->from);
+            } catch (ModelNotFoundException) {
+                $sender = WalletDTO::stub($transaction->from);
             }
         }
 
@@ -118,13 +105,11 @@ class Transaction extends Data
         } else {
             $recipientAddress = $transaction->recipientAddress();
 
-            if ($recipientAddress !== null) {
-                try {
-                    $recipientWallet = Wallets::findByAddress($recipientAddress);
-                    $recipient       = WalletDTO::fromModel($recipientWallet);
-                } catch (ModelNotFoundException) {
-                    $recipient = WalletDTO::stub($recipientAddress);
-                }
+            try {
+                $recipientWallet = Wallets::findByAddress($recipientAddress);
+                $recipient       = WalletDTO::fromModel($recipientWallet);
+            } catch (ModelNotFoundException) {
+                $recipient = WalletDTO::stub($recipientAddress);
             }
         }
 
@@ -168,28 +153,32 @@ class Transaction extends Data
             gas_refunded: (string) $transaction->gas_refunded,
             deployed_contract_address: $transaction->deployed_contract_address,
             decoded_error: $transaction->decoded_error,
-            multi_payment_recipients: $transaction->multi_payment_recipients,
-            amount: $viewModel->amount(),
-            amountForItself: $viewModel->amountForItself(),
-            amountExcludingItself: $viewModel->amountExcludingItself(),
-            amountWithFee: $viewModel->amountWithFee(),
-            amountReceived: $viewModel->amountReceived($address),
+            multiPaymentRecipients: self::multiPaymentRecipients($transaction),
             amountFiat: $viewModel->amountFiat(true),
             amountReceivedFiat: $viewModel->amountReceivedFiat($address),
-            fee: $viewModel->fee(),
             feeFiat: $viewModel->feeFiat(true),
             url: route('transaction', $transaction->hash),
             methodData: $methodData,
             tokenApprovalDetails: static::tokenApprovalDetails($viewModel),
-            isSelfReceiving: $viewModel->isSelfReceiving(),
-            isSent: $viewModel->isSent($address),
-            isSentToSelf: $viewModel->isSentToSelf($address),
-            isReceived: $viewModel->isReceived($address),
             validatorRegistration: $validatorRegistration,
             votedFor: $votedFor,
             votedForUsername: $votedForUsername,
             sender: $sender,
             recipient: $recipient,
         );
+    }
+
+    /**
+     * @return array<int, array{address: string, amount: string}>
+     */
+    private static function multiPaymentRecipients(Model $transaction): array
+    {
+        return $transaction->multiPaymentRecipients
+            ->map(fn (MultiPayment $recipient) => [
+                'address' => $recipient->to,
+                'amount'  => (string) $recipient->amount,
+            ])
+            ->values()
+            ->toArray();
     }
 }

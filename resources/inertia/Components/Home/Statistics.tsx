@@ -77,7 +77,7 @@ function MobileGasTooltip({ statistics }: { statistics: IHomeStatistics }) {
     return (
         <div className="w-[196px] space-y-2 font-semibold">
             {["low", "average", "high"].map((level) => (
-                <div className="flex items-center justify-between">
+                <div key={level} className="flex items-center justify-between">
                     <div className="flex space-x-1">
                         <span>{t(`pages.home.statistics.gas-levels.${level}`)}:</span>
                         <span className="text-theme-secondary-700 dark:text-theme-dark-200">

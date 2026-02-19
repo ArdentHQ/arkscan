@@ -219,15 +219,9 @@ export type ITransaction = {
     gas_refunded: string;
     deployed_contract_address: string | null;
     decoded_error: string | null;
-    multi_payment_recipients: string[];
-    amount: number;
-    amountForItself: number;
-    amountExcludingItself: number;
-    amountWithFee: number;
-    amountReceived: number;
+    multiPaymentRecipients: { address: string; amount: string }[];
     amountFiat: string | number;
     amountReceivedFiat: string | number;
-    fee: number;
     feeFiat: string | number;
     url: string;
     methodData: { functionName: string | null; methodId: string | null; arguments: Record<string, string> };
@@ -239,10 +233,6 @@ export type ITransaction = {
         spenderUsername: string | null;
         spenderHasUsername: boolean;
     } | null;
-    isSelfReceiving: boolean;
-    isSent: boolean;
-    isSentToSelf: boolean;
-    isReceived: boolean;
     validatorRegistration: ITransaction | null;
     votedFor: string | null;
     votedForUsername: string | null;
@@ -272,7 +262,6 @@ export type ITransactionDetails = {
     } | null;
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
-    multiPaymentRecipients: { address: string; amount: string }[];
     batchTokenTransfers: {
         recipient: string;
         amount: string;

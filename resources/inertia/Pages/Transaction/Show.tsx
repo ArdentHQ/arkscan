@@ -46,8 +46,8 @@ export default function Show({ transaction: transactionData, details }: PageProp
 
                 <TransactionStatus transaction={transaction} details={details} />
 
-                {transaction.method.isMultiPayment && details.multiPaymentRecipients.length > 0 && (
-                    <TransactionRecipients recipients={details.multiPaymentRecipients} />
+                {transaction.method.isMultiPayment && transaction.multiPaymentRecipients.length > 0 && (
+                    <TransactionRecipients recipients={transaction.multiPaymentRecipients} />
                 )}
 
                 {transaction.method.isBatchTransfer && details.batchTokenTransfers.length > 0 && (
