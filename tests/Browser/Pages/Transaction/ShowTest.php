@@ -379,7 +379,7 @@ it('should show token transfer symbol', function () {
 
     Token::factory()->create([
         'address' => $transaction->to,
-        'symbol'  => 'TESTINGSYMBOL',
+        'symbol'  => 'TST',
     ]);
 
     (new CacheTokens())->handle();
@@ -423,7 +423,7 @@ it('should show token transfer symbol', function () {
                     'To',
                     $recipientAddress,
                     'Amount',
-                    '1,234.56 TESTI…',
+                    '1,234.56 TST',
                     'Transaction Summary',
                     'Fee',
                     '0.000021 DARK',
@@ -456,7 +456,7 @@ it('should not show recipient username for "to" address', function () {
 
     $token = Token::factory()->create([
         'address' => $transaction->to,
-        'symbol'  => 'TESTINGSYMBOL',
+        'symbol'  => 'TST',
     ]);
 
     TokenTransfer::factory()->create([
@@ -499,7 +499,7 @@ it('should not show recipient username for "to" address', function () {
                     'To',
                     $recipientWallet->attributes['username'],
                     'Amount',
-                    '1,234.56 TESTI…',
+                    '1,234.56 TST',
                     'Transaction Summary',
                     'Fee',
                     '0.000021 DARK',

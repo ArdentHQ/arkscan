@@ -13,7 +13,6 @@ use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
-use App\Models\Scopes\HasTokenTransferRecipientScope;
 use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
@@ -56,8 +55,8 @@ final class WalletController
         $this->view = $view;
 
         return Inertia::renderWithMeta('Wallet/Wallet', 'wallet', [
-            'wallet'       => WalletDTO::fromModel($wallet),
-            'filters'      => self::FILTERS,
+            'wallet'       => fn () => WalletDTO::fromModel($wallet),
+            'filters'      => fn () => self::FILTERS,
             'baseUrl'      => route('wallet', $wallet->address, false),
 
             'transactions' => Inertia::optional(function () use ($wallet) {
@@ -197,25 +196,50 @@ final class WalletController
     {
         $filters = $this->filters($this->view);
 
+        // Each address condition as a separate SELECT hash query so PostgreSQL
+        // can use individual indexes instead of a slow OR-based plan.
+        $hashQueries = [];
+
+        if ($filters['outgoing'] && $wallet->public_key !== null) {
+            $hashQueries[] = Transaction::query()
+                ->withTypeFilter($filters)
+                ->where('sender_public_key', $wallet->public_key)
+                ->select('hash');
+        }
+
+        if ($filters['incoming']) {
+            $hashQueries[] = Transaction::query()
+                ->withTypeFilter($filters)
+                ->where('to', $wallet->address)
+                ->select('hash');
+
+            if ($filters['multipayments']) {
+                $hashQueries[] = Transaction::query()
+                    ->withTypeFilter($filters)
+                    ->withScope(HasMultiPaymentRecipientScope::class, $wallet->address)
+                    ->select('hash');
+            }
+
+            if ($filters['transfers']) {
+                $hashQueries[] = TokenTransfer::query()
+                    ->where('to', $wallet->address)
+                    ->select('transaction_hash as hash');
+            }
+        }
+
+        if ($hashQueries === []) {
+            return Transaction::query()->whereRaw('1 = 0');
+        }
+
+        $union = array_shift($hashQueries);
+        foreach ($hashQueries as $query) {
+            $union = $union->unionAll($query);
+        }
+
         return Transaction::query()
-            ->withTypeFilter($this->filters($this->view))
+            ->withTypeFilter($filters)
             ->with(['votedFor', 'sender', 'senderWallet', 'recipientWallet'])
-            ->where(function ($query) use ($wallet, $filters) {
-                $query->where(fn ($query) => $query->when($filters['outgoing'], fn ($query) => $query->where('sender_public_key', $wallet->public_key)))
-                    ->when($filters['incoming'], function ($query) use ($wallet, $filters) {
-                        $query->orWhere(fn ($query) => $query->where('to', $wallet->address))
-                            ->orWhere(function ($query) use ($wallet, $filters) {
-                                $query->when($filters['multipayments'], function ($query) use ($wallet) {
-                                    $query->withScope(HasMultiPaymentRecipientScope::class, $wallet->address);
-                                });
-                            })
-                            ->orWhere(function ($query) use ($wallet, $filters) {
-                                $query->when($filters['transfers'], function ($query) use ($wallet) {
-                                    $query->withScope(HasTokenTransferRecipientScope::class, $wallet->address);
-                                });
-                            });
-                    });
-            });
+            ->whereIn('hash', $union);
     }
 
     private function hasAddressingFilters(): bool

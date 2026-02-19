@@ -1,7 +1,7 @@
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import Layout from "@/Layout";
 import { Link, router } from "@inertiajs/react";
-import GenericErrorImage from "@ui/images/errors/generic.svg?react";
+import GenericErrorImage from "@icons/errors/generic.svg?react";
 import { useTranslation } from "react-i18next";
 
 export default function NotFound({ id, type }: { id: string; type: "transaction" | "block" | "wallet" }) {
@@ -19,7 +19,7 @@ export default function NotFound({ id, type }: { id: string; type: "transaction"
     }
 
     return (
-        <Layout>
+        <Layout className="mx:px-10 px-6 py-8">
             <div className="text-center">
                 <div className="mx-auto w-84">
                     <GenericErrorImage className="light-dark-icon h-full" />
