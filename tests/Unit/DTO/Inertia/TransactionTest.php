@@ -107,7 +107,6 @@ it('should make an instance', function () {
         'isSent'                    => true,
         'isSentToSelf'              => false,
         'isReceived'                => false,
-        'hasFailedStatus'           => false,
         'validatorRegistration'     => null,
         'votedFor'                  => null,
         'sender'                    => [
@@ -271,7 +270,6 @@ it('should make an instance for a vote transaction', function () {
         'isSent'                    => true,
         'isSentToSelf'              => false,
         'isReceived'                => false,
-        'hasFailedStatus'           => false,
         'validatorRegistration'     => null,
         'votedFor'                  => $walletTo->address,
         'sender'                    => [
@@ -415,7 +413,6 @@ it('should make an instance for a validator resignation transaction', function (
         'isSent'                    => true,
         'isSentToSelf'              => false,
         'isReceived'                => false,
-        'hasFailedStatus'           => false,
         'validatorRegistration'     => [
             'hash'                      => $registrationTransaction->hash,
             'block_hash'                => '0000000000000000000000000000000000000000000000000000000000054320',
@@ -461,7 +458,6 @@ it('should make an instance for a validator resignation transaction', function (
             'isSent'                    => true,
             'isSentToSelf'              => false,
             'isReceived'                => false,
-            'hasFailedStatus'           => false,
             'validatorRegistration'     => null,
             'votedFor'                  => null,
             'sender'                    => [

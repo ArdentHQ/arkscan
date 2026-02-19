@@ -492,26 +492,6 @@ it('should calculate fee with receipt', function () {
     expect($viewModel->fee())->toEqual(0.001134);
 });
 
-it('should should determine if transaction failed', function () {
-    $transaction = Transaction::factory()->create([
-        'status' => false,
-    ]);
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->hasFailedStatus())->toBeTrue();
-});
-
-it('should should determine transaction has not failed', function () {
-    $transaction = Transaction::factory()->create([
-        'status' => true,
-    ]);
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->hasFailedStatus())->toBeFalse();
-});
-
 it('should get the gas used', function () {
     $transaction = Transaction::factory()->create([
         'gas_used' => 8,

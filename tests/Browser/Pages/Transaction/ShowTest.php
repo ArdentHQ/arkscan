@@ -7,6 +7,7 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Models\MultiPayment;
 use App\Models\Token;
+use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -422,10 +423,8 @@ it('should show token transfer symbol', function () {
                     'To',
                     $recipientAddress,
                     'Amount',
-                    '1234.56 TESTINGSYMBOL',
+                    '1,234.56 TESTI…',
                     'Transaction Summary',
-                    'Amount',
-                    '123.45 DARK',
                     'Fee',
                     '0.000021 DARK',
                 ]);
@@ -455,9 +454,16 @@ it('should not show recipient username for "to" address', function () {
             'gas_refunded'      => 10000,
         ]);
 
-    Token::factory()->create([
+    $token = Token::factory()->create([
         'address' => $transaction->to,
         'symbol'  => 'TESTINGSYMBOL',
+    ]);
+
+    TokenTransfer::factory()->create([
+        'address'          => $token->address,
+        'transaction_hash' => $transaction->hash,
+        'to'               => $recipientWallet->address,
+        'value'            => (string) BigNumber::new(1234.56 * 1e18),
     ]);
 
     (new CacheTokens())->handle();
@@ -493,10 +499,8 @@ it('should not show recipient username for "to" address', function () {
                     'To',
                     $recipientWallet->attributes['username'],
                     'Amount',
-                    '1234.56 TESTINGSYMBOL',
+                    '1,234.56 TESTI…',
                     'Transaction Summary',
-                    'Amount',
-                    '123.45 DARK',
                     'Fee',
                     '0.000021 DARK',
                 ]);
