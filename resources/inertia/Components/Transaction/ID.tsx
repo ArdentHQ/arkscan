@@ -6,7 +6,6 @@ import Age from "../Model/Age";
 import { Link } from "@inertiajs/react";
 
 export default function ID({ transaction, withoutAge = false }: { transaction: Transaction; withoutAge?: boolean }) {
-
     return (
         <div className="flex flex-col md:space-y-1 xl:space-y-0">
             <div
