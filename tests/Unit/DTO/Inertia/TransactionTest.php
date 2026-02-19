@@ -347,7 +347,7 @@ it('should make an instance for a validator resignation transaction', function (
         'gas_refunded'              => '0',
         'deployed_contract_address' => null,
         'decoded_error'             => null,
-        'multiPaymentRecipients'  => [],
+        'multiPaymentRecipients'    => [],
         'amountFiat'                => '$0.0000',
         'amountReceivedFiat'        => '$0.00',
         'feeFiat'                   => '$0.0000',

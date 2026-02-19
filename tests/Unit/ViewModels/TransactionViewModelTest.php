@@ -15,7 +15,6 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Str;
-
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
@@ -24,7 +23,7 @@ beforeEach(function () {
 
     (new NetworkCache())->setHeight(fn () => 5000000);
 
-    $this->sender  = Wallet::factory()->create();
+    $this->sender      = Wallet::factory()->create();
     $this->transaction = Transaction::factory()->create([
         'block_hash'               => $this->block->hash,
         'block_number'             => 1,
