@@ -195,3 +195,36 @@ it('should get recipients', function () {
     expect($transaction->multiPaymentRecipients->first()->to)->toBe($recipients[0]);
     expect($transaction->multiPaymentRecipients->last()->to)->toBe($recipients[1]);
 });
+
+it('should determine recipientAddress', function () {
+    $recipient = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->create([
+            'to' => $recipient->address,
+        ]);
+
+    expect($transaction->recipientAddress())->toBe($recipient->address);
+});
+
+it('should use deployment address for recipientAddress', function () {
+    $address = '0x1234567890123456789012345678901234567890';
+
+    $transaction = Transaction::factory()
+        ->create([
+            'to'                        => null,
+            'deployed_contract_address' => $address,
+        ]);
+
+    expect($transaction->recipientAddress())->toBe($address);
+});
+
+it('should use from address for recipientAddress', function () {
+    $transaction = Transaction::factory()
+        ->create([
+            'to'                        => null,
+            'deployed_contract_address' => null,
+        ]);
+
+    expect($transaction->recipientAddress())->toBe($transaction->from);
+});

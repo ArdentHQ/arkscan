@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Enums\ContractMethod;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -78,19 +79,11 @@ it('should make an instance', function () {
         'gas_refunded'              => '0',
         'deployed_contract_address' => null,
         'decoded_error'             => null,
-        'multiPaymentRecipients'  => [],
-        'amount'                    => 10.0,
-        'amountForItself'           => 0.0,
-        'amountExcludingItself'     => 0.0,
-        'amountWithFee'             => 10.00000000000042,
-        'amountReceived'            => 10.0,
+        'multiPaymentRecipients'    => [],
         'amountFiat'                => '$20.00',
         'amountReceivedFiat'        => '$20.00',
-        'fee'                       => 0.00000000000042,
         'feeFiat'                   => '$0.0000',
-        'type'                      => 'Transfer',
         'url'                       => route('transaction', $transaction),
-        'isSelfReceiving'           => false,
         'validatorRegistration'     => null,
         'votedFor'                  => null,
         'sender'                    => [
@@ -154,6 +147,12 @@ it('should make an instance', function () {
             'votePercentage'                    => null,
         ],
         'votedForUsername'                => null,
+        'tokenApprovalDetails'            => null,
+        'methodData'                      => [
+            'functionName' => null,
+            'methodId'     => null,
+            'arguments'    => null,
+        ],
     ]);
 });
 
@@ -222,33 +221,11 @@ it('should make an instance for a vote transaction', function () {
         'gas_refunded'              => '0',
         'deployed_contract_address' => null,
         'decoded_error'             => null,
-        'multiPaymentRecipients'  => [],
-        'amount'                    => 0.0,
-        'amountForItself'           => 0.0,
-        'amountExcludingItself'     => 0.0,
-        'amountWithFee'             => 0.00000000000042,
-        'amountReceived'            => 0.0,
+        'multiPaymentRecipients'    => [],
         'amountFiat'                => '$0.0000',
         'amountReceivedFiat'        => '$0.00',
-        'fee'                       => 0.00000000000042,
         'feeFiat'                   => '$0.0000',
-        'type'                      => 'Vote',
         'url'                       => route('transaction', $transaction),
-        'isTransfer'                => false,
-        'isTokenTransfer'           => false,
-        'isVote'                    => true,
-        'isUnvote'                  => false,
-        'isValidatorRegistration'   => false,
-        'isValidatorResignation'    => false,
-        'isValidatorUpdate'         => false,
-        'isUsernameRegistration'    => false,
-        'isUsernameResignation'     => false,
-        'isContractDeployment'      => false,
-        'isMultiPayment'            => false,
-        'isSelfReceiving'           => true,
-        'isSent'                    => true,
-        'isSentToSelf'              => false,
-        'isReceived'                => false,
         'validatorRegistration'     => null,
         'votedFor'                  => $walletTo->address,
         'sender'                    => [
@@ -283,9 +260,14 @@ it('should make an instance for a vote transaction', function () {
         ],
         'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => 'bill.ding',
-        'isApprove'                       => false,
-        'isApprovalRevoke'                => false,
-        'isBatchTransfer'                 => false,
+        'tokenApprovalDetails'            => null,
+        'methodData'                      => [
+            'functionName' => 'vote(address)',
+            'methodId'     => ContractMethod::vote(),
+            'arguments'    => [
+                $walletTo->address,
+            ],
+        ],
     ]);
 });
 
@@ -302,8 +284,10 @@ it('should make an instance for a validator resignation transaction', function (
             ],
         ]);
 
+    $blsPublicKey = '8a8b2c9d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0';
+
     $registrationTransaction = Transaction::factory()
-        ->validatorRegistration()
+        ->validatorRegistration($blsPublicKey)
         ->create([
             'nonce'             => 122,
             'value'             => 250 * 1e18,
@@ -425,6 +409,14 @@ it('should make an instance for a validator resignation transaction', function (
             ],
             'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
             'votedForUsername'                => null,
+            'tokenApprovalDetails'            => null,
+            'methodData'                      => [
+                'functionName' => 'registerValidator(bytes)',
+                'methodId'     => ContractMethod::validatorRegistration(),
+                'arguments'    => [
+                    str_pad($blsPublicKey, 64, '0', STR_PAD_LEFT),
+                ],
+            ],
         ],
         'votedFor' => null,
         'sender'   => [
@@ -459,6 +451,12 @@ it('should make an instance for a validator resignation transaction', function (
         ],
         'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => null,
+        'tokenApprovalDetails'            => null,
+        'methodData'                      => [
+            'functionName' => 'resignValidator()',
+            'methodId'     => ContractMethod::validatorResignation(),
+            'arguments'    => [],
+        ],
     ]);
 });
 

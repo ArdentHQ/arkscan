@@ -13,6 +13,14 @@ it('should convert from string to array', function () {
     expect($value)->toEqual(['123', '456']);
 });
 
+it('should convert null to empty array', function () {
+    $transaction = Transaction::factory()->create();
+
+    $value = (new CitextArray())->get($transaction, 'multi_payment_recipients', null, []);
+
+    expect($value)->toEqual([]);
+});
+
 it('should not convert to array if already array', function () {
     $transaction = Transaction::factory()->create();
 
