@@ -303,9 +303,7 @@ describe("TransactionMethod", () => {
         });
 
         it("returns the translated key for validator update", () => {
-            expect(method(CONTRACT_METHODS.validator_update).name).toBe(
-                "general.transaction.types.validator-update",
-            );
+            expect(method(CONTRACT_METHODS.validator_update).name).toBe("general.transaction.types.validator-update");
         });
 
         it("returns the translated key for username registration", () => {
