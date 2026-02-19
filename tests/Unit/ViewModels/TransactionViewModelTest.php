@@ -15,6 +15,7 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Str;
+
 use function Spatie\Snapshots\assertMatchesSnapshot;
 
 beforeEach(function () {
@@ -24,7 +25,7 @@ beforeEach(function () {
     (new NetworkCache())->setHeight(fn () => 5000000);
 
     $this->sender  = Wallet::factory()->create();
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
+    $this->transaction = Transaction::factory()->create([
         'block_hash'               => $this->block->hash,
         'block_number'             => 1,
         'gas_price'                => 1,
@@ -33,7 +34,8 @@ beforeEach(function () {
         'value'                    => 2 * 1e18,
         'sender_public_key'        => $this->sender->public_key,
         'to'                       => Wallet::factory()->create(['address' => 'recipient'])->address,
-    ])->fresh());
+    ])->fresh();
+    $this->subject = new TransactionViewModel($this->transaction);
 });
 
 it('should get the url', function () {
@@ -41,45 +43,9 @@ it('should get the url', function () {
     expect($this->subject->url())->toBe(route('transaction', $this->subject->hash()));
 });
 
-it('should determine if the transaction is incoming', function () {
-    expect($this->subject->isReceived('recipient'))->toBeTrue();
-    expect($this->subject->isReceived('0x6E4C6817a95263B758bbC52e87Ce8e759eD0B084'))->toBeFalse();
-});
-
-it('should determine if the transaction is outgoing', function () {
-    expect($this->subject->isSent($this->sender->address))->toBeTrue();
-    expect($this->subject->isSent('recipient'))->toBeFalse();
-});
-
-it('should determine if transfer transaction is sent to self', function () {
-    $transaction = new TransactionViewModel(Transaction::factory()
-        ->create([
-            'sender_public_key' => $this->sender->public_key,
-            'to'                => $this->sender->address,
-        ]));
-
-    expect($transaction->isSentToSelf($this->sender->address))->toBeTrue();
-    expect($transaction->isSentToSelf('recipient'))->toBeFalse();
-});
-
-it('should get the timestamp', function () {
-    expect($this->subject->timestamp())->toBeString();
-    expect($this->subject->timestamp())->toBe('19 Oct 2020 04:54:16');
-});
-
 it('should get the dateTime', function () {
     expect($this->subject->dateTime())->toBeInstanceOf(Carbon::class);
     expect($this->subject->dateTime()->format('Y-m-d H:i:s'))->toBe('2020-10-19 04:54:16');
-});
-
-it('should get the block ID', function () {
-    expect($this->subject->blockHash())->toBeString();
-    expect($this->subject->blockHash())->toBe($this->block->hash);
-});
-
-it('should get the block height', function () {
-    expect($this->subject->blockHeight())->toBeInt();
-    expect($this->subject->blockHeight())->toBe($this->block->number->toNumber());
 });
 
 it('should get the fee', function () {
@@ -92,72 +58,6 @@ it('should get the amount', function () {
     expect($this->subject->amount())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amount());
-});
-
-it('should get the amount for itself', function () {
-    $transaction = Transaction::factory()
-        ->multiPayment([$this->sender->address], [BigNumber::new(30 * 1e18)])
-        ->create([
-            'sender_public_key' => $this->sender->public_key,
-        ]);
-
-    MultiPayment::factory()
-        ->count(1)
-        ->state(new Sequence(
-            ['to' => $this->sender->address],
-        ))
-        ->create([
-            'from'   => $transaction->from,
-            'hash'   => $transaction->hash,
-            'amount' => BigNumber::new(30 * 1e18),
-        ]);
-
-    $viewModel = new TransactionViewModel($transaction);
-
-    expect($viewModel->amountForItself())->toBe(30.0);
-});
-
-it('should return zero for the amount for itself when not multipayment', function () {
-    expect($this->subject->amountForItself())->toBe(0.0);
-});
-
-it('should get the amount excluding itself', function () {
-    $otherAddress = Wallet::factory()->create()->address;
-
-    $transaction = Transaction::factory()
-        ->multiPayment([
-            $this->sender->address,
-            $otherAddress,
-        ], [
-            BigNumber::new(30 * 1e18),
-            BigNumber::new(30 * 1e18),
-        ])
-        ->create([
-            'sender_public_key' => $this->sender->public_key,
-            'value'             => BigNumber::new(60 * 1e18),
-        ]);
-
-    MultiPayment::factory()
-        ->count(2)
-        ->state(new Sequence(
-            ['to' => $this->sender->address],
-            ['to' => $otherAddress],
-        ))
-        ->create([
-            'from'   => $transaction->from,
-            'hash'   => $transaction->hash,
-            'amount' => BigNumber::new(30 * 1e18),
-        ]);
-
-    $viewModel = new TransactionViewModel($transaction);
-
-    expect($viewModel->amount())->toBe(60.0);
-    expect($viewModel->amountReceived($this->sender->address))->toBe(30.0);
-    expect($viewModel->amountExcludingItself())->toBe(30.0);
-});
-
-it('should return zero for the amount excluding itself when not multipayment', function () {
-    expect($this->subject->amountExcludingItself())->toBe(0.0);
 });
 
 it('should get the amount received for transfer transactions', function () {
@@ -174,52 +74,15 @@ it('should get the amount including fee', function () {
 
 it('should get the amount as fiat', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
     ]));
 
     expect($this->subject->amountFiat())->toBe('$0.58');
 });
 
-it('should get the amount excluding self as fiat', function () {
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
-    ]));
-
-    $otherAddress = Wallet::factory()->create()->address;
-
-    $transaction = Transaction::factory()
-        ->multiPayment([
-            $this->sender->address,
-            $otherAddress,
-        ], [
-            BigNumber::new(30 * 1e18),
-            BigNumber::new(30 * 1e18),
-        ])
-        ->create([
-            'sender_public_key' => $this->sender->public_key,
-            'value'             => BigNumber::new(60 * 1e18),
-        ]);
-
-    MultiPayment::factory()
-        ->count(2)
-        ->state(new Sequence(
-            ['to' => $this->sender->address],
-            ['to' => $otherAddress],
-        ))
-        ->create([
-            'from'   => $transaction->from,
-            'hash'   => $transaction->hash,
-            'amount' => BigNumber::new(30 * 1e18),
-        ]);
-
-    $viewModel = new TransactionViewModel($transaction);
-
-    expect($viewModel->amountFiatExcludingItself())->toBe('$'.number_format(30 * 0.2907, 2));
-});
-
 it('should get the total as fiat', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
     ]));
 
     expect($this->subject->totalFiat())->toBe('$0.58');
@@ -227,7 +90,7 @@ it('should get the total as fiat', function () {
 
 it('should get small total values as fiat', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.2907,
+        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
     ]));
 
     expect($this->subject->totalFiat(true))->toBe('$0.5814');
@@ -238,7 +101,7 @@ it('should get the total as cryptocurrency', function () {
         ->andReturn('BTC');
 
     (new CryptoDataCache())->setPrices('BTC.week', collect([
-        Carbon::parse($this->subject->timestamp())->format('Y-m-d') => 0.000001,
+        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.000001,
     ]));
 
     expect($this->subject->totalFiat())->toBe('0.000002 BTC');
@@ -303,15 +166,6 @@ it('should determine if the transaction is self-receiving', function (string $ty
     ['validatorResignation'],
 ]);
 
-it('should fallback to the sender if no recipient address exists', function () {
-    $this->subject = new TransactionViewModel(Transaction::factory()->create([
-        'to'                        => null,
-        'deployed_contract_address' => null,
-    ]));
-
-    expect($this->subject->recipient())->toEqual($this->subject->sender());
-});
-
 it('should fallback to receipt deployed contract address if set', function () {
     $wallet = Wallet::factory()->create(['address' => 'deployedContractAddress']);
 
@@ -349,14 +203,6 @@ it('should fail to get the voted validator if the transaction is not an unvote',
     $subject = new TransactionViewModel(Transaction::factory()->unvote()->create());
 
     expect($subject->voted())->toBeNull();
-});
-
-it('should get the nonce', function () {
-    expect($this->subject->nonce())->toBeInt();
-});
-
-it('should get the gas', function () {
-    expect($this->subject->gas())->toBeFloat();
 });
 
 describe('HasPayload trait', function () {
@@ -490,16 +336,6 @@ it('should calculate fee with receipt', function () {
     $viewModel = new TransactionViewModel($transaction->fresh());
 
     expect($viewModel->fee())->toEqual(0.001134);
-});
-
-it('should get the gas used', function () {
-    $transaction = Transaction::factory()->create([
-        'gas_used' => 8,
-    ]);
-
-    $viewModel = new TransactionViewModel($transaction->fresh());
-
-    expect($viewModel->gasUsed())->toEqual(8);
 });
 
 it('should get the username if set', function () {
