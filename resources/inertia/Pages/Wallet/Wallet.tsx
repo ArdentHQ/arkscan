@@ -5,6 +5,7 @@ import { PropsWithChildren, useEffect } from "react";
 
 import { ITabsQueryString } from "@/Providers/Tabs/types";
 import { IWallet } from "@/types/generated";
+import { Wallet as WalletModel } from "@/models/Wallet";
 import Layout from "@/Layout";
 import Overview from "@/Components/Wallet/Overview/Overview";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
@@ -182,6 +183,7 @@ const WalletTabs = ({
 
 function WalletPageHandlerProvider({ children }: PropsWithChildren) {
     const { baseUrl, wallet } = useSharedData<WalletProps>();
+    const walletModel = WalletModel.from(wallet);
     const tabs = [
         { text: "Transactions", value: "transactions" },
         { text: "Token Transfers", value: "token-transfers" },
@@ -213,7 +215,7 @@ function WalletPageHandlerProvider({ children }: PropsWithChildren) {
         },
     };
 
-    if (wallet.isValidator) {
+    if (walletModel.isValidator) {
         tabs.push({ text: "Validated Blocks", value: "blocks" });
         tabs.push({ text: "Voters", value: "voters" });
 

@@ -77,17 +77,17 @@ export default function Addressing({
                     <>
                         {withoutLink ? (
                             <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                {interactedWallet!.hasUsername && interactedWallet!.username}
-                                {!interactedWallet!.hasUsername && withoutTruncate && interactedWallet!.address}
-                                {!interactedWallet!.hasUsername && !withoutTruncate && (
+                                {interactedWallet!.username && interactedWallet!.username}
+                                {!interactedWallet!.username && withoutTruncate && interactedWallet!.address}
+                                {!interactedWallet!.username && !withoutTruncate && (
                                     <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
                                 )}
                             </span>
                         ) : (
                             <Link className="link" href={route("wallet", interactedWallet!.address)}>
-                                {interactedWallet!.hasUsername && interactedWallet!.username}
-                                {!interactedWallet!.hasUsername && withoutTruncate && interactedWallet!.address}
-                                {!interactedWallet!.hasUsername && !withoutTruncate && (
+                                {interactedWallet!.username && interactedWallet!.username}
+                                {!interactedWallet!.username && withoutTruncate && interactedWallet!.address}
+                                {!interactedWallet!.username && !withoutTruncate && (
                                     <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
                                 )}
                             </Link>

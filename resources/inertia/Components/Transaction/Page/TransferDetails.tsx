@@ -43,8 +43,9 @@ export default function TransferDetails({
                                             address={transfer.recipient}
                                             wallet={{
                                                 address: transfer.recipient,
-                                                hasUsername: transfer.recipientHasUsername,
-                                                username: transfer.recipientUsername,
+                                                username: transfer.recipientHasUsername
+                                                    ? transfer.recipientUsername
+                                                    : null,
                                             }}
                                             testId={`transaction:transfer:${index}`}
                                         />

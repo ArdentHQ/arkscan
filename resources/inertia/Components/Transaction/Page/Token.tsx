@@ -71,8 +71,7 @@ export default function TransactionToken({
                     address={tokenTransfer.recipient}
                     wallet={{
                         address: tokenTransfer.recipient,
-                        hasUsername: tokenTransfer.recipientHasUsername,
-                        username: tokenTransfer.recipientUsername,
+                        username: tokenTransfer.recipientHasUsername ? tokenTransfer.recipientUsername : null,
                     }}
                 />
             </SectionDetailRow>

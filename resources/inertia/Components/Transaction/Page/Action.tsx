@@ -100,7 +100,7 @@ function ApproveActionRow({
 
                     <Link href={route("wallet", transaction.from)} className="link">
                         <span className="hidden md:inline">
-                            {transaction.sender?.hasUsername ? (
+                            {transaction.sender?.username ? (
                                 transaction.sender.username
                             ) : (
                                 <TruncateMiddle>{transaction.from}</TruncateMiddle>
