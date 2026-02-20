@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { PageSection } from "@/Components/PageSection";
-import AmountSmall from "@/Components/General/AmountSmall";
 import { TransactionRecipient } from "@/Pages/Transaction.contracts";
 import { weiToArk } from "@/utils/UnitConverter";
+import CompactAmount from "@/Components/Tokens/CompactAmount";
 import TransactionAddress from "./Address";
 import TableHeader from "@/Components/Tables/Desktop/TableHeader";
 import TableCell from "@/Components/Tables/Desktop/TableCell";
@@ -31,7 +31,7 @@ export default function TransactionRecipients({ recipients }: { recipients: Tran
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <AmountSmall amount={Number(weiToArk(recipient.amount))} />
+                                        <CompactAmount amount={Number(weiToArk(recipient.amount))} hideSymbol />
                                     </TableCell>
                                 </tr>
                             ))}

@@ -2,7 +2,8 @@ import { ITokenTransfer, IWallet } from "@/types/generated";
 import classNames from "classnames";
 import AmountSmall from "../General/AmountSmall";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
-import { formatCompact } from "@/utils/number-formatter";
+import { formatCompact, networkCurrency } from "@/utils/number-formatter";
+import Tooltip from "@/Components/General/Tooltip";
 
 export default function Amount({
     tokenTransfer,
@@ -24,6 +25,8 @@ export default function Amount({
     let amount = tokenTransfer.amount;
 
     const { value, suffix } = formatCompact(amount);
+    const isCompact = suffix !== undefined;
+    const fullFormatted = isCompact ? `${networkCurrency(amount, 8, false)} ${tokenTransfer.token.symbol}` : undefined;
 
     if (isSentToSelf) {
         isReceived = false;
@@ -45,28 +48,33 @@ export default function Amount({
             })}
             data-testid={testId}
         >
-            <div className="inline-block space-x-1 leading-4.25">
+            <div className="inline-block space-x-1 whitespace-nowrap leading-4.25">
                 {wallet && (
-                    <AmountFiatTooltip
-                        amount={value}
-                        suffix={suffix}
-                        isSent={isSent}
-                        isReceived={isReceived}
-                        isSentToSelf={isSentToSelf}
-                        hideCurrency={hideCurrency}
-                    />
+                    <Tooltip content={fullFormatted} disabled={!isCompact}>
+                        <AmountFiatTooltip
+                            amount={value}
+                            suffix={suffix}
+                            isSent={isSent}
+                            isReceived={isReceived}
+                            isSentToSelf={isSentToSelf}
+                            hideCurrency={hideCurrency}
+                        />
+                    </Tooltip>
                 )}
 
                 {!wallet && (
                     <>
-                        <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                            <AmountSmall
-                                amount={tokenTransfer.amount}
-                                hideTooltip
-                                hideCurrency={true}
-                                suffix={suffix}
-                            />
-                        </span>
+                        {isCompact ? (
+                            <Tooltip content={fullFormatted} className="inline">
+                                <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                    <AmountSmall amount={value} hideTooltip hideCurrency={true} suffix={suffix} />
+                                </span>
+                            </Tooltip>
+                        ) : (
+                            <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                                <AmountSmall amount={value} hideTooltip hideCurrency={true} suffix={suffix} />
+                            </span>
+                        )}
 
                         {!hideCurrency && <span>{tokenTransfer.token.symbol}</span>}
                     </>
