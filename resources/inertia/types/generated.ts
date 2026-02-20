@@ -307,18 +307,8 @@ export type IWallet = {
     balance: string;
     nonce: string;
     public_key: string | null;
-    isActive: boolean;
-    isCold: boolean;
-    isValidator: boolean;
-    isLegacy: boolean;
-    isDormant: boolean;
-    isResigned: boolean;
     legacyAddress: string | null;
     username: string | null;
-    hasUsername: boolean;
-    isKnown: boolean;
-    isOwnedByExchange: boolean;
-    hasSecondSignature: boolean;
     votes: string;
     productivity: number;
     balancePercentage: number;
