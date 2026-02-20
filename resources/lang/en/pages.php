@@ -199,6 +199,8 @@ return [
         'all_transactions'       => 'All History',
         'received_transactions'  => 'Incoming',
         'sent_transactions'      => 'Outgoing',
+        'token_holdings'         => 'Token Holdings',
+        'tokens'                 => 'Tokens',
         'voting_for'             => 'Voting For',
         'rank'                   => 'Rank',
         'commission'             => 'Commission',

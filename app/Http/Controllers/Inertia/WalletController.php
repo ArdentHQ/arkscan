@@ -26,6 +26,7 @@ use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -55,9 +56,10 @@ final class WalletController
         $this->view = $view;
 
         return Inertia::renderWithMeta('Wallet/Wallet', 'wallet', [
-            'wallet'       => fn () => WalletDTO::fromModel($wallet),
-            'filters'      => fn () => self::FILTERS,
-            'baseUrl'      => route('wallet', $wallet->address, false),
+            'wallet'             => fn () => WalletDTO::fromModel($wallet),
+            'filters'            => self::FILTERS,
+            'tokenHoldingsCount' => fn () => $this->getTokenHoldingsCount($wallet),
+            'baseUrl'            => route('wallet', $wallet->address, false),
 
             'transactions' => Inertia::optional(function () use ($wallet) {
                 $paginator = $this->getTransactions($wallet);
@@ -190,6 +192,13 @@ final class WalletController
         return $count === 0
             ? (string) trans('tables.tokens.no_results')
             : null;
+    }
+
+    public function getTokenHoldingsCount(Wallet $wallet): int
+    {
+        return (int) Cache::remember('token_holdings_count_'.$wallet->address, now()->addMinutes(10), function () use ($wallet) {
+            return TokenHolder::where('address', $wallet->address)->count();
+        });
     }
 
     private function getTransactionsQuery(Wallet $wallet): Builder
