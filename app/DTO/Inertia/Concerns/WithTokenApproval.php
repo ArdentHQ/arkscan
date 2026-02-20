@@ -55,7 +55,7 @@ trait WithTokenApproval
             'isUnlimited'        => $isUnlimited,
             'isRevoke'           => $isRevoke,
             'spenderUsername'    => $spenderWalletData->username,
-            'spenderHasUsername' => $spenderWalletData->hasUsername,
+            'spenderHasUsername' => $spenderWalletData->username !== null,
         ];
     }
 }

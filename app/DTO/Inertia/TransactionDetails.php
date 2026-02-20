@@ -95,7 +95,7 @@ class TransactionDetails extends Data
                     'recipient'            => $tf->to,
                     'amount'               => (string) $tf->value,
                     'recipientUsername'    => $wallet->username,
-                    'recipientHasUsername' => $wallet->hasUsername,
+                    'recipientHasUsername' => $wallet->username !== null,
                 ];
             }
         }
@@ -149,7 +149,7 @@ class TransactionDetails extends Data
             'recipient'            => $recipient,
             'amount'               => $amount,
             'recipientUsername'    => $recipientWalletData->username,
-            'recipientHasUsername' => $recipientWalletData->hasUsername,
+            'recipientHasUsername' => $recipientWalletData->username !== null,
         ];
     }
 
