@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
-use App\DTO\Inertia\BlockDetails;
+use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
@@ -22,7 +22,7 @@ final class ShowBlockController
     public function __invoke(Block $block): Response
     {
         return Inertia::render('Block/Show', [
-            'block' => BlockDetails::fromModel($block),
+            'block' => BlockDTO::fromModel($block),
 
             'transactions' => Inertia::optional(function () use ($block) {
                 $paginator = $this->getTransactions($block);

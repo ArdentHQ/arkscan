@@ -11,10 +11,12 @@ import classNames from "classnames";
 import Age from "@/Components/Model/Age";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
+import { Block } from "@/models/Block";
 import Address from "@/Components/Wallet/Address";
 import { IPaginatedResponse } from "@/types";
 
-export function Row({ row: block }: { row: IBlock }) {
+export function Row({ row }: { row: IBlock }) {
+    const block = Block.from(row);
     const { network } = useSharedData();
     const { t } = useTranslation();
 

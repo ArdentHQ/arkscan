@@ -3,27 +3,13 @@ export type IBlock = {
     number: number;
     timestamp: number;
     transactionCount: number;
-    totalReward: number;
-    totalRewardFiat: string;
-    rewardFiat: string;
-    proposer: IMemoryWallet;
-};
-export type IBlockDetails = {
-    hash: string;
-    height: number;
-    timestamp: number;
-    timestampFormatted: string;
-    transactionCount: number;
     reward: number;
     rewardFiat: string;
     fee: number;
     feeFiat: string;
-    totalReward: number;
     totalRewardFiat: string;
     confirmations: number;
-    validatorAddress: string;
-    validatorUsername: string | null;
-    validatorHasUsername: boolean;
+    proposer: IMemoryWallet;
 };
 export type IConfigArkconnect = {
     enabled: boolean;
