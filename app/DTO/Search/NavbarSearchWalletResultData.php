@@ -25,7 +25,7 @@ final class NavbarSearchWalletResultData extends Data
     public static function fromModel(Wallet $wallet): self
     {
         $memoryWallet = MemoryWallet::fromAddress($wallet->address);
-        $viewModel = new WalletViewModel($wallet);
+        $viewModel    = new WalletViewModel($wallet);
 
         return new self(
             address: $wallet->address,
