@@ -322,13 +322,13 @@ final class StatisticsController
             'type'   => 'block',
             'url'    => $block->url(),
             'height' => $block->number->toNumber(),
-            'date'   => $viewModel->dateTime(),
+            'date'   => $viewModel->dateTime()->format(DateFormat::DATE),
         ];
 
         if ($key === 'most_transactions_in_block') {
             $record['transactionCount'] = $block->transactions_count;
         } elseif ($key === 'highest_fee') {
-            $record['fee'] = NumberFormatter::currencyWithDecimals($block->fee->toNumber(), Network::currency(), 2);
+            $record['fee'] = NumberFormatter::currencyWithDecimals($block->fee->toFloat(), Network::currency(), 2);
         }
 
         return $record;
