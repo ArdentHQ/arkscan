@@ -21,7 +21,7 @@ export default function CompactAmount({
     const compactContent = (
         <span className="inline-flex items-center space-x-1">
             <AmountSmall amount={value} hideTooltip hideCurrency suffix={suffix} />
-            {!hideSymbol && tokenSymbol && <span>{tokenSymbol}</span>}
+            {!hideSymbol && tokenSymbol && <span>&nbsp;{tokenSymbol}</span>}
         </span>
     );
 
