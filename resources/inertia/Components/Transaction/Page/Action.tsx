@@ -10,6 +10,7 @@ import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import useSharedData from "@/hooks/use-shared-data";
 import { weiToArk } from "@/utils/UnitConverter";
 import { Transaction } from "@/models/Transaction";
+import CompactAmount from "@/Components/Tokens/CompactAmount";
 
 function ApproveActionRow({
     transaction,
@@ -39,7 +40,7 @@ function ApproveActionRow({
     const tokenSymbol = details.token?.symbol ?? network?.currency;
 
     const isUnlimited = tokenApproval.isUnlimited;
-    let amount = !isUnlimited && tokenApproval.amount !== null ? weiToArk(tokenApproval.amount, tokenSymbol) : null;
+    const rawAmount = !isUnlimited && tokenApproval.amount !== null ? Number(weiToArk(tokenApproval.amount)) : null;
 
     let rowTitle = transaction.method.name;
     if (tokenApproval.isRevoke) {
@@ -66,7 +67,7 @@ function ApproveActionRow({
                                     {t("general.unlimited")} {tokenSymbol}
                                 </span>
                             ) : (
-                                amount !== null && <span>{amount}</span>
+                                rawAmount !== null && <CompactAmount amount={rawAmount} tokenSymbol={tokenSymbol} />
                             )}
                             <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
                         </>

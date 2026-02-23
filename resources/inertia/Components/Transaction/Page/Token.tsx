@@ -4,8 +4,8 @@ import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import { formatUnits, parseUnits, weiToArk } from "@/utils/UnitConverter";
-import AmountSmall from "@/Components/General/AmountSmall";
 import { currency } from "@/utils/number-formatter";
+import CompactAmount from "@/Components/Tokens/CompactAmount";
 import { ITransaction } from "@/types/generated";
 
 export default function TransactionToken({
@@ -41,10 +41,7 @@ export default function TransactionToken({
                 </SectionDetailRow>
 
                 <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
-                    <span className="inline-flex items-center space-x-1">
-                        <AmountSmall amount={totalRaw} hideCurrency currency={tokenSymbol} />
-                        <span>{tokenSymbol}</span>
-                    </span>
+                    <CompactAmount amount={totalRaw} tokenSymbol={tokenSymbol} showFullOnDesktop />
                 </SectionDetailRow>
 
                 {network?.canBeExchanged && (
@@ -82,7 +79,7 @@ export default function TransactionToken({
 
             {rawAmount !== null && (
                 <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
-                    <AmountSmall amount={rawAmount} currency={tokenSymbol} />
+                    <CompactAmount amount={rawAmount} tokenSymbol={tokenSymbol} showFullOnDesktop />
                 </SectionDetailRow>
             )}
 
