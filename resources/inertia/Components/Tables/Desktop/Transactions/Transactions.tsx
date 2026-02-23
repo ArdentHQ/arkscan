@@ -150,7 +150,7 @@ export function TransactionsListLoadingState({
             indicatorHeight: "h-[21px]",
             className: "text-left",
             render: () => (
-                <div className="flex flex-1 flex-col justify-between space-y-2 font-semibold leading-4.25 lg:flex-row lg:space-x-2 lg:space-y-0">
+                <div className="flex flex-col space-y-2 text-sm font-semibold sm:space-y-1 md:space-y-2 md-lg:flex-row md-lg:items-center md-lg:space-x-9 md-lg:space-y-0">
                     <div className="flex flex-row space-x-2">
                         <LoadingText width="w-[39px]" />
                         <LoadingText />

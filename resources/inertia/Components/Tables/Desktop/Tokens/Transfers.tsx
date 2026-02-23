@@ -34,7 +34,12 @@ export function Row({ row }: { row: ITokenTransfer }) {
             </TableCell>
 
             <TableCell className="text-right" lastOn="lg">
-                <Amount testId={`transaction:${row.transaction_hash}:amount`} tokenTransfer={row} breakpoint="lg" />
+                <Amount
+                    testId={`transaction:${row.transaction_hash}:amount`}
+                    tokenTransfer={row}
+                    breakpoint="lg"
+                    hideCurrency
+                />
             </TableCell>
 
             <TableCell breakpoint="xl" responsive>
@@ -130,9 +135,16 @@ export default function TransfersTableWrapper({
                         indicatorHeight: "h-[21px]",
                         className: "text-left",
                         render: () => (
-                            <div className="flex flex-row space-x-2">
-                                <LoadingText width="w-[39px]" />
-                                <LoadingText />
+                            <div className="flex flex-col space-y-2 text-sm font-semibold sm:space-y-1 md:space-y-2 md-lg:flex-row md-lg:items-center md-lg:space-x-9 md-lg:space-y-0">
+                                <div className="flex flex-row space-x-2">
+                                    <LoadingText width="w-[39px]" />
+                                    <LoadingText />
+                                </div>
+
+                                <div className="flex flex-row space-x-2">
+                                    <LoadingText width="w-[39px]" />
+                                    <LoadingText />
+                                </div>
                             </div>
                         ),
                     },

@@ -1,7 +1,7 @@
 import MobileTable from "../Table";
 import MobileTableRow from "../Row";
 import TableCell from "../TableCell";
-import { MobileTransactionsSkeletonTable } from "../Skeleton/Wallet/Transactions";
+import { MobileTokenTransfersSkeletonTable } from "../Skeleton/Wallet/TokenTransfers";
 import { ITokenTransfer } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import ID from "@/Components/Transaction/ID";
@@ -65,7 +65,7 @@ export default function TokenTransfersMobileTableWrapper({ rowCount = 10 }: { ro
             <div>
                 <TableHeaderWrapper resultCount={0} />
 
-                <MobileTransactionsSkeletonTable rowCount={rowCount} />
+                <MobileTokenTransfersSkeletonTable rowCount={rowCount} />
             </div>
         );
     }
