@@ -8,6 +8,7 @@ use App\Contracts\ViewModel;
 use App\Models\Block;
 use App\Services\Timestamp;
 use Carbon\Carbon;
+
 final class BlockViewModel implements ViewModel
 {
     public function __construct(private Block $block)
