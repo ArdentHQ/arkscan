@@ -7,7 +7,7 @@ export class TokenTransfer {
     constructor(data: ITokenTransfer) {
         Object.assign(this, data);
 
-        this.transaction = Transaction.from(data.transaction!);
+        this.transaction = Transaction.from(data.transaction);
     }
 
     static from(data: ITokenTransfer): TokenTransfer {

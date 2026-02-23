@@ -199,7 +199,7 @@ export type ITokenTransfer = {
     block_number: number;
     index: number;
     token: IToken;
-    transaction: ITransaction | null;
+    transaction: ITransaction;
 };
 export type ITransaction = {
     hash: string;
