@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Services\Transactions\TransactionMethod;
-
 trait HasMethod
 {
     public function isTransfer(): bool
