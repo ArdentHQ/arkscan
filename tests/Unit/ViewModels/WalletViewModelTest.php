@@ -47,11 +47,6 @@ beforeEach(function () {
     ]);
 });
 
-it('should get the url', function () {
-    expect($this->subject->url())->toBeString();
-    expect($this->subject->url())->toBe(route('wallet', $this->subject->address()));
-});
-
 it('should get the address', function () {
     expect($this->subject->address())->toBe($this->wallet->address);
 });

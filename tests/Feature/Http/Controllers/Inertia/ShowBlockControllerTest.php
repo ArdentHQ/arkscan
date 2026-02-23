@@ -21,7 +21,7 @@ it('should render the page without any errors', function () {
             ->component('Block/Show')
             ->has('block')
             ->where('block.hash', $block->hash)
-            ->where('block.height', $block->number->toNumber())
+            ->where('block.number', $block->number->toNumber())
             ->where('block.transactionCount', $block->transactions_count)
             ->missing('transactions'));
 });
@@ -45,9 +45,9 @@ it('should return block details', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Block/Show')
             ->where('block.hash', $block->hash)
-            ->where('block.height', 500)
+            ->where('block.number', 500)
             ->where('block.transactionCount', 0)
-            ->where('block.validatorAddress', $validator->address)
+            ->where('block.proposer.address', $validator->address)
             ->where('block.confirmations', 500));
 });
 
@@ -69,9 +69,9 @@ it('should return block with validator username', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Block/Show')
-            ->where('block.validatorAddress', $validator->address)
-            ->where('block.validatorUsername', 'test_validator')
-            ->where('block.validatorHasUsername', true));
+            ->where('block.proposer.address', $validator->address)
+            ->where('block.proposer.username', 'test_validator')
+            ->where('block.proposer.hasUsername', true));
 });
 
 it('should show no-results message when no transactions exist', function () {

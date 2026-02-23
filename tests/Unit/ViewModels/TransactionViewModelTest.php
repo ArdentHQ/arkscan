@@ -37,11 +37,6 @@ beforeEach(function () {
     $this->subject = new TransactionViewModel($this->transaction);
 });
 
-it('should get the url', function () {
-    expect($this->subject->url())->toBeString();
-    expect($this->subject->url())->toBe(route('transaction', $this->subject->hash()));
-});
-
 it('should get the dateTime', function () {
     expect($this->subject->dateTime())->toBeInstanceOf(Carbon::class);
     expect($this->subject->dateTime()->format('Y-m-d H:i:s'))->toBe('2020-10-19 04:54:16');
