@@ -42,7 +42,7 @@ beforeEach(() => {
 const method = (methodId: string | null, overrides = {}) =>
     new TransactionMethod(
         makeTransaction({
-            methodData: { functionName: null, methodId, arguments: {} },
+            methodData: { functionName: null, methodId, arguments: [] },
             ...overrides,
         }),
     );
@@ -329,7 +329,7 @@ describe("TransactionMethod", () => {
         it("returns a formatted name from methodName when no type matches and i18n key does not exist", () => {
             const m = new TransactionMethod(
                 makeTransaction({
-                    methodData: { functionName: "my_custom_function", methodId: "deadbeef", arguments: {} },
+                    methodData: { functionName: "my_custom_function", methodId: "deadbeef", arguments: [] },
                 }),
             );
 
@@ -339,7 +339,7 @@ describe("TransactionMethod", () => {
         it("falls back to 0x-prefixed hash when no type, no i18n key, and no methodName", () => {
             const m = new TransactionMethod(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: "deadbeef", arguments: {} },
+                    methodData: { functionName: null, methodId: "deadbeef", arguments: [] },
                 }),
             );
 
@@ -355,7 +355,7 @@ describe("TransactionMethod", () => {
 
             const m = new TransactionMethod(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: "deadbeef", arguments: {} },
+                    methodData: { functionName: null, methodId: "deadbeef", arguments: [] },
                 }),
             );
 

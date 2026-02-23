@@ -90,7 +90,7 @@ export const makeTransaction = (overrides: Partial<ITransaction> = {}): ITransac
     amountReceivedFiat: "1.00",
     feeFiat: "0.01",
     url: "https://example.com/tx/0xabc123",
-    methodData: { functionName: null, methodId: null, arguments: {} },
+    methodData: { functionName: null, methodId: null, arguments: [] },
     tokenApprovalDetails: null,
     validatorRegistration: null,
     votedFor: null,

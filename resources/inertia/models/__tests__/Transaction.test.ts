@@ -151,7 +151,7 @@ describe("Transaction", () => {
                 makeTransaction({
                     sender_public_key: senderPublicKey,
                     to: senderAddress,
-                    methodData: { functionName: null, methodId: null, arguments: {} },
+                    methodData: { functionName: null, methodId: null, arguments: [] },
                 }),
             );
 
@@ -163,7 +163,7 @@ describe("Transaction", () => {
                 makeTransaction({
                     sender_public_key: senderPublicKey,
                     to: senderAddress,
-                    methodData: { functionName: null, methodId: null, arguments: {} },
+                    methodData: { functionName: null, methodId: null, arguments: [] },
                 }),
             );
 
@@ -175,7 +175,7 @@ describe("Transaction", () => {
                 makeTransaction({
                     sender_public_key: senderPublicKey,
                     to: "someone-else",
-                    methodData: { functionName: null, methodId: null, arguments: {} },
+                    methodData: { functionName: null, methodId: null, arguments: [] },
                 }),
             );
 
@@ -187,7 +187,7 @@ describe("Transaction", () => {
                 makeTransaction({
                     sender_public_key: senderPublicKey,
                     to: senderAddress,
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.transfer, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.transfer, arguments: [] },
                 }),
             );
 
@@ -199,7 +199,7 @@ describe("Transaction", () => {
                 makeTransaction({
                     sender_public_key: senderPublicKey,
                     to: senderAddress,
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.vote, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.vote, arguments: [] },
                 }),
             );
 
@@ -214,7 +214,7 @@ describe("Transaction", () => {
             const tx = Transaction.from(
                 makeTransaction({
                     value: "100000000",
-                    methodData: { functionName: null, methodId: null, arguments: {} },
+                    methodData: { functionName: null, methodId: null, arguments: [] },
                 }),
             );
 
@@ -226,7 +226,7 @@ describe("Transaction", () => {
             // recipients: 1e18 + 2e18 → toFloat → 1.0 + 2.0 = 3.0
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     multiPaymentRecipients: [
                         { address: "addr1", amount: "1000000000000000000" },
                         { address: "addr2", amount: "2000000000000000000" },
@@ -240,7 +240,7 @@ describe("Transaction", () => {
         it("returns 0 for a multi-payment with no recipients", () => {
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     multiPaymentRecipients: [],
                 }),
             );
@@ -253,7 +253,7 @@ describe("Transaction", () => {
         it("returns 0 for a non-multi-payment transaction", () => {
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: null, arguments: {} },
+                    methodData: { functionName: null, methodId: null, arguments: [] },
                 }),
             );
 
@@ -265,7 +265,7 @@ describe("Transaction", () => {
 
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     sender,
                     multiPaymentRecipients: [
                         { address: "sender-addr", amount: "1000000000000000000" },
@@ -281,7 +281,7 @@ describe("Transaction", () => {
         it("returns 0 when the sender is null", () => {
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     sender: null,
                     multiPaymentRecipients: [{ address: "some-addr", amount: "1000000000000000000" }],
                 }),
@@ -295,7 +295,7 @@ describe("Transaction", () => {
         it("returns 0 for a non-multi-payment transaction", () => {
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: null, arguments: {} },
+                    methodData: { functionName: null, methodId: null, arguments: [] },
                 }),
             );
 
@@ -307,7 +307,7 @@ describe("Transaction", () => {
 
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     sender,
                     multiPaymentRecipients: [
                         { address: "sender-addr", amount: "1000000000000000000" },
@@ -322,7 +322,7 @@ describe("Transaction", () => {
         it("returns the full amount when the sender is null", () => {
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     sender: null,
                     multiPaymentRecipients: [
                         { address: "addr1", amount: "1000000000000000000" },
@@ -345,7 +345,7 @@ describe("Transaction", () => {
                     value: "2000000000000000000",
                     gas_price: "100",
                     gas_used: "100",
-                    methodData: { functionName: null, methodId: null, arguments: {} },
+                    methodData: { functionName: null, methodId: null, arguments: [] },
                 }),
             );
 
@@ -358,7 +358,7 @@ describe("Transaction", () => {
             const tx = Transaction.from(
                 makeTransaction({
                     value: "100000000",
-                    methodData: { functionName: null, methodId: null, arguments: {} },
+                    methodData: { functionName: null, methodId: null, arguments: [] },
                 }),
             );
 
@@ -368,7 +368,7 @@ describe("Transaction", () => {
         it("returns the full amount when no address is specified for a multi-payment", () => {
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     multiPaymentRecipients: [
                         { address: "addr1", amount: "1000000000000000000" },
                         { address: "addr2", amount: "2000000000000000000" },
@@ -382,7 +382,7 @@ describe("Transaction", () => {
         it("returns the amount received by a specific address in a multi-payment", () => {
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     multiPaymentRecipients: [
                         { address: "addr1", amount: "1000000000000000000" },
                         { address: "addr2", amount: "2000000000000000000" },
@@ -397,7 +397,7 @@ describe("Transaction", () => {
         it("returns 0 when the address is not a recipient in a multi-payment", () => {
             const tx = Transaction.from(
                 makeTransaction({
-                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: {} },
+                    methodData: { functionName: null, methodId: CONTRACT_METHODS.multipayment, arguments: [] },
                     multiPaymentRecipients: [{ address: "addr1", amount: "1000000000000000000" }],
                 }),
             );
