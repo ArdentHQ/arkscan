@@ -33,7 +33,6 @@ export class Transaction {
     }
 
     isReceived(address: string): boolean {
-        console.log(this.to, address, this.to === address);
         return this.to === address;
     }
 
