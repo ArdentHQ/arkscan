@@ -303,8 +303,8 @@ final class StatisticsController
 
         return [
             'type'   => 'transaction',
-            'url'    => $viewModel->url(),
-            'hash'   => $viewModel->hash(),
+            'url'    => $transaction->url(),
+            'hash'   => $transaction->hash,
             'amount' => NumberFormatter::currencyWithDecimals($viewModel->amount(), Network::currency(), 0),
             'date'   => $viewModel->dateTime()->format(DateFormat::DATE),
         ];
@@ -320,15 +320,15 @@ final class StatisticsController
 
         $record = [
             'type'   => 'block',
-            'url'    => $viewModel->url(),
-            'height' => $viewModel->height(),
-            'date'   => $viewModel->dateTime()->format(DateFormat::DATE),
+            'url'    => $block->url(),
+            'height' => $block->number->toNumber(),
+            'date'   => $viewModel->dateTime(),
         ];
 
         if ($key === 'most_transactions_in_block') {
-            $record['transactionCount'] = $viewModel->transactionCount();
+            $record['transactionCount'] = $block->transactions_count;
         } elseif ($key === 'highest_fee') {
-            $record['fee'] = NumberFormatter::currencyWithDecimals($viewModel->fee(), Network::currency(), 2);
+            $record['fee'] = NumberFormatter::currencyWithDecimals($block->fee->toNumber(), Network::currency(), 2);
         }
 
         return $record;
@@ -469,7 +469,7 @@ final class StatisticsController
             'address'     => $viewModel->address(),
             'username'    => $viewModel->username(),
             'hasUsername' => $viewModel->hasUsername(),
-            'url'         => $viewModel->url(),
+            'url'         => $viewModel->model()->url(),
         ];
     }
 

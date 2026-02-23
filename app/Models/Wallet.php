@@ -197,4 +197,9 @@ final class Wallet extends Model
     {
         return 'address';
     }
+
+    public function url(): string
+    {
+        return route('wallet', $this->address);
+    }
 }

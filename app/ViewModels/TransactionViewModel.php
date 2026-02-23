@@ -40,11 +40,6 @@ final class TransactionViewModel implements ViewModel
         $this->method = new TransactionMethod($transaction);
     }
 
-    public function url(): string
-    {
-        return route('transaction', $this->transaction->hash);
-    }
-
     public function model(): Transaction
     {
         return $this->transaction;

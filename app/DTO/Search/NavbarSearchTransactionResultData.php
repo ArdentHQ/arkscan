@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\DTO\Search;
 
+use App\DTO\MemoryWallet;
+use App\Models\Transaction;
+use App\Services\Transactions\TransactionMethod;
 use App\ViewModels\TransactionViewModel;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -25,27 +28,35 @@ final class NavbarSearchTransactionResultData extends Data
     ) {
     }
 
-    public static function fromViewModel(TransactionViewModel $transaction): self
+    public static function fromModel(Transaction $transaction): self
     {
-        $votedValidatorLabel = null;
+        $transactionMethod = new TransactionMethod($transaction);
 
-        if ($transaction->isVote()) {
-            $votedValidator = $transaction->voted();
+        $viewModel = new TransactionViewModel($transaction);
+
+        $votedValidatorLabel = null;
+        if ($transactionMethod->isVote()) {
+            $votedValidator = $viewModel->voted();
             if ($votedValidator !== null) {
                 $votedValidatorLabel = $votedValidator->username() ?? $votedValidator->address();
             }
         }
 
+        $recipient = null;
+        if ($transaction->to !== null) {
+            $recipient = NavbarSearchMemoryWalletData::fromMemoryWallet(MemoryWallet::fromAddress($transaction->to));
+        }
+
         return new self(
-            hash: $transaction->hash(),
-            amountWithFee: $transaction->amountWithFee(),
-            isVote: $transaction->isVote(),
-            isUnvote: $transaction->isUnvote(),
-            isTransfer: $transaction->isTransfer(),
-            isTokenTransfer: $transaction->isTokenTransfer(),
-            sender: NavbarSearchMemoryWalletData::fromMemoryWallet($transaction->sender()),
-            recipient: NavbarSearchMemoryWalletData::fromMemoryWallet($transaction->recipient()),
-            typeName: $transaction->typeName(),
+            hash: $transaction->hash,
+            amountWithFee: $viewModel->amountWithFee(),
+            isVote: $transactionMethod->isVote(),
+            isUnvote: $transactionMethod->isUnvote(),
+            isTransfer: $transactionMethod->isTransfer(),
+            isTokenTransfer: $transactionMethod->isTokenTransfer(),
+            sender: NavbarSearchMemoryWalletData::fromMemoryWallet(MemoryWallet::fromPublicKey($transaction->sender_public_key)),
+            recipient: $recipient,
+            typeName: $transactionMethod->name(),
             votedValidatorLabel: $votedValidatorLabel,
         );
     }
