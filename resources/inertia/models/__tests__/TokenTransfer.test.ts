@@ -1,25 +1,3 @@
-jest.mock("@/hooks/use-shared-data", () => ({
-    __esModule: true,
-    default: () => ({
-        network: {
-            contractMethods: {
-                transfer: "a9059cbb",
-                multipayment: "1234abcd",
-                vote: "5678ef01",
-                unvote: "9abcdef0",
-                validator_registration: "11223344",
-                validator_resignation: "55667788",
-                validator_update: "99aabbcc",
-                username_registration: "ddeeff00",
-                username_resignation: "ff112233",
-                approve: "095ea7b3",
-                contract_deployment: "22222222",
-                batch_transfer: "33333333",
-            },
-        },
-    }),
-}));
-
 jest.mock("react-i18next", () => ({
     useTranslation: () => ({
         t: (key: string) => key,
@@ -28,9 +6,6 @@ jest.mock("react-i18next", () => ({
 }));
 
 jest.mock("@arkecosystem/typescript-crypto", () => ({
-    Address: {
-        fromPublicKey: (publicKey: string) => `ark:${publicKey}`,
-    },
     UnitConverter: {
         formatUnits: (value: string, _unit: string) => Number(value) / 1e8,
     },
@@ -38,32 +13,34 @@ jest.mock("@arkecosystem/typescript-crypto", () => ({
 
 import { TokenTransfer } from "../TokenTransfer";
 import { Transaction } from "../Transaction";
-import { makeMemoryWallet, makeToken, makeTokenTransfer, makeTransaction } from "./factories";
+import { makeMemoryWallet, makeNetwork, makeToken, makeTokenTransfer, makeTransaction } from "./factories";
+
+const network = makeNetwork();
 
 describe("TokenTransfer", () => {
-    describe("from", () => {
+    describe("make", () => {
         it("creates a TokenTransfer instance from raw data", () => {
-            const tokenTransfer = TokenTransfer.from(makeTokenTransfer());
+            const tokenTransfer = TokenTransfer.make(makeTokenTransfer(), network);
 
             expect(tokenTransfer).toBeInstanceOf(TokenTransfer);
         });
 
         it("assigns all ITokenTransfer properties to the instance", () => {
             const data = makeTokenTransfer({ transaction_hash: "0xdeadbeef" });
-            const tokenTransfer = TokenTransfer.from(data);
+            const tokenTransfer = TokenTransfer.make(data, network);
 
             expect(tokenTransfer.transaction_hash).toBe("0xdeadbeef");
         });
 
         it("wraps the transaction as a Transaction instance", () => {
-            const tokenTransfer = TokenTransfer.from(makeTokenTransfer());
+            const tokenTransfer = TokenTransfer.make(makeTokenTransfer(), network);
 
             expect(tokenTransfer.transaction).toBeInstanceOf(Transaction);
         });
 
         it("assigns transaction properties correctly", () => {
             const txData = makeTransaction({ hash: "0xtxhash" });
-            const tokenTransfer = TokenTransfer.from(makeTokenTransfer({ transaction: txData }));
+            const tokenTransfer = TokenTransfer.make(makeTokenTransfer({ transaction: txData }), network);
 
             expect(tokenTransfer.transaction.hash).toBe("0xtxhash");
         });
@@ -71,7 +48,7 @@ describe("TokenTransfer", () => {
         it("preserves from and to wallet data", () => {
             const from = makeMemoryWallet({ address: "from-wallet" });
             const to = makeMemoryWallet({ address: "to-wallet" });
-            const tokenTransfer = TokenTransfer.from(makeTokenTransfer({ from, to }));
+            const tokenTransfer = TokenTransfer.make(makeTokenTransfer({ from, to }), network);
 
             expect(tokenTransfer.from.address).toBe("from-wallet");
             expect(tokenTransfer.to.address).toBe("to-wallet");
@@ -79,15 +56,16 @@ describe("TokenTransfer", () => {
 
         it("preserves token data", () => {
             const token = makeToken({ name: "My Token", symbol: "MTK" });
-            const tokenTransfer = TokenTransfer.from(makeTokenTransfer({ token }));
+            const tokenTransfer = TokenTransfer.make(makeTokenTransfer({ token }), network);
 
             expect(tokenTransfer.token.name).toBe("My Token");
             expect(tokenTransfer.token.symbol).toBe("MTK");
         });
 
         it("preserves amount and value", () => {
-            const tokenTransfer = TokenTransfer.from(
+            const tokenTransfer = TokenTransfer.make(
                 makeTokenTransfer({ amount: 42.5, value: "42500000000000000000" }),
+                network,
             );
 
             expect(tokenTransfer.amount).toBe(42.5);
@@ -102,7 +80,7 @@ describe("TokenTransfer", () => {
                 makeTokenTransfer({ transaction_hash: "0x2" }),
             ];
 
-            const result = TokenTransfer.fromArray(data);
+            const result = TokenTransfer.fromArray(data, network);
 
             expect(result).toHaveLength(2);
             expect(result[0]).toBeInstanceOf(TokenTransfer);
@@ -112,11 +90,11 @@ describe("TokenTransfer", () => {
         });
 
         it("returns an empty array when given an empty array", () => {
-            expect(TokenTransfer.fromArray([])).toEqual([]);
+            expect(TokenTransfer.fromArray([], network)).toEqual([]);
         });
 
         it("wraps each entry's transaction as a Transaction instance", () => {
-            const result = TokenTransfer.fromArray([makeTokenTransfer(), makeTokenTransfer()]);
+            const result = TokenTransfer.fromArray([makeTokenTransfer(), makeTokenTransfer()], network);
 
             for (const tt of result) {
                 expect(tt.transaction).toBeInstanceOf(Transaction);
