@@ -1,6 +1,6 @@
 import { ITransaction } from "@/types/generated";
 import { TransactionMethod } from "@/models/TransactionMethod";
-import { Address, UnitConverter } from "@arkecosystem/typescript-crypto";
+import { UnitConverter } from "@arkecosystem/typescript-crypto";
 import BigNumber, { toFloat } from "@/utils/big-number";
 
 export class Transaction {
@@ -29,7 +29,7 @@ export class Transaction {
     }
 
     isSent(address: string): boolean {
-        return Address.fromPublicKey(this.sender_public_key) === address;
+        return this.from === address;
     }
 
     isReceived(address: string): boolean {
