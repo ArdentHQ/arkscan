@@ -224,7 +224,7 @@ export type ITransaction = {
     amountReceivedFiat: string | number;
     feeFiat: string | number;
     url: string;
-    methodData: { functionName: string | null; methodId: string | null; arguments: Record<string, string> };
+    methodData: { functionName: string | null; methodId: string | null; arguments: string[] | null };
     tokenApprovalDetails: {
         spender: string;
         amount: string | null;
