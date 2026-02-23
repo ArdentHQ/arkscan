@@ -1,4 +1,3 @@
-import { ITransaction } from "@/types/generated";
 import { currency as formatCurrency, networkCurrency } from "@/utils/number-formatter";
 import HintSmallIcon from "@ui/icons/hint-small.svg?react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +15,7 @@ function AmountOutput({
     hideCurrency = false,
     suffix,
 }: {
-    transaction?: ITransaction;
+    transaction?: Transaction;
     isSent: boolean;
     isReceived: boolean;
     isSentToSelf: boolean;

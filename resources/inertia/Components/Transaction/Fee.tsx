@@ -1,5 +1,5 @@
-import { ITransaction } from "@/types/generated";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
+import { Transaction } from "@/models/Transaction";
 
 export default function Fee({
     transaction,
@@ -7,7 +7,7 @@ export default function Fee({
     withoutStyling = false,
     hideCurrency = false,
 }: {
-    transaction: ITransaction;
+    transaction: Transaction;
     className?: string;
     withoutStyling?: boolean;
     hideCurrency?: boolean;
