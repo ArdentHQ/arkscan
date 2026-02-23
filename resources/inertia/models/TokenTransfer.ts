@@ -15,7 +15,7 @@ export class TokenTransfer {
     }
 
     static fromArray(data: ITokenTransfer[], network: INetwork): TokenTransfer[] {
-        return data.map(item => TokenTransfer.make(item, network));
+        return data.map((item) => TokenTransfer.make(item, network));
     }
 }
 

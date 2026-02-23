@@ -252,59 +252,75 @@ describe("TransactionMethod", () => {
 
     describe("name", () => {
         it("returns the translated key for a transfer", () => {
-            expect(method(null).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("general.transaction.types.transfer");
+            expect(method(null).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
+                "general.transaction.types.transfer",
+            );
         });
 
         it("returns the translated key for a token transfer", () => {
-            expect(method(CONTRACT_METHODS.transfer).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("general.transaction.types.transfer");
+            expect(method(CONTRACT_METHODS.transfer).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
+                "general.transaction.types.transfer",
+            );
         });
 
         it("returns the translated key for multipayment", () => {
-            expect(method(CONTRACT_METHODS.multipayment).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("general.transaction.types.multipayment");
+            expect(method(CONTRACT_METHODS.multipayment).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
+                "general.transaction.types.multipayment",
+            );
         });
 
         it("returns the translated key for vote", () => {
-            expect(method(CONTRACT_METHODS.vote).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("general.transaction.types.vote");
+            expect(method(CONTRACT_METHODS.vote).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
+                "general.transaction.types.vote",
+            );
         });
 
         it("returns the translated key for unvote", () => {
-            expect(method(CONTRACT_METHODS.unvote).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("general.transaction.types.unvote");
+            expect(method(CONTRACT_METHODS.unvote).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
+                "general.transaction.types.unvote",
+            );
         });
 
         it("returns the translated key for validator registration", () => {
-            expect(method(CONTRACT_METHODS.validator_registration).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
-                "general.transaction.types.validator-registration",
-            );
+            expect(
+                method(CONTRACT_METHODS.validator_registration).name({ t: mockT, i18n: { exists: mockI18nExists } }),
+            ).toBe("general.transaction.types.validator-registration");
         });
 
         it("returns the translated key for validator resignation", () => {
-            expect(method(CONTRACT_METHODS.validator_resignation).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
-                "general.transaction.types.validator-resignation",
-            );
+            expect(
+                method(CONTRACT_METHODS.validator_resignation).name({ t: mockT, i18n: { exists: mockI18nExists } }),
+            ).toBe("general.transaction.types.validator-resignation");
         });
 
         it("returns the translated key for validator update", () => {
-            expect(method(CONTRACT_METHODS.validator_update).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("general.transaction.types.validator-update");
+            expect(method(CONTRACT_METHODS.validator_update).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
+                "general.transaction.types.validator-update",
+            );
         });
 
         it("returns the translated key for username registration", () => {
-            expect(method(CONTRACT_METHODS.username_registration).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
-                "general.transaction.types.username-registration",
-            );
+            expect(
+                method(CONTRACT_METHODS.username_registration).name({ t: mockT, i18n: { exists: mockI18nExists } }),
+            ).toBe("general.transaction.types.username-registration");
         });
 
         it("returns the translated key for username resignation", () => {
-            expect(method(CONTRACT_METHODS.username_resignation).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
-                "general.transaction.types.username-resignation",
-            );
+            expect(
+                method(CONTRACT_METHODS.username_resignation).name({ t: mockT, i18n: { exists: mockI18nExists } }),
+            ).toBe("general.transaction.types.username-resignation");
         });
 
         it("returns the translated key for approve", () => {
-            expect(method(CONTRACT_METHODS.approve).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("general.transaction.types.approve");
+            expect(method(CONTRACT_METHODS.approve).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
+                "general.transaction.types.approve",
+            );
         });
 
         it("returns the translated key for batch transfer", () => {
-            expect(method(CONTRACT_METHODS.batch_transfer).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("general.transaction.types.batch-transfer");
+            expect(method(CONTRACT_METHODS.batch_transfer).name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe(
+                "general.transaction.types.batch-transfer",
+            );
         });
 
         it("returns a formatted name from methodName when no type matches and i18n key does not exist", () => {

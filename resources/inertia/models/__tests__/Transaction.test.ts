@@ -48,7 +48,10 @@ describe("Transaction", () => {
 
     describe("fromArray", () => {
         it("returns an array of Transaction instances", () => {
-            const txs = Transaction.fromArray([makeTransaction({ hash: "0x1" }), makeTransaction({ hash: "0x2" })], network);
+            const txs = Transaction.fromArray(
+                [makeTransaction({ hash: "0x1" }), makeTransaction({ hash: "0x2" })],
+                network,
+            );
 
             expect(txs).toHaveLength(2);
             expect(txs[0]).toBeInstanceOf(Transaction);
