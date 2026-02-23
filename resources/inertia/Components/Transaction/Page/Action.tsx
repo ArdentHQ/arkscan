@@ -21,7 +21,7 @@ function ApproveActionRow({
     details: TransactionDetails;
     headerWidthClass: string;
 }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { network } = useSharedData();
 
     const tokenApproval = details.tokenApproval;
@@ -42,9 +42,11 @@ function ApproveActionRow({
     const isUnlimited = tokenApproval.isUnlimited;
     const rawAmount = !isUnlimited && tokenApproval.amount !== null ? Number(weiToArk(tokenApproval.amount)) : null;
 
-    let rowTitle = transaction.method.name;
+    let rowTitle = "";
     if (tokenApproval.isRevoke) {
         rowTitle = t("pages.transaction.approve.revoke");
+    } else {
+        rowTitle = transaction.method.name({ t, i18n });
     }
 
     return (

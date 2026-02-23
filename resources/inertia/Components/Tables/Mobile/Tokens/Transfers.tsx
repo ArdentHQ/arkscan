@@ -13,6 +13,7 @@ import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import AddressingGeneric from "@/Components/Tokens/AddressingGeneric";
 import Token from "@/Components/Tokens/Token";
 import { TokenTransfer } from "@/models/TokenTransfer";
+import useSharedData from "@/hooks/use-shared-data";
 
 export function TransfersMobileTable({
     transfers,
@@ -21,12 +22,13 @@ export function TransfersMobileTable({
     transfers: IPaginatedResponse<ITokenTransfer>;
     noAge?: boolean;
 }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const { network } = useSharedData();
 
     return (
         <MobileTable noResultsMessage={transfers.noResultsMessage} resultCount={transfers.total ?? 0}>
             {transfers.data.map((row: ITokenTransfer, index) => {
-                const transfer = TokenTransfer.from(row);
+                const transfer = TokenTransfer.make(row, network);
 
                 return (
                     <MobileTableRow
@@ -44,7 +46,7 @@ export function TransfersMobileTable({
                             </>
                         }
                     >
-                        <TableCell label={transfer.transaction.method.name} className="sm:flex-1">
+                        <TableCell label={transfer.transaction.method.name({ t, i18n })} className="sm:flex-1">
                             <AddressingGeneric transfer={transfer} />
                         </TableCell>
 

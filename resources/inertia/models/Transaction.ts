@@ -1,4 +1,4 @@
-import { ITransaction } from "@/types/generated";
+import { INetwork, ITransaction } from "@/types/generated";
 import { TransactionMethod } from "@/models/TransactionMethod";
 import { UnitConverter } from "@arkecosystem/typescript-crypto";
 import BigNumber, { toFloat } from "@/utils/big-number";
@@ -6,22 +6,22 @@ import BigNumber, { toFloat } from "@/utils/big-number";
 export class Transaction {
     method: TransactionMethod;
 
-    constructor(data: ITransaction) {
+    constructor(data: ITransaction, network: INetwork) {
         Object.assign(this, data);
 
-        this.method = new TransactionMethod(data);
+        this.method = new TransactionMethod(data, network);
 
         if (data.validatorRegistration) {
-            this.validatorRegistration = Transaction.from(data.validatorRegistration);
+            this.validatorRegistration = Transaction.make(data.validatorRegistration, network);
         }
     }
 
-    static from(data: ITransaction): Transaction {
-        return new Transaction(data);
+    static make(data: ITransaction, network: INetwork): Transaction {
+        return new Transaction(data, network);
     }
 
-    static fromArray(data: ITransaction[]): Transaction[] {
-        return data.map(Transaction.from);
+    static fromArray(data: ITransaction[], network: INetwork): Transaction[] {
+        return data.map((item) => Transaction.make(item, network));
     }
 
     get hasFailed(): boolean {

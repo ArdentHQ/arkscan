@@ -24,5 +24,5 @@ export default function Method({ transaction }: { transaction: Transaction }) {
         return <Badge className="encapsulated-badge">{t("general.transaction.types.revoke")}</Badge>;
     }
 
-    return <Badge className="encapsulated-badge">{transaction.method.name}</Badge>;
+    return <Badge className="encapsulated-badge">{transaction.method.name({ t, i18n })}</Badge>;
 }

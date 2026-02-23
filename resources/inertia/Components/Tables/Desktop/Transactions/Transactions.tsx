@@ -18,7 +18,8 @@ import LoadingText from "@/Components/Loading/Text";
 import { Transaction } from "@/models/Transaction";
 
 export function Row({ row, noAge }: { row: ITransaction; noAge?: boolean }) {
-    const transaction = Transaction.from(row);
+    const { network } = useSharedData();
+    const transaction = Transaction.make(row, network);
 
     return (
         <tr className="text-sm font-semibold">

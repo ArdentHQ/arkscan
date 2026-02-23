@@ -29,7 +29,7 @@ export function TransactionsMobileTable({
     return (
         <MobileTable noResultsMessage={transactions.noResultsMessage} resultCount={transactions.total ?? 0}>
             {transactions.data.map((row: ITransaction, index) => {
-                const transaction = Transaction.from(row);
+                const transaction = Transaction.make(row, network);
 
                 return (
                     <MobileTableRow
@@ -47,7 +47,7 @@ export function TransactionsMobileTable({
                             </>
                         }
                     >
-                        <TableCell label={transaction.method.name} className="sm:flex-1">
+                        <TableCell label={transaction.method.name({ t, i18n })} className="sm:flex-1">
                             <AddressingGeneric transaction={transaction} />
                         </TableCell>
 

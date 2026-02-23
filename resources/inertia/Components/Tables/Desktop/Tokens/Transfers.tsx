@@ -14,9 +14,11 @@ import Amount from "@/Components/Tokens/Amount";
 import AddressingGeneric from "@/Components/Tokens/AddressingGeneric";
 import Token from "@/Components/Tokens/Token";
 import { TokenTransfer } from "@/models/TokenTransfer";
+import useSharedData from "@/hooks/use-shared-data";
 
 export function Row({ row }: { row: ITokenTransfer }) {
-    const transfer = TokenTransfer.from(row);
+    const { network } = useSharedData();
+    const transfer = TokenTransfer.make(row, network);
 
     return (
         <tr className="text-sm font-semibold">

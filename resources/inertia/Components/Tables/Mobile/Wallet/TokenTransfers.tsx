@@ -16,13 +16,13 @@ import Addressing from "@/Components/Tokens/Addressing";
 import { TokenTransfer } from "@/models/TokenTransfer";
 
 export function TokenTransfersMobileTable() {
-    const { t } = useTranslation();
-    const { tokenTransfers, wallet } = useSharedData<WalletProps>();
+    const { t, i18n } = useTranslation();
+    const { network, tokenTransfers, wallet } = useSharedData<WalletProps>();
 
     return (
         <MobileTable noResultsMessage={tokenTransfers.noResultsMessage} resultCount={tokenTransfers.total ?? 0}>
             {tokenTransfers.data.map((row: ITokenTransfer, index) => {
-                const transfer = TokenTransfer.from(row);
+                const transfer = TokenTransfer.make(row, network);
 
                 return (
                     <MobileTableRow
@@ -38,7 +38,7 @@ export function TokenTransfersMobileTable() {
                             </>
                         }
                     >
-                        <TableCell label={transfer.transaction.method.name} className="sm:flex-1">
+                        <TableCell label={transfer.transaction.method.name({ t, i18n })} className="sm:flex-1">
                             <Addressing tokenTransfer={transfer} wallet={wallet} />
                         </TableCell>
 

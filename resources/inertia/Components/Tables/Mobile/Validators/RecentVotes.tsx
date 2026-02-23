@@ -15,14 +15,16 @@ import { Link } from "@inertiajs/react";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import Tooltip from "@/Components/General/Tooltip";
 import { Transaction } from "@/models/Transaction";
+import useSharedData from "@/hooks/use-shared-data";
 
 export function RecentVotesMobileTable({ recentVotes }: Pick<ValidatorsProps, "recentVotes">) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const { network } = useSharedData();
 
     return (
         <MobileTable noResultsMessage={recentVotes.noResultsMessage} resultCount={recentVotes.data.length ?? 0}>
             {recentVotes.data.map((row: ITransaction, index) => {
-                const vote = Transaction.from(row);
+                const vote = Transaction.make(row, network);
 
                 return (
                     <MobileTableRow
@@ -61,10 +63,10 @@ export function RecentVotesMobileTable({ recentVotes }: Pick<ValidatorsProps, "r
                                                 validator: vote.votedFor,
                                             })}
                                         >
-                                            <span>{vote.method.name}</span>
+                                            <span>{vote.method.name({ t, i18n })}</span>
                                         </Tooltip>
                                     ) : (
-                                        <span>{vote.method.name}</span>
+                                        <span>{vote.method.name({ t, i18n })}</span>
                                     )}
                                 </>
                             }

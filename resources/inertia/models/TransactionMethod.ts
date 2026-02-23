@@ -1,9 +1,10 @@
-import useShareData from "@/hooks/use-shared-data";
-import { ITransaction } from "@/types/generated";
-import { useTranslation } from "react-i18next";
+import { INetwork, ITransaction } from "@/types/generated";
+import { i18n, TFunction } from "i18next";
 
 export class TransactionMethod {
     private readonly transaction: ITransaction;
+
+    private readonly network: INetwork;
 
     public methodHash: string | null = null;
 
@@ -25,15 +26,14 @@ export class TransactionMethod {
         isContractDeployment: "contract-deployment",
     };
 
-    constructor(transaction: ITransaction) {
+    constructor(transaction: ITransaction, network: INetwork) {
         this.transaction = transaction;
+        this.network = network;
 
         ({ functionName: this.methodName, methodId: this.methodHash } = transaction.methodData);
     }
 
-    get name(): string {
-        const { t, i18n } = useTranslation();
-
+    name({ t, i18n }: { t: TFunction<"translation", undefined>; i18n: i18n }): string {
         for (const [method, name] of Object.entries(this.types)) {
             if (this[method as keyof TransactionMethod]) {
                 return t(`general.transaction.types.${name}`);
@@ -60,63 +60,43 @@ export class TransactionMethod {
     }
 
     get isTokenTransfer(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.transfer;
+        return this.methodHash === this.network.contractMethods.transfer;
     }
 
     get isMultiPayment(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.multipayment;
+        return this.methodHash === this.network.contractMethods.multipayment;
     }
 
     get isVote(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.vote;
+        return this.methodHash === this.network.contractMethods.vote;
     }
 
     get isUnvote(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.unvote;
+        return this.methodHash === this.network.contractMethods.unvote;
     }
 
     get isValidatorRegistration(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.validator_registration;
+        return this.methodHash === this.network.contractMethods.validator_registration;
     }
 
     get isValidatorResignation(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.validator_resignation;
+        return this.methodHash === this.network.contractMethods.validator_resignation;
     }
 
     get isValidatorUpdate(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.validator_update;
+        return this.methodHash === this.network.contractMethods.validator_update;
     }
 
     get isUsernameRegistration(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.username_registration;
+        return this.methodHash === this.network.contractMethods.username_registration;
     }
 
     get isUsernameResignation(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.username_resignation;
+        return this.methodHash === this.network.contractMethods.username_resignation;
     }
 
     get isApprove(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.approve;
+        return this.methodHash === this.network.contractMethods.approve;
     }
 
     get isRevoke(): boolean {
@@ -128,9 +108,7 @@ export class TransactionMethod {
     }
 
     get isBatchTransfer(): boolean {
-        const { network } = useShareData();
-
-        return this.methodHash === network.contractMethods.batch_transfer;
+        return this.methodHash === this.network.contractMethods.batch_transfer;
     }
 
     get isContractDeployment(): boolean {

@@ -17,9 +17,9 @@ import useSharedData from "@/hooks/use-shared-data";
 import { Transaction } from "@/models/Transaction";
 
 export default function Show({ transaction: transactionData, details }: PageProps<TransactionShowProps>) {
-    const transaction = Transaction.from(transactionData);
-    const headerWidthClass = details.recipientIsContract ? "sm:w-[151px]" : "sm:w-[132px]";
     const { network } = useSharedData();
+    const transaction = Transaction.make(transactionData, network);
+    const headerWidthClass = details.recipientIsContract ? "sm:w-[151px]" : "sm:w-[132px]";
 
     const tokenSymbol = details.token?.symbol ?? network?.currency ?? "";
 
