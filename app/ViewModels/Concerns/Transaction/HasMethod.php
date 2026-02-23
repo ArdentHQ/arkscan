@@ -8,11 +8,6 @@ use App\Services\Transactions\TransactionMethod;
 
 trait HasMethod
 {
-    public function typeName(): string
-    {
-        return (new TransactionMethod($this->transaction))->name();
-    }
-
     public function isTransfer(): bool
     {
         return $this->method->isTransfer();
