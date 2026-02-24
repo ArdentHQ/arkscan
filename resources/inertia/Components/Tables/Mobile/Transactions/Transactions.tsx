@@ -14,6 +14,7 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TransactionsHeaderActions } from "@/Components/Tables/Desktop/Transactions/Transactions";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
+import { Transaction } from "@/models/Transaction";
 
 export function TransactionsMobileTable({
     transactions,
@@ -22,54 +23,58 @@ export function TransactionsMobileTable({
     transactions: IPaginatedResponse<ITransaction>;
     noAge?: boolean;
 }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { network } = useSharedData();
 
     return (
         <MobileTable noResultsMessage={transactions.noResultsMessage} resultCount={transactions.total ?? 0}>
-            {transactions.data.map((transaction: ITransaction, index) => (
-                <MobileTableRow
-                    key={index}
-                    header={
-                        <>
-                            <ID transaction={transaction} />
+            {transactions.data.map((row: ITransaction, index) => {
+                const transaction = Transaction.make(row, network);
 
-                            {!noAge && (
-                                <Age
-                                    className="text-theme-secondary-700 dark:text-theme-dark-200"
-                                    timestamp={transaction.timestamp}
-                                />
-                            )}
-                        </>
-                    }
-                >
-                    <TableCell label={transaction.type} className="sm:flex-1">
-                        <AddressingGeneric transaction={transaction} />
-                    </TableCell>
+                return (
+                    <MobileTableRow
+                        key={index}
+                        header={
+                            <>
+                                <ID transaction={transaction} />
 
-                    <TableCell
-                        label={t("tables.transactions.amount", {
-                            currency: network?.currency,
-                        })}
+                                {!noAge && (
+                                    <Age
+                                        className="text-theme-secondary-700 dark:text-theme-dark-200"
+                                        timestamp={transaction.timestamp}
+                                    />
+                                )}
+                            </>
+                        }
                     >
-                        <Amount
-                            testId={`transaction:mobile:${transaction.hash}:amount`}
-                            transaction={transaction}
-                            hideCurrency={true}
-                        />
-                    </TableCell>
+                        <TableCell label={transaction.method.name({ t, i18n })} className="sm:flex-1">
+                            <AddressingGeneric transaction={transaction} />
+                        </TableCell>
 
-                    <div className="sm:flex sm:flex-1 sm:justify-end">
                         <TableCell
-                            label={t("tables.transactions.fee", {
+                            label={t("tables.transactions.amount", {
                                 currency: network?.currency,
                             })}
                         >
-                            <Fee transaction={transaction} />
+                            <Amount
+                                testId={`transaction:mobile:${transaction.hash}:amount`}
+                                transaction={transaction}
+                                hideCurrency={true}
+                            />
                         </TableCell>
-                    </div>
-                </MobileTableRow>
-            ))}
+
+                        <div className="sm:flex sm:flex-1 sm:justify-end">
+                            <TableCell
+                                label={t("tables.transactions.fee", {
+                                    currency: network?.currency,
+                                })}
+                            >
+                                <Fee transaction={transaction} />
+                            </TableCell>
+                        </div>
+                    </MobileTableRow>
+                );
+            })}
         </MobileTable>
     );
 }

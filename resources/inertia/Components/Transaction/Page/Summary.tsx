@@ -1,18 +1,18 @@
 import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
-import { ITransaction } from "@/types/generated";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import AmountSmall from "@/Components/General/AmountSmall";
 import { TableHeaderTooltip } from "@/Components/Tables/Desktop/TableHeader";
 import { currency, isFiat, networkCurrency } from "@/utils/number-formatter";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
+import { Transaction } from "@/models/Transaction";
 
 export default function TransactionSummary({
     transaction,
     details,
     headerWidthClass,
 }: {
-    transaction: ITransaction;
+    transaction: Transaction;
     details: TransactionDetails;
     headerWidthClass: string;
 }) {
@@ -20,9 +20,12 @@ export default function TransactionSummary({
     const { network, settings } = useSharedData();
 
     const showAmountRow =
-        transaction.isTransfer || transaction.isMultiPayment || transaction.isApprove || transaction.isBatchTransfer;
-    const showLockedAmount = transaction.isValidatorRegistration && transaction.amount > 0;
-    const showUnlockedAmount = transaction.isValidatorResignation;
+        transaction.method.isTransfer ||
+        transaction.method.isMultiPayment ||
+        transaction.method.isApprove ||
+        transaction.method.isBatchTransfer;
+    const showLockedAmount = transaction.method.isValidatorRegistration && transaction.amount > 0;
+    const showUnlockedAmount = transaction.method.isValidatorResignation;
 
     const registrationAmount = transaction.validatorRegistration?.amount ?? null;
     const unlockedAmount =
