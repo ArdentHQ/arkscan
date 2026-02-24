@@ -19,7 +19,7 @@ final class TopAccountsController
 
     public function __invoke(): Response
     {
-        return Inertia::render('TopAccounts/List', [
+        return Inertia::renderWithMeta('TopAccounts/List', 'top-accounts', [
             'wallets' => Inertia::optional(function () {
                 $paginator = $this->getWallets();
 
@@ -29,7 +29,7 @@ final class TopAccountsController
                     'noResultsMessage' => $this->noResultsMessage($paginator->count()),
                 ];
             }),
-        ])->withMeta('top-accounts');
+        ]);
     }
 
     private function getWallets(): LengthAwarePaginator
