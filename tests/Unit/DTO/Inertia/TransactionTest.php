@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Enums\ContractMethod;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -53,11 +54,9 @@ it('should make an instance', function () {
             'timestamp'         => 1603083256000,
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
-
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);
@@ -80,34 +79,11 @@ it('should make an instance', function () {
         'gas_refunded'              => '0',
         'deployed_contract_address' => null,
         'decoded_error'             => null,
-        'multi_payment_recipients'  => [],
-        'amount'                    => 10.0,
-        'amountForItself'           => 0.0,
-        'amountExcludingItself'     => 0.0,
-        'amountWithFee'             => 10.00000000000042,
-        'amountReceived'            => 10.0,
+        'multiPaymentRecipients'    => [],
         'amountFiat'                => '$20.00',
         'amountReceivedFiat'        => '$20.00',
-        'fee'                       => 0.00000000000042,
         'feeFiat'                   => '$0.0000',
-        'type'                      => 'Transfer',
         'url'                       => route('transaction', $transaction),
-        'isTransfer'                => true,
-        'isTokenTransfer'           => false,
-        'isVote'                    => false,
-        'isUnvote'                  => false,
-        'isValidatorRegistration'   => false,
-        'isValidatorResignation'    => false,
-        'isValidatorUpdate'         => false,
-        'isUsernameRegistration'    => false,
-        'isUsernameResignation'     => false,
-        'isContractDeployment'      => false,
-        'isMultiPayment'            => false,
-        'isSelfReceiving'           => false,
-        'isSent'                    => true,
-        'isSentToSelf'              => false,
-        'isReceived'                => false,
-        'hasFailedStatus'           => false,
         'validatorRegistration'     => null,
         'votedFor'                  => null,
         'sender'                    => [
@@ -171,9 +147,12 @@ it('should make an instance', function () {
             'votePercentage'                    => null,
         ],
         'votedForUsername'                => null,
-        'isApprove'                       => false,
-        'isApprovalRevoke'                => false,
-        'isBatchTransfer'                 => false,
+        'tokenApprovalDetails'            => null,
+        'methodData'                      => [
+            'functionName' => null,
+            'methodId'     => null,
+            'arguments'    => null,
+        ],
     ]);
 });
 
@@ -217,11 +196,9 @@ it('should make an instance for a vote transaction', function () {
             'timestamp'         => 1603083256000,
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
-
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);
@@ -244,34 +221,11 @@ it('should make an instance for a vote transaction', function () {
         'gas_refunded'              => '0',
         'deployed_contract_address' => null,
         'decoded_error'             => null,
-        'multi_payment_recipients'  => [],
-        'amount'                    => 0.0,
-        'amountForItself'           => 0.0,
-        'amountExcludingItself'     => 0.0,
-        'amountWithFee'             => 0.00000000000042,
-        'amountReceived'            => 0.0,
+        'multiPaymentRecipients'    => [],
         'amountFiat'                => '$0.0000',
         'amountReceivedFiat'        => '$0.00',
-        'fee'                       => 0.00000000000042,
         'feeFiat'                   => '$0.0000',
-        'type'                      => 'Vote',
         'url'                       => route('transaction', $transaction),
-        'isTransfer'                => false,
-        'isTokenTransfer'           => false,
-        'isVote'                    => true,
-        'isUnvote'                  => false,
-        'isValidatorRegistration'   => false,
-        'isValidatorResignation'    => false,
-        'isValidatorUpdate'         => false,
-        'isUsernameRegistration'    => false,
-        'isUsernameResignation'     => false,
-        'isContractDeployment'      => false,
-        'isMultiPayment'            => false,
-        'isSelfReceiving'           => true,
-        'isSent'                    => true,
-        'isSentToSelf'              => false,
-        'isReceived'                => false,
-        'hasFailedStatus'           => false,
         'validatorRegistration'     => null,
         'votedFor'                  => $walletTo->address,
         'sender'                    => [
@@ -306,9 +260,14 @@ it('should make an instance for a vote transaction', function () {
         ],
         'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => 'bill.ding',
-        'isApprove'                       => false,
-        'isApprovalRevoke'                => false,
-        'isBatchTransfer'                 => false,
+        'tokenApprovalDetails'            => null,
+        'methodData'                      => [
+            'functionName' => 'vote(address)',
+            'methodId'     => ContractMethod::vote(),
+            'arguments'    => [
+                $walletTo->address,
+            ],
+        ],
     ]);
 });
 
@@ -325,8 +284,10 @@ it('should make an instance for a validator resignation transaction', function (
             ],
         ]);
 
+    $blsPublicKey = '8a8b2c9d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0';
+
     $registrationTransaction = Transaction::factory()
-        ->validatorRegistration()
+        ->validatorRegistration($blsPublicKey)
         ->create([
             'nonce'             => 122,
             'value'             => 250 * 1e18,
@@ -361,11 +322,9 @@ it('should make an instance for a validator resignation transaction', function (
             'timestamp'         => 1603083256000,
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
-
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);
@@ -388,34 +347,11 @@ it('should make an instance for a validator resignation transaction', function (
         'gas_refunded'              => '0',
         'deployed_contract_address' => null,
         'decoded_error'             => null,
-        'multi_payment_recipients'  => [],
-        'amount'                    => 0.0,
-        'amountForItself'           => 0.0,
-        'amountExcludingItself'     => 0.0,
-        'amountWithFee'             => 0.00000000000042,
-        'amountReceived'            => 0.0,
+        'multiPaymentRecipients'    => [],
         'amountFiat'                => '$0.0000',
         'amountReceivedFiat'        => '$0.00',
-        'fee'                       => 0.00000000000042,
         'feeFiat'                   => '$0.0000',
-        'type'                      => 'Validator Resignation',
         'url'                       => route('transaction', $transaction),
-        'isTransfer'                => false,
-        'isTokenTransfer'           => false,
-        'isVote'                    => false,
-        'isUnvote'                  => false,
-        'isValidatorRegistration'   => false,
-        'isValidatorResignation'    => true,
-        'isValidatorUpdate'         => false,
-        'isUsernameRegistration'    => false,
-        'isUsernameResignation'     => false,
-        'isContractDeployment'      => false,
-        'isMultiPayment'            => false,
-        'isSelfReceiving'           => true,
-        'isSent'                    => true,
-        'isSentToSelf'              => false,
-        'isReceived'                => false,
-        'hasFailedStatus'           => false,
         'validatorRegistration'     => [
             'hash'                      => $registrationTransaction->hash,
             'block_hash'                => '0000000000000000000000000000000000000000000000000000000000054320',
@@ -434,34 +370,11 @@ it('should make an instance for a validator resignation transaction', function (
             'gas_refunded'              => '0',
             'deployed_contract_address' => null,
             'decoded_error'             => null,
-            'multi_payment_recipients'  => [],
-            'amount'                    => 250.0,
-            'amountForItself'           => 0.0,
-            'amountExcludingItself'     => 0.0,
-            'amountWithFee'             => 250.00000000000042,
-            'amountReceived'            => 250.0,
+            'multiPaymentRecipients'    => [],
             'amountFiat'                => '$500.00',
             'amountReceivedFiat'        => '$500.00',
-            'fee'                       => 0.00000000000042,
             'feeFiat'                   => '$0.0000',
-            'type'                      => 'Validator Registration',
             'url'                       => route('transaction', $registrationTransaction),
-            'isTransfer'                => false,
-            'isTokenTransfer'           => false,
-            'isVote'                    => false,
-            'isUnvote'                  => false,
-            'isValidatorRegistration'   => true,
-            'isValidatorResignation'    => false,
-            'isValidatorUpdate'         => false,
-            'isUsernameRegistration'    => false,
-            'isUsernameResignation'     => false,
-            'isContractDeployment'      => false,
-            'isMultiPayment'            => false,
-            'isSelfReceiving'           => true,
-            'isSent'                    => true,
-            'isSentToSelf'              => false,
-            'isReceived'                => false,
-            'hasFailedStatus'           => false,
             'validatorRegistration'     => null,
             'votedFor'                  => null,
             'sender'                    => [
@@ -496,9 +409,14 @@ it('should make an instance for a validator resignation transaction', function (
             ],
             'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
             'votedForUsername'                => null,
-            'isApprove'                       => false,
-            'isApprovalRevoke'                => false,
-        'isBatchTransfer'                     => false,
+            'tokenApprovalDetails'            => null,
+            'methodData'                      => [
+                'functionName' => 'registerValidator(bytes)',
+                'methodId'     => ContractMethod::validatorRegistration(),
+                'arguments'    => [
+                    str_pad($blsPublicKey, 64, '0', STR_PAD_LEFT),
+                ],
+            ],
         ],
         'votedFor' => null,
         'sender'   => [
@@ -533,9 +451,12 @@ it('should make an instance for a validator resignation transaction', function (
         ],
         'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => null,
-        'isApprove'                       => false,
-        'isApprovalRevoke'                => false,
-        'isBatchTransfer'                 => false,
+        'tokenApprovalDetails'            => null,
+        'methodData'                      => [
+            'functionName' => 'resignValidator()',
+            'methodId'     => ContractMethod::validatorResignation(),
+            'arguments'    => [],
+        ],
     ]);
 });
 
@@ -578,13 +499,12 @@ it('should handle token transfer with non-existent recipient wallet', function (
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
     // Should not throw an exception
     $subject = TransactionDTO::fromModel($transaction);
 
-    expect($subject->isTokenTransfer)->toBeTrue();
     expect($subject->recipient)->not->toBeNull();
     expect($subject->recipient->address)->toBe($nonExistentContractAddress);
     expect($subject->sender)->not->toBeNull();
@@ -627,62 +547,15 @@ it('should handle transfer with non-existent recipient wallet', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($viewModel->timestamp())->format('Y-m-d') => 2.0,
+        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
     // Should not throw an exception
     $subject = TransactionDTO::fromModel($transaction);
 
-    expect($subject->isTransfer)->toBeTrue();
     expect($subject->recipient)->not->toBeNull();
     expect($subject->recipient->address)->toBe($nonExistentRecipientAddress);
     expect($subject->sender)->not->toBeNull();
-});
-
-it('should determine an approval transaction', function () {
-    $this->freezeTime();
-    $this->travelTo('2025-09-11 12:00:00');
-
-    $wallet = Wallet::factory()
-        ->create([
-            'address'    => '0x448c9672dc0DD62188064360c704822eCB6b9Fb4',
-            'balance'    => 100.34123 * 1e18,
-            'attributes' => [
-                'username' => 'joe.blogs',
-            ],
-        ]);
-
-    $transaction = Transaction::factory()
-        ->approve($wallet->address, BigNumber::new(1000))
-        ->create();
-
-    $subject = TransactionDTO::fromModel($transaction);
-
-    expect($subject->isApprove)->toBeTrue();
-    expect($subject->isApprovalRevoke)->toBeFalse();
-});
-
-it('should determine an approval revoke transaction', function () {
-    $this->freezeTime();
-    $this->travelTo('2025-09-11 12:00:00');
-
-    $wallet = Wallet::factory()
-        ->create([
-            'address'    => '0x448c9672dc0DD62188064360c704822eCB6b9Fb4',
-            'balance'    => 100.34123 * 1e18,
-            'attributes' => [
-                'username' => 'joe.blogs',
-            ],
-        ]);
-
-    $transaction = Transaction::factory()
-        ->approve($wallet->address, BigNumber::zero())
-        ->create();
-
-    $subject = TransactionDTO::fromModel($transaction);
-
-    expect($subject->isApprove)->toBeTrue();
-    expect($subject->isApprovalRevoke)->toBeTrue();
 });
 
 it('should stub sender wallet when address is not in db', function () {

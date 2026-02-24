@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\Models\ForgingStats as Model;
-use App\ViewModels\ForgingStatsViewModel;
+use App\ViewModels\WalletViewModel;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -22,21 +22,21 @@ class ForgingStats extends Data
     ) {
     }
 
-    public static function fromModel(Model $block): self
+    public static function fromModel(Model $forgingStats): self
     {
-        $viewModel = new ForgingStatsViewModel($block);
-        $validator = $viewModel->validator();
-        if ($validator !== null) {
-            $validator = Wallet::fromModel($validator->model());
-        }
+        $validatorWallet = $forgingStats->validator;
+
+        $walletViewModel = $validatorWallet !== null
+            ? new WalletViewModel($validatorWallet)
+            : null;
 
         return new self(
-            number: $block->missed_height,
-            timestamp: $block->timestamp,
-            validator: $validator,
-            voterCount: $viewModel->validator()?->voterCount(),
-            votesPercentage: $viewModel->validator()?->votesPercentage(),
-            votes: $viewModel->validator()?->votes(),
+            number: $forgingStats->missed_height,
+            timestamp: $forgingStats->timestamp,
+            validator: $validatorWallet !== null ? Wallet::fromModel($validatorWallet) : null,
+            voterCount: $walletViewModel?->voterCount(),
+            votesPercentage: $walletViewModel?->votesPercentage(),
+            votes: $walletViewModel?->votes(),
         );
     }
 }

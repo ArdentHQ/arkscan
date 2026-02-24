@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "@inertiajs/react";
-import { ITransaction } from "@/types/generated";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import Method from "@/Components/Transaction/Method";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
@@ -10,6 +9,7 @@ import ContractIcon from "@ui/icons/transaction/contract.svg?react";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import useSharedData from "@/hooks/use-shared-data";
 import { weiToArk } from "@/utils/UnitConverter";
+import { Transaction } from "@/models/Transaction";
 import CompactAmount from "@/Components/Tokens/CompactAmount";
 
 function ApproveActionRow({
@@ -17,11 +17,11 @@ function ApproveActionRow({
     details,
     headerWidthClass,
 }: {
-    transaction: ITransaction;
+    transaction: Transaction;
     details: TransactionDetails;
     headerWidthClass: string;
 }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { network } = useSharedData();
 
     const tokenApproval = details.tokenApproval;
@@ -42,9 +42,11 @@ function ApproveActionRow({
     const isUnlimited = tokenApproval.isUnlimited;
     const rawAmount = !isUnlimited && tokenApproval.amount !== null ? Number(weiToArk(tokenApproval.amount)) : null;
 
-    let rowTitle = transaction.type;
+    let rowTitle = "";
     if (tokenApproval.isRevoke) {
         rowTitle = t("pages.transaction.approve.revoke");
+    } else {
+        rowTitle = transaction.method.name({ t, i18n });
     }
 
     return (
@@ -121,7 +123,7 @@ export default function TransactionAction({
     details,
     headerWidthClass,
 }: {
-    transaction: ITransaction;
+    transaction: Transaction;
     details: TransactionDetails;
     headerWidthClass: string;
 }) {
@@ -132,7 +134,7 @@ export default function TransactionAction({
 
     return (
         <PageSection title={t("pages.transaction.action")}>
-            {transaction.isApprove ? (
+            {transaction.method.isApprove ? (
                 <ApproveActionRow transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
             ) : (
                 <SectionDetailRow
@@ -144,7 +146,7 @@ export default function TransactionAction({
                 </SectionDetailRow>
             )}
 
-            {transaction.isVote && votedValidator && (
+            {transaction.method.isVote && votedValidator && (
                 <SectionDetailRow title={t("pages.transaction.header.validator")} headerWidthClass={headerWidthClass}>
                     <Link href={route("wallet", votedValidator)} className="link">
                         {votedValidatorUsername ? (
@@ -161,22 +163,23 @@ export default function TransactionAction({
                 </SectionDetailRow>
             )}
 
-            {(transaction.isValidatorRegistration || transaction.isValidatorUpdate) && details.validatorPublicKey && (
-                <SectionDetailRow
-                    title={t("pages.transaction.header.validator")}
-                    valueClassName="min-w-0 overflow-x-auto max-w-full"
-                    headerWidthClass={headerWidthClass}
-                >
-                    <span className="hidden overflow-x-auto sm:inline">
-                        <TruncateDynamic value={details.validatorPublicKey} />
-                    </span>
-                    <span className="sm:hidden">
-                        <TruncateMiddle>{details.validatorPublicKey}</TruncateMiddle>
-                    </span>
-                </SectionDetailRow>
-            )}
+            {(transaction.method.isValidatorRegistration || transaction.method.isValidatorUpdate) &&
+                details.validatorPublicKey && (
+                    <SectionDetailRow
+                        title={t("pages.transaction.header.validator")}
+                        valueClassName="min-w-0 overflow-x-auto max-w-full"
+                        headerWidthClass={headerWidthClass}
+                    >
+                        <span className="hidden overflow-x-auto sm:inline">
+                            <TruncateDynamic value={details.validatorPublicKey} />
+                        </span>
+                        <span className="sm:hidden">
+                            <TruncateMiddle>{details.validatorPublicKey}</TruncateMiddle>
+                        </span>
+                    </SectionDetailRow>
+                )}
 
-            {transaction.isUsernameRegistration && details.username && (
+            {transaction.method.isUsernameRegistration && details.username && (
                 <SectionDetailRow
                     title={t("pages.transaction.header.username")}
                     valueClassName="min-w-0"

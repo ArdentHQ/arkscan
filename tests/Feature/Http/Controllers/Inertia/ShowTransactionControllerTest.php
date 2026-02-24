@@ -127,8 +127,8 @@ it('should return multipayment recipients', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Transaction/Show')
-            ->has('details.multiPaymentRecipients', 2)
-            ->where('details.multiPaymentRecipients', function ($data) use ($recipients, $amounts) {
+            ->has('transaction.multiPaymentRecipients', 2)
+            ->where('transaction.multiPaymentRecipients', function ($data) use ($recipients, $amounts) {
                 $addresses    = collect($data)->pluck('address')->sort()->values()->all();
                 $amountValues = collect($data)->pluck('amount')->sort()->values()->all();
 

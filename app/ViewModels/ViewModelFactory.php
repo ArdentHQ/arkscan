@@ -6,7 +6,6 @@ namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
 use App\Models\Block;
-use App\Models\ForgingStats;
 use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -33,10 +32,6 @@ final class ViewModelFactory
 
         if ($model instanceof Wallet) {
             return new WalletViewModel($model);
-        }
-
-        if ($model instanceof ForgingStats) {
-            return new ForgingStatsViewModel($model);
         }
 
         throw new InvalidArgumentException('Invalid View Model Type.');
