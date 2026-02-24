@@ -2,6 +2,7 @@ import { Link } from "@inertiajs/react";
 import TruncateMiddle from "../General/TruncateMiddle";
 import classNames from "classnames";
 import { IMemoryWallet, IWallet } from "@/types/generated";
+import TruncateDynamic from "../General/TruncateDynamic";
 
 export default function Address({
     wallet,
@@ -9,7 +10,7 @@ export default function Address({
     className = "",
 }: {
     wallet: IWallet | IMemoryWallet | string;
-    truncate?: boolean | number;
+    truncate?: boolean | number | "dynamic";
     className?: string;
 }) {
     const address = typeof wallet === "string" ? wallet : wallet.address;
@@ -41,6 +42,8 @@ export default function Address({
                             {typeof truncate === "number" && (
                                 <TruncateMiddle length={truncate}>{address}</TruncateMiddle>
                             )}
+
+                            {truncate === "dynamic" && <TruncateDynamic value={address} />}
 
                             {truncate === false && address}
                         </>

@@ -8,6 +8,7 @@ import FiatValue from "@/Components/General/FiatValue";
 import Tooltip from "@/Components/General/Tooltip";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { WalletProps } from "@/Pages/Wallet.contracts";
+import { Link } from "@inertiajs/react";
 
 export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
@@ -48,19 +49,24 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                 title={t("pages.wallet.token_holdings")}
                 value={
                     <span className="inline-flex items-center space-x-2">
-                        <span>
+                        <span className="hidden min-[280px]:inline-block">
                             {tokenHoldingsCount} {t("pages.wallet.tokens")}
                         </span>
-                        <button type="button" className="link font-semibold" onClick={() => select("tokens")}>
+
+                        <Link
+                            className="link"
+                            href={route("wallet", { wallet: wallet.address, view: "tokens" }) + "#wallet:tabs:content"}
+                        >
                             {t("general.view")}
-                        </button>
+                        </Link>
                     </span>
                 }
             />
 
             <WalletOverviewItemEntry
                 title={t("pages.wallet.voting_for")}
-                value={wallet.vote ? <Address wallet={wallet.vote} /> : null}
+                value={wallet.vote ? <Address wallet={wallet.vote} truncate="dynamic" /> : null}
+                valueClassName="min-w-0"
             />
         </WalletOverviewItem>
     );
