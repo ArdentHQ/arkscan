@@ -74,26 +74,24 @@ export default function Addressing({
             </div>
 
             <div>
-                {!!interactedWallet ? (
-                    <>
-                        {withoutLink ? (
-                            <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                {interactedWallet!.username}
-                                {!interactedWallet!.username && withoutTruncate && interactedWallet!.address}
-                                {!interactedWallet!.username && !withoutTruncate && (
-                                    <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
-                                )}
-                            </span>
+                {interactedWallet ? (
+                    (() => {
+                        const label =
+                            interactedWallet.username ??
+                            (withoutTruncate ? (
+                                interactedWallet.address
+                            ) : (
+                                <TruncateMiddle>{interactedWallet.address}</TruncateMiddle>
+                            ));
+
+                        return withoutLink ? (
+                            <span className="text-theme-secondary-900 dark:text-theme-dark-50">{label}</span>
                         ) : (
-                            <Link className="link" href={route("wallet", interactedWallet!.address)}>
-                                {interactedWallet!.username}
-                                {!interactedWallet!.username && withoutTruncate && interactedWallet!.address}
-                                {!interactedWallet!.username && !withoutTruncate && (
-                                    <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
-                                )}
+                            <Link className="link" href={route("wallet", interactedWallet.address)}>
+                                {label}
                             </Link>
-                        )}
-                    </>
+                        );
+                    })()
                 ) : (
                     <span className="text-theme-secondary-900 dark:text-theme-dark-50">
                         {t("tables.transactions.contract")}
