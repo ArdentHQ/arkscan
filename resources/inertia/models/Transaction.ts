@@ -101,6 +101,7 @@ export class Transaction {
         return toFloat(amount);
     }
 
+    // TODO: rename to `valueWithFee`
     get amountWithFee(): number {
         return toFloat(this.value) + this.fee;
     }
