@@ -192,7 +192,7 @@ export function decimalsFor(currency: string, isSmallValue = false): number {
     if (isFiat(currency)) {
         return isSmallValue ? FIAT_DECIMALS_SMALL : FIAT_DECIMALS;
     }
-    return isSmallValue ? CRYPTO_DECIMALS_SMALL : CRYPTO_DECIMALS;
+    return CRYPTO_DECIMALS;
 }
 
 /**

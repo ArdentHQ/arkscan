@@ -8,7 +8,6 @@ use App\DTO\Inertia\Concerns\WithTokenApproval;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Enums\TokenTransferArgument;
 use App\Facades\Wallets;
-use App\Models\MultiPayment;
 use App\Models\TokenTransfer as TokenTransferModel;
 use App\Models\Transaction as Model;
 use App\Models\Wallet;
@@ -41,8 +40,6 @@ class TransactionDetails extends Data
         public ?Token $token,
         #[LiteralTypeScriptType('{formatted: string | null; utf8: string | null; raw: string | null} | null')]
         public ?array $payload,
-        #[LiteralTypeScriptType('{address: string; amount: string}[]')]
-        public array $multiPaymentRecipients,
         #[LiteralTypeScriptType('{recipient: string; amount: string; recipientUsername: string | null; recipientHasUsername: boolean}[]')]
         public array $batchTokenTransfers,
         public string $totalFiat,
@@ -55,7 +52,7 @@ class TransactionDetails extends Data
         $viewModel = new TransactionViewModel($transaction);
         $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
         $recipient = $viewModel->recipient();
-        $token     = $recipient !== null ? (new WalletCache())->getToken($recipient->address()) : null;
+        $token     = (new WalletCache())->getToken($recipient->address());
         if ($token !== null) {
             $token = Token::fromModel($token);
         } elseif ($viewModel->isBatchTransfer()) {
@@ -104,14 +101,13 @@ class TransactionDetails extends Data
             timestampFormatted: Timestamp::fromUnixHuman($transaction->timestamp),
             confirmations: $viewModel->confirmations(),
             transactionError: $viewModel->transactionError(),
-            recipientIsContract: $recipient?->isContract() ?? false,
+            recipientIsContract: $recipient->isContract(),
             validatorPublicKey: $viewModel->validatorPublicKey(),
             username: $username,
             tokenTransfer: self::tokenTransferDetails($viewModel),
             tokenApproval: self::tokenApprovalDetails($viewModel),
             token: $token,
             payload: self::payloadDetails($viewModel),
-            multiPaymentRecipients: self::multiPaymentRecipients($viewModel),
             batchTokenTransfers: $batchTokenTransfers,
             totalFiat: $viewModel->totalFiat(true),
             totalFiatValue: ExchangeRate::convertNumerical($viewModel->amountWithFee(), $transaction->timestamp),
@@ -168,20 +164,6 @@ class TransactionDetails extends Data
             'utf8'      => self::safeUtf8($transaction->utf8Payload() ?? ''),
             'raw'       => self::safeUtf8($transaction->rawPayload() ?? ''),
         ];
-    }
-
-    /**
-     * @return array<int, array{address: string, amount: string}>
-     */
-    private static function multiPaymentRecipients(TransactionViewModel $transaction): array
-    {
-        return $transaction->multiPaymentRecipients()
-            ->map(fn (MultiPayment $recipient) => [
-                'address' => $recipient->to,
-                'amount'  => (string) $recipient->amount,
-            ])
-            ->values()
-            ->toArray();
     }
 
     private static function safeUtf8(string $value): string

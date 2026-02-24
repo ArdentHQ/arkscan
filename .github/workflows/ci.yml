@@ -177,8 +177,33 @@ jobs:
                   ARKSCAN_DB_USERNAME: arkscan_test_db
                   ARKSCAN_DB_PASSWORD: password
 
-    browser:
+    jest:
         needs: [conflicts, analyse, format]
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.head_ref }}
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22.11
+
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
+
+            - name: Run Tests
+              run: pnpm test
+
+    browser:
+        needs: [unit, jest]
 
         if: github.event_name != 'pull_request' || github.event_name == 'workflow_dispatch'
 

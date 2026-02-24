@@ -1,11 +1,12 @@
 import useSharedData from "@/hooks/use-shared-data";
-import { ITransaction } from "@/types/generated";
 import classNames from "classnames";
 import Fee from "./Fee";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
+import { Transaction } from "@/models/Transaction";
+import { IWallet } from "@/types/generated";
 
 export default function Amount({
-    forWallet = false,
+    wallet,
     transaction,
     withoutFee = false,
     withNetworkCurrency = false,
@@ -13,8 +14,8 @@ export default function Amount({
     hideCurrency,
     testId,
 }: {
-    forWallet?: boolean;
-    transaction: ITransaction;
+    wallet?: IWallet;
+    transaction: Transaction;
     withoutFee?: boolean;
     withNetworkCurrency?: boolean;
     breakpoint?: "md-lg" | "lg" | "xl";
@@ -23,16 +24,22 @@ export default function Amount({
 }) {
     const { network } = useSharedData();
 
-    let isReceived = forWallet ? !transaction.isSent : false;
-    let isSent = forWallet ? transaction.isSent : false;
+    let isSent = false;
+    let isReceived = false;
+
+    if (wallet && transaction.isSent(wallet.address)) {
+        isSent = true;
+    } else if (wallet) {
+        isReceived = true;
+    }
 
     let amount = transaction.amount;
     let amountFiat = transaction.amountFiat;
     let amountForItself: number | undefined = undefined;
 
-    if (forWallet) {
-        if (isReceived || transaction.isSentToSelf) {
-            amount = transaction.amountReceived;
+    if (wallet) {
+        if (isReceived || transaction.isSentToSelf(wallet.address)) {
+            amount = transaction.amountReceived(wallet.address);
             amountFiat = transaction.amountReceivedFiat;
         } else {
             amountForItself = transaction.amountForItself;
@@ -42,7 +49,7 @@ export default function Amount({
         }
     }
 
-    if (transaction.isValidatorResignation) {
+    if (transaction.method.isValidatorResignation) {
         const registration = transaction.validatorRegistration;
         if (registration !== null) {
             amount = registration.amount;
@@ -82,6 +89,7 @@ export default function Amount({
                     amountForItself={amountForItself}
                     fiat={amountFiat}
                     isSent={isSent}
+                    isSentToSelf={wallet ? transaction.isSentToSelf(wallet.address) : false}
                     isReceived={isReceived}
                     transaction={transaction}
                     hideCurrency={hideCurrency}
