@@ -69,7 +69,7 @@ function ApproveActionRow({
                                     {t("general.unlimited")} {tokenSymbol}
                                 </span>
                             ) : (
-                                rawAmount !== null && <CompactAmount amount={rawAmount} tokenSymbol={tokenSymbol} />
+                                rawAmount !== null && <CompactAmount amount={rawAmount} tokenSymbol={tokenSymbol} fullTokenSymbol={details.token?.symbolFull} />
                             )}
                             <span className="whitespace-nowrap">{t("pages.transaction.approve.for_use_by")}</span>
                         </>
