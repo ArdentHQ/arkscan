@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
  * @property string $symbol
  * @property string $name
  * @property string $symbolNormalized
+ * @property string $symbolFull
  * @property string $nameNormalized
  * @property int $decimals
  * @property BigNumber $total_supply
@@ -82,8 +83,17 @@ final class Token extends Model
         return self::normalizeString($this->symbol, self::MAX_SYMBOL_LENGTH, '…');
     }
 
-    private static function normalizeString(string $value, int $maxLength, ?string $suffix = null): string
+    public function getSymbolFullAttribute(): string
     {
+        return self::normalizeString($this->symbol);
+    }
+
+    private static function normalizeString(string $value, ?int $maxLength = null, ?string $suffix = null): string
+    {
+        if ($maxLength === null) {
+            return Str::trim($value);
+        }
+
         if (strlen($value) <= $maxLength) {
             return $value;
         }
