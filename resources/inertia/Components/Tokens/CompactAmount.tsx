@@ -32,7 +32,7 @@ export default function CompactAmount({
         return (
             <>
                 <span className="hidden md:inline">
-                    <span className="break-all inline">
+                    <span className="inline break-all">
                         {formattedFull}
                         {!hideSymbol && <TokenSymbol tokenSymbol={tokenSymbol} fullTokenSymbol={fullTokenSymbol} />}
                     </span>

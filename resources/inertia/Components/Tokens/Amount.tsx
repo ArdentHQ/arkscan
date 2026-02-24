@@ -27,7 +27,9 @@ export default function Amount({
 
     const { value, suffix } = formatCompact(amount);
     const isCompact = suffix !== undefined;
-    const fullFormatted = isCompact ? `${networkCurrency(amount, 8, false)} ${tokenTransfer.token.symbolFull ?? tokenTransfer.token.symbol}` : undefined;
+    const fullFormatted = isCompact
+        ? `${networkCurrency(amount, 8, false)} ${tokenTransfer.token.symbolFull ?? tokenTransfer.token.symbol}`
+        : undefined;
 
     if (isSentToSelf) {
         isReceived = false;
@@ -77,7 +79,12 @@ export default function Amount({
                             </span>
                         )}
 
-                        {!hideCurrency && <TokenSymbol tokenSymbol={tokenTransfer.token.symbol} fullTokenSymbol={tokenTransfer.token.symbolFull} />}
+                        {!hideCurrency && (
+                            <TokenSymbol
+                                tokenSymbol={tokenTransfer.token.symbol}
+                                fullTokenSymbol={tokenTransfer.token.symbolFull}
+                            />
+                        )}
                     </>
                 )}
             </div>

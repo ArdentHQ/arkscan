@@ -41,7 +41,12 @@ export default function TransactionToken({
                 </SectionDetailRow>
 
                 <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
-                    <CompactAmount amount={totalRaw} tokenSymbol={tokenSymbol} fullTokenSymbol={details.token?.symbolFull} showFullOnDesktop />
+                    <CompactAmount
+                        amount={totalRaw}
+                        tokenSymbol={tokenSymbol}
+                        fullTokenSymbol={details.token?.symbolFull}
+                        showFullOnDesktop
+                    />
                 </SectionDetailRow>
 
                 {network?.canBeExchanged && (
