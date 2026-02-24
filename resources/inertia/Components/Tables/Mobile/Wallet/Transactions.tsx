@@ -18,7 +18,7 @@ import { Transaction } from "@/models/Transaction";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 
 export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { network, wallet } = useSharedData<WalletProps>();
 
     return (

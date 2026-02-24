@@ -4,7 +4,7 @@ import Tooltip from "../General/Tooltip";
 import { Transaction } from "@/models/Transaction";
 
 export default function Method({ transaction }: { transaction: Transaction }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     if (transaction.method.isVote) {
         if (transaction.votedFor) {

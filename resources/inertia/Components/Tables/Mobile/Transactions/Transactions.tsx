@@ -23,7 +23,7 @@ export function TransactionsMobileTable({
     transactions: IPaginatedResponse<ITransaction>;
     noAge?: boolean;
 }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { network } = useSharedData();
 
     return (
