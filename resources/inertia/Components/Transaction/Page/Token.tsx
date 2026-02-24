@@ -6,14 +6,14 @@ import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import { formatUnits, parseUnits, weiToArk } from "@/utils/UnitConverter";
 import { currency } from "@/utils/number-formatter";
 import CompactAmount from "@/Components/Tokens/CompactAmount";
-import { ITransaction } from "@/types/generated";
+import { Transaction } from "@/models/Transaction";
 
 export default function TransactionToken({
     transaction,
     details,
     headerWidthClass,
 }: {
-    transaction: ITransaction;
+    transaction: Transaction;
     details: TransactionDetails;
     headerWidthClass: string;
 }) {
@@ -22,7 +22,7 @@ export default function TransactionToken({
 
     const tokenSymbol = details.token?.symbol ?? network?.currency;
 
-    if (transaction.isBatchTransfer) {
+    if (transaction.method.isBatchTransfer) {
         const transfers = details.batchTokenTransfers;
         const totalRaw = transfers.reduce((sum, tf) => {
             return sum + Number(weiToArk(tf.amount));

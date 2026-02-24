@@ -13,45 +13,50 @@ import Token from "@/Components/Tokens/Token";
 import useSharedData from "@/hooks/use-shared-data";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import Addressing from "@/Components/Tokens/Addressing";
+import { TokenTransfer } from "@/models/TokenTransfer";
 
 export function TokenTransfersMobileTable() {
-    const { t } = useTranslation();
-    const { tokenTransfers, wallet } = useSharedData<WalletProps>();
+    const { t, i18n } = useTranslation();
+    const { network, tokenTransfers, wallet } = useSharedData<WalletProps>();
 
     return (
         <MobileTable noResultsMessage={tokenTransfers.noResultsMessage} resultCount={tokenTransfers.total ?? 0}>
-            {tokenTransfers.data.map((transfer: ITokenTransfer, index) => (
-                <MobileTableRow
-                    key={index}
-                    header={
-                        <>
-                            <ID transaction={transfer.transaction!} />
+            {tokenTransfers.data.map((row: ITokenTransfer, index) => {
+                const transfer = TokenTransfer.make(row, network);
 
-                            <Age
-                                className="text-theme-secondary-700 dark:text-theme-dark-200"
-                                timestamp={transfer.transaction!.timestamp}
+                return (
+                    <MobileTableRow
+                        key={index}
+                        header={
+                            <>
+                                <ID transaction={transfer.transaction} />
+
+                                <Age
+                                    className="text-theme-secondary-700 dark:text-theme-dark-200"
+                                    timestamp={transfer.transaction.timestamp}
+                                />
+                            </>
+                        }
+                    >
+                        <TableCell label={transfer.transaction.method.name({ t, i18n })} className="sm:flex-1">
+                            <Addressing tokenTransfer={transfer} wallet={wallet} />
+                        </TableCell>
+
+                        <TableCell label={t("tables.tokens.amount_generic")} className="sm:flex-1">
+                            <Amount
+                                testId={`transaction:mobile:${transfer.transaction.hash}:amount`}
+                                tokenTransfer={transfer}
+                                hideCurrency
+                                wallet={wallet}
                             />
-                        </>
-                    }
-                >
-                    <TableCell label={transfer.transaction!.type} className="sm:flex-1">
-                        <Addressing tokenTransfer={transfer} wallet={wallet} />
-                    </TableCell>
+                        </TableCell>
 
-                    <TableCell label={t("tables.tokens.amount_generic")} className="sm:flex-1">
-                        <Amount
-                            testId={`transaction:mobile:${transfer.transaction!.hash}:amount`}
-                            tokenTransfer={transfer}
-                            hideCurrency
-                            wallet={wallet}
-                        />
-                    </TableCell>
-
-                    <TableCell label={t("tables.tokens.token")}>
-                        <Token token={transfer.token} className="w-full sm:w-[120px]" />
-                    </TableCell>
-                </MobileTableRow>
-            ))}
+                        <TableCell label={t("tables.tokens.token")}>
+                            <Token token={transfer.token} className="w-full sm:w-[120px]" />
+                        </TableCell>
+                    </MobileTableRow>
+                );
+            })}
         </MobileTable>
     );
 }

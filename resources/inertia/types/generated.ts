@@ -139,7 +139,9 @@ export type INetwork = {
         validator_update: string;
         username_registration: string;
         username_resignation: string;
+        approve: string;
         contract_deployment: string;
+        batch_transfer: string;
     };
 };
 export type IPriceTickerData = {
@@ -197,7 +199,7 @@ export type ITokenTransfer = {
     block_number: number;
     index: number;
     token: IToken;
-    transaction: ITransaction | null;
+    transaction: ITransaction;
 };
 export type ITransaction = {
     hash: string;
@@ -217,37 +219,20 @@ export type ITransaction = {
     gas_refunded: string;
     deployed_contract_address: string | null;
     decoded_error: string | null;
-    multi_payment_recipients: string[];
-    amount: number;
-    amountForItself: number;
-    amountExcludingItself: number;
-    amountWithFee: number;
-    amountReceived: number;
+    multiPaymentRecipients: { address: string; amount: string }[];
     amountFiat: string | number;
     amountReceivedFiat: string | number;
-    fee: number;
     feeFiat: string | number;
-    type: string;
     url: string;
-    isTransfer: boolean;
-    isTokenTransfer: boolean;
-    isVote: boolean;
-    isUnvote: boolean;
-    isValidatorRegistration: boolean;
-    isValidatorResignation: boolean;
-    isValidatorUpdate: boolean;
-    isUsernameRegistration: boolean;
-    isUsernameResignation: boolean;
-    isApprove: boolean;
-    isApprovalRevoke: boolean;
-    isContractDeployment: boolean;
-    isMultiPayment: boolean;
-    isBatchTransfer: boolean;
-    isSelfReceiving: boolean;
-    isSent: boolean;
-    isSentToSelf: boolean;
-    isReceived: boolean;
-    hasFailedStatus: boolean;
+    methodData: { functionName: string | null; methodId: string | null; arguments: string[] | null };
+    tokenApprovalDetails: {
+        spender: string;
+        amount: string | null;
+        isUnlimited: boolean;
+        isRevoke: boolean;
+        spenderUsername: string | null;
+        spenderHasUsername: boolean;
+    } | null;
     validatorRegistration: ITransaction | null;
     votedFor: string | null;
     votedForUsername: string | null;
@@ -277,7 +262,6 @@ export type ITransactionDetails = {
     } | null;
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
-    multiPaymentRecipients: { address: string; amount: string }[];
     batchTokenTransfers: {
         recipient: string;
         amount: string;

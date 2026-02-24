@@ -8,21 +8,13 @@ use App\DTO\MemoryWallet;
 
 trait InteractsWithWallets
 {
-    public function sender(): ?MemoryWallet
+    public function sender(): MemoryWallet
     {
         return MemoryWallet::fromPublicKey($this->transaction->sender_public_key);
     }
 
-    public function recipient(): ?MemoryWallet
+    public function recipient(): MemoryWallet
     {
-        if (is_null($this->transaction->to)) {
-            if ($this->transaction->deployed_contract_address !== null) {
-                return MemoryWallet::fromAddress($this->transaction->deployed_contract_address);
-            }
-
-            return $this->sender();
-        }
-
-        return MemoryWallet::fromAddress($this->transaction->to);
+        return MemoryWallet::fromAddress($this->transaction->recipientAddress());
     }
 }
