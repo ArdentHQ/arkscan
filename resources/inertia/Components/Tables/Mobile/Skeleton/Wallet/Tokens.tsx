@@ -21,9 +21,9 @@ export function MobileTokensSkeletonTable({ rowCount }: { rowCount: number }) {
             >
                 <LoadingTableCell withLabel={true} />
 
-                <LoadingTableCell withLabel={true} />
-
                 {network.canBeExchanged && <LoadingTableCell withLabel={true} />}
+
+                <LoadingTableCell withLabel={true} className="sm:hidden" />
             </MobileTableRow>,
         );
     }
