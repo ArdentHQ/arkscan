@@ -12,6 +12,7 @@ import { WalletProps } from "@/Pages/Wallet.contracts";
 import Address from "@/Components/Wallet/Address";
 import AmountGeneric from "@/Components/Tokens/AmountGeneric";
 import TruncatedValue from "@/Components/Tokens/TruncatedValue";
+import TruncatedTokenSymbol from "@/Components/Tokens/TruncatedTokenSymbol";
 
 export function TokensMobileTable() {
     const { t } = useTranslation();
@@ -30,7 +31,7 @@ export function TokensMobileTable() {
                                 </div>
 
                                 <div className="md-lg:hidden">
-                                    <TruncatedValue value={token.token.symbol} />
+                                    <TruncatedTokenSymbol tokenSymbol={token.token.symbol} fullTokenSymbol={token.token.symbolFull} />
                                 </div>
                             </div>
 

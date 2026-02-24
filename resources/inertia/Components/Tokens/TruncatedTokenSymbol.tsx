@@ -8,8 +8,7 @@ export default function TruncatedTokenSymbol({ tokenSymbol, fullTokenSymbol, cla
     }, [tokenSymbol]);
 
     return isTruncated ? (
-        <TokenSymbol tokenSymbol={tokenSymbol} fullTokenSymbol={fullTokenSymbol} />
-        
+        <TokenSymbol tokenSymbol={tokenSymbol} fullTokenSymbol={fullTokenSymbol} addSpace={false} />
     ) : (
         <TruncateDynamic value={tokenSymbol} location="end" className={className} />
     );
