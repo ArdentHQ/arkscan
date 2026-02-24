@@ -6,14 +6,12 @@ import useSharedData from "@/hooks/use-shared-data";
 import Address from "../Address";
 import FiatValue from "@/Components/General/FiatValue";
 import Tooltip from "@/Components/General/Tooltip";
-import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import { Link } from "@inertiajs/react";
 
 export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
     const { network, tokenHoldingsCount } = useSharedData<WalletProps>();
-    const { select } = useTabs();
 
     const showTooltip = wallet.formattedBalanceTwoDecimals !== wallet.formattedBalanceFull;
 
