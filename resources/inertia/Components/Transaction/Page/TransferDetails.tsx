@@ -36,16 +36,14 @@ export default function TransferDetails({
                             {transfers.map((transfer, index) => (
                                 <tr
                                     className="text-sm font-semibold"
-                                    key={`${transfer.recipient}-${transfer.amount}-${index}`}
+                                    key={`${transfer.recipient.address}-${transfer.amount}-${index}`}
                                 >
                                     <TableCell>
                                         <TransactionAddress
-                                            address={transfer.recipient}
+                                            address={transfer.recipient.address}
                                             wallet={{
-                                                address: transfer.recipient,
-                                                username: transfer.recipientHasUsername
-                                                    ? transfer.recipientUsername
-                                                    : null,
+                                                address: transfer.recipient.address,
+                                                username: transfer.recipient.username ?? null,
                                             }}
                                             testId={`transaction:transfer:${index}`}
                                         />

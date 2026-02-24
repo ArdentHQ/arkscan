@@ -78,16 +78,16 @@ function ApproveActionRow({
 
                 <div className="flex items-center gap-x-1">
                     <span className="inline-flex items-center">
-                        <Link href={route("wallet", tokenApproval.spender)} className="link">
+                        <Link href={route("wallet", tokenApproval.spender.address)} className="link">
                             <span className="hidden md:inline">
-                                {tokenApproval.spenderHasUsername ? (
-                                    tokenApproval.spenderUsername
+                                {tokenApproval.spender.username ? (
+                                    tokenApproval.spender.username
                                 ) : (
-                                    <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
+                                    <TruncateMiddle length={14}>{tokenApproval.spender.address}</TruncateMiddle>
                                 )}
                             </span>
                             <span className="md:hidden">
-                                <TruncateMiddle length={14}>{tokenApproval.spender}</TruncateMiddle>
+                                <TruncateMiddle length={14}>{tokenApproval.spender.address}</TruncateMiddle>
                             </span>
                         </Link>
 

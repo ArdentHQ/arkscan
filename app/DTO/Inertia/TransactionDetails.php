@@ -33,14 +33,14 @@ class TransactionDetails extends Data
         public bool $recipientIsContract,
         public ?string $validatorPublicKey,
         public ?string $username,
-        #[LiteralTypeScriptType('{recipient: string; amount: string | null; recipientUsername: string | null; recipientHasUsername: boolean} | null')]
+        #[LiteralTypeScriptType('{recipient: IWallet; amount: string | null} | null')]
         public ?array $tokenTransfer,
-        #[LiteralTypeScriptType('{spender: string; amount: string | null; isUnlimited: boolean; isRevoke: boolean; spenderUsername: string | null; spenderHasUsername: boolean} | null')]
+        #[LiteralTypeScriptType('{spender: IWallet; amount: string | null; isUnlimited: boolean; isRevoke: boolean} | null')]
         public ?array $tokenApproval,
         public ?Token $token,
         #[LiteralTypeScriptType('{formatted: string | null; utf8: string | null; raw: string | null} | null')]
         public ?array $payload,
-        #[LiteralTypeScriptType('{recipient: string; amount: string; recipientUsername: string | null; recipientHasUsername: boolean}[]')]
+        #[LiteralTypeScriptType('{recipient: IWallet; amount: string}[]')]
         public array $batchTokenTransfers,
         public string $totalFiat,
         public float $totalFiatValue,
@@ -89,10 +89,8 @@ class TransactionDetails extends Data
                     : WalletDTO::stub($tf->to);
 
                 $batchTokenTransfers[] = [
-                    'recipient'            => $tf->to,
-                    'amount'               => (string) $tf->value,
-                    'recipientUsername'    => $wallet->username,
-                    'recipientHasUsername' => $wallet->username !== null,
+                    'recipient' => $wallet,
+                    'amount'    => (string) $tf->value,
                 ];
             }
         }
@@ -115,7 +113,7 @@ class TransactionDetails extends Data
     }
 
     /**
-     * @return array{recipient: string, amount: string|null, recipientUsername: string|null, recipientHasUsername: bool}|null
+     * @return array{recipient: WalletDTO, amount: string|null}|null
      */
     private static function tokenTransferDetails(TransactionViewModel $transaction): ?array
     {
@@ -142,10 +140,8 @@ class TransactionDetails extends Data
         }
 
         return [
-            'recipient'            => $recipient,
-            'amount'               => $amount,
-            'recipientUsername'    => $recipientWalletData->username,
-            'recipientHasUsername' => $recipientWalletData->username !== null,
+            'recipient' => $recipientWalletData,
+            'amount'    => $amount,
         ];
     }
 

@@ -50,12 +50,10 @@ trait WithTokenApproval
         }
 
         return [
-            'spender'            => $spender,
-            'amount'             => $amount,
-            'isUnlimited'        => $isUnlimited,
-            'isRevoke'           => $isRevoke,
-            'spenderUsername'    => $spenderWalletData->username,
-            'spenderHasUsername' => $spenderWalletData->username !== null,
+            'spender'     => $spenderWalletData,
+            'amount'      => $amount,
+            'isUnlimited' => $isUnlimited,
+            'isRevoke'    => $isRevoke,
         ];
     }
 }

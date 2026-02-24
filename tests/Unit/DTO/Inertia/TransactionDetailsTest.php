@@ -86,12 +86,11 @@ it('should include token approval details for approve transaction', function () 
     $details = TransactionDetails::fromModel($transaction);
 
     expect($details->tokenApproval)->not->toBeNull();
-    expect($details->tokenApproval['spender'])->toBe($spender->address);
+    expect($details->tokenApproval['spender']->address)->toBe($spender->address);
     expect($details->tokenApproval['amount'])->toBeString();
     expect($details->tokenApproval['isUnlimited'])->toBeFalse();
     expect($details->tokenApproval['isRevoke'])->toBeFalse();
-    expect($details->tokenApproval['spenderUsername'])->toBe('spender.user');
-    expect($details->tokenApproval['spenderHasUsername'])->toBeTrue();
+    expect($details->tokenApproval['spender']->username)->toBe('spender.user');
 });
 
 it('should detect unlimited approve', function () {
@@ -154,9 +153,8 @@ it('should handle approve with unknown spender wallet', function () {
     $details = TransactionDetails::fromModel($transaction);
 
     expect($details->tokenApproval)->not->toBeNull();
-    expect(strtolower($details->tokenApproval['spender']))->toBe(strtolower($unknownSpender));
-    expect($details->tokenApproval['spenderHasUsername'])->toBeFalse();
-    expect($details->tokenApproval['spenderUsername'])->toBeNull();
+    expect(strtolower($details->tokenApproval['spender']->address))->toBe(strtolower($unknownSpender));
+    expect($details->tokenApproval['spender']->username)->toBeNull();
 });
 
 it('should return null token approval for approve without valid arguments', function () {
@@ -242,13 +240,12 @@ it('should include batch token transfers', function () {
     $details = TransactionDetails::fromModel($transaction);
 
     expect($details->batchTokenTransfers)->toHaveCount(2);
-    expect($details->batchTokenTransfers[0]['recipient'])->toBe($recipient1->address);
+    expect($details->batchTokenTransfers[0]['recipient']->address)->toBe($recipient1->address);
     expect($details->batchTokenTransfers[0]['amount'])->toBe('1000');
-    expect($details->batchTokenTransfers[0]['recipientUsername'])->toBe('bob');
-    expect($details->batchTokenTransfers[0]['recipientHasUsername'])->toBeTrue();
-    expect($details->batchTokenTransfers[1]['recipient'])->toBe($recipient2->address);
+    expect($details->batchTokenTransfers[0]['recipient']->username)->toBe('bob');
+    expect($details->batchTokenTransfers[1]['recipient']->address)->toBe($recipient2->address);
     expect($details->batchTokenTransfers[1]['amount'])->toBe('2000');
-    expect($details->batchTokenTransfers[1]['recipientHasUsername'])->toBeFalse();
+    expect($details->batchTokenTransfers[1]['recipient']->username)->toBeNull();
     expect($details->token)->not->toBeNull();
     expect($details->token->symbol)->toBe($token->symbol);
 });
@@ -286,8 +283,8 @@ it('should handle batch transfer with unknown recipient wallet', function () {
     $details = TransactionDetails::fromModel($transaction);
 
     expect($details->batchTokenTransfers)->toHaveCount(1);
-    expect($details->batchTokenTransfers[0]['recipient'])->toBe($unknownAddress);
-    expect($details->batchTokenTransfers[0]['recipientHasUsername'])->toBeFalse();
+    expect($details->batchTokenTransfers[0]['recipient']->address)->toBe($unknownAddress);
+    expect($details->batchTokenTransfers[0]['recipient']->username)->toBeNull();
 });
 
 it('should resolve token from token_transfer record for token transfers', function () {
@@ -338,6 +335,6 @@ it('should handle token transfer with unknown recipient wallet', function () {
     $details = TransactionDetails::fromModel($transaction);
 
     expect($details->tokenTransfer)->not->toBeNull();
-    expect(strtolower($details->tokenTransfer['recipient']))->toBe(strtolower($unknownAddress));
-    expect($details->tokenTransfer['recipientHasUsername'])->toBeFalse();
+    expect(strtolower($details->tokenTransfer['recipient']->address))->toBe(strtolower($unknownAddress));
+    expect($details->tokenTransfer['recipient']->username)->toBeNull();
 });

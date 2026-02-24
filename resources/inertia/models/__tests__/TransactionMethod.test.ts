@@ -10,7 +10,7 @@ jest.mock("react-i18next", () => ({
 }));
 
 import { TransactionMethod } from "../TransactionMethod";
-import { CONTRACT_METHODS, makeNetwork, makeTransaction } from "./factories";
+import { CONTRACT_METHODS, makeMemoryWallet, makeNetwork, makeTransaction } from "./factories";
 
 const network = makeNetwork();
 
@@ -147,12 +147,10 @@ describe("TransactionMethod", () => {
         it("returns true when isApprove and tokenApprovalDetails.isRevoke is true", () => {
             const m = method(CONTRACT_METHODS.approve, {
                 tokenApprovalDetails: {
-                    spender: "spender-address",
+                    spender: makeMemoryWallet({ address: "spender-address" }),
                     amount: null,
                     isUnlimited: false,
                     isRevoke: true,
-                    spenderUsername: null,
-                    spenderHasUsername: false,
                 },
             });
 
@@ -162,12 +160,10 @@ describe("TransactionMethod", () => {
         it("returns false when isApprove but tokenApprovalDetails.isRevoke is false", () => {
             const m = method(CONTRACT_METHODS.approve, {
                 tokenApprovalDetails: {
-                    spender: "spender-address",
+                    spender: makeMemoryWallet({ address: "spender-address" }),
                     amount: "100",
                     isUnlimited: false,
                     isRevoke: false,
-                    spenderUsername: null,
-                    spenderHasUsername: false,
                 },
             });
 
@@ -183,12 +179,10 @@ describe("TransactionMethod", () => {
         it("returns false when not isApprove", () => {
             const m = method(CONTRACT_METHODS.vote, {
                 tokenApprovalDetails: {
-                    spender: "spender-address",
+                    spender: makeMemoryWallet({ address: "spender-address" }),
                     amount: null,
                     isUnlimited: false,
                     isRevoke: true,
-                    spenderUsername: null,
-                    spenderHasUsername: false,
                 },
             });
 

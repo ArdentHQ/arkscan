@@ -226,12 +226,10 @@ export type ITransaction = {
     url: string;
     methodData: { functionName: string | null; methodId: string | null; arguments: string[] | null };
     tokenApprovalDetails: {
-        spender: string;
+        spender: IWallet;
         amount: string | null;
         isUnlimited: boolean;
         isRevoke: boolean;
-        spenderUsername: string | null;
-        spenderHasUsername: boolean;
     } | null;
     validatorRegistration: ITransaction | null;
     votedFor: string | null;
@@ -246,28 +244,11 @@ export type ITransactionDetails = {
     recipientIsContract: boolean;
     validatorPublicKey: string | null;
     username: string | null;
-    tokenTransfer: {
-        recipient: string;
-        amount: string | null;
-        recipientUsername: string | null;
-        recipientHasUsername: boolean;
-    } | null;
-    tokenApproval: {
-        spender: string;
-        amount: string | null;
-        isUnlimited: boolean;
-        isRevoke: boolean;
-        spenderUsername: string | null;
-        spenderHasUsername: boolean;
-    } | null;
+    tokenTransfer: { recipient: IWallet; amount: string | null } | null;
+    tokenApproval: { spender: IWallet; amount: string | null; isUnlimited: boolean; isRevoke: boolean } | null;
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
-    batchTokenTransfers: {
-        recipient: string;
-        amount: string;
-        recipientUsername: string | null;
-        recipientHasUsername: boolean;
-    }[];
+    batchTokenTransfers: { recipient: IWallet; amount: string }[];
     totalFiat: string;
     totalFiatValue: number;
 };
