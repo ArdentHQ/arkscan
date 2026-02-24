@@ -14,6 +14,7 @@ import useSharedData from "@/hooks/use-shared-data";
 import Amount from "@/Components/Tokens/Amount";
 import TruncatedValue from "@/Components/Tokens/TruncatedValue";
 import { TokenTransfer } from "@/models/TokenTransfer";
+import TruncatedTokenSymbol from "@/Components/Tokens/TruncatedTokenSymbol";
 
 export function Row({ row }: { row: ITokenTransfer }) {
     const { network, wallet } = useSharedData<WalletProps>();
@@ -47,7 +48,7 @@ export function Row({ row }: { row: ITokenTransfer }) {
             </TableCell>
 
             <TableCell className="text-right" breakpoint="md-lg" responsive>
-                <TruncatedValue value={transfer.token.symbol} className="justify-end" />
+                <TruncatedTokenSymbol tokenSymbol={transfer.token.symbol} fullTokenSymbol={transfer.token.symbolFull} className="justify-end" />
             </TableCell>
         </tr>
     );

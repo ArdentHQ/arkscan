@@ -4,6 +4,7 @@ import AmountSmall from "../General/AmountSmall";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
 import { formatCompact, networkCurrency } from "@/utils/number-formatter";
 import Tooltip from "@/Components/General/Tooltip";
+import TokenSymbol from "./TokenSymbol";
 
 export default function Amount({
     tokenTransfer,
@@ -76,7 +77,7 @@ export default function Amount({
                             </span>
                         )}
 
-                        {!hideCurrency && <span>{tokenTransfer.token.symbol}</span>}
+                        {!hideCurrency && <TokenSymbol tokenSymbol={tokenTransfer.token.symbol} fullTokenSymbol={tokenTransfer.token.symbolFull} />}
                     </>
                 )}
             </div>
