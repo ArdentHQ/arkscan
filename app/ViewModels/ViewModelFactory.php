@@ -6,11 +6,6 @@ namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
 use App\Models\Block;
-<<<<<<< refactor/remove-round-view-model
-use App\Models\ForgingStats;
-=======
-use App\Models\Round;
->>>>>>> mainsail-develop
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
