@@ -47,7 +47,9 @@ class INetwork extends Data
             validator_update: string;
             username_registration: string;
             username_resignation: string;
+            approve: string;
             contract_deployment: string;
+            batch_transfer: string;
         }')]
         public array $contractMethods,
     ) {

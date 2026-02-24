@@ -1,9 +1,10 @@
-import { ITransaction, IWallet } from "@/types/generated";
+import { IWallet } from "@/types/generated";
 import classNames from "classnames";
 import TruncateMiddle from "../General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
 import { Link } from "@inertiajs/react";
 import { useMemo } from "react";
+import { Transaction } from "@/models/Transaction";
 
 export default function Addressing({
     transaction,
@@ -12,16 +13,16 @@ export default function Addressing({
     withoutTruncate = false,
     isGeneric = false,
     className,
-    forWallet = false,
+    wallet,
     isReceived = false,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
-    transaction: ITransaction;
+    transaction: Transaction;
     withoutLink?: boolean;
     alwaysShowAddress?: boolean;
     withoutTruncate?: boolean;
     isGeneric?: boolean;
-    forWallet?: Boolean;
+    wallet?: IWallet;
     isReceived?: boolean;
 }) {
     const { t } = useTranslation();
@@ -29,14 +30,14 @@ export default function Addressing({
     let interactedWallet: IWallet | null = null;
 
     const isSent = useMemo(() => {
-        return forWallet && transaction.isSent && !transaction.isSentToSelf;
-    }, [transaction.isSent, transaction.isSentToSelf, forWallet]);
+        return wallet && transaction.isSent(wallet?.address) && !transaction.isSentToSelf(wallet?.address);
+    }, [transaction.isSent, transaction.isSentToSelf, wallet]);
 
     const isSentToSelf = useMemo(() => {
-        return forWallet && transaction.isSentToSelf;
-    }, [transaction.isSentToSelf, forWallet]);
+        return wallet && transaction.isSentToSelf(wallet?.address);
+    }, [transaction.isSentToSelf, wallet]);
 
-    if (transaction.isTransfer || transaction.isTokenTransfer || alwaysShowAddress) {
+    if (transaction.method.isTransfer || transaction.method.isTokenTransfer || alwaysShowAddress) {
         interactedWallet = transaction.sender;
 
         if (isSent) {
@@ -60,13 +61,13 @@ export default function Addressing({
                 className={classNames({
                     "h-[21px] w-[47px] rounded border text-center text-xs leading-5": true,
                     "encapsulated-badge border-theme-secondary-200 bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200":
-                        transaction.isSentToSelf,
+                        isSentToSelf,
                     "border-theme-success-100 bg-theme-success-100 text-theme-success-700 dark:border-theme-success-700 dark:bg-transparent dark:text-theme-success-500":
-                        (!transaction.isSent && !isGeneric && !transaction.isSentToSelf) || isReceived,
+                        (!isSent && !isGeneric && !isSentToSelf) || isReceived,
                     "border-theme-orange-light bg-theme-orange-light text-theme-orange-dark dim:border-theme-failed-state-bg dim:text-theme-failed-state-text dark:border-theme-failed-state-bg dark:bg-transparent dark:text-theme-failed-state-text":
-                        transaction.isSent && !isGeneric && !transaction.isSentToSelf,
+                        isSent && !isGeneric,
                     "border-theme-secondary-200 bg-theme-secondary-200 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200":
-                        isGeneric && !transaction.isSentToSelf,
+                        isGeneric && !isSentToSelf,
                 })}
             >
                 {direction}

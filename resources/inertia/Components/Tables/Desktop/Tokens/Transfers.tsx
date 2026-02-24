@@ -13,32 +13,41 @@ import LoadingText from "@/Components/Loading/Text";
 import Amount from "@/Components/Tokens/Amount";
 import AddressingGeneric from "@/Components/Tokens/AddressingGeneric";
 import Token from "@/Components/Tokens/Token";
+import { TokenTransfer } from "@/models/TokenTransfer";
+import useSharedData from "@/hooks/use-shared-data";
 
 export function Row({ row }: { row: ITokenTransfer }) {
+    const { network } = useSharedData();
+    const transfer = TokenTransfer.make(row, network);
+
     return (
         <tr className="text-sm font-semibold">
             <TableCell className="w-[60px]">
-                <ID transaction={row.transaction!} />
+                <ID transaction={transfer.transaction} />
             </TableCell>
 
             <TableCell breakpoint="xl" responsive>
-                <Age timestamp={row.transaction!.timestamp} />
+                <Age timestamp={transfer.transaction.timestamp} />
             </TableCell>
 
             <TableCell>
-                <Method transaction={row.transaction!} />
+                <Method transaction={transfer.transaction} />
             </TableCell>
 
             <TableCell>
-                <AddressingGeneric transfer={row} />
+                <AddressingGeneric transfer={transfer} />
             </TableCell>
 
             <TableCell className="text-right" lastOn="lg">
-                <Amount testId={`transaction:${row.transaction_hash}:amount`} tokenTransfer={row} breakpoint="lg" />
+                <Amount
+                    testId={`transaction:${transfer.transaction_hash}:amount`}
+                    tokenTransfer={transfer}
+                    breakpoint="lg"
+                />
             </TableCell>
 
             <TableCell breakpoint="xl" responsive>
-                <Token token={row.token} className="w-[120px]" />
+                <Token token={transfer.token} className="w-[120px]" />
             </TableCell>
         </tr>
     );

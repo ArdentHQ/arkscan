@@ -14,8 +14,12 @@ import { Link } from "@inertiajs/react";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import Method from "@/Components/Transaction/Method";
 import TableSortingProvider from "@/Providers/TableSorting/TableSortingProvider";
+import { Transaction } from "@/models/Transaction";
+import useSharedData from "@/hooks/use-shared-data";
 
-export function Row({ row: vote }: { row: ITransaction }) {
+export function Row({ row }: { row: ITransaction }) {
+    const { network } = useSharedData();
+    const vote = Transaction.make(row, network);
     const votedFor = vote.votedFor;
 
     return (

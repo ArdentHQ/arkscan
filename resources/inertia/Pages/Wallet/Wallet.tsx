@@ -26,20 +26,6 @@ import TokenTransfersMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/
 import TokensTableWrapper from "@/Components/Tables/Desktop/Wallet/Tokens";
 import TokensMobileTableWrapper from "@/Components/Tables/Mobile/Wallet/Tokens";
 
-const WalletTabsWrapper = ({
-    transactions,
-    blocks,
-    voters,
-    filters,
-}: {
-    transactions?: IPaginatedResponse<ITransaction>;
-    blocks?: IPaginatedResponse<IBlock>;
-    voters?: IPaginatedResponse<IWallet>;
-    filters: ITabbedData<IFilters>;
-}) => {
-    return <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />;
-};
-
 const WalletTabs = ({
     transactions,
     blocks,
@@ -247,7 +233,7 @@ export default function Wallet({ transactions, blocks, voters, filters }: PagePr
     return (
         <Layout>
             <WalletPageHandlerProvider>
-                <WalletTabsWrapper transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
+                <WalletTabs transactions={transactions} blocks={blocks} voters={voters} filters={filters} />
             </WalletPageHandlerProvider>
         </Layout>
     );

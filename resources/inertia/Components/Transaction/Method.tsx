@@ -1,12 +1,12 @@
-import { ITransaction } from "@/types/generated";
 import Badge from "../General/Badge";
 import { useTranslation } from "react-i18next";
 import Tooltip from "../General/Tooltip";
+import { Transaction } from "@/models/Transaction";
 
-export default function Method({ transaction }: { transaction: ITransaction }) {
-    const { t } = useTranslation();
+export default function Method({ transaction }: { transaction: Transaction }) {
+    const { t, i18n } = useTranslation();
 
-    if (transaction.isVote) {
+    if (transaction.method.isVote) {
         if (transaction.votedFor) {
             return (
                 <Tooltip
@@ -20,9 +20,9 @@ export default function Method({ transaction }: { transaction: ITransaction }) {
         }
     }
 
-    if (transaction.isApprovalRevoke) {
+    if (transaction.method.isRevoke) {
         return <Badge className="encapsulated-badge">{t("general.transaction.types.revoke")}</Badge>;
     }
 
-    return <Badge className="encapsulated-badge">{transaction.type}</Badge>;
+    return <Badge className="encapsulated-badge">{transaction.method.name({ t, i18n })}</Badge>;
 }

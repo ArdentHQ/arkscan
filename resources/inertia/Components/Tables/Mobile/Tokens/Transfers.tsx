@@ -12,6 +12,8 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import AddressingGeneric from "@/Components/Tokens/AddressingGeneric";
 import Token from "@/Components/Tokens/Token";
+import { TokenTransfer } from "@/models/TokenTransfer";
+import useSharedData from "@/hooks/use-shared-data";
 
 export function TransfersMobileTable({
     transfers,
@@ -20,42 +22,47 @@ export function TransfersMobileTable({
     transfers: IPaginatedResponse<ITokenTransfer>;
     noAge?: boolean;
 }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const { network } = useSharedData();
 
     return (
         <MobileTable noResultsMessage={transfers.noResultsMessage} resultCount={transfers.total ?? 0}>
-            {transfers.data.map((transfer: ITokenTransfer, index) => (
-                <MobileTableRow
-                    key={index}
-                    header={
-                        <>
-                            <ID transaction={transfer.transaction!} />
+            {transfers.data.map((row: ITokenTransfer, index) => {
+                const transfer = TokenTransfer.make(row, network);
 
-                            {!noAge && (
-                                <Age
-                                    className="text-theme-secondary-700 dark:text-theme-dark-200"
-                                    timestamp={transfer.transaction!.timestamp}
-                                />
-                            )}
-                        </>
-                    }
-                >
-                    <TableCell label={transfer.transaction!.type} className="sm:flex-1">
-                        <AddressingGeneric transfer={transfer} />
-                    </TableCell>
+                return (
+                    <MobileTableRow
+                        key={index}
+                        header={
+                            <>
+                                <ID transaction={transfer.transaction} />
 
-                    <TableCell label={t("tables.tokens.amount_generic")} className="sm:flex-1">
-                        <Amount
-                            testId={`transaction:mobile:${transfer.transaction!.hash}:amount`}
-                            tokenTransfer={transfer}
-                        />
-                    </TableCell>
+                                {!noAge && (
+                                    <Age
+                                        className="text-theme-secondary-700 dark:text-theme-dark-200"
+                                        timestamp={transfer.transaction.timestamp}
+                                    />
+                                )}
+                            </>
+                        }
+                    >
+                        <TableCell label={transfer.transaction.method.name({ t, i18n })} className="sm:flex-1">
+                            <AddressingGeneric transfer={transfer} />
+                        </TableCell>
 
-                    <TableCell label={t("tables.tokens.token")}>
-                        <Token token={transfer.token} className="w-full sm:w-[120px]" />
-                    </TableCell>
-                </MobileTableRow>
-            ))}
+                        <TableCell label={t("tables.tokens.amount_generic")} className="sm:flex-1">
+                            <Amount
+                                testId={`transaction:mobile:${transfer.transaction!.hash}:amount`}
+                                tokenTransfer={transfer}
+                            />
+                        </TableCell>
+
+                        <TableCell label={t("tables.tokens.token")}>
+                            <Token token={transfer.token} className="w-full sm:w-[120px]" />
+                        </TableCell>
+                    </MobileTableRow>
+                );
+            })}
         </MobileTable>
     );
 }
