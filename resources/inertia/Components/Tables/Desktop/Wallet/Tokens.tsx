@@ -10,6 +10,7 @@ import useSharedData from "@/hooks/use-shared-data";
 import Address from "@/Components/Wallet/Address";
 import AmountGeneric from "@/Components/Tokens/AmountGeneric";
 import TruncatedValue from "@/Components/Tokens/TruncatedValue";
+import TruncatedTokenSymbol from "@/Components/Tokens/TruncatedTokenSymbol";
 
 export function Row({ row }: { row: ITokenHolder }) {
     const { network } = useSharedData<WalletProps>();
@@ -23,13 +24,13 @@ export function Row({ row }: { row: ITokenHolder }) {
                     </div>
 
                     <div className="md-lg:hidden">
-                        <TruncatedValue value={row.token.symbol} />
+                        <TruncatedTokenSymbol tokenSymbol={row.token.symbol} fullTokenSymbol={row.token.symbolFull} />
                     </div>
                 </div>
             </TableCell>
 
             <TableCell breakpoint="md-lg" responsive>
-                <TruncatedValue value={row.token.symbol} />
+                <TruncatedTokenSymbol tokenSymbol={row.token.symbol} fullTokenSymbol={row.token.symbolFull} />
             </TableCell>
 
             <TableCell>
