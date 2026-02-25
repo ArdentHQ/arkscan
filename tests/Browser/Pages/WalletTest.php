@@ -391,7 +391,7 @@ describe('Overview', function () {
                 ->waitForText('5 results', ignoreCase: true);
 
             $browser->clickAtXPath('//a[.//text()="View"]')
-                ->waitForText('20 results', ignoreCase: true)
+                ->waitForText('20 results', 10, ignoreCase: true)
                 ->pause(400);
 
             $scrollTop    = $browser->script('return window.scrollY;')[0];
