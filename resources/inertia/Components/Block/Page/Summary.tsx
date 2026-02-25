@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { IBlockDetails } from "@/types/generated";
+import { IBlock } from "@/types/generated";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import { NetworkCurrency } from "@/Components/General/NetworkCurrency";
 
-export default function BlockSummary({ block }: { block: IBlockDetails }) {
+export default function BlockSummary({ block }: { block: IBlock }) {
     const { t } = useTranslation();
 
     return (

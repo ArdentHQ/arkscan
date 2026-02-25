@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { IBlockDetails } from "@/types/generated";
+import { IBlock } from "@/types/generated";
 import PageHeaderContainer from "@/Components/PageHeader/Container";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
 import Clipboard from "@/Components/General/Clipboard";
 
-function HeaderActions({ block }: { block: IBlockDetails }) {
+function HeaderActions({ block }: { block: IBlock }) {
     const { t } = useTranslation();
 
     return (
@@ -22,7 +22,7 @@ function HeaderActions({ block }: { block: IBlockDetails }) {
     );
 }
 
-export default function BlockHeader({ block }: { block: IBlockDetails }) {
+export default function BlockHeader({ block }: { block: IBlock }) {
     const { t } = useTranslation();
 
     return (
