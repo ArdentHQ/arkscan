@@ -8,7 +8,7 @@ export default function CompactAmount({
     hideSymbol = false,
     showFullOnDesktop = false,
 }: {
-    amount: number;
+    amount: number | string;
     tokenSymbol?: string;
     hideSymbol?: boolean;
     showFullOnDesktop?: boolean;

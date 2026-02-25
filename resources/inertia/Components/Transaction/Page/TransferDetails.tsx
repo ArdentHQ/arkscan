@@ -50,10 +50,7 @@ export default function TransferDetails({
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <CompactAmount
-                                            amount={Number(weiToArk(transfer.amount))}
-                                            tokenSymbol={tokenSymbol}
-                                        />
+                                        <CompactAmount amount={weiToArk(transfer.amount)} tokenSymbol={tokenSymbol} />
                                     </TableCell>
                                 </tr>
                             ))}
