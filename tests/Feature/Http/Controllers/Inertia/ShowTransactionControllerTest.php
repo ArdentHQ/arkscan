@@ -60,7 +60,7 @@ it('should return decoded token transfer details', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Transaction/Show')
-            ->where('details.tokenTransfer.recipient', $recipient->address)
+            ->where('details.tokenTransfer.recipient.address', $recipient->address)
             ->where('details.tokenTransfer.amount', '1')
             ->where('details.payload.raw', fn ($payload) => is_string($payload) && $payload !== ''));
 });

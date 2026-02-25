@@ -38,22 +38,21 @@ export default function TransferDetails({
                             {transfers.map((transfer, index) => (
                                 <tr
                                     className="text-sm font-semibold"
-                                    key={`${transfer.recipient}-${transfer.amount}-${index}`}
+                                    key={`${transfer.recipient.address}-${transfer.amount}-${index}`}
                                 >
                                     <TableCell>
                                         <TransactionAddress
-                                            address={transfer.recipient}
+                                            address={transfer.recipient.address}
                                             wallet={{
-                                                address: transfer.recipient,
-                                                hasUsername: transfer.recipientHasUsername,
-                                                username: transfer.recipientUsername,
+                                                address: transfer.recipient.address,
+                                                username: transfer.recipient.username ?? null,
                                             }}
                                             testId={`transaction:transfer:${index}`}
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <CompactAmount
-                                            amount={Number(weiToArk(transfer.amount))}
+                                            amount={weiToArk(transfer.amount)}
                                             tokenSymbol={tokenSymbol}
                                             fullTokenSymbol={fullTokenSymbol}
                                         />

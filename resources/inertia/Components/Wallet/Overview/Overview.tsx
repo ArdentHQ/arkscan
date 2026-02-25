@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import PageHeaderContainer from "../../PageHeader/Container";
 import { IWallet } from "@/types/generated";
+import { Wallet } from "@/models/Wallet";
 import TruncateDynamic from "../../General/TruncateDynamic";
 import Clipboard from "../../General/Clipboard";
 import PageHeaderPublicKeyAction from "../../PageHeader/Actions/PublicKey";
@@ -11,6 +12,7 @@ import PageHeaderQRCodeModalAction from "@/Components/PageHeader/Actions/QRCodeM
 
 function OverviewActions({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
+    const walletModel = Wallet.from(wallet);
 
     return (
         <>
@@ -24,11 +26,11 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
                 testId="wallet:copy-address"
             />
 
-            {!wallet.isCold && (
+            {!walletModel.isCold && (
                 <>
                     <PageHeaderPublicKeyAction wallet={wallet} testId="wallet:show-public-key" />
 
-                    {wallet.isLegacy && wallet.legacyAddress !== null && (
+                    {walletModel.isLegacy && wallet.legacyAddress !== null && (
                         <PageHeaderLegacyAddressAction wallet={wallet} testId="wallet:show-legacy-address" />
                     )}
                 </>

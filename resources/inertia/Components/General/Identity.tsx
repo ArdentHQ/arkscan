@@ -12,14 +12,14 @@ export default function Identity({
     ...props
 }: React.HTMLAttributes<HTMLDivElement> &
     React.PropsWithChildren<{
-        model?: Pick<IWallet, "address" | "username" | "hasUsername">;
+        model?: Pick<IWallet, "address" | "username">;
         address?: string;
         contentClassName?: string;
         linkClassName?: string;
     }>) {
     const address = model?.address || addressProp;
 
-    const hasUsername = model?.hasUsername || false;
+    const hasUsername = model?.username !== null && model?.username !== undefined;
 
     return (
         <div className={classNames("flex items-center", className)} {...props}>

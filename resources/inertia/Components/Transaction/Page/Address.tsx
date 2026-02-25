@@ -16,7 +16,7 @@ export default function TransactionAddress({
     className,
     testId,
 }: React.HTMLAttributes<HTMLDivElement> & {
-    wallet?: Pick<IWallet, "address" | "hasUsername" | "username"> | null;
+    wallet?: Pick<IWallet, "address" | "username"> | null;
     address?: string | null;
     isContract?: boolean;
     testId?: string;
@@ -24,7 +24,7 @@ export default function TransactionAddress({
     const { t } = useTranslation();
 
     const resolvedAddress = address ?? wallet?.address ?? "";
-    const hasUsername = wallet?.hasUsername ?? false;
+    const hasUsername = wallet?.username !== null && wallet?.username !== undefined;
     const username = wallet?.username ?? null;
 
     if (!resolvedAddress) {

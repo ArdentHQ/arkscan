@@ -82,7 +82,7 @@ export function Row({ row: validator }: { row: IValidator }) {
 
             <TableCell className="text-right">
                 {arkconnectConfig.enabled ? (
-                    <VoteLink wallet={validator} />
+                    <VoteLink wallet={validator} isResigned={validator.isResigned} />
                 ) : (
                     <ExternalLink url={validator.voteUrl ?? ""} innerClass="text-sm" noIcon>
                         {t("actions.vote")}
