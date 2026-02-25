@@ -9,6 +9,7 @@ import Age from "@/Components/Model/Age";
 import useSharedData from "@/hooks/use-shared-data";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
+import { Block } from "@/models/Block";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import { BlocksListProps } from "@/Pages/Blocks.contracts";
@@ -20,39 +21,43 @@ export function BlocksListMobileTable({ blocks }: { blocks: IPaginatedResponse<I
 
     return (
         <MobileTable noResultsMessage={blocks.noResultsMessage} resultCount={blocks.total ?? 0}>
-            {blocks.data.map((block: IBlock, index) => (
-                <MobileTableRow
-                    key={index}
-                    header={
-                        <>
-                            <div className="sm:flex sm:flex-1">
-                                <Height block={block} />
-                            </div>
+            {blocks.data.map((row: IBlock, index) => {
+                const block = Block.from(row);
 
-                            <div className="justify-end sm:flex sm:flex-1">
-                                <Age
-                                    timestamp={block.timestamp}
-                                    className="text-theme-secondary-700 dark:text-theme-dark-200"
-                                />
-                            </div>
-                        </>
-                    }
-                >
-                    <TableCell label={t("tables.blocks.generated_by")}>
-                        <Address wallet={block.proposer} truncate />
-                    </TableCell>
+                return (
+                    <MobileTableRow
+                        key={index}
+                        header={
+                            <>
+                                <div className="sm:flex sm:flex-1">
+                                    <Height block={block} />
+                                </div>
 
-                    <TableCell label={t("tables.blocks.transactions")}>{block.transactionCount}</TableCell>
-
-                    <TableCell
-                        label={t("tables.blocks.total_reward", {
-                            currency: network?.currency,
-                        })}
+                                <div className="justify-end sm:flex sm:flex-1">
+                                    <Age
+                                        timestamp={block.timestamp}
+                                        className="text-theme-secondary-700 dark:text-theme-dark-200"
+                                    />
+                                </div>
+                            </>
+                        }
                     >
-                        <Reward block={block} withoutValue={!network?.canBeExchanged} />
-                    </TableCell>
-                </MobileTableRow>
-            ))}
+                        <TableCell label={t("tables.blocks.generated_by")}>
+                            <Address wallet={block.proposer} truncate />
+                        </TableCell>
+
+                        <TableCell label={t("tables.blocks.transactions")}>{block.transactionCount}</TableCell>
+
+                        <TableCell
+                            label={t("tables.blocks.total_reward", {
+                                currency: network?.currency,
+                            })}
+                        >
+                            <Reward block={block} withoutValue={!network?.canBeExchanged} />
+                        </TableCell>
+                    </MobileTableRow>
+                );
+            })}
         </MobileTable>
     );
 }

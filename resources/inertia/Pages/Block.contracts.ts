@@ -1,7 +1,7 @@
 import { IPaginatedResponse } from "@/types";
-import { IBlockDetails, ITransaction } from "@/types/generated";
+import { IBlock, ITransaction } from "@/types/generated";
 
 export interface BlockShowProps {
-    block: IBlockDetails;
+    block: IBlock;
     transactions?: IPaginatedResponse<ITransaction>;
 }

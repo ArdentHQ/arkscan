@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Contracts\ViewModel;
 use App\DTO\Search\NavbarSearchBlockResultData;
 use App\DTO\Search\NavbarSearchTransactionResultData;
 use App\DTO\Search\NavbarSearchWalletResultData;
 use App\Facades\Network;
+use App\Models\Block;
+use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
-use App\ViewModels\BlockViewModel;
-use App\ViewModels\TransactionViewModel;
-use App\ViewModels\ViewModelFactory;
-use App\ViewModels\WalletViewModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -38,7 +36,7 @@ final class SearchController
 
         return response()->json([
             'results'    => $results
-                ->map(fn (ViewModel $result) => $this->serializeResult($result))
+                ->map(fn (Wallet|Block|Transaction $result) => $this->serializeResult($result))
                 ->toArray(),
             'hasResults' => $results->isNotEmpty(),
         ]);
@@ -70,7 +68,7 @@ final class SearchController
         $results = $results->concat((new TransactionSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE));
         $results = $results->concat((new BlockSearch())->search(query: $query, limit: RESULT_LIMIT_PER_TYPE));
 
-        return ViewModelFactory::collection($results);
+        return $results;
     }
 
     /**
@@ -123,52 +121,49 @@ final class SearchController
                 }
             });
 
-        return ViewModelFactory::collection($results);
+        return collect($results);
     }
 
-    private function serializeResult(ViewModel $result): array
+    private function serializeResult(Wallet|Block|Transaction $result): array
     {
-        /**
-         * @var WalletViewModel|BlockViewModel|TransactionViewModel $result
-         */
+        $identifier = null;
+        if ($result instanceof Wallet) {
+            $identifier = $result->address;
+        } else {
+            $identifier = $result->hash;
+        }
+
         return [
             'type'       => $this->determineType($result),
             'url'        => $result->url(),
-            'identifier' => method_exists($result, 'id') ? $result->id() : (method_exists($result, 'hash') ? $result->hash() : null),
+            'identifier' => $identifier,
             'data'       => $this->toArray($result),
         ];
     }
 
-    private function determineType(ViewModel $result): string
+    private function determineType(Wallet|Block|Transaction $result): string
     {
         return match (true) {
-            $result instanceof WalletViewModel      => 'wallet',
-            $result instanceof BlockViewModel       => 'block',
-            $result instanceof TransactionViewModel => 'transaction',
-            default                                 => throw new \Exception('Invalid result type: '.get_class($result)),
+            $result instanceof Wallet      => 'wallet',
+            $result instanceof Block       => 'block',
+            $result instanceof Transaction => 'transaction',
         };
     }
 
     /**
      * @return array<string, mixed>
      */
-    private function toArray(ViewModel $result): array
+    private function toArray(Wallet|Block|Transaction $result): array
     {
-        if ($result instanceof WalletViewModel) {
-            return NavbarSearchWalletResultData::fromViewModel($result)->toArray();
+        if ($result instanceof Wallet) {
+            return NavbarSearchWalletResultData::fromModel($result)->toArray();
         }
 
-        if ($result instanceof BlockViewModel) {
-            return NavbarSearchBlockResultData::fromViewModel($result)->toArray();
+        if ($result instanceof Block) {
+            return NavbarSearchBlockResultData::fromModel($result)->toArray();
         }
 
-        if ($result instanceof TransactionViewModel) {
-            return NavbarSearchTransactionResultData::fromViewModel($result)->toArray();
-        }
-
-        // @codeCoverageIgnoreStart
-        throw new \Exception('Invalid result type: '.get_class($result));
-        // @codeCoverageIgnoreEnd
+        return NavbarSearchTransactionResultData::fromModel($result)->toArray();
     }
 
     private function parseQuery(string $query): string

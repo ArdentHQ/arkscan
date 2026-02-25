@@ -13,6 +13,7 @@ import {
     TransactionList,
 } from "@/Components/Block/Page";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
+import { Block } from "@/models/Block";
 
 export default function Show({ block, transactions }: PageProps<BlockShowProps>) {
     useEffect(() => {
@@ -23,12 +24,14 @@ export default function Show({ block, transactions }: PageProps<BlockShowProps>)
         }
     }, []);
 
+    const blockModel = Block.from(block);
+
     return (
         <Layout>
             <BlockHeader block={block} />
 
             <div>
-                <BlockDetails block={block} />
+                <BlockDetails block={blockModel} />
 
                 <GeneratedBy block={block} />
 

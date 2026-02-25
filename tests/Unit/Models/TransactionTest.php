@@ -228,3 +228,8 @@ it('should use from address for recipientAddress', function () {
 
     expect($transaction->recipientAddress())->toBe($transaction->from);
 });
+
+it('should get the url', function () {
+    expect($this->subject->url())->toBeString();
+    expect($this->subject->url())->toBe(route('transaction', $this->subject->hash));
+});
