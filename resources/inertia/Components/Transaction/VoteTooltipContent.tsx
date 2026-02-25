@@ -1,10 +1,4 @@
-export default function VoteTooltipContent({
-    variant,
-    validator,
-}: {
-    variant: "vote" | "voting";
-    validator: string;
-}) {
+export default function VoteTooltipContent({ variant, validator }: { variant: "vote" | "voting"; validator: string }) {
     return (
         <span className="break-words font-semibold text-theme-secondary-500">
             {variant === "vote" ? (
