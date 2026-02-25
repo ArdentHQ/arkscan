@@ -78,8 +78,8 @@ export type INavbarSearchTransactionResultData = {
     isUnvote: boolean;
     isTransfer: boolean;
     isTokenTransfer: boolean;
-    sender: INavbarSearchMemoryWallet | null;
-    recipient: INavbarSearchMemoryWallet | null;
+    sender: INavbarSearchMemoryWallet;
+    recipient: INavbarSearchMemoryWallet;
     typeName: string;
     votedValidatorLabel: string | null;
 };

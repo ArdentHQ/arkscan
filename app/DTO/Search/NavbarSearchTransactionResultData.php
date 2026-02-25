@@ -21,8 +21,8 @@ final class NavbarSearchTransactionResultData extends Data
         public bool $isUnvote,
         public bool $isTransfer,
         public bool $isTokenTransfer,
-        public ?NavbarSearchMemoryWalletData $sender,
-        public ?NavbarSearchMemoryWalletData $recipient,
+        public NavbarSearchMemoryWalletData $sender,
+        public NavbarSearchMemoryWalletData $recipient,
         public string $typeName,
         public ?string $votedValidatorLabel,
     ) {
@@ -42,10 +42,11 @@ final class NavbarSearchTransactionResultData extends Data
             }
         }
 
-        $recipient = null;
-        if ($transaction->to !== null) {
-            $recipient = NavbarSearchMemoryWalletData::fromMemoryWallet(MemoryWallet::fromAddress($transaction->to));
-        }
+        /** @var NavbarSearchMemoryWalletData $sender */
+        $sender = NavbarSearchMemoryWalletData::fromMemoryWallet(MemoryWallet::fromPublicKey($transaction->sender_public_key));
+
+        /** @var NavbarSearchMemoryWalletData $recipient */
+        $recipient = NavbarSearchMemoryWalletData::fromMemoryWallet(MemoryWallet::fromAddress($transaction->recipientAddress()));
 
         return new self(
             hash: $transaction->hash,
@@ -54,7 +55,7 @@ final class NavbarSearchTransactionResultData extends Data
             isUnvote: $transactionMethod->isUnvote(),
             isTransfer: $transactionMethod->isTransfer(),
             isTokenTransfer: $transactionMethod->isTokenTransfer(),
-            sender: NavbarSearchMemoryWalletData::fromMemoryWallet(MemoryWallet::fromPublicKey($transaction->sender_public_key)),
+            sender: $sender,
             recipient: $recipient,
             typeName: $transactionMethod->name(),
             votedValidatorLabel: $votedValidatorLabel,
