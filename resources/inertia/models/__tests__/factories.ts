@@ -136,9 +136,11 @@ export const makeBlock = (overrides: Partial<IBlock> = {}): IBlock => ({
     transactionCount: 5,
     reward: 2.0,
     fee: 0.5,
+    feeFiat: "0.50",
     rewardFiat: "2.00",
     totalRewardFiat: "2.50",
     proposer: makeMemoryWallet(),
+    confirmations: 10,
     ...overrides,
 });
 
