@@ -31,7 +31,7 @@ export default function TransactionRecipients({ recipients }: { recipients: Tran
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <CompactAmount amount={Number(weiToArk(recipient.amount))} hideSymbol />
+                                        <CompactAmount amount={weiToArk(recipient.amount)} hideSymbol />
                                     </TableCell>
                                 </tr>
                             ))}

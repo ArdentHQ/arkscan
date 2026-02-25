@@ -151,17 +151,27 @@ export function networkCurrency(
     currency: string | undefined = undefined,
     suffix: string | undefined = undefined,
 ): string {
-    const numeric = Number(value) || 0;
+    const parsedValue = new BigNumber(value);
+    const safeValue = parsedValue.isFinite() ? parsedValue : new BigNumber(0);
+    const rounded = safeValue.decimalPlaces(decimals, BigNumber.ROUND_HALF_UP);
+    const minimumFractionDigits = Math.min(2, decimals);
 
-    // Workaround similar to PHP/other formatters:
-    // round the numeric value to the requested number of decimals before formatting
-    // to avoid unexpected rounding behaviour.
-    const rounded = Number(numeric.toFixed(decimals));
+    let [integerPart, fractionalPart = ""] = rounded.toFixed(decimals).split(".");
+    const isNegative = integerPart.startsWith("-");
+    const absoluteIntegerPart = isNegative ? integerPart.slice(1) : integerPart;
 
-    let formatted = new Intl.NumberFormat("en-US", {
-        minimumFractionDigits: Math.min(2, decimals),
-        maximumFractionDigits: decimals,
-    }).format(rounded);
+    const groupedIntegerPart = absoluteIntegerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    integerPart = isNegative ? `-${groupedIntegerPart}` : groupedIntegerPart;
+
+    if (decimals > 0) {
+        fractionalPart = fractionalPart.replace(/0+$/, "");
+
+        while (fractionalPart.length < minimumFractionDigits) {
+            fractionalPart += "0";
+        }
+    }
+
+    let formatted = fractionalPart.length > 0 ? `${integerPart}.${fractionalPart}` : integerPart;
 
     if (suffix) {
         formatted = `${formatted}${suffix}`;
