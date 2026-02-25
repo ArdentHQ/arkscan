@@ -167,6 +167,7 @@ export type IToken = {
     address: string;
     name: string;
     symbol: string;
+    symbolFull: string;
     decimals: number;
     totalSupply: string;
     deploymentHash: string;

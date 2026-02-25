@@ -12,9 +12,11 @@ type BatchTransfer = ITransactionDetails["batchTokenTransfers"][number];
 export default function TransferDetails({
     transfers,
     tokenSymbol,
+    fullTokenSymbol,
 }: {
     transfers: BatchTransfer[];
     tokenSymbol: string;
+    fullTokenSymbol?: string;
 }) {
     const { t } = useTranslation();
 
@@ -49,7 +51,11 @@ export default function TransferDetails({
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <CompactAmount amount={weiToArk(transfer.amount)} tokenSymbol={tokenSymbol} />
+                                        <CompactAmount
+                                            amount={weiToArk(transfer.amount)}
+                                            tokenSymbol={tokenSymbol}
+                                            fullTokenSymbol={fullTokenSymbol}
+                                        />
                                     </TableCell>
                                 </tr>
                             ))}
