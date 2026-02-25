@@ -411,7 +411,7 @@ it('should show token transfer symbol', function () {
             }
 
             // CompactAmount shows full value on md+ and compact on smaller viewports
-            $expectedAmount = $resolution['width'] >= 768 ? '1,234.56 TST' : '1.23456K TST';
+            $expectedAmount = $resolution['width'] >= 768 ? '1,234.56' : '1.23456K';
 
             $browser->resize($resolution['width'], $resolution['height'])
                 ->pause(100)
@@ -427,6 +427,7 @@ it('should show token transfer symbol', function () {
                     $recipientAddress,
                     'Amount',
                     $expectedAmount,
+                    'TST',
                     'Transaction Summary',
                     'Fee',
                     '0.000021 DARK',
@@ -490,7 +491,7 @@ it('should not show recipient username for "to" address', function () {
             }
 
             // CompactAmount shows full value on md+ and compact on smaller viewports
-            $expectedAmount = $resolution['width'] >= 768 ? '1,234.56 TST' : '1.23456K TST';
+            $expectedAmount = $resolution['width'] >= 768 ? '1,234.56' : '1.23456K';
 
             $browser->resize($resolution['width'], $resolution['height'])
                 ->pause(100)
@@ -506,6 +507,7 @@ it('should not show recipient username for "to" address', function () {
                     $recipientWallet->attributes['username'],
                     'Amount',
                     $expectedAmount,
+                    'TST',
                     'Transaction Summary',
                     'Fee',
                     '0.000021 DARK',
