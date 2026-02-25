@@ -6,8 +6,6 @@ namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
 use App\Models\Block;
-use App\Models\ForgingStats;
-use App\Models\Round;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -23,20 +21,12 @@ final class ViewModelFactory
             return new BlockViewModel($model);
         }
 
-        if ($model instanceof Round) {
-            return new RoundViewModel($model);
-        }
-
         if ($model instanceof Transaction) {
             return new TransactionViewModel($model);
         }
 
         if ($model instanceof Wallet) {
             return new WalletViewModel($model);
-        }
-
-        if ($model instanceof ForgingStats) {
-            return new ForgingStatsViewModel($model);
         }
 
         throw new InvalidArgumentException('Invalid View Model Type.');

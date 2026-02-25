@@ -18,13 +18,13 @@ import { Transaction } from "@/models/Transaction";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 
 export function TransactionsMobileTable({ transactions }: { transactions: IPaginatedResponse<ITransaction> }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { network, wallet } = useSharedData<WalletProps>();
 
     return (
         <MobileTable noResultsMessage={transactions.noResultsMessage} resultCount={transactions.total ?? 0}>
             {transactions.data.map((row: ITransaction, index) => {
-                const transaction = Transaction.from(row);
+                const transaction = Transaction.make(row, network);
 
                 return (
                     <MobileTableRow
@@ -37,7 +37,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                             </>
                         }
                     >
-                        <TableCell label={transaction.method.name} className="sm:flex-1">
+                        <TableCell label={transaction.method.name({ t, i18n })} className="sm:flex-1">
                             <Addressing
                                 transaction={transaction}
                                 withoutLink={transaction.isSentToSelf(wallet.address)}

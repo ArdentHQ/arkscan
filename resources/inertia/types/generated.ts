@@ -185,7 +185,7 @@ export type ITokenTransfer = {
     block_number: number;
     index: number;
     token: IToken;
-    transaction: ITransaction | null;
+    transaction: ITransaction;
 };
 export type ITransaction = {
     hash: string;
@@ -210,7 +210,7 @@ export type ITransaction = {
     amountReceivedFiat: string | number;
     feeFiat: string | number;
     url: string;
-    methodData: { functionName: string | null; methodId: string | null; arguments: Record<string, string> };
+    methodData: { functionName: string | null; methodId: string | null; arguments: string[] | null };
     tokenApprovalDetails: {
         spender: string;
         amount: string | null;

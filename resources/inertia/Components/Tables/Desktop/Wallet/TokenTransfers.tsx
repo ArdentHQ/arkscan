@@ -16,8 +16,8 @@ import TruncatedValue from "@/Components/Tokens/TruncatedValue";
 import { TokenTransfer } from "@/models/TokenTransfer";
 
 export function Row({ row }: { row: ITokenTransfer }) {
-    const { wallet } = useSharedData<WalletProps>();
-    const transfer = TokenTransfer.from(row);
+    const { network, wallet } = useSharedData<WalletProps>();
+    const transfer = TokenTransfer.make(row, network);
 
     return (
         <tr className="text-sm font-semibold">

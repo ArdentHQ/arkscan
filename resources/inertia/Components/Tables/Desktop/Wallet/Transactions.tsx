@@ -21,7 +21,8 @@ import useSharedData from "@/hooks/use-shared-data";
 import { Transaction } from "@/models/Transaction";
 
 export function Row({ row }: { row: ITransaction }) {
-    const transaction = Transaction.from(row);
+    const { network } = useSharedData();
+    const transaction = Transaction.make(row, network);
 
     const { wallet } = useSharedData<WalletProps>();
 

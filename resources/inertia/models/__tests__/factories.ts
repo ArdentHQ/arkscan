@@ -1,4 +1,4 @@
-import { type IBlock, IMemoryWallet, IToken, ITokenTransfer, ITransaction, IWallet } from "@/types/generated";
+import { IBlock, IMemoryWallet, INetwork, IToken, ITokenTransfer, ITransaction, IWallet } from "@/types/generated";
 
 export const CONTRACT_METHODS = {
     transfer: "a9059cbb",
@@ -14,6 +14,35 @@ export const CONTRACT_METHODS = {
     contract_deployment: "22222222",
     batch_transfer: "33333333",
 };
+
+export const makeNetwork = (overrides: Partial<INetwork> = {}): INetwork => ({
+    coin: "ARK",
+    name: "testnet",
+    api: "https://api.test",
+    alias: "ark.test",
+    nethash: "testhash",
+    mainnetExplorerUrl: "https://explorer.test",
+    testnetExplorerUrl: "https://explorer.test",
+    legacyExplorerUrl: "https://explorer.test",
+    currency: "ARK",
+    currencySymbol: "Ѧ",
+    confirmations: 51,
+    knownWallets: [],
+    knownWalletsUrl: "",
+    canBeExchanged: false,
+    epoch: "2017-03-21T13:00:00.000Z",
+    validatorCount: 51,
+    blockTime: 8,
+    blockReward: 2,
+    base58Prefix: 23,
+    contractAddresses: {
+        consensus: "0xconsensus",
+        multipayment: "0xmultipayment",
+        username: "0xusername",
+    },
+    contractMethods: CONTRACT_METHODS,
+    ...overrides,
+});
 
 export const makeWallet = (overrides: Partial<IWallet> = {}): IWallet => ({
     address: "wallet-address",
@@ -90,7 +119,7 @@ export const makeTransaction = (overrides: Partial<ITransaction> = {}): ITransac
     amountReceivedFiat: "1.00",
     feeFiat: "0.01",
     url: "https://example.com/tx/0xabc123",
-    methodData: { functionName: null, methodId: null, arguments: {} },
+    methodData: { functionName: null, methodId: null, arguments: [] },
     tokenApprovalDetails: null,
     validatorRegistration: null,
     votedFor: null,

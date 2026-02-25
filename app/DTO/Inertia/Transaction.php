@@ -44,7 +44,7 @@ class Transaction extends Data
         public int | string $amountReceivedFiat,
         public int | string $feeFiat,
         public string $url,
-        #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: Record<string, string> }')]
+        #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: string[] | null }')]
         public array $methodData,
         #[LiteralTypeScriptType('{
             spender: string;

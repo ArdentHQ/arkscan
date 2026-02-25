@@ -4,7 +4,7 @@ import Tooltip from "../General/Tooltip";
 import { Transaction } from "@/models/Transaction";
 
 export default function Method({ transaction }: { transaction: Transaction }) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     if (transaction.method.isVote) {
         if (transaction.votedFor) {
@@ -24,5 +24,5 @@ export default function Method({ transaction }: { transaction: Transaction }) {
         return <Badge className="encapsulated-badge">{t("general.transaction.types.revoke")}</Badge>;
     }
 
-    return <Badge className="encapsulated-badge">{transaction.method.name}</Badge>;
+    return <Badge className="encapsulated-badge">{transaction.method.name({ t, i18n })}</Badge>;
 }

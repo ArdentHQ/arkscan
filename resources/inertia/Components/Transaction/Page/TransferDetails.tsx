@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { PageSection } from "@/Components/PageSection";
-import AmountSmall from "@/Components/General/AmountSmall";
 import { weiToArk } from "@/utils/UnitConverter";
+import CompactAmount from "@/Components/Tokens/CompactAmount";
 import TransactionAddress from "./Address";
 import TableHeader from "@/Components/Tables/Desktop/TableHeader";
 import TableCell from "@/Components/Tables/Desktop/TableCell";
@@ -50,12 +50,10 @@ export default function TransferDetails({
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <span className="inline-flex items-center space-x-1">
-                                            <AmountSmall amount={Number(weiToArk(transfer.amount))} hideCurrency />
-                                            <span className="whitespace-nowrap text-sm font-semibold text-theme-secondary-500 dark:text-theme-dark-300">
-                                                {tokenSymbol}
-                                            </span>
-                                        </span>
+                                        <CompactAmount
+                                            amount={Number(weiToArk(transfer.amount))}
+                                            tokenSymbol={tokenSymbol}
+                                        />
                                     </TableCell>
                                 </tr>
                             ))}

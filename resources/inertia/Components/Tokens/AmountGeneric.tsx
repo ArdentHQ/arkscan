@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import AmountSmall from "../General/AmountSmall";
-import { formatCompact } from "@/utils/number-formatter";
+import { formatCompact, networkCurrency } from "@/utils/number-formatter";
+import Tooltip from "@/Components/General/Tooltip";
 
 export default function AmountGeneric({
     amount,
@@ -20,6 +21,16 @@ export default function AmountGeneric({
     )[breakpoint];
 
     const { value, suffix } = formatCompact(amount);
+    const isCompact = suffix !== undefined;
+    const fullFormatted = isCompact ? networkCurrency(amount, 8, false) : undefined;
+
+    const content = (
+        <div className="inline-block space-x-1 leading-4.25">
+            <AmountSmall amount={value} hideTooltip hideCurrency={true} />
+
+            {suffix && <span>{suffix}</span>}
+        </div>
+    );
 
     return (
         <div
@@ -29,11 +40,7 @@ export default function AmountGeneric({
             })}
             data-testid={testId}
         >
-            <div className="inline-block space-x-1 leading-4.25">
-                <AmountSmall amount={value} hideTooltip hideCurrency={true} />
-
-                {suffix && <span>{suffix}</span>}
-            </div>
+            {isCompact ? <Tooltip content={fullFormatted}>{content}</Tooltip> : content}
         </div>
     );
 }

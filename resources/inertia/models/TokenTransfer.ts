@@ -1,21 +1,21 @@
-import { ITokenTransfer } from "@/types/generated";
+import { INetwork, ITokenTransfer } from "@/types/generated";
 import { Transaction } from "@/models/Transaction";
 
 export class TokenTransfer {
     transaction: Transaction;
 
-    constructor(data: ITokenTransfer) {
+    constructor(data: ITokenTransfer, network: INetwork) {
         Object.assign(this, data);
 
-        this.transaction = Transaction.from(data.transaction!);
+        this.transaction = Transaction.make(data.transaction, network);
     }
 
-    static from(data: ITokenTransfer): TokenTransfer {
-        return new TokenTransfer(data);
+    static make(data: ITokenTransfer, network: INetwork): TokenTransfer {
+        return new TokenTransfer(data, network);
     }
 
-    static fromArray(data: ITokenTransfer[]): TokenTransfer[] {
-        return data.map(TokenTransfer.from);
+    static fromArray(data: ITokenTransfer[], network: INetwork): TokenTransfer[] {
+        return data.map((item) => TokenTransfer.make(item, network));
     }
 }
 
