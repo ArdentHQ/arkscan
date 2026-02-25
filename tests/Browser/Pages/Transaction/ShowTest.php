@@ -410,6 +410,9 @@ it('should show token transfer symbol', function () {
                 $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
             }
 
+            // CompactAmount shows full value on md+ and compact on smaller viewports
+            $expectedAmount = $resolution['width'] >= 768 ? '1,234.56 TST' : '1.23456K TST';
+
             $browser->resize($resolution['width'], $resolution['height'])
                 ->pause(100)
                 ->assertSee($transactionIdPart2)
@@ -423,7 +426,7 @@ it('should show token transfer symbol', function () {
                     'To',
                     $recipientAddress,
                     'Amount',
-                    '1,234.56 TST',
+                    $expectedAmount,
                     'Transaction Summary',
                     'Fee',
                     '0.000021 DARK',
@@ -486,6 +489,9 @@ it('should not show recipient username for "to" address', function () {
                 $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
             }
 
+            // CompactAmount shows full value on md+ and compact on smaller viewports
+            $expectedAmount = $resolution['width'] >= 768 ? '1,234.56 TST' : '1.23456K TST';
+
             $browser->resize($resolution['width'], $resolution['height'])
                 ->pause(100)
                 ->assertSee($transactionIdPart2)
@@ -499,7 +505,7 @@ it('should not show recipient username for "to" address', function () {
                     'To',
                     $recipientWallet->attributes['username'],
                     'Amount',
-                    '1,234.56 TST',
+                    $expectedAmount,
                     'Transaction Summary',
                     'Fee',
                     '0.000021 DARK',
