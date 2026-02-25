@@ -6,6 +6,7 @@ import TableCell from "../TableCell";
 import { MobileTopAccountsSkeletonTable } from "../Skeleton/Wallet/TopAccounts";
 import { IPaginatedResponse } from "@/types";
 import { IWallet } from "@/types/generated";
+import { Wallet } from "@/models/Wallet";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import Number from "@/Components/General/Number";
 import Percentage from "@/Components/General/Percentage";
@@ -22,6 +23,7 @@ export function TopAccountsMobileTable({ wallets }: { wallets: IPaginatedRespons
         <MobileTable noResultsMessage={wallets.noResultsMessage} resultCount={wallets.total ?? 0}>
             {wallets.data.map((wallet: IWallet, index) => {
                 const rank = baseRank + index + 1;
+                const walletModel = Wallet.from(wallet);
 
                 return (
                     <MobileTableRow
@@ -42,10 +44,10 @@ export function TopAccountsMobileTable({ wallets }: { wallets: IPaginatedRespons
                         <TableCell
                             label={t("labels.name")}
                             className={classNames({
-                                "hidden sm:block": !wallet.hasUsername,
+                                "hidden sm:block": !walletModel.hasUsername,
                             })}
                         >
-                            {wallet.hasUsername ? (
+                            {walletModel.hasUsername ? (
                                 <div className="inline-block text-theme-secondary-900 dark:text-theme-dark-50">
                                     {wallet.username}
                                 </div>
@@ -58,7 +60,7 @@ export function TopAccountsMobileTable({ wallets }: { wallets: IPaginatedRespons
 
                         <TableCell
                             className={classNames({
-                                "!mt-0": !wallet.hasUsername,
+                                "!mt-0": !walletModel.hasUsername,
                             })}
                             label={t("tables.wallets.balance_currency", {
                                 currency: network?.currency,

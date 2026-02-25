@@ -47,12 +47,10 @@ class Transaction extends Data
         #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: string[] | null }')]
         public array $methodData,
         #[LiteralTypeScriptType('{
-            spender: string;
+            spender: IWallet;
             amount: string | null;
             isUnlimited: boolean;
             isRevoke: boolean;
-            spenderUsername: string | null;
-            spenderHasUsername: boolean;
         } | null')]
         public ?array $tokenApprovalDetails,
         public ?self $validatorRegistration,

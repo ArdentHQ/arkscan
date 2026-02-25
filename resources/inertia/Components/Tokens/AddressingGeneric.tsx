@@ -16,7 +16,7 @@ export default function AddressingForTransfer({
     return (
         <AddressingGeneric
             sender={sender!.address}
-            senderUsername={sender?.hasUsername && sender?.username ? sender?.username : undefined}
+            senderUsername={sender?.username ?? undefined}
             recipient={recipient.address}
             recipientUsername={transfer.to.username}
             contractAddress={contractAddress}

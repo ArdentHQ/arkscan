@@ -1,4 +1,5 @@
 import { IWallet } from "@/types/generated";
+import { Wallet } from "@/models/Wallet";
 import WalletOverviewItem from "../Item";
 import { useTranslation } from "react-i18next";
 import WalletOverviewItemEntry from "../ItemEntry";
@@ -30,8 +31,9 @@ function EmptyWalletOverviewValidator() {
 
 export default function WalletOverviewValidator({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
+    const walletModel = Wallet.from(wallet);
 
-    if (!wallet.isValidator) {
+    if (!walletModel.isValidator) {
         return <EmptyWalletOverviewValidator />;
     }
 
@@ -40,10 +42,11 @@ export default function WalletOverviewValidator({ wallet }: { wallet: IWallet })
             title={t("pages.wallet.validator_info")}
             titleExtra={
                 <>
-                    {!wallet.isResigned && (
+                    {!walletModel.isResigned && (
                         <div>
                             <VoteLink
                                 wallet={wallet}
+                                isResigned={walletModel.isResigned}
                                 voteText={
                                     <>
                                         <span className="md:hidden">{t("actions.vote")}</span>
@@ -76,9 +79,9 @@ export default function WalletOverviewValidator({ wallet }: { wallet: IWallet })
 
             <WalletOverviewItemEntry
                 title={t("pages.wallet.validator.forged_total")}
-                hasEmptyValue={!wallet.isValidator}
-                value={wallet.isValidator && <NetworkCurrency value={wallet.totalForged} decimals={0} />}
-                tooltip={wallet.isValidator ? <NetworkCurrency value={wallet.totalForged} /> : undefined}
+                hasEmptyValue={!walletModel.isValidator}
+                value={walletModel.isValidator && <NetworkCurrency value={wallet.totalForged} decimals={0} />}
+                tooltip={walletModel.isValidator ? <NetworkCurrency value={wallet.totalForged} /> : undefined}
             />
         </WalletOverviewItem>
     );

@@ -68,11 +68,10 @@ export default function TransactionToken({
         <PageSection title={t("pages.transaction.tokens_transferred")}>
             <SectionDetailRow title={t("pages.transaction.header.to")} headerWidthClass={headerWidthClass}>
                 <TransactionAddress
-                    address={tokenTransfer.recipient}
+                    address={tokenTransfer.recipient.address}
                     wallet={{
-                        address: tokenTransfer.recipient,
-                        hasUsername: tokenTransfer.recipientHasUsername,
-                        username: tokenTransfer.recipientUsername,
+                        address: tokenTransfer.recipient.address,
+                        username: tokenTransfer.recipient.username ?? null,
                     }}
                 />
             </SectionDetailRow>
