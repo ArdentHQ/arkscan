@@ -6,6 +6,7 @@ import NavbarResults, { getResultHref } from "./NavbarResults";
 import { type KeyboardEvent, useRef } from "react";
 import { useNavbar } from "@/Components/General/Navbar/NavbarContext";
 import { router } from "@inertiajs/react";
+import { useFloating, autoUpdate, offset, shift, flip } from "@floating-ui/react";
 
 export default function NavbarSearch() {
     const { t } = useTranslation();
@@ -13,6 +14,12 @@ export default function NavbarSearch() {
     const { query, setQuery, results, clear } = useNavbar();
 
     const searchRef = useRef<HTMLDivElement>(null);
+
+    const { refs, floatingStyles } = useFloating({
+        placement: "bottom-end",
+        whileElementsMounted: autoUpdate,
+        middleware: [offset(8), shift({ padding: 16 }), flip({ padding: 8 })],
+    });
 
     const blurHandler = (event: React.FocusEvent<HTMLElement>) => {
         const blurredOutside = !searchRef.current?.contains(event.relatedTarget);
@@ -53,7 +60,10 @@ export default function NavbarSearch() {
 
     return (
         <div className="relative w-full" ref={searchRef}>
-            <div className="transition-default group w-[340px] rounded-md border border-transparent bg-theme-secondary-200 focus-within:border-theme-primary-600 focus-within:bg-white hover:bg-white dark:bg-theme-dark-900 focus-within:dark:border-theme-primary-600 md:w-full md-lg:w-[340px] hover:[&:not(:focus-within)]:border-theme-primary-600 hover:[&:not(:focus-within)]:dark:border-theme-dark-700">
+            <div
+                ref={refs.setReference}
+                className="transition-default group w-[340px] rounded-md border border-transparent bg-theme-secondary-200 focus-within:border-theme-primary-600 focus-within:bg-white hover:bg-white dark:bg-theme-dark-900 focus-within:dark:border-theme-primary-600 md:w-full md-lg:w-[340px] hover:[&:not(:focus-within)]:border-theme-primary-600 hover:[&:not(:focus-within)]:dark:border-theme-dark-700"
+            >
                 <div className="relative flex items-center rounded border border-transparent pl-1 focus-within:border-theme-primary-600 dark:border-theme-dark-700 focus-within:dark:border-theme-primary-600 hover:[&:not(:focus-within)]:border-theme-primary-600 group-hover:[&:not(:focus-within)]:dark:border-theme-dark-700">
                     <span className="ml-3 text-theme-secondary-500 dark:text-theme-dark-500">
                         <MagnifyingGlassSmallIcon className="h-4 w-4" />
@@ -96,7 +106,7 @@ export default function NavbarSearch() {
                 </div>
             </div>
 
-            <NavbarResults onBlur={blurHandler} />
+            <NavbarResults onBlur={blurHandler} floatingRef={refs.setFloating} floatingStyles={floatingStyles} />
         </div>
     );
 }
