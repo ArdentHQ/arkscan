@@ -1,7 +1,7 @@
 import MobileTable from "../Table";
 import MobileTableRow from "../Row";
 import TableCell from "../TableCell";
-import { MobileTransactionsSkeletonTable } from "../Skeleton/Wallet/Transactions";
+import { MobileTokensSkeletonTable } from "../Skeleton/Wallet/Tokens";
 import { ITokenHolder } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
@@ -23,7 +23,7 @@ export function TokensMobileTable() {
                 <MobileTableRow
                     key={index}
                     header={
-                        <div className="flex min-w-0 items-center justify-between space-x-2">
+                        <div className="flex w-full items-center justify-between space-x-2">
                             <div className="flex w-full min-w-0 items-center space-x-1">
                                 <div className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
                                     <TruncatedValue value={token.token.name} />
@@ -66,7 +66,7 @@ export default function TokensMobileTableWrapper({ rowCount = 10 }: { rowCount?:
             <div>
                 <TableHeaderWrapper resultCount={0} />
 
-                <MobileTransactionsSkeletonTable rowCount={rowCount} />
+                <MobileTokensSkeletonTable rowCount={rowCount} />
             </div>
         );
     }
