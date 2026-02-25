@@ -1,4 +1,3 @@
-import { IWallet } from "@/types/generated";
 import Tippy from "@tippyjs/react";
 import { useTranslation } from "react-i18next";
 import classNames from "classnames";
@@ -10,10 +9,12 @@ import useSharedData from "@/hooks/use-shared-data";
 
 export default function VoteLink({
     wallet,
+    isResigned,
     voteText,
     unvoteText,
 }: {
-    wallet: Pick<IWallet, "address" | "isResigned" | "voteUrl">;
+    wallet: { address: string; voteUrl: string | null };
+    isResigned: boolean;
     voteText?: React.ReactNode;
     unvoteText?: React.ReactNode;
 }) {
@@ -24,7 +25,7 @@ export default function VoteLink({
 
     const validatorAddress = wallet.address;
 
-    const shouldRenderDropdown = !wallet.isResigned || votingForAddress === validatorAddress;
+    const shouldRenderDropdown = !isResigned || votingForAddress === validatorAddress;
 
     const showArkConnectOption = isArkConnectEnabled && hasExtension;
     const showWrongNetwork = showArkConnectOption && isConnected && isOnSameNetwork === false;
@@ -33,7 +34,7 @@ export default function VoteLink({
     return (
         <DropdownProvider>
             <>
-                {wallet.isResigned && votingForAddress !== validatorAddress && (
+                {isResigned && votingForAddress !== validatorAddress && (
                     <Tippy content={t("pages.wallet.validator.resigned_vote_tooltip")}>
                         <div>
                             <button

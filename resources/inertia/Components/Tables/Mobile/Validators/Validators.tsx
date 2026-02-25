@@ -48,7 +48,7 @@ export function ValidatorsMobileTable({ validators }: Pick<ValidatorsProps, "val
                                         </span>
 
                                         <div className="border-theme-secondary-300 dark:border-theme-dark-700 sm:ml-3 sm:border-l sm:pl-3">
-                                            <VoteLink wallet={validator} />
+                                            <VoteLink wallet={validator} isResigned={validator.isResigned} />
                                         </div>
                                     </div>
                                 </div>

@@ -55,6 +55,22 @@ export default function Addressing({
         return t("tables.transactions.from");
     }, [isSentToSelf, isSent]);
 
+    const walletDisplayName = useMemo(() => {
+        if (!interactedWallet) {
+            return null;
+        }
+
+        if (interactedWallet.username) {
+            return interactedWallet.username;
+        }
+
+        if (withoutTruncate) {
+            return interactedWallet.address;
+        }
+
+        return <TruncateMiddle>{interactedWallet.address}</TruncateMiddle>;
+    }, [interactedWallet, withoutTruncate]);
+
     return (
         <div className={classNames("flex items-center space-x-2 text-sm font-semibold", className)} {...props}>
             <div
@@ -74,26 +90,14 @@ export default function Addressing({
             </div>
 
             <div>
-                {!!interactedWallet ? (
-                    <>
-                        {withoutLink ? (
-                            <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                {interactedWallet!.hasUsername && interactedWallet!.username}
-                                {!interactedWallet!.hasUsername && withoutTruncate && interactedWallet!.address}
-                                {!interactedWallet!.hasUsername && !withoutTruncate && (
-                                    <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
-                                )}
-                            </span>
-                        ) : (
-                            <Link className="link" href={route("wallet", interactedWallet!.address)}>
-                                {interactedWallet!.hasUsername && interactedWallet!.username}
-                                {!interactedWallet!.hasUsername && withoutTruncate && interactedWallet!.address}
-                                {!interactedWallet!.hasUsername && !withoutTruncate && (
-                                    <TruncateMiddle>{interactedWallet!.address}</TruncateMiddle>
-                                )}
-                            </Link>
-                        )}
-                    </>
+                {interactedWallet ? (
+                    withoutLink ? (
+                        <span className="text-theme-secondary-900 dark:text-theme-dark-50">{walletDisplayName}</span>
+                    ) : (
+                        <Link className="link" href={route("wallet", interactedWallet.address)}>
+                            {walletDisplayName}
+                        </Link>
+                    )
                 ) : (
                     <span className="text-theme-secondary-900 dark:text-theme-dark-50">
                         {t("tables.transactions.contract")}

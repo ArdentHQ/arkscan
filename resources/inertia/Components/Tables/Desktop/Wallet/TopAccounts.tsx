@@ -4,6 +4,7 @@ import TableCell from "../TableCell";
 import LoadingTable, { ILoadingTableColumn } from "../LoadingTable";
 import { IPaginatedResponse } from "@/types";
 import { IWallet } from "@/types/generated";
+import { Wallet } from "@/models/Wallet";
 import { Table } from "../Table";
 import TableHeader from "../TableHeader";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
@@ -20,22 +21,27 @@ import SecondSignatureIcon from "@ui/icons/transaction/second-signature.svg?reac
 
 function WalletTypeIcons({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
+    const { network } = useSharedData();
+    const walletModel = Wallet.from(wallet, {
+        validatorCount: network!.validatorCount,
+        knownWallets: network!.knownWallets,
+    });
 
     return (
         <div className="flex w-full items-center justify-center space-x-2 text-theme-secondary-700 dark:text-theme-dark-200">
-            {wallet.isKnown && (
+            {walletModel.isKnown && (
                 <Tooltip content={t("labels.verified_address")}>
                     <VerifiedCheckmarkIcon className="h-4 w-4" />
                 </Tooltip>
             )}
 
-            {wallet.isOwnedByExchange && (
+            {walletModel.isOwnedByExchange && (
                 <Tooltip content={t("labels.exchange")}>
                     <ExchangeIcon className="h-4 w-4" />
                 </Tooltip>
             )}
 
-            {wallet.hasSecondSignature && (
+            {walletModel.hasSecondSignature && (
                 <Tooltip content={t("labels.second_signature")}>
                     <SecondSignatureIcon className="h-4 w-4" />
                 </Tooltip>
@@ -128,7 +134,7 @@ export function TopAccountsTable({
                 </TableCell>
 
                 <TableCell>
-                    <span className="leading-4.25">{wallet.hasUsername ? wallet.username : null}</span>
+                    <span className="leading-4.25">{wallet.username ?? null}</span>
                 </TableCell>
 
                 <TableCell className="text-center" breakpoint="md-lg" responsive>

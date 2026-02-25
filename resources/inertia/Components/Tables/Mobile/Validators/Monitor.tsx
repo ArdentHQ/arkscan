@@ -67,7 +67,7 @@ export function MonitorMobileTable({ validators }: { validators: IMonitorValidat
                     <MobileTableRow
                         expandClass={classNames({
                             "space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700":
-                                !validator.wallet?.isResigned,
+                                validator.wallet?.attributes?.validatorResigned !== true,
                         })}
                         className={classNames({
                             "validator-monitor-favorite": isFavorite(validator.wallet.public_key),

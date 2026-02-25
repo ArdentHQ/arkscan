@@ -117,7 +117,7 @@ export default function AmountSmall({
                             currency={currency}
                         />
                     )}
-                    {suffix && <span>{suffix}</span>}
+                    {suffix}
                 </>
             )}
         </>

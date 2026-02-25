@@ -3,10 +3,11 @@ import useSharedData from "@/hooks/use-shared-data";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
-import { formatUnits, parseUnits, weiToArk } from "@/utils/UnitConverter";
+import { formatUnits, weiToArk } from "@/utils/UnitConverter";
 import { currency } from "@/utils/number-formatter";
 import CompactAmount from "@/Components/Tokens/CompactAmount";
 import { Transaction } from "@/models/Transaction";
+import BigNumber from "bignumber.js";
 
 export default function TransactionToken({
     transaction,
@@ -25,8 +26,8 @@ export default function TransactionToken({
     if (transaction.method.isBatchTransfer) {
         const transfers = details.batchTokenTransfers;
         const totalRaw = transfers.reduce((sum, tf) => {
-            return sum + Number(weiToArk(tf.amount));
-        }, 0);
+            return sum.plus(weiToArk(tf.amount));
+        }, new BigNumber(0));
 
         return (
             <PageSection title={t("pages.transaction.tokens_transferred")}>
@@ -41,7 +42,7 @@ export default function TransactionToken({
                 </SectionDetailRow>
 
                 <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
-                    <CompactAmount amount={totalRaw} tokenSymbol={tokenSymbol} showFullOnDesktop />
+                    <CompactAmount amount={totalRaw.toFixed()} tokenSymbol={tokenSymbol} showFullOnDesktop />
                 </SectionDetailRow>
 
                 {network?.canBeExchanged && (
@@ -61,18 +62,16 @@ export default function TransactionToken({
 
     const tokenTransfer = details.tokenTransfer;
 
-    const rawAmount =
-        tokenTransfer.amount !== null ? Number(formatUnits(parseUnits(tokenTransfer.amount, "wei"), "ark")) : null;
+    const rawAmount = tokenTransfer.amount !== null ? formatUnits(tokenTransfer.amount, "ark") : null;
 
     return (
         <PageSection title={t("pages.transaction.tokens_transferred")}>
             <SectionDetailRow title={t("pages.transaction.header.to")} headerWidthClass={headerWidthClass}>
                 <TransactionAddress
-                    address={tokenTransfer.recipient}
+                    address={tokenTransfer.recipient.address}
                     wallet={{
-                        address: tokenTransfer.recipient,
-                        hasUsername: tokenTransfer.recipientHasUsername,
-                        username: tokenTransfer.recipientUsername,
+                        address: tokenTransfer.recipient.address,
+                        username: tokenTransfer.recipient.username ?? null,
                     }}
                 />
             </SectionDetailRow>
