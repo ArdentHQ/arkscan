@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\ViewModels;
 
 use App\Contracts\ViewModel;
-use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -17,10 +16,6 @@ final class ViewModelFactory
 {
     public static function make(Model $model): ViewModel
     {
-        if ($model instanceof Block) {
-            return new BlockViewModel($model);
-        }
-
         if ($model instanceof Transaction) {
             return new TransactionViewModel($model);
         }

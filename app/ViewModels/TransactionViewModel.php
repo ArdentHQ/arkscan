@@ -10,7 +10,6 @@ use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\ExchangeRate;
-use App\Services\Timestamp;
 use App\Services\Transactions\TransactionMethod;
 use App\ViewModels\Concerns\Transaction\CanBeValidatorRegistration;
 use App\ViewModels\Concerns\Transaction\CanHaveUsername;
@@ -20,7 +19,6 @@ use App\ViewModels\Concerns\Transaction\HasState;
 use App\ViewModels\Concerns\Transaction\InteractsWithVotes;
 use App\ViewModels\Concerns\Transaction\InteractsWithWallets;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 final class TransactionViewModel implements ViewModel
@@ -48,11 +46,6 @@ final class TransactionViewModel implements ViewModel
     public function hash(): string
     {
         return $this->transaction->hash;
-    }
-
-    public function dateTime(): Carbon
-    {
-        return Timestamp::fromUnix($this->transaction->timestamp);
     }
 
     public function fee(): float
