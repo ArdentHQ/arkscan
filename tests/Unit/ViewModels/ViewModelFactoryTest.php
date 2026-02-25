@@ -8,6 +8,7 @@ use App\ViewModels\TransactionViewModel;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Tests\InvalidModel;
 
@@ -45,3 +46,18 @@ it('cannot make an invalid view model', function () {
 
     ViewModelFactory::make(new InvalidModel());
 })->throws(InvalidArgumentException::class);
+
+it('should paginate a view model collection', function () {
+    $models = Transaction::factory()->count(10)->create();
+
+    $paginator = new LengthAwarePaginator($models, 10, 5);
+
+    $paginatedViewModels = ViewModelFactory::paginate($paginator);
+
+    expect($paginatedViewModels)->toBeInstanceOf(LengthAwarePaginator::class);
+    expect($paginatedViewModels->total())->toBe(10);
+
+    foreach ($paginator->getCollection() as $model) {
+        expect($model)->toBeInstanceOf(TransactionViewModel::class);
+    }
+});
