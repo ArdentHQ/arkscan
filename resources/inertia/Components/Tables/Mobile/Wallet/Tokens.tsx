@@ -31,7 +31,10 @@ export function TokensMobileTable() {
                                 </div>
 
                                 <div className="md-lg:hidden">
-                                    <TruncatedTokenSymbol tokenSymbol={token.token.symbol} fullTokenSymbol={token.token.symbolFull} />
+                                    <TruncatedTokenSymbol
+                                        tokenSymbol={token.token.symbol}
+                                        fullTokenSymbol={token.token.symbolFull}
+                                    />
                                 </div>
                             </div>
 

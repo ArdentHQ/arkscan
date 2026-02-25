@@ -2,7 +2,7 @@ import Tooltip from "../General/Tooltip";
 
 export default function TokenSymbol({
     tokenSymbol,
-    fullTokenSymbol,    
+    fullTokenSymbol,
     addSpace = true,
 }: {
     tokenSymbol?: string;
@@ -10,15 +10,18 @@ export default function TokenSymbol({
     addSpace?: boolean;
 }) {
     if (tokenSymbol === undefined) {
-        return <></>
+        return <></>;
     }
 
     const showTooltip = fullTokenSymbol !== undefined && tokenSymbol !== null && fullTokenSymbol !== tokenSymbol;
 
     if (showTooltip) {
-        return <Tooltip className="inline" content={`${fullTokenSymbol}`}><span>{addSpace ? <>&nbsp;{tokenSymbol}</> : tokenSymbol}</span></Tooltip>
+        return (
+            <Tooltip className="inline" content={`${fullTokenSymbol}`}>
+                <span>{addSpace ? <>&nbsp;{tokenSymbol}</> : tokenSymbol}</span>
+            </Tooltip>
+        );
     }
 
-    return <span>{addSpace ? <>&nbsp;{tokenSymbol}</> : tokenSymbol}</span>
-   
+    return <span>{addSpace ? <>&nbsp;{tokenSymbol}</> : tokenSymbol}</span>;
 }

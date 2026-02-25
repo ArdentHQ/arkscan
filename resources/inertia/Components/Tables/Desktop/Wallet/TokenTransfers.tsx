@@ -48,7 +48,11 @@ export function Row({ row }: { row: ITokenTransfer }) {
             </TableCell>
 
             <TableCell className="text-right" breakpoint="md-lg" responsive>
-                <TruncatedTokenSymbol tokenSymbol={transfer.token.symbol} fullTokenSymbol={transfer.token.symbolFull} className="justify-end" />
+                <TruncatedTokenSymbol
+                    tokenSymbol={transfer.token.symbol}
+                    fullTokenSymbol={transfer.token.symbolFull}
+                    className="justify-end"
+                />
             </TableCell>
         </tr>
     );
