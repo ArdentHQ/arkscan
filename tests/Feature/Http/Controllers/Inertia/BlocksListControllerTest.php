@@ -8,7 +8,6 @@ use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-use App\ViewModels\ViewModelFactory;
 use Carbon\Carbon;
 use Inertia\Testing\AssertableInertia as Assert;
 
