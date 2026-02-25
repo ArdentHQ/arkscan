@@ -291,11 +291,11 @@ it('should show multipayment recipients', function ($resolution) {
         $mappedAddresses = [
             [
                 'address' => $recipient1->address,
-                'amount'  => '10.00 DARK',
+                'amount'  => '10.00',
             ],
             [
                 'address' => $recipient2->address,
-                'amount'  => '1.00 DARK',
+                'amount'  => '1.00',
             ],
         ];
 
