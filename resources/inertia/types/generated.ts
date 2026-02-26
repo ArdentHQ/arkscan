@@ -264,10 +264,6 @@ export type IWallet = {
     votes: string;
     productivity: number;
     balancePercentage: number;
-    formattedBalanceTwoDecimals: string;
-    formattedBalanceFull: string;
-    formattedBalanceFullWithoutSuffix: string;
-    fiatValue: string;
     totalForged: string;
     attributes: Record<string, any>;
     vote: IWallet | null;

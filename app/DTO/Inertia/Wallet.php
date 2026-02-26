@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace App\DTO\Inertia;
 
-use App\Facades\Network;
 use App\Models\Wallet as Model;
-use App\Services\ExchangeRate;
-use App\Services\NumberFormatter as ExplorerNumberFormatter;
 use App\ViewModels\WalletViewModel;
-use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -27,10 +23,6 @@ class Wallet extends Data
         public string $votes,
         public float $productivity,
         public float $balancePercentage,
-        public string $formattedBalanceTwoDecimals,
-        public string $formattedBalanceFull,
-        public string $formattedBalanceFullWithoutSuffix,
-        public string $fiatValue,
         public string $totalForged,
         // TODO: Consider using another data object for the attributes
         #[LiteralTypeScriptType('Record<string, any>')]
@@ -54,10 +46,6 @@ class Wallet extends Data
             votes: '0',
             productivity: 0.0,
             balancePercentage: 0.0,
-            formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom(0, Network::currency(), 2),
-            formattedBalanceFull: NumberFormatter::new()->formatWithCurrencyCustom(0, Network::currency(), null),
-            formattedBalanceFullWithoutSuffix: '0',
-            fiatValue: ExchangeRate::convert(0, null),
             totalForged: '0',
             vote: null,
             voteUrl: null,
@@ -93,10 +81,6 @@ class Wallet extends Data
             votes: (string) $viewModel->votes(),
             productivity: $viewModel->productivity(),
             balancePercentage: $viewModel->balancePercentage(),
-            formattedBalanceTwoDecimals: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), 2),
-            formattedBalanceFull: NumberFormatter::new()->formatWithCurrencyCustom($viewModel->balance(), Network::currency(), null),
-            formattedBalanceFullWithoutSuffix: ExplorerNumberFormatter::currencyWithoutSuffix($viewModel->balance(), Network::currency()),
-            fiatValue: ExchangeRate::convert($wallet->balance, null),
             totalForged: (string) $viewModel->totalForged(),
             vote: $votedWallet,
             voteUrl: $voteUrl,

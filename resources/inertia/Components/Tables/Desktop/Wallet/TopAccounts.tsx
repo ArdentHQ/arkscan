@@ -9,6 +9,7 @@ import { Table } from "../Table";
 import TableHeader from "../TableHeader";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
+import useWalletFormatting from "@/hooks/use-wallet-formatting";
 import Number from "@/Components/General/Number";
 import Percentage from "@/Components/General/Percentage";
 import Tooltip from "@/Components/General/Tooltip";
@@ -122,6 +123,7 @@ export function TopAccountsTable({
 
     const Row = ({ row: wallet }: { row: IWallet }) => {
         const rank = baseRank + wallets.data.indexOf(wallet) + 1;
+        const { formattedBalanceFullWithoutSuffix, fiatValue } = useWalletFormatting(wallet.balance);
 
         return (
             <tr className="text-sm font-semibold">
@@ -147,8 +149,8 @@ export function TopAccountsTable({
 
                 <TableCell className="text-right" lastOn="lg">
                     <div className="flex flex-col font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50">
-                        <Tooltip content={wallet.fiatValue} disabled={!network?.canBeExchanged}>
-                            <span>{wallet.formattedBalanceFullWithoutSuffix}</span>
+                        <Tooltip content={fiatValue} disabled={!network?.canBeExchanged}>
+                            <span>{formattedBalanceFullWithoutSuffix}</span>
                         </Tooltip>
 
                         <span className="mt-1 text-xs font-semibold leading-3.75 text-theme-secondary-500 md-lg:hidden">
