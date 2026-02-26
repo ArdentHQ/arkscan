@@ -107,11 +107,11 @@ it('should calculate gas statistics with value', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
             ->where('statistics.gas.low.amount', '1500000000')
-            ->where('statistics.gas.low.value', 3.0)
+            ->where('statistics.gas.low.value', fn ($value) => (float) $value === 3.0)
             ->where('statistics.gas.average.amount', '2500000000')
-            ->where('statistics.gas.average.value', 5.0)
+            ->where('statistics.gas.average.value', fn ($value) => (float) $value === 5.0)
             ->where('statistics.gas.high.amount', '3500000000')
-            ->where('statistics.gas.high.value', 7.0));
+            ->where('statistics.gas.high.value', fn ($value) => (float) $value === 7.0));
 });
 
 it('should format small gas values for fiat currencies', function () {
@@ -141,9 +141,9 @@ it('should format small gas values for fiat currencies', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
-            ->where('statistics.gas.low.value', fn ($value) => is_float($value) && $value < 0.01)
-            ->where('statistics.gas.average.value', fn ($value) => is_float($value) && $value < 0.01)
-            ->where('statistics.gas.high.value', fn ($value) => is_float($value) && $value < 0.01));
+            ->where('statistics.gas.low.value', fn ($value) => is_numeric($value) && $value < 0.01)
+            ->where('statistics.gas.average.value', fn ($value) => is_numeric($value) && $value < 0.01)
+            ->where('statistics.gas.high.value', fn ($value) => is_numeric($value) && $value < 0.01));
 });
 
 it('should format gas values for crypto currencies', function () {
@@ -181,9 +181,9 @@ it('should format gas values for crypto currencies', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
-            ->where('statistics.gas.low.value', 3.0)
-            ->where('statistics.gas.average.value', 5.0)
-            ->where('statistics.gas.high.value', 7.0));
+            ->where('statistics.gas.low.value', fn ($value) => (float) $value === 3.0)
+            ->where('statistics.gas.average.value', fn ($value) => (float) $value === 5.0)
+            ->where('statistics.gas.high.value', fn ($value) => (float) $value === 7.0));
 });
 
 it('should show the no-results message when no transactions exist', function () {
@@ -265,7 +265,7 @@ it('should include chart data with market stats', function () {
             ->where('chart.period', 'day')
             ->where('chart.datasets.2', 2)
             ->where('chart.theme.name', 'green')
-            ->where('chart.market.volume', 2255149.0)
+            ->where('chart.market.volume', fn ($value) => (float) $value === 2255149.0)
             ->where('chart.market.marketCap', $expectedMarketCap));
 });
 

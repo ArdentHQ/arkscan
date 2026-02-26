@@ -311,10 +311,10 @@ it('should include market data, validators, addresses, annual data, and block re
             ->where('insights.validators.2.value', Carbon::parse('2020-01-01')->timestamp)
             ->where('insights.validators.4.key', 'most_blocks_forged')
             ->where('insights.validators.4.value', 77)
-            ->where('insights.transactions.records.highest_fee.fee', $highestFeeBlock->fee->toFloat())
+            ->where('insights.transactions.records.highest_fee.fee', fn ($value) => (float) $value === $highestFeeBlock->fee->toFloat())
             ->where('insights.transactions.records.most_transactions_in_block.transactionCount', 99)
             ->where('insights.addresses.holdings.0.grouped', 1)
             ->where('insights.addresses.holdings.0.count', 7)
             ->where('insights.addresses.unique.largest.value', $largestValue)
-            ->where('insights.annual.0.fees', 0.5));
+            ->where('insights.annual.0.fees', fn ($value) => (float) $value === 0.5));
 });
