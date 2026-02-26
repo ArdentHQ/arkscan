@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TabsContext from "./TabsContext";
 import { ITab, ITabsContextType, ITabsQueryString, TabChangedMethod } from "./types";
 import Wrapper from "@/Components/Tabs/Wrapper";
@@ -29,6 +29,7 @@ export default function TabsProvider({
     const [queryStringValues, setQueryStringValues] = useState<ITabsQueryString>(queryStringDefaults);
     const [tabLoaded, setTabLoaded] = useState<Record<string, boolean>>({});
     const [events, setEvents] = useState<Record<string, ((tab: ITab) => void)[]>>({});
+    const isInitialMount = useRef(true);
 
     const changeTab = (newTab: string) => {
         if (currentTab) {
@@ -123,6 +124,17 @@ export default function TabsProvider({
                 return;
             }
 
+            const currentUrl = new URL(location.href);
+            const hydratedValues = { ...queryStringDefaults[tab] };
+            Object.entries(queryStringDefaults[tab]).forEach(([param, value]) => {
+                hydratedValues[param] = (currentUrl.searchParams.get(param) ?? value).toString();
+            });
+
+            setQueryStringValues((prev) => ({
+                ...prev,
+                [tab]: hydratedValues,
+            }));
+
             setCurrentTab(tab);
             setSelectedTab(tabs.find((t) => t.value === tab) ?? tabs[0]);
             setTabLoaded({ ...tabLoaded, [tab]: true });
@@ -131,6 +143,11 @@ export default function TabsProvider({
 
     useEffect(() => {
         if (!currentTab) {
+            return;
+        }
+
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
             return;
         }
 
