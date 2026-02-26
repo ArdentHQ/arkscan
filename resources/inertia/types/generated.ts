@@ -41,9 +41,9 @@ export type IExchange = {
     iconUrl: string;
     coingecko_id: string | null;
     price: number | null;
-    priceFiat: string | null;
+    priceFiat: number | null;
     volume: number | null;
-    volumeFiat: string | null;
+    volumeFiat: number | null;
 };
 export type IForgingStats = {
     number: number;

@@ -27,9 +27,9 @@ class IExchange extends Data
         public string $iconUrl,
         public ?string $coingecko_id,
         public ?float $price,
-        public ?string $priceFiat,
+        public ?float $priceFiat,
         public ?float $volume,
-        public ?string $volumeFiat,
+        public ?float $volumeFiat,
     ) {
     }
 
@@ -49,9 +49,9 @@ class IExchange extends Data
             iconUrl: config('arkscan.exchanges.icon_url').$exchange->icon.'.svg',
             coingecko_id: $exchange->coingecko_id,
             price: $exchange->price,
-            priceFiat: $exchange->price !== null ? ExchangeRate::convertFiatToCurrency($exchange->price, 'USD', Settings::currency()) : null,
+            priceFiat: $exchange->price !== null ? ExchangeRate::convertFiatToCurrencyNumerical($exchange->price, 'USD', Settings::currency()) : null,
             volume: $exchange->volume,
-            volumeFiat: $exchange->volume !== null ? ExchangeRate::convertFiatToCurrency($exchange->volume, 'USD', Settings::currency(), 2) : null,
+            volumeFiat: $exchange->volume !== null ? ExchangeRate::convertFiatToCurrencyNumerical($exchange->volume, 'USD', Settings::currency()) : null,
         );
     }
 }

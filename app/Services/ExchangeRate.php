@@ -38,7 +38,21 @@ final class ExchangeRate
 
     public static function convertFiatToCurrency(float $amount, string $from, string $to, int $decimals = 4): ?string
     {
-        // Determine the exchange rate based on Network token currency value
+        $converted = self::convertFiatToCurrencyNumerical($amount, $from, $to);
+
+        if ($converted === null) {
+            return null;
+        }
+
+        if (! NumberFormatter::isFiat($to)) {
+            $decimals = 8;
+        }
+
+        return NumberFormatter::currencyWithDecimals($converted, Settings::currency(), $decimals);
+    }
+
+    public static function convertFiatToCurrencyNumerical(float $amount, string $from, string $to): ?float
+    {
         $cache = new NetworkStatusBlockCache();
 
         $fromValue = $cache->getPrice(Network::currency(), $from);
@@ -48,13 +62,7 @@ final class ExchangeRate
             return null;
         }
 
-        $exchangeRate = $toValue / $fromValue;
-
-        if (! NumberFormatter::isFiat($to)) {
-            $decimals = 8;
-        }
-
-        return NumberFormatter::currencyWithDecimals($amount * $exchangeRate, Settings::currency(), $decimals);
+        return $amount * ($toValue / $fromValue);
     }
 
     public static function now(): float
