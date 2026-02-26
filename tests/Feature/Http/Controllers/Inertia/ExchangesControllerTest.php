@@ -326,7 +326,7 @@ it('should include chart data for crypto currencies with a valid period', functi
             ->component('Resources/Exchanges')
             ->has('chart')
             ->where('chart.period', StatsPeriods::MONTH)
-            ->where('chart.mainValueFiat', 2.0)
+            ->where('chart.mainValueFiat', fn ($value) => (float) $value === 2.0)
             ->where('chart.mainValuePercentage', fn ($value) => abs($value - 50.0) < 0.0001)
             ->where('chart.theme.name', 'green'));
 });

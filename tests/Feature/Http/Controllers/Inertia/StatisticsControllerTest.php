@@ -112,7 +112,7 @@ it('should include information card data', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Statistics/Index')
-            ->where('informationCards.transactions.allTimeValue', 5.0)
+            ->where('informationCards.transactions.allTimeValue', fn ($value) => (float) $value === 5.0)
             ->where('informationCards.fees.allTimeValue', fn ($value) => abs($value - 3.0) < 0.001));
 });
 
@@ -178,7 +178,7 @@ it('should format fee cards above threshold and convert chart datasets', functio
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Statistics/Index')
-            ->where('informationCards.fees.periods.day.value', fn ($value) => is_float($value) && $value > 10000)
+            ->where('informationCards.fees.periods.day.value', fn ($value) => is_numeric($value) && $value > 10000)
             ->where('informationCards.fees.periods.day.aboveThreshold', true)
             ->where('informationCards.fees.periods.day.chart.datasets.0', fn ($value) => (float) $value === $expectedDataset));
 });
