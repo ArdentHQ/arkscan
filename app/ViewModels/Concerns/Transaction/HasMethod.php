@@ -4,15 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Services\Transactions\TransactionMethod;
-
 trait HasMethod
 {
-    public function typeName(): string
-    {
-        return (new TransactionMethod($this->transaction))->name();
-    }
-
     public function isTransfer(): bool
     {
         return $this->method->isTransfer();

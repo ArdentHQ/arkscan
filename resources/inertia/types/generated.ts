@@ -3,27 +3,13 @@ export type IBlock = {
     number: number;
     timestamp: number;
     transactionCount: number;
-    totalReward: number;
-    totalRewardFiat: string;
-    rewardFiat: string;
-    proposer: IMemoryWallet;
-};
-export type IBlockDetails = {
-    hash: string;
-    height: number;
-    timestamp: number;
-    timestampFormatted: string;
-    transactionCount: number;
     reward: number;
     rewardFiat: string;
     fee: number;
     feeFiat: string;
-    totalReward: number;
     totalRewardFiat: string;
     confirmations: number;
-    validatorAddress: string;
-    validatorUsername: string | null;
-    validatorHasUsername: boolean;
+    proposer: IMemoryWallet;
 };
 export type IConfigArkconnect = {
     enabled: boolean;
@@ -92,8 +78,8 @@ export type INavbarSearchTransactionResultData = {
     isUnvote: boolean;
     isTransfer: boolean;
     isTokenTransfer: boolean;
-    sender: INavbarSearchMemoryWallet | null;
-    recipient: INavbarSearchMemoryWallet | null;
+    sender: INavbarSearchMemoryWallet;
+    recipient: INavbarSearchMemoryWallet;
     typeName: string;
     votedValidatorLabel: string | null;
 };
@@ -181,6 +167,7 @@ export type IToken = {
     address: string;
     name: string;
     symbol: string;
+    symbolFull: string;
     decimals: number;
     totalSupply: string;
     deploymentHash: string;

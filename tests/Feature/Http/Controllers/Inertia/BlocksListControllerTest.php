@@ -8,7 +8,6 @@ use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-use App\ViewModels\ViewModelFactory;
 use Carbon\Carbon;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -219,8 +218,8 @@ it('should list the first page of records', function () {
     performBlocksListRequest(
         $this,
         reloadCallback: function (Assert $page) {
-            foreach (ViewModelFactory::paginate(Block::withScope(OrderByTimestampScope::class)->paginate())->items() as $index => $block) {
-                $page->where("blocks.data.{$index}.hash", $block->hash());
+            foreach (Block::withScope(OrderByTimestampScope::class)->paginate()->items() as $index => $block) {
+                $page->where("blocks.data.{$index}.hash", $block->hash);
             }
         },
     );
@@ -248,8 +247,8 @@ it('should list the last page of records', function () {
             $blocks = Block::withScope(OrderByTimestampScope::class)
                 ->paginate(25, ['*'], 'page', 2, Block::count());
 
-            foreach (ViewModelFactory::paginate($blocks)->items() as $index => $block) {
-                $page->where("blocks.data.{$index}.hash", $block->hash());
+            foreach ($blocks->items() as $index => $block) {
+                $page->where("blocks.data.{$index}.hash", $block->hash);
             }
         },
         queryString: ['page' => 2],
@@ -279,8 +278,8 @@ it('should handle a lot of blocks', function () {
             $blocks = Block::withScope(OrderByTimestampScope::class)
                 ->paginate(25, ['*'], 'page', 159, Block::count());
 
-            foreach (ViewModelFactory::paginate($blocks)->items() as $index => $block) {
-                $page->where("blocks.data.{$index}.hash", $block->hash());
+            foreach ($blocks->items() as $index => $block) {
+                $page->where("blocks.data.{$index}.hash", $block->hash);
             }
         },
         queryString: ['page' => 159],
@@ -345,8 +344,8 @@ it('should list the last page of a snapshot', function () {
 
             $page->has('blocks.data', 11);
 
-            foreach (ViewModelFactory::paginate($blocks)->items() as $index => $block) {
-                $page->where("blocks.data.{$index}.hash", $block->hash());
+            foreach ($blocks->items() as $index => $block) {
+                $page->where("blocks.data.{$index}.hash", $block->hash);
             }
         },
         queryString: ['page' => $pageCount, 'per-page' => 25],

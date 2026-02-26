@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\DTO\Search;
 
-use App\ViewModels\BlockViewModel;
+use App\DTO\MemoryWallet;
+use App\Models\Block;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -18,12 +19,12 @@ final class NavbarSearchBlockResultData extends Data
     ) {
     }
 
-    public static function fromViewModel(BlockViewModel $block): self
+    public static function fromModel(Block $block): self
     {
         return new self(
-            hash: $block->hash(),
-            transactionCount: $block->transactionCount(),
-            validator: NavbarSearchMemoryWalletData::fromMemoryWallet($block->validator()),
+            hash: $block->hash,
+            transactionCount: $block->transactions_count,
+            validator: NavbarSearchMemoryWalletData::fromMemoryWallet(MemoryWallet::fromAddress($block->proposer)),
         );
     }
 }

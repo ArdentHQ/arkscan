@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\DTO\Search;
 
+use App\DTO\MemoryWallet;
+use App\Models\Wallet;
 use App\ViewModels\WalletViewModel;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -20,14 +22,17 @@ final class NavbarSearchWalletResultData extends Data
     ) {
     }
 
-    public static function fromViewModel(WalletViewModel $wallet): self
+    public static function fromModel(Wallet $wallet): self
     {
+        $memoryWallet = MemoryWallet::fromAddress($wallet->address);
+        $viewModel    = new WalletViewModel($wallet);
+
         return new self(
-            address: $wallet->address(),
-            username: $wallet->username(),
-            hasUsername: $wallet->hasUsername(),
-            isKnown: $wallet->isKnown(),
-            balance: $wallet->balance(),
+            address: $wallet->address,
+            username: $memoryWallet->username(),
+            hasUsername: $memoryWallet->hasUsername(),
+            isKnown: $viewModel->isKnown(),
+            balance: $viewModel->balance(),
         );
     }
 }

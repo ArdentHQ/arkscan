@@ -33,11 +33,6 @@ final class WalletViewModel implements ViewModel
     {
     }
 
-    public function url(): string
-    {
-        return route('wallet', $this->wallet->address);
-    }
-
     public function model(): Wallet
     {
         return $this->wallet;

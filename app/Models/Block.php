@@ -167,4 +167,9 @@ final class Block extends Model
     {
         return $this->hasOne(self::class, 'hash', 'parent_hash');
     }
+
+    public function url(): string
+    {
+        return route('block', $this->hash);
+    }
 }

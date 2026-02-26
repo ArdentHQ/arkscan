@@ -4,6 +4,7 @@ import Age from "@/Components/Model/Age";
 import ExportBlocksModal from "./ExportBlocksModal";
 import Height from "@/Components/Block/Height";
 import { IBlock } from "@/types/generated";
+import { Block } from "@/models/Block";
 import { IPaginatedResponse } from "@/types";
 import Reward from "@/Components/Block/Reward";
 import { Table } from "../Table";
@@ -18,29 +19,30 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export function Row({ row }: { row: IBlock }) {
+    const block = Block.from(row);
     const { network } = useSharedData();
 
     return (
         <tr className="text-sm font-semibold">
             <TableCell>
-                <Height block={row} />
+                <Height block={block} />
             </TableCell>
 
             <TableCell breakpoint="md-lg" responsive>
-                <Age timestamp={row.timestamp} />
+                <Age timestamp={block.timestamp} />
             </TableCell>
 
             <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
-                {row.transactionCount}
+                {block.transactionCount}
             </TableCell>
 
             <TableCell className="text-right" last-on={network?.canBeExchanged ? "lg" : undefined}>
-                <Reward block={row} withoutValue={!network?.canBeExchanged} />
+                <Reward block={block} withoutValue={!network?.canBeExchanged} />
             </TableCell>
 
             {network?.canBeExchanged && (
                 <TableCell className="text-right" breakpoint="lg" responsive>
-                    {row.rewardFiat}
+                    {block.rewardFiat}
                 </TableCell>
             )}
         </tr>

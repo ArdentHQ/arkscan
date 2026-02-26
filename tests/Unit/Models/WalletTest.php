@@ -67,3 +67,8 @@ it('adds the timestamp from the updated_at column when making searchable', funct
     // Expect no exception to be thrown
     expect(true)->toBeTrue();
 });
+
+it('should get the url', function () {
+    expect($this->subject->url())->toBeString();
+    expect($this->subject->url())->toBe(route('wallet', $this->subject->address));
+});

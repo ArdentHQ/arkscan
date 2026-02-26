@@ -1,4 +1,4 @@
-import { IBlock } from "@/types/generated";
+import { Block } from "@/models/Block";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
 
 export default function Reward({
@@ -7,7 +7,7 @@ export default function Reward({
     withoutStyling = false,
     className = "",
 }: {
-    block: IBlock;
+    block: Block;
     withoutValue?: boolean;
     withoutStyling?: boolean;
     className?: string;

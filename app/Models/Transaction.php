@@ -372,6 +372,11 @@ final class Transaction extends Model
         return $this->from;
     }
 
+    public function url(): string
+    {
+        return route('transaction', $this->hash);
+    }
+
     /**
      * Get the current connection name for the model.
      *

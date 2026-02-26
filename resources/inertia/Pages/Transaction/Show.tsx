@@ -51,7 +51,11 @@ export default function Show({ transaction: transactionData, details }: PageProp
                 )}
 
                 {transaction.method.isBatchTransfer && details.batchTokenTransfers.length > 0 && (
-                    <TransferDetails transfers={details.batchTokenTransfers} tokenSymbol={tokenSymbol} />
+                    <TransferDetails
+                        transfers={details.batchTokenTransfers}
+                        tokenSymbol={tokenSymbol}
+                        fullTokenSymbol={details.token?.symbolFull}
+                    />
                 )}
             </div>
 

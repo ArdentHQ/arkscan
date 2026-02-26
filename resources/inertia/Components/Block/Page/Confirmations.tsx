@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
-import { IBlockDetails } from "@/types/generated";
+import { IBlock } from "@/types/generated";
 import { PageSection } from "@/Components/PageSection";
 import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
 import Number from "@/Components/General/Number";
 
-export default function Confirmations({ block }: { block: IBlockDetails }) {
+export default function Confirmations({ block }: { block: IBlock }) {
     const { t } = useTranslation();
 
     const confirmationsKey =
