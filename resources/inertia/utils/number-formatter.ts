@@ -198,6 +198,18 @@ export function networkCurrency(
     return `${formatted} ${networkCurrency}`;
 }
 
+export function currencyShortNotation(value: number): string {
+    if (value < 1000) {
+        return Math.floor(value).toString();
+    }
+
+    if (value < 1_000_000) {
+        return `${Math.floor(value / 1000)}K`;
+    }
+
+    return `${(value / 1_000_000).toFixed(2)}M`;
+}
+
 export function decimalsFor(currency: string, isSmallValue = false): number {
     if (isFiat(currency)) {
         return isSmallValue ? FIAT_DECIMALS_SMALL : FIAT_DECIMALS;

@@ -23,7 +23,6 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
 use App\Services\ExchangeRate;
 use App\Services\MarketCap;
-use App\Services\NumberFormatter;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Http\Request;
@@ -98,11 +97,9 @@ final class HomeController
             ->through(fn (Block $block) => BlockDTO::fromModel($block));
     }
 
-    protected function getTotalSupply(): string
+    protected function getTotalSupply(): float
     {
-        $supply = CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
-
-        return NumberFormatter::currencyShortNotation($supply);
+        return CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
     }
 
     protected function getBlockHeight(): int
@@ -131,7 +128,7 @@ final class HomeController
             'totalSupply' => $this->getTotalSupply(),
             'voting'      => [
                 'percentage' => $this->getVotingPercent(),
-                'amount'     => NumberFormatter::currencyShortNotation($this->getVotingValue()),
+                'amount'     => $this->getVotingValue(),
             ],
 
             'gas' => [
@@ -151,21 +148,11 @@ final class HomeController
         ];
     }
 
-    private function formatGasValue(string $gas): string
+    private function formatGasValue(string $gas): float
     {
-        $amount    = BigNumber::new((string) UnitConverter::parseUnits($gas, 'gwei'));
-        $currency  = Settings::currency();
-        $converted = ExchangeRate::convertNumerical($amount->toFloat());
+        $amount = BigNumber::new((string) UnitConverter::parseUnits($gas, 'gwei'));
 
-        if (! NumberFormatter::isFiat($currency)) {
-            return NumberFormatter::currency($converted, $currency, true);
-        }
-
-        if ($converted > 0 && $converted < 0.01) {
-            return sprintf('< %s', NumberFormatter::currency(0.01, $currency));
-        }
-
-        return NumberFormatter::currency($converted, $currency);
+        return ExchangeRate::convertNumerical($amount->toFloat());
     }
 
     private function getChartData(Request $request): array
@@ -199,7 +186,7 @@ final class HomeController
 
         $labels    = collect($chartData['labels'] ?? [])->values()->all();
         $volume    = (new CryptoDataCache())->getVolume($currency);
-        $marketCap = MarketCap::getFormatted(Network::currency(), $currency);
+        $marketCap = MarketCap::get(Network::currency(), $currency);
 
         return [
             'datasets'        => $datasets->values()->all(),
@@ -209,7 +196,7 @@ final class HomeController
                 'mode' => Settings::theme(),
             ],
             'market'          => [
-                'volume'    => $volume !== null ? NumberFormatter::currencyForViews($volume, $currency) : null,
+                'volume'    => $volume,
                 'marketCap' => $marketCap,
             ],
             'period'          => $period,
