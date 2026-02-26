@@ -9,6 +9,7 @@ use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Facades\Wallets;
 use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
+use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
@@ -40,9 +41,9 @@ class Transaction extends Data
         public ?string $decoded_error,
         #[LiteralTypeScriptType('{address: string; amount: string}[]')]
         public array $multiPaymentRecipients,
-        public int | string $amountFiat,
-        public int | string $amountReceivedFiat,
-        public int | string $feeFiat,
+        public float $amountFiat,
+        public float $amountReceivedFiat,
+        public float $feeFiat,
         public string $url,
         #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: string[] | null }')]
         public array $methodData,
@@ -152,9 +153,9 @@ class Transaction extends Data
             deployed_contract_address: $transaction->deployed_contract_address,
             decoded_error: $transaction->decoded_error,
             multiPaymentRecipients: self::multiPaymentRecipients($transaction),
-            amountFiat: $viewModel->amountFiat(true),
-            amountReceivedFiat: $viewModel->amountReceivedFiat($address),
-            feeFiat: $viewModel->feeFiat(true),
+            amountFiat: ExchangeRate::convertNumerical($viewModel->amount(), $transaction->timestamp),
+            amountReceivedFiat: ExchangeRate::convertNumerical($viewModel->amountReceived($address), $transaction->timestamp),
+            feeFiat: ExchangeRate::convertNumerical($viewModel->fee(), $transaction->timestamp),
             url: route('transaction', $transaction->hash),
             methodData: $methodData,
             tokenApprovalDetails: static::tokenApprovalDetails($viewModel),

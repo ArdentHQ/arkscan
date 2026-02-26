@@ -12,6 +12,7 @@ use App\Services\Addresses\Legacy;
 use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
 use Carbon\Carbon;
 
@@ -59,7 +60,8 @@ it('should make an instance', function () {
         Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
-    $subject = TransactionDTO::fromModel($transaction);
+    $viewModel = new TransactionViewModel($transaction);
+    $subject   = TransactionDTO::fromModel($transaction);
 
     expect($subject->toArray())->toEqual([
         'hash'                      => $transaction->hash,
@@ -80,9 +82,9 @@ it('should make an instance', function () {
         'deployed_contract_address' => null,
         'decoded_error'             => null,
         'multiPaymentRecipients'    => [],
-        'amountFiat'                => '$20.00',
-        'amountReceivedFiat'        => '$20.00',
-        'feeFiat'                   => '$0.0000',
+        'amountFiat'                => ExchangeRate::convertNumerical($viewModel->amount(), $transaction->timestamp),
+        'amountReceivedFiat'        => ExchangeRate::convertNumerical($viewModel->amountReceived($walletFrom->address), $transaction->timestamp),
+        'feeFiat'                   => ExchangeRate::convertNumerical($viewModel->fee(), $transaction->timestamp),
         'url'                       => route('transaction', $transaction),
         'validatorRegistration'     => null,
         'votedFor'                  => null,
@@ -173,7 +175,8 @@ it('should make an instance for a vote transaction', function () {
         Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
-    $subject = TransactionDTO::fromModel($transaction);
+    $viewModel = new TransactionViewModel($transaction);
+    $subject   = TransactionDTO::fromModel($transaction);
 
     expect($subject->toArray())->toEqual([
         'hash'                      => $transaction->hash,
@@ -194,9 +197,9 @@ it('should make an instance for a vote transaction', function () {
         'deployed_contract_address' => null,
         'decoded_error'             => null,
         'multiPaymentRecipients'    => [],
-        'amountFiat'                => '$0.0000',
-        'amountReceivedFiat'        => '$0.00',
-        'feeFiat'                   => '$0.0000',
+        'amountFiat'                => ExchangeRate::convertNumerical($viewModel->amount(), $transaction->timestamp),
+        'amountReceivedFiat'        => ExchangeRate::convertNumerical($viewModel->amountReceived($walletFrom->address), $transaction->timestamp),
+        'feeFiat'                   => ExchangeRate::convertNumerical($viewModel->fee(), $transaction->timestamp),
         'url'                       => route('transaction', $transaction),
         'validatorRegistration'     => null,
         'votedFor'                  => $walletTo->address,
@@ -285,7 +288,9 @@ it('should make an instance for a validator resignation transaction', function (
         Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
     ]));
 
-    $subject = TransactionDTO::fromModel($transaction);
+    $viewModel    = new TransactionViewModel($transaction);
+    $regViewModel = new TransactionViewModel($registrationTransaction);
+    $subject      = TransactionDTO::fromModel($transaction);
 
     expect($subject->toArray())->toEqual([
         'hash'                      => $transaction->hash,
@@ -306,9 +311,9 @@ it('should make an instance for a validator resignation transaction', function (
         'deployed_contract_address' => null,
         'decoded_error'             => null,
         'multiPaymentRecipients'    => [],
-        'amountFiat'                => '$0.0000',
-        'amountReceivedFiat'        => '$0.00',
-        'feeFiat'                   => '$0.0000',
+        'amountFiat'                => ExchangeRate::convertNumerical($viewModel->amount(), $transaction->timestamp),
+        'amountReceivedFiat'        => ExchangeRate::convertNumerical($viewModel->amountReceived($walletFrom->address), $transaction->timestamp),
+        'feeFiat'                   => ExchangeRate::convertNumerical($viewModel->fee(), $transaction->timestamp),
         'url'                       => route('transaction', $transaction),
         'validatorRegistration'     => [
             'hash'                      => $registrationTransaction->hash,
@@ -329,9 +334,9 @@ it('should make an instance for a validator resignation transaction', function (
             'deployed_contract_address' => null,
             'decoded_error'             => null,
             'multiPaymentRecipients'    => [],
-            'amountFiat'                => '$500.00',
-            'amountReceivedFiat'        => '$500.00',
-            'feeFiat'                   => '$0.0000',
+            'amountFiat'                => ExchangeRate::convertNumerical($regViewModel->amount(), $registrationTransaction->timestamp),
+            'amountReceivedFiat'        => ExchangeRate::convertNumerical($regViewModel->amountReceived($walletFrom->address), $registrationTransaction->timestamp),
+            'feeFiat'                   => ExchangeRate::convertNumerical($regViewModel->fee(), $registrationTransaction->timestamp),
             'url'                       => route('transaction', $registrationTransaction),
             'validatorRegistration'     => null,
             'votedFor'                  => null,
