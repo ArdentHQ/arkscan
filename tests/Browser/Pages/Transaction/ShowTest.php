@@ -291,11 +291,11 @@ it('should show multipayment recipients', function ($resolution) {
         $mappedAddresses = [
             [
                 'address' => $recipient1->address,
-                'amount'  => '10.00 DARK',
+                'amount'  => '10.00',
             ],
             [
                 'address' => $recipient2->address,
-                'amount'  => '1.00 DARK',
+                'amount'  => '1.00',
             ],
         ];
 
@@ -410,6 +410,9 @@ it('should show token transfer symbol', function () {
                 $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
             }
 
+            // CompactAmount shows full value on md+ and compact on smaller viewports
+            $expectedAmount = $resolution['width'] >= 768 ? '1,234.56' : '1.23456K';
+
             $browser->resize($resolution['width'], $resolution['height'])
                 ->pause(100)
                 ->assertSee($transactionIdPart2)
@@ -423,7 +426,8 @@ it('should show token transfer symbol', function () {
                     'To',
                     $recipientAddress,
                     'Amount',
-                    '1,234.56 TST',
+                    $expectedAmount,
+                    'TST',
                     'Transaction Summary',
                     'Fee',
                     '0.000021 DARK',
@@ -486,6 +490,9 @@ it('should not show recipient username for "to" address', function () {
                 $contractAddress = [substr($contractWallet->address, 0, 5), substr($contractWallet->address, -5)];
             }
 
+            // CompactAmount shows full value on md+ and compact on smaller viewports
+            $expectedAmount = $resolution['width'] >= 768 ? '1,234.56' : '1.23456K';
+
             $browser->resize($resolution['width'], $resolution['height'])
                 ->pause(100)
                 ->assertSee($transactionIdPart2)
@@ -499,7 +506,8 @@ it('should not show recipient username for "to" address', function () {
                     'To',
                     $recipientWallet->attributes['username'],
                     'Amount',
-                    '1,234.56 TST',
+                    $expectedAmount,
+                    'TST',
                     'Transaction Summary',
                     'Fee',
                     '0.000021 DARK',
