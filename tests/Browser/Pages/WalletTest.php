@@ -390,7 +390,7 @@ describe('Overview', function () {
             $browser->visitRoute('wallet', $wallet)
                 ->waitForText('5 results', ignoreCase: true);
 
-            $browser->clickAtXPath('//a[.//text()="View"]')
+            $browser->clickAtXPath("//a[contains(@href, '/voters')]")
                 ->waitForText('20 results', ignoreCase: true)
                 ->pause(400);
 
@@ -432,7 +432,7 @@ describe('Overview', function () {
                 ->click('button#tab-voters')
                 ->waitForText('20 results', ignoreCase: true);
 
-            $browser->clickAtXPath('//a[.//text()="View"]')
+            $browser->clickAtXPath("//a[contains(@href, '/voters')]")
                 ->pause(500);
 
             $scrollTop    = $browser->script('return window.scrollY;')[0];
@@ -471,7 +471,7 @@ describe('Overview', function () {
             $browser->visitRoute('wallet', $wallet)
                 ->waitForText('5 results', ignoreCase: true);
 
-            $browser->clickAtXPath('//a[.//text()="View"]')
+            $browser->clickAtXPath("//a[contains(@href, '/voters')]")
                 ->waitForText('20 results', ignoreCase: true)
                 ->pause(400);
 
