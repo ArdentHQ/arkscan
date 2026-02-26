@@ -225,7 +225,6 @@ export type ITransaction = {
     recipient: IWallet | null;
 };
 export type ITransactionDetails = {
-    timestampFormatted: string;
     confirmations: number;
     transactionError: string | null;
     recipientIsContract: boolean;
@@ -236,7 +235,6 @@ export type ITransactionDetails = {
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
     batchTokenTransfers: { recipient: IWallet; amount: string }[];
-    totalFiat: string;
     totalFiatValue: number;
 };
 export type IValidator = {

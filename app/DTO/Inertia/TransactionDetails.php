@@ -13,7 +13,6 @@ use App\Models\Transaction as Model;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\ExchangeRate;
-use App\Services\Timestamp;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -27,7 +26,6 @@ class TransactionDetails extends Data
     use WithTokenApproval;
 
     public function __construct(
-        public string $timestampFormatted,
         public int $confirmations,
         public ?string $transactionError,
         public bool $recipientIsContract,
@@ -42,7 +40,6 @@ class TransactionDetails extends Data
         public ?array $payload,
         #[LiteralTypeScriptType('{recipient: IWallet; amount: string}[]')]
         public array $batchTokenTransfers,
-        public string $totalFiat,
         public float $totalFiatValue,
     ) {
     }
@@ -96,7 +93,6 @@ class TransactionDetails extends Data
         }
 
         return new self(
-            timestampFormatted: Timestamp::fromUnixHuman($transaction->timestamp),
             confirmations: $viewModel->confirmations(),
             transactionError: $viewModel->transactionError(),
             recipientIsContract: $recipient->isContract(),
@@ -107,7 +103,6 @@ class TransactionDetails extends Data
             token: $token,
             payload: self::payloadDetails($viewModel),
             batchTokenTransfers: $batchTokenTransfers,
-            totalFiat: $viewModel->totalFiat(true),
             totalFiatValue: ExchangeRate::convertNumerical($viewModel->amountWithFee(), $transaction->timestamp),
         );
     }
