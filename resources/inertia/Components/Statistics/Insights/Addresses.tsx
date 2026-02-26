@@ -5,6 +5,7 @@ import Number from "@/Components/General/Number";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import useSharedData from "@/hooks/use-shared-data";
 import { StatisticsAddressInsights } from "@/Pages/Statistics.contracts";
+import { networkCurrency } from "@/utils/number-formatter";
 
 export default function AddressInsights({ data, activeTab }: { data: StatisticsAddressInsights; activeTab: string }) {
     const { t } = useTranslation();
@@ -68,11 +69,7 @@ export default function AddressInsights({ data, activeTab }: { data: StatisticsA
                             key === "most_transactions" ? (
                                 <Number>{entry.value}</Number>
                             ) : key === "largest" ? (
-                                "valueShort" in entry ? (
-                                    entry.valueShort
-                                ) : (
-                                    entry.value
-                                )
+                                networkCurrency(entry.value as number, 2)
                             ) : (
                                 entry.value
                             );
@@ -81,11 +78,7 @@ export default function AddressInsights({ data, activeTab }: { data: StatisticsA
                             key === "most_transactions" ? (
                                 <Number>{entry.value}</Number>
                             ) : key === "largest" ? (
-                                "valueFull" in entry ? (
-                                    entry.valueFull
-                                ) : (
-                                    entry.value
-                                )
+                                networkCurrency(entry.value as number, 2)
                             ) : (
                                 entry.value
                             );

@@ -1,9 +1,11 @@
 import { Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
-import classNames from "classnames";
 import Number from "@/Components/General/Number";
 import { StatisticsRecord } from "@/Pages/Statistics.contracts";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
+import { networkCurrency } from "@/utils/number-formatter";
+import dayjs from "dayjs";
+import { DATE_FORMAT } from "@/constants";
 
 export default function TransactionRecordDesktopRow({
     recordKey,
@@ -45,16 +47,17 @@ export default function TransactionRecordDesktopRow({
         }
 
         if (recordKey === "highest_fee" && isBlock) {
-            return record.fee ?? t("general.na");
+            return record.fee !== undefined ? networkCurrency(record.fee, 2) : t("general.na");
         }
 
         if (isTransaction) {
-            return record.amount;
+            return networkCurrency(record.amount, 0);
         }
 
         return t("general.na");
     })();
 
+    const dateFormatted = dayjs(record.timestamp * 1000).format(DATE_FORMAT);
     const recordUrl = record.type === "transaction" ? route("transaction", record.hash) : record.url;
 
     return (
@@ -80,7 +83,7 @@ export default function TransactionRecordDesktopRow({
 
                         <div className="hidden justify-between space-x-2 md:flex xl:hidden">
                             <div>{t("pages.statistics.insights.transactions.header.date")}:</div>
-                            <div className="text-theme-secondary-900 dark:text-theme-dark-50">{record.date}</div>
+                            <div className="text-theme-secondary-900 dark:text-theme-dark-50">{dateFormatted}</div>
                         </div>
                     </div>
                 </div>
@@ -88,7 +91,7 @@ export default function TransactionRecordDesktopRow({
 
             <div className="flex justify-between space-x-2 md:hidden md-lg:pl-16 xl:flex xl:w-[330px]">
                 <div>{t("pages.statistics.insights.transactions.header.date")}:</div>
-                <div className="text-theme-secondary-900 dark:text-theme-dark-50">{record.date}</div>
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50">{dateFormatted}</div>
             </div>
         </div>
     );

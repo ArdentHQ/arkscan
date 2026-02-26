@@ -3,6 +3,8 @@ import { Link } from "@inertiajs/react";
 import HeaderItem from "@/Components/PageHeader/HeaderItem";
 import useSharedData from "@/hooks/use-shared-data";
 import { HighlightsData } from "@/Pages/Statistics.contracts";
+import { currencyShortNotation, networkCurrency } from "@/utils/number-formatter";
+import Number from "@/Components/General/Number";
 
 function HighlightStat({
     label,
@@ -10,7 +12,7 @@ function HighlightStat({
     link,
 }: {
     label: string;
-    value: string;
+    value: React.ReactNode;
     link?: { href: string; label: string };
 }) {
     return (
@@ -43,23 +45,23 @@ export default function Highlights({ data }: { data: HighlightsData }) {
                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 xl:grid-cols-4">
                         <HighlightStat
                             label={t("pages.statistics.highlights.total_supply")}
-                            value={`${data.totalSupply} ${network.currency}`}
+                            value={`${currencyShortNotation(data.totalSupply)} ${network.currency}`}
                         />
 
                         <HighlightStat
                             label={t("pages.statistics.highlights.voting", { percent: data.voting.percentage })}
-                            value={`${data.voting.value} ${network.currency}`}
+                            value={`${networkCurrency(data.voting.value, 0)} ${network.currency}`}
                         />
 
                         <HighlightStat
                             label={t("pages.statistics.highlights.validators")}
-                            value={data.validators}
+                            value={<Number>{data.validators}</Number>}
                             link={{ href: route("validators"), label: t("actions.view_all") }}
                         />
 
                         <HighlightStat
                             label={t("pages.statistics.highlights.addresses")}
-                            value={data.wallets}
+                            value={<Number>{data.wallets}</Number>}
                             link={{ href: route("top-accounts"), label: t("actions.view_all") }}
                         />
                     </div>

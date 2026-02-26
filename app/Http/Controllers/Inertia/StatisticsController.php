@@ -33,10 +33,8 @@ use App\Services\ExchangeRate;
 use App\Services\MainsailApi;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter;
-use App\Services\Timestamp;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -97,7 +95,7 @@ final class StatisticsController
             'amount'        => (string) $amount,
             'duration'      => $duration,
             'durationLabel' => trans_choice('general.seconds_duration', $duration, ['duration' => $duration]),
-            'value'         => $canBeExchanged ? ExchangeRate::convert($amount) : null,
+            'value'         => $canBeExchanged ? ExchangeRate::convertNumerical((float) $amount) : null,
         ];
     }
 
@@ -107,7 +105,7 @@ final class StatisticsController
             'totalSupply' => $this->getTotalSupply(),
             'voting'      => [
                 'percentage' => $this->getVotingPercent(),
-                'value'      => NumberFormatter::networkCurrency($this->getVotingValue(), 0),
+                'value'      => $this->getVotingValue(),
             ],
             'validators'  => $this->getValidators(),
             'wallets'     => $this->getWallets(),
@@ -133,7 +131,7 @@ final class StatisticsController
 
                 return [
                     $period => [
-                        'value' => NumberFormatter::number($this->totalFromChart($chartData)),
+                        'value' => $this->totalFromChart($chartData),
                         'chart' => [
                             ...$chartData,
                             'theme' => $this->chartTheme('black'),
@@ -144,9 +142,9 @@ final class StatisticsController
             ->toArray();
 
         return [
-            'allTimeValue' => NumberFormatter::number($this->totalFromChart(
+            'allTimeValue' => $this->totalFromChart(
                 $this->chartData(TransactionCache::class, StatsPeriods::ALL)
-            )),
+            ),
             'periods' => $periods,
         ];
     }
@@ -161,9 +159,9 @@ final class StatisticsController
 
                 return [
                     $period => [
-                        'value'   => $this->formatFeesValue($periodTotal, $aboveThreshold),
-                        'tooltip' => $aboveThreshold ? $this->formatFeesMoney($periodTotal) : null,
-                        'chart'   => [
+                        'value'          => $this->weiToArk($periodTotal),
+                        'aboveThreshold' => $aboveThreshold,
+                        'chart'          => [
                             ...$this->convertFeesChart($chartData),
                             'theme' => $this->chartTheme('yellow'),
                         ],
@@ -173,7 +171,7 @@ final class StatisticsController
             ->toArray();
 
         return [
-            'allTimeValue' => $this->formatFeesMoney(
+            'allTimeValue' => $this->weiToArk(
                 $this->totalFromChart($this->chartData(FeeCache::class, StatsPeriods::ALL))
             ),
             'periods' => $periods,
@@ -216,23 +214,9 @@ final class StatisticsController
         ];
     }
 
-    private function formatFeesValue(float $periodTotal, bool $aboveThreshold): string
+    private function weiToArk(float $value): float
     {
-        if ($aboveThreshold) {
-            $convertedAmount = NumberFormatter::weiToArk((string) BigDecimal::of($periodTotal), false);
-
-            return sprintf('%s %s', NumberFormatter::number($convertedAmount), Network::currency());
-        }
-
-        return $this->formatFeesMoney($periodTotal);
-    }
-
-    private function formatFeesMoney(float $value): string
-    {
-        return NumberFormatter::currency(
-            NumberFormatter::weiToArk((string) BigDecimal::of($value)),
-            Network::currency(),
-        );
+        return BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of($value), false))->toFloat();
     }
 
     private function chartTheme(string $color): array
@@ -302,11 +286,11 @@ final class StatisticsController
         $viewModel = new TransactionViewModel($transaction);
 
         return [
-            'type'   => 'transaction',
-            'url'    => $transaction->url(),
-            'hash'   => $transaction->hash,
-            'amount' => NumberFormatter::currencyWithDecimals($viewModel->amount(), Network::currency(), 0),
-            'date'   => Timestamp::fromUnix($transaction->timestamp)->format(DateFormat::DATE),
+            'type'      => 'transaction',
+            'url'       => $transaction->url(),
+            'hash'      => $transaction->hash,
+            'amount'    => $viewModel->amount(),
+            'timestamp' => $transaction->timestamp,
         ];
     }
 
@@ -317,16 +301,16 @@ final class StatisticsController
         }
 
         $record = [
-            'type'   => 'block',
-            'url'    => $block->url(),
-            'height' => $block->number->toNumber(),
-            'date'   => Timestamp::fromUnix($block->timestamp)->format(DateFormat::DATE),
+            'type'      => 'block',
+            'url'       => $block->url(),
+            'height'    => $block->number->toNumber(),
+            'timestamp' => $block->timestamp,
         ];
 
         if ($key === 'most_transactions_in_block') {
             $record['transactionCount'] = $block->transactions_count;
         } elseif ($key === 'highest_fee') {
-            $record['fee'] = NumberFormatter::currencyWithDecimals($block->fee->toFloat(), Network::currency(), 2);
+            $record['fee'] = $block->fee->toFloat();
         }
 
         return $record;
@@ -497,13 +481,7 @@ final class StatisticsController
             'genesis'           => $uniqueAddresses->genesis,
             'newest'            => $uniqueAddresses->newest,
             'most_transactions' => $uniqueAddresses->mostTransactions,
-            'largest'           => $largest !== null
-                ? [
-                    ...$largest,
-                    'valueShort' => NumberFormatter::currencyShort($largest['value'], Network::currency()),
-                    'valueFull'  => NumberFormatter::currencyWithDecimals($largest['value'], Network::currency(), 2),
-                ]
-                : null,
+            'largest'           => $largest,
         ];
     }
 
@@ -524,8 +502,8 @@ final class StatisticsController
             $yearData[] = [
                 'year'         => $data['year'],
                 'transactions' => $data['transactions'],
-                'volume'       => NumberFormatter::currencyWithDecimals($data['volume'], Network::currency(), 2),
-                'fees'         => NumberFormatter::currencyWithDecimals($fees, Network::currency(), $fees < 1 ? 4 : 2),
+                'volume'       => $data['volume'],
+                'fees'         => $fees,
                 'blocks'       => $data['blocks'],
             ];
         }
@@ -596,10 +574,8 @@ final class StatisticsController
         );
     }
 
-    private function getValidators(): string
+    private function getValidators(): int
     {
-        $registeredValidators = (new NetworkCache())->getValidatorRegistrationCount();
-
-        return NumberFormatter::number($registeredValidators);
+        return (new NetworkCache())->getValidatorRegistrationCount();
     }
 }

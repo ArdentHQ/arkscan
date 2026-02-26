@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import InsightsContainer from "./Container";
 import Number from "@/Components/General/Number";
 import { StatisticsAnnualRow } from "@/Pages/Statistics.contracts";
+import { networkCurrency } from "@/utils/number-formatter";
 
 export default function AnnualInsights({ years, activeTab }: { years: StatisticsAnnualRow[]; activeTab: string }) {
     const { t } = useTranslation();
@@ -27,7 +28,7 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
                                 <div className="flex w-full flex-col space-y-2 pt-3 sm:w-[170px] sm:pt-0">
                                     <span>{t("pages.statistics.insights.annual.header.volume")}</span>
                                     <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                        {year.volume}
+                                        {networkCurrency(year.volume, 2)}
                                     </span>
                                 </div>
                             </div>
@@ -36,7 +37,7 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
                                 <div className="flex flex-col space-y-2">
                                     <span>{t("pages.statistics.insights.annual.header.fees")}</span>
                                     <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                        {year.fees}
+                                        {networkCurrency(year.fees, year.fees < 1 ? 4 : 2)}
                                     </span>
                                 </div>
 
@@ -78,13 +79,13 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
                                             <div className="flex justify-between space-x-3">
                                                 <span>{t("pages.statistics.insights.annual.header.volume")}:</span>
                                                 <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                    {year.volume}
+                                                    {networkCurrency(year.volume, 2)}
                                                 </span>
                                             </div>
                                             <div className="flex justify-between space-x-3">
                                                 <span>{t("pages.statistics.insights.annual.header.fees")}:</span>
                                                 <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                    {year.fees}
+                                                    {networkCurrency(year.fees, year.fees < 1 ? 4 : 2)}
                                                 </span>
                                             </div>
                                         </div>
@@ -118,7 +119,7 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
                                             <div className="flex justify-between space-x-3 px-8">
                                                 <span>{t("pages.statistics.insights.annual.header.volume")}:</span>
                                                 <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                    {year.volume}
+                                                    {networkCurrency(year.volume, 2)}
                                                 </span>
                                             </div>
                                         </td>
@@ -126,7 +127,7 @@ export default function AnnualInsights({ years, activeTab }: { years: Statistics
                                             <div className="flex justify-between space-x-3 px-8">
                                                 <span>{t("pages.statistics.insights.annual.header.fees")}:</span>
                                                 <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                    {year.fees}
+                                                    {networkCurrency(year.fees, year.fees < 1 ? 4 : 2)}
                                                 </span>
                                             </div>
                                         </td>

@@ -4,6 +4,7 @@ import Tooltip from "@/Components/General/Tooltip";
 import useSharedData from "@/hooks/use-shared-data";
 import { GasTrackerData } from "@/Pages/Statistics.contracts";
 import { gweiToArk } from "@/utils/UnitConverter";
+import { currency } from "@/utils/number-formatter";
 import GasLowIcon from "@icons/gas/low.svg?react";
 import GasAverageIcon from "@icons/gas/average.svg?react";
 import GasHighIcon from "@icons/gas/high.svg?react";
@@ -51,8 +52,8 @@ function GasTrackerCard({
                     },
                 )}
             >
-                {canBeExchanged && fee.value && (
-                    <span className="text-theme-secondary-900 dark:text-theme-dark-50">~ {fee.value}</span>
+                {canBeExchanged && fee.value !== null && (
+                    <span className="text-theme-secondary-900 dark:text-theme-dark-50">~ {currency(fee.value)}</span>
                 )}
 
                 <Tooltip content={tooltipValue}>

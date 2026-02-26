@@ -15,7 +15,7 @@ export interface GasTrackerFee {
     amount: string;
     duration: number;
     durationLabel: string;
-    value: string | null;
+    value: number | null;
 }
 
 export interface GasTrackerData {
@@ -28,23 +28,23 @@ export interface GasTrackerData {
 }
 
 export interface HighlightsData {
-    totalSupply: string;
+    totalSupply: number;
     voting: {
-        percentage: string;
-        value: string;
+        percentage: number;
+        value: number;
     };
-    validators: string;
-    wallets: string;
+    validators: number;
+    wallets: number;
 }
 
 export interface InformationCardPeriodData {
-    value: string;
+    value: number;
     chart: StatisticsChartData;
-    tooltip?: string | null;
+    aboveThreshold?: boolean;
 }
 
 export interface InformationCardData {
-    allTimeValue: string;
+    allTimeValue: number;
     periods: Record<StatisticsPeriod, InformationCardPeriodData>;
 }
 
@@ -60,16 +60,16 @@ export interface StatisticsTransactionRecord {
     type: "transaction";
     url: string;
     hash: string;
-    amount: string;
-    date: string;
+    amount: number;
+    timestamp: number;
 }
 
 export interface StatisticsBlockRecord {
     type: "block";
     url: string;
     height: number;
-    date: string;
-    fee?: string;
+    timestamp: number;
+    fee?: number;
     transactionCount?: number;
 }
 
@@ -79,28 +79,28 @@ export interface StatisticsTransactionInsights {
     details: Record<string, number>;
     averages: {
         transactions: number;
-        transaction_volume: string;
-        transaction_fees: string;
+        transaction_volume: number;
+        transaction_fees: number;
     };
     records: Record<string, StatisticsRecord | null>;
 }
 
 export interface StatisticsMarketDataInsights {
     prices: {
-        daily: { low: string | null; high: string | null };
-        year: { low: string | null; high: string | null };
-        atl: { value: string | null; date: string | null };
-        ath: { value: string | null; date: string | null };
+        daily: { low: number | null; high: number | null };
+        year: { low: number | null; high: number | null };
+        atl: { value: number | null; date: string | null };
+        ath: { value: number | null; date: string | null };
     };
     volume: {
-        today: string;
-        atl: { value: string; date: string | null };
-        ath: { value: string; date: string | null };
+        today: number;
+        atl: { value: number; date: string | null };
+        ath: { value: number; date: string | null };
     };
     caps: {
-        today: string | null;
-        atl: { value: string | null; date: string | null };
-        ath: { value: string | null; date: string | null };
+        today: number | null;
+        atl: { value: number | null; date: string | null };
+        ath: { value: number | null; date: string | null };
     };
 }
 
@@ -127,10 +127,7 @@ export interface StatisticsUniqueAddressRow {
     value: string | number;
 }
 
-export interface StatisticsLargestAddressRow extends StatisticsUniqueAddressRow {
-    valueShort: string;
-    valueFull: string;
-}
+export type StatisticsLargestAddressRow = StatisticsUniqueAddressRow;
 
 export interface StatisticsUniqueAddresses {
     genesis: StatisticsUniqueAddressRow | null;
@@ -147,8 +144,8 @@ export interface StatisticsAddressInsights {
 export interface StatisticsAnnualRow {
     year: number;
     transactions: number;
-    volume: string;
-    fees: string;
+    volume: number;
+    fees: number;
     blocks: number;
 }
 

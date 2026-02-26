@@ -3,16 +3,41 @@ import classNames from "classnames";
 import InsightsContainer from "./Container";
 import { StatisticsMarketDataInsights } from "@/Pages/Statistics.contracts";
 import useSettings from "@/Providers/Settings/useSettings";
-import { isFiat } from "@/utils/number-formatter";
+import { currency as formatCurrency, currencyWithDecimals, isFiat } from "@/utils/number-formatter";
 
-function RangeValue({ low, high }: { low: string | null; high: string | null }) {
-    if (!low || !high) {
+function useMarketFormatters() {
+    const { currency: userCurrency } = useSettings();
+    const isFiatCurrency = isFiat(userCurrency);
+
+    const formatPrice = (value: number | null) => {
+        if (value === null) return null;
+        return currencyWithDecimals({
+            value,
+            currency: userCurrency,
+            decimals: isFiatCurrency ? 2 : 8,
+        });
+    };
+
+    const formatVolume = (value: number | null) => {
+        if (value === null) return null;
+        return currencyWithDecimals({ value, currency: userCurrency, decimals: 0 });
+    };
+
+    return { formatPrice, formatVolume };
+}
+
+function RangeValue({ low, high }: { low: number | null; high: number | null }) {
+    const { formatPrice } = useMarketFormatters();
+    const formattedLow = formatPrice(low);
+    const formattedHigh = formatPrice(high);
+
+    if (!formattedLow || !formattedHigh) {
         return null;
     }
 
     return (
         <>
-            {low} - {high}
+            {formattedLow} - {formattedHigh}
         </>
     );
 }
@@ -27,6 +52,11 @@ export default function MarketDataInsights({
     const { t } = useTranslation();
     const { currency } = useSettings();
     const isFiatCurrency = isFiat(currency);
+    const { formatPrice, formatVolume } = useMarketFormatters();
+
+    const fmtPriceVal = (v: number | null) => (v !== null ? formatPrice(v) : null);
+    const fmtVolVal = (v: number | null) => (v !== null ? formatVolume(v) : null);
+    const fmtCapVal = (v: number | null) => (v !== null ? formatVolume(v) : null);
 
     return (
         <div className={activeTab !== "market_data" ? "hidden md:block" : undefined}>
@@ -51,7 +81,7 @@ export default function MarketDataInsights({
                                         {item === "daily" ? (
                                             <RangeValue low={data.prices.daily.low} high={data.prices.daily.high} />
                                         ) : (
-                                            (data.prices[item].value ?? t("general.na"))
+                                            (fmtPriceVal(data.prices[item].value) ?? t("general.na"))
                                         )}
                                     </span>
                                 </div>
@@ -104,7 +134,8 @@ export default function MarketDataInsights({
                                     {item === "year" && (
                                         <RangeValue low={data.prices.year.low} high={data.prices.year.high} />
                                     )}
-                                    {(item === "atl" || item === "ath") && (data.prices[item].value ?? t("general.na"))}
+                                    {(item === "atl" || item === "ath") &&
+                                        (fmtPriceVal(data.prices[item].value) ?? t("general.na"))}
                                 </div>
 
                                 <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">
@@ -131,7 +162,9 @@ export default function MarketDataInsights({
                                         <span>{t(`pages.statistics.insights.market_data.header.${item}`)}</span>
 
                                         <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                            {item === "today_volume" ? data.volume.today : data.volume[item].value}
+                                            {item === "today_volume"
+                                                ? fmtVolVal(data.volume.today)
+                                                : fmtVolVal(data.volume[item].value)}
                                         </span>
                                     </div>
 
@@ -164,7 +197,9 @@ export default function MarketDataInsights({
 
                                 <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                                     <div className="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                                        {item === "today_volume" ? data.volume.today : data.volume[item].value}
+                                        {item === "today_volume"
+                                            ? fmtVolVal(data.volume.today)
+                                            : fmtVolVal(data.volume[item].value)}
                                     </div>
 
                                     <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">
@@ -192,7 +227,9 @@ export default function MarketDataInsights({
                                         <span>{t(`pages.statistics.insights.market_data.header.${item}`)}</span>
 
                                         <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                            {item === "today_value" ? data.caps.today : data.caps[item].value}
+                                            {item === "today_value"
+                                                ? fmtCapVal(data.caps.today)
+                                                : fmtCapVal(data.caps[item].value)}
                                         </span>
                                     </div>
 
@@ -225,7 +262,9 @@ export default function MarketDataInsights({
 
                                 <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
                                     <div className="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
-                                        {item === "today_value" ? data.caps.today : data.caps[item].value}
+                                        {item === "today_value"
+                                            ? fmtCapVal(data.caps.today)
+                                            : fmtCapVal(data.caps[item].value)}
                                     </div>
 
                                     <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">

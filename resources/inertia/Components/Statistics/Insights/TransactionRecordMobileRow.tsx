@@ -2,6 +2,9 @@ import { Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import Number from "@/Components/General/Number";
 import { StatisticsRecord } from "@/Pages/Statistics.contracts";
+import { networkCurrency } from "@/utils/number-formatter";
+import dayjs from "dayjs";
+import { DATE_FORMAT } from "@/constants";
 
 export default function TransactionRecordMobileRow({
     recordKey,
@@ -29,7 +32,7 @@ export default function TransactionRecordMobileRow({
 
     const mainValue = (() => {
         if (isTransaction) {
-            return record.amount;
+            return networkCurrency(record.amount, 0);
         }
 
         if (recordKey === "most_transactions_in_block" && isBlock) {
@@ -37,12 +40,13 @@ export default function TransactionRecordMobileRow({
         }
 
         if (recordKey === "highest_fee" && isBlock) {
-            return record.fee ?? t("general.na");
+            return record.fee !== undefined ? networkCurrency(record.fee, 2) : t("general.na");
         }
 
         return t("general.na");
     })();
 
+    const dateFormatted = dayjs(record.timestamp * 1000).format(DATE_FORMAT);
     const recordUrl = record.type === "transaction" ? route("transaction", record.hash) : record.url;
 
     return (
@@ -56,7 +60,7 @@ export default function TransactionRecordMobileRow({
 
             <div className="flex w-[90px] flex-col space-y-2">
                 <div>{t("pages.statistics.insights.transactions.header.date")}</div>
-                <div className="text-theme-secondary-900 dark:text-theme-dark-50">{record.date}</div>
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50">{dateFormatted}</div>
             </div>
         </div>
     );
