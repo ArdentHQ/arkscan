@@ -196,7 +196,7 @@ final class HomeController
                 'mode' => Settings::theme(),
             ],
             'market'          => [
-                'volume'    => $volume,
+                'volume'    => $volume !== null ? (float) $volume : null,
                 'marketCap' => $marketCap,
             ],
             'period'          => $period,
