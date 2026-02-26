@@ -91,11 +91,13 @@ final class StatisticsController
 
     private function gasFee(mixed $amount, int $duration, bool $canBeExchanged): array
     {
+        $numericAmount = $amount instanceof \App\Services\BigNumber ? $amount->toFloat() : (float) $amount;
+
         return [
             'amount'        => (string) $amount,
             'duration'      => $duration,
             'durationLabel' => trans_choice('general.seconds_duration', $duration, ['duration' => $duration]),
-            'value'         => $canBeExchanged ? ExchangeRate::convertNumerical((float) $amount) : null,
+            'value'         => $canBeExchanged ? ExchangeRate::convertNumerical($numericAmount) : null,
         ];
     }
 

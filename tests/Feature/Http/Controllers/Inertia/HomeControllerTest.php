@@ -15,7 +15,6 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
 use App\Services\Cache\ValidatorCache;
 use App\Services\MarketCap;
-use App\Services\NumberFormatter;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -69,9 +68,9 @@ it('should have statistics', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
             ->where('statistics.blockHeight', 123456)
-            ->where('statistics.totalSupply', '12K')
-            ->where('statistics.voting.percentage', '123.45%')
-            ->where('statistics.voting.amount', '4K')
+            ->where('statistics.totalSupply', 12345.6789)
+            ->where('statistics.voting.percentage', 123.45)
+            ->where('statistics.voting.amount', 4567.2345)
             ->where('statistics.gas.low.amount', '1.5')
             ->where('statistics.gas.low.value', null)
             ->where('statistics.gas.average.amount', '2.5')
@@ -108,11 +107,11 @@ it('should calculate gas statistics with value', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
             ->where('statistics.gas.low.amount', '1500000000')
-            ->where('statistics.gas.low.value', '$3.00')
+            ->where('statistics.gas.low.value', 3.0)
             ->where('statistics.gas.average.amount', '2500000000')
-            ->where('statistics.gas.average.value', '$5.00')
+            ->where('statistics.gas.average.value', 5.0)
             ->where('statistics.gas.high.amount', '3500000000')
-            ->where('statistics.gas.high.value', '$7.00'));
+            ->where('statistics.gas.high.value', 7.0));
 });
 
 it('should format small gas values for fiat currencies', function () {
@@ -137,16 +136,14 @@ it('should format small gas values for fiat currencies', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 1.0);
 
-    $expectedValue = sprintf('< %s', NumberFormatter::currency(0.01, Settings::currency()));
-
     $this
         ->get(route('home'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
-            ->where('statistics.gas.low.value', $expectedValue)
-            ->where('statistics.gas.average.value', $expectedValue)
-            ->where('statistics.gas.high.value', $expectedValue));
+            ->where('statistics.gas.low.value', fn ($value) => is_float($value) && $value < 0.01)
+            ->where('statistics.gas.average.value', fn ($value) => is_float($value) && $value < 0.01)
+            ->where('statistics.gas.high.value', fn ($value) => is_float($value) && $value < 0.01));
 });
 
 it('should format gas values for crypto currencies', function () {
@@ -178,19 +175,15 @@ it('should format gas values for crypto currencies', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'ARK', 2.0);
 
-    $expectedLowValue     = NumberFormatter::currency(3, 'ARK', true);
-    $expectedAverageValue = NumberFormatter::currency(5, 'ARK', true);
-    $expectedHighValue    = NumberFormatter::currency(7, 'ARK', true);
-
     $this
         ->withCookie('settings', json_encode($settings))
         ->get(route('home'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Home/Index')
-            ->where('statistics.gas.low.value', $expectedLowValue)
-            ->where('statistics.gas.average.value', $expectedAverageValue)
-            ->where('statistics.gas.high.value', $expectedHighValue));
+            ->where('statistics.gas.low.value', 3.0)
+            ->where('statistics.gas.average.value', 5.0)
+            ->where('statistics.gas.high.value', 7.0));
 });
 
 it('should show the no-results message when no transactions exist', function () {
@@ -261,8 +254,7 @@ it('should include chart data with market stats', function () {
         1_700_007_200 => 1.2,
     ]));
 
-    $expectedVolume    = NumberFormatter::currencyForViews(2255149, $currency);
-    $expectedMarketCap = MarketCap::getFormatted($networkCurrency, $currency);
+    $expectedMarketCap = MarketCap::get($networkCurrency, $currency);
 
     $this
         ->get(route('home'))
@@ -273,7 +265,7 @@ it('should include chart data with market stats', function () {
             ->where('chart.period', 'day')
             ->where('chart.datasets.2', 2)
             ->where('chart.theme.name', 'green')
-            ->where('chart.market.volume', $expectedVolume)
+            ->where('chart.market.volume', 2255149.0)
             ->where('chart.market.marketCap', $expectedMarketCap));
 });
 

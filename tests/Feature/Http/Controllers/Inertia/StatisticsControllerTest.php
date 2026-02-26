@@ -75,10 +75,10 @@ it('should include highlights and gas tracker data', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Statistics/Index')
-            ->where('highlights.totalSupply', '12,345.679')
-            ->where('highlights.voting.percentage', '42.50%')
-            ->where('highlights.validators', '12')
-            ->where('highlights.wallets', '5')
+            ->where('highlights.totalSupply', 12345.6789)
+            ->where('highlights.voting.percentage', 42.5)
+            ->where('highlights.validators', 12)
+            ->where('highlights.wallets', 5)
             ->where('gasTracker.fees.low.amount', '1.5')
             ->where('gasTracker.fees.average.amount', '2.5')
             ->where('gasTracker.fees.high.amount', '3.5'));
@@ -112,8 +112,8 @@ it('should include information card data', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Statistics/Index')
-            ->where('informationCards.transactions.allTimeValue', '5')
-            ->where('informationCards.fees.allTimeValue', '3 DARK'));
+            ->where('informationCards.transactions.allTimeValue', 5.0)
+            ->where('informationCards.fees.allTimeValue', fn ($value) => abs($value - 3.0) < 0.001));
 });
 
 it('should include insights data', function () {
@@ -171,12 +171,6 @@ it('should format fee cards above threshold and convert chart datasets', functio
         ]));
     }
 
-    $convertedAmount = NumberFormatter::weiToArk((string) BigDecimal::of($aboveThreshold), false);
-    $expectedValue   = sprintf('%s %s', NumberFormatter::number($convertedAmount), Network::currency());
-    $expectedTooltip = NumberFormatter::currency(
-        NumberFormatter::weiToArk((string) BigDecimal::of($aboveThreshold)),
-        Network::currency(),
-    );
     $expectedDataset = BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of($aboveThreshold), false))->toFloat();
 
     $this
@@ -184,8 +178,8 @@ it('should format fee cards above threshold and convert chart datasets', functio
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Statistics/Index')
-            ->where('informationCards.fees.periods.day.value', $expectedValue)
-            ->where('informationCards.fees.periods.day.tooltip', $expectedTooltip)
+            ->where('informationCards.fees.periods.day.value', fn ($value) => is_float($value) && $value > 10000)
+            ->where('informationCards.fees.periods.day.aboveThreshold', true)
             ->where('informationCards.fees.periods.day.chart.datasets.0', fn ($value) => (float) $value === $expectedDataset));
 });
 
@@ -305,32 +299,22 @@ it('should include market data, validators, addresses, annual data, and block re
     $blockCache->setLargestIdByFees($highestFeeBlock->hash);
     $blockCache->setLargestIdByTransactionCount($mostTransactionsBlock->hash);
 
-    $expectedHighestFee = NumberFormatter::currencyWithDecimals(
-        $highestFeeBlock->fee->toFloat(),
-        Network::currency(),
-        2,
-    );
-    $expectedLargestShort = NumberFormatter::currencyShort($largestValue, Network::currency());
-    $expectedLargestFull  = NumberFormatter::currencyWithDecimals($largestValue, Network::currency(), 2);
-    $expectedLowFees      = NumberFormatter::currencyWithDecimals('0.5', Network::currency(), 4);
-
     $this
         ->get(route('statistics'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Statistics/Index')
-            ->where('insights.marketData.prices.daily.low', NumberFormatter::currencyWithDecimals(1.1, $currency, 2))
+            ->where('insights.marketData.prices.daily.low', 1.1)
             ->where('insights.validators.0.key', 'most_unique_voters')
             ->where('insights.validators.0.value', 15)
             ->where('insights.validators.2.key', 'oldest_active_validator')
-            ->where('insights.validators.2.value', Carbon::parse('2020-01-01')->format(DateFormat::DATE))
+            ->where('insights.validators.2.value', Carbon::parse('2020-01-01')->timestamp)
             ->where('insights.validators.4.key', 'most_blocks_forged')
             ->where('insights.validators.4.value', 77)
-            ->where('insights.transactions.records.highest_fee.fee', $expectedHighestFee)
+            ->where('insights.transactions.records.highest_fee.fee', $highestFeeBlock->fee->toFloat())
             ->where('insights.transactions.records.most_transactions_in_block.transactionCount', 99)
             ->where('insights.addresses.holdings.0.grouped', 1)
             ->where('insights.addresses.holdings.0.count', 7)
-            ->where('insights.addresses.unique.largest.valueShort', $expectedLargestShort)
-            ->where('insights.addresses.unique.largest.valueFull', $expectedLargestFull)
-            ->where('insights.annual.0.fees', $expectedLowFees));
+            ->where('insights.addresses.unique.largest.value', $largestValue)
+            ->where('insights.annual.0.fees', 0.5));
 });

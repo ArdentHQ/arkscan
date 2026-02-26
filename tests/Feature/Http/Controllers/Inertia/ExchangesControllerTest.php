@@ -8,7 +8,6 @@ use App\Models\Exchange;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
-use App\Services\NumberFormatter;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -319,8 +318,6 @@ it('should include chart data for crypto currencies with a valid period', functi
         1_700_003_600 => 1.5,
     ]));
 
-    $expectedValue = NumberFormatter::currency(2.0, $currency);
-
     $this
         ->withCookie('settings', json_encode($settings))
         ->get(route('exchanges', ['chartPeriod' => StatsPeriods::MONTH]))
@@ -329,7 +326,7 @@ it('should include chart data for crypto currencies with a valid period', functi
             ->component('Resources/Exchanges')
             ->has('chart')
             ->where('chart.period', StatsPeriods::MONTH)
-            ->where('chart.mainValueFiat', $expectedValue)
+            ->where('chart.mainValueFiat', 2.0)
             ->where('chart.mainValuePercentage', fn ($value) => abs($value - 50.0) < 0.0001)
             ->where('chart.theme.name', 'green'));
 });
