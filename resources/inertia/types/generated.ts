@@ -4,10 +4,10 @@ export type IBlock = {
     timestamp: number;
     transactionCount: number;
     reward: number;
-    rewardFiat: string;
+    rewardFiat: number;
     fee: number;
-    feeFiat: string;
-    totalRewardFiat: string;
+    feeFiat: number;
+    totalRewardFiat: number;
     confirmations: number;
     proposer: IMemoryWallet;
 };

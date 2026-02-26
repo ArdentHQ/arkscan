@@ -14,10 +14,11 @@ import Reward from "@/Components/Block/Reward";
 import { Block } from "@/models/Block";
 import Address from "@/Components/Wallet/Address";
 import { IPaginatedResponse } from "@/types";
+import { currency } from "@/utils/number-formatter";
 
 export function Row({ row }: { row: IBlock }) {
     const block = Block.from(row);
-    const { network } = useSharedData();
+    const { network, settings } = useSharedData();
     const { t } = useTranslation();
 
     return (
@@ -62,7 +63,7 @@ export function Row({ row }: { row: IBlock }) {
 
             {network?.canBeExchanged && (
                 <TableCell className="text-right" breakpoint="lg" responsive>
-                    {block.rewardFiat}
+                    {currency(block.rewardFiat, settings!.currency)}
                 </TableCell>
             )}
         </tr>
