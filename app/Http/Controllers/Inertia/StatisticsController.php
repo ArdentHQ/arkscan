@@ -335,34 +335,34 @@ final class StatisticsController
                     'high' => $marketData->prices->yearHigh(),
                 ],
                 'atl' => [
-                    'value' => $marketData->prices->atlValue(),
-                    'date'  => $marketData->prices->atlDate(),
+                    'value'     => $marketData->prices->atlValue(),
+                    'timestamp' => $marketData->prices->atlTimestamp(),
                 ],
                 'ath' => [
-                    'value' => $marketData->prices->athValue(),
-                    'date'  => $marketData->prices->athDate(),
+                    'value'     => $marketData->prices->athValue(),
+                    'timestamp' => $marketData->prices->athTimestamp(),
                 ],
             ],
             'volume' => [
                 'today' => $marketData->volume->todayVolumeValue(),
                 'atl'   => [
-                    'value' => $marketData->volume->atlValue(),
-                    'date'  => $marketData->volume->atlDate(),
+                    'value'     => $marketData->volume->atlValue(),
+                    'timestamp' => $marketData->volume->atlTimestamp(),
                 ],
                 'ath'   => [
-                    'value' => $marketData->volume->athValue(),
-                    'date'  => $marketData->volume->athDate(),
+                    'value'     => $marketData->volume->athValue(),
+                    'timestamp' => $marketData->volume->athTimestamp(),
                 ],
             ],
             'caps' => [
                 'today' => $marketData->caps->todayValueValue(),
                 'atl'   => [
-                    'value' => $marketData->caps->atlValue(),
-                    'date'  => $marketData->caps->atlDate(),
+                    'value'     => $marketData->caps->atlValue(),
+                    'timestamp' => $marketData->caps->atlTimestamp(),
                 ],
                 'ath'   => [
-                    'value' => $marketData->caps->athValue(),
-                    'date'  => $marketData->caps->athDate(),
+                    'value'     => $marketData->caps->athValue(),
+                    'timestamp' => $marketData->caps->athTimestamp(),
                 ],
             ],
         ];

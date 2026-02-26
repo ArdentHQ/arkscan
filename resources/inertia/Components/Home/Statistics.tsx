@@ -145,7 +145,9 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                             />
 
                             <StatEntry
-                                label={t("pages.home.statistics.voting", { percentage: statistics.voting.percentage })}
+                                label={t("pages.home.statistics.voting", {
+                                    percentage: `${statistics.voting.percentage.toFixed(2)}%`,
+                                })}
                                 value={`${currencyShortNotation(statistics.voting.amount)} ${network.currency}`}
                             />
 

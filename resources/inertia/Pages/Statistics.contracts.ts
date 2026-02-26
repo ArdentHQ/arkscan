@@ -89,18 +89,18 @@ export interface StatisticsMarketDataInsights {
     prices: {
         daily: { low: number | null; high: number | null };
         year: { low: number | null; high: number | null };
-        atl: { value: number | null; date: string | null };
-        ath: { value: number | null; date: string | null };
+        atl: { value: number | null; timestamp: number | null };
+        ath: { value: number | null; timestamp: number | null };
     };
     volume: {
         today: number;
-        atl: { value: number; date: string | null };
-        ath: { value: number; date: string | null };
+        atl: { value: number; timestamp: number | null };
+        ath: { value: number; timestamp: number | null };
     };
     caps: {
         today: number | null;
-        atl: { value: number | null; date: string | null };
-        ath: { value: number | null; date: string | null };
+        atl: { value: number | null; timestamp: number | null };
+        ath: { value: number | null; timestamp: number | null };
     };
 }
 

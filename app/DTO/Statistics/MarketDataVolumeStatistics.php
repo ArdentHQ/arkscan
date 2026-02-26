@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\DTO\Statistics;
 
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
-use Carbon\Carbon;
-
 final class MarketDataVolumeStatistics
 {
     public function __construct(
@@ -39,13 +36,9 @@ final class MarketDataVolumeStatistics
         return $this->atl->value ?? 0.0;
     }
 
-    public function atlDate(): ?string
+    public function atlTimestamp(): ?int
     {
-        if ($this->atl->timestamp === null) {
-            return null;
-        }
-
-        return Carbon::createFromTimestamp($this->atl->timestamp)->format(DateFormat::DATE);
+        return $this->atl->timestamp;
     }
 
     public function athValue(): float
@@ -53,13 +46,9 @@ final class MarketDataVolumeStatistics
         return $this->ath->value ?? 0.0;
     }
 
-    public function athDate(): ?string
+    public function athTimestamp(): ?int
     {
-        if ($this->ath->timestamp === null) {
-            return null;
-        }
-
-        return Carbon::createFromTimestamp($this->ath->timestamp)->format(DateFormat::DATE);
+        return $this->ath->timestamp;
     }
 
     public function toArray(): array

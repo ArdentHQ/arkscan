@@ -4,6 +4,8 @@ import InsightsContainer from "./Container";
 import { StatisticsMarketDataInsights } from "@/Pages/Statistics.contracts";
 import useSettings from "@/Providers/Settings/useSettings";
 import { currency as formatCurrency, currencyWithDecimals, isFiat } from "@/utils/number-formatter";
+import dayjs from "dayjs";
+import { DATE_FORMAT } from "@/constants";
 
 function useMarketFormatters() {
     const { currency: userCurrency } = useSettings();
@@ -57,6 +59,7 @@ export default function MarketDataInsights({
     const fmtPriceVal = (v: number | null) => (v !== null ? formatPrice(v) : null);
     const fmtVolVal = (v: number | null) => (v !== null ? formatVolume(v) : null);
     const fmtCapVal = (v: number | null) => (v !== null ? formatVolume(v) : null);
+    const fmtDate = (ts: number | null) => (ts !== null ? dayjs(ts * 1000).format(DATE_FORMAT) : null);
 
     return (
         <div className={activeTab !== "market_data" ? "hidden md:block" : undefined}>
@@ -100,7 +103,7 @@ export default function MarketDataInsights({
                                         <>
                                             <span>{t("pages.statistics.insights.market_data.header.date")}:</span>
                                             <span className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                {data.prices[item].date ?? t("general.na")}
+                                                {fmtDate(data.prices[item].timestamp) ?? t("general.na")}
                                             </span>
                                         </>
                                     )}
@@ -143,7 +146,7 @@ export default function MarketDataInsights({
                                         <>
                                             <div>{t("pages.statistics.insights.market_data.header.date")}:</div>
                                             <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                {data.prices[item].date ?? t("general.na")}
+                                                {fmtDate(data.prices[item].timestamp) ?? t("general.na")}
                                             </div>
                                         </>
                                     )}
@@ -173,7 +176,7 @@ export default function MarketDataInsights({
                                             <span>{t("pages.statistics.insights.market_data.header.date")}:</span>
 
                                             <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                {data.volume[item].date ?? t("general.na")}
+                                                {fmtDate(data.volume[item].timestamp) ?? t("general.na")}
                                             </div>
                                         </div>
                                     )}
@@ -207,7 +210,7 @@ export default function MarketDataInsights({
                                             <>
                                                 <div>{t("pages.statistics.insights.market_data.header.date")}:</div>
                                                 <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                    {data.volume[item].date ?? t("general.na")}
+                                                    {fmtDate(data.volume[item].timestamp) ?? t("general.na")}
                                                 </div>
                                             </>
                                         )}
@@ -238,7 +241,7 @@ export default function MarketDataInsights({
                                             <span>{t("pages.statistics.insights.market_data.header.date")}:</span>
 
                                             <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                {data.caps[item].date ?? t("general.na")}
+                                                {fmtDate(data.caps[item].timestamp) ?? t("general.na")}
                                             </div>
                                         </div>
                                     )}
@@ -272,7 +275,7 @@ export default function MarketDataInsights({
                                             <>
                                                 <div>{t("pages.statistics.insights.market_data.header.date")}:</div>
                                                 <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                                                    {data.caps[item].date ?? t("general.na")}
+                                                    {fmtDate(data.caps[item].timestamp) ?? t("general.na")}
                                                 </div>
                                             </>
                                         )}

@@ -49,7 +49,9 @@ export default function Highlights({ data }: { data: HighlightsData }) {
                         />
 
                         <HighlightStat
-                            label={t("pages.statistics.highlights.voting", { percent: data.voting.percentage })}
+                            label={t("pages.statistics.highlights.voting", {
+                                percent: `${data.voting.percentage.toFixed(2)}%`,
+                            })}
                             value={`${networkCurrency(data.voting.value, 0)} ${network.currency}`}
                         />
 

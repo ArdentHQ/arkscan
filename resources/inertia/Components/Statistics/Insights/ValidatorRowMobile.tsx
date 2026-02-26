@@ -3,6 +3,8 @@ import Number from "@/Components/General/Number";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
 import { StatisticsValidatorRow } from "@/Pages/Statistics.contracts";
+import dayjs from "dayjs";
+import { DATE_FORMAT } from "@/constants";
 
 export default function ValidatorRowMobile({ row }: { row: StatisticsValidatorRow }) {
     const { t } = useTranslation();
@@ -35,7 +37,13 @@ export default function ValidatorRowMobile({ row }: { row: StatisticsValidatorRo
                 <div className="flex w-[90px] flex-col space-y-2">
                     <div>{valueLabel}</div>
                     <div className="text-theme-secondary-900 dark:text-theme-dark-50">
-                        {typeof row.value === "number" ? <Number>{row.value}</Number> : (row.value ?? t("general.na"))}
+                        {row.key.includes("active_validator") && typeof row.value === "number" ? (
+                            dayjs(row.value * 1000).format(DATE_FORMAT)
+                        ) : typeof row.value === "number" ? (
+                            <Number>{row.value}</Number>
+                        ) : (
+                            (row.value ?? t("general.na"))
+                        )}
                     </div>
                 </div>
             </div>
