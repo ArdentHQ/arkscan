@@ -97,9 +97,11 @@ export function currencyWithDecimals({
         // Round the value to avoid unexpected rounding in Intl.NumberFormat
         const rounded = Number(Number(value).toFixed(effectiveDecimals));
 
+        const minDecimals = Math.min(2, effectiveDecimals);
+
         if (hideCurrency) {
             const formatted = new Intl.NumberFormat("en-US", {
-                minimumFractionDigits: 2,
+                minimumFractionDigits: minDecimals,
                 maximumFractionDigits: effectiveDecimals,
             }).format(rounded);
             return formatted;
@@ -108,7 +110,7 @@ export function currencyWithDecimals({
         const formatted = new Intl.NumberFormat(locale, {
             style: "currency",
             currency,
-            minimumFractionDigits: 2,
+            minimumFractionDigits: minDecimals,
             maximumFractionDigits: effectiveDecimals,
         }).format(rounded);
         return formatted;
