@@ -9,6 +9,7 @@ import { currencyWithDecimals } from "@/utils/number-formatter";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import Tooltip from "@/Components/General/Tooltip";
+import VoteTooltipContent from "@/Components/Transaction/VoteTooltipContent";
 import { useNavbar } from "@/Components/General/Navbar/NavbarContext";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
@@ -30,9 +31,11 @@ export type SearchResult<TData = SearchResultData> = {
 
 interface NavbarResultsProps {
     onBlur: (event: React.FocusEvent<HTMLElement>) => void;
+    floatingRef: (node: HTMLElement | null) => void;
+    floatingStyles: React.CSSProperties;
 }
 
-export default function NavbarResults({ onBlur }: NavbarResultsProps) {
+export default function NavbarResults({ onBlur, floatingRef, floatingStyles }: NavbarResultsProps) {
     const { t } = useTranslation();
 
     const { query, results, hasResults, isLoading, searchModalOpen } = useNavbar();
@@ -43,8 +46,10 @@ export default function NavbarResults({ onBlur }: NavbarResultsProps) {
 
     return (
         <div
+            ref={floatingRef}
+            style={{ ...floatingStyles, zIndex: 10 }}
             className={classNames(
-                "search-dropdown absolute right-0 top-9 z-10 mt-2 origin-top-right rounded-xl border border-transparent bg-white py-1 shadow-lg transition-all duration-150 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200",
+                "search-dropdown rounded-xl border border-transparent bg-white py-1 shadow-lg transition-all duration-150 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200",
                 {
                     "pointer-events-auto scale-100 opacity-100": open,
                     "pointer-events-none scale-95 opacity-0": !open,
@@ -504,17 +509,9 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                                 <Tooltip
                                     disabled={!votedValidatorLabel}
                                     content={
-                                        <div
-                                            dangerouslySetInnerHTML={
-                                                votedValidatorLabel
-                                                    ? {
-                                                          __html: t("general.transaction.vote_validator", {
-                                                              validator: votedValidatorLabel,
-                                                          }),
-                                                      }
-                                                    : undefined
-                                            }
-                                        />
+                                        votedValidatorLabel ? (
+                                            <VoteTooltipContent variant="vote" validator={votedValidatorLabel} />
+                                        ) : undefined
                                     }
                                 >
                                     <span>{result.data.typeName}</span>
@@ -593,17 +590,9 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                         <Tooltip
                             disabled={!votedValidatorLabel}
                             content={
-                                <div
-                                    dangerouslySetInnerHTML={
-                                        votedValidatorLabel
-                                            ? {
-                                                  __html: t("general.transaction.vote_validator", {
-                                                      validator: votedValidatorLabel,
-                                                  }),
-                                              }
-                                            : undefined
-                                    }
-                                />
+                                votedValidatorLabel ? (
+                                    <VoteTooltipContent variant="vote" validator={votedValidatorLabel} />
+                                ) : undefined
                             }
                         >
                             <span>{result.data.typeName}</span>

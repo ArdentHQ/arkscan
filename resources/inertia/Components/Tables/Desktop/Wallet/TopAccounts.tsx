@@ -13,6 +13,7 @@ import useWalletFormatting from "@/hooks/use-wallet-formatting";
 import Number from "@/Components/General/Number";
 import Percentage from "@/Components/General/Percentage";
 import Tooltip from "@/Components/General/Tooltip";
+import VoteTooltipContent from "@/Components/Transaction/VoteTooltipContent";
 import Clipboard from "@/Components/General/Clipboard";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import CheckMarkBoxIcon from "@ui/icons/check-mark-box.svg?react";
@@ -52,7 +53,6 @@ function WalletTypeIcons({ wallet }: { wallet: IWallet }) {
 }
 
 function WalletVotingIndicator({ wallet }: { wallet: IWallet }) {
-    const { t } = useTranslation();
     const isVoting = wallet.attributes?.vote !== null && wallet.attributes?.vote !== undefined;
 
     if (!isVoting) {
@@ -60,15 +60,7 @@ function WalletVotingIndicator({ wallet }: { wallet: IWallet }) {
     }
 
     const validatorLabel = wallet.vote?.username ?? wallet.vote?.address;
-    const tooltip = validatorLabel ? (
-        <span
-            dangerouslySetInnerHTML={{
-                __html: t("general.transaction.voting_validator", {
-                    validator: validatorLabel,
-                }),
-            }}
-        />
-    ) : null;
+    const tooltip = validatorLabel ? <VoteTooltipContent variant="voting" validator={validatorLabel} /> : null;
 
     return (
         <div className="flex w-full items-center justify-center">
