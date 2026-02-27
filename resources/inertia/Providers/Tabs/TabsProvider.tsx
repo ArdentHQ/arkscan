@@ -12,10 +12,7 @@ export function resolveTabQueryStringValues(
     const tabDefaults = defaults[tab];
 
     return Object.fromEntries(
-        Object.entries(tabDefaults).map(([param, value]) => [
-            param,
-            (url.searchParams.get(param) ?? value).toString(),
-        ]),
+        Object.entries(tabDefaults).map(([param, value]) => [param, (url.searchParams.get(param) ?? value).toString()]),
     );
 }
 
