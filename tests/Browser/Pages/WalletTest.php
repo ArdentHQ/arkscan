@@ -1186,6 +1186,126 @@ describe('Voters Tab', function () {
             }
         });
     });
+
+    it('should preserve browser history when paginating within a tab', function () {
+        Transaction::factory()
+            ->transfer()
+            ->count(75)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->resize(1280, 1024);
+
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('75 results', ignoreCase: true)
+                ->assertSee('Page 1 of 3');
+
+            // Navigate forward through pages
+            $browser->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 2 of 3')
+                ->assertQueryStringHas('page', '2');
+
+            $browser->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 3 of 3')
+                ->assertQueryStringHas('page', '3');
+
+            // Go back and verify each page is restored correctly
+            $browser->back()
+                ->waitForText('Page 2 of 3')
+                ->assertQueryStringHas('page', '2');
+
+            $browser->back()
+                ->waitForText('Page 1 of 3')
+                ->assertQueryStringMissing('page');
+        });
+    });
+
+    it('should not add extra history entries on initial page load', function () {
+        Transaction::factory()
+            ->transfer()
+            ->count(30)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->resize(1280, 1024);
+
+            // Visit a known page first to establish a history entry
+            $browser->visitRoute('top-accounts')
+                ->waitForText('Top Accounts');
+
+            // Navigate to wallet page
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('30 results', ignoreCase: true);
+
+            // Going back should return to the previous page, not stay on the wallet page
+            $browser->back()
+                ->waitForText('Top Accounts');
+        });
+    });
+
+    it('should preserve browser history when paginating across tabs', function () {
+        Transaction::factory()
+            ->transfer()
+            ->count(30)
+            ->create([
+                'from'              => $this->wallet->address,
+                'to'                => $this->wallet->address,
+                'sender_public_key' => $this->wallet->public_key,
+            ]);
+
+        Wallet::factory()
+            ->count(30)
+            ->create([
+                'attributes' => [
+                    'vote' => $this->wallet->address,
+                ],
+            ]);
+
+        $this->browse(function (Browser $browser) {
+            $browser->resize(1280, 1024);
+
+            // Start on transactions tab, paginate to page 2
+            $browser->visitRoute('wallet', $this->wallet)
+                ->waitForText('30 results', ignoreCase: true)
+                ->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringHas('page', '2');
+
+            // Switch to voters tab
+            $browser->click('button#tab-voters')
+                ->waitForText('30 results', ignoreCase: true)
+                ->assertPathIs('/addresses/'.$this->wallet->address.'/voters');
+
+            // Paginate within voters tab
+            $browser->click('[data-testid="pagination:next-page"] button')
+                ->waitForText('Page 2 of 2')
+                ->assertQueryStringHas('page', '2');
+
+            // Go back through history: voters page 2 -> voters page 1 -> transactions page 2 -> transactions page 1
+            $browser->back()
+                ->waitForText('Page 1 of 2')
+                ->assertPathIs('/addresses/'.$this->wallet->address.'/voters')
+                ->assertQueryStringMissing('page');
+
+            $browser->back()
+                ->waitForText('Page 2 of 2')
+                ->assertPathIs('/addresses/'.$this->wallet->address)
+                ->assertQueryStringHas('page', '2');
+
+            $browser->back()
+                ->waitForText('Page 1 of 2')
+                ->assertPathIs('/addresses/'.$this->wallet->address)
+                ->assertQueryStringMissing('page');
+        });
+    });
 });
 
 describe('Token Transfers Tab', function () {

@@ -1,8 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TabsContext from "./TabsContext";
 import { ITab, ITabsContextType, ITabsQueryString, TabChangedMethod } from "./types";
 import Wrapper from "@/Components/Tabs/Wrapper";
 import { router } from "@inertiajs/react";
+
+export function resolveTabQueryStringValues(
+    defaults: ITabsQueryString,
+    tab: string,
+    url: URL,
+): Record<string, string | number | boolean> {
+    const tabDefaults = defaults[tab];
+
+    return Object.fromEntries(
+        Object.entries(tabDefaults).map(([param, value]) => [param, (url.searchParams.get(param) ?? value).toString()]),
+    );
+}
 
 export default function TabsProvider({
     defaultSelected,
@@ -29,19 +41,13 @@ export default function TabsProvider({
     const [queryStringValues, setQueryStringValues] = useState<ITabsQueryString>(queryStringDefaults);
     const [tabLoaded, setTabLoaded] = useState<Record<string, boolean>>({});
     const [events, setEvents] = useState<Record<string, ((tab: ITab) => void)[]>>({});
+    const hasMounted = useRef(false);
 
     const changeTab = (newTab: string) => {
         if (currentTab) {
-            const updatedQueryStringValues = { ...queryStringValues[currentTab] };
-
-            const currentUrl = new URL(location.href);
-            Object.entries(queryStringDefaults[currentTab]).forEach(([param, value]) => {
-                updatedQueryStringValues[param] = (currentUrl.searchParams.get(param) ?? value).toString();
-            });
-
             setQueryStringValues({
                 ...queryStringValues,
-                [currentTab]: updatedQueryStringValues,
+                [currentTab]: resolveTabQueryStringValues(queryStringDefaults, currentTab, new URL(location.href)),
             });
         }
 
@@ -123,6 +129,11 @@ export default function TabsProvider({
                 return;
             }
 
+            setQueryStringValues((prev) => ({
+                ...prev,
+                [tab]: resolveTabQueryStringValues(queryStringDefaults, tab, new URL(location.href)),
+            }));
+
             setCurrentTab(tab);
             setSelectedTab(tabs.find((t) => t.value === tab) ?? tabs[0]);
             setTabLoaded({ ...tabLoaded, [tab]: true });
@@ -131,6 +142,12 @@ export default function TabsProvider({
 
     useEffect(() => {
         if (!currentTab) {
+            return;
+        }
+
+        if (!hasMounted.current) {
+            hasMounted.current = true;
+
             return;
         }
 
