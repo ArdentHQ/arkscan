@@ -4,6 +4,21 @@ import { ITab, ITabsContextType, ITabsQueryString, TabChangedMethod } from "./ty
 import Wrapper from "@/Components/Tabs/Wrapper";
 import { router } from "@inertiajs/react";
 
+export function resolveTabQueryStringValues(
+    defaults: ITabsQueryString,
+    tab: string,
+    url: URL,
+): Record<string, string | number | boolean> {
+    const tabDefaults = defaults[tab];
+
+    return Object.fromEntries(
+        Object.entries(tabDefaults).map(([param, value]) => [
+            param,
+            (url.searchParams.get(param) ?? value).toString(),
+        ]),
+    );
+}
+
 export default function TabsProvider({
     defaultSelected,
     queryStringDefaults,
@@ -29,20 +44,13 @@ export default function TabsProvider({
     const [queryStringValues, setQueryStringValues] = useState<ITabsQueryString>(queryStringDefaults);
     const [tabLoaded, setTabLoaded] = useState<Record<string, boolean>>({});
     const [events, setEvents] = useState<Record<string, ((tab: ITab) => void)[]>>({});
-    const isInitialMount = useRef(true);
+    const hasMounted = useRef(false);
 
     const changeTab = (newTab: string) => {
         if (currentTab) {
-            const updatedQueryStringValues = { ...queryStringValues[currentTab] };
-
-            const currentUrl = new URL(location.href);
-            Object.entries(queryStringDefaults[currentTab]).forEach(([param, value]) => {
-                updatedQueryStringValues[param] = (currentUrl.searchParams.get(param) ?? value).toString();
-            });
-
             setQueryStringValues({
                 ...queryStringValues,
-                [currentTab]: updatedQueryStringValues,
+                [currentTab]: resolveTabQueryStringValues(queryStringDefaults, currentTab, new URL(location.href)),
             });
         }
 
@@ -124,15 +132,9 @@ export default function TabsProvider({
                 return;
             }
 
-            const currentUrl = new URL(location.href);
-            const hydratedValues = { ...queryStringDefaults[tab] };
-            Object.entries(queryStringDefaults[tab]).forEach(([param, value]) => {
-                hydratedValues[param] = (currentUrl.searchParams.get(param) ?? value).toString();
-            });
-
             setQueryStringValues((prev) => ({
                 ...prev,
-                [tab]: hydratedValues,
+                [tab]: resolveTabQueryStringValues(queryStringDefaults, tab, new URL(location.href)),
             }));
 
             setCurrentTab(tab);
@@ -146,8 +148,9 @@ export default function TabsProvider({
             return;
         }
 
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
+        if (!hasMounted.current) {
+            hasMounted.current = true;
+
             return;
         }
 
