@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import classNames from "classnames";
 import Tooltip from "@/Components/General/Tooltip";
 import useSharedData from "@/hooks/use-shared-data";
+import useSettings from "@/Providers/Settings/useSettings";
 import { GasTrackerData } from "@/Pages/Statistics.contracts";
 import { gweiToArk } from "@/utils/UnitConverter";
 import { currency } from "@/utils/number-formatter";
@@ -28,6 +29,7 @@ function GasTrackerCard({
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
+    const { currency: selectedCurrency } = useSettings();
 
     const tooltipValue = gweiToArk(fee.amount, network.currency);
 
@@ -53,7 +55,9 @@ function GasTrackerCard({
                 )}
             >
                 {canBeExchanged && fee.value !== null && (
-                    <span className="text-theme-secondary-900 dark:text-theme-dark-50">~ {currency(fee.value)}</span>
+                    <span className="text-theme-secondary-900 dark:text-theme-dark-50">
+                        ~ {currency(fee.value, selectedCurrency)}
+                    </span>
                 )}
 
                 <Tooltip content={tooltipValue}>
