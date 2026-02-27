@@ -9,6 +9,7 @@ import { currencyWithDecimals } from "@/utils/number-formatter";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import Tooltip from "@/Components/General/Tooltip";
+import VoteTooltipContent from "@/Components/Transaction/VoteTooltipContent";
 import { useNavbar } from "@/Components/General/Navbar/NavbarContext";
 import MagnifyingGlassSmallIcon from "@ui/icons/magnifying-glass-small.svg?react";
 import CrossIcon from "@ui/icons/cross.svg?react";
@@ -508,17 +509,9 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                                 <Tooltip
                                     disabled={!votedValidatorLabel}
                                     content={
-                                        <div
-                                            dangerouslySetInnerHTML={
-                                                votedValidatorLabel
-                                                    ? {
-                                                          __html: t("general.transaction.vote_validator", {
-                                                              validator: votedValidatorLabel,
-                                                          }),
-                                                      }
-                                                    : undefined
-                                            }
-                                        />
+                                        votedValidatorLabel ? (
+                                            <VoteTooltipContent variant="vote" validator={votedValidatorLabel} />
+                                        ) : undefined
                                     }
                                 >
                                     <span>{result.data.typeName}</span>
@@ -597,17 +590,9 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                         <Tooltip
                             disabled={!votedValidatorLabel}
                             content={
-                                <div
-                                    dangerouslySetInnerHTML={
-                                        votedValidatorLabel
-                                            ? {
-                                                  __html: t("general.transaction.vote_validator", {
-                                                      validator: votedValidatorLabel,
-                                                  }),
-                                              }
-                                            : undefined
-                                    }
-                                />
+                                votedValidatorLabel ? (
+                                    <VoteTooltipContent variant="vote" validator={votedValidatorLabel} />
+                                ) : undefined
                             }
                         >
                             <span>{result.data.typeName}</span>
