@@ -72,6 +72,7 @@ export default function InformationCard({
     data,
     defaultPeriod,
     periods,
+    formatValue,
 }: {
     id: string;
     mainTitle: string;
