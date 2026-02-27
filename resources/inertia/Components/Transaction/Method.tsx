@@ -1,6 +1,7 @@
 import Badge from "../General/Badge";
 import { useTranslation } from "react-i18next";
 import Tooltip from "../General/Tooltip";
+import VoteTooltipContent from "./VoteTooltipContent";
 import { Transaction } from "@/models/Transaction";
 
 export default function Method({ transaction }: { transaction: Transaction }) {
@@ -10,9 +11,12 @@ export default function Method({ transaction }: { transaction: Transaction }) {
         if (transaction.votedFor) {
             return (
                 <Tooltip
-                    content={t("general.transaction.vote_validator", {
-                        validator: transaction.votedFor,
-                    })}
+                    content={
+                        <VoteTooltipContent
+                            variant="vote"
+                            validator={transaction.votedForUsername ?? transaction.votedFor}
+                        />
+                    }
                 >
                     <Badge className="encapsulated-badge">Vote</Badge>
                 </Tooltip>

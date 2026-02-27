@@ -54,23 +54,7 @@ export function RecentVotesMobileTable({ recentVotes }: Pick<ValidatorsProps, "r
                             </TableCell>
                         </div>
 
-                        <TableCell
-                            label={
-                                <>
-                                    {vote.votedFor ? (
-                                        <Tooltip
-                                            content={t("general.transaction.vote_validator", {
-                                                validator: vote.votedFor,
-                                            })}
-                                        >
-                                            <span>{vote.method.name({ t, i18n })}</span>
-                                        </Tooltip>
-                                    ) : (
-                                        <span>{vote.method.name({ t, i18n })}</span>
-                                    )}
-                                </>
-                            }
-                        >
+                        <TableCell label={<span>{vote.method.name({ t, i18n })}</span>}>
                             {vote.votedFor && (
                                 <Link href={route("wallet", vote.votedFor)} className="link text-sm font-semibold">
                                     {vote.votedForUsername ? (
