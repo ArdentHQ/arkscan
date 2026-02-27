@@ -32,7 +32,7 @@ export default function TransactionRecordMobileRow({
 
     const mainValue = (() => {
         if (isTransaction) {
-            return networkCurrency(record.amount, 0);
+            return networkCurrency(record.amount, 0, true);
         }
 
         if (recordKey === "most_transactions_in_block" && isBlock) {
@@ -40,7 +40,7 @@ export default function TransactionRecordMobileRow({
         }
 
         if (recordKey === "highest_fee" && isBlock) {
-            return record.fee !== undefined ? networkCurrency(record.fee, 2) : t("general.na");
+            return record.fee !== undefined ? networkCurrency(record.fee, 2, true) : t("general.na");
         }
 
         return t("general.na");

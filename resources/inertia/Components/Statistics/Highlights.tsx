@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 import HeaderItem from "@/Components/PageHeader/HeaderItem";
 import useSharedData from "@/hooks/use-shared-data";
 import { HighlightsData } from "@/Pages/Statistics.contracts";
-import { currencyShortNotation, networkCurrency } from "@/utils/number-formatter";
+import { networkCurrency } from "@/utils/number-formatter";
 import Number from "@/Components/General/Number";
 
 function HighlightStat({
@@ -45,14 +45,14 @@ export default function Highlights({ data }: { data: HighlightsData }) {
                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 xl:grid-cols-4">
                         <HighlightStat
                             label={t("pages.statistics.highlights.total_supply")}
-                            value={`${currencyShortNotation(data.totalSupply)} ${network.currency}`}
+                            value={networkCurrency(data.totalSupply, 8, true)}
                         />
 
                         <HighlightStat
                             label={t("pages.statistics.highlights.voting", {
                                 percent: `${data.voting.percentage.toFixed(2)}%`,
                             })}
-                            value={`${networkCurrency(data.voting.value, 0)} ${network.currency}`}
+                            value={networkCurrency(data.voting.value, 0, true)}
                         />
 
                         <HighlightStat

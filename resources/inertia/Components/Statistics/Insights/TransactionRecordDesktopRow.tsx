@@ -47,11 +47,11 @@ export default function TransactionRecordDesktopRow({
         }
 
         if (recordKey === "highest_fee" && isBlock) {
-            return record.fee !== undefined ? networkCurrency(record.fee, 2) : t("general.na");
+            return record.fee !== undefined ? networkCurrency(record.fee, 2, true) : t("general.na");
         }
 
         if (isTransaction) {
-            return networkCurrency(record.amount, 0);
+            return networkCurrency(record.amount, 0, true);
         }
 
         return t("general.na");

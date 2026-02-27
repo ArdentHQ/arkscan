@@ -69,7 +69,7 @@ export default function AddressInsights({ data, activeTab }: { data: StatisticsA
                             key === "most_transactions" ? (
                                 <Number>{entry.value}</Number>
                             ) : key === "largest" ? (
-                                networkCurrency(entry.value as number, 2)
+                                networkCurrency(entry.value as number, 2, true)
                             ) : (
                                 entry.value
                             );
@@ -78,7 +78,7 @@ export default function AddressInsights({ data, activeTab }: { data: StatisticsA
                             key === "most_transactions" ? (
                                 <Number>{entry.value}</Number>
                             ) : key === "largest" ? (
-                                networkCurrency(entry.value as number, 2)
+                                networkCurrency(entry.value as number, 2, true)
                             ) : (
                                 entry.value
                             );

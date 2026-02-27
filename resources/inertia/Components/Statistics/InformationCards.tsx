@@ -23,16 +23,16 @@ export default function InformationCards({ data }: { data: InformationCardsData 
             <InformationCard
                 id="all-time-fees-collected"
                 mainTitle={t("pages.statistics.information-cards.all-time-fees-collected")}
-                mainValue={networkCurrency(data.fees.allTimeValue)}
+                mainValue={networkCurrency(data.fees.allTimeValue, 8, true)}
                 secondaryTitle={t("pages.statistics.information-cards.fees")}
                 data={data.fees}
                 defaultPeriod={data.defaultPeriod}
                 periods={data.periods}
                 formatValue={(v, aboveThreshold) => {
                     if (aboveThreshold) {
-                        return <>{networkCurrency(v, 0, false)}</>;
+                        return <>{networkCurrency(v, 0, true)}</>;
                     }
-                    return <>{networkCurrency(v)}</>;
+                    return <>{networkCurrency(v, 8, true)}</>;
                 }}
             />
         </div>
