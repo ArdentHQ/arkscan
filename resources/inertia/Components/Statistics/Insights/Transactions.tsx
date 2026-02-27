@@ -35,7 +35,11 @@ export default function TransactionInsights({
                     {(["transactions", "transaction_volume", "transaction_fees"] as const).map((key) => {
                         const value = data.averages[key];
                         const content =
-                            key === "transactions" ? <Number>{value}</Number> : networkCurrency(value as number);
+                            key === "transactions" ? (
+                                <Number>{value}</Number>
+                            ) : (
+                                networkCurrency(value as number, 8, true)
+                            );
 
                         return (
                             <InsightsRow key={key} title={t(`pages.statistics.insights.transactions.header.${key}`)}>
