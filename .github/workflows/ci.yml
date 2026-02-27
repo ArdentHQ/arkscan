@@ -309,6 +309,14 @@ jobs:
                   ARKSCAN_DB_PASSWORD: password
                   APP_ENV: testing
 
+            - name: Sanitize Screenshot Filenames
+              if: failure()
+              run: |
+                  cd tests/Browser/screenshots
+                  for f in *'"'*; do
+                    [ -e "$f" ] && mv "$f" "$(echo "$f" | tr -d '"')"
+                  done
+
             - name: Upload Screenshots
               if: failure()
               uses: actions/upload-artifact@v4
