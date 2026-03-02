@@ -77,7 +77,7 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(CacheTokens::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(CacheWhitelistedTokens::class)->everyFiveMinutes()->withoutOverlapping();
+        $schedule->command(CacheWhitelistedTokens::class)->daily()->withoutOverlapping();
 
         $schedule->command(CacheValidatorPerformance::class)->everyMinute()->withoutOverlapping();
 
