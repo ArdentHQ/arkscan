@@ -30,8 +30,8 @@ it('should aggregate the fees for the given range', function () {
         ->sortByDesc('timestamp');
 
     $result = (new RangeAggregate())->aggregate(
-        Carbon::createFromTimestamp($start->last()->timestamp)->startOfDay(),
-        Carbon::createFromTimestamp($end->last()->timestamp)->endOfDay(),
+        $start->last()->timestamp->copy()->startOfDay(),
+        $end->last()->timestamp->copy()->endOfDay(),
         'YYYY-MM-DD'
     );
 

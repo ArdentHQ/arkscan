@@ -31,8 +31,8 @@ it('should not dispatch unique addresses event if no change', function () {
 
     expect($cache->getNewestAddress())->toEqual([
         'address'   => $wallet->address,
-        'timestamp' => $transaction->timestamp * 1000,
-        'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp)->format(DateFormat::DATE),
+        'timestamp' => $transaction->timestamp->getTimestampMs(),
+        'value'     => $transaction->timestamp->format(DateFormat::DATE),
     ]);
 
     Event::fake();
@@ -64,8 +64,8 @@ it('should dispatch unique addresses event', function () {
 
     expect($cache->getNewestAddress())->toEqual([
         'address'   => $walletA->address,
-        'timestamp' => $transaction->timestamp * 1000,
-        'value'     => Carbon::createFromTimestamp((int) $transaction->timestamp)->format(DateFormat::DATE),
+        'timestamp' => $transaction->timestamp->getTimestampMs(),
+        'value'     => $transaction->timestamp->format(DateFormat::DATE),
     ]);
 
     Event::fake();
