@@ -17,11 +17,11 @@ use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\Scopes\OrderByWhitelistedTokensFirstScope;
 use App\Models\TokenHolder;
 use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\Cache\WalletCache;
 use App\Services\ExchangeRate;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Database\Eloquent\Builder;
@@ -174,19 +174,9 @@ final class WalletController
 
     public function getTokens(Wallet $wallet): LengthAwarePaginator
     {
-        $whitelistedTokens = app(WalletCache::class)->getWhitelistedTokens();
-
-        $query = TokenHolder::with(['token'])
-            ->where('address', $wallet->address);
-
-        if ($whitelistedTokens !== []) {
-            $query->orderByRaw(
-                'CASE WHEN LOWER(token_address) IN ('.implode(',', array_fill(0, count($whitelistedTokens), '?')).') THEN 0 ELSE 1 END',
-                $whitelistedTokens,
-            );
-        }
-
-        return $query
+        return TokenHolder::with(['token'])
+            ->where('address', $wallet->address)
+            ->withScope(OrderByWhitelistedTokensFirstScope::class)
             ->orderBy('balance', 'desc')
             ->paginate($this->perPage())
             ->through(fn (TokenHolder $tokenHolder) => TokenHolderDTO::fromModel($tokenHolder));
