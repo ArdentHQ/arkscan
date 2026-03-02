@@ -87,7 +87,7 @@ it('should show basic transaction details', function () {
                 ->assertSee($transactionIdPart2)
                 ->assertSeeInOrder([
                     'Timestamp',
-                    Carbon::createFromTimestamp($transaction->timestamp)->format('d M Y H:i:s'),
+                    $transaction->timestamp->format('d M Y H:i:s'),
                     'Block',
                     number_format($transaction->block_number),
                     'Nonce',
@@ -278,7 +278,7 @@ it('should show multipayment recipients', function ($resolution) {
             ->assertSee($transactionIdPart2)
             ->assertSeeInOrder([
                 'Timestamp',
-                Carbon::createFromTimestamp($transaction->timestamp)->format('d M Y H:i:s'),
+                $transaction->timestamp->format('d M Y H:i:s'),
                 'Block',
                 number_format($transaction->block_number),
                 'Nonce',

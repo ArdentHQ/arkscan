@@ -14,9 +14,9 @@ use App\Services\Cache\RequestScopedCache;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use App\Services\Monitor\ValidatorTracker;
-use App\Services\Timestamp;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -103,7 +103,7 @@ trait ValidatorData
                 $missedCount,
                 $lastStatus,
                 $lastBlock,
-                $lastSlot->forgingAt()->unix(),
+                $lastSlot->forgingAt(),
                 hasReachedFinalSlot: true,
             );
         }
@@ -234,7 +234,7 @@ trait ValidatorData
                 address: $validator['address'],
                 order: $i + 1,
                 wallet: $walletViewModel,
-                forgingAt: Timestamp::fromUnix($blockTimestamp)->addMilliseconds($validator['time']),
+                forgingAt: $blockTimestamp->copy()->addMilliseconds($validator['time']),
                 lastBlock: (new WalletCache())->getLastBlock($validator['address']),
                 status: $validator['status'],
                 roundBlockCount: $roundBlockCount,
@@ -256,7 +256,7 @@ trait ValidatorData
         int $missedCount,
         string $previousStatus,
         Block $lastBlock,
-        int $lastTimestamp,
+        Carbon $lastTimestamp,
         ?Collection $overflowBlockCount = null,
         bool $hasReachedFinalSlot = false,
     ): array {
@@ -271,12 +271,12 @@ trait ValidatorData
             if ($overflowBlockCount->isEmpty()) {
                 $secondsUntilForge = Network::blockTime();
 
-                $forgingAt = Timestamp::fromUnix($lastTimestamp)->addSeconds($secondsUntilForge);
+                $forgingAt = $lastTimestamp->copy()->addSeconds($secondsUntilForge);
             } else {
                 $secondsUntilForge = Network::blockTime();
                 $secondsUntilForge += $missedSeconds;
 
-                $forgingAt = Timestamp::fromUnix($lastTimestamp)->addSeconds($secondsUntilForge);
+                $forgingAt = $lastTimestamp->copy()->addSeconds($secondsUntilForge);
             }
 
             $status = 'pending';
@@ -305,7 +305,7 @@ trait ValidatorData
                 $hasReachedFinalSlot = true;
             }
 
-            $lastTimestamp = $forgingAt->unix();
+            $lastTimestamp = $forgingAt->copy();
 
             $previousStatus = $status;
 

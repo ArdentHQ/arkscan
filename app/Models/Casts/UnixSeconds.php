@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Casts;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
 final class UnixSeconds implements CastsAttributes
@@ -15,13 +16,11 @@ final class UnixSeconds implements CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array  $attributes
-     * @return mixed
+     * @return Carbon
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        // TODO: Database now stores timestamp in unix milliseconds,
-        // consider adapting all backend code to use Carbon instead of an int - https://app.clickup.com/t/86dvxzgt6
-        return (int) floor($value / 1000);
+        return Carbon::createFromTimestamp((int) floor($value / 1000));
     }
 
     /**
@@ -35,6 +34,10 @@ final class UnixSeconds implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes)
     {
+        if ($value instanceof Carbon) {
+            return $value->getTimestampMs();
+        }
+
         return $value;
     }
 }

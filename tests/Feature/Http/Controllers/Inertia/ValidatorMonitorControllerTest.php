@@ -172,7 +172,7 @@ describe('Monitor', function () {
                     'validatorLastBlock' => [
                         'hash'      => $lastBlock->hash,
                         'number'    => $lastBlock->number->toNumber(),
-                        'timestamp' => $lastBlock->timestamp,
+                        'timestamp' => $lastBlock->timestamp->unix(),
                     ],
                 ],
             ])->save();
@@ -431,7 +431,7 @@ describe('Monitor', function () {
         // Overflow slot 3
         $lastBlock = createBlock($height + 1, $validators->get(2)['address'], $this);
 
-        $overflowForgeTime = Carbon::createFromTimestamp($lastBlock->timestamp)->subSeconds((Network::blockTime() * 2) + 2);
+        $overflowForgeTime = $lastBlock->timestamp->copy()->subSeconds((Network::blockTime() * 2) + 2);
 
         performValidatorMonitorRequest($this, reloadCallback: function (Assert $reload) use ($overflowForgeTime) {
             $reload->has('validatorData.overflowValidators', 6)
@@ -692,7 +692,7 @@ describe('Data Boxes', function () {
             (new WalletCache())->setLastBlock($wallet->address, [
                 'id'        => $block->hash,
                 'number'    => $block->number->toNumber(),
-                'timestamp' => $block->timestamp,
+                'timestamp' => $block->timestamp->unix(),
             ]);
         });
     }
