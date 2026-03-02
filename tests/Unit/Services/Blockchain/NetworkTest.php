@@ -157,7 +157,7 @@ it('should return contract method from config', function () {
     $config = [
         'contract_methods' => [
             'transfer' => 'transfer(address,uint256)',
-            'approve' => 'approve(address,uint256)',
+            'approve'  => 'approve(address,uint256)',
         ],
     ];
 
@@ -183,7 +183,7 @@ it('should return known contract by name', function () {
     $config = [
         'contract_addresses' => [
             'USDX' => '0x123abc',
-            'BTC' => '0x456def',
+            'BTC'  => '0x456def',
         ],
     ];
 

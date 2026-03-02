@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\Cache\CryptoDataCache;
-use App\Services\Cache\NetworkStatusBlockCache;
 use Laravel\Dusk\Browser;
 
 beforeEach(function () {
     $this->withoutExceptionHandling();
 
-    $this->wallet = Wallet::factory()->create();
+    $this->wallet          = Wallet::factory()->create();
     $this->recipientWallet = Wallet::factory()->create();
 });
 
