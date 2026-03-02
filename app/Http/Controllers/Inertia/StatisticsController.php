@@ -33,7 +33,6 @@ use App\Services\ExchangeRate;
 use App\Services\MainsailApi;
 use App\Services\MarketCap;
 use App\Services\NumberFormatter;
-use App\Services\Timestamp;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
 use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
@@ -306,7 +305,7 @@ final class StatisticsController
             'url'    => $transaction->url(),
             'hash'   => $transaction->hash,
             'amount' => NumberFormatter::currencyWithDecimals($viewModel->amount(), Network::currency(), 0),
-            'date'   => Timestamp::fromUnix($transaction->timestamp)->format(DateFormat::DATE),
+            'date'   => $transaction->timestamp->format(DateFormat::DATE),
         ];
     }
 
@@ -320,7 +319,7 @@ final class StatisticsController
             'type'   => 'block',
             'url'    => $block->url(),
             'height' => $block->number->toNumber(),
-            'date'   => Timestamp::fromUnix($block->timestamp)->format(DateFormat::DATE),
+            'date'   => $block->timestamp->format(DateFormat::DATE),
         ];
 
         if ($key === 'most_transactions_in_block') {

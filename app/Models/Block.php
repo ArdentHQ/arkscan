@@ -22,7 +22,7 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $number
  * @property int $transactions_count
  * @property BigNumber $reward
- * @property int $timestamp
+ * @property \Carbon\Carbon $timestamp
  * @property BigNumber $fee
  * @property int $gas_used
  * @property string $proposer
@@ -100,7 +100,7 @@ final class Block extends Model
             // shown on the results
             'transactions_count' => $this->transactions_count,
             // sortable attribute
-            'timestamp' => $this->timestamp,
+            'timestamp' => (int) $this->timestamp->timestamp,
         ];
     }
 
