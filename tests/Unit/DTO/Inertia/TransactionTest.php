@@ -13,7 +13,6 @@ use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\ViewModels\TransactionViewModel;
-use Carbon\Carbon;
 
 it('should make an instance', function () {
     $this->freezeTime();
@@ -56,7 +55,7 @@ it('should make an instance', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);
@@ -178,7 +177,7 @@ it('should make an instance for a vote transaction', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);
@@ -294,7 +293,7 @@ it('should make an instance for a validator resignation transaction', function (
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
     $subject = TransactionDTO::fromModel($transaction);
@@ -449,7 +448,7 @@ it('should handle token transfer with non-existent recipient wallet', function (
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
     // Should not throw an exception
@@ -497,7 +496,7 @@ it('should handle transfer with non-existent recipient wallet', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
     // Should not throw an exception
