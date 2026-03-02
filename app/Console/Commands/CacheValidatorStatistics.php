@@ -58,7 +58,7 @@ final class CacheValidatorStatistics extends Command
         if ($newestActiveValidatorTx !== null) {
             $cache->setNewestActiveValidator(
                 $newestActiveValidatorTx->from,
-                (int) $newestActiveValidatorTx->timestamp->timestamp
+                $newestActiveValidatorTx->timestamp->unix()
             );
         }
 
@@ -72,7 +72,7 @@ final class CacheValidatorStatistics extends Command
         if ($oldestActiveValidatorTx !== null) {
             $cache->setOldestActiveValidator(
                 $oldestActiveValidatorTx->from,
-                (int) $oldestActiveValidatorTx->timestamp->timestamp
+                $oldestActiveValidatorTx->timestamp->unix()
             );
         }
 

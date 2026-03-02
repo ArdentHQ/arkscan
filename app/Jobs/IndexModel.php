@@ -57,7 +57,7 @@ abstract class IndexModel implements ShouldQueue, ShouldBeUnique
         /** @var mixed */
         $latestItem      = $query->orderBy('timestamp', 'desc')->first();
         $latestTimestamp = $latestItem->timestamp instanceof \Carbon\Carbon
-            ? (int) $latestItem->timestamp->timestamp
+            ? $latestItem->timestamp->unix()
             : (int) $latestItem->timestamp;
 
         $this->updateLatestIndexedTimestamp($indexName, $latestTimestamp);

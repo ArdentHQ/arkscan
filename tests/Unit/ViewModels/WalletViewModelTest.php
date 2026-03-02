@@ -903,7 +903,7 @@ it('should return count for time since last forged', function () {
     (new WalletCache())->setLastBlock($wallet->address(), [
         'id'        => $block->hash,
         'number'    => $block->number->toNumber(),
-        'timestamp' => (int) $block->timestamp->timestamp,
+        'timestamp' => $block->timestamp->unix(),
     ]);
 
     $this->travelTo(Carbon::parse('2021-04-14 13:02:14'));

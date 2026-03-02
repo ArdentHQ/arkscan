@@ -100,7 +100,7 @@ final class Block extends Model
             // shown on the results
             'transactions_count' => $this->transactions_count,
             // sortable attribute
-            'timestamp' => (int) $this->timestamp->timestamp,
+            'timestamp' => $this->timestamp->unix(),
         ];
     }
 

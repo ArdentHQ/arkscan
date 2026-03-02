@@ -25,7 +25,7 @@ class Transaction extends Data
         public string $block_hash,
         public int $block_number,
         public int $transaction_index,
-        public int $timestamp,  // unix seconds for frontend
+        public int $timestamp,
         public int $nonce,
         public string $sender_public_key,
         public string $from,
@@ -138,7 +138,7 @@ class Transaction extends Data
             block_hash: $transaction->block_hash,
             block_number: $transaction->block_number,
             transaction_index: $transaction->transaction_index,
-            timestamp: (int) $transaction->timestamp->timestamp,
+            timestamp: $transaction->timestamp->unix(),
             nonce: $transaction->nonce,
             sender_public_key: $transaction->sender_public_key,
             from: $transaction->from,

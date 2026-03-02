@@ -156,7 +156,7 @@ final class Transaction extends Model
             'value'  => $this->value->__toString(),
             'fee'    => $this->gas_price->__toString(),
             // used to build the payments and sortable
-            'timestamp' => (int) $this->timestamp->timestamp,
+            'timestamp' => $this->timestamp->unix(),
         ];
     }
 

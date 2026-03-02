@@ -172,7 +172,7 @@ describe('Monitor', function () {
                     'validatorLastBlock' => [
                         'hash'      => $lastBlock->hash,
                         'number'    => $lastBlock->number->toNumber(),
-                        'timestamp' => (int) $lastBlock->timestamp->timestamp,
+                        'timestamp' => $lastBlock->timestamp->unix(),
                     ],
                 ],
             ])->save();
@@ -692,7 +692,7 @@ describe('Data Boxes', function () {
             (new WalletCache())->setLastBlock($wallet->address, [
                 'id'        => $block->hash,
                 'number'    => $block->number->toNumber(),
-                'timestamp' => (int) $block->timestamp->timestamp,
+                'timestamp' => $block->timestamp->unix(),
             ]);
         });
     }
