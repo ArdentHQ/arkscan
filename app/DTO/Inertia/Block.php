@@ -38,7 +38,7 @@ class Block extends Data
             transactionCount: $block->transactions_count,
             reward: $block->reward->toFloat(),
             fee: $block->fee->toFloat(),
-            exchangeRates: ExchangeRate::ratesAllCurrencies($block->timestamp),
+            exchangeRates: ExchangeRate::allCurrencyRates($block->timestamp),
             confirmations: abs(CacheNetworkHeight::execute() - $block->number->toNumber()),
             proposer: MemoryWalletDTO::fromAddress($block->proposer),
         );

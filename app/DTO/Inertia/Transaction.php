@@ -152,7 +152,7 @@ class Transaction extends Data
             deployed_contract_address: $transaction->deployed_contract_address,
             decoded_error: $transaction->decoded_error,
             multiPaymentRecipients: self::multiPaymentRecipients($transaction),
-            exchangeRates: ExchangeRate::ratesAllCurrencies($transaction->timestamp),
+            exchangeRates: ExchangeRate::allCurrencyRates($transaction->timestamp),
             url: route('transaction', $transaction->hash),
             methodData: $methodData,
             tokenApprovalDetails: static::tokenApprovalDetails($viewModel),

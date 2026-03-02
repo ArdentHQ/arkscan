@@ -83,8 +83,9 @@ final class ExchangeRate
     /**
      * @return array<string, float>
      */
-    public static function ratesAllCurrencies(?int $timestamp = null): array
+    public static function allCurrencyRates(?int $timestamp = null): array
     {
+        /** @var string[] $currencies */
         $currencies = array_keys(config('currencies.currencies'));
         $result     = [];
 
@@ -102,7 +103,7 @@ final class ExchangeRate
 
             foreach ($currencies as $currency) {
                 $upper          = strtoupper($currency);
-                $result[$upper] = $cache->getPrice(Network::currency(), $upper) ?? 0;
+                $result[$upper] = $cache->getPrice(Network::currency(), $upper) ?? 0.0;
             }
         }
 
