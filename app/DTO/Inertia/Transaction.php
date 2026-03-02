@@ -41,9 +41,8 @@ class Transaction extends Data
         public ?string $decoded_error,
         #[LiteralTypeScriptType('{address: string; amount: string}[]')]
         public array $multiPaymentRecipients,
-        public float $amountFiat,
-        public float $amountReceivedFiat,
-        public float $feeFiat,
+        #[LiteralTypeScriptType('Record<string, number>')]
+        public array $exchangeRates,
         public string $url,
         #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: string[] | null }')]
         public array $methodData,
@@ -153,9 +152,7 @@ class Transaction extends Data
             deployed_contract_address: $transaction->deployed_contract_address,
             decoded_error: $transaction->decoded_error,
             multiPaymentRecipients: self::multiPaymentRecipients($transaction),
-            amountFiat: ExchangeRate::convertNumerical($viewModel->amount(), $transaction->timestamp),
-            amountReceivedFiat: ExchangeRate::convertNumerical($viewModel->amountReceived($address), $transaction->timestamp),
-            feeFiat: ExchangeRate::convertNumerical($viewModel->fee(), $transaction->timestamp),
+            exchangeRates: ExchangeRate::ratesAllCurrencies($transaction->timestamp),
             url: route('transaction', $transaction->hash),
             methodData: $methodData,
             tokenApprovalDetails: static::tokenApprovalDetails($viewModel),

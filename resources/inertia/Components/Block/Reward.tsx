@@ -1,6 +1,6 @@
 import { Block } from "@/models/Block";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
-import useSharedData from "@/hooks/use-shared-data";
+import useSettings from "@/Providers/Settings/useSettings";
 import { currency } from "@/utils/number-formatter";
 
 export default function Reward({
@@ -14,9 +14,9 @@ export default function Reward({
     withoutStyling?: boolean;
     className?: string;
 }) {
-    const { settings } = useSharedData();
-    const totalRewardFiat = currency(block.totalRewardFiat, settings!.currency);
-    const rewardFiat = currency(block.rewardFiat, settings!.currency);
+    const { currency: selectedCurrency } = useSettings();
+    const totalRewardFiat = currency(block.totalRewardFiat(selectedCurrency), selectedCurrency);
+    const rewardFiat = currency(block.rewardFiat(selectedCurrency), selectedCurrency);
 
     return (
         <div>

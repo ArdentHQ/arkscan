@@ -80,6 +80,35 @@ final class ExchangeRate
         return (new CryptoDataCache())->getPrices(Settings::currency().'.week');
     }
 
+    /**
+     * @return array<string, float>
+     */
+    public static function ratesAllCurrencies(?int $timestamp = null): array
+    {
+        $currencies = array_keys(config('currencies.currencies'));
+        $result     = [];
+
+        if ($timestamp !== null) {
+            $date  = Carbon::parse(static::timestamp($timestamp))->format('Y-m-d');
+            $cache = new CryptoDataCache();
+
+            foreach ($currencies as $currency) {
+                $upper          = strtoupper($currency);
+                $prices         = $cache->getPrices($upper.'.week');
+                $result[$upper] = (float) Arr::get($prices, $date, 0);
+            }
+        } else {
+            $cache = new NetworkStatusBlockCache();
+
+            foreach ($currencies as $currency) {
+                $upper          = strtoupper($currency);
+                $result[$upper] = $cache->getPrice(Network::currency(), $upper) ?? 0;
+            }
+        }
+
+        return $result;
+    }
+
     private static function timestamp(int $timestamp): Carbon
     {
         return Timestamp::fromUnix($timestamp);

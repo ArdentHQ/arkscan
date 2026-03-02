@@ -59,11 +59,11 @@ describe("Block", () => {
             expect(block.proposer.address).toBe("proposer-address");
         });
 
-        it("exposes rewardFiat and totalRewardFiat from data", () => {
-            const block = Block.from(makeBlock({ rewardFiat: 1.5, totalRewardFiat: 2.0 }));
+        it("calculates rewardFiat and totalRewardFiat from exchangeRates", () => {
+            const block = Block.from(makeBlock({ reward: 2.0, fee: 0.5, exchangeRates: { USD: 1.5 } }));
 
-            expect(block.rewardFiat).toBe(1.5);
-            expect(block.totalRewardFiat).toBe(2.0);
+            expect(block.rewardFiat("USD")).toBe(3.0);
+            expect(block.totalRewardFiat("USD")).toBe(3.75);
         });
     });
 });

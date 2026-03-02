@@ -14,6 +14,7 @@ export default function SettingsProvider({
     theme: string;
 }) {
     const [currentTickerData, setCurrentTickerData] = useState(tickerData);
+    const [currentCurrency, setCurrentCurrency] = useState(tickerData.currency);
     const [isUpdatingCurrency, setIsUpdatingCurrency] = useState(false);
 
     const [currentTheme, setCurrentTheme] = useState(theme);
@@ -41,7 +42,9 @@ export default function SettingsProvider({
     };
 
     router.on("success", (event) => {
-        setCurrentTickerData(event.detail.page.props.priceTickerData as IPriceTickerData);
+        const tickerData = event.detail.page.props.priceTickerData as IPriceTickerData;
+        setCurrentTickerData(tickerData);
+        setCurrentCurrency(tickerData.currency);
     });
 
     useEffect(() => {
@@ -49,6 +52,7 @@ export default function SettingsProvider({
     }, [currentTickerData.currency]);
 
     const updateCurrency = (newCurrency: string): Promise<void> => {
+        setCurrentCurrency(newCurrency);
         setIsUpdatingCurrency(true);
         return new Promise((resolve, reject) => {
             router.post(
@@ -62,6 +66,7 @@ export default function SettingsProvider({
                         resolve();
                     },
                     onError: (error) => {
+                        setCurrentCurrency(currentTickerData.currency);
                         reject(error);
                     },
                     onFinish: () => {
@@ -142,7 +147,7 @@ export default function SettingsProvider({
     return (
         <SettingsContext.Provider
             value={{
-                currency: currentTickerData.currency,
+                currency: currentCurrency,
                 updateCurrency,
                 isUpdatingCurrency,
                 isPriceAvailable: currentTickerData.isPriceAvailable,
