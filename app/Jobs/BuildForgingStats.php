@@ -50,7 +50,7 @@ final class BuildForgingStats implements ShouldQueue
             ->where('number', '>=', $startHeight - Network::validatorCount())
             ->where('number', '<=', $height)
             ->get()
-            ->keyBy('timestamp');
+            ->keyBy(fn ($block) => (int) $block->timestamp->timestamp); // @phpstan-ignore property.notFound
 
         $data = [];
         foreach ($forgingStats as $timestamp => $statsForTimestamp) {
