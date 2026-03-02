@@ -125,7 +125,8 @@ it('should return rates for all currencies at a given timestamp', function () {
     $rates     = ExchangeRate::allCurrencyRates($timestamp);
 
     expect($rates)->toBeArray();
-    expect($rates)->toHaveKeys(['USD', 'EUR', 'GBP', 'AUD', 'BRL', 'BTC', 'CAD', 'CHF', 'CNY', 'ETH', 'JPY', 'KRW', 'LTC', 'NZD', 'RUB']);
+    $expectedCurrencies = array_map('strtoupper', array_keys(config('currencies.currencies')));
+    expect($rates)->toHaveKeys($expectedCurrencies);
     expect($rates['USD'])->toBe(2.5);
     expect($rates['EUR'])->toBe(2.1);
     expect($rates['GBP'])->toBe(1.8);
