@@ -35,7 +35,7 @@ export default function TransactionSummary({
 
     const isFiatCurrency = isFiat(selectedCurrency);
     const totalFiatValue = transaction.totalFiat(selectedCurrency);
-    const isSmallFiatValue = isFiatCurrency && totalFiatValue < 0.01;
+    const isSmallFiatValue = isFiatCurrency && totalFiatValue > 0 && totalFiatValue < 0.01;
     const totalFiat = currency(totalFiatValue, selectedCurrency, true);
 
     return (
