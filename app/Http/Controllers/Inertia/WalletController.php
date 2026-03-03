@@ -17,6 +17,7 @@ use App\Models\Scopes\OrderByBalanceScope;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\Scopes\OrderByWhitelistedTokensFirstScope;
 use App\Models\TokenHolder;
 use App\Models\TokenTransfer;
 use App\Models\Transaction;
@@ -175,6 +176,7 @@ final class WalletController
     {
         return TokenHolder::with(['token'])
             ->where('address', $wallet->address)
+            ->withScope(OrderByWhitelistedTokensFirstScope::class)
             ->orderBy('balance', 'desc')
             ->paginate($this->perPage())
             ->through(fn (TokenHolder $tokenHolder) => TokenHolderDTO::fromModel($tokenHolder));

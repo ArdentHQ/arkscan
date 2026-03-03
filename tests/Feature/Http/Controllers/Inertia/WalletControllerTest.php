@@ -197,6 +197,53 @@ it('should have tokens', function () {
     );
 });
 
+it('should sort whitelisted tokens at the top', function () {
+    $regularToken = TokenHolder::factory()->create([
+        'address' => $this->subject->address,
+        'balance' => (string) BigNumber::new(1000)->multipliedBy(1e18),
+    ]);
+
+    $whitelistedToken = TokenHolder::factory()->create([
+        'address' => $this->subject->address,
+        'balance' => (string) BigNumber::new(1)->multipliedBy(1e18),
+    ]);
+
+    $cache = new WalletCache();
+    $cache->setWhitelistedTokens(fn () => [strtolower($whitelistedToken->token_address)]);
+
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) use ($whitelistedToken, $regularToken) {
+            $reload->has('tokens.data', 2)
+                ->where('tokens.data.0.token.address', $whitelistedToken->token_address)
+                ->where('tokens.data.1.token.address', $regularToken->token_address);
+        },
+    );
+});
+
+it('should sort tokens by balance when no whitelisted tokens', function () {
+    $lowBalance = TokenHolder::factory()->create([
+        'address' => $this->subject->address,
+        'balance' => (string) BigNumber::new(1)->multipliedBy(1e18),
+    ]);
+
+    $highBalance = TokenHolder::factory()->create([
+        'address' => $this->subject->address,
+        'balance' => (string) BigNumber::new(1000)->multipliedBy(1e18),
+    ]);
+
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) use ($highBalance, $lowBalance) {
+            $reload->has('tokens.data', 2)
+                ->where('tokens.data.0.token.address', $highBalance->token_address)
+                ->where('tokens.data.1.token.address', $lowBalance->token_address);
+        },
+    );
+});
+
 it('should have blocks', function () {
     $block1 = Block::factory()
         ->create([
