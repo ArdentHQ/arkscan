@@ -53,11 +53,6 @@ final class TransactionViewModel implements ViewModel
         return UnitConverter::formatUnits((string) $this->transaction->fee(), 'ark');
     }
 
-    public function feeFiat(bool $showSmallAmounts = false): string
-    {
-        return ExchangeRate::convert($this->fee(), $this->transaction->timestamp, $showSmallAmounts);
-    }
-
     public function amount(): float
     {
         if (! $this->isMultiPayment()) {
@@ -99,21 +94,6 @@ final class TransactionViewModel implements ViewModel
         }
 
         return $this->amount();
-    }
-
-    public function amountFiat(bool $showSmallAmounts = false): string
-    {
-        return ExchangeRate::convert($this->amount(), $this->transaction->timestamp, $showSmallAmounts);
-    }
-
-    public function amountReceivedFiat(?string $walletAddress = null): string
-    {
-        return ExchangeRate::convert($this->amountReceived($walletAddress), $this->transaction->timestamp);
-    }
-
-    public function totalFiat(bool $withSmallAmounts = false): string
-    {
-        return ExchangeRate::convert($this->amountWithFee(), $this->transaction->timestamp, $withSmallAmounts);
     }
 
     public function confirmations(): int
