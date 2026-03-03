@@ -13,9 +13,9 @@ use App\Models\Transaction as Model;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\ExchangeRate;
-use App\Services\Timestamp;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
+use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
@@ -96,7 +96,7 @@ class TransactionDetails extends Data
         }
 
         return new self(
-            timestampFormatted: Timestamp::fromUnixHuman($transaction->timestamp),
+            timestampFormatted: $transaction->timestamp->format(DateFormat::TIME),
             confirmations: $viewModel->confirmations(),
             transactionError: $viewModel->transactionError(),
             recipientIsContract: $recipient->isContract(),
