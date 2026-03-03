@@ -15,6 +15,7 @@ class BlockRepositoryStub implements BlockRepository
 
     public function __construct(private Block $block)
     {
+        //
     }
 
     public function findByHash($hash): Block

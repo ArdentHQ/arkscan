@@ -20,6 +20,7 @@ class WalletRepositoryStub implements WalletRepository
 
     public function __construct(private Wallet $wallet)
     {
+        //
     }
 
     public function allWithUsername(): Builder

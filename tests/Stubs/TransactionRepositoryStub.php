@@ -17,6 +17,7 @@ class TransactionRepositoryStub implements TransactionRepository
 
     public function __construct(private Transaction $transaction)
     {
+        //
     }
 
     public function allByWallet(string $address, string $publicKey): Collection

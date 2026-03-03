@@ -15,6 +15,7 @@ final class DuskNetworkStub
 
     public function __construct(private NetworkContract $network)
     {
+        //
     }
 
     public function __call(string $method, array $arguments): mixed

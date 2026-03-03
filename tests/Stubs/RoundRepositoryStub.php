@@ -16,6 +16,7 @@ class RoundRepositoryStub implements RoundRepository
 
     public function __construct(private Round $round, private SupportCollection $validators)
     {
+        //
     }
 
     public function current(): Round
