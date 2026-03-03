@@ -41,18 +41,22 @@ export default function SettingsProvider({
         });
     };
 
-    router.on("success", (event) => {
-        const tickerData = event.detail.page.props.priceTickerData as IPriceTickerData;
-        setCurrentTickerData(tickerData);
-        setCurrentCurrency(tickerData.currency);
-    });
+    useEffect(() => {
+        return router.on("success", (event) => {
+            const tickerData = event.detail.page.props.priceTickerData as IPriceTickerData;
+            setCurrentTickerData(tickerData);
+            setCurrentCurrency(tickerData.currency);
+        });
+    }, []);
 
     useEffect(() => {
         return listen(`currency-update.${currentTickerData.currency}`, "CurrencyUpdate", reloadPriceTicker);
     }, [currentTickerData.currency]);
 
     const updateCurrency = (newCurrency: string): Promise<void> => {
+        const previousTickerData = currentTickerData;
         setCurrentCurrency(newCurrency);
+        setCurrentTickerData((prev) => ({ ...prev, priceExchangeRate: null }));
         setIsUpdatingCurrency(true);
         return new Promise((resolve, reject) => {
             router.post(
@@ -66,7 +70,8 @@ export default function SettingsProvider({
                         resolve();
                     },
                     onError: (error) => {
-                        setCurrentCurrency(currentTickerData.currency);
+                        setCurrentCurrency(previousTickerData.currency);
+                        setCurrentTickerData(previousTickerData);
                         reject(error);
                     },
                     onFinish: () => {
