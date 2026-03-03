@@ -9,8 +9,8 @@ export interface HomeChartTheme {
 }
 
 export interface HomeChartMarket {
-    volume: string | null;
-    marketCap: string | null;
+    volume: number | null;
+    marketCap: number | null;
 }
 
 export interface HomeChartData {

@@ -3,6 +3,7 @@ import Number from "@/Components/General/Number";
 import InsightsContainer from "./Container";
 import InsightsRow from "./Row";
 import { StatisticsTransactionInsights } from "@/Pages/Statistics.contracts";
+import { networkCurrency } from "@/utils/number-formatter";
 import TransactionRecordDesktopRow from "./TransactionRecordDesktopRow";
 import TransactionRecordMobileRow from "./TransactionRecordMobileRow";
 
@@ -33,7 +34,12 @@ export default function TransactionInsights({
                 <InsightsContainer title={t("pages.statistics.insights.transactions.daily_averages")}>
                     {(["transactions", "transaction_volume", "transaction_fees"] as const).map((key) => {
                         const value = data.averages[key];
-                        const content = key === "transactions" ? <Number>{value}</Number> : value;
+                        const content =
+                            key === "transactions" ? (
+                                <Number>{value}</Number>
+                            ) : (
+                                networkCurrency(value as number, 8, true)
+                            );
 
                         return (
                             <InsightsRow key={key} title={t(`pages.statistics.insights.transactions.header.${key}`)}>

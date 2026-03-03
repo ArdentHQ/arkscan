@@ -12,6 +12,7 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
@@ -58,6 +59,22 @@ it('should get the amount including fee', function () {
     expect($this->subject->amountWithFee())->toBeFloat();
 
     assertMatchesSnapshot($this->subject->amountWithFee());
+});
+
+it('should get the fee as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->feeFiat())->toBeString();
+});
+
+it('should get the amount received as fiat', function () {
+    (new CryptoDataCache())->setPrices('USD.week', collect([
+        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
+    ]));
+
+    expect($this->subject->amountReceivedFiat('recipient'))->toBeString();
 });
 
 it('should get the amount as fiat', function () {

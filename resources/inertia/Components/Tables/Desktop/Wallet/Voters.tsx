@@ -7,8 +7,11 @@ import { Table } from "../Table";
 import useSharedData from "@/hooks/use-shared-data";
 import TableHeader from "../TableHeader";
 import Address from "@/Components/Wallet/Address";
+import useWalletFormatting from "@/hooks/use-wallet-formatting";
 
 export function Row({ row }: { row: IWallet }) {
+    const { formattedBalanceFull } = useWalletFormatting(row.balance);
+
     return (
         <tr className="text-sm font-semibold">
             <TableCell>
@@ -16,7 +19,7 @@ export function Row({ row }: { row: IWallet }) {
             </TableCell>
 
             <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
-                {row.formattedBalanceFull}
+                {formattedBalanceFull}
             </TableCell>
 
             <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">

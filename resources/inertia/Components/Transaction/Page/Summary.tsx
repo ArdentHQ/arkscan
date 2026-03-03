@@ -33,6 +33,7 @@ export default function TransactionSummary({
 
     const isFiatCurrency = isFiat(settings!.currency);
     const isSmallFiatValue = isFiatCurrency && details.totalFiatValue !== null && details.totalFiatValue < 0.01;
+    const totalFiat = currency(details.totalFiatValue, settings!.currency, true);
 
     return (
         <PageSection title={t("pages.transaction.transaction_summary")}>
@@ -84,8 +85,8 @@ export default function TransactionSummary({
             {network?.canBeExchanged && (
                 <SectionDetailRow
                     title={t("pages.transaction.header.value")}
-                    value={isSmallFiatValue ? `<${currency(0.01, settings!.currency)}` : details.totalFiat}
-                    tooltip={isSmallFiatValue ? (details.totalFiat ?? undefined) : undefined}
+                    value={isSmallFiatValue ? `<${currency(0.01, settings!.currency)}` : totalFiat}
+                    tooltip={isSmallFiatValue ? (totalFiat ?? undefined) : undefined}
                     headerWidthClass={headerWidthClass}
                 />
             )}

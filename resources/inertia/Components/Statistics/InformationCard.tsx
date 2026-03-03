@@ -4,7 +4,6 @@ import ChartCanvas from "@/Components/Home/Chart/ChartCanvas";
 import { InformationCardData, StatisticsChartData, StatisticsPeriod } from "@/Pages/Statistics.contracts";
 import { useTranslation } from "react-i18next";
 import useSettings from "@/Providers/Settings/useSettings";
-import Tooltip from "@/Components/General/Tooltip";
 
 function PeriodSelect({
     options,
@@ -73,14 +72,16 @@ export default function InformationCard({
     data,
     defaultPeriod,
     periods,
+    formatValue,
 }: {
     id: string;
     mainTitle: string;
-    mainValue: string;
+    mainValue: React.ReactNode;
     secondaryTitle: string;
     data: InformationCardData;
     defaultPeriod: StatisticsPeriod;
     periods: StatisticsPeriod[];
+    formatValue: (value: number, aboveThreshold?: boolean) => React.ReactNode;
 }) {
     const { t } = useTranslation();
     const [selectedPeriod, setSelectedPeriod] = useState<StatisticsPeriod>(defaultPeriod);
@@ -117,17 +118,9 @@ export default function InformationCard({
                             {secondaryTitle}
                         </div>
 
-                        {periodData.tooltip ? (
-                            <Tooltip content={periodData.tooltip}>
-                                <div className="mt-2 whitespace-nowrap text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-base md:leading-5">
-                                    {periodData.value}
-                                </div>
-                            </Tooltip>
-                        ) : (
-                            <div className="mt-2 whitespace-nowrap text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-base md:leading-5">
-                                {periodData.value}
-                            </div>
-                        )}
+                        <div className="mt-2 whitespace-nowrap text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-base md:leading-5">
+                            {formatValue(periodData.value, periodData.aboveThreshold)}
+                        </div>
                     </div>
 
                     <Chart id={`stats-${id}`} chart={periodData.chart} />

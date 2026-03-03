@@ -97,9 +97,11 @@ export function currencyWithDecimals({
         // Round the value to avoid unexpected rounding in Intl.NumberFormat
         const rounded = Number(Number(value).toFixed(effectiveDecimals));
 
+        const minDecimals = Math.min(2, effectiveDecimals);
+
         if (hideCurrency) {
             const formatted = new Intl.NumberFormat("en-US", {
-                minimumFractionDigits: 2,
+                minimumFractionDigits: minDecimals,
                 maximumFractionDigits: effectiveDecimals,
             }).format(rounded);
             return formatted;
@@ -108,7 +110,7 @@ export function currencyWithDecimals({
         const formatted = new Intl.NumberFormat(locale, {
             style: "currency",
             currency,
-            minimumFractionDigits: 2,
+            minimumFractionDigits: minDecimals,
             maximumFractionDigits: effectiveDecimals,
         }).format(rounded);
         return formatted;
@@ -196,6 +198,18 @@ export function networkCurrency(
         "ARK";
 
     return `${formatted} ${networkCurrency}`;
+}
+
+export function currencyShortNotation(value: number): string {
+    if (value < 1000) {
+        return Math.floor(value).toString();
+    }
+
+    if (value < 1_000_000) {
+        return `${Math.floor(value / 1000)}K`;
+    }
+
+    return `${(value / 1_000_000).toFixed(2)}M`;
 }
 
 export function decimalsFor(currency: string, isSmallValue = false): number {
