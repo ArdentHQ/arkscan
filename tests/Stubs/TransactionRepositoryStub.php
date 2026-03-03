@@ -11,8 +11,11 @@ use Illuminate\Support\Collection;
 class TransactionRepositoryStub implements TransactionRepository
 {
     public int $allByWalletCalls = 0;
+
     public int $allBySenderCalls = 0;
+
     public int $allByRecipientCalls = 0;
+
     public int $findByHashCalls = 0;
 
     public function __construct(private Transaction $transaction)

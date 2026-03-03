@@ -10,8 +10,8 @@ use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Repositories\RoundRepositoryWithCache;
 use Illuminate\Support\Facades\Cache;
-use Tests\Stubs\RoundRepositoryStub;
 use function Tests\createRoundEntry;
+use Tests\Stubs\RoundRepositoryStub;
 
 beforeEach(function () {
     Cache::tags('rounds')->flush();

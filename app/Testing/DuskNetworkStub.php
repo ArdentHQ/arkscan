@@ -6,7 +6,6 @@ namespace App\Testing;
 
 use App\Contracts\Network as NetworkContract;
 use App\DTO\Inertia\INetwork;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
 final class DuskNetworkStub

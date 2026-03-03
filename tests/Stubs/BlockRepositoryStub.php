@@ -10,7 +10,9 @@ use App\Models\Block;
 class BlockRepositoryStub implements BlockRepository
 {
     public int $findByHashCalls = 0;
+
     public int $findByHeightCalls = 0;
+
     public int $findByIdentifierCalls = 0;
 
     public function __construct(private Block $block)

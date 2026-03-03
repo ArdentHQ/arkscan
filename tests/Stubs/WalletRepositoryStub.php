@@ -13,9 +13,13 @@ use LogicException;
 class WalletRepositoryStub implements WalletRepository
 {
     public int $findByAddressCalls = 0;
+
     public int $findByPublicKeyCalls = 0;
+
     public int $findByPublicKeysCalls = 0;
+
     public int $findByUsernameCalls = 0;
+
     public int $findByIdentifierCalls = 0;
 
     public function __construct(private Wallet $wallet)

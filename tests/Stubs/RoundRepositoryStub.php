@@ -11,7 +11,9 @@ use Illuminate\Support\Collection as SupportCollection;
 class RoundRepositoryStub implements RoundRepository
 {
     public int $currentCalls = 0;
+
     public int $byRoundCalls = 0;
+
     public int $validatorsCalls = 0;
 
     public function __construct(private Round $round, private SupportCollection $validators)
