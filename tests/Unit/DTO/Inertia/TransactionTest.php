@@ -76,7 +76,7 @@ it('should make an instance', function () {
         'gas_price'                 => '20',
         'gas'                       => '21000',
         'status'                    => true,
-        'gas_used'                  => '21000',a
+        'gas_used'                  => '21000',
         'gas_refunded'              => '0',
         'deployed_contract_address' => null,
         'decoded_error'             => null,
