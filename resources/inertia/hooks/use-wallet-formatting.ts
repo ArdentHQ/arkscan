@@ -4,11 +4,11 @@ import { toFloat, toArkString } from "@/utils/big-number";
 import { formatWithCurrencyCustom, networkCurrency, currency as formatCurrency } from "@/utils/number-formatter";
 
 export default function useWalletFormatting(balance: string) {
-    const { network, priceTickerData } = useSharedData();
+    const { network } = useSharedData();
     const { currency: selectedCurrency, priceExchangeRate } = useSettings();
     const balanceStr = toArkString(balance);
     const balanceFloat = toFloat(balance);
-    const rate = priceExchangeRate ?? priceTickerData?.priceExchangeRate ?? 0;
+    const rate = priceExchangeRate ?? 0;
 
     return {
         balanceFloat,
