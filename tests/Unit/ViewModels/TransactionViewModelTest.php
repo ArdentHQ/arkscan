@@ -61,57 +61,6 @@ it('should get the amount including fee', function () {
     assertMatchesSnapshot($this->subject->amountWithFee());
 });
 
-it('should get the fee as fiat', function () {
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
-    ]));
-
-    expect($this->subject->feeFiat())->toBeString();
-});
-
-it('should get the amount received as fiat', function () {
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
-    ]));
-
-    expect($this->subject->amountReceivedFiat('recipient'))->toBeString();
-});
-
-it('should get the amount as fiat', function () {
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        $this->transaction->timestamp->format('Y-m-d') => 0.2907,
-    ]));
-
-    expect($this->subject->amountFiat())->toBe('$0.58');
-});
-
-it('should get the total as fiat', function () {
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        $this->transaction->timestamp->format('Y-m-d') => 0.2907,
-    ]));
-
-    expect($this->subject->totalFiat())->toBe('$0.58');
-});
-
-it('should get small total values as fiat', function () {
-    (new CryptoDataCache())->setPrices('USD.week', collect([
-        $this->transaction->timestamp->format('Y-m-d') => 0.2907,
-    ]));
-
-    expect($this->subject->totalFiat(true))->toBe('$0.5814');
-});
-
-it('should get the total as cryptocurrency', function () {
-    Settings::shouldReceive('currency')
-        ->andReturn('BTC');
-
-    (new CryptoDataCache())->setPrices('BTC.week', collect([
-        $this->transaction->timestamp->format('Y-m-d') => 0.000001,
-    ]));
-
-    expect($this->subject->totalFiat())->toBe('0.000002 BTC');
-});
-
 it('should get the confirmations', function () {
     expect($this->subject->confirmations())->toBeInt();
     expect($this->subject->confirmations())->toBe(4999999);

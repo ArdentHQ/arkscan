@@ -121,7 +121,7 @@ it('should return rates for all currencies at a given timestamp', function () {
     (new CryptoDataCache())->setPrices('EUR.week', collect([$date => 2.1]));
     (new CryptoDataCache())->setPrices('GBP.week', collect([$date => 1.8]));
 
-    $timestamp = Timestamp::now()->timestamp;
+    $timestamp = Timestamp::now();
     $rates     = ExchangeRate::allCurrencyRates($timestamp);
 
     expect($rates)->toBeArray();
@@ -140,7 +140,7 @@ it('should return 0 for currencies without historical data', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([$date => 3.0]));
     // EUR is not set in cache
 
-    $timestamp = Timestamp::now()->timestamp;
+    $timestamp = Timestamp::now();
     $rates     = ExchangeRate::allCurrencyRates($timestamp);
 
     expect($rates['USD'])->toBe(3.0);
