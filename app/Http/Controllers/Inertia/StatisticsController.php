@@ -35,6 +35,7 @@ use App\Services\MarketCap;
 use App\Services\NumberFormatter;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
+use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
