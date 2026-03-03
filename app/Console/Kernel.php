@@ -26,6 +26,7 @@ use App\Console\Commands\CacheValidatorsWithVoters;
 use App\Console\Commands\CacheValidatorVoterCounts;
 use App\Console\Commands\CacheValidatorWallets;
 use App\Console\Commands\CacheVolume;
+use App\Console\Commands\CacheWhitelistedTokens;
 use App\Console\Commands\FetchExchangesDetails;
 use App\Console\Commands\GenerateVoteReport;
 use App\Console\Commands\LoadExchanges;
@@ -75,6 +76,8 @@ final class Kernel extends ConsoleKernel
         $schedule->command(BuildForgingStats::class)->everyMinute()->withoutOverlapping();
 
         $schedule->command(CacheTokens::class)->everyMinute()->withoutOverlapping();
+
+        $schedule->command(CacheWhitelistedTokens::class)->daily()->withoutOverlapping();
 
         $schedule->command(CacheValidatorPerformance::class)->everyMinute()->withoutOverlapping();
 

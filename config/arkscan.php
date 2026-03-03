@@ -42,6 +42,9 @@ return [
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 23)),
 
+            // Note: no default URL for production, must be set via env var
+            'whitelistedTokens' => env('ARKSCAN_NETWORK_WHITELISTED_TOKENS'),
+
             'contract_addresses' => [],
 
             'contract_methods' => [
@@ -78,6 +81,8 @@ return [
             'blockTime'          => intval(env('ARKSCAN_NETWORK_BLOCK_TIME', 8)),
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 30)),
+
+            'whitelistedTokens' => env('ARKSCAN_NETWORK_WHITELISTED_TOKENS', 'https://raw.githubusercontent.com/ArkEcosystem/common/refs/heads/master/mainsail/testnet/tokens-whitelist.json'),
 
             'contract_addresses' => [
                 'consensus'    => env('ARKSCAN_CONTRACT_CONSENSUS_ADDRESS', '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1'),

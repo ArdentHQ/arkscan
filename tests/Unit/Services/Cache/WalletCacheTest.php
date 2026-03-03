@@ -63,6 +63,24 @@ it('should get and set the username by address', function () {
     expect($this->subject->getWalletNameByAddress('address'))->toBeString();
 });
 
+it('should get and set the whitelisted tokens', function () {
+    expect($this->subject->getWhitelistedTokens())->toBe([]);
+
+    $this->subject->setWhitelistedTokens(fn () => ['0xaaa', '0xbbb']);
+
+    expect($this->subject->getWhitelistedTokens())->toBe(['0xaaa', '0xbbb']);
+});
+
+it('should force refresh whitelisted tokens', function () {
+    $this->subject->setWhitelistedTokens(fn () => ['0xold']);
+
+    expect($this->subject->getWhitelistedTokens())->toBe(['0xold']);
+
+    $this->subject->setWhitelistedTokens(fn () => ['0xnew'], true);
+
+    expect($this->subject->getWhitelistedTokens())->toBe(['0xnew']);
+});
+
 it('should get and set the missed blocks by address', function () {
     expect($this->subject->getMissedBlocks('address'))->toBe(0);
 

@@ -34,7 +34,7 @@ class Block extends Data
         return new self(
             hash: $block->hash,
             number: $block->number->toNumber(),
-            timestamp: $block->timestamp,
+            timestamp: $block->timestamp->unix(),
             transactionCount: $block->transactions_count,
             reward: $block->reward->toFloat(),
             fee: $block->fee->toFloat(),

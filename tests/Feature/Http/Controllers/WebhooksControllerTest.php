@@ -248,7 +248,7 @@ describe('transaction', function () {
         expect($cache->getNewestAddress())->toEqual([
             'address'   => $walletA->address,
             'timestamp' => $timestamp,
-            'value'     => Carbon::createFromTimestamp($transaction->timestamp)->format(DateFormat::DATE),
+            'value'     => $transaction->timestamp->format(DateFormat::DATE),
         ]);
 
         $this

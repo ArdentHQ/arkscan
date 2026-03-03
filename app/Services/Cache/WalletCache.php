@@ -31,6 +31,20 @@ final class WalletCache implements Contract
         return $this->remember('known', now()->addDay(), $callback);
     }
 
+    public function getWhitelistedTokens(): array
+    {
+        return $this->get('whitelisted_tokens', []);
+    }
+
+    public function setWhitelistedTokens(Closure $callback, bool $force = false): array
+    {
+        if ($force) {
+            $this->forget('whitelisted_tokens');
+        }
+
+        return $this->remember('whitelisted_tokens', now()->addDay(), $callback);
+    }
+
     public function getLastBlock(string $address): array
     {
         return $this->get(sprintf('last_block/%s', $address), []);

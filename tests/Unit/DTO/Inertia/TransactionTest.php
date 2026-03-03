@@ -56,10 +56,11 @@ it('should make an instance', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
-    $subject = TransactionDTO::fromModel($transaction);
+    $viewModel = new TransactionViewModel($transaction);
+    $subject   = TransactionDTO::fromModel($transaction);
 
     expect($subject->toArray())->toEqual([
         'hash'                      => $transaction->hash,
@@ -75,7 +76,7 @@ it('should make an instance', function () {
         'gas_price'                 => '20',
         'gas'                       => '21000',
         'status'                    => true,
-        'gas_used'                  => '21000',
+        'gas_used'                  => '21000',a
         'gas_refunded'              => '0',
         'deployed_contract_address' => null,
         'decoded_error'             => null,
@@ -168,10 +169,11 @@ it('should make an instance for a vote transaction', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
-    $subject = TransactionDTO::fromModel($transaction);
+    $viewModel = new TransactionViewModel($transaction);
+    $subject   = TransactionDTO::fromModel($transaction);
 
     expect($subject->toArray())->toEqual([
         'hash'                      => $transaction->hash,
@@ -180,7 +182,7 @@ it('should make an instance for a vote transaction', function () {
         'transaction_index'         => 13,
         'timestamp'                 => 1603083256,
         'nonce'                     => 123,
-        'sender_public_key'         => $walletFrom->public_key,
+        'sender_public_key'         => $walletFrom->public_key,a
         'from'                      => $walletFrom->address,
         'to'                        => Network::knownContract('consensus'),
         'value'                     => '0',
@@ -278,11 +280,13 @@ it('should make an instance for a validator resignation transaction', function (
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
-    $subject = TransactionDTO::fromModel($transaction);
-
+    $viewModel    = new TransactionViewModel($transaction);
+    $regViewModel = new TransactionViewModel($registrationTransaction);
+    $subject      = TransactionDTO::fromModel($transaction);
+a
     expect($subject->toArray())->toEqual([
         'hash'                      => $transaction->hash,
         'block_hash'                => '0000000000000000000000000000000000000000000000000000000000054321',
@@ -302,7 +306,7 @@ it('should make an instance for a validator resignation transaction', function (
         'deployed_contract_address' => null,
         'decoded_error'             => null,
         'multiPaymentRecipients'    => [],
-        'exchangeRates'             => ExchangeRate::allCurrencyRates($transaction->timestamp),
+        'exchangeRates'             => ExchangeRate::allCurrencyRates($transaction->tiamestamp),
         'url'                       => route('transaction', $transaction),
         'validatorRegistration'     => [
             'hash'                      => $registrationTransaction->hash,
@@ -419,7 +423,7 @@ it('should handle token transfer with non-existent recipient wallet', function (
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
     // Should not throw an exception
@@ -465,7 +469,7 @@ it('should handle transfer with non-existent recipient wallet', function () {
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($transaction->timestamp)->format('Y-m-d') => 2.0,
+        $transaction->timestamp->format('Y-m-d') => 2.0,
     ]));
 
     // Should not throw an exception
