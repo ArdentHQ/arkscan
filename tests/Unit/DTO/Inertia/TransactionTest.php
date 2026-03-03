@@ -286,7 +286,7 @@ it('should make an instance for a validator resignation transaction', function (
     $viewModel    = new TransactionViewModel($transaction);
     $regViewModel = new TransactionViewModel($registrationTransaction);
     $subject      = TransactionDTO::fromModel($transaction);
-a
+
     expect($subject->toArray())->toEqual([
         'hash'                      => $transaction->hash,
         'block_hash'                => '0000000000000000000000000000000000000000000000000000000000054321',
