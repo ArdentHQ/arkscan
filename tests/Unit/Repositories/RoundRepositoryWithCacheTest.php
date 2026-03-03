@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-// @TODO: assert that cache has been called
-
 use App\Facades\Network;
 use App\Facades\Rounds;
 use App\Models\Block;
@@ -11,9 +9,13 @@ use App\Models\Round;
 use App\Models\Wallet;
 use App\Repositories\RoundRepository;
 use App\Repositories\RoundRepositoryWithCache;
+use Illuminate\Support\Facades\Cache;
+use Tests\Stubs\RoundRepositoryStub;
 use function Tests\createRoundEntry;
 
 beforeEach(function () {
+    Cache::tags('rounds')->flush();
+
     $this->subject = new RoundRepositoryWithCache(new RoundRepository());
 
     $wallets = Wallet::factory(Network::validatorCount())->create();
@@ -60,4 +62,25 @@ it('should get the slot data for the current round using cache', function () {
     $validators = $this->subject->validators();
 
     expect($validators->firstWhere(fn ($validator) => $validator['address'] === $wallet['address'])['block'])->not->toBeNull();
+});
+
+it('should cache round lookups', function () {
+    $repository = new RoundRepositoryStub(
+        Round::factory()->make(['round' => 112168]),
+        collect([['address' => 'validator-address', 'block' => null]])
+    );
+    $subject = new RoundRepositoryWithCache($repository);
+
+    $subject->current();
+    $subject->current();
+    $subject->byRound(112168);
+    $subject->byRound(112168);
+    $subject->validators();
+    $subject->validators();
+    $subject->validators(false);
+    $subject->validators(false);
+
+    expect($repository->currentCalls)->toBe(1)
+        ->and($repository->byRoundCalls)->toBe(1)
+        ->and($repository->validatorsCalls)->toBe(2);
 });

@@ -14,7 +14,6 @@ class NetworkStub
 {
     public function __construct(public bool $canBeExchanged, public ?Carbon $epoch = null)
     {
-        //
     }
 
     public function canBeExchanged(): bool
