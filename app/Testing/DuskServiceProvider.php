@@ -98,8 +98,6 @@ class DuskServiceProvider extends ServiceProvider
         });
 
         $network = new DuskNetworkStub($this->app->make(NetworkContract::class));
-
-        $this->app->singleton(NetworkContract::class, fn () => $network);
         NetworkFacade::swap($network);
 
         Zendesk::swap(new FakeZendesk());
