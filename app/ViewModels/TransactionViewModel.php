@@ -9,7 +9,6 @@ use App\Contracts\ViewModel;
 use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Services\BigNumber;
-use App\Services\ExchangeRate;
 use App\Services\Transactions\TransactionMethod;
 use App\ViewModels\Concerns\Transaction\CanBeValidatorRegistration;
 use App\ViewModels\Concerns\Transaction\CanHaveUsername;
