@@ -14,7 +14,6 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
-use Carbon\Carbon;
 
 it('should make an instance', function () {
     $this->freezeTime();
