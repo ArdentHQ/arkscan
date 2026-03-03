@@ -85,13 +85,13 @@ final class ExchangeRate
     /**
      * @return array<string, float>
      */
-    public static function allCurrencyRates(?int $timestamp = null): array
+    public static function allCurrencyRates(?Carbon $timestamp = null): array
     {
         /** @var string[] $currencies */
         $currencies = array_keys(config('currencies.currencies'));
 
         if ($timestamp !== null) {
-            $date = Carbon::parse(static::timestamp($timestamp))->format('Y-m-d');
+            $date = $timestamp->format('Y-m-d');
             $key  = 'exchange_rates_'.$date;
         } else {
             $date = null;
@@ -121,10 +121,5 @@ final class ExchangeRate
 
             return $result;
         });
-    }
-
-    private static function timestamp(int $timestamp): Carbon
-    {
-        return Timestamp::fromUnix($timestamp);
     }
 }
