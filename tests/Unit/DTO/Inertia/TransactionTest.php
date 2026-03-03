@@ -182,7 +182,7 @@ it('should make an instance for a vote transaction', function () {
         'transaction_index'         => 13,
         'timestamp'                 => 1603083256,
         'nonce'                     => 123,
-        'sender_public_key'         => $walletFrom->public_key,a
+        'sender_public_key'         => $walletFrom->public_key,
         'from'                      => $walletFrom->address,
         'to'                        => Network::knownContract('consensus'),
         'value'                     => '0',
