@@ -53,7 +53,8 @@ final class BuildForgingStats implements ShouldQueue
             ->mapWithKeys(fn ($block) => [$block->timestamp->unix() => $block]); // @phpstan-ignore property.notFound
 
         $data = [];
-        foreach ($forgingStats as $timestamp => $statsForTimestamp) {
+        foreach ($forgingStats as $statsForTimestamp) {
+            $timestamp    = $statsForTimestamp['timestamp'];
             $missedHeight = null;
             if ($statsForTimestamp['forged'] === false) {
                 $missedBlock = null;
@@ -78,14 +79,14 @@ final class BuildForgingStats implements ShouldQueue
             ];
 
             if (count($data) > 1000) {
-                DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['address', 'forged']), attempts: 2);
+                DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp', 'address'], ['forged']), attempts: 2);
 
                 $data = [];
             }
         }
 
         if (count($data) > 0) {
-            DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp'], ['address', 'forged']), attempts: 2);
+            DB::transaction(fn () => ForgingStats::upsert($data, ['timestamp', 'address'], ['forged']), attempts: 2);
         }
 
         // clean up old stats entries

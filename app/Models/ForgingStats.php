@@ -25,27 +25,6 @@ final class ForgingStats extends Model
     use SearchesCaseInsensitive;
 
     /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    public $keyType = 'string';
-
-    /**
-     * The column name of the primary key.
-     *
-     * @var string
-     */
-    public $primaryKey = 'timestamp';
-
-    /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array<string, string>
