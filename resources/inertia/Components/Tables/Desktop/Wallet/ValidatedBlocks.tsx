@@ -17,10 +17,11 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { currency } from "@/utils/number-formatter";
 
 export function Row({ row }: { row: IBlock }) {
     const block = Block.from(row);
-    const { network } = useSharedData();
+    const { network, settings } = useSharedData();
 
     return (
         <tr className="text-sm font-semibold">
@@ -42,7 +43,7 @@ export function Row({ row }: { row: IBlock }) {
 
             {network?.canBeExchanged && (
                 <TableCell className="text-right" breakpoint="lg" responsive>
-                    {block.rewardFiat}
+                    {currency(block.rewardFiat, settings!.currency)}
                 </TableCell>
             )}
         </tr>

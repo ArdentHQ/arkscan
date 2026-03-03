@@ -44,7 +44,7 @@ it('should display highlights', function ($resolution) {
         $browser->visitRoute('statistics')
             ->waitForText('Statistics')
             ->waitForText('Current Gas Prices')
-            ->assertSee('500,000,000 DARK')
+            ->assertSee('500,000,000.00 DARK')
             ->assertSee('250,000,000 DARK')
             ->assertSee('75.50%')
             ->assertSee('18');

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Facades\Settings;
+use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\ExchangeRate;
@@ -20,6 +21,15 @@ it('should convert with a historical rate', function () {
 
     expect(ExchangeRate::convert(10, Timestamp::now()->subDays(1)->timestamp))
         ->toBe(NumberFormatter::currency(30, 'USD.week'));
+});
+
+it('should convert a BigNumber amount', function () {
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 24);
+
+    $amount = BigNumber::new(10 * 1e18);
+
+    expect(ExchangeRate::convert($amount))
+        ->toBe('$240.00');
 });
 
 it('should convert with current rate if no timestamp', function () {

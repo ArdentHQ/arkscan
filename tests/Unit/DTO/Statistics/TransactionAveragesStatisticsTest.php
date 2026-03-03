@@ -12,12 +12,12 @@ it('should create statistics object correctly', function () {
     ]);
 
     expect($averages->count)->toEqual(1);
-    expect($averages->volume)->toEqual('100.42134589 DARK');
-    expect($averages->fees)->toEqual('1.42134589 DARK');
+    expect($averages->volume)->toEqual(100.42134589);
+    expect($averages->fees)->toEqual(1.42134589);
 
     expect($averages->toArray())->toBe([
         'transactions'       => 1,
-        'transaction_volume' => '100.42134589 DARK',
-        'transaction_fees'   => '1.42134589 DARK',
+        'transaction_volume' => 100.42134589,
+        'transaction_fees'   => 1.42134589,
     ]);
 });

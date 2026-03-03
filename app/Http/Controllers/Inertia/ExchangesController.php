@@ -13,8 +13,6 @@ use App\Models\Exchange;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
 use App\Services\MarketCap;
-use App\Services\NumberFormatter;
-use ARKEcosystem\Foundation\NumberFormatter\NumberFormatter as BetterNumberFormatter;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -130,12 +128,12 @@ final class ExchangesController
             'period'              => $period,
             'options'             => $this->periodOptions(),
             'refreshInterval'     => (int) config('arkscan.statistics.refreshInterval', 60),
-            'mainValueFiat'       => $this->mainValueFiat($currency),
+            'mainValueFiat'       => $this->getPrice($currency),
             'mainValuePercentage' => $this->mainValuePercentage($datasets, $currency),
             'mainValueVariation'  => $variation,
-            'marketCapValue'      => MarketCap::getFormatted(Network::currency(), $currency),
-            'minPriceValue'       => $this->minPrice($datasets, $currency),
-            'maxPriceValue'       => $this->maxPrice($datasets, $currency),
+            'marketCapValue'      => MarketCap::get(Network::currency(), $currency),
+            'minPriceValue'       => (float) collect($datasets)->min(),
+            'maxPriceValue'       => (float) collect($datasets)->max(),
             'dateUnitOverride'    => $period === StatsPeriods::WEEK ? 'day' : null,
         ];
     }
@@ -286,21 +284,6 @@ final class ExchangesController
         ];
     }
 
-    private function mainValueFiat(string $currency): string
-    {
-        $price = $this->getPrice($currency);
-
-        if (NumberFormatter::isFiat($currency)) {
-            return BetterNumberFormatter::new()
-                ->withLocale(Settings::locale())
-                ->withFractionDigits(2)
-                ->formatWithCurrencyAccounting($price);
-        }
-
-        return BetterNumberFormatter::new()
-            ->formatWithCurrencyCustom($price, $currency, NumberFormatter::CRYPTO_DECIMALS);
-    }
-
     private function mainValuePercentage(array $dataset, string $currency): float
     {
         $initialValue = collect($dataset)->first();
@@ -324,15 +307,5 @@ final class ExchangesController
     private function getPrice(string $currency): float
     {
         return (new NetworkStatusBlockCache())->getPrice(Network::currency(), $currency) ?? 0.0;
-    }
-
-    private function minPrice(array $dataset, string $currency): string
-    {
-        return NumberFormatter::currency((float) collect($dataset)->min(), $currency);
-    }
-
-    private function maxPrice(array $dataset, string $currency): string
-    {
-        return NumberFormatter::currency((float) collect($dataset)->max(), $currency);
     }
 }

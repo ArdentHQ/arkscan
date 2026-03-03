@@ -20,10 +20,10 @@ class Block extends Data
         public int $timestamp,
         public int $transactionCount,
         public float $reward,
-        public string $rewardFiat,
+        public float $rewardFiat,
         public float $fee,
-        public string $feeFiat,
-        public string $totalRewardFiat,
+        public float $feeFiat,
+        public float $totalRewardFiat,
         public int $confirmations,
         public MemoryWalletDTO $proposer,
     ) {
@@ -37,10 +37,10 @@ class Block extends Data
             timestamp: $block->timestamp->unix(),
             transactionCount: $block->transactions_count,
             reward: $block->reward->toFloat(),
-            rewardFiat: ExchangeRate::convert($block->reward->toFloat(), $block->timestamp),
+            rewardFiat: ExchangeRate::convertNumerical($block->reward->toFloat(), $block->timestamp),
             fee: $block->fee->toFloat(),
-            feeFiat: ExchangeRate::convert($block->fee->toFloat(), $block->timestamp),
-            totalRewardFiat: ExchangeRate::convert(
+            feeFiat: ExchangeRate::convertNumerical($block->fee->toFloat(), $block->timestamp),
+            totalRewardFiat: ExchangeRate::convertNumerical(
                 $block->reward->toFloat() + $block->fee->toFloat(),
                 $block->timestamp
             ),

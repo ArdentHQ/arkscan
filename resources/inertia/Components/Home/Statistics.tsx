@@ -8,6 +8,7 @@ import Info from "../General/Info";
 import ChartContent from "@/Components/Home/Chart/ChartContent";
 import Number from "../General/Number";
 import { Link } from "@inertiajs/react";
+import { currency, currencyShortNotation, isFiat } from "@/utils/number-formatter";
 function StatEntry({
     label,
     value,
@@ -94,6 +95,22 @@ function MobileGasTooltip({ statistics }: { statistics: IHomeStatistics }) {
     );
 }
 
+function FormatGasValue({ value }: { value: number }) {
+    const { settings } = useSharedData();
+    const userCurrency = settings!.currency;
+    const isFiatCurrency = isFiat(userCurrency);
+
+    if (!isFiatCurrency) {
+        return <>{currency(value, userCurrency, true)}</>;
+    }
+
+    if (value > 0 && value < 0.01) {
+        return <>{`< ${currency(0.01, userCurrency)}`}</>;
+    }
+
+    return <>{currency(value, userCurrency)}</>;
+}
+
 export default function Statistics({ statistics }: { statistics: IHomeStatistics }) {
     const { t } = useTranslation();
     const { network, chart } = useSharedData<HomeProps>();
@@ -124,12 +141,14 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                         <StatRow>
                             <StatEntry
                                 label={t("pages.home.statistics.total_supply")}
-                                value={`${statistics.totalSupply} ${network.currency}`}
+                                value={`${currencyShortNotation(statistics.totalSupply)} ${network.currency}`}
                             />
 
                             <StatEntry
-                                label={t("pages.home.statistics.voting", { percentage: statistics.voting.percentage })}
-                                value={`${statistics.voting.amount} ${network.currency}`}
+                                label={t("pages.home.statistics.voting", {
+                                    percentage: `${statistics.voting.percentage.toFixed(2)}%`,
+                                })}
+                                value={`${currencyShortNotation(statistics.voting.amount)} ${network.currency}`}
                             />
 
                             <StatEntry
@@ -143,19 +162,19 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                                 <>
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_low")}
-                                        value={statistics.gas.low.value}
+                                        value={<FormatGasValue value={statistics.gas.low.value} />}
                                         tooltip={`${statistics.gas.low.amount} ${t("general.gwei")}`}
                                     />
 
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_average")}
-                                        value={statistics.gas.average.value}
+                                        value={<FormatGasValue value={statistics.gas.average.value} />}
                                         tooltip={`${statistics.gas.average.amount} ${t("general.gwei")}`}
                                     />
 
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_high")}
-                                        value={statistics.gas.high.value}
+                                        value={<FormatGasValue value={statistics.gas.high.value} />}
                                         tooltip={`${statistics.gas.high.amount} ${t("general.gwei")}`}
                                     />
                                 </>
@@ -188,11 +207,13 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                             value={
                                 <div className="flex items-center space-x-2">
                                     <span>
-                                        {network.canBeExchanged
-                                            ? statistics.gas.average.value
-                                            : t("pages.home.statistics.gas_average_value", {
-                                                  value: `${statistics.gas.average.amount} ${t("general.gwei")}`,
-                                              })}
+                                        {network.canBeExchanged ? (
+                                            <FormatGasValue value={statistics.gas.average.value} />
+                                        ) : (
+                                            t("pages.home.statistics.gas_average_value", {
+                                                value: `${statistics.gas.average.amount} ${t("general.gwei")}`,
+                                            })
+                                        )}
                                     </span>
 
                                     <Info

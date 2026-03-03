@@ -1,4 +1,5 @@
 import { IWallet } from "@/types/generated";
+import { toFloat } from "@/utils/big-number";
 
 interface WalletNetworkConfig {
     validatorCount: number;
@@ -70,6 +71,10 @@ export class Wallet {
 
     get rank(): number | null {
         return this.attributes?.validatorRank ?? null;
+    }
+
+    get balanceFloat(): number {
+        return toFloat(this.balance);
     }
 
     private _findKnownWallet(): { address: string; type?: string } | undefined {

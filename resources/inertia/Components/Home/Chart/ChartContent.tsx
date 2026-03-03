@@ -6,7 +6,7 @@ import useSettings from "@/Providers/Settings/useSettings";
 import ChartCanvas from "@/Components/Home/Chart/ChartCanvas";
 import MarketOverviewHeader from "@/Components/Home/Chart/MarketOverviewHeader";
 import MarketStat from "@/Components/Home/Chart/MarketStat";
-import { currency, hasSymbol } from "@/utils/number-formatter";
+import { currency, currencyWithDecimals, hasSymbol } from "@/utils/number-formatter";
 import { HomeChartData, HomeProps } from "@/Pages/Home.contracts";
 import ChevronRightSmallIcon from "@ui/icons/arrows/chevron-right-small.svg?react";
 
@@ -27,8 +27,14 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
     const priceTitle = network?.currency
         ? `${network.currency} ${t("pages.home.charts.price")}`
         : t("pages.home.charts.price");
-    const volumeValue = chart.market?.volume ?? null;
-    const marketCapValue = chart.market?.marketCap ?? null;
+    const volumeValue =
+        chart.market?.volume !== null && chart.market?.volume !== undefined
+            ? currencyWithDecimals({ value: chart.market.volume, currency: selectedCurrency, decimals: 0 })
+            : null;
+    const marketCapValue =
+        chart.market?.marketCap !== null && chart.market?.marketCap !== undefined
+            ? currencyWithDecimals({ value: chart.market.marketCap, currency: selectedCurrency, decimals: 0 })
+            : null;
     const dotsClassName =
         chartTheme.name === "red"
             ? "bg-[radial-gradient(var(--theme-color-danger-100)_1px,transparent_1px)] dark:bg-[radial-gradient(var(--theme-color-dark-800)_1px,transparent_1px)] dim:bg-[radial-gradient(var(--theme-color-dim-800)_1px,transparent_1px)]"

@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\DTO\Statistics;
 
-use App\Facades\Settings;
-use App\Services\NumberFormatter;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
-use Carbon\Carbon;
-
 final class MarketDataPriceStatistics
 {
     public function __construct(
@@ -34,76 +29,44 @@ final class MarketDataPriceStatistics
         );
     }
 
-    public function atlValue(): ?string
+    public function atlValue(): ?float
     {
-        if ($this->atl->value === null) {
-            return null;
-        }
-
-        return $this->formatCurrency($this->atl->value);
+        return $this->atl->value;
     }
 
-    public function atlDate(): ?string
+    public function atlTimestamp(): ?int
     {
-        if ($this->atl->timestamp === null) {
-            return null;
-        }
-
-        return Carbon::createFromTimestamp($this->atl->timestamp)->format(DateFormat::DATE);
+        return $this->atl->timestamp;
     }
 
-    public function athValue(): ?string
+    public function athValue(): ?float
     {
-        if ($this->ath->value === null) {
-            return null;
-        }
-
-        return $this->formatCurrency($this->ath->value);
+        return $this->ath->value;
     }
 
-    public function athDate(): ?string
+    public function athTimestamp(): ?int
     {
-        if ($this->ath->timestamp === null) {
-            return null;
-        }
-
-        return Carbon::createFromTimestamp($this->ath->timestamp)->format(DateFormat::DATE);
+        return $this->ath->timestamp;
     }
 
-    public function dailyLow(): ?string
+    public function dailyLow(): ?float
     {
-        if ($this->daily->low === null) {
-            return null;
-        }
-
-        return $this->formatCurrency($this->daily->low);
+        return $this->daily->low;
     }
 
-    public function dailyHigh(): ?string
+    public function dailyHigh(): ?float
     {
-        if ($this->daily->high === null) {
-            return null;
-        }
-
-        return $this->formatCurrency($this->daily->high);
+        return $this->daily->high;
     }
 
-    public function yearLow(): ?string
+    public function yearLow(): ?float
     {
-        if ($this->year->low === null) {
-            return null;
-        }
-
-        return $this->formatCurrency($this->year->low);
+        return $this->year->low;
     }
 
-    public function yearHigh(): ?string
+    public function yearHigh(): ?float
     {
-        if ($this->year->high === null) {
-            return null;
-        }
-
-        return $this->formatCurrency($this->year->high);
+        return $this->year->high;
     }
 
     public function toArray(): array
@@ -114,22 +77,5 @@ final class MarketDataPriceStatistics
             'daily' => $this->daily->toArray(),
             'year'  => $this->year->toArray(),
         ];
-    }
-
-    /**
-     * @param string|int|float $value
-     */
-    private function formatCurrency($value): string
-    {
-        return NumberFormatter::currencyWithDecimals($value, Settings::currency(), $this->decimals());
-    }
-
-    private function decimals(): int
-    {
-        if (NumberFormatter::isFiat(Settings::currency())) {
-            return 2;
-        }
-
-        return 8;
     }
 }

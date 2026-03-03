@@ -60,10 +60,10 @@ describe("Block", () => {
         });
 
         it("exposes rewardFiat and totalRewardFiat from data", () => {
-            const block = Block.from(makeBlock({ rewardFiat: "1.50", totalRewardFiat: "2.00" }));
+            const block = Block.from(makeBlock({ rewardFiat: 1.5, totalRewardFiat: 2.0 }));
 
-            expect(block.rewardFiat).toBe("1.50");
-            expect(block.totalRewardFiat).toBe("2.00");
+            expect(block.rewardFiat).toBe(1.5);
+            expect(block.totalRewardFiat).toBe(2.0);
         });
     });
 });

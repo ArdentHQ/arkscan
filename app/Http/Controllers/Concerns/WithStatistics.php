@@ -8,22 +8,17 @@ use App\Actions\CacheNetworkSupply;
 use App\Models\Wallet;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\ValidatorCache;
-use App\Services\NumberFormatter;
 
 trait WithStatistics
 {
-    protected function getTotalSupply(): string
+    protected function getTotalSupply(): float
     {
-        $supply = CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
-
-        return NumberFormatter::number($supply);
+        return CacheNetworkSupply::execute() / config('currencies.notation.crypto', 1e18);
     }
 
-    protected function getVotingPercent(): string
+    protected function getVotingPercent(): float
     {
-        $votesPercent = (new NetworkCache())->getVotesPercentage();
-
-        return NumberFormatter::percentage($votesPercent);
+        return (new NetworkCache())->getVotesPercentage();
     }
 
     protected function getVotingValue(): float
@@ -31,10 +26,8 @@ trait WithStatistics
         return (new ValidatorCache())->getTotalBalanceVoted();
     }
 
-    protected function getWallets(): string
+    protected function getWallets(): int
     {
-        $wallets = Wallet::count();
-
-        return NumberFormatter::number($wallets);
+        return Wallet::count();
     }
 }

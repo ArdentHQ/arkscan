@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\DTO\Statistics\LowHighValue;
 use App\DTO\Statistics\MarketDataPriceStatistics;
 use App\DTO\Statistics\TimestampedValue;
-use App\Facades\Settings;
 use Carbon\Carbon;
 
 it('should create statistics object correctly', function () {
@@ -59,10 +58,7 @@ it('should create statistics object correctly', function () {
     ]);
 });
 
-it('should fall back to 8 decimal places', function () {
-    Settings::shouldReceive('currency')
-        ->andReturn('BTC');
-
+it('should return raw float values', function () {
     $timestamp = Carbon::now()->timestamp;
 
     $prices = MarketDataPriceStatistics::make(
@@ -84,8 +80,10 @@ it('should fall back to 8 decimal places', function () {
         ]),
     );
 
-    expect($prices->athValue())->toBe('1.23456789 BTC');
-    expect($prices->atlValue())->toBe('0.23456789 BTC');
-    expect($prices->dailyHigh())->toBe('1.23456789 BTC');
-    expect($prices->dailyLow())->toBe('0.23456789 BTC');
+    expect($prices->athValue())->toBe(1.234567890123);
+    expect($prices->atlValue())->toBe(0.234567890123);
+    expect($prices->dailyHigh())->toBe(1.234567890123);
+    expect($prices->dailyLow())->toBe(0.234567890123);
+    expect($prices->athTimestamp())->toBe($timestamp);
+    expect($prices->atlTimestamp())->toBe($timestamp);
 });

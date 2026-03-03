@@ -8,12 +8,14 @@ import FiatValue from "@/Components/General/FiatValue";
 import Tooltip from "@/Components/General/Tooltip";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import { Link } from "@inertiajs/react";
+import useWalletFormatting from "@/hooks/use-wallet-formatting";
 
 export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
     const { network, tokenHoldingsCount } = useSharedData<WalletProps>();
+    const { formattedBalanceTwoDecimals, formattedBalanceFull, fiatValue } = useWalletFormatting(wallet.balance);
 
-    const showTooltip = wallet.formattedBalanceTwoDecimals !== wallet.formattedBalanceFull;
+    const showTooltip = formattedBalanceTwoDecimals !== formattedBalanceFull;
 
     return (
         <WalletOverviewItem title={t("general.overview")}>
@@ -25,22 +27,22 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                     <>
                         {showTooltip && (
                             <div className="sm:hidden">
-                                <Tooltip content={wallet.formattedBalanceFull}>
-                                    <span>{wallet.formattedBalanceTwoDecimals}</span>
+                                <Tooltip content={formattedBalanceFull}>
+                                    <span>{formattedBalanceTwoDecimals}</span>
                                 </Tooltip>
                             </div>
                         )}
 
-                        {!showTooltip && <span className="sm:hidden">{wallet.formattedBalanceTwoDecimals}</span>}
+                        {!showTooltip && <span className="sm:hidden">{formattedBalanceTwoDecimals}</span>}
 
-                        <span className="hidden sm:inline">{wallet.formattedBalanceFull}</span>
+                        <span className="hidden sm:inline">{formattedBalanceFull}</span>
                     </>
                 }
             />
 
             <WalletOverviewItemEntry
                 title={t("pages.wallet.value")}
-                value={network!.canBeExchanged ? <FiatValue value={wallet.fiatValue} /> : null}
+                value={network!.canBeExchanged ? <FiatValue value={fiatValue} /> : null}
             />
 
             <WalletOverviewItemEntry
