@@ -12,7 +12,6 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkCache;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Support\Str;
 use function Spatie\Snapshots\assertMatchesSnapshot;
@@ -79,7 +78,7 @@ it('should get the amount received as fiat', function () {
 
 it('should get the amount as fiat', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
+        $this->transaction->timestamp->format('Y-m-d') => 0.2907,
     ]));
 
     expect($this->subject->amountFiat())->toBe('$0.58');
@@ -87,7 +86,7 @@ it('should get the amount as fiat', function () {
 
 it('should get the total as fiat', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
+        $this->transaction->timestamp->format('Y-m-d') => 0.2907,
     ]));
 
     expect($this->subject->totalFiat())->toBe('$0.58');
@@ -95,7 +94,7 @@ it('should get the total as fiat', function () {
 
 it('should get small total values as fiat', function () {
     (new CryptoDataCache())->setPrices('USD.week', collect([
-        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.2907,
+        $this->transaction->timestamp->format('Y-m-d') => 0.2907,
     ]));
 
     expect($this->subject->totalFiat(true))->toBe('$0.5814');
@@ -106,7 +105,7 @@ it('should get the total as cryptocurrency', function () {
         ->andReturn('BTC');
 
     (new CryptoDataCache())->setPrices('BTC.week', collect([
-        Carbon::parse($this->transaction->timestamp)->format('Y-m-d') => 0.000001,
+        $this->transaction->timestamp->format('Y-m-d') => 0.000001,
     ]));
 
     expect($this->subject->totalFiat())->toBe('0.000002 BTC');

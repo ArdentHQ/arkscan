@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 
 final class ExchangeRate
 {
-    public static function convert(float | BigNumber $amount, ?int $timestamp = null, bool $showSmallAmounts = false): string
+    public static function convert(float | BigNumber $amount, Carbon|int|null $timestamp = null, bool $showSmallAmounts = false): string
     {
         if ($amount instanceof BigNumber) {
             $amount = $amount->toFloat();
@@ -23,12 +23,13 @@ final class ExchangeRate
         return NumberFormatter::currency(self::convertNumerical($amount, $timestamp), Settings::currency(), $showSmallAmounts);
     }
 
-    public static function convertNumerical(float $amount, ?int $timestamp = null): float
+    public static function convertNumerical(float $amount, Carbon|int|null $timestamp = null): float
     {
         $exchangeRate = 0;
         if ($timestamp !== null) {
             $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
-            $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
+            $carbon       = $timestamp instanceof Carbon ? $timestamp : Carbon::createFromTimestamp($timestamp);
+            $exchangeRate = Arr::get($prices, $carbon->format('Y-m-d'), 0);
         } else {
             $exchangeRate = static::currentRate();
         }
@@ -78,10 +79,5 @@ final class ExchangeRate
     public static function rates(): Collection
     {
         return (new CryptoDataCache())->getPrices(Settings::currency().'.week');
-    }
-
-    private static function timestamp(int $timestamp): Carbon
-    {
-        return Timestamp::fromUnix($timestamp);
     }
 }

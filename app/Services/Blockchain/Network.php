@@ -93,6 +93,11 @@ final class Network implements Contract
         return (new WalletCache())->getKnown();
     }
 
+    public function whitelistedTokensUrl(): ?string
+    {
+        return Arr::get($this->config, 'whitelistedTokens');
+    }
+
     public function knownContracts(): array
     {
         return $this->config['contract_addresses'];

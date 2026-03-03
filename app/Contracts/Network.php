@@ -29,6 +29,8 @@ interface Network
 
     public function knownWallets(): array;
 
+    public function whitelistedTokensUrl(): ?string;
+
     public function knownContracts(): array;
 
     public function knownContract(string $name): ?string;

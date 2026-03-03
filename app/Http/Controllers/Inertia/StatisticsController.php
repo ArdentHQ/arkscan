@@ -292,7 +292,7 @@ final class StatisticsController
             'url'       => $transaction->url(),
             'hash'      => $transaction->hash,
             'amount'    => $viewModel->amount(),
-            'timestamp' => $transaction->timestamp,
+            'date'      => $transaction->timestamp->format(DateFormat::DATE),
         ];
     }
 
@@ -306,7 +306,7 @@ final class StatisticsController
             'type'      => 'block',
             'url'       => $block->url(),
             'height'    => $block->number->toNumber(),
-            'timestamp' => $block->timestamp,
+            'date'      => $block->timestamp->format(DateFormat::DATE),
         ];
 
         if ($key === 'most_transactions_in_block') {

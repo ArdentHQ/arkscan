@@ -34,6 +34,7 @@ it('should have all required properties', function (array $config) {
     expect($subject->currencySymbol())->toBe($config['currencySymbol']);
     expect($subject->confirmations())->toBe($config['confirmations']);
     expect($subject->knownWallets())->toBeArray();
+    expect($subject->whitelistedTokensUrl())->toBe($config['whitelistedTokens'] ?? null);
     expect($subject->knownContracts())->toBeArray();
     expect($subject->canBeExchanged())->toBe($config['canBeExchanged']);
     expect($subject->epoch())->toBeInstanceOf(Carbon::class);

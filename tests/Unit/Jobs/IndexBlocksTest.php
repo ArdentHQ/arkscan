@@ -67,7 +67,7 @@ it('should index new blocks', function () {
 
     Event::assertDispatched(ModelsImported::class, function ($event) {
         return $event->models->count() === 3 &&
-            $event->models->pluck('timestamp')->sort()->values()->toArray() === [
+            $event->models->pluck('timestamp')->map->timestamp->sort()->values()->toArray() === [
                 Carbon::now()->subDays(10)->unix(),
                 Carbon::now()->subDays(5)->unix(),
                 Carbon::now()->subDays(1)->unix(),
@@ -105,7 +105,7 @@ it('should index blocks using the timestamp from cache', function () {
 
     Event::assertDispatched(ModelsImported::class, function ($event) {
         return $event->models->count() === 2 &&
-            $event->models->pluck('timestamp')->sort()->values()->toArray() === [
+            $event->models->pluck('timestamp')->map->timestamp->sort()->values()->toArray() === [
                 Carbon::now()->subDays(5)->unix(),
                 Carbon::now()->subDays(1)->unix(),
             ];

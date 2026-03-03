@@ -139,7 +139,7 @@ class Transaction extends Data
             block_hash: $transaction->block_hash,
             block_number: $transaction->block_number,
             transaction_index: $transaction->transaction_index,
-            timestamp: $transaction->timestamp,
+            timestamp: $transaction->timestamp->unix(),
             nonce: $transaction->nonce,
             sender_public_key: $transaction->sender_public_key,
             from: $transaction->from,

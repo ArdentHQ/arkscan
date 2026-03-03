@@ -39,7 +39,7 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $value
  * @property BigNumber $gas
  * @property BigNumber $gas_price
- * @property int $timestamp
+ * @property \Carbon\Carbon $timestamp
  * @property int $transaction_index
  * @property string|null $to
  * @property string $from
@@ -156,7 +156,7 @@ final class Transaction extends Model
             'value'  => $this->value->__toString(),
             'fee'    => $this->gas_price->__toString(),
             // used to build the payments and sortable
-            'timestamp' => $this->timestamp,
+            'timestamp' => $this->timestamp->unix(),
         ];
     }
 
