@@ -81,9 +81,7 @@ it('should make an instance', function () {
         'deployed_contract_address' => null,
         'decoded_error'             => null,
         'multiPaymentRecipients'    => [],
-        'amountFiat'                => ExchangeRate::convertNumerical($viewModel->amount(), $transaction->timestamp),
-        'amountReceivedFiat'        => ExchangeRate::convertNumerical($viewModel->amountReceived($walletFrom->address), $transaction->timestamp),
-        'feeFiat'                   => ExchangeRate::convertNumerical($viewModel->fee(), $transaction->timestamp),
+        'exchangeRates'             => ExchangeRate::allCurrencyRates($transaction->timestamp),
         'url'                       => route('transaction', $transaction),
         'validatorRegistration'     => null,
         'votedFor'                  => null,
@@ -196,9 +194,7 @@ it('should make an instance for a vote transaction', function () {
         'deployed_contract_address' => null,
         'decoded_error'             => null,
         'multiPaymentRecipients'    => [],
-        'amountFiat'                => ExchangeRate::convertNumerical($viewModel->amount(), $transaction->timestamp),
-        'amountReceivedFiat'        => ExchangeRate::convertNumerical($viewModel->amountReceived($walletFrom->address), $transaction->timestamp),
-        'feeFiat'                   => ExchangeRate::convertNumerical($viewModel->fee(), $transaction->timestamp),
+        'exchangeRates'             => ExchangeRate::allCurrencyRates($transaction->timestamp),
         'url'                       => route('transaction', $transaction),
         'validatorRegistration'     => null,
         'votedFor'                  => $walletTo->address,
@@ -310,9 +306,7 @@ it('should make an instance for a validator resignation transaction', function (
         'deployed_contract_address' => null,
         'decoded_error'             => null,
         'multiPaymentRecipients'    => [],
-        'amountFiat'                => ExchangeRate::convertNumerical($viewModel->amount(), $transaction->timestamp),
-        'amountReceivedFiat'        => ExchangeRate::convertNumerical($viewModel->amountReceived($walletFrom->address), $transaction->timestamp),
-        'feeFiat'                   => ExchangeRate::convertNumerical($viewModel->fee(), $transaction->timestamp),
+        'exchangeRates'             => ExchangeRate::allCurrencyRates($transaction->tiamestamp),
         'url'                       => route('transaction', $transaction),
         'validatorRegistration'     => [
             'hash'                      => $registrationTransaction->hash,
@@ -333,9 +327,7 @@ it('should make an instance for a validator resignation transaction', function (
             'deployed_contract_address' => null,
             'decoded_error'             => null,
             'multiPaymentRecipients'    => [],
-            'amountFiat'                => ExchangeRate::convertNumerical($regViewModel->amount(), $registrationTransaction->timestamp),
-            'amountReceivedFiat'        => ExchangeRate::convertNumerical($regViewModel->amountReceived($walletFrom->address), $registrationTransaction->timestamp),
-            'feeFiat'                   => ExchangeRate::convertNumerical($regViewModel->fee(), $registrationTransaction->timestamp),
+            'exchangeRates'             => ExchangeRate::allCurrencyRates($registrationTransaction->timestamp),
             'url'                       => route('transaction', $registrationTransaction),
             'validatorRegistration'     => null,
             'votedFor'                  => null,
@@ -429,8 +421,6 @@ it('should handle token transfer with non-existent recipient wallet', function (
             'timestamp'         => 1603083256000,
         ]);
 
-    $viewModel = new TransactionViewModel($transaction);
-
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([
         $transaction->timestamp->format('Y-m-d') => 2.0,
@@ -476,8 +466,6 @@ it('should handle transfer with non-existent recipient wallet', function () {
             'block_hash'        => '0000000000000000000000000000000000000000000000000000000000054321',
             'timestamp'         => 1603083256000,
         ]);
-
-    $viewModel = new TransactionViewModel($transaction);
 
     (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
     (new CryptoDataCache())->setPrices('USD.week', collect([

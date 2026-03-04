@@ -8,6 +8,7 @@ use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\Cache\RequestScopedCache;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -79,5 +80,46 @@ final class ExchangeRate
     public static function rates(): Collection
     {
         return (new CryptoDataCache())->getPrices(Settings::currency().'.week');
+    }
+
+    /**
+     * @return array<string, float>
+     */
+    public static function allCurrencyRates(?Carbon $timestamp = null): array
+    {
+        /** @var string[] $currencies */
+        $currencies = array_keys(config('currencies.currencies'));
+
+        if ($timestamp !== null) {
+            $date = $timestamp->format('Y-m-d');
+            $key  = 'exchange_rates_'.$date;
+        } else {
+            $date = null;
+            $key  = 'exchange_rates_current';
+        }
+
+        /** @var array<string, float> */
+        return RequestScopedCache::remember($key, function () use ($currencies, $date): array {
+            $result = [];
+
+            if ($date !== null) {
+                $cache = new CryptoDataCache();
+
+                foreach ($currencies as $currency) {
+                    $upper          = strtoupper($currency);
+                    $prices         = $cache->getPrices($upper.'.week');
+                    $result[$upper] = (float) Arr::get($prices, $date, 0);
+                }
+            } else {
+                $cache = new NetworkStatusBlockCache();
+
+                foreach ($currencies as $currency) {
+                    $upper          = strtoupper($currency);
+                    $result[$upper] = $cache->getPrice(Network::currency(), $upper) ?? 0.0;
+                }
+            }
+
+            return $result;
+        });
     }
 }

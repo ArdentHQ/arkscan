@@ -47,7 +47,20 @@ return [
 
             'contract_addresses' => [],
 
-            'contract_methods' => [],
+            'contract_methods' => [
+                'transfer'               => env('ARKSCAN_CONTRACT_TRANSFER_METHOD'),
+                'multipayment'           => env('ARKSCAN_CONTRACT_MULTIPAYMENT_METHOD'),
+                'vote'                   => env('ARKSCAN_CONTRACT_VOTE_METHOD'),
+                'unvote'                 => env('ARKSCAN_CONTRACT_UNVOTE_METHOD'),
+                'validator_registration' => env('ARKSCAN_CONTRACT_VALIDATOR_REGISTRATION_METHOD'),
+                'validator_resignation'  => env('ARKSCAN_CONTRACT_VALIDATOR_RESIGNATION_METHOD'),
+                'validator_update'       => env('ARKSCAN_CONTRACT_VALIDATOR_UPDATE_METHOD'),
+                'username_registration'  => env('ARKSCAN_CONTRACT_USERNAME_REGISTRATION_METHOD'),
+                'username_resignation'   => env('ARKSCAN_CONTRACT_USERNAME_RESIGNATION_METHOD'),
+                'contract_deployment'    => env('ARKSCAN_CONTRACT_DEPLOYMENT_METHOD'),
+                'approve'                => env('ARKSCAN_CONTRACT_APPROVE_METHOD'),
+                'batch_transfer'         => env('ARKSCAN_CONTRACT_BATCH_TRANSFER_METHOD'),
+            ],
         ],
         'development' => [
             'coin'               => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),

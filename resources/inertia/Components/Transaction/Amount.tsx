@@ -1,4 +1,5 @@
 import useSharedData from "@/hooks/use-shared-data";
+import useSettings from "@/Providers/Settings/useSettings";
 import classNames from "classnames";
 import Fee from "./Fee";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
@@ -23,7 +24,8 @@ export default function Amount({
     hideCurrency?: boolean;
     testId?: string;
 }) {
-    const { network, settings } = useSharedData();
+    const { network } = useSharedData();
+    const { currency: selectedCurrency } = useSettings();
 
     let isSent = false;
     let isReceived = false;
@@ -35,13 +37,13 @@ export default function Amount({
     }
 
     let amount = transaction.amount;
-    let amountFiat = currency(transaction.amountFiat, settings!.currency, true);
+    let amountFiat = currency(transaction.amountFiat(selectedCurrency), selectedCurrency, true);
     let amountForItself: number | undefined = undefined;
 
     if (wallet) {
         if (isReceived || transaction.isSentToSelf(wallet.address)) {
             amount = transaction.amountReceived(wallet.address);
-            amountFiat = currency(transaction.amountReceivedFiat, settings!.currency);
+            amountFiat = currency(transaction.amountReceivedFiat(selectedCurrency, wallet.address), selectedCurrency);
         } else {
             amountForItself = transaction.amountForItself;
             if (amountForItself > 0) {
