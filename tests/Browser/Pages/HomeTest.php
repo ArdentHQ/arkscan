@@ -12,8 +12,9 @@ use App\Services\Cache\MainsailCache;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\ValidatorCache;
-use Facebook\WebDriver\WebDriverBy;
+use App\Testing\DuskNetworkStub;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Dusk\Browser;
 
 describe('Statistics', function () {
@@ -119,57 +120,60 @@ describe('Statistics', function () {
 
         State::latest()?->update(['block_number' => 123456]);
 
-        $this->browse(function (Browser $browser) use ($resolution) {
-            $browser->resize($resolution['width'], $resolution['height']);
+        Cache::forever(DuskNetworkStub::CAN_BE_EXCHANGED_CACHE_KEY, true);
 
-            $outputInOrder = [
-                trans('pages.home.statistics.total_supply'),
-                '12K DARK',
-                trans('pages.home.statistics.voting', ['percentage' => '123.45%']),
-                '4K DARK',
-                trans('pages.home.statistics.block_height'),
-                '123,456',
-            ];
+        try {
+            $this->browse(function (Browser $browser) use ($resolution) {
+                $browser->resize($resolution['width'], $resolution['height']);
 
-            if ($resolution['width'] >= 640) {
                 $outputInOrder = [
-                    ...$outputInOrder,
-
-                    trans('pages.home.statistics.gas_low'),
-                    '$3.00',
-                    trans('pages.home.statistics.gas_average'),
-                    '$5.00',
-                    trans('pages.home.statistics.gas_high'),
-                    '$7.00',
+                    trans('pages.home.statistics.total_supply'),
+                    '12K DARK',
+                    trans('pages.home.statistics.voting', ['percentage' => '123.45%']),
+                    '4K DARK',
+                    trans('pages.home.statistics.block_height'),
+                    '123,456',
                 ];
-            } else {
-                $outputInOrder[] = trans('pages.home.statistics.gas_average_value', ['value' => '$5.00']);
-            }
 
-            $browser->visitRoute('home')
-                ->pause(500)
-                ->waitForText(trans('pages.home.statistics.title_mobile'), ignoreCase: true)
-                ->assertSeeInOrder($outputInOrder);
+                if ($resolution['width'] >= 640) {
+                    $outputInOrder = [
+                        ...$outputInOrder,
 
-            if ($resolution['width'] < 640) {
-                $browser->mouseover('[data-testid="statistics:gas-tracker"]')
-                    ->assertSeeInOrder([
-                        'Low:',
-                        '~30 sec',
-                        '1500000000 Gwei',
-                        'Average:',
-                        '~30 sec',
-                        '2500000000 Gwei',
-                        'High:',
-                        '~30 sec',
-                        '3500000000 Gwei',
-                    ]);
-            } else {
-                // sleep(3);
-                $browser->driver->findElement(WebDriverBy::xpath('//div[text()="$3.00"]'))->hover();
-            }
-        });
-    })->with('resolutions')->skip('Cannot change config/env values in test.');
+                        trans('pages.home.statistics.gas_low'),
+                        '$3.00',
+                        trans('pages.home.statistics.gas_average'),
+                        '$5.00',
+                        trans('pages.home.statistics.gas_high'),
+                        '$7.00',
+                    ];
+                } else {
+                    $outputInOrder[] = trans('pages.home.statistics.gas_average_value', ['value' => '$5.00']);
+                }
+
+                $browser->visitRoute('home')
+                    ->pause(500)
+                    ->waitForText(trans('pages.home.statistics.title_mobile'), ignoreCase: true)
+                    ->assertSeeInOrder($outputInOrder);
+
+                if ($resolution['width'] < 640) {
+                    $browser->mouseover('[data-testid="statistics:gas-tracker"]')
+                        ->assertSeeInOrder([
+                            'Low:',
+                            '~30 sec',
+                            '1500000000 Gwei',
+                            'Average:',
+                            '~30 sec',
+                            '2500000000 Gwei',
+                            'High:',
+                            '~30 sec',
+                            '3500000000 Gwei',
+                        ]);
+                }
+            });
+        } finally {
+            Cache::forget(DuskNetworkStub::CAN_BE_EXCHANGED_CACHE_KEY);
+        }
+    })->with('resolutions');
 });
 
 describe('Transactions Tab', function () {

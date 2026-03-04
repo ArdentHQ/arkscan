@@ -207,13 +207,11 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                             value={
                                 <div className="flex items-center space-x-2">
                                     <span>
-                                        {network.canBeExchanged ? (
-                                            <FormatGasValue value={statistics.gas.average.value} />
-                                        ) : (
-                                            t("pages.home.statistics.gas_average_value", {
-                                                value: `${statistics.gas.average.amount} ${t("general.gwei")}`,
-                                            })
-                                        )}
+                                        {t("pages.home.statistics.gas_average_value", {
+                                            value: network.canBeExchanged
+                                                ? statistics.gas.average.value
+                                                : `${statistics.gas.average.amount} ${t("general.gwei")}`,
+                                        })}
                                     </span>
 
                                     <Info
