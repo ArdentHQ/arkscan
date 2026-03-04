@@ -81,7 +81,7 @@ export default function PriceTicker() {
                                     })}
                                 ></div>
 
-                                <span>{currency}</span>
+                                <span data-testid="price-ticker:currency">{currency}</span>
 
                                 <span className={classNames("transition-default", { "rotate-180": isOpen })}>
                                     <ChevronDownSmallIcon className="h-2.5 w-2.5 md:h-3 md:w-3" />

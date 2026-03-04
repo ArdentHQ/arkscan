@@ -35,7 +35,6 @@ use App\Services\MarketCap;
 use App\Services\NumberFormatter;
 use App\ViewModels\TransactionViewModel;
 use App\ViewModels\WalletViewModel;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -293,7 +292,7 @@ final class StatisticsController
             'url'       => $transaction->url(),
             'hash'      => $transaction->hash,
             'amount'    => $viewModel->amount(),
-            'date'      => $transaction->timestamp->format(DateFormat::DATE),
+            'timestamp' => $transaction->timestamp,
         ];
     }
 
@@ -307,7 +306,7 @@ final class StatisticsController
             'type'      => 'block',
             'url'       => $block->url(),
             'height'    => $block->number->toNumber(),
-            'date'      => $block->timestamp->format(DateFormat::DATE),
+            'timestamp' => $block->timestamp,
         ];
 
         if ($key === 'most_transactions_in_block') {

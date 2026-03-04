@@ -22,6 +22,22 @@ export class Block {
     get timestampFormatted(): string {
         return dayjs(this.timestamp * 1000).format(DATE_TIME_FORMAT);
     }
+
+    fiatRate(currency: string): number {
+        return (this.exchangeRates as Record<string, number>)[currency] ?? 0;
+    }
+
+    rewardFiat(currency: string): number {
+        return this.reward * this.fiatRate(currency);
+    }
+
+    feeFiat(currency: string): number {
+        return this.fee * this.fiatRate(currency);
+    }
+
+    totalRewardFiat(currency: string): number {
+        return this.totalReward * this.fiatRate(currency);
+    }
 }
 
 export interface Block extends IBlock {}

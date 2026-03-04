@@ -153,3 +153,44 @@ it('should return network data as an array', function (array $config) {
         'contract_addresses'  => [],
     ]],
 ]);
+
+it('should return contract method from config', function () {
+    $config = [
+        'contract_methods' => [
+            'transfer' => 'transfer(address,uint256)',
+            'approve'  => 'approve(address,uint256)',
+        ],
+    ];
+
+    $subject = new Network($config);
+
+    expect($subject->contractMethod('transfer', 'default'))->toBe('transfer(address,uint256)');
+    expect($subject->contractMethod('approve', 'default'))->toBe('approve(address,uint256)');
+});
+
+it('should return default contract method if not found', function () {
+    $config = [
+        'contract_methods' => [
+            'transfer' => 'transfer(address,uint256)',
+        ],
+    ];
+
+    $subject = new Network($config);
+
+    expect($subject->contractMethod('nonexistent', 'fallback'))->toBe('fallback');
+});
+
+it('should return known contract by name', function () {
+    $config = [
+        'contract_addresses' => [
+            'USDX' => '0x123abc',
+            'BTC'  => '0x456def',
+        ],
+    ];
+
+    $subject = new Network($config);
+
+    expect($subject->knownContract('USDX'))->toBe('0x123abc');
+    expect($subject->knownContract('BTC'))->toBe('0x456def');
+    expect($subject->knownContract('unknown'))->toBeNull();
+});

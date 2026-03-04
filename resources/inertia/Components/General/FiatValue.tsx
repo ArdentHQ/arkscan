@@ -1,14 +1,14 @@
-import useSharedData from "@/hooks/use-shared-data";
+import useSettings from "@/Providers/Settings/useSettings";
 import { hasSymbol } from "@/utils/number-formatter";
 
 export default function FiatValue({ value }: { value: number | string }) {
-    const { settings } = useSharedData();
+    const { currency } = useSettings();
 
     return (
         <span>
             <span>{value}</span>
 
-            {hasSymbol(settings!.currency) && <span>{settings!.currency}</span>}
+            {hasSymbol(currency) && <span>{currency}</span>}
         </span>
     );
 }

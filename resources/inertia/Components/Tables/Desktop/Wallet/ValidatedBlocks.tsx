@@ -15,13 +15,15 @@ import { WalletProps } from "@/Pages/Wallet.contracts";
 import classNames from "classnames";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
+import useSettings from "@/Providers/Settings/useSettings";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { currency } from "@/utils/number-formatter";
 
 export function Row({ row }: { row: IBlock }) {
     const block = Block.from(row);
-    const { network, settings } = useSharedData();
+    const { network } = useSharedData();
+    const { currency: selectedCurrency } = useSettings();
 
     return (
         <tr className="text-sm font-semibold">
@@ -43,7 +45,7 @@ export function Row({ row }: { row: IBlock }) {
 
             {network?.canBeExchanged && (
                 <TableCell className="text-right" breakpoint="lg" responsive>
-                    {currency(block.rewardFiat, settings!.currency)}
+                    {currency(block.rewardFiat(selectedCurrency), selectedCurrency)}
                 </TableCell>
             )}
         </tr>

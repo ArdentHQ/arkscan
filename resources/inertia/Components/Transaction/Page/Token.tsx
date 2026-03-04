@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
+import useSettings from "@/Providers/Settings/useSettings";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
@@ -19,7 +20,8 @@ export default function TransactionToken({
     headerWidthClass: string;
 }) {
     const { t } = useTranslation();
-    const { network, settings } = useSharedData();
+    const { network } = useSharedData();
+    const { currency: selectedCurrency } = useSettings();
 
     const tokenSymbol = details.token?.symbol ?? network?.currency;
 
@@ -53,7 +55,7 @@ export default function TransactionToken({
                 {network?.canBeExchanged && (
                     <SectionDetailRow
                         title={t("pages.transaction.header.value")}
-                        value={currency(0, settings!.currency)}
+                        value={currency(0, selectedCurrency)}
                         headerWidthClass={headerWidthClass}
                     />
                 )}
@@ -90,7 +92,7 @@ export default function TransactionToken({
             {network?.canBeExchanged && (
                 <SectionDetailRow
                     title={t("pages.transaction.header.value")}
-                    value={currency(0, settings!.currency)}
+                    value={currency(0, selectedCurrency)}
                     headerWidthClass={headerWidthClass}
                 />
             )}

@@ -6,6 +6,7 @@ import { Table } from "../Table";
 import TableHeader from "../TableHeader";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
+import useSettings from "@/Providers/Settings/useSettings";
 import { BlocksListProps } from "@/Pages/Blocks.contracts";
 import classNames from "classnames";
 import Age from "@/Components/Model/Age";
@@ -18,7 +19,8 @@ import { currency } from "@/utils/number-formatter";
 
 export function Row({ row }: { row: IBlock }) {
     const block = Block.from(row);
-    const { network, settings } = useSharedData();
+    const { network } = useSharedData();
+    const { currency: selectedCurrency } = useSettings();
     const { t } = useTranslation();
 
     return (
@@ -63,7 +65,7 @@ export function Row({ row }: { row: IBlock }) {
 
             {network?.canBeExchanged && (
                 <TableCell className="text-right" breakpoint="lg" responsive>
-                    {currency(block.rewardFiat, settings!.currency)}
+                    {currency(block.rewardFiat(selectedCurrency), selectedCurrency)}
                 </TableCell>
             )}
         </tr>

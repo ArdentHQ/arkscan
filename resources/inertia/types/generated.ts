@@ -4,10 +4,8 @@ export type IBlock = {
     timestamp: number;
     transactionCount: number;
     reward: number;
-    rewardFiat: number;
     fee: number;
-    feeFiat: number;
-    totalRewardFiat: number;
+    exchangeRates: Record<string, number>;
     confirmations: number;
     proposer: IMemoryWallet;
 };
@@ -207,9 +205,7 @@ export type ITransaction = {
     deployed_contract_address: string | null;
     decoded_error: string | null;
     multiPaymentRecipients: { address: string; amount: string }[];
-    amountFiat: number;
-    amountReceivedFiat: number;
-    feeFiat: number;
+    exchangeRates: Record<string, number>;
     url: string;
     methodData: { functionName: string | null; methodId: string | null; arguments: string[] | null };
     tokenApprovalDetails: {
@@ -235,7 +231,6 @@ export type ITransactionDetails = {
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
     batchTokenTransfers: { recipient: IWallet; amount: string }[];
-    totalFiatValue: number;
 };
 export type IValidator = {
     rank: number | null;

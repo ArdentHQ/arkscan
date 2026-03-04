@@ -112,6 +112,65 @@ it('should return null if a currency value is missing', function () {
     expect(ExchangeRate::convertFiatToCurrency(4, 'USD', 'GBP'))->toBeNull();
 });
 
+it('should return rates for all currencies at a given timestamp', function () {
+    $this->travelTo(Carbon::parse('2023-07-05'));
+
+    $date = Carbon::now()->format('Y-m-d');
+
+    (new CryptoDataCache())->setPrices('USD.week', collect([$date => 2.5]));
+    (new CryptoDataCache())->setPrices('EUR.week', collect([$date => 2.1]));
+    (new CryptoDataCache())->setPrices('GBP.week', collect([$date => 1.8]));
+
+    $timestamp = Timestamp::now();
+    $rates     = ExchangeRate::allCurrencyRates($timestamp);
+
+    expect($rates)->toBeArray();
+    $expectedCurrencies = array_map('strtoupper', array_keys(config('currencies.currencies')));
+    expect($rates)->toHaveKeys($expectedCurrencies);
+    expect($rates['USD'])->toBe(2.5);
+    expect($rates['EUR'])->toBe(2.1);
+    expect($rates['GBP'])->toBe(1.8);
+});
+
+it('should return 0 for currencies without historical data', function () {
+    $this->travelTo(Carbon::parse('2023-07-05'));
+
+    $date = Carbon::now()->format('Y-m-d');
+
+    (new CryptoDataCache())->setPrices('USD.week', collect([$date => 3.0]));
+    // EUR is not set in cache
+
+    $timestamp = Timestamp::now();
+    $rates     = ExchangeRate::allCurrencyRates($timestamp);
+
+    expect($rates['USD'])->toBe(3.0);
+    expect($rates['EUR'])->toBe(0.0);
+});
+
+it('should return current rates for all currencies when no timestamp is given', function () {
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 5.0);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'EUR', 4.5);
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'GBP', 3.9);
+
+    $rates = ExchangeRate::allCurrencyRates();
+
+    expect($rates)->toBeArray();
+    expect($rates)->toHaveKeys(['USD', 'EUR', 'GBP', 'AUD', 'BRL', 'BTC', 'CAD', 'CHF', 'CNY', 'ETH', 'JPY', 'KRW', 'LTC', 'NZD', 'RUB']);
+    expect($rates['USD'])->toBe(5.0);
+    expect($rates['EUR'])->toBe(4.5);
+    expect($rates['GBP'])->toBe(3.9);
+});
+
+it('should return 0 for currencies without current rate data', function () {
+    (new NetworkStatusBlockCache())->setPrice('DARK', 'USD', 2.0);
+    // EUR is not set
+
+    $rates = ExchangeRate::allCurrencyRates();
+
+    expect($rates['USD'])->toBe(2.0);
+    expect($rates['EUR'])->toBe(0.0);
+});
+
 it('should list all rates', function () {
     Settings::shouldReceive('currency')
         ->andReturn('USD');

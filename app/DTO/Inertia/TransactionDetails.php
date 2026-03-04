@@ -12,7 +12,6 @@ use App\Models\TokenTransfer as TokenTransferModel;
 use App\Models\Transaction as Model;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
-use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -40,7 +39,6 @@ class TransactionDetails extends Data
         public ?array $payload,
         #[LiteralTypeScriptType('{recipient: IWallet; amount: string}[]')]
         public array $batchTokenTransfers,
-        public float $totalFiatValue,
     ) {
     }
 
@@ -103,7 +101,6 @@ class TransactionDetails extends Data
             token: $token,
             payload: self::payloadDetails($viewModel),
             batchTokenTransfers: $batchTokenTransfers,
-            totalFiatValue: ExchangeRate::convertNumerical($viewModel->amountWithFee(), $transaction->timestamp),
         );
     }
 

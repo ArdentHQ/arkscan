@@ -128,6 +128,26 @@ export class Transaction {
 
         return UnitConverter.formatUnits(gasPrice.toString(), "ark");
     }
+
+    fiatRate(currency: string): number {
+        return (this.exchangeRates as Record<string, number>)[currency] ?? 0;
+    }
+
+    amountFiat(currency: string): number {
+        return this.amount * this.fiatRate(currency);
+    }
+
+    amountReceivedFiat(currency: string, address?: string): number {
+        return this.amountReceived(address) * this.fiatRate(currency);
+    }
+
+    feeFiat(currency: string): number {
+        return this.fee * this.fiatRate(currency);
+    }
+
+    totalFiat(currency: string): number {
+        return this.amountWithFee * this.fiatRate(currency);
+    }
 }
 
 export interface Transaction extends ITransaction {

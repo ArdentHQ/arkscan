@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
+import useSettings from "@/Providers/Settings/useSettings";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import AmountSmall from "@/Components/General/AmountSmall";
 import { TableHeaderTooltip } from "@/Components/Tables/Desktop/TableHeader";
@@ -17,7 +18,8 @@ export default function TransactionSummary({
     headerWidthClass: string;
 }) {
     const { t } = useTranslation();
-    const { network, settings } = useSharedData();
+    const { network } = useSharedData();
+    const { currency: selectedCurrency } = useSettings();
 
     const showAmountRow =
         transaction.method.isTransfer ||
@@ -31,9 +33,10 @@ export default function TransactionSummary({
     const unlockedAmount =
         registrationAmount !== null && registrationAmount > 0 ? registrationAmount : transaction.amount;
 
-    const isFiatCurrency = isFiat(settings!.currency);
-    const isSmallFiatValue = isFiatCurrency && details.totalFiatValue !== null && details.totalFiatValue < 0.01;
-    const totalFiat = currency(details.totalFiatValue, settings!.currency, true);
+    const isFiatCurrency = isFiat(selectedCurrency);
+    const totalFiatValue = transaction.totalFiat(selectedCurrency);
+    const isSmallFiatValue = isFiatCurrency && totalFiatValue > 0 && totalFiatValue < 0.01;
+    const totalFiat = currency(totalFiatValue, selectedCurrency, true);
 
     return (
         <PageSection title={t("pages.transaction.transaction_summary")}>
@@ -85,7 +88,7 @@ export default function TransactionSummary({
             {network?.canBeExchanged && (
                 <SectionDetailRow
                     title={t("pages.transaction.header.value")}
-                    value={isSmallFiatValue ? `<${currency(0.01, settings!.currency)}` : totalFiat}
+                    value={isSmallFiatValue ? `<${currency(0.01, selectedCurrency)}` : totalFiat}
                     tooltip={isSmallFiatValue ? (totalFiat ?? undefined) : undefined}
                     headerWidthClass={headerWidthClass}
                 />
