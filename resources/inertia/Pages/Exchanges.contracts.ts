@@ -25,12 +25,12 @@ export interface ExchangeChartData {
     period: ExchangeChartPeriod;
     options: ExchangeChartOption[];
     refreshInterval: number;
-    mainValueFiat: string;
+    mainValueFiat: number;
     mainValuePercentage: number;
     mainValueVariation: "red" | "green";
-    marketCapValue: string | null;
-    minPriceValue: string;
-    maxPriceValue: string;
+    marketCapValue: number | null;
+    minPriceValue: number;
+    maxPriceValue: number;
     dateUnitOverride?: string | null;
 }
 

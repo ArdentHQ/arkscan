@@ -8,7 +8,7 @@ import Percentage from "@/Components/General/Percentage";
 import Select from "@/Components/General/Select";
 import useSharedData from "@/hooks/use-shared-data";
 import useSettings from "@/Providers/Settings/useSettings";
-import { hasSymbol } from "@/utils/number-formatter";
+import { currency, currencyWithDecimals, hasSymbol } from "@/utils/number-formatter";
 import {
     ExchangeChartData,
     ExchangeChartOption,
@@ -117,6 +117,14 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
     const chartTheme = useMemo(() => ({ ...chart.theme, mode: theme }), [chart.theme, theme]);
     const currencySuffix = hasSymbol(selectedCurrency) ? selectedCurrency : null;
 
+    const mainValueFormatted = currency(chart.mainValueFiat, selectedCurrency);
+    const marketCapFormatted =
+        chart.marketCapValue !== null
+            ? currencyWithDecimals({ value: chart.marketCapValue, currency: selectedCurrency, decimals: 0 })
+            : null;
+    const minPriceFormatted = currency(chart.minPriceValue, selectedCurrency);
+    const maxPriceFormatted = currency(chart.maxPriceValue, selectedCurrency);
+
     const updatePeriod = (value: ExchangeChartPeriod) => {
         if (value === selectedPeriod) {
             return;
@@ -177,7 +185,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                             </div>
 
                             <span className="text-lg font-semibold leading-5.25 text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl md:!leading-[29px]">
-                                {chart.mainValueFiat}
+                                {mainValueFormatted}
                             </span>
                         </div>
 
@@ -215,9 +223,9 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                                 </h3>
 
                                 <p className="mt-2 text-base font-semibold leading-5">
-                                    {chart.marketCapValue ? (
+                                    {marketCapFormatted ? (
                                         <span className="leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
-                                            {chart.marketCapValue}
+                                            {marketCapFormatted}
                                             {currencySuffix && <span className="ml-1">{currencySuffix}</span>}
                                         </span>
                                     ) : (
@@ -234,7 +242,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                                 </h3>
 
                                 <p className="mt-2 text-base font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {chart.minPriceValue}
+                                    {minPriceFormatted}
                                 </p>
                             </div>
 
@@ -244,7 +252,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                                 </h3>
 
                                 <p className="mt-2 text-base font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
-                                    {chart.maxPriceValue}
+                                    {maxPriceFormatted}
                                 </p>
                             </div>
                         </div>

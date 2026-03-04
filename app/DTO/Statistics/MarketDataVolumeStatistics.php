@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\DTO\Statistics;
 
-use App\Facades\Settings;
-use App\Services\NumberFormatter;
-use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
-use Carbon\Carbon;
-
 final class MarketDataVolumeStatistics
 {
     public function __construct(
@@ -31,49 +26,29 @@ final class MarketDataVolumeStatistics
         );
     }
 
-    public function todayVolumeValue(): string
+    public function todayVolumeValue(): float
     {
-        if ($this->today === null) {
-            return $this->zeroValue();
-        }
-
-        return $this->formatCurrency($this->today);
+        return $this->today !== null ? (float) $this->today : 0;
     }
 
-    public function atlValue(): string
+    public function atlValue(): float
     {
-        if ($this->atl->value === null) {
-            return $this->zeroValue();
-        }
-
-        return $this->formatCurrency($this->atl->value);
+        return $this->atl->value ?? 0.0;
     }
 
-    public function atlDate(): ?string
+    public function atlTimestamp(): ?int
     {
-        if ($this->atl->timestamp === null) {
-            return null;
-        }
-
-        return Carbon::createFromTimestamp($this->atl->timestamp)->format(DateFormat::DATE);
+        return $this->atl->timestamp;
     }
 
-    public function athValue(): string
+    public function athValue(): float
     {
-        if ($this->ath->value === null) {
-            return $this->zeroValue();
-        }
-
-        return $this->formatCurrency($this->ath->value);
+        return $this->ath->value ?? 0.0;
     }
 
-    public function athDate(): ?string
+    public function athTimestamp(): ?int
     {
-        if ($this->ath->timestamp === null) {
-            return null;
-        }
-
-        return Carbon::createFromTimestamp($this->ath->timestamp)->format(DateFormat::DATE);
+        return $this->ath->timestamp;
     }
 
     public function toArray(): array
@@ -83,18 +58,5 @@ final class MarketDataVolumeStatistics
             'atl'   => $this->atl->toArray(),
             'ath'   => $this->ath->toArray(),
         ];
-    }
-
-    private function zeroValue(): string
-    {
-        return $this->formatCurrency(0);
-    }
-
-    /**
-     * @param string|int|float $value
-     */
-    private function formatCurrency($value): string
-    {
-        return NumberFormatter::currencyForViews($value, Settings::currency());
     }
 }

@@ -4,10 +4,10 @@ export type IBlock = {
     timestamp: number;
     transactionCount: number;
     reward: number;
-    rewardFiat: string;
+    rewardFiat: number;
     fee: number;
-    feeFiat: string;
-    totalRewardFiat: string;
+    feeFiat: number;
+    totalRewardFiat: number;
     confirmations: number;
     proposer: IMemoryWallet;
 };
@@ -41,9 +41,9 @@ export type IExchange = {
     iconUrl: string;
     coingecko_id: string | null;
     price: number | null;
-    priceFiat: string | null;
+    priceFiat: number | null;
     volume: number | null;
-    volumeFiat: string | null;
+    volumeFiat: number | null;
 };
 export type IForgingStats = {
     number: number;
@@ -207,9 +207,9 @@ export type ITransaction = {
     deployed_contract_address: string | null;
     decoded_error: string | null;
     multiPaymentRecipients: { address: string; amount: string }[];
-    amountFiat: string | number;
-    amountReceivedFiat: string | number;
-    feeFiat: string | number;
+    amountFiat: number;
+    amountReceivedFiat: number;
+    feeFiat: number;
     url: string;
     methodData: { functionName: string | null; methodId: string | null; arguments: string[] | null };
     tokenApprovalDetails: {
@@ -225,7 +225,6 @@ export type ITransaction = {
     recipient: IWallet | null;
 };
 export type ITransactionDetails = {
-    timestampFormatted: string;
     confirmations: number;
     transactionError: string | null;
     recipientIsContract: boolean;
@@ -236,7 +235,6 @@ export type ITransactionDetails = {
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
     batchTokenTransfers: { recipient: IWallet; amount: string }[];
-    totalFiat: string;
     totalFiatValue: number;
 };
 export type IValidator = {
@@ -264,10 +262,6 @@ export type IWallet = {
     votes: string;
     productivity: number;
     balancePercentage: number;
-    formattedBalanceTwoDecimals: string;
-    formattedBalanceFull: string;
-    formattedBalanceFullWithoutSuffix: string;
-    fiatValue: string;
     totalForged: string;
     attributes: Record<string, any>;
     vote: IWallet | null;
