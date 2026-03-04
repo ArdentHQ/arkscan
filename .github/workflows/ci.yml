@@ -140,7 +140,10 @@ jobs:
               run: pnpm build
 
             - name: Prepare the application
-              run: cp .env.testing .env
+              run: |
+                  cp .env.testing .env
+                  php artisan key:generate
+                  cp .env .env.testing
 
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
