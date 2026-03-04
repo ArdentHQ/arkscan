@@ -56,6 +56,14 @@ export function weiToArk(value: string | number | BigNumber, suffix?: string, de
     return suffix ? `${result} ${suffix}` : result;
 }
 
+export function formatGwei(value: string | number): string {
+    const str = String(value);
+    const dotIndex = str.indexOf(".");
+    if (dotIndex === -1) return str;
+    const trimmed = str.slice(0, dotIndex + 3).replace(/\.?0+$/, "");
+    return trimmed;
+}
+
 export function gweiToArk(value: string | number | BigNumber, suffix?: string): string {
     const arkValue = formatUnits(parseUnits(value, "gwei"), "ark");
     const result = arkValue.toString().replace(/\.?0+$/, ""); // strip trailing zeros
