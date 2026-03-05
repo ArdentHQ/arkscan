@@ -60,17 +60,17 @@ class MissedBlocksCalculator implements \App\Contracts\Services\Monitor\MissedBl
             if (! $isForger) {
                 $misses += 1;
 
-                // TODO: update stats for actual forger, however this currently gets overridden below since it shares the same timestamp
-                // https://app.clickup.com/t/86dvxzh3y
-                $forgeInfoByTimestamp[strval($block->timestamp->unix())] = [
-                    'address' => $actualValidator,
-                    'forged'  => true,
+                $forgeInfoByTimestamp[$block->timestamp->unix().'_'.$actualValidator] = [
+                    'timestamp' => $block->timestamp->unix(),
+                    'address'   => $actualValidator,
+                    'forged'    => true,
                 ];
             }
 
-            $forgeInfoByTimestamp[strval($block->timestamp->unix())] = [
-                'address' => $expectedValidator,
-                'forged'  => $isForger,
+            $forgeInfoByTimestamp[$block->timestamp->unix().'_'.$expectedValidator] = [
+                'timestamp' => $block->timestamp->unix(),
+                'address'   => $expectedValidator,
+                'forged'    => $isForger,
             ];
         });
 

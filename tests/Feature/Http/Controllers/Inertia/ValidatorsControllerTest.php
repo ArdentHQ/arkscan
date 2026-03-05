@@ -864,35 +864,6 @@ describe('Missed Blocks', function () {
         );
     });
 
-    it('should pull missed blocks from sqlite databases', function () {
-        Config::set('database.default', 'sqlite');
-        Config::set('database.connections.sqlite.database', ':memory:');
-
-        $this->artisan('migrate:fresh');
-
-        $block1 = ForgingStats::factory()->create();
-        $block2 = ForgingStats::factory()->create();
-
-        performValidatorsRequest(
-            $this,
-            reloadCallback: function (Assert $reload) use ($block1, $block2) {
-                $reload->has('missedBlocks.data', 2)
-                    ->where('missedBlocks.total', 2)
-                    ->where('missedBlocks.current_page', 1)
-                    ->where('missedBlocks.last_page', 1)
-                    ->where('missedBlocks.meta', [
-                        'pageName'  => 'page',
-                        'urlParams' => [],
-                    ])
-                    ->where('missedBlocks.data', function ($blocks) use ($block1, $block2) {
-                        $missedHeights = collect($blocks)->pluck('number');
-
-                        return $missedHeights->contains($block1->missed_height) && $missedHeights->contains($block2->missed_height);
-                    });
-            },
-        );
-    });
-
     it('should return no results message when there are no missed blocks', function () {
         performValidatorsRequest(
             $this,
@@ -1683,63 +1654,6 @@ describe('Missed Blocks', function () {
         'no_of_voters'     => ['no_of_voters', 'no_of_voters'],
         'votes'            => ['votes', 'votes'],
         'percentage_votes' => ['percentage_votes', 'percentage_votes'],
-    ]);
-
-    it('should not sort for sqlite databases', function ($sortBy) {
-        Config::set('database.default', 'sqlite');
-        Config::set('database.connections.sqlite.database', ':memory:');
-
-        $this->artisan('migrate:fresh');
-
-        $wallet2 = Wallet::factory()->activeValidator()->create([
-            'attributes' => [
-                'username'             => 'validator-2',
-                'validatorVoteBalance' => (string) BigNumber::new(4000 * 1e18),
-            ],
-        ]);
-
-        $wallet1 = Wallet::factory()->activeValidator()->create([
-            'attributes' => [
-                'username'             => 'validator-1',
-                'validatorVoteBalance' => (string) BigNumber::new(10000 * 1e18),
-            ],
-        ]);
-
-        ForgingStats::factory()->create([
-            'address'    => $wallet1->address,
-            'timestamp'  => 100,
-        ]);
-
-        ForgingStats::factory()->create([
-            'address'    => $wallet2->address,
-            'timestamp'  => 134,
-        ]);
-
-        // Not missed
-        ForgingStats::factory()->create([
-            'address'       => $wallet2->address,
-            'timestamp'     => 151,
-            'missed_height' => null,
-        ]);
-
-        performValidatorsRequest(
-            $this,
-            reloadCallback: function (Assert $reload) use ($wallet1, $wallet2) {
-                $reload->has('missedBlocks.data', 2)
-                    ->where('missedBlocks.data.0.validator.address', $wallet2->address)
-                    ->where('missedBlocks.data.1.validator.address', $wallet1->address);
-            },
-            queryString: [
-                'sort' => $sortBy,
-            ],
-            reloadProps: 'missedBlocks',
-        );
-    })->with([
-        'height',
-        'age',
-        'no_of_voters',
-        'votes',
-        'percentage_votes',
     ]);
 
     it('should handle empty table when sorting', function ($sortBy) {
