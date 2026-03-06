@@ -4,7 +4,7 @@ import Tooltip from "@/Components/General/Tooltip";
 import useSharedData from "@/hooks/use-shared-data";
 import useSettings from "@/Providers/Settings/useSettings";
 import { GasTrackerData } from "@/Pages/Statistics.contracts";
-import { gweiToArk } from "@/utils/UnitConverter";
+import { formatGwei, gweiToArk } from "@/utils/UnitConverter";
 import { currency } from "@/utils/number-formatter";
 import GasLowIcon from "@icons/gas/low.svg?react";
 import GasAverageIcon from "@icons/gas/average.svg?react";
@@ -62,7 +62,7 @@ function GasTrackerCard({
 
                 <Tooltip content={tooltipValue}>
                     <span>
-                        {fee.amount} {t("general.gwei")}
+                        {formatGwei(fee.amount)} {t("general.gwei")}
                     </span>
                 </Tooltip>
             </div>
