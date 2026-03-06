@@ -17,14 +17,6 @@ trait MissedBlocksTab
 
     private function getMissedBlocks(): AbstractPaginator
     {
-        if (config('database.default') === 'sqlite') {
-            return ForgingStats::with('validator')
-                ->orderByDesc('timestamp')
-                ->whereNotNull('missed_height')
-                ->paginate($this->perPage(), page: $this->page())
-                ->through(fn (ForgingStats $voter) => ForgingStatsDTO::fromModel($voter));
-        }
-
         $sortDirection = SortDirection::ASC;
         if ($this->sortDirection('missed-blocks') === SortDirection::DESC) {
             $sortDirection = SortDirection::DESC;

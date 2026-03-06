@@ -139,11 +139,11 @@ jobs:
             - name: Build public-facing assets
               run: pnpm build
 
-            - name: Prepare the database
-              run: touch database/database.sqlite
-
             - name: Prepare the application
-              run: cp .env.example .env && php artisan key:generate
+              run: |
+                  cp .env.testing .env
+                  php artisan key:generate
+                  cp .env .env.testing
 
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
@@ -162,20 +162,6 @@ jobs:
 
             - name: Run Tests
               run: composer test:coverage
-              env:
-                  # Main database
-                  DB_CONNECTION: pgsql
-                  DB_HOST: 127.0.0.1
-                  DB_PORT: 5432
-                  DB_DATABASE: arkscan_test_db
-                  DB_USERNAME: arkscan_test_db
-                  DB_PASSWORD: password
-                  # Explorer database
-                  ARKSCAN_DB_HOST: 127.0.0.1
-                  ARKSCAN_DB_PORT: 5432
-                  ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
-                  ARKSCAN_DB_USERNAME: arkscan_test_db
-                  ARKSCAN_DB_PASSWORD: password
 
     jest:
         needs: [conflicts, analyse, format]
@@ -293,21 +279,6 @@ jobs:
 
             - name: Run Tests
               run: composer test:browser -- --stop-on-failure --stop-on-error
-              env:
-                  # Main database
-                  DB_CONNECTION: pgsql
-                  DB_HOST: 127.0.0.1
-                  DB_PORT: 5432
-                  DB_DATABASE: arkscan_test_db
-                  DB_USERNAME: arkscan_test_db
-                  DB_PASSWORD: password
-                  # Explorer database
-                  ARKSCAN_DB_HOST: 127.0.0.1
-                  ARKSCAN_DB_PORT: 5432
-                  ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
-                  ARKSCAN_DB_USERNAME: arkscan_test_db
-                  ARKSCAN_DB_PASSWORD: password
-                  APP_ENV: testing
 
             - name: Sanitize Screenshot Filenames
               if: failure()
