@@ -57,11 +57,8 @@ export function weiToArk(value: string | number | BigNumber, suffix?: string, de
 }
 
 export function formatGwei(value: string | number): string {
-    const str = String(value);
-    const dotIndex = str.indexOf(".");
-    if (dotIndex === -1) return str;
-    const trimmed = str.slice(0, dotIndex + 3).replace(/\.?0+$/, "");
-    return trimmed;
+    const val = Number(value);
+    return parseFloat(val.toFixed(2)).toString();
 }
 
 export function gweiToArk(value: string | number | BigNumber, suffix?: string): string {
