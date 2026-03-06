@@ -8,15 +8,15 @@ export default function AddressingForTransfer({
 }: React.HTMLAttributes<HTMLDivElement> & {
     transfer: ITokenTransfer;
 }) {
-    const sender = transfer.transaction!.sender;
+    const sender = transfer.from;
     const recipient = transfer.to;
     const contractAddress =
         transfer.transaction!.deployed_contract_address ?? transfer.transaction!.to ?? recipient.address ?? "";
 
     return (
         <AddressingGeneric
-            sender={sender!.address}
-            senderUsername={sender?.username ?? undefined}
+            sender={sender.address}
+            senderUsername={sender.username ?? undefined}
             recipient={recipient.address}
             recipientUsername={transfer.to.username}
             contractAddress={contractAddress}
