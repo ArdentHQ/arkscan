@@ -9,6 +9,7 @@ import ChartContent from "@/Components/Home/Chart/ChartContent";
 import Number from "../General/Number";
 import { Link } from "@inertiajs/react";
 import { currency, currencyShortNotation, isFiat } from "@/utils/number-formatter";
+import { formatGwei } from "@/utils/UnitConverter";
 function StatEntry({
     label,
     value,
@@ -87,7 +88,7 @@ function MobileGasTooltip({ statistics }: { statistics: IHomeStatistics }) {
                     </div>
 
                     <span>
-                        {(statistics.gas as any)[level].amount} {t("general.gwei")}
+                        {formatGwei((statistics.gas as any)[level].amount)} {t("general.gwei")}
                     </span>
                 </div>
             ))}
@@ -163,36 +164,36 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_low")}
                                         value={<FormatGasValue value={statistics.gas.low.value} />}
-                                        tooltip={`${statistics.gas.low.amount} ${t("general.gwei")}`}
+                                        tooltip={`${formatGwei(statistics.gas.low.amount)} ${t("general.gwei")}`}
                                     />
 
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_average")}
                                         value={<FormatGasValue value={statistics.gas.average.value} />}
-                                        tooltip={`${statistics.gas.average.amount} ${t("general.gwei")}`}
+                                        tooltip={`${formatGwei(statistics.gas.average.amount)} ${t("general.gwei")}`}
                                     />
 
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_high")}
                                         value={<FormatGasValue value={statistics.gas.high.value} />}
-                                        tooltip={`${statistics.gas.high.amount} ${t("general.gwei")}`}
+                                        tooltip={`${formatGwei(statistics.gas.high.amount)} ${t("general.gwei")}`}
                                     />
                                 </>
                             ) : (
                                 <>
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_low")}
-                                        value={`${statistics.gas.low.amount} ${t("general.gwei")}`}
+                                        value={`${formatGwei(statistics.gas.low.amount)} ${t("general.gwei")}`}
                                     />
 
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_average")}
-                                        value={`${statistics.gas.average.amount} ${t("general.gwei")}`}
+                                        value={`${formatGwei(statistics.gas.average.amount)} ${t("general.gwei")}`}
                                     />
 
                                     <StatEntry
                                         label={t("pages.home.statistics.gas_high")}
-                                        value={`${statistics.gas.high.amount} ${t("general.gwei")}`}
+                                        value={`${formatGwei(statistics.gas.high.amount)} ${t("general.gwei")}`}
                                     />
                                 </>
                             )}
@@ -210,7 +211,7 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                                         {t("pages.home.statistics.gas_average_value", {
                                             value: network.canBeExchanged
                                                 ? statistics.gas.average.value
-                                                : `${statistics.gas.average.amount} ${t("general.gwei")}`,
+                                                : `${formatGwei(statistics.gas.average.amount)} ${t("general.gwei")}`,
                                         })}
                                     </span>
 
