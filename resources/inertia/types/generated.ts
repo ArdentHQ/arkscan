@@ -205,6 +205,7 @@ export type ITransaction = {
     deployed_contract_address: string | null;
     decoded_error: string | null;
     multiPaymentRecipients: { address: string; amount: string }[];
+    multiPaymentTotal: string | null;
     exchangeRates: Record<string, number>;
     url: string;
     methodData: { functionName: string | null; methodId: string | null; arguments: string[] | null };

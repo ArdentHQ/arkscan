@@ -86,11 +86,11 @@ final class HomeController
     public function getTransactions(): LengthAwarePaginator
     {
         $paginator = Transaction::query()
-            ->with(['multiPaymentRecipients'])
             ->withScope(OrderByTimestampScope::class)
             ->paginate((int) config('arkscan.pagination.per_page'));
 
         $this->loadWalletRelations($paginator);
+        $this->loadMultiPaymentTotals($paginator);
 
         return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
     }

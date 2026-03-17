@@ -38,6 +38,7 @@ class Transaction extends Data
         public ?string $decoded_error,
         #[LiteralTypeScriptType('{address: string; amount: string}[]')]
         public array $multiPaymentRecipients,
+        public ?string $multiPaymentTotal,
         #[LiteralTypeScriptType('Record<string, number>')]
         public array $exchangeRates,
         public string $url,
@@ -134,6 +135,7 @@ class Transaction extends Data
             deployed_contract_address: $transaction->deployed_contract_address,
             decoded_error: $transaction->decoded_error,
             multiPaymentRecipients: self::multiPaymentRecipients($transaction),
+            multiPaymentTotal: $transaction->multi_payment_total ?? null,
             exchangeRates: ExchangeRate::allCurrencyRates($transaction->timestamp),
             url: route('transaction', $transaction->hash),
             methodData: $methodData,
@@ -151,6 +153,10 @@ class Transaction extends Data
      */
     private static function multiPaymentRecipients(Model $transaction): array
     {
+        if (! $transaction->relationLoaded('multiPaymentRecipients')) {
+            return [];
+        }
+
         return $transaction->multiPaymentRecipients
             ->map(fn (MultiPayment $recipient) => [
                 'address' => $recipient->to,

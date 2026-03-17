@@ -85,10 +85,10 @@ final class TransactionsController
         $paginator = Transaction::withTypeFilter($this->filters())
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
-            ->with(['multiPaymentRecipients'])
             ->paginate($this->perPage('transactions'));
 
         $this->loadWalletRelations($paginator);
+        $this->loadMultiPaymentTotals($paginator);
 
         return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
     }
