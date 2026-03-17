@@ -129,9 +129,7 @@ final class Transaction extends Model
         'multi_payment_recipients' => CitextArray::class,
     ];
 
-    protected $with = [
-        'multiPaymentRecipients',
-    ];
+    protected $with = [];
 
     /**
      * Get the indexable data array for the model.

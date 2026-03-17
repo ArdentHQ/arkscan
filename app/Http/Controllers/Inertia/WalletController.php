@@ -249,7 +249,7 @@ final class WalletController
 
         return Transaction::query()
             ->withTypeFilter($filters)
-            ->with(['votedFor', 'sender', 'senderWallet', 'recipientWallet'])
+            ->with(['votedFor', 'senderWallet', 'recipientWallet', 'multiPaymentRecipients'])
             ->whereIn('hash', $union);
     }
 

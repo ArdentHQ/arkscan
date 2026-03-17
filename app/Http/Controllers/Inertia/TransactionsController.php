@@ -83,7 +83,7 @@ final class TransactionsController
         return Transaction::withTypeFilter($this->filters())
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
-            ->with(['votedFor', 'sender', 'senderWallet', 'recipientWallet', 'multiPaymentRecipients'])
+            ->with(['votedFor', 'senderWallet', 'recipientWallet', 'multiPaymentRecipients'])
             ->paginate($this->perPage('transactions'))
             ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
     }

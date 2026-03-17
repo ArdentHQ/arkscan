@@ -6,12 +6,10 @@ namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Concerns\WithTokenApproval;
 use App\DTO\Inertia\Wallet as WalletDTO;
-use App\Facades\Wallets;
 use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -78,38 +76,23 @@ class Transaction extends Data
         }
 
         $sender       = null;
-        $senderWallet = $transaction->relationLoaded('senderWallet') ? $transaction->senderWallet : null;
-        $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
-
-        if ($senderWallet === null) {
-            try {
-                $senderWallet = Wallets::findByAddress($transaction->from);
-            } catch (ModelNotFoundException) {
-                $sender = WalletDTO::stub($transaction->from);
-            }
-        }
-
-        if ($senderWallet !== null) {
-            $sender = WalletDTO::fromModel($senderWallet);
-        }
-
-        $recipient = null;
-
-        $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
-        if ($recipientWallet !== null) {
-            $recipient = WalletDTO::fromModel($recipientWallet);
-        } elseif ($transaction->relationLoaded('recipientWallet') && $transaction->to !== null) {
-            $recipient = WalletDTO::stub($transaction->to);
+        $senderWallet = null;
+        if ($transaction->relationLoaded('senderWallet') || $transaction->relationLoaded('sender')) {
+            $senderWallet = $transaction->relationLoaded('senderWallet') ? $transaction->senderWallet : null;
+            $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
         } else {
-            $recipientAddress = $transaction->recipientAddress();
-
-            try {
-                $recipientWallet = Wallets::findByAddress($recipientAddress);
-                $recipient       = WalletDTO::fromModel($recipientWallet);
-            } catch (ModelNotFoundException) {
-                $recipient = WalletDTO::stub($recipientAddress);
-            }
+            $senderWallet = $transaction->senderWallet;
         }
+
+        $sender = $senderWallet !== null
+            ? WalletDTO::fromModelSimple($senderWallet)
+            : WalletDTO::stub($transaction->from);
+
+        $recipientWallet = $transaction->recipientWallet;
+
+        $recipient = $recipientWallet !== null
+            ? WalletDTO::fromModelSimple($recipientWallet)
+            : WalletDTO::stub($transaction->recipientAddress());
 
         $validatorRegistration            = null;
         $validatorRegistrationTransaction = $viewModel->validatorRegistration();
