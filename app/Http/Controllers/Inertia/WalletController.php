@@ -11,6 +11,7 @@ use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
+use App\Http\Controllers\Inertia\Concerns\WithWalletRelations;
 use App\Models\Block;
 use App\Models\Scopes\HasMultiPaymentRecipientScope;
 use App\Models\Scopes\OrderByBalanceScope;
@@ -35,6 +36,7 @@ final class WalletController
 {
     use WithFilters;
     use WithPagination;
+    use WithWalletRelations;
 
     public const FILTERS = [
         'transactions' => [
@@ -137,11 +139,14 @@ final class WalletController
             return $emptyResults;
         }
 
-        return $this->getTransactionsQuery($wallet)
+        $paginator = $this->getTransactionsQuery($wallet)
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
-            ->paginate($this->perPage(), page: $this->page())
-            ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address));
+            ->paginate($this->perPage(), page: $this->page());
+
+        $this->loadWalletRelations($paginator);
+
+        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address));
     }
 
     public function getBlocks(Wallet $wallet): AbstractPaginator
@@ -249,7 +254,7 @@ final class WalletController
 
         return Transaction::query()
             ->withTypeFilter($filters)
-            ->with(['votedFor', 'senderWallet', 'recipientWallet', 'multiPaymentRecipients'])
+            ->with(['multiPaymentRecipients'])
             ->whereIn('hash', $union);
     }
 
