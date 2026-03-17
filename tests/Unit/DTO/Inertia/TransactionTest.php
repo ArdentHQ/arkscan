@@ -3,12 +3,11 @@
 declare(strict_types=1);
 
 use App\DTO\Inertia\Transaction as TransactionDTO;
-use App\DTO\Inertia\Wallet as WalletDTO;
+use App\DTO\Inertia\WalletReference;
 use App\Enums\ContractMethod;
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
-use App\Services\Addresses\Legacy;
 use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
@@ -86,36 +85,12 @@ it('should make an instance', function () {
         'validatorRegistration'     => null,
         'votedFor'                  => null,
         'sender'                    => [
-            'address'                           => $walletFrom->address,
-            'attributes'                        => $walletFrom->attributes,
-            'balance'                           => (string) $walletFrom->balance,
-            'nonce'                             => (string) $walletFrom->nonce,
-            'public_key'                        => $walletFrom->public_key,
-            'legacyAddress'                     => Legacy::generateAddressFromPublicKey($walletFrom->public_key),
-            'username'                          => 'joe.blogs',
-            'vote'                              => null,
-            'votes'                             => '0',
-            'productivity'                      => 0.0,
-            'totalForged'                       => '0',
-            'balancePercentage'                 => 0.0,
-            'voteUrl'                           => null,
-            'votePercentage'                    => null,
+            'address'  => $walletFrom->address,
+            'username' => 'joe.blogs',
         ],
         'recipient' => [
-            'address'                           => $walletTo->address,
-            'attributes'                        => $walletTo->attributes,
-            'balance'                           => (string) $walletTo->balance,
-            'nonce'                             => (string) $walletTo->nonce,
-            'public_key'                        => $walletTo->public_key,
-            'legacyAddress'                     => null,
-            'username'                          => 'bill.ding',
-            'vote'                              => null,
-            'votes'                             => '0',
-            'productivity'                      => 0.0,
-            'totalForged'                       => '0',
-            'balancePercentage'                 => 0.0,
-            'voteUrl'                           => null,
-            'votePercentage'                    => null,
+            'address'  => $walletTo->address,
+            'username' => 'bill.ding',
         ],
         'votedForUsername'                => null,
         'tokenApprovalDetails'            => null,
@@ -199,22 +174,10 @@ it('should make an instance for a vote transaction', function () {
         'validatorRegistration'     => null,
         'votedFor'                  => $walletTo->address,
         'sender'                    => [
-            'address'                           => $walletFrom->address,
-            'attributes'                        => $walletFrom->attributes,
-            'balance'                           => (string) $walletFrom->balance,
-            'nonce'                             => (string) $walletFrom->nonce,
-            'public_key'                        => $walletFrom->public_key,
-            'legacyAddress'                     => Legacy::generateAddressFromPublicKey($walletFrom->public_key),
-            'username'                          => 'joe.blogs',
-            'vote'                              => null,
-            'votes'                             => '0',
-            'productivity'                      => 0.0,
-            'totalForged'                       => '0',
-            'balancePercentage'                 => 0.0,
-            'voteUrl'                           => null,
-            'votePercentage'                    => null,
+            'address'  => $walletFrom->address,
+            'username' => 'joe.blogs',
         ],
-        'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
+        'recipient'                       => WalletReference::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => 'bill.ding',
         'tokenApprovalDetails'            => null,
         'methodData'                      => [
@@ -332,22 +295,10 @@ it('should make an instance for a validator resignation transaction', function (
             'validatorRegistration'     => null,
             'votedFor'                  => null,
             'sender'                    => [
-                'address'                           => $walletFrom->address,
-                'attributes'                        => $walletFrom->attributes,
-                'balance'                           => (string) $walletFrom->balance,
-                'nonce'                             => (string) $walletFrom->nonce,
-                'public_key'                        => $walletFrom->public_key,
-                'legacyAddress'                     => Legacy::generateAddressFromPublicKey($walletFrom->public_key),
-                'username'                          => 'joe.blogs',
-                'vote'                              => null,
-                'votes'                             => '0',
-                'productivity'                      => 0.0,
-                'totalForged'                       => '0',
-                'balancePercentage'                 => 0.0,
-                'voteUrl'                           => null,
-                'votePercentage'                    => null,
+                'address'  => $walletFrom->address,
+                'username' => 'joe.blogs',
             ],
-            'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
+            'recipient'                       => WalletReference::stub(Network::knownContract('consensus'))->toArray(),
             'votedForUsername'                => null,
             'tokenApprovalDetails'            => null,
             'methodData'                      => [
@@ -360,22 +311,10 @@ it('should make an instance for a validator resignation transaction', function (
         ],
         'votedFor' => null,
         'sender'   => [
-            'address'                           => $walletFrom->address,
-            'attributes'                        => $walletFrom->attributes,
-            'balance'                           => (string) $walletFrom->balance,
-            'nonce'                             => (string) $walletFrom->nonce,
-            'public_key'                        => $walletFrom->public_key,
-            'legacyAddress'                     => Legacy::generateAddressFromPublicKey($walletFrom->public_key),
-            'username'                          => 'joe.blogs',
-            'vote'                              => null,
-            'votes'                             => '0',
-            'productivity'                      => 0.0,
-            'totalForged'                       => '0',
-            'balancePercentage'                 => 0.0,
-            'voteUrl'                           => null,
-            'votePercentage'                    => null,
+            'address'  => $walletFrom->address,
+            'username' => 'joe.blogs',
         ],
-        'recipient'                       => WalletDTO::stub(Network::knownContract('consensus'))->toArray(),
+        'recipient'                       => WalletReference::stub(Network::knownContract('consensus'))->toArray(),
         'votedForUsername'                => null,
         'tokenApprovalDetails'            => null,
         'methodData'                      => [

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Concerns\WithTokenApproval;
-use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
 use App\Services\ExchangeRate;
@@ -45,7 +44,7 @@ class Transaction extends Data
         #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: string[] | null }')]
         public array $methodData,
         #[LiteralTypeScriptType('{
-            spender: IWallet;
+            spender: IWalletReference;
             amount: string | null;
             isUnlimited: boolean;
             isRevoke: boolean;
@@ -54,8 +53,8 @@ class Transaction extends Data
         public ?self $validatorRegistration,
         public ?string $votedFor,
         public ?string $votedForUsername,
-        public ?WalletDTO $sender,
-        public ?WalletDTO $recipient,
+        public ?WalletReference $sender,
+        public ?WalletReference $recipient,
     ) {
     }
 
@@ -85,14 +84,14 @@ class Transaction extends Data
         }
 
         $sender = $senderWallet !== null
-            ? WalletDTO::fromModelSimple($senderWallet)
-            : WalletDTO::stub($transaction->from);
+            ? WalletReference::fromModel($senderWallet)
+            : WalletReference::stub($transaction->from);
 
         $recipientWallet = $transaction->recipientWallet;
 
         $recipient = $recipientWallet !== null
-            ? WalletDTO::fromModelSimple($recipientWallet)
-            : WalletDTO::stub($transaction->recipientAddress());
+            ? WalletReference::fromModel($recipientWallet)
+            : WalletReference::stub($transaction->recipientAddress());
 
         $validatorRegistration            = null;
         $validatorRegistrationTransaction = $viewModel->validatorRegistration();

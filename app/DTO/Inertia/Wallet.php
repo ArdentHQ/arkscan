@@ -87,30 +87,4 @@ class Wallet extends Data
             votePercentage: $viewModel->votePercentage(),
         );
     }
-
-    /**
-     * Lightweight factory that skips vote resolution and heavy ViewModel operations.
-     * Use for transaction lists where vote data per sender/recipient is not needed.
-     */
-    public static function fromModelSimple(Model $wallet): self
-    {
-        $viewModel = new WalletViewModel($wallet);
-
-        return new self(
-            address: $wallet->address,
-            balance: (string) $wallet->balance,
-            nonce: (string) $wallet->nonce,
-            public_key: $wallet->public_key,
-            attributes: $wallet->attributes,
-            legacyAddress: $viewModel->legacyAddress(),
-            username: $viewModel->username(),
-            votes: (string) $viewModel->votes(),
-            productivity: $viewModel->productivity(),
-            balancePercentage: $viewModel->balancePercentage(),
-            totalForged: (string) $viewModel->totalForged(),
-            vote: null,
-            voteUrl: null,
-            votePercentage: null,
-        );
-    }
 }

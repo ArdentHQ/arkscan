@@ -209,7 +209,7 @@ export type ITransaction = {
     url: string;
     methodData: { functionName: string | null; methodId: string | null; arguments: string[] | null };
     tokenApprovalDetails: {
-        spender: IWallet;
+        spender: IWalletReference;
         amount: string | null;
         isUnlimited: boolean;
         isRevoke: boolean;
@@ -217,8 +217,8 @@ export type ITransaction = {
     validatorRegistration: ITransaction | null;
     votedFor: string | null;
     votedForUsername: string | null;
-    sender: IWallet | null;
-    recipient: IWallet | null;
+    sender: IWalletReference | null;
+    recipient: IWalletReference | null;
 };
 export type ITransactionDetails = {
     confirmations: number;
@@ -226,11 +226,11 @@ export type ITransactionDetails = {
     recipientIsContract: boolean;
     validatorPublicKey: string | null;
     username: string | null;
-    tokenTransfer: { recipient: IWallet; amount: string | null } | null;
-    tokenApproval: { spender: IWallet; amount: string | null; isUnlimited: boolean; isRevoke: boolean } | null;
+    tokenTransfer: { recipient: IWalletReference; amount: string | null } | null;
+    tokenApproval: { spender: IWalletReference; amount: string | null; isUnlimited: boolean; isRevoke: boolean } | null;
     token: IToken | null;
     payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
-    batchTokenTransfers: { recipient: IWallet; amount: string }[];
+    batchTokenTransfers: { recipient: IWalletReference; amount: string }[];
 };
 export type IValidator = {
     rank: number | null;
@@ -262,6 +262,10 @@ export type IWallet = {
     vote: IWallet | null;
     voteUrl: string | null;
     votePercentage: number | null;
+};
+export type IWalletReference = {
+    address: string;
+    username: string | null;
 };
 export enum SortDirection {
     ASC = "asc",

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTO\Inertia\Concerns;
 
-use App\DTO\Inertia\Wallet as WalletDTO;
+use App\DTO\Inertia\WalletReference;
 use App\Enums\ApproveArgument;
 use App\Models\Wallet;
 use App\ViewModels\TransactionViewModel;
@@ -43,8 +43,8 @@ trait WithTokenApproval
 
         $spenderWallet     = Wallet::where('address', $spender)->first();
         $spenderWalletData = $spenderWallet !== null
-            ? WalletDTO::fromModelSimple($spenderWallet)
-            : WalletDTO::stub($spender);
+            ? WalletReference::fromModel($spenderWallet)
+            : WalletReference::stub($spender);
 
         return [
             'spender'     => $spenderWalletData,
