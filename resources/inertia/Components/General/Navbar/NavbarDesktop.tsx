@@ -52,14 +52,14 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
 
                 <div className="flex items-center space-x-3">
                     <div className="flex justify-end">
-                        <div className="flex flex-1 items-center justify-end sm:items-stretch sm:justify-between mr-1">
+                        <div className="flex flex-1 items-center justify-end sm:items-stretch sm:justify-between mr-2">
                             <div className="-mx-4 hidden h-[3.25rem] items-center sm:h-16 md:flex">
                                 {navigation.map((navItem, index) => (
                                     <div key={index} className="relative h-full">
                                         {navItem.children ? (
                                             <DropdownProvider>
                                                 <Dropdown
-                                                    wrapperClass="relative h-full mr-3"
+                                                    wrapperClass="relative h-full mr-2"
                                                     useDefaultButtonClasses={false}
                                                     buttonClass="inline-flex h-full px-2 focus-visible:ring-inset"
                                                     dropdownClasses="w-auto"
