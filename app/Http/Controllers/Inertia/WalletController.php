@@ -9,6 +9,7 @@ use App\DTO\Inertia\TokenAction as TokenActionDTO;
 use App\DTO\Inertia\TokenHolder as TokenHolderDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Enums\TokenActionType;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
@@ -165,8 +166,11 @@ final class WalletController
         return TokenAction::select('token_actions.*')
             ->with(['token', 'transaction.sender', 'transaction.senderWallet', 'transaction.recipientWallet'])
             ->join('transactions', 'transactions.hash', '=', 'token_actions.transaction_hash')
-            ->where('token_actions.to', $wallet->address)
-            ->orWhere('token_actions.from', $wallet->address)
+            ->where(function (Builder $query) use ($wallet) {
+                $query->where('token_actions.to', $wallet->address)
+                    ->orWhere('token_actions.from', $wallet->address);
+            })
+            ->where('token_actions.action', TokenActionType::Transfer)
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage())
             ->through(fn (TokenAction $transaction) => TokenActionDTO::fromModel($transaction));

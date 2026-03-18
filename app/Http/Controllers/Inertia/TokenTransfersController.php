@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\TokenAction as TokenActionDTO;
+use App\Enums\TokenActionType;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\TokenAction;
@@ -45,6 +46,7 @@ final class TokenTransfersController
         return TokenAction::select('token_actions.*')
             ->with(['token', 'transaction.sender', 'transaction.senderWallet', 'transaction.recipientWallet'])
             ->join('transactions', 'transactions.hash', '=', 'token_actions.transaction_hash')
+            ->where('token_actions.action', TokenActionType::Transfer)
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage())
             ->through(fn (TokenAction $transaction) => TokenActionDTO::fromModel($transaction));
