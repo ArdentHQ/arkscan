@@ -2,7 +2,7 @@ import MobileTable from "../Table";
 import MobileTableRow from "../Row";
 import TableCell from "../TableCell";
 import { MobileTokenTransfersSkeletonTable } from "../Skeleton/Wallet/TokenTransfers";
-import { ITokenTransfer } from "@/types/generated";
+import { ITokenAction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import ID from "@/Components/Transaction/ID";
 import Age from "@/Components/Model/Age";
@@ -13,16 +13,16 @@ import Token from "@/Components/Tokens/Token";
 import useSharedData from "@/hooks/use-shared-data";
 import { WalletProps } from "@/Pages/Wallet.contracts";
 import Addressing from "@/Components/Tokens/Addressing";
-import { TokenTransfer } from "@/models/TokenTransfer";
+import { TokenAction } from "@/models/TokenAction";
 
 export function TokenTransfersMobileTable() {
     const { t, i18n } = useTranslation();
-    const { network, tokenTransfers, wallet } = useSharedData<WalletProps>();
+    const { network, tokenActions, wallet } = useSharedData<WalletProps>();
 
     return (
-        <MobileTable noResultsMessage={tokenTransfers.noResultsMessage} resultCount={tokenTransfers.total ?? 0}>
-            {tokenTransfers.data.map((row: ITokenTransfer, index) => {
-                const transfer = TokenTransfer.make(row, network);
+        <MobileTable noResultsMessage={tokenActions.noResultsMessage} resultCount={tokenActions.total ?? 0}>
+            {tokenActions.data.map((row: ITokenAction, index) => {
+                const transfer = TokenAction.make(row, network);
 
                 return (
                     <MobileTableRow
@@ -39,13 +39,13 @@ export function TokenTransfersMobileTable() {
                         }
                     >
                         <TableCell label={transfer.transaction.method.name({ t, i18n })} className="sm:flex-1">
-                            <Addressing tokenTransfer={transfer} wallet={wallet} />
+                            <Addressing tokenAction={transfer} wallet={wallet} />
                         </TableCell>
 
                         <TableCell label={t("tables.tokens.amount_generic")} className="sm:flex-1">
                             <Amount
                                 testId={`transaction:mobile:${transfer.transaction.hash}:amount`}
-                                tokenTransfer={transfer}
+                                tokenAction={transfer}
                                 hideCurrency
                                 wallet={wallet}
                             />
@@ -63,9 +63,9 @@ export function TokenTransfersMobileTable() {
 
 export default function TokenTransfersMobileTableWrapper({ rowCount = 10 }: { rowCount?: number }) {
     const { isLoading } = usePageHandler();
-    const { tokenTransfers } = useSharedData<WalletProps>();
+    const { tokenActions } = useSharedData<WalletProps>();
 
-    if (!tokenTransfers || isLoading) {
+    if (!tokenActions || isLoading) {
         return (
             <div>
                 <TableHeaderWrapper resultCount={0} />

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Inertia;
 
-use App\DTO\Inertia\TokenTransfer as TokenTransferDTO;
+use App\DTO\Inertia\TokenAction as TokenActionDTO;
+use App\Enums\TokenActionType;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Scopes\OrderByTimestampScope;
-use App\Models\TokenTransfer;
+use App\Models\TokenAction;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
@@ -42,11 +43,12 @@ final class TokenTransfersController
 
     public function getTransactions(): LengthAwarePaginator
     {
-        return TokenTransfer::select('token_transfers.*')
+        return TokenAction::select('token_actions.*')
             ->with(['token', 'transaction.sender', 'transaction.senderWallet', 'transaction.recipientWallet'])
-            ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
+            ->join('transactions', 'transactions.hash', '=', 'token_actions.transaction_hash')
+            ->where('token_actions.action', TokenActionType::Transfer)
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage())
-            ->through(fn (TokenTransfer $transaction) => TokenTransferDTO::fromModel($transaction));
+            ->through(fn (TokenAction $transaction) => TokenActionDTO::fromModel($transaction));
     }
 }

@@ -1,4 +1,4 @@
-import { IBlock, IMemoryWallet, INetwork, IToken, ITokenTransfer, ITransaction, IWallet } from "@/types/generated";
+import { IBlock, IMemoryWallet, INetwork, IToken, ITokenAction, ITransaction, IWallet } from "@/types/generated";
 
 export const CONTRACT_METHODS = {
     transfer: "a9059cbb",
@@ -136,7 +136,7 @@ export const makeBlock = (overrides: Partial<IBlock> = {}): IBlock => ({
     ...overrides,
 });
 
-export const makeTokenTransfer = (overrides: Partial<ITokenTransfer> = {}): ITokenTransfer => ({
+export const makeTokenAction = (overrides: Partial<ITokenAction> = {}): ITokenAction => ({
     transaction_hash: "0xabc123",
     from: makeMemoryWallet({ address: "from-address" }),
     to: makeMemoryWallet({ address: "to-address" }),
