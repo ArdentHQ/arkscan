@@ -95,6 +95,7 @@ function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
             ]}
             header={<HeaderStats statistics={statistics} />}
             baseUrl={baseUrl}
+            ariaLabel="Validators"
         >
             <PageHandlerProvider>{children}</PageHandlerProvider>
         </TabsProvider>

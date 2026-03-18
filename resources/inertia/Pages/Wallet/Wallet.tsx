@@ -223,6 +223,7 @@ function WalletPageHandlerProvider({ children }: PropsWithChildren) {
             tabs={tabs}
             header={<Overview wallet={wallet} />}
             baseUrl={baseUrl}
+            ariaLabel="Wallet"
         >
             <PageHandlerProvider>{children}</PageHandlerProvider>
         </TabsProvider>
