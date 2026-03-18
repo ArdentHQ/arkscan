@@ -268,6 +268,7 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
 
                     <div
                         aria-hidden={!open}
+                        inert={!open ? true : undefined}
                         className={classNames("transition-all duration-200 ease-in-out", {
                             "pointer-events-none max-h-0 overflow-hidden opacity-0": !open,
                             "max-h-screen opacity-100": open,

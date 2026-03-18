@@ -17,7 +17,7 @@ export default function Honeypot() {
                 tabIndex={-1}
             />
 
-            <input type="text" value={honeypot.encryptedValidFrom} name={honeypot.validFromFieldName} />
+            <input type="text" value={honeypot.encryptedValidFrom} name={honeypot.validFromFieldName} tabIndex={-1} />
         </div>
     );
 }
