@@ -3,7 +3,7 @@ import { IBlock, IWallet, ITransaction, ITokenAction, ITokenHolder } from "@/typ
 
 export interface WalletProps {
     transactions: IPaginatedResponse<ITransaction>;
-    tokenActions: IPaginatedResponse<ITokenAction>;
+    tokenTransfers: IPaginatedResponse<ITokenAction>;
     tokens: IPaginatedResponse<ITokenHolder>;
     blocks?: IPaginatedResponse<IBlock>;
     voters?: IPaginatedResponse<IWallet>;

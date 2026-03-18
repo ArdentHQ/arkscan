@@ -12,7 +12,6 @@ import { WalletProps } from "@/Pages/Wallet.contracts";
 import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
 import Amount from "@/Components/Tokens/Amount";
-import TruncatedValue from "@/Components/Tokens/TruncatedValue";
 import { TokenAction } from "@/models/TokenAction";
 import TruncatedTokenSymbol from "@/Components/Tokens/TruncatedTokenSymbol";
 
@@ -60,16 +59,16 @@ export function Row({ row }: { row: ITokenAction }) {
 
 export function TokenTransfersTable({ mobile }: { mobile?: React.ReactNode }) {
     const { t } = useTranslation();
-    const { tokenActions } = useSharedData<WalletProps>();
+    const { tokenTransfers } = useSharedData<WalletProps>();
 
     return (
         <Table
             withHeader
             withFooter
-            paginator={tokenActions}
+            paginator={tokenTransfers}
             rowComponent={Row}
             mobile={mobile}
-            noResultsMessage={tokenActions.noResultsMessage}
+            noResultsMessage={tokenTransfers.noResultsMessage}
             columns={
                 <>
                     <TableHeader>{t("tables.transactions.id")}</TableHeader>
@@ -104,15 +103,15 @@ export default function TokenTransfersTableWrapper({
 }) {
     const { isLoading } = usePageHandler();
     const { t } = useTranslation();
-    const { tokenActions } = useSharedData<WalletProps>();
+    const { tokenTransfers } = useSharedData<WalletProps>();
 
-    if (!tokenActions || isLoading) {
+    if (!tokenTransfers || isLoading) {
         return (
             <>
                 <LoadingTable
                     header
                     mobile={mobile}
-                    paginator={tokenActions}
+                    paginator={tokenTransfers}
                     rowCount={rowCount}
                     columns={[
                         {

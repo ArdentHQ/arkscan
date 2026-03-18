@@ -17,11 +17,11 @@ import { TokenAction } from "@/models/TokenAction";
 
 export function TokenTransfersMobileTable() {
     const { t, i18n } = useTranslation();
-    const { network, tokenActions, wallet } = useSharedData<WalletProps>();
+    const { network, tokenTransfers, wallet } = useSharedData<WalletProps>();
 
     return (
-        <MobileTable noResultsMessage={tokenActions.noResultsMessage} resultCount={tokenActions.total ?? 0}>
-            {tokenActions.data.map((row: ITokenAction, index) => {
+        <MobileTable noResultsMessage={tokenTransfers.noResultsMessage} resultCount={tokenTransfers.total ?? 0}>
+            {tokenTransfers.data.map((row: ITokenAction, index) => {
                 const transfer = TokenAction.make(row, network);
 
                 return (
@@ -63,9 +63,9 @@ export function TokenTransfersMobileTable() {
 
 export default function TokenTransfersMobileTableWrapper({ rowCount = 10 }: { rowCount?: number }) {
     const { isLoading } = usePageHandler();
-    const { tokenActions } = useSharedData<WalletProps>();
+    const { tokenTransfers } = useSharedData<WalletProps>();
 
-    if (!tokenActions || isLoading) {
+    if (!tokenTransfers || isLoading) {
         return (
             <div>
                 <TableHeaderWrapper resultCount={0} />
