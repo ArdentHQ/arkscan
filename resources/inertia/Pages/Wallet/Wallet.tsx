@@ -2,6 +2,7 @@ import { router } from "@inertiajs/react";
 import { IBlock, ITransaction } from "@/types/generated";
 import { IFilters, IPaginatedResponse, ITabbedData } from "@/types";
 import { PropsWithChildren, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { ITabsQueryString } from "@/Providers/Tabs/types";
 import { IWallet } from "@/types/generated";
@@ -168,6 +169,7 @@ const WalletTabs = ({
 };
 
 function WalletPageHandlerProvider({ children }: PropsWithChildren) {
+    const { t } = useTranslation();
     const { baseUrl, wallet } = useSharedData<WalletProps>();
     const walletModel = WalletModel.from(wallet);
     const tabs = [
@@ -223,7 +225,7 @@ function WalletPageHandlerProvider({ children }: PropsWithChildren) {
             tabs={tabs}
             header={<Overview wallet={wallet} />}
             baseUrl={baseUrl}
-            ariaLabel="Wallet"
+            ariaLabel={t("pages.wallet.title")}
         >
             <PageHandlerProvider>{children}</PageHandlerProvider>
         </TabsProvider>
