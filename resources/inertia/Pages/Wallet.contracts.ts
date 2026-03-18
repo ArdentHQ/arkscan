@@ -1,9 +1,9 @@
 import { IFilters, IPaginatedResponse, ITabbedData } from "@/types";
-import { IBlock, IWallet, ITransaction, ITokenTransfer, ITokenHolder } from "@/types/generated";
+import { IBlock, IWallet, ITransaction, ITokenAction, ITokenHolder } from "@/types/generated";
 
 export interface WalletProps {
     transactions: IPaginatedResponse<ITransaction>;
-    tokenTransfers: IPaginatedResponse<ITokenTransfer>;
+    tokenActions: IPaginatedResponse<ITokenAction>;
     tokens: IPaginatedResponse<ITokenHolder>;
     blocks?: IPaginatedResponse<IBlock>;
     voters?: IPaginatedResponse<IWallet>;

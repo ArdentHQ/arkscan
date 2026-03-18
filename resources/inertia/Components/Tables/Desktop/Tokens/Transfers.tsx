@@ -1,6 +1,6 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { ITokenTransfer } from "@/types/generated";
+import { ITokenAction } from "@/types/generated";
 import { IPaginatedResponse } from "@/types";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
@@ -13,12 +13,12 @@ import LoadingText from "@/Components/Loading/Text";
 import Amount from "@/Components/Tokens/Amount";
 import AddressingGeneric from "@/Components/Tokens/AddressingGeneric";
 import Token from "@/Components/Tokens/Token";
-import { TokenTransfer } from "@/models/TokenTransfer";
+import { TokenAction } from "@/models/TokenAction";
 import useSharedData from "@/hooks/use-shared-data";
 
-export function Row({ row }: { row: ITokenTransfer }) {
+export function Row({ row }: { row: ITokenAction }) {
     const { network } = useSharedData();
-    const transfer = TokenTransfer.make(row, network);
+    const transfer = TokenAction.make(row, network);
 
     return (
         <tr className="text-sm font-semibold">
@@ -41,7 +41,7 @@ export function Row({ row }: { row: ITokenTransfer }) {
             <TableCell className="text-right" lastOn="lg">
                 <Amount
                     testId={`transaction:${transfer.transaction_hash}:amount`}
-                    tokenTransfer={transfer}
+                    tokenAction={transfer}
                     breakpoint="lg"
                 />
             </TableCell>
@@ -57,7 +57,7 @@ export function TransfersTable({
     transfers,
     mobile,
 }: {
-    transfers: IPaginatedResponse<ITokenTransfer>;
+    transfers: IPaginatedResponse<ITokenAction>;
     mobile?: React.ReactNode;
 }) {
     const { t } = useTranslation();
@@ -100,7 +100,7 @@ export default function TransfersTableWrapper({
     mobile,
     rowCount = 20,
 }: {
-    transfers?: IPaginatedResponse<ITokenTransfer>;
+    transfers?: IPaginatedResponse<ITokenAction>;
     mobile?: React.ReactNode;
     rowCount?: number;
 }) {

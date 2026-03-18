@@ -1,8 +1,8 @@
 import { IPaginatedResponse } from "@/types";
-import { ITokenTransfer } from "@/types/generated";
+import { ITokenAction } from "@/types/generated";
 import { PageProps } from "@inertiajs/core";
 
-export interface TokenTransfersProps
+export interface TokenActionsProps
     extends PageProps<{
-        transfers?: IPaginatedResponse<ITokenTransfer>;
+        transfers?: IPaginatedResponse<ITokenAction>;
     }> {}

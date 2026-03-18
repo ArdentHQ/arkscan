@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\TokenTransfer;
+use App\Models\TokenAction;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -36,7 +36,7 @@ function performRequest($context, $withReload = true, $pageCallback = null, $rel
 }
 
 it('should render the page without any errors', function () {
-    TokenTransfer::factory(3)->create();
+    TokenAction::factory(3)->create();
 
     performRequest($this, reloadCallback: function (Assert $page) {
         $page->has('transfers.data', 3)
@@ -55,11 +55,11 @@ it('should provide the no results message if no transfers exist', function () {
 });
 
 it('should include contract deployment transactions', function () {
-    TokenTransfer::factory(3)->create();
+    TokenAction::factory(3)->create();
 
     $contractDeployment = Transaction::factory()->contractDeployment()->create();
 
-    TokenTransfer::factory(2)->create([
+    TokenAction::factory(2)->create([
         'transaction_hash' => $contractDeployment->hash,
     ]);
 

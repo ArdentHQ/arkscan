@@ -6,7 +6,7 @@ use App\Console\Commands\CacheValidatorsWithVoters;
 use App\Facades\Network;
 use App\Models\Block;
 use App\Models\TokenHolder;
-use App\Models\TokenTransfer;
+use App\Models\TokenAction;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -46,7 +46,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                     ],
                 ])
                 ->missing('transactions')
-                ->missing('tokenTransfers')
+                ->missing('tokenActions')
                 ->missing('tokens')
                 ->missing('blocks')
                 ->missing('voters')
@@ -60,7 +60,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                 return;
             }
 
-            $page->reloadOnly('wallet,transactions,tokenTransfers,tokens,blocks,voters', function (Assert $reload) use ($reloadCallback) {
+            $page->reloadOnly('wallet,transactions,tokenActions,tokens,blocks,voters', function (Assert $reload) use ($reloadCallback) {
                 if (is_callable($reloadCallback)) {
                     $reloadCallback($reload);
                 }
@@ -132,13 +132,13 @@ it('should have token transfers', function () {
         ])
         ->fresh();
 
-    TokenTransfer::factory()->create([
+    TokenAction::factory()->create([
         'transaction_hash' => $sent->hash,
         'from'             => $this->subject->address,
         'to'               => $altWallet->address,
     ]);
 
-    TokenTransfer::factory()->create([
+    TokenAction::factory()->create([
         'transaction_hash' => $received->hash,
         'from'             => $altWallet->address,
         'to'               => $this->subject->address,
@@ -148,15 +148,15 @@ it('should have token transfers', function () {
         $this,
         wallet: $this->subject,
         reloadCallback: function (Assert $reload) use ($sent, $received) {
-            $reload->has('tokenTransfers.data', 2)
-                ->where('tokenTransfers.total', 2)
-                ->where('tokenTransfers.current_page', 1)
-                ->where('tokenTransfers.last_page', 1)
-                ->where('tokenTransfers.meta', [
+            $reload->has('tokenActions.data', 2)
+                ->where('tokenActions.total', 2)
+                ->where('tokenActions.current_page', 1)
+                ->where('tokenActions.last_page', 1)
+                ->where('tokenActions.meta', [
                     'pageName'  => 'page',
                     'urlParams' => [],
                 ])
-                ->where('tokenTransfers.data', function ($transactions) use ($sent, $received) {
+                ->where('tokenActions.data', function ($transactions) use ($sent, $received) {
                     $transactionIds = collect($transactions)->pluck('transaction_hash');
 
                     return $transactionIds->contains($sent->hash) && $transactionIds->contains($received->hash);
@@ -428,7 +428,7 @@ it('should filter by incoming and outgoing transactions', function () {
         ])
         ->fresh();
 
-    $sentTokenTransfer = Transaction::factory()
+    $sentTokenAction = Transaction::factory()
         ->tokenTransfer($altWallet->address, BigNumber::new(1 * 1e18))
         ->create([
             'sender_public_key' => $this->subject->public_key,
@@ -437,7 +437,7 @@ it('should filter by incoming and outgoing transactions', function () {
         ])
         ->fresh();
 
-    $receivedTokenTransfer = Transaction::factory()
+    $receivedTokenAction = Transaction::factory()
         ->tokenTransfer($this->subject->address, BigNumber::new(1 * 1e18))
         ->create([
             'sender_public_key' => $altWallet->public_key,
@@ -446,14 +446,14 @@ it('should filter by incoming and outgoing transactions', function () {
         ])
         ->fresh();
 
-    TokenTransfer::factory()->create([
-        'transaction_hash' => $sentTokenTransfer->hash,
+    TokenAction::factory()->create([
+        'transaction_hash' => $sentTokenAction->hash,
         'from'             => $this->subject->address,
         'to'               => $altWallet->address,
     ]);
 
-    TokenTransfer::factory()->create([
-        'transaction_hash' => $receivedTokenTransfer->hash,
+    TokenAction::factory()->create([
+        'transaction_hash' => $receivedTokenAction->hash,
         'from'             => $altWallet->address,
         'to'               => $this->subject->address,
     ]);
@@ -472,10 +472,10 @@ it('should filter by incoming and outgoing transactions', function () {
             'contract_deployment' => 'false',
             'others'              => 'false',
         ],
-        reloadCallback: function (Assert $reload) use ($sent, $received, $sentTokenTransfer, $receivedTokenTransfer) {
+        reloadCallback: function (Assert $reload) use ($sent, $received, $sentTokenAction, $receivedTokenAction) {
             $reload->has('transactions.data', 4)
                 ->where('transactions.total', 4)
-                ->where('transactions.data', function ($transactions) use ($sent, $received, $sentTokenTransfer, $receivedTokenTransfer) {
+                ->where('transactions.data', function ($transactions) use ($sent, $received, $sentTokenAction, $receivedTokenAction) {
                     $transactionIds = collect($transactions)->pluck('hash');
 
                     if (! $transactionIds->contains($sent->hash)) {
@@ -486,11 +486,11 @@ it('should filter by incoming and outgoing transactions', function () {
                         return false;
                     }
 
-                    if (! $transactionIds->contains($sentTokenTransfer->hash)) {
+                    if (! $transactionIds->contains($sentTokenAction->hash)) {
                         return false;
                     }
 
-                    if (! $transactionIds->contains($receivedTokenTransfer->hash)) {
+                    if (! $transactionIds->contains($receivedTokenAction->hash)) {
                         return false;
                     }
 
@@ -1035,9 +1035,9 @@ it('should show no results message if no token transfers', function () {
         $this,
         wallet: $this->subject,
         reloadCallback: function (Assert $reload) {
-            $reload->has('tokenTransfers.data', 0)
-                ->where('tokenTransfers.total', 0)
-                ->where('tokenTransfers.noResultsMessage', trans('tables.tokens.transfers.no_results'));
+            $reload->has('tokenActions.data', 0)
+                ->where('tokenActions.total', 0)
+                ->where('tokenActions.noResultsMessage', trans('tables.tokens.transfers.no_results'));
         },
     );
 });

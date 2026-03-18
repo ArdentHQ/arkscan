@@ -1,4 +1,4 @@
-import { IMemoryWallet, ITokenTransfer, IWallet } from "@/types/generated";
+import { IMemoryWallet, ITokenAction, IWallet } from "@/types/generated";
 import classNames from "classnames";
 import TruncateMiddle from "../General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
@@ -6,35 +6,35 @@ import { Link } from "@inertiajs/react";
 import { useMemo } from "react";
 
 export default function Addressing({
-    tokenTransfer,
+    tokenAction,
     className,
     wallet,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
-    tokenTransfer: ITokenTransfer;
+    tokenAction: ITokenAction;
     wallet: IWallet;
 }) {
     const { t } = useTranslation();
 
-    let interactedWallet: IMemoryWallet | null = tokenTransfer.from;
+    let interactedWallet: IMemoryWallet | null = tokenAction.from;
 
     const isSent = useMemo(() => {
-        return wallet && tokenTransfer.from.address === wallet.address;
-    }, [tokenTransfer.from, wallet]);
+        return wallet && tokenAction.from.address === wallet.address;
+    }, [tokenAction.from, wallet]);
 
     const isReceived = useMemo(() => {
         return (
             wallet &&
-            tokenTransfer.to.address !== tokenTransfer.from.address &&
-            tokenTransfer.to.address === wallet.address
+            tokenAction.to.address !== tokenAction.from.address &&
+            tokenAction.to.address === wallet.address
         );
-    }, [tokenTransfer.to, wallet]);
+    }, [tokenAction.to, wallet]);
 
     const isSentToSelf = useMemo(() => {
         return (
             wallet &&
-            tokenTransfer.to.address === tokenTransfer.from.address &&
-            tokenTransfer.to.address === wallet.address
+            tokenAction.to.address === tokenAction.from.address &&
+            tokenAction.to.address === wallet.address
         );
     }, [isSent, isReceived]);
 
@@ -43,7 +43,7 @@ export default function Addressing({
     }, [isSent, isSentToSelf]);
 
     if (isSent) {
-        interactedWallet = tokenTransfer.to;
+        interactedWallet = tokenAction.to;
     }
 
     const direction = useMemo(() => {
