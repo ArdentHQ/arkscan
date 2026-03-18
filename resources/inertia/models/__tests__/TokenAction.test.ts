@@ -75,10 +75,7 @@ describe("TokenAction", () => {
 
     describe("fromArray", () => {
         it("returns an array of TokenAction instances", () => {
-            const data = [
-                makeTokenAction({ transaction_hash: "0x1" }),
-                makeTokenAction({ transaction_hash: "0x2" }),
-            ];
+            const data = [makeTokenAction({ transaction_hash: "0x1" }), makeTokenAction({ transaction_hash: "0x2" })];
 
             const result = TokenAction.fromArray(data, network);
 

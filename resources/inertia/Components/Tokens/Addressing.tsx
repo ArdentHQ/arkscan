@@ -24,17 +24,13 @@ export default function Addressing({
 
     const isReceived = useMemo(() => {
         return (
-            wallet &&
-            tokenAction.to.address !== tokenAction.from.address &&
-            tokenAction.to.address === wallet.address
+            wallet && tokenAction.to.address !== tokenAction.from.address && tokenAction.to.address === wallet.address
         );
     }, [tokenAction.to, wallet]);
 
     const isSentToSelf = useMemo(() => {
         return (
-            wallet &&
-            tokenAction.to.address === tokenAction.from.address &&
-            tokenAction.to.address === wallet.address
+            wallet && tokenAction.to.address === tokenAction.from.address && tokenAction.to.address === wallet.address
         );
     }, [isSent, isReceived]);
 
