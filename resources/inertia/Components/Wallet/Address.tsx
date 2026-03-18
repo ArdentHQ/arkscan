@@ -31,7 +31,7 @@ export default function Address({
                 [className]: true,
             })}
         >
-            <div className="min-w-0 truncate">
+            <div className="-m-0.5 min-w-0 truncate p-0.5">
                 <Link className="link whitespace-nowrap" href={route("wallet", address)}>
                     {!!name ? (
                         name
