@@ -59,7 +59,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                         {navItem.children ? (
                                             <DropdownProvider>
                                                 <Dropdown
-                                                    wrapperClass="relative h-full mr-6"
+                                                    wrapperClass="relative h-full mr-4"
                                                     useDefaultButtonClasses={false}
                                                     buttonClass="inline-flex h-full px-2 focus-visible:ring-inset"
                                                     dropdownClasses="w-auto"
