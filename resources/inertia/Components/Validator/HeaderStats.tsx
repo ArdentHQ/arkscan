@@ -29,17 +29,17 @@ function ExploreHeaderStat() {
             className="flex-none bg-theme-primary-100 dim:bg-theme-dark-700 dark:bg-theme-dark-800 xl:flex-1"
             background={
                 <>
-                    <img src={headerBg} className="hidden max-w-none dark:hidden sm:block" />
+                    <img src={headerBg} className="hidden max-w-none dark:hidden sm:block" alt="" />
 
-                    <img src={headerBgMobile} className="max-w-none dark:hidden sm:hidden" />
+                    <img src={headerBgMobile} className="max-w-none dark:hidden sm:hidden" alt="" />
 
-                    <img src={headerBgDark} className="hidden max-w-none dim:sm:hidden dark:sm:block" />
+                    <img src={headerBgDark} className="hidden max-w-none dim:sm:hidden dark:sm:block" alt="" />
 
-                    <img src={headerBgMobileDark} className="hidden max-w-none dim:hidden dark:block dark:sm:hidden" />
+                    <img src={headerBgMobileDark} className="hidden max-w-none dim:hidden dark:block dark:sm:hidden" alt="" />
 
-                    <img src={headerBgDim} className="hidden max-w-none dark:hidden dim:sm:block" />
+                    <img src={headerBgDim} className="hidden max-w-none dark:hidden dim:sm:block" alt="" />
 
-                    <img src={headerBgMobileDim} className="hidden max-w-none dim:block dark:hidden dim:sm:hidden" />
+                    <img src={headerBgMobileDim} className="hidden max-w-none dim:block dark:hidden dim:sm:hidden" alt="" />
                 </>
             }
         >
