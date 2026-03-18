@@ -18,7 +18,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
         <Link
             href={link}
             className={classNames({
-                "group relative mx-4 inline-flex h-full rounded border-t-2 border-transparent px-2 font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none focus:ring-inset": true,
+                "group relative mx-4 inline-flex h-full rounded border-t-2 border-transparent px-2 font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none focus-visible:ring-inset": true,
                 "text-theme-secondary-900 dark:text-theme-dark-50": isActive,
                 "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-200 dark:hover:text-theme-secondary-400":
                     !isActive,
@@ -61,7 +61,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                 <Dropdown
                                                     wrapperClass="relative h-full"
                                                     useDefaultButtonClasses={false}
-                                                    buttonClass="inline-flex h-full"
+                                                    buttonClass="inline-flex h-full focus-visible:ring-inset"
                                                     dropdownClasses="w-auto"
                                                     placement="bottom-start"
                                                     button={({ isOpen }) => (
