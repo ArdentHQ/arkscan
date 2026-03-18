@@ -25,6 +25,7 @@ export default function TabsProvider({
     children,
     useQueryParam = false,
     viewParam = "view",
+    ariaLabel,
 }: {
     defaultSelected: string;
     queryStringDefaults: ITabsQueryString;
@@ -34,6 +35,7 @@ export default function TabsProvider({
     children: React.ReactNode;
     useQueryParam?: boolean;
     viewParam?: string;
+    ariaLabel?: string;
 }) {
     const [currentTab, setCurrentTab] = useState<string>();
     const [selectedTab, setSelectedTab] = useState<ITab>();
@@ -193,9 +195,15 @@ export default function TabsProvider({
         <TabsContext.Provider value={value}>
             {header}
 
-            <Wrapper tabs={tabs} />
+            <Wrapper tabs={tabs} ariaLabel={ariaLabel} />
 
-            <div>{children}</div>
+            <div
+                role="tabpanel"
+                id={currentTab ? `panel-${currentTab}` : undefined}
+                aria-labelledby={currentTab ? `tab-${currentTab}` : undefined}
+            >
+                {children}
+            </div>
         </TabsContext.Provider>
     );
 }

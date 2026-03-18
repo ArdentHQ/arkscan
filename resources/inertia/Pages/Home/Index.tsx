@@ -67,6 +67,7 @@ function HomeTabsProvider({ children }: PropsWithChildren) {
             ]}
             baseUrl={baseUrl}
             useQueryParam
+            ariaLabel={t("pages.home.title")}
         >
             {children}
         </TabsProvider>
