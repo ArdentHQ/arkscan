@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Inertia;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
+use App\Http\Controllers\Inertia\Concerns\WithWalletRelations;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
@@ -21,6 +22,7 @@ final class TransactionsController
 {
     use WithPagination;
     use WithFilters;
+    use WithWalletRelations;
 
     public const FILTERS = [
         'transfers'           => true,
@@ -80,11 +82,14 @@ final class TransactionsController
             return $emptyResults;
         }
 
-        return Transaction::withTypeFilter($this->filters())
+        $paginator = Transaction::withTypeFilter($this->filters())
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
-            ->with(['votedFor', 'sender', 'senderWallet', 'recipientWallet', 'multiPaymentRecipients'])
-            ->paginate($this->perPage('transactions'))
-            ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
+            ->paginate($this->perPage('transactions'));
+
+        $this->loadWalletRelations($paginator);
+        $this->loadMultiPaymentTotals($paginator);
+
+        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
     }
 }

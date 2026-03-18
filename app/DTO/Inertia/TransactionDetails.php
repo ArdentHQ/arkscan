@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Concerns\WithTokenApproval;
-use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Enums\TokenTransferArgument;
-use App\Facades\Wallets;
 use App\Models\TokenAction;
 use App\Models\Transaction as Model;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -30,14 +27,14 @@ class TransactionDetails extends Data
         public bool $recipientIsContract,
         public ?string $validatorPublicKey,
         public ?string $username,
-        #[LiteralTypeScriptType('{recipient: IWallet; amount: string | null} | null')]
+        #[LiteralTypeScriptType('{recipient: IWalletReference; amount: string | null} | null')]
         public ?array $tokenTransfer,
-        #[LiteralTypeScriptType('{spender: IWallet; amount: string | null; isUnlimited: boolean; isRevoke: boolean} | null')]
+        #[LiteralTypeScriptType('{spender: IWalletReference; amount: string | null; isUnlimited: boolean; isRevoke: boolean} | null')]
         public ?array $tokenApproval,
         public ?Token $token,
         #[LiteralTypeScriptType('{formatted: string | null; utf8: string | null; raw: string | null} | null')]
         public ?array $payload,
-        #[LiteralTypeScriptType('{recipient: IWallet; amount: string}[]')]
+        #[LiteralTypeScriptType('{recipient: IWalletReference; amount: string}[]')]
         public array $batchTokenTransfers,
     ) {
     }
@@ -80,8 +77,8 @@ class TransactionDetails extends Data
             foreach ($tokenActionRecords as $tf) {
                 $walletModel = $wallets->get($tf->to);
                 $wallet      = $walletModel !== null
-                    ? WalletDTO::fromModel($walletModel)
-                    : WalletDTO::stub($tf->to);
+                    ? WalletReference::fromModel($walletModel)
+                    : WalletReference::stub($tf->to);
 
                 $batchTokenTransfers[] = [
                     'recipient' => $wallet,
@@ -105,7 +102,7 @@ class TransactionDetails extends Data
     }
 
     /**
-     * @return array{recipient: WalletDTO, amount: string|null}|null
+     * @return array{recipient: WalletReference, amount: string|null}|null
      */
     private static function tokenTransferDetails(TransactionViewModel $transaction): ?array
     {
@@ -125,11 +122,10 @@ class TransactionDetails extends Data
             $amount = (new ArgumentDecoder($arguments[TokenTransferArgument::AMOUNT]))->decodeUnsignedInt();
         }
 
-        try {
-            $recipientWalletData = WalletDTO::fromModel(Wallets::findByAddress($recipient));
-        } catch (ModelNotFoundException) {
-            $recipientWalletData = WalletDTO::stub($recipient);
-        }
+        $recipientWallet     = Wallet::where('address', $recipient)->first();
+        $recipientWalletData = $recipientWallet !== null
+            ? WalletReference::fromModel($recipientWallet)
+            : WalletReference::stub($recipient);
 
         return [
             'recipient' => $recipientWalletData,

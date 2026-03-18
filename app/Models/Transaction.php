@@ -56,6 +56,7 @@ use Laravel\Scout\Searchable;
  * @property resource|null $output
  * @property string|null $decoded_error
  * @property array $multi_payment_recipients
+ * @property string|null $multi_payment_total
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Transaction extends Model
@@ -129,9 +130,7 @@ final class Transaction extends Model
         'multi_payment_recipients' => CitextArray::class,
     ];
 
-    protected $with = [
-        'multiPaymentRecipients',
-    ];
+    protected $with = [];
 
     /**
      * Get the indexable data array for the model.

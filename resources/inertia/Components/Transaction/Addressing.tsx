@@ -1,4 +1,4 @@
-import { IWallet } from "@/types/generated";
+import { IWalletReference } from "@/types/generated";
 import classNames from "classnames";
 import TruncateMiddle from "../General/TruncateMiddle";
 import { useTranslation } from "react-i18next";
@@ -22,12 +22,12 @@ export default function Addressing({
     alwaysShowAddress?: boolean;
     withoutTruncate?: boolean;
     isGeneric?: boolean;
-    wallet?: IWallet;
+    wallet?: IWalletReference;
     isReceived?: boolean;
 }) {
     const { t } = useTranslation();
 
-    let interactedWallet: IWallet | null = null;
+    let interactedWallet: IWalletReference | null = null;
 
     const isSent = useMemo(() => {
         return wallet && transaction.isSent(wallet?.address) && !transaction.isSentToSelf(wallet?.address);

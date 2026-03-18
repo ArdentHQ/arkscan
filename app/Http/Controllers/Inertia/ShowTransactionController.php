@@ -14,7 +14,7 @@ final class ShowTransactionController
 {
     public function __invoke(Transaction $transaction): Response
     {
-        $transaction->loadMissing('votedFor', 'multiPaymentRecipients', 'sender', 'recipientWallet');
+        $transaction->loadMissing('votedFor', 'multiPaymentRecipients', 'senderWallet', 'recipientWallet');
 
         return Inertia::render('Transaction/Show', [
             'transaction' => TransactionDTO::fromModel($transaction),

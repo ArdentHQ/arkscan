@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Concerns\WithTokenApproval;
-use App\DTO\Inertia\Wallet as WalletDTO;
-use App\Facades\Wallets;
 use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -41,13 +38,14 @@ class Transaction extends Data
         public ?string $decoded_error,
         #[LiteralTypeScriptType('{address: string; amount: string}[]')]
         public array $multiPaymentRecipients,
+        public ?string $multiPaymentTotal,
         #[LiteralTypeScriptType('Record<string, number>')]
         public array $exchangeRates,
         public string $url,
         #[LiteralTypeScriptType('{ functionName: string | null, methodId: string | null, arguments: string[] | null }')]
         public array $methodData,
         #[LiteralTypeScriptType('{
-            spender: IWallet;
+            spender: IWalletReference;
             amount: string | null;
             isUnlimited: boolean;
             isRevoke: boolean;
@@ -56,8 +54,8 @@ class Transaction extends Data
         public ?self $validatorRegistration,
         public ?string $votedFor,
         public ?string $votedForUsername,
-        public ?WalletDTO $sender,
-        public ?WalletDTO $recipient,
+        public ?WalletReference $sender,
+        public ?WalletReference $recipient,
     ) {
     }
 
@@ -78,38 +76,23 @@ class Transaction extends Data
         }
 
         $sender       = null;
-        $senderWallet = $transaction->relationLoaded('senderWallet') ? $transaction->senderWallet : null;
-        $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
-
-        if ($senderWallet === null) {
-            try {
-                $senderWallet = Wallets::findByAddress($transaction->from);
-            } catch (ModelNotFoundException) {
-                $sender = WalletDTO::stub($transaction->from);
-            }
-        }
-
-        if ($senderWallet !== null) {
-            $sender = WalletDTO::fromModel($senderWallet);
-        }
-
-        $recipient = null;
-
-        $recipientWallet = $transaction->relationLoaded('recipientWallet') ? $transaction->recipientWallet : null;
-        if ($recipientWallet !== null) {
-            $recipient = WalletDTO::fromModel($recipientWallet);
-        } elseif ($transaction->relationLoaded('recipientWallet') && $transaction->to !== null) {
-            $recipient = WalletDTO::stub($transaction->to);
+        $senderWallet = null;
+        if ($transaction->relationLoaded('senderWallet') || $transaction->relationLoaded('sender')) {
+            $senderWallet = $transaction->relationLoaded('senderWallet') ? $transaction->senderWallet : null;
+            $senderWallet ??= $transaction->relationLoaded('sender') ? $transaction->sender : null;
         } else {
-            $recipientAddress = $transaction->recipientAddress();
-
-            try {
-                $recipientWallet = Wallets::findByAddress($recipientAddress);
-                $recipient       = WalletDTO::fromModel($recipientWallet);
-            } catch (ModelNotFoundException) {
-                $recipient = WalletDTO::stub($recipientAddress);
-            }
+            $senderWallet = $transaction->senderWallet;
         }
+
+        $sender = $senderWallet !== null
+            ? WalletReference::fromModel($senderWallet)
+            : WalletReference::stub($transaction->from);
+
+        $recipientWallet = $transaction->recipientWallet;
+
+        $recipient = $recipientWallet !== null
+            ? WalletReference::fromModel($recipientWallet)
+            : WalletReference::stub($transaction->recipientAddress());
 
         $validatorRegistration            = null;
         $validatorRegistrationTransaction = $viewModel->validatorRegistration();
@@ -152,6 +135,7 @@ class Transaction extends Data
             deployed_contract_address: $transaction->deployed_contract_address,
             decoded_error: $transaction->decoded_error,
             multiPaymentRecipients: self::multiPaymentRecipients($transaction),
+            multiPaymentTotal: $transaction->multi_payment_total ?? null,
             exchangeRates: ExchangeRate::allCurrencyRates($transaction->timestamp),
             url: route('transaction', $transaction->hash),
             methodData: $methodData,
@@ -169,6 +153,10 @@ class Transaction extends Data
      */
     private static function multiPaymentRecipients(Model $transaction): array
     {
+        if (! $transaction->relationLoaded('multiPaymentRecipients')) {
+            return [];
+        }
+
         return $transaction->multiPaymentRecipients
             ->map(fn (MultiPayment $recipient) => [
                 'address' => $recipient->to,
