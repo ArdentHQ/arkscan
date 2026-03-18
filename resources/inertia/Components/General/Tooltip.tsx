@@ -58,7 +58,7 @@ export default function Tooltip({ children, dynamic = false, className, ...props
     const disabled = props.disabled || (dynamic ? !shouldEnableTooltip : false);
 
     return (
-        <Tippy theme="ark" {...props} disabled={disabled}>
+        <Tippy theme="ark" {...props} disabled={disabled} aria={{ content: "describedby", expanded: false }}>
             <div
                 ref={wrapperRef}
                 className={classNames("tooltip-content", className)}
