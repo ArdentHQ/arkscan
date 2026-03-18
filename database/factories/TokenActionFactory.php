@@ -45,12 +45,12 @@ final class TokenActionFactory extends Factory
         ];
     }
 
-        public function approval()
-        {
-            return $this->state(function () {
-                return [
-                    'action' => 'Approval',
-                ];
-            });
-        }
+    public function approval()
+    {
+        return $this->state(function () {
+            return [
+                'action' => 'Approval',
+            ];
+        });
+    }
 }
