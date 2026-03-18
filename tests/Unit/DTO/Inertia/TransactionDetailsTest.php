@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Console\Commands\CacheTokens;
 use App\DTO\Inertia\TransactionDetails;
 use App\Models\Token;
-use App\Models\TokenTransfer as TokenTransferModel;
+use App\Models\TokenAction;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -216,7 +216,7 @@ it('should include batch token transfers', function () {
             'status'       => true,
         ]);
 
-    TokenTransferModel::factory()->count(2)->sequence(
+    TokenAction::factory()->count(2)->sequence(
         [
             'transaction_hash' => $transaction->hash,
             'block_number'     => $transaction->block_number,
@@ -270,7 +270,7 @@ it('should handle batch transfer with unknown recipient wallet', function () {
             'status'       => true,
         ]);
 
-    TokenTransferModel::factory()->create([
+    TokenAction::factory()->create([
         'transaction_hash' => $transaction->hash,
         'block_number'     => $transaction->block_number,
         'address'          => $token->address,
@@ -302,7 +302,7 @@ it('should resolve token from token_transfer record for token transfers', functi
             'status'       => true,
         ]);
 
-    TokenTransferModel::factory()->create([
+    TokenAction::factory()->create([
         'transaction_hash' => $transaction->hash,
         'block_number'     => $transaction->block_number,
         'address'          => $token->address,

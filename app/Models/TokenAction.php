@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $address
+ * @property string $action
  * @property int $block_number
  * @property int $index
  * @property string $transaction_hash
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property BigNumber $value
  * @property Token $token
  */
-final class TokenTransfer extends Model
+final class TokenAction extends Model
 {
     use HasFactory;
 

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Inertia;
 
 use App\DTO\Inertia\Block as BlockDTO;
+use App\DTO\Inertia\TokenAction as TokenActionDTO;
 use App\DTO\Inertia\TokenHolder as TokenHolderDTO;
-use App\DTO\Inertia\TokenTransfer as TokenTransferDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
+use App\Enums\TokenActionType;
 use App\Http\Controllers\Inertia\Concerns\WithFilters;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
@@ -18,8 +19,8 @@ use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Scopes\OrderByWhitelistedTokensFirstScope;
+use App\Models\TokenAction;
 use App\Models\TokenHolder;
-use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\ExchangeRate;
@@ -162,14 +163,17 @@ final class WalletController
 
     public function getTokenTransfers(Wallet $wallet): LengthAwarePaginator
     {
-        return TokenTransfer::select('token_transfers.*')
+        return TokenAction::select('token_actions.*')
             ->with(['token', 'transaction.sender', 'transaction.senderWallet', 'transaction.recipientWallet'])
-            ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
-            ->where('token_transfers.to', $wallet->address)
-            ->orWhere('token_transfers.from', $wallet->address)
+            ->join('transactions', 'transactions.hash', '=', 'token_actions.transaction_hash')
+            ->where(function (Builder $query) use ($wallet) {
+                $query->where('token_actions.to', $wallet->address)
+                    ->orWhere('token_actions.from', $wallet->address);
+            })
+            ->where('token_actions.action', TokenActionType::Transfer)
             ->withScope(OrderByTimestampScope::class)
             ->paginate($this->perPage())
-            ->through(fn (TokenTransfer $transaction) => TokenTransferDTO::fromModel($transaction));
+            ->through(fn (TokenAction $transaction) => TokenActionDTO::fromModel($transaction));
     }
 
     public function getTokens(Wallet $wallet): LengthAwarePaginator
@@ -232,7 +236,7 @@ final class WalletController
             }
 
             if ($filters['transfers']) {
-                $hashQueries[] = TokenTransfer::query()
+                $hashQueries[] = TokenAction::query()
                     ->where('to', $wallet->address)
                     ->select('transaction_hash as hash');
             }

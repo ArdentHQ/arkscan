@@ -232,18 +232,7 @@ return [
         'View'                    => Illuminate\Support\Facades\View::class,
         'Vite'                    => Illuminate\Support\Facades\Vite::class,
 
-        'DateFormat'              => ARKEcosystem\Foundation\UserInterface\Support\DateFormat::class,
         'Network'                 => App\Facades\Network::class,
-        'ExplorerNumberFormatter' => App\Services\NumberFormatter::class,
-        'Settings'                => App\Facades\Settings::class,
-        'Percentage'              => Mattiasgeniar\Percentage\Percentage::class,
-        'ExchangeRate'            => App\Services\ExchangeRate::class,
-        'Helpers'                 => App\Services\Helpers::class,
-        'Forms'                   => App\Services\Forms::class,
-        'Zendesk'                 => Huddle\Zendesk\Facades\Zendesk::class,
-        'SortDirection'           => App\Enums\SortDirection::class,
-        'TokenTransferArgument'   => App\Enums\TokenTransferArgument::class,
-        'ArgumentDecoder'         => ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder::class,
     ],
 
 ];
