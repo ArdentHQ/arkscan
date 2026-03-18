@@ -61,7 +61,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                 <Dropdown
                                                     wrapperClass="relative h-full mr-6"
                                                     useDefaultButtonClasses={false}
-                                                    buttonClass="inline-flex h-full focus-visible:ring-inset"
+                                                    buttonClass="inline-flex h-full px-2 focus-visible:ring-inset"
                                                     dropdownClasses="w-auto"
                                                     placement="bottom-start"
                                                     button={({ isOpen }) => (
