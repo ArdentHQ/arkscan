@@ -1,4 +1,4 @@
-import { ITokenTransfer, IWallet } from "@/types/generated";
+import { ITokenAction, IWallet } from "@/types/generated";
 import classNames from "classnames";
 import AmountSmall from "../General/AmountSmall";
 import AmountFiatTooltip from "../General/AmountFiatTooltip";
@@ -7,28 +7,28 @@ import Tooltip from "@/Components/General/Tooltip";
 import TokenSymbol from "./TokenSymbol";
 
 export default function Amount({
-    tokenTransfer,
+    tokenAction,
     breakpoint = "md-lg",
     hideCurrency = false,
     wallet,
     testId,
 }: {
-    tokenTransfer: ITokenTransfer;
+    tokenAction: ITokenAction;
     breakpoint?: "md-lg" | "lg" | "xl";
     hideCurrency?: boolean;
     wallet?: IWallet;
     testId?: string;
 }) {
-    let isReceived = wallet ? tokenTransfer.to.address === wallet.address : false;
-    let isSent = wallet ? tokenTransfer.from.address === wallet.address : false;
-    const isSentToSelf = wallet ? tokenTransfer.from.address === tokenTransfer.to.address : false;
+    let isReceived = wallet ? tokenAction.to.address === wallet.address : false;
+    let isSent = wallet ? tokenAction.from.address === wallet.address : false;
+    const isSentToSelf = wallet ? tokenAction.from.address === tokenAction.to.address : false;
 
-    let amount = tokenTransfer.amount;
+    let amount = tokenAction.amount;
 
     const { value, suffix } = formatCompact(amount);
     const isCompact = suffix !== undefined;
     const fullFormatted = isCompact
-        ? `${networkCurrency(amount, 8, false)} ${tokenTransfer.token.symbolFull ?? tokenTransfer.token.symbol}`
+        ? `${networkCurrency(amount, 8, false)} ${tokenAction.token.symbolFull ?? tokenAction.token.symbol}`
         : undefined;
 
     if (isSentToSelf) {
@@ -81,8 +81,8 @@ export default function Amount({
 
                         {!hideCurrency && (
                             <TokenSymbol
-                                tokenSymbol={tokenTransfer.token.symbol}
-                                fullTokenSymbol={tokenTransfer.token.symbolFull}
+                                tokenSymbol={tokenAction.token.symbol}
+                                fullTokenSymbol={tokenAction.token.symbolFull}
                             />
                         )}
                     </>

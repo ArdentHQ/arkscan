@@ -170,12 +170,7 @@ export type IToken = {
     totalSupply: string;
     deploymentHash: string;
 };
-export type ITokenHolder = {
-    wallet: IMemoryWallet;
-    token: IToken;
-    balance: number;
-};
-export type ITokenTransfer = {
+export type ITokenAction = {
     transaction_hash: string;
     from: IMemoryWallet;
     to: IMemoryWallet;
@@ -185,6 +180,11 @@ export type ITokenTransfer = {
     index: number;
     token: IToken;
     transaction: ITransaction;
+};
+export type ITokenHolder = {
+    wallet: IMemoryWallet;
+    token: IToken;
+    balance: number;
 };
 export type ITransaction = {
     hash: string;

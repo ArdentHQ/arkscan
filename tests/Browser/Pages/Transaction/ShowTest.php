@@ -7,7 +7,7 @@ use App\Facades\Network;
 use App\Models\Block;
 use App\Models\MultiPayment;
 use App\Models\Token;
-use App\Models\TokenTransfer;
+use App\Models\TokenAction;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
@@ -463,7 +463,7 @@ it('should not show recipient username for "to" address', function () {
         'symbol'  => 'TST',
     ]);
 
-    TokenTransfer::factory()->create([
+    TokenAction::factory()->create([
         'address'          => $token->address,
         'transaction_hash' => $transaction->hash,
         'to'               => $recipientWallet->address,

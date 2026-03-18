@@ -6,7 +6,7 @@ namespace App\DTO\Inertia;
 
 use App\DTO\Inertia\Concerns\WithTokenApproval;
 use App\Enums\TokenTransferArgument;
-use App\Models\TokenTransfer as TokenTransferModel;
+use App\Models\TokenAction;
 use App\Models\Transaction as Model;
 use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
@@ -48,33 +48,33 @@ class TransactionDetails extends Data
         if ($token !== null) {
             $token = Token::fromModel($token);
         } elseif ($viewModel->isBatchTransfer()) {
-            $tokenTransferRecords = TokenTransferModel::with('token')
+            $tokenActionRecords = TokenAction::with('token')
                 ->where('transaction_hash', $transaction->hash)
                 ->get();
 
-            $firstRecord = $tokenTransferRecords->first();
+            $firstRecord = $tokenActionRecords->first();
             if ($firstRecord?->token !== null) {
                 $token = Token::fromModel($firstRecord->token);
             }
         } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove()) {
-            $tokenTransferRecord = TokenTransferModel::with('token')
+            $tokenActionRecord = TokenAction::with('token')
                 ->where('transaction_hash', $transaction->hash)
                 ->first();
 
-            if ($tokenTransferRecord?->token !== null) {
-                $token = Token::fromModel($tokenTransferRecord->token);
+            if ($tokenActionRecord?->token !== null) {
+                $token = Token::fromModel($tokenActionRecord->token);
             }
         }
 
         $batchTokenTransfers = [];
-        if ($viewModel->isBatchTransfer() && isset($tokenTransferRecords)) {
-            $addresses = $tokenTransferRecords->pluck('to')->unique()->values()->all();
+        if ($viewModel->isBatchTransfer() && isset($tokenActionRecords)) {
+            $addresses = $tokenActionRecords->pluck('to')->unique()->values()->all();
 
             $wallets = Wallet::whereIn('address', $addresses)
                 ->get()
                 ->keyBy('address');
 
-            foreach ($tokenTransferRecords as $tf) {
+            foreach ($tokenActionRecords as $tf) {
                 $walletModel = $wallets->get($tf->to);
                 $wallet      = $walletModel !== null
                     ? WalletReference::fromModel($walletModel)
