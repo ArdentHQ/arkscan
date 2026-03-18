@@ -59,7 +59,11 @@ export default function Tooltip({ children, dynamic = false, className, ...props
 
     return (
         <Tippy theme="ark" {...props} disabled={disabled}>
-            <div ref={wrapperRef} className={classNames("tooltip-content", className)}>
+            <div
+                ref={wrapperRef}
+                className={classNames("tooltip-content", className)}
+                tabIndex={disabled ? undefined : 0}
+            >
                 {children}
             </div>
         </Tippy>
