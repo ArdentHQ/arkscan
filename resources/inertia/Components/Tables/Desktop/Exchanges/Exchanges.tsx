@@ -21,7 +21,7 @@ export function Row({ row: exchange }: { row: IExchange }) {
             <TableCell>
                 <div className="flex items-center space-x-3">
                     <div className="flex h-5 w-5 items-center justify-center">
-                        <img className="max-h-full max-w-full" src={exchange.iconUrl} alt={`${exchange.name} icon`} />
+                        <img className="max-h-full max-w-full" src={exchange.iconUrl} alt="" />
                     </div>
 
                     <ExternalLink
