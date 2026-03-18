@@ -58,7 +58,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                     <div
                                         key={index}
                                         className={classNames("relative h-full", {
-                                            "ml-3": navItem.children,
+                                            "ml-1": navItem.children,
                                         })}
                                     >
                                         {navItem.children ? (
