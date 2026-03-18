@@ -1,6 +1,6 @@
 import TableCell from "../TableCell";
 import LoadingTable from "../LoadingTable";
-import { ITokenTransfer } from "@/types/generated";
+import { ITokenAction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import Age from "@/Components/Model/Age";
 import ID from "@/Components/Transaction/ID";
@@ -13,12 +13,12 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import useSharedData from "@/hooks/use-shared-data";
 import Amount from "@/Components/Tokens/Amount";
 import TruncatedValue from "@/Components/Tokens/TruncatedValue";
-import { TokenTransfer } from "@/models/TokenTransfer";
+import { TokenAction } from "@/models/TokenAction";
 import TruncatedTokenSymbol from "@/Components/Tokens/TruncatedTokenSymbol";
 
-export function Row({ row }: { row: ITokenTransfer }) {
+export function Row({ row }: { row: ITokenAction }) {
     const { network, wallet } = useSharedData<WalletProps>();
-    const transfer = TokenTransfer.make(row, network);
+    const transfer = TokenAction.make(row, network);
 
     return (
         <tr className="text-sm font-semibold">
@@ -35,13 +35,13 @@ export function Row({ row }: { row: ITokenTransfer }) {
             </TableCell>
 
             <TableCell>
-                <Addressing tokenTransfer={transfer} wallet={wallet} />
+                <Addressing tokenAction={transfer} wallet={wallet} />
             </TableCell>
 
             <TableCell className="text-right" lastOn="md-lg">
                 <Amount
                     testId={`transaction:${transfer.transaction.hash}:amount`}
-                    tokenTransfer={transfer}
+                    tokenAction={transfer}
                     hideCurrency
                     wallet={wallet}
                 />
@@ -60,16 +60,16 @@ export function Row({ row }: { row: ITokenTransfer }) {
 
 export function TokenTransfersTable({ mobile }: { mobile?: React.ReactNode }) {
     const { t } = useTranslation();
-    const { tokenTransfers } = useSharedData<WalletProps>();
+    const { tokenActions } = useSharedData<WalletProps>();
 
     return (
         <Table
             withHeader
             withFooter
-            paginator={tokenTransfers}
+            paginator={tokenActions}
             rowComponent={Row}
             mobile={mobile}
-            noResultsMessage={tokenTransfers.noResultsMessage}
+            noResultsMessage={tokenActions.noResultsMessage}
             columns={
                 <>
                     <TableHeader>{t("tables.transactions.id")}</TableHeader>
@@ -104,15 +104,15 @@ export default function TokenTransfersTableWrapper({
 }) {
     const { isLoading } = usePageHandler();
     const { t } = useTranslation();
-    const { tokenTransfers } = useSharedData<WalletProps>();
+    const { tokenActions } = useSharedData<WalletProps>();
 
-    if (!tokenTransfers || isLoading) {
+    if (!tokenActions || isLoading) {
         return (
             <>
                 <LoadingTable
                     header
                     mobile={mobile}
-                    paginator={tokenTransfers}
+                    paginator={tokenActions}
                     rowCount={rowCount}
                     columns={[
                         {

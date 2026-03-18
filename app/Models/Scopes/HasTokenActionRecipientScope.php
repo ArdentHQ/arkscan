@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-final class HasTokenTransferRecipientScope implements Scope
+final class HasTokenActionRecipientScope implements Scope
 {
     public function __construct(private string $address)
     {
@@ -19,9 +19,9 @@ final class HasTokenTransferRecipientScope implements Scope
     {
         $builder->whereExists(function ($query) {
             $query->selectRaw('1')
-                ->from('token_transfers')
-                ->whereColumn('token_transfers.transaction_hash', 'transactions.hash')
-                ->where('token_transfers.to', $this->address);
+                ->from('token_actions')
+                ->whereColumn('token_actions.transaction_hash', 'transactions.hash')
+                ->where('token_actions.to', $this->address);
         });
     }
 }

@@ -1,4 +1,4 @@
-import { ITokenTransfer } from "@/types/generated";
+import { ITokenAction } from "@/types/generated";
 import { AddressingGeneric } from "@/Components/General/Addressing/AddressingGeneric";
 
 export default function AddressingForTransfer({
@@ -6,7 +6,7 @@ export default function AddressingForTransfer({
     className,
     ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
-    transfer: ITokenTransfer;
+    transfer: ITokenAction;
 }) {
     const sender = transfer.from;
     const recipient = transfer.to;

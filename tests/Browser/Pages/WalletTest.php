@@ -7,8 +7,8 @@ use App\Models\Block;
 use App\Models\MultiPayment;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\TokenAction;
 use App\Models\TokenHolder;
-use App\Models\TokenTransfer;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\Addresses\Legacy;
@@ -1315,7 +1315,7 @@ describe('Token Transfers Tab', function () {
     });
 
     it('should display transfers', function () {
-        $transfers = TokenTransfer::factory(5)->create([
+        $transfers = TokenAction::factory(5)->create([
             'from' => $this->wallet->address,
             'to'   => $this->recipientWallet->address,
         ]);
@@ -1336,7 +1336,7 @@ describe('Token Transfers Tab', function () {
     });
 
     it('should correctly format amounts', function (float $amount, string $expected) {
-        $transfer = TokenTransfer::factory()->create([
+        $transfer = TokenAction::factory()->create([
             'value' => (string) BigNumber::new($amount)->multipliedBy(1e18),
             'from'  => $this->wallet->address,
             'to'    => $this->recipientWallet->address,
@@ -1372,7 +1372,7 @@ describe('Token Transfers Tab', function () {
     ]);
 
     it('should correctly abbreviate large amounts', function (string $value, string $expected) {
-        $transfer = TokenTransfer::factory()->create([
+        $transfer = TokenAction::factory()->create([
             'value' => $value,
             'from'  => $this->wallet->address,
             'to'    => $this->recipientWallet->address,
@@ -1421,14 +1421,14 @@ describe('Token Transfers Tab', function () {
     ]);
 
     it('should go to page 2', function ($resolution) {
-        TokenTransfer::factory(50)->create([
+        TokenAction::factory(50)->create([
             'from' => $this->wallet->address,
             'to'   => $this->recipientWallet->address,
         ]);
 
         $this->browse(function (Browser $browser) use ($resolution) {
-            $sortedTransfers = TokenTransfer::select('token_transfers.*')
-                ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
+            $sortedTransfers = TokenAction::select('token_actions.*')
+                ->join('transactions', 'transactions.hash', '=', 'token_actions.transaction_hash')
                 ->withScope(OrderByTimestampScope::class);
 
             $browser->resize($resolution['width'], $resolution['height']);
@@ -1446,14 +1446,14 @@ describe('Token Transfers Tab', function () {
     })->with('desktop_mobile_resolutions');
 
     it('should reset to page 1 on per-page change', function ($resolution) {
-        TokenTransfer::factory(50)->create([
+        TokenAction::factory(50)->create([
             'from' => $this->wallet->address,
             'to'   => $this->recipientWallet->address,
         ]);
 
         $this->browse(function (Browser $browser) use ($resolution) {
-            $sortedTransfers = TokenTransfer::select('token_transfers.*')
-                ->join('transactions', 'transactions.hash', '=', 'token_transfers.transaction_hash')
+            $sortedTransfers = TokenAction::select('token_actions.*')
+                ->join('transactions', 'transactions.hash', '=', 'token_actions.transaction_hash')
                 ->withScope(OrderByTimestampScope::class);
 
             $browser->resize($resolution['width'], $resolution['height']);

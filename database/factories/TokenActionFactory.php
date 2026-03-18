@@ -6,15 +6,15 @@ namespace Database\Factories;
 
 use App\Facades\Network;
 use App\Models\Token;
-use App\Models\TokenTransfer;
+use App\Models\TokenAction;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-final class TokenTransferFactory extends Factory
+final class TokenActionFactory extends Factory
 {
-    protected $model = TokenTransfer::class;
+    protected $model = TokenAction::class;
 
     public function definition()
     {
@@ -35,6 +35,7 @@ final class TokenTransferFactory extends Factory
 
         return [
             'address'          => fn () => Token::factory()->create()->address,
+            'action'           => 'Transfer',
             'block_number'     => $transaction->block_number,
             'index'            => $this->faker->numberBetween(0, 100),
             'transaction_hash' => $transaction->hash,
@@ -42,5 +43,14 @@ final class TokenTransferFactory extends Factory
             'to'               => fn () => Wallet::factory()->create()->address,
             'value'            => (string) BigNumber::new($this->faker->numberBetween(1, 1000))->multipliedBy(1e18),
         ];
+    }
+
+    public function approval()
+    {
+        return $this->state(function () {
+            return [
+                'action' => 'Approval',
+            ];
+        });
     }
 }

@@ -3,7 +3,7 @@ import MobileTableRow from "../Row";
 import TableCell from "../TableCell";
 import { MobileTransactionsSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Transactions/Transactions";
 import { IPaginatedResponse } from "@/types";
-import { ITokenTransfer } from "@/types/generated";
+import { ITokenAction } from "@/types/generated";
 import { useTranslation } from "react-i18next";
 import ID from "@/Components/Transaction/ID";
 import Age from "@/Components/Model/Age";
@@ -12,14 +12,14 @@ import { usePageHandler } from "@/Providers/PageHandler/PageHandlerContext";
 import { TableHeaderWrapper } from "@/Components/Tables/Desktop/Table";
 import AddressingGeneric from "@/Components/Tokens/AddressingGeneric";
 import Token from "@/Components/Tokens/Token";
-import { TokenTransfer } from "@/models/TokenTransfer";
+import { TokenAction } from "@/models/TokenAction";
 import useSharedData from "@/hooks/use-shared-data";
 
 export function TransfersMobileTable({
     transfers,
     noAge,
 }: {
-    transfers: IPaginatedResponse<ITokenTransfer>;
+    transfers: IPaginatedResponse<ITokenAction>;
     noAge?: boolean;
 }) {
     const { t, i18n } = useTranslation();
@@ -27,8 +27,8 @@ export function TransfersMobileTable({
 
     return (
         <MobileTable noResultsMessage={transfers.noResultsMessage} resultCount={transfers.total ?? 0}>
-            {transfers.data.map((row: ITokenTransfer, index) => {
-                const transfer = TokenTransfer.make(row, network);
+            {transfers.data.map((row: ITokenAction, index) => {
+                const transfer = TokenAction.make(row, network);
 
                 return (
                     <MobileTableRow
@@ -53,7 +53,7 @@ export function TransfersMobileTable({
                         <TableCell label={t("tables.tokens.amount_generic")} className="sm:flex-1">
                             <Amount
                                 testId={`transaction:mobile:${transfer.transaction!.hash}:amount`}
-                                tokenTransfer={transfer}
+                                tokenAction={transfer}
                             />
                         </TableCell>
 
@@ -71,7 +71,7 @@ export default function TransfersMobileTableWrapper({
     transfers,
     rowCount = 10,
 }: {
-    transfers?: IPaginatedResponse<ITokenTransfer>;
+    transfers?: IPaginatedResponse<ITokenAction>;
     rowCount?: number;
 }) {
     const { isLoading } = usePageHandler();
