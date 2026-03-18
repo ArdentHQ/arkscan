@@ -46,7 +46,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                     ],
                 ])
                 ->missing('transactions')
-                ->missing('tokenActions')
+                ->missing('tokenTransfers')
                 ->missing('tokens')
                 ->missing('blocks')
                 ->missing('voters')
@@ -60,7 +60,7 @@ function performWalletRequest($context, $withReload = true, $pageCallback = null
                 return;
             }
 
-            $page->reloadOnly('wallet,transactions,tokenActions,tokens,blocks,voters', function (Assert $reload) use ($reloadCallback) {
+            $page->reloadOnly('wallet,transactions,tokenTransfers,tokens,blocks,voters', function (Assert $reload) use ($reloadCallback) {
                 if (is_callable($reloadCallback)) {
                     $reloadCallback($reload);
                 }
@@ -113,7 +113,7 @@ it('should have transactions', function () {
     );
 });
 
-it('should have token transfers', function () {
+it('should only have token transfers', function () {
     $altWallet = Wallet::factory()->create();
 
     $sent = Transaction::factory()
@@ -132,6 +132,14 @@ it('should have token transfers', function () {
         ])
         ->fresh();
 
+    $approval = Transaction::factory()
+        ->approve($this->subject->address, BigNumber::new(1 * 1e18))
+        ->create([
+            'sender_public_key' => $altWallet->public_key,
+            'from'              => $altWallet->address,
+        ])
+        ->fresh();
+
     TokenAction::factory()->create([
         'transaction_hash' => $sent->hash,
         'from'             => $this->subject->address,
@@ -144,20 +152,32 @@ it('should have token transfers', function () {
         'to'               => $this->subject->address,
     ]);
 
+    TokenAction::factory()
+        ->approval()
+        ->create([
+            'transaction_hash' => $approval->hash,
+            'from'             => $altWallet->address,
+            'to'               => $this->subject->address,
+        ]);
+
     performWalletRequest(
         $this,
         wallet: $this->subject,
-        reloadCallback: function (Assert $reload) use ($sent, $received) {
-            $reload->has('tokenActions.data', 2)
-                ->where('tokenActions.total', 2)
-                ->where('tokenActions.current_page', 1)
-                ->where('tokenActions.last_page', 1)
-                ->where('tokenActions.meta', [
+        reloadCallback: function (Assert $reload) use ($sent, $received, $approval) {
+            $reload->has('tokenTransfers.data', 2)
+                ->where('tokenTransfers.total', 2)
+                ->where('tokenTransfers.current_page', 1)
+                ->where('tokenTransfers.last_page', 1)
+                ->where('tokenTransfers.meta', [
                     'pageName'  => 'page',
                     'urlParams' => [],
                 ])
-                ->where('tokenActions.data', function ($transactions) use ($sent, $received) {
+                ->where('tokenTransfers.data', function ($transactions) use ($sent, $received, $approval) {
                     $transactionIds = collect($transactions)->pluck('transaction_hash');
+
+                    if ($transactionIds->contains($approval->hash)) {
+                        return false;
+                    }
 
                     return $transactionIds->contains($sent->hash) && $transactionIds->contains($received->hash);
                 });
@@ -1035,9 +1055,9 @@ it('should show no results message if no token transfers', function () {
         $this,
         wallet: $this->subject,
         reloadCallback: function (Assert $reload) {
-            $reload->has('tokenActions.data', 0)
-                ->where('tokenActions.total', 0)
-                ->where('tokenActions.noResultsMessage', trans('tables.tokens.transfers.no_results'));
+            $reload->has('tokenTransfers.data', 0)
+                ->where('tokenTransfers.total', 0)
+                ->where('tokenTransfers.noResultsMessage', trans('tables.tokens.transfers.no_results'));
         },
     );
 });

@@ -334,7 +334,7 @@ it('should handle token transfer with unknown recipient wallet', function () {
 
     $details = TransactionDetails::fromModel($transaction);
 
-    expect($details->tokenAction)->not->toBeNull();
-    expect(strtolower($details->tokenAction['recipient']->address))->toBe(strtolower($unknownAddress));
-    expect($details->tokenAction['recipient']->username)->toBeNull();
+    expect($details->tokenTransfer)->not->toBeNull();
+    expect(strtolower($details->tokenTransfer['recipient']->address))->toBe(strtolower($unknownAddress));
+    expect($details->tokenTransfer['recipient']->username)->toBeNull();
 });

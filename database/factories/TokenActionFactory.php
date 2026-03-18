@@ -44,4 +44,13 @@ final class TokenActionFactory extends Factory
             'value'            => (string) BigNumber::new($this->faker->numberBetween(1, 1000))->multipliedBy(1e18),
         ];
     }
+
+        public function approval()
+        {
+            return $this->state(function () {
+                return [
+                    'action' => 'Approval',
+                ];
+            });
+        }
 }

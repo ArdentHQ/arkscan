@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Models\TokenAction;
 use App\Models\Transaction;
+use App\Models\Wallet;
+use App\Services\BigNumber;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -66,5 +68,31 @@ it('should include contract deployment transactions', function () {
     performRequest($this, reloadCallback: function (Assert $page) {
         $page->has('transfers.data', 5)
             ->where('transfers.noResultsMessage', null);
+    });
+});
+
+it('should only show transfers', function () {
+    TokenAction::factory(3)->create();
+
+    $wallet = Wallet::factory()->create();
+
+    $approval = Transaction::factory()
+        ->approve($wallet->address, BigNumber::new(1 * 1e18))
+        ->create();
+
+    TokenAction::factory()
+        ->approval()
+        ->create([
+            'transaction_hash' => $approval->hash,
+        ]);
+
+    performRequest($this, reloadCallback: function (Assert $page) use ($approval) {
+        $page->has('transfers.data', 3)
+            ->where('transfers.noResultsMessage', null)
+            ->where('transfers.data', function ($transactions) use ($approval) {
+                return collect($transactions)
+                    ->pluck('transaction_hash')
+                    ->doesntContain($approval->hash);
+            });
     });
 });
