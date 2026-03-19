@@ -16,7 +16,7 @@ const Layout = ({ children, className = "py-8" }: { children: React.ReactNode; c
 
             <Navbar />
 
-            <div className={className}>{children}</div>
+            <main className={className}>{children}</main>
         </>
     );
 };
