@@ -68,6 +68,20 @@ return [
         'top_accounts_no_results' => 'There are currently no accounts to display.',
     ],
 
+    'bookmarks' => [
+        'addresses' => [
+            'no_results' => "You don't have any saved addresses.",
+        ],
+
+        'transactions' => [
+            'no_results' => "You don't have any saved transactions.",
+        ],
+
+        'blocks' => [
+            'no_results' => "You don't have any saved blocks.",
+        ],
+    ],
+
     'exchanges' => [
         'name'            => 'Name',
         'top_pairs'       => 'Top Pairs',
