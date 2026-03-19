@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\Inertia\BlocksListController;
+use App\Http\Controllers\Inertia\BookmarksController;
 use App\Http\Controllers\Inertia\CompatibleWalletsController;
 use App\Http\Controllers\Inertia\ExchangesController;
 use App\Http\Controllers\Inertia\HomeController;
@@ -73,6 +74,7 @@ Route::post('support', [SupportController::class, 'submit'])
         ProtectAgainstSpam::class,
         'throttle:5,60',
     ]);
+
 // Explorer 3.0 BC - Remove after some time!
 Route::redirect('/top-wallets', '/top-accounts');
 Route::redirect('/wallets', '/top-accounts');
@@ -91,6 +93,8 @@ Route::get('/exchanges', ExchangesController::class)->name('exchanges');
 Route::post('/exchanges', [ExchangesController::class, 'submit'])
     ->middleware(['throttle:3,3600'])
     ->name('exchanges.submit');
+
+Route::get('/bookmarks', BookmarksController::class)->name('bookmarks');
 
 Route::post('/webhooks', WebhooksController::class)
     ->withoutMiddleware([VerifyCsrfToken::class])
