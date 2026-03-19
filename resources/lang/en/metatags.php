@@ -129,4 +129,11 @@ return [
         'description' => 'Get help with the use of the :name Blockchain Explorer.',
         'image'       => 'metadata/support.png',
     ],
+
+    // TODO: update image once available - https://app.clickup.com/t/86e0f41zc
+    'bookmarks'       => [
+        'title'       => 'Bookmarks | :name Blockchain Explorer',
+        'description' => 'View your bookmarked addresses, transactions, and blocks on the :name Blockchain Explorer.',
+        'image'       => 'metadata/support.png',
+    ],
 ];
