@@ -18,7 +18,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
         <Link
             href={link}
             className={classNames({
-                "group relative mx-4 inline-flex h-full rounded border-t-2 border-transparent px-2 font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none focus:ring-inset": true,
+                "group relative mx-4 inline-flex h-full rounded px-2 pt-[2px] font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none focus-visible:ring-inset": true,
                 "text-theme-secondary-900 dark:text-theme-dark-50": isActive,
                 "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-200 dark:hover:text-theme-secondary-400":
                     !isActive,
@@ -52,22 +52,22 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
 
                 <div className="flex items-center space-x-3">
                     <div className="flex justify-end">
-                        <div className="flex flex-1 items-center justify-end sm:items-stretch sm:justify-between">
+                        <div className="mr-2 flex flex-1 items-center justify-end sm:items-stretch sm:justify-between">
                             <div className="-mx-4 hidden h-[3.25rem] items-center sm:h-16 md:flex">
                                 {navigation.map((navItem, index) => (
                                     <div key={index} className="relative h-full">
                                         {navItem.children ? (
                                             <DropdownProvider>
                                                 <Dropdown
-                                                    wrapperClass="relative h-full"
+                                                    wrapperClass="relative h-full mr-2"
                                                     useDefaultButtonClasses={false}
-                                                    buttonClass="inline-flex h-full"
+                                                    buttonClass="inline-flex h-full px-2 focus-visible:ring-inset"
                                                     dropdownClasses="w-auto"
                                                     placement="bottom-start"
                                                     button={({ isOpen }) => (
                                                         <div
                                                             className={classNames(
-                                                                "relative mr-6 inline-flex h-full items-center justify-center border-b-2 border-transparent px-1 pt-px font-semibold leading-5 text-theme-secondary-700 transition duration-150 ease-in-out hover:border-theme-primary-300 focus:outline-none focus:ring-inset dark:text-theme-dark-200 hover:dark:text-theme-dark-50",
+                                                                "relative inline-flex h-full items-center justify-center border-b-2 border-transparent pt-px font-semibold leading-5 text-theme-secondary-700 transition duration-150 ease-in-out hover:border-theme-primary-300 focus:outline-none focus:ring-inset dark:text-theme-dark-200 hover:dark:text-theme-dark-50",
                                                                 {
                                                                     "!border-theme-primary-600": isOpen,
                                                                     "hover:border-theme-primary-300 dark:hover:border-theme-secondary-600":

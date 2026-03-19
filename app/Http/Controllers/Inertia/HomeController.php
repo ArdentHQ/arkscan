@@ -13,6 +13,7 @@ use App\Facades\Network;
 use App\Facades\Services\GasTracker;
 use App\Facades\Settings;
 use App\Http\Controllers\Concerns\WithStatistics;
+use App\Http\Controllers\Inertia\Concerns\WithWalletRelations;
 use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Models\Scopes\OrderByTimestampScope;
@@ -33,6 +34,7 @@ use Inertia\Response;
 final class HomeController
 {
     use WithStatistics;
+    use WithWalletRelations;
 
     public function __invoke(Request $request): Response
     {
@@ -83,11 +85,14 @@ final class HomeController
 
     public function getTransactions(): LengthAwarePaginator
     {
-        return Transaction::query()
-            ->with(['votedFor', 'sender', 'senderWallet', 'recipientWallet', 'multiPaymentRecipients'])
+        $paginator = Transaction::query()
             ->withScope(OrderByTimestampScope::class)
-            ->paginate((int) config('arkscan.pagination.per_page'))
-            ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
+            ->paginate((int) config('arkscan.pagination.per_page'));
+
+        $this->loadWalletRelations($paginator);
+        $this->loadMultiPaymentTotals($paginator);
+
+        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
     }
 
     public function getBlocks(): LengthAwarePaginator

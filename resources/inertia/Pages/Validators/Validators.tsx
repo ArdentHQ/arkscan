@@ -59,6 +59,7 @@ const ValidatorsTabs = () => {
 };
 
 function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
+    const { t } = useTranslation();
     const { baseUrl, filters, statistics } = useSharedData<ValidatorsProps>();
 
     return (
@@ -95,6 +96,7 @@ function ValidatorsPageHandlerProvider({ children }: PropsWithChildren) {
             ]}
             header={<HeaderStats statistics={statistics} />}
             baseUrl={baseUrl}
+            ariaLabel={t("pages.validators.title")}
         >
             <PageHandlerProvider>{children}</PageHandlerProvider>
         </TabsProvider>

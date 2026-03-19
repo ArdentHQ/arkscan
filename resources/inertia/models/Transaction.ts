@@ -57,6 +57,10 @@ export class Transaction {
             return UnitConverter.formatUnits(this.value, "ark");
         }
 
+        if (this.multiPaymentTotal) {
+            return UnitConverter.formatUnits(this.multiPaymentTotal, "ark");
+        }
+
         let amount = new BigNumber(0);
         for (const recipient of this.multiPaymentRecipients) {
             amount = amount.plus(recipient.amount);

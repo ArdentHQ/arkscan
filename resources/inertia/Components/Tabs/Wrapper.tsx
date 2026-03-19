@@ -2,7 +2,7 @@ import { ITab } from "@/Providers/Tabs/types";
 import Tab from "./Tab";
 import { useEffect, useRef, useState } from "react";
 
-export default function Wrapper({ tabs }: { tabs: ITab[] }) {
+export default function Wrapper({ tabs, ariaLabel }: { tabs: ITab[]; ariaLabel?: string }) {
     const [showOverflowIndicators, setShowOverflowIndicators] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,7 +38,7 @@ export default function Wrapper({ tabs }: { tabs: ITab[] }) {
                 className="no-scrollbar mb-6 w-screen overflow-scroll bg-theme-secondary-200 px-6 py-2 dark:bg-theme-dark-950 sm:mb-4 sm:w-auto sm:!bg-transparent sm:px-0 sm:py-0 md:mb-0"
             >
                 <div className="relative z-10 inline-flex items-center justify-between rounded-xl bg-theme-secondary-200 dark:bg-theme-dark-950 sm:p-1">
-                    <div role="tablist" className="flex space-x-1 !px-0 pr-6 sm:pr-0">
+                    <div role="tablist" aria-label={ariaLabel} className="flex space-x-1 !px-0 pr-6 sm:pr-0">
                         {tabs.map((tab) => (
                             <Tab key={tab.value} text={tab.text} value={tab.value} />
                         ))}

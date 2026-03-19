@@ -186,6 +186,29 @@ it('should make an instance for a voting wallet', function () {
     ]);
 });
 
+it('should create a stub with default values', function () {
+    $address = '0x1234567890abcdef1234567890abcdef12345678';
+
+    $subject = WalletDTO::stub($address);
+
+    expect($subject->toArray())->toEqual([
+        'address'           => $address,
+        'attributes'        => null,
+        'balance'           => '0',
+        'nonce'             => '0',
+        'public_key'        => null,
+        'legacyAddress'     => null,
+        'username'          => null,
+        'vote'              => null,
+        'votes'             => '0',
+        'productivity'      => 0.0,
+        'totalForged'       => '0',
+        'balancePercentage' => 0.0,
+        'voteUrl'           => null,
+        'votePercentage'    => null,
+    ]);
+});
+
 it('should not recursively load votes', function () {
     $this->freezeTime();
     $this->travelTo('2025-09-11 12:00:00');

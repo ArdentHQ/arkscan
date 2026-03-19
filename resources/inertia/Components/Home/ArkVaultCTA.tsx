@@ -22,11 +22,11 @@ export default function ArkVaultCTA() {
             backgroundClass="left-0 right-auto max-w-none sm:left-auto sm:right-0"
             background={
                 <>
-                    <img src={footerBg} className="max-w-none dark:hidden sm:block" />
+                    <img src={footerBg} className="max-w-none dark:hidden sm:block" alt="" />
 
-                    <img src={footerBgDark} className="hidden max-w-none dim:hidden dark:block" />
+                    <img src={footerBgDark} className="hidden max-w-none dim:hidden dark:block" alt="" />
 
-                    <img src={footerBgDim} className="hidden max-w-none dim:block" />
+                    <img src={footerBgDim} className="hidden max-w-none dim:block" alt="" />
                 </>
             }
         >
@@ -34,9 +34,9 @@ export default function ArkVaultCTA() {
 
             <div className="relative z-30 flex h-full flex-1 flex-col items-center sm:flex-row sm:justify-between">
                 <div className="-ml-24 hidden h-full sm:block md:-ml-16 lg:ml-0">
-                    <img src={footerImage} className="h-full dark:hidden" />
-                    <img src={footerImageDark} className="hidden h-full dim:hidden dark:block" />
-                    <img src={footerImageDim} className="hidden h-full dim:block" />
+                    <img src={footerImage} className="h-full dark:hidden" alt="" />
+                    <img src={footerImageDark} className="hidden h-full dim:hidden dark:block" alt="" />
+                    <img src={footerImageDim} className="hidden h-full dim:block" alt="" />
                 </div>
 
                 <div className="flex w-full flex-1 flex-col sm:ml-6 sm:w-auto md:ml-2 md-lg:pl-8 lg:ml-6">

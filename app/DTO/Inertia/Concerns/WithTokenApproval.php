@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\DTO\Inertia\Concerns;
 
-use App\DTO\Inertia\Wallet as WalletDTO;
+use App\DTO\Inertia\WalletReference;
 use App\Enums\ApproveArgument;
-use App\Facades\Wallets;
+use App\Models\Wallet;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 trait WithTokenApproval
 {
@@ -42,12 +41,10 @@ trait WithTokenApproval
             }
         }
 
-        try {
-            $spenderWallet     = Wallets::findByAddress($spender);
-            $spenderWalletData = WalletDTO::fromModel($spenderWallet);
-        } catch (ModelNotFoundException) {
-            $spenderWalletData = WalletDTO::stub($spender);
-        }
+        $spenderWallet     = Wallet::where('address', $spender)->first();
+        $spenderWalletData = $spenderWallet !== null
+            ? WalletReference::fromModel($spenderWallet)
+            : WalletReference::stub($spender);
 
         return [
             'spender'     => $spenderWalletData,

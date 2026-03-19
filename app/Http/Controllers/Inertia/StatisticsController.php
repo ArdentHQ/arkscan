@@ -268,7 +268,7 @@ final class StatisticsController
 
         return [
             'largest_transaction' => $this->makeTransactionRecord($largestTransaction !== null
-                ? Transaction::where('hash', $largestTransaction)->first()
+                ? Transaction::with('multiPaymentRecipients')->where('hash', $largestTransaction)->first()
                 : null),
             'highest_fee' => $this->makeBlockRecord($highestFeeBlock !== null
                 ? Block::where('hash', $highestFeeBlock)->first()
