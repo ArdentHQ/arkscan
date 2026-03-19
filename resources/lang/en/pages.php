@@ -781,8 +781,8 @@ return [
         'subtitle' => 'Collection of bookmarked addresses, transactions, and blocks.',
 
         'header' => [
-            'title' => 'How to Save a Bookmark?',
-            'subtitle' => 'On every page featuring addresses, transactions, and blocks, you\'ll find a flag icon for bookmarking on the right side.'
-        ]
+            'title'    => 'How to Save a Bookmark?',
+            'subtitle' => 'On every page featuring addresses, transactions, and blocks, you\'ll find a flag icon for bookmarking on the right side.',
+        ],
     ],
 ];
