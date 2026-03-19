@@ -43,7 +43,11 @@ export default function ArkVault() {
 
                 <div className="flex flex-1 grow pr-3 pt-2 md:py-2">
                     <img src={arkvaultImage} className="dark:hidden" alt="ARK Vault - Official ARK Wallet" />
-                    <img src={arkvaultImageDark} className="hidden dim:hidden dark:block" alt="ARK Vault - Official ARK Wallet" />
+                    <img
+                        src={arkvaultImageDark}
+                        className="hidden dim:hidden dark:block"
+                        alt="ARK Vault - Official ARK Wallet"
+                    />
                     <img src={arkvaultImageDim} className="hidden dim:block" alt="ARK Vault - Official ARK Wallet" />
                 </div>
             </div>
