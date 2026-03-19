@@ -6,6 +6,9 @@ import { useTabs } from "@/Providers/Tabs/TabsContext";
 import BookmarkAddressesTable from "@/Components/Tables/Desktop/Bookmarks/Addresses";
 import BookmarkTransactionsTable from "@/Components/Tables/Desktop/Bookmarks/Transactions";
 import BookmarkBlocksTable from "@/Components/Tables/Desktop/Bookmarks/Blocks";
+import HeaderBanner from "@/Components/Bookmarks/HeaderBanner";
+import PageHeader from "@/Components/PageHeader/PageHeader";
+import MobileDivider from "@/Components/General/MobileDivider";
 
 const tabs = [
     { text: "Addresses", value: "addresses" },
@@ -36,6 +39,14 @@ export default function BookmarksIndex() {
 
     return (
         <Layout>
+            <PageHeader title={t("pages.bookmarks.title")} subtitle={t("pages.bookmarks.subtitle")} />
+
+            <div className="mb-6 px-6 md:mx-auto md:max-w-7xl md:px-10">
+                <HeaderBanner />
+            </div>
+
+            <MobileDivider className="mb-6" />
+
             <TabsProvider
                 defaultSelected="addresses"
                 queryStringDefaults={queryStringDefaults}
