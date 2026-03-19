@@ -27,4 +27,6 @@ return [
     'exchanges'       => 'Exchanges',
     'statistics'      => 'Statistics',
     'hide'            => 'Hide',
+    'menu'            => 'Menu',
+    'search'          => 'Search',
 ];

@@ -242,7 +242,7 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                                         <span className="sr-only">{t("actions.search")}</span>
                                     </NavbarMobileButton>
 
-                                    <NavbarMobileButton onClick={() => setOpen(!open)}>
+                                    <NavbarMobileButton onClick={() => setOpen(!open)} aria-label={t("actions.menu")}>
                                         <span
                                             className={classNames({
                                                 hidden: open,
