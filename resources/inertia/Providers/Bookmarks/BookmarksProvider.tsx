@@ -8,6 +8,18 @@ const STORAGE_KEYS: Record<BookmarkType, string> = {
     blocks: "bookmarks:blocks",
 };
 
+const STORAGE_KEY_TO_TYPE: Record<string, BookmarkType> = Object.fromEntries(
+    Object.entries(STORAGE_KEYS).map(([type, key]) => [key, type as BookmarkType]),
+);
+
+function readFromStorage(): Record<BookmarkType, string[]> {
+    return {
+        addresses: JSON.parse(localStorage.getItem(STORAGE_KEYS.addresses) || "[]"),
+        transactions: JSON.parse(localStorage.getItem(STORAGE_KEYS.transactions) || "[]"),
+        blocks: JSON.parse(localStorage.getItem(STORAGE_KEYS.blocks) || "[]"),
+    };
+}
+
 export default function BookmarksProvider({ children }: { children: React.ReactNode }) {
     const [bookmarks, setBookmarks] = useState<Record<BookmarkType, string[]>>({
         addresses: [],
@@ -16,11 +28,22 @@ export default function BookmarksProvider({ children }: { children: React.ReactN
     });
 
     useEffect(() => {
-        setBookmarks({
-            addresses: JSON.parse(localStorage.getItem(STORAGE_KEYS.addresses) || "[]"),
-            transactions: JSON.parse(localStorage.getItem(STORAGE_KEYS.transactions) || "[]"),
-            blocks: JSON.parse(localStorage.getItem(STORAGE_KEYS.blocks) || "[]"),
-        });
+        setBookmarks(readFromStorage());
+
+        const onStorageChange = (event: StorageEvent) => {
+            const type = event.key ? STORAGE_KEY_TO_TYPE[event.key] : null;
+
+            if (type) {
+                setBookmarks((prev) => ({
+                    ...prev,
+                    [type]: JSON.parse(event.newValue || "[]"),
+                }));
+            }
+        };
+
+        window.addEventListener("storage", onStorageChange);
+
+        return () => window.removeEventListener("storage", onStorageChange);
     }, []);
 
     const isBookmarked = (type: BookmarkType, id: string) => {
