@@ -5,28 +5,27 @@ import TableCell from "../TableCell";
 import { IPaginatedResponse } from "@/types";
 import { IBlock } from "@/types/generated";
 import useSharedData from "@/hooks/use-shared-data";
-import useSettings from "@/Providers/Settings/useSettings";
 import { Block } from "@/models/Block";
 import Age from "@/Components/Model/Age";
 import Height from "@/Components/Block/Height";
 import Reward from "@/Components/Block/Reward";
 import Address from "@/Components/Wallet/Address";
 import BookmarkButton from "@/Components/General/BookmarkButton";
-import { currency } from "@/utils/number-formatter";
 
 function Row({ row }: { row: IBlock }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
-    const { currency: selectedCurrency } = useSettings();
     const block = Block.from(row);
 
     return (
         <MobileTableRow
             header={
                 <>
-                    <Height block={block} />
+                    <div className="sm:flex sm:flex-1">
+                        <Height block={block} />
+                    </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center justify-end space-x-2 sm:flex-1">
                         <Age
                             className="text-theme-secondary-700 dark:text-theme-dark-200"
                             timestamp={block.timestamp}
@@ -36,7 +35,7 @@ function Row({ row }: { row: IBlock }) {
                 </>
             }
         >
-            <TableCell label={t("tables.blocks.generated_by")} className="sm:flex-1">
+            <TableCell label={t("tables.blocks.generated_by")}>
                 <Address wallet={block.proposer} truncate />
             </TableCell>
 
@@ -49,16 +48,6 @@ function Row({ row }: { row: IBlock }) {
             >
                 <Reward block={block} withoutValue={!network?.canBeExchanged} />
             </TableCell>
-
-            {network?.canBeExchanged && (
-                <TableCell
-                    label={t("tables.blocks.value", {
-                        currency: network?.currency,
-                    })}
-                >
-                    {currency(block.rewardFiat(selectedCurrency), selectedCurrency)}
-                </TableCell>
-            )}
         </MobileTableRow>
     );
 }
