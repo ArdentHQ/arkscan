@@ -26,8 +26,9 @@ export default function BookmarkButton({
                 type="button"
                 className={classNames(
                     "group/bookmark transition-default flex items-center justify-center rounded border p-2 focus-visible:ring-inset",
-                    "border-theme-secondary-300 bg-white",
-                    "dark:border-theme-dark-700 dark:bg-theme-dark-900",
+                    isBookmarked
+                        ? "border-theme-primary-100 bg-theme-primary-100 hover:border-theme-primary-600 hover:bg-theme-primary-600 dark:border-theme-dark-700 dark:bg-theme-dark-800 dark:hover:border-theme-primary-600 dark:hover:bg-theme-primary-600"
+                        : "border-theme-secondary-300 bg-white hover:border-theme-primary-600 hover:bg-theme-primary-600 dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:hover:border-theme-primary-600 dark:hover:bg-theme-primary-600",
                     className,
                 )}
                 onClick={() => setIsBookmarked(!isBookmarked)}
@@ -37,8 +38,8 @@ export default function BookmarkButton({
                     className={classNames(
                         "transition-default h-4 w-4",
                         isBookmarked
-                            ? "fill-theme-primary-600 text-theme-primary-600 group-hover/bookmark:text-theme-primary-400 dark:fill-theme-dark-blue-500 dark:text-theme-dark-blue-500 dark:group-hover/bookmark:text-theme-dark-blue-300"
-                            : "text-theme-secondary-700 group-hover/bookmark:text-theme-secondary-900 dark:text-theme-dark-200 dark:group-hover/bookmark:text-white",
+                            ? "fill-theme-primary-600 text-theme-primary-600 group-hover/bookmark:fill-white group-hover/bookmark:text-white dark:fill-theme-dark-blue-500 dark:text-theme-dark-blue-500 dark:group-hover/bookmark:fill-white dark:group-hover/bookmark:text-white"
+                            : "text-theme-secondary-700 group-hover/bookmark:text-white dark:text-theme-dark-200 dark:group-hover/bookmark:text-white",
                     )}
                 />
             </button>
