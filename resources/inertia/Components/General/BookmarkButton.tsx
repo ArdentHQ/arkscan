@@ -14,19 +14,21 @@ export default function BookmarkButton({ testId, className }: { testId?: string;
             <button
                 type="button"
                 className={classNames(
-                    "transition-default flex items-center justify-center rounded border p-2 focus-visible:ring-inset",
-                    isBookmarked
-                        ? "border-theme-primary-600 bg-theme-primary-600 text-white dark:border-theme-dark-blue-500 dark:bg-theme-dark-blue-500"
-                        : "border-theme-secondary-300 bg-white text-theme-secondary-700 hover:border-theme-primary-700 hover:bg-theme-primary-700 hover:text-white dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700 dark:hover:text-theme-secondary-200",
+                    "group/bookmark transition-default flex items-center justify-center rounded border p-2 focus-visible:ring-inset",
+                    "border-theme-secondary-300 bg-white",
+                    "dark:border-theme-dark-700 dark:bg-theme-dark-900",
                     className,
                 )}
                 onClick={() => setIsBookmarked(!isBookmarked)}
                 data-testid={testId}
             >
                 <BookmarkIcon
-                    className={classNames("h-4 w-4", {
-                        "fill-current": isBookmarked,
-                    })}
+                    className={classNames(
+                        "transition-default h-4 w-4",
+                        isBookmarked
+                            ? "fill-theme-primary-600 text-theme-primary-600 group-hover/bookmark:text-theme-primary-400 dark:fill-theme-dark-blue-500 dark:text-theme-dark-blue-500 dark:group-hover/bookmark:text-theme-dark-blue-300"
+                            : "text-theme-secondary-700 group-hover/bookmark:text-theme-secondary-900 dark:text-theme-dark-200 dark:group-hover/bookmark:text-white",
+                    )}
                 />
             </button>
         </Tooltip>
