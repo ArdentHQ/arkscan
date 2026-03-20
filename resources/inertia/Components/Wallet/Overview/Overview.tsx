@@ -9,6 +9,7 @@ import PageHeaderLegacyAddressAction from "../../PageHeader/Actions/LegacyAddres
 import WalletOverviewWallet from "./Wallet";
 import WalletOverviewValidator from "./Validator/Validator";
 import PageHeaderQRCodeModalAction from "@/Components/PageHeader/Actions/QRCodeModal";
+import BookmarkButton from "@/Components/General/BookmarkButton";
 
 function OverviewActions({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
@@ -37,6 +38,8 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
             )}
 
             <PageHeaderQRCodeModalAction wallet={wallet} testId="wallet:show-qr-code-modal" />
+
+            <BookmarkButton testId="wallet:bookmark" />
         </>
     );
 }
