@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { router } from "@inertiajs/react";
 import { PageProps } from "@inertiajs/core";
@@ -12,6 +12,7 @@ import { IBlock, ITransaction, IWallet } from "@/types/generated";
 import BookmarkAddressesTable from "@/Components/Tables/Desktop/Bookmarks/Addresses";
 import BookmarkTransactionsTable from "@/Components/Tables/Desktop/Bookmarks/Transactions";
 import BookmarkBlocksTable from "@/Components/Tables/Desktop/Bookmarks/Blocks";
+import { BookmarkType } from "@/Providers/Bookmarks/types";
 
 interface BookmarksProps {
     addresses?: IPaginatedResponse<IWallet>;
@@ -32,23 +33,33 @@ const queryStringDefaults: ITabsQueryString = {
 };
 
 function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
-    const { currentTab } = useTabs();
+    const { currentTab, onTabChange } = useTabs();
     const { getBookmarks } = useBookmarks();
+    const hasMounted = useRef(false);
+
+    const loadBookmarks = (tab: string) => {
+        const bookmarkIds = getBookmarks(tab as BookmarkType);
+
+        router.reload({
+            only: [tab],
+            headers: {
+                "X-Bookmarks": JSON.stringify({ [tab]: bookmarkIds }),
+            },
+        });
+    };
 
     useEffect(() => {
-        if (!currentTab) {
+        if (!currentTab || hasMounted.current) {
             return;
         }
 
-        const bookmarkIds = getBookmarks(currentTab as "addresses" | "transactions" | "blocks");
-
-        router.reload({
-            only: [currentTab],
-            headers: {
-                "X-Bookmarks": JSON.stringify({ [currentTab]: bookmarkIds }),
-            },
-        });
+        hasMounted.current = true;
+        loadBookmarks(currentTab);
     }, [currentTab]);
+
+    onTabChange((tab) => {
+        loadBookmarks(tab.value);
+    });
 
     return (
         <div>
