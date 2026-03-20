@@ -2,41 +2,69 @@ import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
 import { Table } from "../Table";
 import TableHeader from "../TableHeader";
+import TableCell from "../TableCell";
+import { IPaginatedResponse } from "@/types";
+import { ITransaction } from "@/types/generated";
+import Age from "@/Components/Model/Age";
+import ID from "@/Components/Transaction/ID";
+import Amount from "@/Components/Transaction/Amount";
+import Method from "@/Components/Transaction/Method";
+import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
+import { Transaction } from "@/models/Transaction";
+import BookmarkButton from "@/Components/General/BookmarkButton";
 
-// TODO: replace with real data from localStorage
-const emptyPaginator = {
-    data: [],
-    current_page: 1,
-    first_page_url: "",
-    from: 0,
-    last_page: 1,
-    last_page_url: "",
-    links: [],
-    meta: { pageName: "page", urlParams: {} },
-    next_page_url: null,
-    path: "",
-    per_page: 25,
-    prev_page_url: null,
-    to: 0,
-    total: 0,
-    noResultsMessage: "",
-    perPageOptions: null,
-};
+function Row({ row }: { row: ITransaction }) {
+    const { network } = useSharedData();
+    const transaction = Transaction.make(row, network);
 
-function Row() {
-    return <tr></tr>;
+    return (
+        <tr className="text-sm font-semibold">
+            <TableCell className="w-[60px]">
+                <ID transaction={transaction} />
+            </TableCell>
+
+            <TableCell breakpoint="xl" responsive>
+                <Age timestamp={row.timestamp} />
+            </TableCell>
+
+            <TableCell>
+                <Method transaction={transaction} />
+            </TableCell>
+
+            <TableCell>
+                <AddressingGeneric transaction={transaction} />
+            </TableCell>
+
+            <TableCell className="text-right">
+                <Amount transaction={transaction} hideCurrency />
+            </TableCell>
+
+            <TableCell className="text-center">
+                <BookmarkButton type="transactions" id={transaction.hash} />
+            </TableCell>
+        </tr>
+    );
 }
 
-export default function BookmarkTransactionsTable() {
+export default function BookmarkTransactionsTable({
+    transactions,
+}: {
+    transactions?: IPaginatedResponse<ITransaction>;
+}) {
     const { t } = useTranslation();
     const { network } = useSharedData();
+
+    if (!transactions) {
+        return null;
+    }
 
     return (
         <Table
             withHeader
-            paginator={emptyPaginator}
+            withFooter
+            paginator={transactions}
             rowComponent={Row}
-            noResultsMessage={t("tables.bookmarks.transactions.no_results")}
+            noResultsMessage={transactions.noResultsMessage}
             columns={
                 <>
                     <TableHeader>{t("tables.transactions.id")}</TableHeader>
@@ -49,17 +77,13 @@ export default function BookmarkTransactionsTable() {
 
                     <TableHeader>{t("tables.transactions.addressing")}</TableHeader>
 
-                    <TableHeader className="last-until-lg text-right" lastOn="lg">
+                    <TableHeader className="text-right">
                         {t("tables.transactions.amount", {
                             currency: network!.currency,
                         })}
                     </TableHeader>
 
-                    <TableHeader className="text-right" responsive breakpoint="lg">
-                        {t("tables.transactions.fee", {
-                            currency: network!.currency,
-                        })}
-                    </TableHeader>
+                    <TableHeader className="text-center">{""}</TableHeader>
                 </>
             }
         />

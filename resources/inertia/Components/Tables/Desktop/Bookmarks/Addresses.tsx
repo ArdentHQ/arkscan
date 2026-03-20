@@ -2,41 +2,52 @@ import { useTranslation } from "react-i18next";
 import useSharedData from "@/hooks/use-shared-data";
 import { Table } from "../Table";
 import TableHeader from "../TableHeader";
+import TableCell from "../TableCell";
+import { IPaginatedResponse } from "@/types";
+import { IWallet } from "@/types/generated";
+import Address from "@/Components/Wallet/Address";
+import useWalletFormatting from "@/hooks/use-wallet-formatting";
+import BookmarkButton from "@/Components/General/BookmarkButton";
 
-// TODO: replace with real data from localStorage
-const emptyPaginator = {
-    data: [],
-    current_page: 1,
-    first_page_url: "",
-    from: 0,
-    last_page: 1,
-    last_page_url: "",
-    links: [],
-    meta: { pageName: "page", urlParams: {} },
-    next_page_url: null,
-    path: "",
-    per_page: 25,
-    prev_page_url: null,
-    to: 0,
-    total: 0,
-    noResultsMessage: "",
-    perPageOptions: null,
-};
+function Row({ row }: { row: IWallet }) {
+    const { formattedBalanceFull } = useWalletFormatting(row.balance);
 
-function Row() {
-    return <tr></tr>;
+    return (
+        <tr className="text-sm font-semibold">
+            <TableCell>
+                <Address wallet={row} />
+            </TableCell>
+
+            <TableCell>
+                <span className="leading-4.25">{row.username ?? null}</span>
+            </TableCell>
+
+            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+                {formattedBalanceFull}
+            </TableCell>
+
+            <TableCell className="text-center">
+                <BookmarkButton type="addresses" id={row.address} />
+            </TableCell>
+        </tr>
+    );
 }
 
-export default function BookmarkAddressesTable() {
+export default function BookmarkAddressesTable({ addresses }: { addresses?: IPaginatedResponse<IWallet> }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
+
+    if (!addresses) {
+        return null;
+    }
 
     return (
         <Table
             withHeader
-            paginator={emptyPaginator}
+            withFooter
+            paginator={addresses}
             rowComponent={Row}
-            noResultsMessage={t("tables.bookmarks.addresses.no_results")}
+            noResultsMessage={addresses.noResultsMessage}
             columns={
                 <>
                     <TableHeader type="id" className="whitespace-nowrap">
@@ -45,29 +56,13 @@ export default function BookmarkAddressesTable() {
 
                     <TableHeader>{t("general.wallet.name")}</TableHeader>
 
-                    <TableHeader className="text-center" breakpoint="md-lg" responsive>
-                        {t("general.wallet.type")}
-                    </TableHeader>
-
-                    <TableHeader className="text-center" breakpoint="lg" responsive>
-                        {t("general.wallet.voting")}
-                    </TableHeader>
-
-                    <TableHeader className="last-until-lg text-right" lastOn="lg">
+                    <TableHeader className="text-right">
                         {t("general.wallet.balance_currency", {
                             currency: network!.currency,
                         })}
                     </TableHeader>
 
-                    <TableHeader
-                        className="text-right"
-                        breakpoint="md-lg"
-                        responsive
-                        type="number"
-                        tooltip={t("pages.wallets.percentage_tooltip")}
-                    >
-                        {t("general.wallet.percentage")}
-                    </TableHeader>
+                    <TableHeader className="text-center">{""}</TableHeader>
                 </>
             }
         />
