@@ -42,12 +42,11 @@ function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
 
         const bookmarkIds = getBookmarks(currentTab as "addresses" | "transactions" | "blocks");
 
-        const params: Record<string, string[]> = {};
-        params[currentTab] = bookmarkIds;
-
         router.reload({
             only: [currentTab],
-            data: params,
+            headers: {
+                "X-Bookmarks": JSON.stringify({ [currentTab]: bookmarkIds }),
+            },
         });
     }, [currentTab]);
 

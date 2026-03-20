@@ -29,9 +29,18 @@ final class BookmarksController
         ]);
     }
 
+    private function bookmarkIds(string $type): array
+    {
+        $header = request()->header('X-Bookmarks', '{}');
+
+        $bookmarks = json_decode($header, true) ?? [];
+
+        return (array) ($bookmarks[$type] ?? []);
+    }
+
     private function getAddresses(): array
     {
-        $ids = (array) request()->query('addresses', []);
+        $ids = $this->bookmarkIds('addresses');
 
         if ($ids === []) {
             return $this->emptyPaginator(trans('tables.bookmarks.addresses.no_results'));
@@ -46,7 +55,7 @@ final class BookmarksController
 
     private function getTransactions(): array
     {
-        $ids = (array) request()->query('transactions', []);
+        $ids = $this->bookmarkIds('transactions');
 
         if ($ids === []) {
             return $this->emptyPaginator(trans('tables.bookmarks.transactions.no_results'));
@@ -61,7 +70,7 @@ final class BookmarksController
 
     private function getBlocks(): array
     {
-        $ids = (array) request()->query('blocks', []);
+        $ids = $this->bookmarkIds('blocks');
 
         if ($ids === []) {
             return $this->emptyPaginator(trans('tables.bookmarks.blocks.no_results'));
