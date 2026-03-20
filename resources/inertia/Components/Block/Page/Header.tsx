@@ -22,7 +22,12 @@ function HeaderActions({ block }: { block: IBlock }) {
                 <div className="ml-2 sm:hidden">{t("actions.copy")}</div>
             </Clipboard>
 
-            <BookmarkButton testId="block:bookmark" className="h-8 min-w-[62px] sm:min-w-0" />
+            <BookmarkButton
+                type="blocks"
+                id={block.hash}
+                testId="block:bookmark"
+                className="h-8 min-w-[62px] sm:min-w-0"
+            />
         </>
     );
 }

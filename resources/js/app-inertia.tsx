@@ -6,6 +6,7 @@ import ArkConnectProvider from "@/Providers/ArkConnect/ArkConnectProvider";
 import WebhooksProvider from "@/Providers/Webhooks/WebhooksProvider";
 import SettingsProvider from "@/Providers/Settings/SettingsProvider";
 import ToastProvider from "@/Providers/Toast/ToastProvider";
+import BookmarksProvider from "@/Providers/Bookmarks/BookmarksProvider";
 import { IConfigArkconnect, INetwork, IPriceTickerData } from "@/types/generated";
 import { ArkConnectConfiguration } from "@/Providers/ArkConnect/types";
 
@@ -38,7 +39,9 @@ createInertiaApp({
                 >
                     <ArkConnectProvider configuration={configuration}>
                         <ToastProvider>
-                            <App {...props} />
+                            <BookmarksProvider>
+                                <App {...props} />
+                            </BookmarksProvider>
                         </ToastProvider>
                     </ArkConnectProvider>
                 </SettingsProvider>
