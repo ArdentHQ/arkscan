@@ -22,15 +22,15 @@ function Row({ row }: { row: ITransaction }) {
         <MobileTableRow
             header={
                 <>
+                    <ID transaction={transaction} />
+
                     <div className="flex items-center space-x-2">
-                        <ID transaction={transaction} />
+                        <Age
+                            className="text-theme-secondary-700 dark:text-theme-dark-200"
+                            timestamp={transaction.timestamp}
+                        />
                         <BookmarkButton type="transactions" id={transaction.hash} variant="inline" />
                     </div>
-
-                    <Age
-                        className="text-theme-secondary-700 dark:text-theme-dark-200"
-                        timestamp={transaction.timestamp}
-                    />
                 </>
             }
         >

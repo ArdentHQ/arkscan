@@ -24,12 +24,15 @@ function Row({ row }: { row: IBlock }) {
         <MobileTableRow
             header={
                 <>
+                    <Height block={block} />
+
                     <div className="flex items-center space-x-2">
-                        <Height block={block} />
+                        <Age
+                            className="text-theme-secondary-700 dark:text-theme-dark-200"
+                            timestamp={block.timestamp}
+                        />
                         <BookmarkButton type="blocks" id={block.hash} variant="inline" />
                     </div>
-
-                    <Age className="text-theme-secondary-700 dark:text-theme-dark-200" timestamp={block.timestamp} />
                 </>
             }
         >

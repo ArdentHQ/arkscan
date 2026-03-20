@@ -20,7 +20,7 @@ function Row({ wallet }: { wallet: IWallet }) {
     return (
         <MobileTableRow
             header={
-                <div className="flex items-center space-x-2">
+                <>
                     <Link className="link min-w-0 sm:hidden" href={route("wallet", wallet.address)}>
                         <TruncateMiddle>{wallet.address}</TruncateMiddle>
                     </Link>
@@ -28,16 +28,18 @@ function Row({ wallet }: { wallet: IWallet }) {
                         {wallet.address}
                     </Link>
 
-                    <Clipboard
-                        value={wallet.address}
-                        noStyling
-                        className="transition-default flex shrink-0 items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
-                        tooltipContent={t("pages.wallet.address_copied")}
-                        checkmarksClass=""
-                    />
+                    <div className="flex shrink-0 items-center space-x-2">
+                        <Clipboard
+                            value={wallet.address}
+                            noStyling
+                            className="transition-default flex items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
+                            tooltipContent={t("pages.wallet.address_copied")}
+                            checkmarksClass=""
+                        />
 
-                    <BookmarkButton type="addresses" id={wallet.address} variant="inline" />
-                </div>
+                        <BookmarkButton type="addresses" id={wallet.address} variant="inline" />
+                    </div>
+                </>
             }
         >
             <TableCell
