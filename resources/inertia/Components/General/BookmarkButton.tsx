@@ -27,7 +27,7 @@ export default function BookmarkButton({
                 className={classNames(
                     "group/bookmark transition-default flex items-center justify-center rounded border p-2 focus-visible:ring-inset",
                     isBookmarked
-                        ? "border-theme-primary-400 bg-theme-primary-100 hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-blue-400 dark:bg-theme-dark-800 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700"
+                        ? "border-theme-primary-400 bg-theme-primary-100 hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-600 dark:bg-theme-dark-800 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700"
                         : "border-theme-secondary-300 bg-white hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700",
                     className,
                 )}
