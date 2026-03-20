@@ -14,10 +14,10 @@ export default function BookmarkButton({ testId, className }: { testId?: string;
             <button
                 type="button"
                 className={classNames(
-                    "button button-icon p-2 focus-visible:ring-inset",
+                    "transition-default flex items-center justify-center rounded-lg border p-2 focus-visible:ring-inset",
                     isBookmarked
-                        ? "button-primary"
-                        : "button-secondary text-theme-secondary-700 hover:text-white dark:text-theme-dark-200 dark:hover:text-white",
+                        ? "border-theme-primary-600 bg-theme-primary-600 text-white dark:border-theme-dark-blue-500 dark:bg-theme-dark-blue-500"
+                        : "border-theme-secondary-300 bg-white text-theme-secondary-700 hover:border-theme-primary-700 hover:bg-theme-primary-700 hover:text-white dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700",
                     className,
                 )}
                 onClick={() => setIsBookmarked(!isBookmarked)}
