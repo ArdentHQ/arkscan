@@ -65,7 +65,7 @@ function Row({ row }: { row: IBlock }) {
 
 export default function BookmarkBlocksMobileTable({ blocks }: { blocks: IPaginatedResponse<IBlock> }) {
     return (
-        <div className="px-6 md:hidden">
+        <div className="md:hidden">
             <MobileTable noResultsMessage={blocks.noResultsMessage} resultCount={blocks.total ?? 0}>
                 {blocks.data.map((row: IBlock, index) => (
                     <Row key={index} row={row} />

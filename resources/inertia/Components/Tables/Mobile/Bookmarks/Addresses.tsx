@@ -59,7 +59,7 @@ function Row({ wallet }: { wallet: IWallet }) {
 
 export default function BookmarkAddressesMobileTable({ addresses }: { addresses: IPaginatedResponse<IWallet> }) {
     return (
-        <div className="px-6 md:hidden">
+        <div className="md:hidden">
             <MobileTable noResultsMessage={addresses.noResultsMessage} resultCount={addresses.total ?? 0}>
                 {addresses.data.map((wallet: IWallet) => (
                     <Row key={wallet.address} wallet={wallet} />

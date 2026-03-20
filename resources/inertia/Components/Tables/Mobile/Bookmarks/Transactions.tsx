@@ -69,7 +69,7 @@ export default function BookmarkTransactionsMobileTable({
     transactions: IPaginatedResponse<ITransaction>;
 }) {
     return (
-        <div className="px-6 md:hidden">
+        <div className="md:hidden">
             <MobileTable noResultsMessage={transactions.noResultsMessage} resultCount={transactions.total ?? 0}>
                 {transactions.data.map((row: ITransaction, index) => (
                     <Row key={index} row={row} />
