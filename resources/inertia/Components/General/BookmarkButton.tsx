@@ -8,12 +8,14 @@ import { BookmarkType } from "@/Providers/Bookmarks/types";
 export default function BookmarkButton({
     type,
     id,
+    variant = "button",
     testId,
     className,
     wrapperClassName,
 }: {
     type: BookmarkType;
     id: string;
+    variant?: "button" | "inline";
     testId?: string;
     className?: string;
     wrapperClassName?: string;
@@ -30,10 +32,13 @@ export default function BookmarkButton({
             <button
                 type="button"
                 className={classNames(
-                    "group/bookmark transition-default flex items-center justify-center rounded border p-2 focus-visible:ring-inset",
-                    bookmarked
-                        ? "border-theme-primary-400 bg-theme-primary-100 hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-blue-800 dark:bg-theme-dark-blue-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700 dim:border-theme-dark-600 dim:bg-theme-dark-800"
-                        : "border-theme-secondary-300 bg-white hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700",
+                    "group/bookmark transition-default flex items-center justify-center focus-visible:ring-inset",
+                    variant === "button" && [
+                        "rounded border p-2",
+                        bookmarked
+                            ? "border-theme-primary-400 bg-theme-primary-100 hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-blue-800 dark:bg-theme-dark-blue-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700 dim:border-theme-dark-600 dim:bg-theme-dark-800"
+                            : "border-theme-secondary-300 bg-white hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700",
+                    ],
                     className,
                 )}
                 onClick={() => toggle(type, id)}
