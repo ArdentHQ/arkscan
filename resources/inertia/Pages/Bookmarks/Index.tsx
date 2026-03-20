@@ -33,9 +33,9 @@ const queryStringDefaults: ITabsQueryString = {
 };
 
 function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
-    const { currentTab, onTabChange } = useTabs();
+    const { currentTab, addEventListener, removeEventListener } = useTabs();
     const { getBookmarks } = useBookmarks();
-    const hasMounted = useRef(false);
+    const loadedTabs = useRef<Record<string, boolean>>({});
 
     const loadBookmarks = (tab: string) => {
         const bookmarkIds = getBookmarks(tab as BookmarkType);
@@ -49,17 +49,25 @@ function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
     };
 
     useEffect(() => {
-        if (!currentTab || hasMounted.current) {
+        if (!currentTab || loadedTabs.current[currentTab]) {
             return;
         }
 
-        hasMounted.current = true;
+        loadedTabs.current[currentTab] = true;
         loadBookmarks(currentTab);
     }, [currentTab]);
 
-    onTabChange((tab) => {
-        loadBookmarks(tab.value);
-    });
+    useEffect(() => {
+        const handler = (tab: { value: string }) => {
+            loadBookmarks(tab.value);
+        };
+
+        addEventListener("tabChange", handler);
+
+        return () => {
+            removeEventListener("tabChange", handler);
+        };
+    }, []);
 
     return (
         <div>
