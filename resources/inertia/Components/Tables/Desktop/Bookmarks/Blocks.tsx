@@ -13,6 +13,7 @@ import { Block } from "@/models/Block";
 import Address from "@/Components/Wallet/Address";
 import BookmarkButton from "@/Components/General/BookmarkButton";
 import BookmarkBlocksMobileTable from "@/Components/Tables/Mobile/Bookmarks/Blocks";
+import { MobileBookmarkBlocksSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Bookmarks/Blocks";
 import classNames from "classnames";
 import useSettings from "@/Providers/Settings/useSettings";
 import { currency } from "@/utils/number-formatter";
@@ -110,7 +111,12 @@ export default function BookmarkBlocksTable({
 
         columns.push({ name: "" });
 
-        return <LoadingTable rowCount={rowCount} columns={columns} header />;
+        return (
+            <>
+                <LoadingTable rowCount={rowCount} columns={columns} header />
+                <MobileBookmarkBlocksSkeletonTable rowCount={rowCount} />
+            </>
+        );
     }
 
     return (

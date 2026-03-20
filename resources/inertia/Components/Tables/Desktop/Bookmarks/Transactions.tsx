@@ -15,6 +15,7 @@ import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
 import { Transaction } from "@/models/Transaction";
 import BookmarkButton from "@/Components/General/BookmarkButton";
 import BookmarkTransactionsMobileTable from "@/Components/Tables/Mobile/Bookmarks/Transactions";
+import { MobileBookmarkTransactionsSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Bookmarks/Transactions";
 
 function Row({ row }: { row: ITransaction }) {
     const { network } = useSharedData();
@@ -83,7 +84,12 @@ export default function BookmarkTransactionsTable({
             { name: "" },
         ];
 
-        return <LoadingTable rowCount={rowCount} columns={columns} header />;
+        return (
+            <>
+                <LoadingTable rowCount={rowCount} columns={columns} header />
+                <MobileBookmarkTransactionsSkeletonTable rowCount={rowCount} />
+            </>
+        );
     }
 
     return (

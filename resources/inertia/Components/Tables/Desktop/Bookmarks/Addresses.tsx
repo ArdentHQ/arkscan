@@ -15,6 +15,7 @@ import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import Percentage from "@/Components/General/Percentage";
 import BookmarkButton from "@/Components/General/BookmarkButton";
 import BookmarkAddressesMobileTable from "@/Components/Tables/Mobile/Bookmarks/Addresses";
+import { MobileBookmarkAddressesSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Bookmarks/Addresses";
 import VoteTooltipContent from "@/Components/Transaction/VoteTooltipContent";
 import VerifiedCheckmarkIcon from "@ui/icons/verified-checkmark.svg?react";
 import ExchangeIcon from "@ui/icons/exchanges.svg?react";
@@ -162,7 +163,12 @@ export default function BookmarkAddressesTable({
             { name: "" },
         ];
 
-        return <LoadingTable rowCount={rowCount} columns={columns} header />;
+        return (
+            <>
+                <LoadingTable rowCount={rowCount} columns={columns} header />
+                <MobileBookmarkAddressesSkeletonTable rowCount={rowCount} />
+            </>
+        );
     }
 
     return (
