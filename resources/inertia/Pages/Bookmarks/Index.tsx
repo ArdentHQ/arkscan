@@ -33,22 +33,10 @@ const queryStringDefaults: ITabsQueryString = {
 };
 
 function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
-    const { currentTab, addEventListener, removeEventListener } = useTabs();
+    const { currentTab } = useTabs();
     const { getBookmarks } = useBookmarks();
+    const [loading, setLoading] = useState<Record<string, boolean>>({});
     const loadedTabs = useRef<Record<string, boolean>>({});
-    const [loading, setLoading] = useState(false);
-
-    const loadBookmarks = (tab: string) => {
-        setLoading(true);
-
-        router.reload({
-            only: [tab],
-            headers: {
-                "X-Bookmarks": JSON.stringify({ [tab]: getBookmarks(tab as BookmarkType) }),
-            },
-            onFinish: () => setLoading(false),
-        });
-    };
 
     useEffect(() => {
         if (!currentTab || loadedTabs.current[currentTab]) {
@@ -56,39 +44,42 @@ function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
         }
 
         loadedTabs.current[currentTab] = true;
-        loadBookmarks(currentTab);
+
+        setLoading((prev) => ({ ...prev, [currentTab]: true }));
+
+        router.reload({
+            only: [currentTab],
+            headers: {
+                "X-Bookmarks": JSON.stringify({ [currentTab]: getBookmarks(currentTab as BookmarkType) }),
+            },
+            onFinish: () => {
+                setLoading((prev) => ({ ...prev, [currentTab]: false }));
+            },
+        });
     }, [currentTab]);
 
-    useEffect(() => {
-        const handler = (tab: { value: string }) => {
-            loadBookmarks(tab.value);
-        };
-
-        addEventListener("tabChange", handler);
-
-        return () => {
-            removeEventListener("tabChange", handler);
-        };
-    }, []);
-
     const skeletonCount = (type: BookmarkType) => Math.min(getBookmarks(type).length, 25) || 3;
+    const isLoading = (tab: string) => loading[tab] !== false;
 
     return (
         <div>
             {currentTab === "addresses" && (
                 <BookmarkAddressesTable
-                    addresses={loading ? undefined : addresses}
+                    addresses={isLoading("addresses") ? undefined : addresses}
                     rowCount={skeletonCount("addresses")}
                 />
             )}
             {currentTab === "transactions" && (
                 <BookmarkTransactionsTable
-                    transactions={loading ? undefined : transactions}
+                    transactions={isLoading("transactions") ? undefined : transactions}
                     rowCount={skeletonCount("transactions")}
                 />
             )}
             {currentTab === "blocks" && (
-                <BookmarkBlocksTable blocks={loading ? undefined : blocks} rowCount={skeletonCount("blocks")} />
+                <BookmarkBlocksTable
+                    blocks={isLoading("blocks") ? undefined : blocks}
+                    rowCount={skeletonCount("blocks")}
+                />
             )}
         </div>
     );
