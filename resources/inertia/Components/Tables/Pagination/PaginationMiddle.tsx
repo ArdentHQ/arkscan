@@ -78,7 +78,12 @@ export default function PaginationMiddle({
                         <SquareReturnArrowIcon className="hidden h-4 w-4 dark:text-theme-dark-600 sm:block" />
                     </div>
 
-                    <button type="button" className="button-secondary p-2" onClick={() => setShowSearch(false)}>
+                    <button
+                        type="button"
+                        aria-label={t("actions.close")}
+                        className="button-secondary p-2"
+                        onClick={() => setShowSearch(false)}
+                    >
                         <CrossIcon className="h-4 w-4" />
                     </button>
                 </div>
