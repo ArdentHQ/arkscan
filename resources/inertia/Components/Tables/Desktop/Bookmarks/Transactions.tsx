@@ -58,9 +58,11 @@ function Row({ row }: { row: ITransaction }) {
 export default function BookmarkTransactionsTable({
     transactions,
     rowCount = 3,
+    resultCount = 0,
 }: {
     transactions?: IPaginatedResponse<ITransaction>;
     rowCount?: number;
+    resultCount?: number;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();

@@ -79,9 +79,11 @@ function Row({ row }: { row: IBlock }) {
 export default function BookmarkBlocksTable({
     blocks,
     rowCount = 3,
+    resultCount = 0,
 }: {
     blocks?: IPaginatedResponse<IBlock>;
     rowCount?: number;
+    resultCount?: number;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
