@@ -4,13 +4,24 @@ import BookmarkIcon from "@icons/bookmark.svg?react";
 import Tooltip from "./Tooltip";
 import classNames from "classnames";
 
-export default function BookmarkButton({ testId, className }: { testId?: string; className?: string }) {
+export default function BookmarkButton({
+    testId,
+    className,
+    wrapperClassName,
+}: {
+    testId?: string;
+    className?: string;
+    wrapperClassName?: string;
+}) {
     // TODO: replace with localStorage state from bookmarks provider
     const [isBookmarked, setIsBookmarked] = useState(false);
     const { t } = useTranslation();
 
     return (
-        <Tooltip content={isBookmarked ? t("general.bookmarks.saved") : t("general.bookmarks.save")}>
+        <Tooltip
+            content={isBookmarked ? t("general.bookmarks.saved") : t("general.bookmarks.save")}
+            className={classNames("flex", wrapperClassName)}
+        >
             <button
                 type="button"
                 className={classNames(
