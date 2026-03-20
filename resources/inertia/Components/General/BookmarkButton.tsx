@@ -27,7 +27,7 @@ export default function BookmarkButton({
                 className={classNames(
                     "group/bookmark transition-default flex items-center justify-center rounded border p-2 focus-visible:ring-inset",
                     isBookmarked
-                        ? "border-theme-primary-400 bg-theme-primary-100 hover:border-theme-primary-700 hover:bg-transparent dark:border-theme-dark-blue-400 dark:bg-theme-dark-800 dark:hover:border-theme-primary-700 dark:hover:bg-transparent"
+                        ? "border-theme-primary-400 bg-theme-primary-100 hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-blue-400 dark:bg-theme-dark-800 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700"
                         : "border-theme-secondary-300 bg-white hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700",
                     className,
                 )}
@@ -38,7 +38,7 @@ export default function BookmarkButton({
                     className={classNames(
                         "transition-default h-4 w-4",
                         isBookmarked
-                            ? "fill-theme-primary-600 text-theme-primary-600 group-hover/bookmark:fill-theme-primary-300 group-hover/bookmark:text-theme-primary-300 dark:fill-theme-dark-blue-500 dark:text-theme-dark-blue-500 dark:group-hover/bookmark:fill-theme-primary-300 dark:group-hover/bookmark:text-theme-primary-300"
+                            ? "fill-theme-primary-600 text-theme-primary-600 group-hover/bookmark:fill-none group-hover/bookmark:text-white dark:fill-theme-dark-blue-500 dark:text-theme-dark-blue-500 dark:group-hover/bookmark:fill-none dark:group-hover/bookmark:text-white"
                             : "text-theme-secondary-700 group-hover/bookmark:text-white dark:text-theme-dark-200 dark:group-hover/bookmark:text-white",
                     )}
                 />
