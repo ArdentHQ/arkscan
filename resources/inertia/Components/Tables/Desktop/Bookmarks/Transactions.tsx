@@ -14,6 +14,7 @@ import Method from "@/Components/Transaction/Method";
 import AddressingGeneric from "@/Components/Transaction/AddressingGeneric";
 import { Transaction } from "@/models/Transaction";
 import BookmarkButton from "@/Components/General/BookmarkButton";
+import BookmarkTransactionsMobileTable from "@/Components/Tables/Mobile/Bookmarks/Transactions";
 
 function Row({ row }: { row: ITransaction }) {
     const { network } = useSharedData();
@@ -92,6 +93,7 @@ export default function BookmarkTransactionsTable({
             paginator={transactions}
             rowComponent={Row}
             noResultsMessage={transactions.noResultsMessage}
+            mobile={<BookmarkTransactionsMobileTable transactions={transactions} />}
             columns={
                 <>
                     <TableHeader>{t("tables.transactions.id")}</TableHeader>

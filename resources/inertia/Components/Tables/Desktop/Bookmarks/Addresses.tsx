@@ -14,6 +14,7 @@ import Clipboard from "@/Components/General/Clipboard";
 import TruncateMiddle from "@/Components/General/TruncateMiddle";
 import Percentage from "@/Components/General/Percentage";
 import BookmarkButton from "@/Components/General/BookmarkButton";
+import BookmarkAddressesMobileTable from "@/Components/Tables/Mobile/Bookmarks/Addresses";
 import VoteTooltipContent from "@/Components/Transaction/VoteTooltipContent";
 import VerifiedCheckmarkIcon from "@ui/icons/verified-checkmark.svg?react";
 import ExchangeIcon from "@ui/icons/exchanges.svg?react";
@@ -171,6 +172,7 @@ export default function BookmarkAddressesTable({
             paginator={addresses}
             rowComponent={Row}
             noResultsMessage={addresses.noResultsMessage}
+            mobile={<BookmarkAddressesMobileTable addresses={addresses} />}
             columns={
                 <>
                     <TableHeader>{t("general.wallet.address")}</TableHeader>

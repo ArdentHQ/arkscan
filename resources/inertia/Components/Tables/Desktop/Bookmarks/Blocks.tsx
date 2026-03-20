@@ -12,6 +12,7 @@ import Reward from "@/Components/Block/Reward";
 import { Block } from "@/models/Block";
 import Address from "@/Components/Wallet/Address";
 import BookmarkButton from "@/Components/General/BookmarkButton";
+import BookmarkBlocksMobileTable from "@/Components/Tables/Mobile/Bookmarks/Blocks";
 import classNames from "classnames";
 import useSettings from "@/Providers/Settings/useSettings";
 import { currency } from "@/utils/number-formatter";
@@ -119,6 +120,7 @@ export default function BookmarkBlocksTable({
             paginator={blocks}
             rowComponent={Row}
             noResultsMessage={blocks.noResultsMessage}
+            mobile={<BookmarkBlocksMobileTable blocks={blocks} />}
             columns={
                 <>
                     <TableHeader type="id" className="whitespace-nowrap">
