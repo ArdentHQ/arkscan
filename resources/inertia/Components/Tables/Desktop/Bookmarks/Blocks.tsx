@@ -14,6 +14,7 @@ import Address from "@/Components/Wallet/Address";
 import BookmarkButton from "@/Components/General/BookmarkButton";
 import BookmarkBlocksMobileTable from "@/Components/Tables/Mobile/Bookmarks/Blocks";
 import { MobileBookmarkBlocksSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Bookmarks/Blocks";
+import { TableHeaderWrapper } from "../Table";
 import classNames from "classnames";
 import useSettings from "@/Providers/Settings/useSettings";
 import { currency } from "@/utils/number-formatter";
@@ -114,7 +115,10 @@ export default function BookmarkBlocksTable({
         return (
             <>
                 <LoadingTable rowCount={rowCount} columns={columns} header />
-                <MobileBookmarkBlocksSkeletonTable rowCount={rowCount} />
+                <div className="px-6 md:hidden">
+                    <TableHeaderWrapper resultCount={0} />
+                    <MobileBookmarkBlocksSkeletonTable rowCount={rowCount} />
+                </div>
             </>
         );
     }

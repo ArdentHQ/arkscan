@@ -16,6 +16,7 @@ import Percentage from "@/Components/General/Percentage";
 import BookmarkButton from "@/Components/General/BookmarkButton";
 import BookmarkAddressesMobileTable from "@/Components/Tables/Mobile/Bookmarks/Addresses";
 import { MobileBookmarkAddressesSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Bookmarks/Addresses";
+import { TableHeaderWrapper } from "../Table";
 import VoteTooltipContent from "@/Components/Transaction/VoteTooltipContent";
 import VerifiedCheckmarkIcon from "@ui/icons/verified-checkmark.svg?react";
 import ExchangeIcon from "@ui/icons/exchanges.svg?react";
@@ -166,7 +167,10 @@ export default function BookmarkAddressesTable({
         return (
             <>
                 <LoadingTable rowCount={rowCount} columns={columns} header />
-                <MobileBookmarkAddressesSkeletonTable rowCount={rowCount} />
+                <div className="px-6 md:hidden">
+                    <TableHeaderWrapper resultCount={0} />
+                    <MobileBookmarkAddressesSkeletonTable rowCount={rowCount} />
+                </div>
             </>
         );
     }

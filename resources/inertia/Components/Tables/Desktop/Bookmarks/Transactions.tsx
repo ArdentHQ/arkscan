@@ -16,6 +16,7 @@ import { Transaction } from "@/models/Transaction";
 import BookmarkButton from "@/Components/General/BookmarkButton";
 import BookmarkTransactionsMobileTable from "@/Components/Tables/Mobile/Bookmarks/Transactions";
 import { MobileBookmarkTransactionsSkeletonTable } from "@/Components/Tables/Mobile/Skeleton/Bookmarks/Transactions";
+import { TableHeaderWrapper } from "../Table";
 
 function Row({ row }: { row: ITransaction }) {
     const { network } = useSharedData();
@@ -87,7 +88,10 @@ export default function BookmarkTransactionsTable({
         return (
             <>
                 <LoadingTable rowCount={rowCount} columns={columns} header />
-                <MobileBookmarkTransactionsSkeletonTable rowCount={rowCount} />
+                <div className="px-6 md:hidden">
+                    <TableHeaderWrapper resultCount={0} />
+                    <MobileBookmarkTransactionsSkeletonTable rowCount={rowCount} />
+                </div>
             </>
         );
     }
