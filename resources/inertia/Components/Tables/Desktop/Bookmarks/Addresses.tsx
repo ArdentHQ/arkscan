@@ -136,9 +136,11 @@ function Row({ row: wallet }: { row: IWallet }) {
 export default function BookmarkAddressesTable({
     addresses,
     rowCount = 3,
+    resultCount = 0,
 }: {
     addresses?: IPaginatedResponse<IWallet>;
     rowCount?: number;
+    resultCount?: number;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
@@ -168,7 +170,7 @@ export default function BookmarkAddressesTable({
             <>
                 <LoadingTable rowCount={rowCount} columns={columns} header />
                 <div className="px-6 md:hidden">
-                    <TableHeaderWrapper resultCount={0} />
+                    <TableHeaderWrapper resultCount={resultCount} />
                     <MobileBookmarkAddressesSkeletonTable rowCount={rowCount} />
                 </div>
             </>

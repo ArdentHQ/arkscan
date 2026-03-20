@@ -13,7 +13,10 @@ export function MobileBookmarkAddressesSkeletonTable({ rowCount }: { rowCount: n
                 header={
                     <>
                         <LoadingText />
-                        <LoadingText width="w-[40px]" />
+                        <div className="flex items-center space-x-2">
+                            <LoadingText width="w-[16px]" />
+                            <LoadingText width="w-[16px]" />
+                        </div>
                     </>
                 }
             >

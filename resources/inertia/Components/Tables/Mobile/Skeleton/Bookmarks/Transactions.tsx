@@ -5,7 +5,6 @@ import LoadingTable from "../Table";
 
 export function MobileBookmarkTransactionsSkeletonTable({ rowCount }: { rowCount: number }) {
     const rows = [];
-
     for (let i = 0; i < rowCount; i++) {
         rows.push(
             <MobileTableRow
@@ -13,7 +12,10 @@ export function MobileBookmarkTransactionsSkeletonTable({ rowCount }: { rowCount
                 header={
                     <>
                         <LoadingText />
-                        <LoadingText />
+                        <div className="flex items-center space-x-2">
+                            <LoadingText width="w-[60px]" />
+                            <LoadingText width="w-[16px]" />
+                        </div>
                     </>
                 }
             >

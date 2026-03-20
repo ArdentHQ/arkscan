@@ -58,7 +58,8 @@ function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
         });
     }, [currentTab]);
 
-    const skeletonCount = (type: BookmarkType) => Math.min(getBookmarks(type).length, 25) || 3;
+    const bookmarkCount = (type: BookmarkType) => getBookmarks(type).length;
+    const skeletonCount = (type: BookmarkType) => Math.min(bookmarkCount(type), 25) || 3;
     const isLoading = (tab: string) => loading[tab] !== false;
 
     return (
@@ -67,18 +68,21 @@ function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
                 <BookmarkAddressesTable
                     addresses={isLoading("addresses") ? undefined : addresses}
                     rowCount={skeletonCount("addresses")}
+                    resultCount={bookmarkCount("addresses")}
                 />
             )}
             {currentTab === "transactions" && (
                 <BookmarkTransactionsTable
                     transactions={isLoading("transactions") ? undefined : transactions}
                     rowCount={skeletonCount("transactions")}
+                    resultCount={bookmarkCount("transactions")}
                 />
             )}
             {currentTab === "blocks" && (
                 <BookmarkBlocksTable
                     blocks={isLoading("blocks") ? undefined : blocks}
                     rowCount={skeletonCount("blocks")}
+                    resultCount={bookmarkCount("blocks")}
                 />
             )}
         </div>

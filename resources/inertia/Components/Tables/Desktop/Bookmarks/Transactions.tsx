@@ -89,7 +89,7 @@ export default function BookmarkTransactionsTable({
             <>
                 <LoadingTable rowCount={rowCount} columns={columns} header />
                 <div className="px-6 md:hidden">
-                    <TableHeaderWrapper resultCount={0} />
+                    <TableHeaderWrapper resultCount={resultCount} />
                     <MobileBookmarkTransactionsSkeletonTable rowCount={rowCount} />
                 </div>
             </>
