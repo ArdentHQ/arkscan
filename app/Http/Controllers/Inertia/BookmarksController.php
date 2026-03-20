@@ -8,6 +8,7 @@ use App\DTO\Inertia\Block as BlockDTO;
 use App\DTO\Inertia\Transaction as TransactionDTO;
 use App\DTO\Inertia\Wallet as WalletDTO;
 use App\Http\Controllers\Inertia\Concerns\WithPagination;
+use App\Http\Controllers\Inertia\Concerns\WithWalletRelations;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
@@ -19,6 +20,7 @@ use Inertia\Response;
 final class BookmarksController
 {
     use WithPagination;
+    use WithWalletRelations;
 
     public function __invoke(): Response
     {
@@ -62,8 +64,11 @@ final class BookmarksController
         }
 
         $paginator = Transaction::whereIn('hash', $ids)
-            ->paginate($this->perPage(), page: $this->page())
-            ->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
+            ->paginate($this->perPage(), page: $this->page());
+
+        $this->loadWalletRelations($paginator);
+
+        $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
 
         return $this->formatPaginator($paginator, trans('tables.bookmarks.transactions.no_results'));
     }
