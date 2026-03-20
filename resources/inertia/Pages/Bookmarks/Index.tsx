@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { router } from "@inertiajs/react";
 import { PageProps } from "@inertiajs/core";
@@ -36,15 +36,17 @@ function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
     const { currentTab, addEventListener, removeEventListener } = useTabs();
     const { getBookmarks } = useBookmarks();
     const loadedTabs = useRef<Record<string, boolean>>({});
+    const [loading, setLoading] = useState(false);
 
     const loadBookmarks = (tab: string) => {
-        const bookmarkIds = getBookmarks(tab as BookmarkType);
+        setLoading(true);
 
         router.reload({
             only: [tab],
             headers: {
-                "X-Bookmarks": JSON.stringify({ [tab]: bookmarkIds }),
+                "X-Bookmarks": JSON.stringify({ [tab]: getBookmarks(tab as BookmarkType) }),
             },
+            onFinish: () => setLoading(false),
         });
     };
 
@@ -69,11 +71,25 @@ function BookmarksTabs({ addresses, transactions, blocks }: BookmarksProps) {
         };
     }, []);
 
+    const skeletonCount = (type: BookmarkType) => Math.min(getBookmarks(type).length, 25) || 3;
+
     return (
         <div>
-            {currentTab === "addresses" && <BookmarkAddressesTable addresses={addresses} />}
-            {currentTab === "transactions" && <BookmarkTransactionsTable transactions={transactions} />}
-            {currentTab === "blocks" && <BookmarkBlocksTable blocks={blocks} />}
+            {currentTab === "addresses" && (
+                <BookmarkAddressesTable
+                    addresses={loading ? undefined : addresses}
+                    rowCount={skeletonCount("addresses")}
+                />
+            )}
+            {currentTab === "transactions" && (
+                <BookmarkTransactionsTable
+                    transactions={loading ? undefined : transactions}
+                    rowCount={skeletonCount("transactions")}
+                />
+            )}
+            {currentTab === "blocks" && (
+                <BookmarkBlocksTable blocks={loading ? undefined : blocks} rowCount={skeletonCount("blocks")} />
+            )}
         </div>
     );
 }

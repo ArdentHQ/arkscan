@@ -54,8 +54,10 @@ function Row({ row }: { row: ITransaction }) {
 
 export default function BookmarkTransactionsTable({
     transactions,
+    rowCount = 3,
 }: {
     transactions?: IPaginatedResponse<ITransaction>;
+    rowCount?: number;
 }) {
     const { t } = useTranslation();
     const { network } = useSharedData();
@@ -80,7 +82,7 @@ export default function BookmarkTransactionsTable({
             { name: "" },
         ];
 
-        return <LoadingTable rowCount={3} columns={columns} header />;
+        return <LoadingTable rowCount={rowCount} columns={columns} header />;
     }
 
     return (

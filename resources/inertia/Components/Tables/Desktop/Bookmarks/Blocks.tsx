@@ -73,7 +73,13 @@ function Row({ row }: { row: IBlock }) {
     );
 }
 
-export default function BookmarkBlocksTable({ blocks }: { blocks?: IPaginatedResponse<IBlock> }) {
+export default function BookmarkBlocksTable({
+    blocks,
+    rowCount = 3,
+}: {
+    blocks?: IPaginatedResponse<IBlock>;
+    rowCount?: number;
+}) {
     const { t } = useTranslation();
     const { network } = useSharedData();
 
@@ -103,7 +109,7 @@ export default function BookmarkBlocksTable({ blocks }: { blocks?: IPaginatedRes
 
         columns.push({ name: "" });
 
-        return <LoadingTable rowCount={3} columns={columns} header />;
+        return <LoadingTable rowCount={rowCount} columns={columns} header />;
     }
 
     return (

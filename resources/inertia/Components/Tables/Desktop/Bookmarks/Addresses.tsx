@@ -130,7 +130,13 @@ function Row({ row: wallet }: { row: IWallet }) {
     );
 }
 
-export default function BookmarkAddressesTable({ addresses }: { addresses?: IPaginatedResponse<IWallet> }) {
+export default function BookmarkAddressesTable({
+    addresses,
+    rowCount = 3,
+}: {
+    addresses?: IPaginatedResponse<IWallet>;
+    rowCount?: number;
+}) {
     const { t } = useTranslation();
     const { network } = useSharedData();
 
@@ -155,7 +161,7 @@ export default function BookmarkAddressesTable({ addresses }: { addresses?: IPag
             { name: "" },
         ];
 
-        return <LoadingTable rowCount={3} columns={columns} header />;
+        return <LoadingTable rowCount={rowCount} columns={columns} header />;
     }
 
     return (
