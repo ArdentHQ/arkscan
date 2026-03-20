@@ -37,9 +37,11 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
                 </>
             )}
 
-            <PageHeaderQRCodeModalAction wallet={wallet} testId="wallet:show-qr-code-modal" />
+            <div className="w-full flex-1 [&>div]:w-full [&_button]:w-full">
+                <PageHeaderQRCodeModalAction wallet={wallet} testId="wallet:show-qr-code-modal" />
+            </div>
 
-            <BookmarkButton testId="wallet:bookmark" className="w-full" wrapperClassName="flex-1" />
+            <BookmarkButton testId="wallet:bookmark" className="w-full" wrapperClassName="w-full flex-1" />
         </>
     );
 }
