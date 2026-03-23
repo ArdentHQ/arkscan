@@ -18,10 +18,10 @@ export default function HeaderBanner() {
             <div
                 className={classNames(["mx-auto flex flex-1 flex-col items-center bg-right bg-no-repeat md:flex-row"])}
             >
-                <div className="flex flex-col justify-center space-y-2 p-3 md:max-w-[356px] md:p-0 md-lg:max-w-[568px] xl:max-w-none">
+                <div className="flex flex-col justify-center space-y-2 p-4 md:max-w-[356px] md:p-0 md-lg:max-w-[568px] xl:max-w-none">
                     <span
                         className={classNames([
-                            "space-x-1 text-lg font-semibold leading-5.25",
+                            "space-x-1 text-sm font-semibold leading-5.25 sm:text-lg",
                             "text-theme-secondary-900 dark:text-theme-dark-50",
                         ])}
                     >
