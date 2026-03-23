@@ -226,4 +226,9 @@ return [
         'hours_minutes_short' => '~ :hoursh :minutes min',
         'more_than_a_day'     => 'more than a day',
     ],
+
+    'bookmarks' => [
+        'save'  => 'Save to bookmarks',
+        'saved' => 'Saved to bookmarks',
+    ],
 ];
