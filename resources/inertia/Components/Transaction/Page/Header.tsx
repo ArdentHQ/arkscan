@@ -22,7 +22,12 @@ function HeaderActions({ hash }: { hash: string }) {
                 <div className="ml-2 sm:hidden">{t("actions.copy")}</div>
             </Clipboard>
 
-            <BookmarkButton testId="transaction:bookmark" className="h-8 min-w-[62px] sm:min-w-0" />
+            <BookmarkButton
+                type="transactions"
+                id={hash}
+                testId="transaction:bookmark"
+                className="h-8 min-w-[62px] sm:min-w-0"
+            />
         </>
     );
 }

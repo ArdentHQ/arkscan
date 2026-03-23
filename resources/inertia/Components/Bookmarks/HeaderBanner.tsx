@@ -1,8 +1,8 @@
 import classNames from "classnames";
-import { useTranslation } from "react-i18next";
 import headerBgImage from "@images/bookmarks/header-bg.svg";
 import headerBgImageDark from "@images/bookmarks/header-bg-dark.svg";
 import headerBgImageDim from "@images/bookmarks/header-bg-dim.svg";
+import { useTranslation } from "react-i18next";
 
 export default function HeaderBanner() {
     const { t } = useTranslation();
@@ -21,7 +21,7 @@ export default function HeaderBanner() {
                 <div className="flex flex-col justify-center space-y-2 p-3 md:max-w-[356px] md:p-0 md-lg:max-w-[568px] xl:max-w-none">
                     <span
                         className={classNames([
-                            "space-x-1 text-lg font-semibold leading-5.25 leading-6",
+                            "space-x-1 text-lg font-semibold leading-5.25",
                             "text-theme-secondary-900 dark:text-theme-dark-50",
                         ])}
                     >
