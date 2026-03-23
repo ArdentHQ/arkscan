@@ -46,7 +46,7 @@ export default function BookmarkButton({
                     variant === "button" && [
                         "rounded border p-2",
                         bookmarked
-                            ? "border-theme-primary-400 bg-theme-primary-100 hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-blue-800 dark:bg-theme-dark-blue-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700 dim:border-theme-dark-600 dim:bg-theme-dark-800"
+                            ? "border-theme-primary-400 bg-theme-primary-100 hover:border-theme-primary-700 hover:bg-theme-primary-700 dim:border-theme-dark-600 dim:bg-theme-dark-800 dark:border-theme-dark-blue-800 dark:bg-theme-dark-blue-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700"
                             : "border-theme-secondary-300 bg-white hover:border-theme-primary-700 hover:bg-theme-primary-700 dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:hover:border-theme-primary-700 dark:hover:bg-theme-primary-700",
                     ],
                     className,
