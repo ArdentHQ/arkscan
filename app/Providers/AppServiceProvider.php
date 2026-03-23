@@ -33,6 +33,8 @@ final class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
 
+        Fortify::ignoreRoutes();
+
         $this->app->singleton(
             MarketDataProvider::class,
             fn () => new (Config::get('arkscan.market_data_provider_service'))
@@ -59,8 +61,6 @@ final class AppServiceProvider extends ServiceProvider
         $this->registerCollectionMacros();
 
         $this->registerDataBags();
-
-        Fortify::loginView(fn () => abort(404));
 
         RateLimiter::for('coingecko_api_rate', fn () => Limit::perMinute(10));
     }
