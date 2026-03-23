@@ -2,6 +2,7 @@ import { useDropdown } from "@/Providers/Dropdown/DropdownContext";
 import Dropdown from "./Dropdown";
 import CrossIcon from "@ui/icons/cross.svg?react";
 import classNames from "classnames";
+import { useTranslation } from "react-i18next";
 
 export default function DropdownPopup({
     title,
@@ -25,6 +26,7 @@ export default function DropdownPopup({
     testId?: string;
 }) {
     const { setIsOpen } = useDropdown();
+    const { t } = useTranslation();
 
     return (
         <Dropdown
@@ -47,6 +49,7 @@ export default function DropdownPopup({
                 <div>
                     <button
                         type="button"
+                        aria-label={t("actions.close")}
                         className="button button-generic flex h-6 w-6 items-center justify-center p-0 hover:bg-theme-primary-700 hover:text-white dark:text-theme-dark-600 dark:hover:text-white"
                         onClick={() => {
                             setIsOpen(false);
