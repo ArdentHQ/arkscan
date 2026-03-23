@@ -42,8 +42,9 @@
                 <span class="inline-flex items-center space-x-1 whitespace-nowrap">
                     <span>@lang ('general.market_data_by')</span>
 
-                    <a href="@lang ('general.urls.coingecko')" target="_blank" rel="noopener nofollow noreferrer">
+                    <a href="@lang ('general.urls.coingecko')" target="_blank" rel="noopener nofollow noreferrer" aria-label="CoinGecko">
                         <x-ark-icon name="app-coingecko" />
+                        <span class="sr-only">CoinGecko</span>
                     </a>
                 </span>
             </x-ark-footer>
