@@ -3,22 +3,32 @@ import { IBlock } from "@/types/generated";
 import PageHeaderContainer from "@/Components/PageHeader/Container";
 import TruncateDynamic from "@/Components/General/TruncateDynamic";
 import Clipboard from "@/Components/General/Clipboard";
+import BookmarkButton from "@/Components/General/BookmarkButton";
 
 function HeaderActions({ block }: { block: IBlock }) {
     const { t } = useTranslation();
 
     return (
-        <Clipboard
-            value={block.hash}
-            className="button-secondary group flex h-8 w-full items-center p-2 focus-visible:ring-inset"
-            wrapperClass="flex-1"
-            tooltipContent={t("pages.block.block_id_copied")}
-            withCheckmarks
-            checkmarksClass="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
-            testId="block:copy-id"
-        >
-            <div className="ml-2 sm:hidden">{t("actions.copy")}</div>
-        </Clipboard>
+        <>
+            <Clipboard
+                value={block.hash}
+                className="button-secondary group flex h-8 w-full items-center p-2 focus-visible:ring-inset"
+                wrapperClass="flex-1"
+                tooltipContent={t("pages.block.block_id_copied")}
+                withCheckmarks
+                checkmarksClass="group-hover:text-white text-theme-primary-900 dark:text-theme-dark-200"
+                testId="block:copy-id"
+            >
+                <div className="ml-2 sm:hidden">{t("actions.copy")}</div>
+            </Clipboard>
+
+            <BookmarkButton
+                type="blocks"
+                id={block.hash}
+                testId="block:bookmark"
+                className="h-8 min-w-[62px] sm:min-w-0"
+            />
+        </>
     );
 }
 
