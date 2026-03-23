@@ -35,6 +35,7 @@ export default function Navbar() {
                     { route: "validator-monitor", label: t("menus.validator_monitor") },
                     { route: "compatible-wallets", label: t("menus.wallets") },
                     ...(canBeExchanged ? [{ route: "exchanges", label: t("menus.exchanges") }] : []),
+                    { route: "bookmarks", label: t("menus.bookmarks") },
                 ],
             },
             {
