@@ -1,18 +1,22 @@
-import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { router } from "@inertiajs/react";
-import { PageProps } from "@inertiajs/core";
-import Layout from "@/Layout";
-import TabsProvider from "@/Providers/Tabs/TabsProvider";
-import { ITabsQueryString } from "@/Providers/Tabs/types";
-import { useTabs } from "@/Providers/Tabs/TabsContext";
-import { useBookmarks } from "@/Providers/Bookmarks/BookmarksContext";
-import { IPaginatedResponse } from "@/types";
 import { IBlock, ITransaction, IWallet } from "@/types/generated";
+import { useEffect, useRef, useState } from "react";
+
 import BookmarkAddressesTable from "@/Components/Tables/Desktop/Bookmarks/Addresses";
-import BookmarkTransactionsTable from "@/Components/Tables/Desktop/Bookmarks/Transactions";
 import BookmarkBlocksTable from "@/Components/Tables/Desktop/Bookmarks/Blocks";
+import BookmarkTransactionsTable from "@/Components/Tables/Desktop/Bookmarks/Transactions";
 import { BookmarkType } from "@/Providers/Bookmarks/types";
+import HeaderBanner from "@/Components/Bookmarks/HeaderBanner";
+import { IPaginatedResponse } from "@/types";
+import { ITabsQueryString } from "@/Providers/Tabs/types";
+import Layout from "@/Layout";
+import MobileDivider from "@/Components/General/MobileDivider";
+import PageHeader from "@/Components/PageHeader/PageHeader";
+import { PageProps } from "@inertiajs/core";
+import TabsProvider from "@/Providers/Tabs/TabsProvider";
+import { router } from "@inertiajs/react";
+import { useBookmarks } from "@/Providers/Bookmarks/BookmarksContext";
+import { useTabs } from "@/Providers/Tabs/TabsContext";
+import { useTranslation } from "react-i18next";
 
 interface BookmarksProps {
     addresses?: IPaginatedResponse<IWallet>;
@@ -94,6 +98,14 @@ export default function BookmarksIndex({ addresses, transactions, blocks }: Page
 
     return (
         <Layout>
+            <PageHeader title={t("pages.bookmarks.title")} subtitle={t("pages.bookmarks.subtitle")} />
+
+            <div className="mb-6 px-6 md:mx-auto md:max-w-7xl md:px-10">
+                <HeaderBanner />
+            </div>
+
+            <MobileDivider className="mb-6" />
+
             <TabsProvider
                 defaultSelected="addresses"
                 queryStringDefaults={queryStringDefaults}
