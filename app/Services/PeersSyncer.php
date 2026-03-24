@@ -7,7 +7,7 @@ namespace App\Services;
 use App\Facades\Network;
 use App\Models\Peer;
 use Illuminate\Support\Facades\Http;
-use Torann\GeoIP\Facades\GeoIP;
+use Torann\GeoIP\Location;
 
 final class PeersSyncer
 {
@@ -64,7 +64,8 @@ final class PeersSyncer
         $default = ['lat' => null, 'lon' => null, 'country' => null, 'city' => null];
 
         try {
-            $location = GeoIP::getLocation($ip);
+            /** @var Location $location */
+            $location = geoip($ip);
 
             if ($location->default) {
                 return $default;
