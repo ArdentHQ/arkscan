@@ -34,6 +34,8 @@ final class PeersSyncer
                 'port'      => $peerData['port'],
                 'latitude'  => $location['lat'],
                 'longitude' => $location['lon'],
+                'country'   => $location['country'],
+                'city'      => $location['city'],
             ]);
         }
 
@@ -55,23 +57,27 @@ final class PeersSyncer
     }
 
     /**
-     * @return array{lat: float|null, lon: float|null}
+     * @return array{lat: float|null, lon: float|null, country: string|null, city: string|null}
      */
     private function resolveLocation(string $ip): array
     {
+        $default = ['lat' => null, 'lon' => null, 'country' => null, 'city' => null];
+
         try {
             $location = GeoIP::getLocation($ip);
 
             if ($location->default) {
-                return ['lat' => null, 'lon' => null];
+                return $default;
             }
 
             return [
-                'lat' => $location->lat,
-                'lon' => $location->lon,
+                'lat'     => $location->lat,
+                'lon'     => $location->lon,
+                'country' => $location->country ?? null,
+                'city'    => $location->city ?? null,
             ];
         } catch (\Throwable) {
-            return ['lat' => null, 'lon' => null];
+            return $default;
         }
     }
 }

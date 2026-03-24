@@ -13,6 +13,8 @@ final class Peer extends Model
         'port',
         'latitude',
         'longitude',
+        'country',
+        'city',
     ];
 
     protected function casts(): array

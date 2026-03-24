@@ -133,6 +133,8 @@ export type IPeer = {
     port: number;
     latitude: number | null;
     longitude: number | null;
+    country: string | null;
+    city: string | null;
 };
 export type IPriceTickerData = {
     currency: string;

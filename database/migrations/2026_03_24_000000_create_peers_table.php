@@ -15,6 +15,8 @@ return new class() extends Migration {
             $table->integer('port');
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
             $table->timestamps();
         });
     }

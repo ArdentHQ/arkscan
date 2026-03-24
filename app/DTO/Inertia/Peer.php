@@ -16,6 +16,8 @@ class Peer extends Data
         public int $port,
         public ?float $latitude,
         public ?float $longitude,
+        public ?string $country,
+        public ?string $city,
     ) {
     }
 
@@ -26,6 +28,8 @@ class Peer extends Data
             port: $peer->port,
             latitude: $peer->latitude,
             longitude: $peer->longitude,
+            country: $peer->country,
+            city: $peer->city,
         );
     }
 }
