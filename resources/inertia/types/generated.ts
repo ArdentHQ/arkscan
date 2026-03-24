@@ -128,6 +128,12 @@ export type INetwork = {
         batch_transfer: string;
     };
 };
+export type IPeer = {
+    ip: string;
+    port: number;
+    latitude: number | null;
+    longitude: number | null;
+};
 export type IPriceTickerData = {
     currency: string;
     isPriceAvailable: boolean;
@@ -271,6 +277,10 @@ export type IWalletReference = {
 export enum SortDirection {
     ASC = "asc",
     DESC = "desc",
+}
+export enum TokenActionType {
+    Transfer = "Transfer",
+    Approval = "Approval",
 }
 export enum WebhookEvents {
     BlockApplied = "block.applied",

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "897c3e354d1eca0943bca7dc68af9912",
+    "content-hash": "b846b4325656193d9c716b07fa7a6ebd",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -17842,5 +17842,5 @@
         "ext-gmp": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

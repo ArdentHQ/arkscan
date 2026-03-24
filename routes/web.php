@@ -8,6 +8,7 @@ use App\Http\Controllers\Inertia\BookmarksController;
 use App\Http\Controllers\Inertia\CompatibleWalletsController;
 use App\Http\Controllers\Inertia\ExchangesController;
 use App\Http\Controllers\Inertia\HomeController;
+use App\Http\Controllers\Inertia\PeersMapController;
 use App\Http\Controllers\Inertia\ShowBlockController;
 use App\Http\Controllers\Inertia\ShowTransactionController;
 use App\Http\Controllers\Inertia\StatisticsController;
@@ -95,6 +96,8 @@ Route::post('/exchanges', [ExchangesController::class, 'submit'])
     ->name('exchanges.submit');
 
 Route::get('/bookmarks', BookmarksController::class)->name('bookmarks');
+
+Route::get('/peers-map', PeersMapController::class)->name('peers-map');
 
 Route::post('/webhooks', WebhooksController::class)
     ->withoutMiddleware([VerifyCsrfToken::class])
