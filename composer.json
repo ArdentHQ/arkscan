@@ -16,7 +16,7 @@
         "blade-ui-kit/blade-icons": "^1.7",
         "brick/math": "^0.12",
         "doctrine/dbal": "^3.0",
-        "geoip2/geoip2": "*",
+        "geoip2/geoip2": "^3.3",
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "^3.9",
         "inertiajs/inertia-laravel": "^2.0",
@@ -36,7 +36,7 @@
         "spatie/laravel-typescript-transformer": "^2.5",
         "symfony/psr-http-message-bridge": "^7.1",
         "tightenco/ziggy": "^2.6",
-        "torann/geoip": "*"
+        "torann/geoip": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
