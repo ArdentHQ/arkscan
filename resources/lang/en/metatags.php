@@ -135,4 +135,9 @@ return [
         'description' => 'View your bookmarked addresses, transactions, and blocks on the :name Blockchain Explorer.',
         'image'       => 'metadata/bookmarks.png',
     ],
+
+    'peers-map'       => [
+        'title'       => 'Peers Map | :name Blockchain Explorer',
+        'description' => 'View the geographic distribution of network peers on the :name Blockchain.',
+    ],
 ];
