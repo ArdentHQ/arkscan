@@ -28,7 +28,7 @@ it('should not dispatch any event if insecure url', function () {
     $event = [
         'event' => 'block.applied',
         'data'  => [
-            'generatorPublicKey' => 'public-key',
+            'proposer' => 'public-key',
         ],
     ];
 
@@ -58,7 +58,7 @@ describe('block', function () {
         $this->block = [
             'event' => 'block.applied',
             'data'  => [
-                'generatorPublicKey' => 'public-key',
+                'proposer' => 'public-key',
             ],
         ];
     });
@@ -159,7 +159,7 @@ describe('transaction', function () {
         $this->transaction = [
             'event' => 'transaction.applied',
             'data'  => [
-                'recipientId'     => 'address',
+                'to'              => 'address',
                 'senderPublicKey' => 'public-key',
             ],
         ];

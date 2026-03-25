@@ -24,7 +24,6 @@ trait HandlesTransactionWebhooks
 
     private function handleRecipientTransactionApplied(): void
     {
-        // Recipient Address since we can't easily get the public key
-        NewTransaction::dispatch(request()->input('data.recipientId'));
+        NewTransaction::dispatch(request()->input('data.to'));
     }
 }
