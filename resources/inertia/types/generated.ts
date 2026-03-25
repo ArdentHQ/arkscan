@@ -272,8 +272,11 @@ export enum SortDirection {
     ASC = "asc",
     DESC = "desc",
 }
+export enum TokenActionType {
+    Transfer = "Transfer",
+    Approval = "Approval",
+}
 export enum WebhookEvents {
     BlockApplied = "block.applied",
     TransactionApplied = "transaction.applied",
-    WalletVote = "wallet.vote",
 }

@@ -172,9 +172,6 @@ return [
         'transaction-applied' => [
             'ttl' => (int) env('ARKSCAN_WEBHOOKS_TRANSACTION_APPLIED_TTL', 8),
         ],
-        'wallet-vote' => [
-            'ttl' => (int) env('ARKSCAN_WEBHOOKS_WALLET_VOTE_TTL', 8),
-        ],
         'currency-update' => [
             'ttl' => (int) env('ARKSCAN_WEBHOOKS_CURRENCY_UPDATE_TTL', 8),
         ],
