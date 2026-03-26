@@ -120,18 +120,6 @@ const WalletTabs = ({
         });
     }, [wallet.public_key, currentTab]);
 
-    useEffect(() => {
-        if (currentTab !== "voters") {
-            return;
-        }
-
-        return listen(`wallet-vote.${wallet.public_key}`, "WalletVote", () => {
-            router.reload({
-                only: ["voters"],
-            });
-        });
-    }, [wallet.public_key, currentTab]);
-
     return (
         <div id="wallet:tabs:content" className="scroll-mt-13 sm:scroll-mt-16 md:scroll-mt-[123px]">
             {currentTab === "transactions" && (

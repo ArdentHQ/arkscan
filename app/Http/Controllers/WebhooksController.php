@@ -7,13 +7,11 @@ namespace App\Http\Controllers;
 use App\Enums\WebhookEvents;
 use App\Http\Controllers\Concerns\HandlesBlockWebhooks;
 use App\Http\Controllers\Concerns\HandlesTransactionWebhooks;
-use App\Http\Controllers\Concerns\HandlesWalletWebhooks;
 
 final class WebhooksController
 {
     use HandlesBlockWebhooks;
     use HandlesTransactionWebhooks;
-    use HandlesWalletWebhooks;
 
     public function __invoke(): void
     {
@@ -35,13 +33,6 @@ final class WebhooksController
             $this->handleTransactionApplied();
             $this->handleSenderTransactionApplied();
             $this->handleRecipientTransactionApplied();
-
-            return;
-        }
-
-        if ($event === WebhookEvents::WalletVote->value) {
-            $this->handleWalletVote();
-            $this->handleWalletUnvote();
 
             return;
         }

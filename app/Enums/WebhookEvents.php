@@ -9,6 +9,4 @@ enum WebhookEvents: string
     case BlockApplied = 'block.applied';
 
     case TransactionApplied = 'transaction.applied';
-
-    case WalletVote = 'wallet.vote';
 }

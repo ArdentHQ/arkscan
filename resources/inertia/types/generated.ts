@@ -287,5 +287,4 @@ export enum TokenActionType {
 export enum WebhookEvents {
     BlockApplied = "block.applied",
     TransactionApplied = "transaction.applied",
-    WalletVote = "wallet.vote",
 }

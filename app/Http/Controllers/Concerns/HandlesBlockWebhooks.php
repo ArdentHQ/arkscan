@@ -19,6 +19,6 @@ trait HandlesBlockWebhooks
 
     private function handleGeneratorBlockApplied(): void
     {
-        NewBlock::dispatch(request()->input('data.generatorPublicKey'));
+        NewBlock::dispatch(request()->input('data.proposer'));
     }
 }
