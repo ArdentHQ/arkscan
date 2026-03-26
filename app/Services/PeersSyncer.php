@@ -48,9 +48,22 @@ final class PeersSyncer
     private function fetchPeers(): array
     {
         try {
-            $response = Http::get(sprintf('%s/peers', Network::api()))->json();
+            $peers = [];
+            $page  = 1;
 
-            return $response['data'] ?? [];
+            do {
+                $response = Http::get(sprintf('%s/peers', Network::api()), [
+                    'page' => $page,
+                ])->json();
+
+                $data = $response['data'] ?? [];
+                $peers = array_merge($peers, $data);
+
+                $lastPage = $response['meta']['last'] ?? $response['meta']['lastPage'] ?? 1;
+                $page++;
+            } while ($page <= $lastPage);
+
+            return $peers;
         } catch (\Throwable) {
             return [];
         }

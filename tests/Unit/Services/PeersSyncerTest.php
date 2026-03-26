@@ -23,11 +23,12 @@ function mockGeoIPFailure(): void
 
 it('should sync new peers', function () {
     Http::fake([
-        '*/peers' => Http::response([
+        '*/peers*' => Http::response([
             'data' => [
                 ['ip' => '185.220.101.1', 'port' => 4000],
                 ['ip' => '195.201.175.10', 'port' => 4000],
             ],
+            'meta' => ['last' => 1],
         ]),
     ]);
 
@@ -47,14 +48,45 @@ it('should sync new peers', function () {
     expect(Peer::first()->country)->toBe('Germany');
 });
 
+it('should handle pagination across multiple pages', function () {
+    Http::fake([
+        '*/peers?page=1' => Http::response([
+            'data' => [
+                ['ip' => '185.220.101.1', 'port' => 4000],
+            ],
+            'meta' => ['last' => 2],
+        ]),
+        '*/peers?page=2' => Http::response([
+            'data' => [
+                ['ip' => '195.201.175.10', 'port' => 4000],
+            ],
+            'meta' => ['last' => 2],
+        ]),
+    ]);
+
+    mockGeoIP(new Location([
+        'lat'     => 52.52,
+        'lon'     => 13.405,
+        'country' => 'Germany',
+        'city'    => 'Berlin',
+        'default' => false,
+    ]));
+
+    $count = (new PeersSyncer())->sync();
+
+    expect($count)->toBe(2);
+    expect(Peer::count())->toBe(2);
+});
+
 it('should remove peers no longer in the API', function () {
     Peer::factory()->create(['ip' => '1.2.3.4']);
 
     Http::fake([
-        '*/peers' => Http::response([
+        '*/peers*' => Http::response([
             'data' => [
                 ['ip' => '5.6.7.8', 'port' => 4000],
             ],
+            'meta' => ['last' => 1],
         ]),
     ]);
 
@@ -76,10 +108,11 @@ it('should not re-create existing peers', function () {
     Peer::factory()->create(['ip' => '185.220.101.1']);
 
     Http::fake([
-        '*/peers' => Http::response([
+        '*/peers*' => Http::response([
             'data' => [
                 ['ip' => '185.220.101.1', 'port' => 4000],
             ],
+            'meta' => ['last' => 1],
         ]),
     ]);
 
@@ -91,7 +124,7 @@ it('should not re-create existing peers', function () {
 
 it('should return 0 when API fails', function () {
     Http::fake([
-        '*/peers' => Http::response(fn () => throw new Exception('Connection failed')),
+        '*/peers*' => Http::response(fn () => throw new Exception('Connection failed')),
     ]);
 
     expect((new PeersSyncer())->sync())->toBe(0);
@@ -99,10 +132,11 @@ it('should return 0 when API fails', function () {
 
 it('should handle geoip failures gracefully', function () {
     Http::fake([
-        '*/peers' => Http::response([
+        '*/peers*' => Http::response([
             'data' => [
                 ['ip' => '185.220.101.1', 'port' => 4000],
             ],
+            'meta' => ['last' => 1],
         ]),
     ]);
 
@@ -120,10 +154,11 @@ it('should handle geoip failures gracefully', function () {
 
 it('should handle default location', function () {
     Http::fake([
-        '*/peers' => Http::response([
+        '*/peers*' => Http::response([
             'data' => [
                 ['ip' => '127.0.0.1', 'port' => 4000],
             ],
+            'meta' => ['last' => 1],
         ]),
     ]);
 
