@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Contracts\MarketDataProvider;
 use App\Contracts\Services\GasTracker as GasTrackerContract;
 use App\Contracts\Services\Monitor\MissedBlocksCalculator as MissedBlocksCalculatorContract;
+use App\Facades\Network;
 use App\Services\BigNumber;
 use App\Services\GasTracker;
 use App\Services\Monitor\MissedBlocksCalculator;
