@@ -90,6 +90,10 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     const peerGroups = useMemo(() => groupPeersByLocation(peers), [peers]);
 
+    const pulseDelays = useMemo(() => peerGroups.map(() => Math.random() * 10), [peerGroups]);
+
+    const pulseDurations = useMemo(() => peerGroups.map(() => 4 + Math.random() * 4), [peerGroups]);
+
     useEffect(() => {
         import("world-atlas/countries-110m.json").then((topology) => {
             const topo = topology.default as unknown as Topology;
@@ -219,18 +223,6 @@ export default function WorldMap({ peers }: WorldMapProps) {
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
             >
-                <defs>
-                    <style>
-                        {`
-                            @keyframes peer-pulse {
-                                0% { r: ${dotRadius}; opacity: 0.6; }
-                                50% { r: ${dotRadius + 5}; opacity: 0; }
-                                100% { r: ${dotRadius}; opacity: 0; }
-                            }
-                        `}
-                    </style>
-                </defs>
-
                 <g
                     transform={`translate(${width / 2 + pan.x}, ${height / 2 + pan.y}) scale(${zoom}) translate(${-width / 2}, ${-height / 2})`}
                 >
@@ -252,20 +244,27 @@ export default function WorldMap({ peers }: WorldMapProps) {
                         }
 
                         const isHovered = hoveredGroup?.group === group;
+                        const duration = pulseDurations[index];
+                        const delay = pulseDelays[index];
 
                         return (
                             <g key={index}>
-                                <circle
-                                    cx={coords[0]}
-                                    cy={coords[1]}
-                                    r={dotRadius}
-                                    fill="#818cf8"
-                                    opacity={0.3}
-                                    style={{
-                                        animation: "peer-pulse 3s ease-in-out infinite",
-                                        animationDelay: `${Math.random() * 3}s`,
-                                    }}
-                                />
+                                <circle cx={coords[0]} cy={coords[1]} r={dotRadius} fill="#818cf8" opacity={0}>
+                                    <animate
+                                        attributeName="r"
+                                        values={`${dotRadius};${dotRadius + 5};${dotRadius}`}
+                                        dur={`${duration}s`}
+                                        begin={`${delay}s`}
+                                        repeatCount="indefinite"
+                                    />
+                                    <animate
+                                        attributeName="opacity"
+                                        values="0.5;0;0"
+                                        dur={`${duration}s`}
+                                        begin={`${delay}s`}
+                                        repeatCount="indefinite"
+                                    />
+                                </circle>
 
                                 <circle
                                     cx={coords[0]}
