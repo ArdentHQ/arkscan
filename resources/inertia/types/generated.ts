@@ -129,8 +129,6 @@ export type INetwork = {
     };
 };
 export type IPeer = {
-    ip: string;
-    port: number;
     latitude: number | null;
     longitude: number | null;
     country: string | null;

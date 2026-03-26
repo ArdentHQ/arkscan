@@ -32,5 +32,6 @@ it('should return peers with coordinates', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('PeersMap/Index')
             ->has('peers', 1)
-            ->where('peers.0.ip', $peer->ip));
+            ->where('peers.0.latitude', $peer->latitude)
+            ->where('peers.0.longitude', $peer->longitude));
 });

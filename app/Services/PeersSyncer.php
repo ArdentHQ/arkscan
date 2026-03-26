@@ -56,7 +56,7 @@ final class PeersSyncer
                     'page' => $page,
                 ])->json();
 
-                $data = $response['data'] ?? [];
+                $data  = $response['data'] ?? [];
                 $peers = array_merge($peers, $data);
 
                 $lastPage = $response['meta']['last'] ?? $response['meta']['lastPage'] ?? 1;

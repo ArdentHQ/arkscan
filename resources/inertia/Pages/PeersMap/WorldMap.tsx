@@ -1,10 +1,17 @@
 import { geoNaturalEarth1, geoPath } from "d3-geo";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { IPeer } from "@/types/generated";
 import { feature } from "topojson-client";
 
 import type { Topology } from "topojson-specification";
+
+interface PeerGroup {
+    latitude: number;
+    longitude: number;
+    location: string;
+    count: number;
+}
 
 interface WorldMapProps {
     peers: IPeer[];
@@ -12,24 +19,55 @@ interface WorldMapProps {
 
 const ASPECT_RATIO = 0.5;
 
-function PeerTooltip({ peer, x, y }: { peer: IPeer; x: number; y: number }) {
-    const location = [peer.city, peer.country].filter(Boolean).join(", ");
+function groupPeersByLocation(peers: IPeer[]): PeerGroup[] {
+    const groups = new Map<string, { latSum: number; lonSum: number; count: number; location: string }>();
 
+    for (const peer of peers) {
+        if (peer.latitude === null || peer.longitude === null) {
+            continue;
+        }
+
+        const key = [peer.city, peer.country].filter(Boolean).join(", ") || `${peer.latitude},${peer.longitude}`;
+        const location = [peer.city, peer.country].filter(Boolean).join(", ");
+
+        const existing = groups.get(key);
+
+        if (existing) {
+            existing.latSum += peer.latitude;
+            existing.lonSum += peer.longitude;
+            existing.count++;
+        } else {
+            groups.set(key, {
+                latSum: peer.latitude,
+                lonSum: peer.longitude,
+                count: 1,
+                location,
+            });
+        }
+    }
+
+    return Array.from(groups.values()).map((group) => ({
+        latitude: group.latSum / group.count,
+        longitude: group.lonSum / group.count,
+        location: group.location,
+        count: group.count,
+    }));
+}
+
+function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y: number; flipped: boolean }) {
     return (
         <div
             className="pointer-events-none absolute z-10 rounded-lg border border-white/10 bg-[#1c2333] px-3 py-2 text-sm shadow-xl"
             style={{
                 left: x,
                 top: y,
-                transform: "translate(-50%, -100%) translateY(-12px)",
+                transform: flipped ? "translate(-50%, 12px)" : "translate(-50%, -100%) translateY(-12px)",
             }}
         >
             <div className="space-y-1">
-                <div className="font-medium text-white">{peer.ip}</div>
+                <div className="font-medium text-white">{group.count === 1 ? "1 Peer" : `${group.count} Peers`}</div>
 
-                {location && <div className="text-gray-400">{location}</div>}
-
-                <div className="text-gray-500 text-xs">Port {peer.port}</div>
+                {group.location && <div className="text-gray-400">{group.location}</div>}
             </div>
         </div>
     );
@@ -39,7 +77,18 @@ export default function WorldMap({ peers }: WorldMapProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 960, height: 480 });
     const [worldData, setWorldData] = useState<GeoJSON.FeatureCollection | null>(null);
-    const [hoveredPeer, setHoveredPeer] = useState<{ peer: IPeer; x: number; y: number } | null>(null);
+    const [hoveredGroup, setHoveredGroup] = useState<{
+        group: PeerGroup;
+        x: number;
+        y: number;
+        flipped: boolean;
+    } | null>(null);
+    const [zoom, setZoom] = useState(1);
+    const [pan, setPan] = useState({ x: 0, y: 0 });
+    const [isPanning, setIsPanning] = useState(false);
+    const panStart = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
+
+    const peerGroups = useMemo(() => groupPeersByLocation(peers), [peers]);
 
     useEffect(() => {
         import("world-atlas/countries-110m.json").then((topology) => {
@@ -72,7 +121,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     const pathGenerator = geoPath().projection(projection);
 
-    const handlePeerHover = (peer: IPeer, event: React.MouseEvent<SVGCircleElement>) => {
+    const handleGroupHover = (group: PeerGroup, event: React.MouseEvent<SVGCircleElement>) => {
         const svg = event.currentTarget.closest("svg");
         const container = containerRef.current;
 
@@ -83,7 +132,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
         const svgRect = svg.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
 
-        const coords = projection([peer.longitude!, peer.latitude!]);
+        const coords = projection([group.longitude, group.latitude]);
 
         if (!coords) {
             return;
@@ -92,82 +141,163 @@ export default function WorldMap({ peers }: WorldMapProps) {
         const scaleX = svgRect.width / width;
         const scaleY = svgRect.height / height;
 
-        setHoveredPeer({
-            peer,
+        const tooltipY = coords[1] * scaleY + (svgRect.top - containerRect.top);
+        const flipped = tooltipY < 60;
+
+        setHoveredGroup({
+            group,
             x: coords[0] * scaleX + (svgRect.left - containerRect.left),
-            y: coords[1] * scaleY + (svgRect.top - containerRect.top),
+            y: tooltipY,
+            flipped,
         });
     };
 
+    const handleWheel = (event: React.WheelEvent) => {
+        event.preventDefault();
+
+        const delta = event.deltaY > 0 ? -0.2 : 0.2;
+        const newZoom = Math.min(Math.max(zoom + delta, 1), 8);
+
+        if (newZoom === 1) {
+            setPan({ x: 0, y: 0 });
+        }
+
+        setZoom(newZoom);
+    };
+
+    const handleMouseDown = (event: React.MouseEvent) => {
+        if (zoom <= 1) {
+            return;
+        }
+
+        setIsPanning(true);
+        panStart.current = { x: event.clientX, y: event.clientY, panX: pan.x, panY: pan.y };
+    };
+
+    const handleMouseMove = (event: React.MouseEvent) => {
+        if (!isPanning) {
+            return;
+        }
+
+        const dx = event.clientX - panStart.current.x;
+        const dy = event.clientY - panStart.current.y;
+
+        setPan({
+            x: panStart.current.panX + dx,
+            y: panStart.current.panY + dy,
+        });
+    };
+
+    const handleMouseUp = () => {
+        setIsPanning(false);
+    };
+
+    const dotRadius = Math.max(2, 3 / Math.sqrt(zoom));
+
     return (
         <div ref={containerRef} className="relative w-full">
-            <svg viewBox={`0 0 ${width} ${height}`} className="w-full" style={{ background: "#0d1117" }}>
+            {zoom > 1 && (
+                <button
+                    type="button"
+                    className="absolute right-2 top-2 z-20 rounded-md bg-white/10 px-2 py-1 text-xs text-white hover:bg-white/20"
+                    onClick={() => {
+                        setZoom(1);
+                        setPan({ x: 0, y: 0 });
+                    }}
+                >
+                    Reset
+                </button>
+            )}
+
+            <svg
+                viewBox={`0 0 ${width} ${height}`}
+                className="w-full"
+                style={{ background: "#0d1117", cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default" }}
+                onWheel={handleWheel}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseUp}
+            >
                 <defs>
                     <style>
                         {`
                             @keyframes peer-pulse {
-                                0% { r: 3; opacity: 0.6; }
-                                50% { r: 8; opacity: 0; }
-                                100% { r: 3; opacity: 0; }
+                                0% { r: ${dotRadius}; opacity: 0.6; }
+                                50% { r: ${dotRadius + 5}; opacity: 0; }
+                                100% { r: ${dotRadius}; opacity: 0; }
                             }
                         `}
                     </style>
                 </defs>
 
-                {worldData?.features.map((feature, index) => (
-                    <path
-                        key={index}
-                        d={pathGenerator(feature) || ""}
-                        fill="#1c2333"
-                        stroke="#2d3748"
-                        strokeWidth={0.5}
-                    />
-                ))}
+                <g
+                    transform={`translate(${width / 2 + pan.x}, ${height / 2 + pan.y}) scale(${zoom}) translate(${-width / 2}, ${-height / 2})`}
+                >
+                    {worldData?.features.map((feature, index) => (
+                        <path
+                            key={index}
+                            d={pathGenerator(feature) || ""}
+                            fill="#1c2333"
+                            stroke="#2d3748"
+                            strokeWidth={0.5 / zoom}
+                        />
+                    ))}
 
-                {peers.map((peer) => {
-                    if (peer.latitude === null || peer.longitude === null) {
-                        return null;
-                    }
+                    {peerGroups.map((group, index) => {
+                        const coords = projection([group.longitude, group.latitude]);
 
-                    const coords = projection([peer.longitude, peer.latitude]);
+                        if (!coords) {
+                            return null;
+                        }
 
-                    if (!coords) {
-                        return null;
-                    }
+                        const isHovered = hoveredGroup?.group === group;
 
-                    const isHovered = hoveredPeer?.peer.ip === peer.ip;
+                        return (
+                            <g key={index}>
+                                <circle
+                                    cx={coords[0]}
+                                    cy={coords[1]}
+                                    r={dotRadius}
+                                    fill="#818cf8"
+                                    opacity={0.3}
+                                    style={{
+                                        animation: "peer-pulse 3s ease-in-out infinite",
+                                        animationDelay: `${Math.random() * 3}s`,
+                                    }}
+                                />
 
-                    return (
-                        <g key={peer.ip}>
-                            <circle
-                                cx={coords[0]}
-                                cy={coords[1]}
-                                r={3}
-                                fill="#818cf8"
-                                opacity={0.3}
-                                style={{
-                                    animation: "peer-pulse 3s ease-in-out infinite",
-                                    animationDelay: `${Math.random() * 3}s`,
-                                }}
-                            />
+                                <circle
+                                    cx={coords[0]}
+                                    cy={coords[1]}
+                                    r={dotRadius}
+                                    fill="#818cf8"
+                                    opacity={isHovered ? 1 : 0.8}
+                                />
 
-                            <circle cx={coords[0]} cy={coords[1]} r={3} fill="#818cf8" opacity={isHovered ? 1 : 0.8} />
-
-                            <circle
-                                cx={coords[0]}
-                                cy={coords[1]}
-                                r={8}
-                                fill="transparent"
-                                className="cursor-pointer"
-                                onMouseEnter={(e) => handlePeerHover(peer, e)}
-                                onMouseLeave={() => setHoveredPeer(null)}
-                            />
-                        </g>
-                    );
-                })}
+                                <circle
+                                    cx={coords[0]}
+                                    cy={coords[1]}
+                                    r={Math.max(8, 8 / zoom)}
+                                    fill="transparent"
+                                    className="cursor-pointer"
+                                    onMouseEnter={(e) => handleGroupHover(group, e)}
+                                    onMouseLeave={() => setHoveredGroup(null)}
+                                />
+                            </g>
+                        );
+                    })}
+                </g>
             </svg>
 
-            {hoveredPeer && <PeerTooltip peer={hoveredPeer.peer} x={hoveredPeer.x} y={hoveredPeer.y} />}
+            {hoveredGroup && (
+                <PeerTooltip
+                    group={hoveredGroup.group}
+                    x={hoveredGroup.x}
+                    y={hoveredGroup.y}
+                    flipped={hoveredGroup.flipped}
+                />
+            )}
         </div>
     );
 }

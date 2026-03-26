@@ -12,8 +12,6 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class Peer extends Data
 {
     public function __construct(
-        public string $ip,
-        public int $port,
         public ?float $latitude,
         public ?float $longitude,
         public ?string $country,
@@ -24,8 +22,6 @@ class Peer extends Data
     public static function fromModel(Model $peer): self
     {
         return new self(
-            ip: $peer->ip,
-            port: $peer->port,
             latitude: $peer->latitude,
             longitude: $peer->longitude,
             country: $peer->country,
