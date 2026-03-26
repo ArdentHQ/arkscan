@@ -87,6 +87,8 @@ final class AppServiceProvider extends ServiceProvider
 
         InertiaResponse::macro('withMeta', function (string $pageName, array $detail = []) {
             /** @var InertiaResponse $this */
+            $detail = array_merge(['name' => Network::currency()], $detail);
+
             $this->with('metaPage', $pageName);
             $this->with('metaDetail', $detail);
 
