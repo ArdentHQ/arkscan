@@ -16,10 +16,10 @@ final class ShowTransactionController
     {
         $transaction->loadMissing('votedFor', 'multiPaymentRecipients', 'senderWallet', 'recipientWallet');
 
-        return Inertia::render('Transaction/Show', [
+        return Inertia::renderWithMeta('Transaction/Show', 'transaction', [
             'transaction' => TransactionDTO::fromModel($transaction),
             'details'     => TransactionDetails::fromModel($transaction),
-        ])->withMeta('transaction', [
+        ], [
             'txid' => $transaction->hash,
         ]);
     }

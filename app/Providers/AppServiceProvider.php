@@ -87,8 +87,6 @@ final class AppServiceProvider extends ServiceProvider
 
         InertiaResponse::macro('withMeta', function (string $pageName, array $detail = []) {
             /** @var InertiaResponse $this */
-            $detail = array_merge(['name' => Network::currency()], $detail);
-
             $this->with('metaPage', $pageName);
             $this->with('metaDetail', $detail);
 
@@ -103,7 +101,11 @@ final class AppServiceProvider extends ServiceProvider
         InertiaResponseFactory::macro('renderWithMeta', function (string $component, string $pageName, array $props = [], array $detail = []) {
             /** @var InertiaResponseFactory $this */
             return $this->render($component, $props)
-                ->withMeta($pageName, $detail);
+                ->withMeta($pageName, [
+                    'name' => Network::currency(),
+
+                    ...$detail,
+                ]);
         });
     }
 
