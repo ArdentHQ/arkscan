@@ -26,7 +26,7 @@ export function TransactionRecipientsSkeleton({ rows = 5 }: { rows?: number }) {
                             {Array.from({ length: rows }).map((_, index) => (
                                 <tr className="text-sm font-semibold" key={index}>
                                     <TableCell>
-                                        <LoadingText width="w-[100px] md:w-[200px]" />
+                                        <LoadingText width="w-[100px] md:w-[350px]" />
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <LoadingText width="w-[70px]" />
