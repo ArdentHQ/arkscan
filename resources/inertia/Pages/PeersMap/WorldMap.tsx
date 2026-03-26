@@ -156,17 +156,57 @@ export default function WorldMap({ peers }: WorldMapProps) {
         });
     };
 
+    const zoomToPoint = (newZoom: number, clientX: number, clientY: number) => {
+        const clamped = Math.min(Math.max(newZoom, 1), 8);
+
+        if (clamped === 1) {
+            setPan({ x: 0, y: 0 });
+            setZoom(1);
+            return;
+        }
+
+        const svg = containerRef.current?.querySelector("svg");
+
+        if (!svg) {
+            setZoom(clamped);
+            return;
+        }
+
+        const rect = svg.getBoundingClientRect();
+        const mouseX = clientX - rect.left;
+        const mouseY = clientY - rect.top;
+
+        const svgX = (mouseX / rect.width) * width;
+        const svgY = (mouseY / rect.height) * height;
+
+        const pointX = (svgX - width / 2 - pan.x) / zoom;
+        const pointY = (svgY - height / 2 - pan.y) / zoom;
+
+        const newPanX = svgX - width / 2 - pointX * clamped;
+        const newPanY = svgY - height / 2 - pointY * clamped;
+
+        setPan({ x: newPanX, y: newPanY });
+        setZoom(clamped);
+    };
+
     const handleWheel = (event: React.WheelEvent) => {
         event.preventDefault();
 
-        const delta = event.deltaY > 0 ? -0.2 : 0.2;
-        const newZoom = Math.min(Math.max(zoom + delta, 1), 8);
+        const delta = event.deltaY > 0 ? -0.3 : 0.3;
 
-        if (newZoom === 1) {
-            setPan({ x: 0, y: 0 });
+        zoomToPoint(zoom + delta, event.clientX, event.clientY);
+    };
+
+    const handleZoomButton = (direction: number) => {
+        const container = containerRef.current;
+
+        if (!container) {
+            return;
         }
 
-        setZoom(newZoom);
+        const rect = container.getBoundingClientRect();
+
+        zoomToPoint(zoom + direction * 0.5, rect.left + rect.width / 2, rect.top + rect.height / 2);
     };
 
     const handleMouseDown = (event: React.MouseEvent) => {
@@ -200,18 +240,38 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     return (
         <div ref={containerRef} className="relative w-full">
-            {zoom > 1 && (
+            <div className="absolute right-2 top-2 z-20 flex flex-col gap-1">
                 <button
                     type="button"
-                    className="absolute right-2 top-2 z-20 rounded-md bg-white/10 px-2 py-1 text-xs text-white hover:bg-white/20"
-                    onClick={() => {
-                        setZoom(1);
-                        setPan({ x: 0, y: 0 });
-                    }}
+                    className="rounded-md bg-white/10 px-2 py-1 text-xs text-white hover:bg-white/20 disabled:opacity-30"
+                    disabled={zoom >= 8}
+                    onClick={() => handleZoomButton(1)}
                 >
-                    Reset
+                    +
                 </button>
-            )}
+
+                <button
+                    type="button"
+                    className="rounded-md bg-white/10 px-2 py-1 text-xs text-white hover:bg-white/20 disabled:opacity-30"
+                    disabled={zoom <= 1}
+                    onClick={() => handleZoomButton(-1)}
+                >
+                    &minus;
+                </button>
+
+                {zoom > 1 && (
+                    <button
+                        type="button"
+                        className="mt-1 rounded-md bg-white/10 px-2 py-1 text-xs text-white hover:bg-white/20"
+                        onClick={() => {
+                            setZoom(1);
+                            setPan({ x: 0, y: 0 });
+                        }}
+                    >
+                        Reset
+                    </button>
+                )}
+            </div>
 
             <svg
                 viewBox={`0 0 ${width} ${height}`}
