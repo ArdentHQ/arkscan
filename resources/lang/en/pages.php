@@ -468,9 +468,11 @@ return [
     ],
 
     'validator-monitor' => [
-        'title'                 => 'Validator Monitor',
-        'subtitle'              => 'Validator block production observer tool.',
-        'missed_blocks_tooltip' => 'Validator last forged :blocks blocks ago (:time)',
+        'title'                    => 'Validator Monitor',
+        'subtitle'                 => 'Validator block production observer tool.',
+        'missed_blocks_tooltip'    => 'Validator last forged :blocks blocks ago (:time)',
+        'last_block_forged_at'     => 'Last block forged at :time',
+        'no_blocks_forged_yet'     => 'No blocks forged yet',
 
         'stats' => [
             'forging'        => 'Forging',
