@@ -789,5 +789,8 @@ return [
     'peers-map' => [
         'title'    => 'Peers Map',
         'subtitle' => 'Geographic distribution of network peers.',
+        'reset'    => 'Reset',
+        'peer'     => '1 Peer',
+        'peers'    => '{{count}} Peers',
     ],
 ];

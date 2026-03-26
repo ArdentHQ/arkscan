@@ -1,5 +1,6 @@
 import { geoNaturalEarth1, geoPath } from "d3-geo";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { IPeer } from "@/types/generated";
 import { feature } from "topojson-client";
@@ -55,6 +56,8 @@ function groupPeersByLocation(peers: IPeer[]): PeerGroup[] {
 }
 
 function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y: number; flipped: boolean }) {
+    const { t } = useTranslation();
+
     return (
         <div
             className="pointer-events-none absolute z-10 rounded-lg border border-white/10 bg-[#1c2333] px-3 py-2 text-sm shadow-xl"
@@ -65,7 +68,9 @@ function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y:
             }}
         >
             <div className="space-y-1">
-                <div className="font-medium text-white">{group.count === 1 ? "1 Peer" : `${group.count} Peers`}</div>
+                <div className="font-medium text-white">
+                    {group.count === 1 ? t("pages.peers-map.peer") : t("pages.peers-map.peers", { count: group.count })}
+                </div>
 
                 {group.location && <div className="text-gray-400">{group.location}</div>}
             </div>
@@ -74,6 +79,7 @@ function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y:
 }
 
 export default function WorldMap({ peers }: WorldMapProps) {
+    const { t } = useTranslation();
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 960, height: 480 });
     const [worldData, setWorldData] = useState<GeoJSON.FeatureCollection | null>(null);
@@ -240,10 +246,23 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     return (
         <div ref={containerRef} className="relative w-full">
-            <div className="absolute right-2 top-2 z-20 flex flex-col gap-1">
+            <div className="absolute right-2 top-2 z-20 flex items-center gap-1">
+                {zoom > 1 && (
+                    <button
+                        type="button"
+                        className="flex h-7 items-center justify-center rounded-md bg-white/10 px-2 text-xs text-white hover:bg-white/20"
+                        onClick={() => {
+                            setZoom(1);
+                            setPan({ x: 0, y: 0 });
+                        }}
+                    >
+                        {t("pages.peers-map.reset")}
+                    </button>
+                )}
+
                 <button
                     type="button"
-                    className="rounded-md bg-white/10 px-2 py-1 text-xs text-white hover:bg-white/20 disabled:opacity-30"
+                    className="flex h-7 w-7 items-center justify-center rounded-md bg-white/10 text-xs text-white hover:bg-white/20 disabled:opacity-30"
                     disabled={zoom >= 8}
                     onClick={() => handleZoomButton(1)}
                 >
@@ -252,25 +271,12 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 <button
                     type="button"
-                    className="rounded-md bg-white/10 px-2 py-1 text-xs text-white hover:bg-white/20 disabled:opacity-30"
+                    className="flex h-7 w-7 items-center justify-center rounded-md bg-white/10 text-xs text-white hover:bg-white/20 disabled:opacity-30"
                     disabled={zoom <= 1}
                     onClick={() => handleZoomButton(-1)}
                 >
                     &minus;
                 </button>
-
-                {zoom > 1 && (
-                    <button
-                        type="button"
-                        className="mt-1 rounded-md bg-white/10 px-2 py-1 text-xs text-white hover:bg-white/20"
-                        onClick={() => {
-                            setZoom(1);
-                            setPan({ x: 0, y: 0 });
-                        }}
-                    >
-                        Reset
-                    </button>
-                )}
             </div>
 
             <svg
@@ -309,7 +315,14 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                         return (
                             <g key={index}>
-                                <circle cx={coords[0]} cy={coords[1]} r={dotRadius} fill="#818cf8" opacity={0}>
+                                <circle
+                                    cx={coords[0]}
+                                    cy={coords[1]}
+                                    r={dotRadius}
+                                    fill="#818cf8"
+                                    opacity={0}
+                                    style={{ pointerEvents: "none" }}
+                                >
                                     <animate
                                         attributeName="r"
                                         values={`${dotRadius};${dotRadius + 5};${dotRadius}`}
@@ -337,7 +350,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                 <circle
                                     cx={coords[0]}
                                     cy={coords[1]}
-                                    r={Math.max(8, 8 / zoom)}
+                                    r={dotRadius + 2}
                                     fill="transparent"
                                     className="cursor-pointer"
                                     onMouseEnter={(e) => handleGroupHover(group, e)}
