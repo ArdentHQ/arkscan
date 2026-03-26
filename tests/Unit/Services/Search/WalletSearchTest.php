@@ -61,3 +61,58 @@ it('should map meilisearch results array', function () {
 
     expect($result->first()->address)->toBe($wallet->address);
 });
+
+it('should search for a wallet by username', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'genesis_19',
+        ],
+    ]);
+
+    Wallet::factory(5)->create();
+
+    $result = (new WalletSearch())->search('genesis_19', 5);
+
+    expect($result)->toHaveCount(1);
+    expect($result->first()->address)->toBe($wallet->address);
+});
+
+it('should search for a wallet by username case insensitive', function () {
+    $wallet = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'Genesis_19',
+        ],
+    ]);
+
+    Wallet::factory(5)->create();
+
+    $result = (new WalletSearch())->search('genesis_19', 5);
+
+    expect($result)->toHaveCount(1);
+    expect($result->first()->address)->toBe($wallet->address);
+});
+
+it('should return both address and username matches', function () {
+    Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'testuser',
+        ],
+    ]);
+
+    Wallet::factory()->create([
+        'address' => 'testuserAAAAAAAAAAAA',
+    ]);
+
+    $result = (new WalletSearch())->search('testuser', 5);
+
+    expect($result)->toHaveCount(2);
+});
+
+it('should handle a negative limit', function () {
+    $query = WalletSearch::buildSearchQueryForIndex('aaaaaabbbbbbbccccccdddddd3', -5);
+
+    expect($query->toArray())->toMatchArray([
+        'indexUid' => 'wallets',
+        'q'        => 'aaaaaabbbbbbbccccccdddddd3',
+    ]);
+});

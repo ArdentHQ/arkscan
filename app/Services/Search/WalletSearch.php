@@ -10,6 +10,7 @@ use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Meilisearch\Contracts\SearchQuery;
 
 final class WalletSearch implements Search
@@ -21,6 +22,10 @@ final class WalletSearch implements Search
      */
     public function search(string $query, int $limit): EloquentCollection
     {
+        if ($this->couldBeAddress($query)) {
+            return Wallet::where('address', 'ilike', $query)->limit(1)->get();
+        }
+
         if ($this->couldntBeAddress($query)) {
             /**
              * @var EloquentCollection<Wallet>
@@ -28,13 +33,17 @@ final class WalletSearch implements Search
             return (new Wallet())->newCollection([]);
         }
 
-        if ($this->couldBeAddress($query)) {
-            $builder = Wallet::where('address', 'ilike', $query)->limit(1);
-        } else {
-            $builder = Wallet::where('address', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
+        $builder = Wallet::where('address', 'ilike', sprintf('%%%s%%', $query));
+
+        if ($this->couldBeUsername($query)) {
+            $quoted = substr(DB::connection('explorer')->getPdo()->quote($query), 1, -1);
+
+            $builder->orWhereRaw(
+                'lower(attributes::text)::jsonb @> lower(\'{"username":"'.$quoted.'"}\')::jsonb'
+            );
         }
 
-        return $builder->get();
+        return $builder->limit($limit)->get();
     }
 
     public static function mapMeilisearchResults(array $rawResults): Collection
