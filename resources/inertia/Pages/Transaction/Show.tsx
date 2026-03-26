@@ -1,6 +1,6 @@
-import { PageProps } from "@inertiajs/core";
+import { Deferred, PageProps, usePage } from "@inertiajs/react";
 import Layout from "@/Layout";
-import { TransactionShowProps } from "@/Pages/Transaction.contracts";
+import { TransactionRecipient, TransactionShowProps } from "@/Pages/Transaction.contracts";
 import {
     TransactionHeader,
     TransactionDetails,
@@ -10,11 +10,22 @@ import {
     TransactionSummary,
     TransactionStatus,
     TransactionRecipients,
+    TransactionRecipientsSkeleton,
     TransactionMoreDetails,
     TransferDetails,
 } from "@/Components/Transaction/Page";
 import useSharedData from "@/hooks/use-shared-data";
 import { Transaction } from "@/models/Transaction";
+
+function DeferredRecipients() {
+    const { recipients } = usePage<PageProps<{ recipients: TransactionRecipient[] }>>().props;
+
+    if (recipients.length === 0) {
+        return null;
+    }
+
+    return <TransactionRecipients recipients={recipients} />;
+}
 
 export default function Show({ transaction: transactionData, details }: PageProps<TransactionShowProps>) {
     const { network } = useSharedData();
@@ -46,8 +57,10 @@ export default function Show({ transaction: transactionData, details }: PageProp
 
                 <TransactionStatus transaction={transaction} details={details} />
 
-                {transaction.method.isMultiPayment && transaction.multiPaymentRecipients.length > 0 && (
-                    <TransactionRecipients recipients={transaction.multiPaymentRecipients} />
+                {transaction.method.isMultiPayment && (
+                    <Deferred data="recipients" fallback={<TransactionRecipientsSkeleton />}>
+                        <DeferredRecipients />
+                    </Deferred>
                 )}
 
                 {transaction.method.isBatchTransfer && details.batchTokenTransfers.length > 0 && (

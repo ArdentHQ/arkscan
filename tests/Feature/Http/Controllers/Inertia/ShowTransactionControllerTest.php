@@ -91,7 +91,7 @@ it('should return null token transfer details when payload has no arguments', fu
             ->where('details.tokenTransfer', null));
 });
 
-it('should return multipayment recipients', function () {
+it('should return multipayment recipients as deferred prop', function () {
     $this->withoutExceptionHandling();
 
     fakeCryptoCompare();
@@ -127,12 +127,14 @@ it('should return multipayment recipients', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Transaction/Show')
-            ->has('transaction.multiPaymentRecipients', 2)
-            ->where('transaction.multiPaymentRecipients', function ($data) use ($recipients, $amounts) {
-                $addresses    = collect($data)->pluck('address')->sort()->values()->all();
-                $amountValues = collect($data)->pluck('amount')->sort()->values()->all();
+            ->missing('recipients')
+            ->loadDeferredProps(fn (Assert $reload) => $reload
+                ->has('recipients', 2)
+                ->where('recipients', function ($data) use ($recipients, $amounts) {
+                    $addresses    = collect($data)->pluck('address')->sort()->values()->all();
+                    $amountValues = collect($data)->pluck('amount')->sort()->values()->all();
 
-                return $addresses === $recipients->pluck('address')->sort()->values()->all()
-                    && $amountValues === collect($amounts)->map(fn ($amount) => (string) $amount)->sort()->values()->all();
-            }));
+                    return $addresses === $recipients->pluck('address')->sort()->values()->all()
+                        && $amountValues === collect($amounts)->map(fn ($amount) => (string) $amount)->sort()->values()->all();
+                })));
 });

@@ -10,4 +10,5 @@ export type TransactionRecipient = ITransaction["multiPaymentRecipients"][number
 export interface TransactionShowProps {
     transaction: ITransaction;
     details: ITransactionDetails;
+    recipients: TransactionRecipient[];
 }
