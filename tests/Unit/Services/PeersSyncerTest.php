@@ -49,20 +49,27 @@ it('should sync new peers', function () {
 });
 
 it('should handle pagination across multiple pages', function () {
-    Http::fake([
-        '*/peers?page=1' => Http::response([
-            'data' => [
-                ['ip' => '185.220.101.1', 'port' => 4000],
-            ],
-            'meta' => ['last' => 2],
-        ]),
-        '*/peers?page=2' => Http::response([
+    $callCount = 0;
+
+    Http::fake(function ($request) use (&$callCount) {
+        $callCount++;
+
+        if ($callCount === 1) {
+            return Http::response([
+                'data' => [
+                    ['ip' => '185.220.101.1', 'port' => 4000],
+                ],
+                'meta' => ['last' => 2],
+            ]);
+        }
+
+        return Http::response([
             'data' => [
                 ['ip' => '195.201.175.10', 'port' => 4000],
             ],
             'meta' => ['last' => 2],
-        ]),
-    ]);
+        ]);
+    });
 
     mockGeoIP(new Location([
         'lat'     => 52.52,

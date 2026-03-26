@@ -57,7 +57,8 @@ final class PeersSyncer
 
             do {
                 $response = Http::get(sprintf('%s/peers', $this->apiUrl ?? Network::api()), [
-                    'page' => $page,
+                    'page'    => $page,
+                    'orderBy' => 'ip:asc',
                 ])->json();
 
                 $data  = $response['data'] ?? [];
