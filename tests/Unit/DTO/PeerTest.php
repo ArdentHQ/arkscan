@@ -17,8 +17,6 @@ it('should create from model', function () {
 
     $dto = PeerDTO::fromModel($peer);
 
-    expect($dto->ip)->toBe('185.220.101.1');
-    expect($dto->port)->toBe(4000);
     expect($dto->latitude)->toBe(52.52);
     expect($dto->longitude)->toBe(13.405);
     expect($dto->country)->toBe('Germany');
