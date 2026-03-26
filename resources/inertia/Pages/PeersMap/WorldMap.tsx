@@ -132,32 +132,24 @@ export default function WorldMap({ peers }: WorldMapProps) {
     const pathGenerator = geoPath().projection(projection);
 
     const handleGroupHover = (group: PeerGroup, event: React.MouseEvent<SVGCircleElement>) => {
-        const svg = event.currentTarget.closest("svg");
         const container = containerRef.current;
+        const circle = event.currentTarget;
 
-        if (!svg || !container) {
+        if (!container) {
             return;
         }
 
-        const svgRect = svg.getBoundingClientRect();
+        const circleRect = circle.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
 
-        const coords = projection([group.longitude, group.latitude]);
-
-        if (!coords) {
-            return;
-        }
-
-        const scaleX = svgRect.width / width;
-        const scaleY = svgRect.height / height;
-
-        const tooltipY = coords[1] * scaleY + (svgRect.top - containerRect.top);
-        const flipped = tooltipY < 60;
+        const x = circleRect.left + circleRect.width / 2 - containerRect.left;
+        const y = circleRect.top - containerRect.top;
+        const flipped = y < 60;
 
         setHoveredGroup({
             group,
-            x: coords[0] * scaleX + (svgRect.left - containerRect.left),
-            y: tooltipY,
+            x,
+            y,
             flipped,
         });
     };
@@ -350,7 +342,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                 <circle
                                     cx={coords[0]}
                                     cy={coords[1]}
-                                    r={dotRadius + 2}
+                                    r={dotRadius}
                                     fill="transparent"
                                     className="cursor-pointer"
                                     onMouseEnter={(e) => handleGroupHover(group, e)}
