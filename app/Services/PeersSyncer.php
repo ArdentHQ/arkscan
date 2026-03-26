@@ -11,6 +11,10 @@ use Torann\GeoIP\Location;
 
 final class PeersSyncer
 {
+    public function __construct(private ?string $apiUrl = null)
+    {
+    }
+
     public function sync(): int
     {
         $peers = $this->fetchPeers();
@@ -52,7 +56,7 @@ final class PeersSyncer
             $page  = 1;
 
             do {
-                $response = Http::get(sprintf('%s/peers', Network::api()), [
+                $response = Http::get(sprintf('%s/peers', $this->apiUrl ?? Network::api()), [
                     'page' => $page,
                 ])->json();
 
