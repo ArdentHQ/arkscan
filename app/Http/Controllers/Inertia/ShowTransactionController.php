@@ -15,12 +15,14 @@ final class ShowTransactionController
 {
     public function __invoke(Transaction $transaction): Response
     {
-        $transaction->loadMissing('votedFor', 'senderWallet', 'recipientWallet');
-
         return Inertia::render('Transaction/Show', [
-            'transaction' => TransactionDTO::fromModel($transaction),
-            'details'     => TransactionDetails::fromModel($transaction),
-            'recipients'  => Inertia::defer(fn () => $this->recipients($transaction)),
+            'transaction' => function () use ($transaction) {
+                $transaction->loadMissing('votedFor', 'senderWallet', 'recipientWallet');
+
+                return TransactionDTO::fromModel($transaction);
+            },
+            'details'    => fn () => TransactionDetails::fromModel($transaction),
+            'recipients' => Inertia::defer(fn () => $this->recipients($transaction)),
         ])->withMeta('transaction', [
             'txid' => $transaction->hash,
         ]);
