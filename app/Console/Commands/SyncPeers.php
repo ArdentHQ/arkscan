@@ -14,7 +14,7 @@ final class SyncPeers extends Command
      *
      * @var string
      */
-    protected $signature = 'explorer:sync-peers';
+    protected $signature = 'explorer:sync-peers {--api= : Override the API base URL}';
 
     /**
      * The console command description.
@@ -23,9 +23,12 @@ final class SyncPeers extends Command
      */
     protected $description = 'Fetch peers from the API and resolve their geo coordinates.';
 
-    public function handle(PeersSyncer $syncer): void
+    public function handle(): void
     {
-        $count = $syncer->sync();
+        /** @var string|null $apiUrl */
+        $apiUrl = $this->option('api');
+
+        $count = (new PeersSyncer($apiUrl))->sync();
 
         $this->info(sprintf('Synced %d new peer(s).', $count));
     }
