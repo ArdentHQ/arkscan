@@ -172,11 +172,14 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     const zoomRef = useRef(zoom);
     const panRef = useRef(pan);
+    const dimensionsRef = useRef(dimensions);
     zoomRef.current = zoom;
     panRef.current = pan;
+    dimensionsRef.current = dimensions;
 
-    const zoomToPoint = (newZoom: number, clientX: number, clientY: number) => {
+    const applyZoom = useRef((newZoom: number, centerX?: number, centerY?: number) => {
         const clamped = Math.min(Math.max(newZoom, 1), 8);
+        const { width: w, height: h } = dimensionsRef.current;
 
         if (clamped === 1) {
             setPan({ x: 0, y: 0 });
@@ -192,24 +195,21 @@ export default function WorldMap({ peers }: WorldMapProps) {
         }
 
         const rect = svg.getBoundingClientRect();
-        const mouseX = clientX - rect.left;
-        const mouseY = clientY - rect.top;
+        const mouseX = (centerX ?? rect.left + rect.width / 2) - rect.left;
+        const mouseY = (centerY ?? rect.top + rect.height / 2) - rect.top;
 
-        const svgX = (mouseX / rect.width) * width;
-        const svgY = (mouseY / rect.height) * height;
+        const svgX = (mouseX / rect.width) * w;
+        const svgY = (mouseY / rect.height) * h;
 
-        const currentZoom = zoomRef.current;
-        const currentPan = panRef.current;
+        const curZoom = zoomRef.current;
+        const curPan = panRef.current;
 
-        const pointX = (svgX - width / 2 - currentPan.x) / currentZoom;
-        const pointY = (svgY - height / 2 - currentPan.y) / currentZoom;
+        const pointX = (svgX - w / 2 - curPan.x) / curZoom;
+        const pointY = (svgY - h / 2 - curPan.y) / curZoom;
 
-        const newPanX = svgX - width / 2 - pointX * clamped;
-        const newPanY = svgY - height / 2 - pointY * clamped;
-
-        setPan({ x: newPanX, y: newPanY });
+        setPan({ x: svgX - w / 2 - pointX * clamped, y: svgY - h / 2 - pointY * clamped });
         setZoom(clamped);
-    };
+    }).current;
 
     useEffect(() => {
         const svg = containerRef.current?.querySelector("svg");
@@ -223,24 +223,16 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
             const delta = event.deltaY > 0 ? -0.3 : 0.3;
 
-            zoomToPoint(zoomRef.current + delta, event.clientX, event.clientY);
+            applyZoom(zoomRef.current + delta, event.clientX, event.clientY);
         };
 
         svg.addEventListener("wheel", handleWheel, { passive: false });
 
         return () => svg.removeEventListener("wheel", handleWheel);
-    }, [width, height]);
+    }, [worldData]);
 
     const handleZoomButton = (direction: number) => {
-        const container = containerRef.current;
-
-        if (!container) {
-            return;
-        }
-
-        const rect = container.getBoundingClientRect();
-
-        zoomToPoint(zoom + direction * 0.5, rect.left + rect.width / 2, rect.top + rect.height / 2);
+        applyZoom(zoomRef.current + direction * 0.5);
     };
 
     const handleMouseDown = (event: React.MouseEvent) => {
