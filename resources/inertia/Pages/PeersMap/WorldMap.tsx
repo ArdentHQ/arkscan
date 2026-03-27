@@ -1,11 +1,10 @@
 import { geoNaturalEarth1, geoPath } from "d3-geo";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 
 import { IPeer } from "@/types/generated";
-import { feature } from "topojson-client";
-
 import type { Topology } from "topojson-specification";
+import { feature } from "topojson-client";
+import { useTranslation } from "react-i18next";
 
 interface PeerGroup {
     latitude: number;
@@ -60,7 +59,7 @@ function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y:
 
     return (
         <div
-            className="pointer-events-none absolute z-10 rounded-lg border border-white/10 bg-[#1c2333] px-3 py-2 text-sm shadow-xl"
+            className="pointer-events-none absolute z-10 rounded-lg border border-theme-secondary-200 bg-white px-3 py-2 text-sm shadow-xl dark:border-white/10 dark:bg-[#1c2333]"
             style={{
                 left: x,
                 top: y,
@@ -68,7 +67,7 @@ function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y:
             }}
         >
             <div className="space-y-1">
-                <div className="font-medium text-white">
+                <div className="font-medium text-black dark:text-white">
                     {group.count === 1 ? t("pages.peers-map.peer") : t("pages.peers-map.peers", { count: group.count })}
                 </div>
 
@@ -274,7 +273,10 @@ export default function WorldMap({ peers }: WorldMapProps) {
             <svg
                 viewBox={`0 0 ${width} ${height}`}
                 className="w-full"
-                style={{ background: "#0d1117", cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default" }}
+                style={{
+                    backgroundColor: "var(--map-background)",
+                    cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default",
+                }}
                 onWheel={handleWheel}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
@@ -288,8 +290,8 @@ export default function WorldMap({ peers }: WorldMapProps) {
                         <path
                             key={index}
                             d={pathGenerator(feature) || ""}
-                            fill="#1c2333"
-                            stroke="#2d3748"
+                            fill="var(--map-land)"
+                            stroke="var(--map-land-borders)"
                             strokeWidth={0.5 / zoom}
                         />
                     ))}
@@ -311,7 +313,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                     cx={coords[0]}
                                     cy={coords[1]}
                                     r={dotRadius}
-                                    fill="#818cf8"
+                                    fill="var(--map-peer-pulse)"
                                     opacity={0}
                                     style={{ pointerEvents: "none" }}
                                 >
@@ -335,7 +337,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                     cx={coords[0]}
                                     cy={coords[1]}
                                     r={dotRadius}
-                                    fill="#818cf8"
+                                    fill="var(--map-peer)"
                                     opacity={isHovered ? 1 : 0.8}
                                 />
 
