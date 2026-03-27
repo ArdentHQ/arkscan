@@ -96,6 +96,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
     const dotColor = getCssVar("--map-peer");
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const svgRef = useRef<SVGSVGElement>(null);
     const [dimensions, setDimensions] = useState({ width: 960, height: 480 });
     const [worldData, setWorldData] = useState<GeoJSON.FeatureCollection | null>(null);
     const [hoveredGroup, setHoveredGroup] = useState<{
@@ -187,7 +188,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
             return;
         }
 
-        const svg = containerRef.current?.querySelector("svg");
+        const svg = svgRef.current;
 
         if (!svg) {
             setZoom(clamped);
@@ -212,7 +213,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
     }).current;
 
     useEffect(() => {
-        const svg = containerRef.current?.querySelector("svg");
+        const svg = svgRef.current;
 
         if (!svg) {
             return;
@@ -229,7 +230,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
         svg.addEventListener("wheel", handleWheel, { passive: false });
 
         return () => svg.removeEventListener("wheel", handleWheel);
-    }, [worldData]);
+    }, []);
 
     const handleZoomButton = (direction: number) => {
         applyZoom(zoomRef.current + direction * 0.5);
@@ -270,7 +271,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                 {zoom > 1 && (
                     <button
                         type="button"
-                        className="button-secondary h-7 px-2 py-0 text-sm"
+                        className="button-secondary h-7 px-2 py-0 text-xs"
                         onClick={() => {
                             setZoom(1);
                             setPan({ x: 0, y: 0 });
@@ -300,6 +301,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
             </div>
 
             <svg
+                ref={svgRef}
                 viewBox={`0 0 ${width} ${height}`}
                 className="w-full rounded-lg"
                 style={{ background: mapBg, cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default" }}
