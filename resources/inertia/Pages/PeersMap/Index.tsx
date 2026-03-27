@@ -3,7 +3,7 @@ import Layout from "@/Layout";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
-import WorldMap from "./WorldMap";
+import WorldMap from "@/Components/PeersMap/WorldMap";
 import { useTranslation } from "react-i18next";
 
 interface PeersMapProps {
