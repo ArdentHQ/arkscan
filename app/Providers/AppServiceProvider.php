@@ -18,7 +18,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Response as InertiaResponse;
 use Inertia\ResponseFactory as InertiaResponseFactory;
 use Laravel\Fortify\Fortify;
 
@@ -85,27 +84,19 @@ final class AppServiceProvider extends ServiceProvider
             return collect($this->items);
         });
 
-        InertiaResponse::macro('withMeta', function (string $pageName, array $detail = []) {
-            /** @var InertiaResponse $this */
-            $this->with('metaPage', $pageName);
-            $this->with('metaDetail', $detail);
+        InertiaResponseFactory::macro('renderWithMeta', function (string $component, string $pageName, array $props = [], array $detail = []) {
+            /** @var InertiaResponseFactory $this */
+            $detail = array_merge(['name' => Network::currency()], $detail);
 
-            $this->withViewData([
+            $response = $this->render($component, $props);
+            $response->with('metaPage', $pageName);
+            $response->with('metaDetail', $detail);
+            $response->withViewData([
                 'metaPage'   => $pageName,
                 'metaDetail' => $detail,
             ]);
 
-            return $this;
-        });
-
-        InertiaResponseFactory::macro('renderWithMeta', function (string $component, string $pageName, array $props = [], array $detail = []) {
-            /** @var InertiaResponseFactory $this */
-            return $this->render($component, $props)
-                ->withMeta($pageName, [
-                    'name' => Network::currency(),
-
-                    ...$detail,
-                ]);
+            return $response;
         });
     }
 
