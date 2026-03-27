@@ -7,5 +7,4 @@ parameters:
         - app/Console/Commands/RunPlaybookCommand.php
         - app/Services/Monitor
         - app/Testing
-    ignoreErrors:
-        - '#Dynamic call to static method Inertia\\Response::withMeta\(\)\.#'
+    ignoreErrors: []
