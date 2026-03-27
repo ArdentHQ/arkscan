@@ -5,6 +5,6 @@ export { default as TransactionAddressing } from "./Addressing";
 export { default as TransactionToken } from "./Token";
 export { default as TransactionSummary } from "./Summary";
 export { default as TransactionStatus } from "./Status";
-export { default as TransactionRecipients } from "./Recipients";
+export { default as TransactionRecipients, TransactionRecipientsSkeleton } from "./Recipients";
 export { default as TransactionMoreDetails } from "./MoreDetails";
 export { default as TransferDetails } from "./TransferDetails";
