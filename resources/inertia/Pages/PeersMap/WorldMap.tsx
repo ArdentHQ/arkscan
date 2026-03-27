@@ -17,7 +17,9 @@ interface WorldMapProps {
     peers: IPeer[];
 }
 
-const ASPECT_RATIO = 0.5;
+const DESKTOP_ASPECT_RATIO = 576 / 1152;
+const MOBILE_ASPECT_RATIO = 360 / 272;
+const MOBILE_BREAKPOINT = 768;
 
 function groupPeersByLocation(peers: IPeer[]): PeerGroup[] {
     const groups = new Map<string, { latSum: number; lonSum: number; count: number; location: string }>();
@@ -83,16 +85,13 @@ function getCssVar(name: string): string {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-
-
-
 export default function WorldMap({ peers }: WorldMapProps) {
     const { t } = useTranslation();
     const mapBg = getCssVar("--map-background");
     const landFill = getCssVar("--map-land");
     const landStroke = getCssVar("--map-land-borders");
     const dotColor = getCssVar("--map-peer");
-    
+
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 960, height: 480 });
     const [worldData, setWorldData] = useState<GeoJSON.FeatureCollection | null>(null);
@@ -125,7 +124,8 @@ export default function WorldMap({ peers }: WorldMapProps) {
         const updateDimensions = () => {
             if (containerRef.current) {
                 const width = containerRef.current.clientWidth;
-                setDimensions({ width, height: width * ASPECT_RATIO });
+                const ratio = width < MOBILE_BREAKPOINT ? MOBILE_ASPECT_RATIO : DESKTOP_ASPECT_RATIO;
+                setDimensions({ width, height: width * ratio });
             }
         };
 
