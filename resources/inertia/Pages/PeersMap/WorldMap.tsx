@@ -83,16 +83,13 @@ function getCssVar(name: string): string {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-
-
-
 export default function WorldMap({ peers }: WorldMapProps) {
     const { t } = useTranslation();
     const mapBg = getCssVar("--map-background");
     const landFill = getCssVar("--map-land");
     const landStroke = getCssVar("--map-land-borders");
     const dotColor = getCssVar("--map-peer");
-    
+
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 960, height: 480 });
     const [worldData, setWorldData] = useState<GeoJSON.FeatureCollection | null>(null);
