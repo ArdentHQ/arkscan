@@ -170,6 +170,11 @@ export default function WorldMap({ peers }: WorldMapProps) {
         });
     };
 
+    const zoomRef = useRef(zoom);
+    const panRef = useRef(pan);
+    zoomRef.current = zoom;
+    panRef.current = pan;
+
     const zoomToPoint = (newZoom: number, clientX: number, clientY: number) => {
         const clamped = Math.min(Math.max(newZoom, 1), 8);
 
@@ -193,8 +198,11 @@ export default function WorldMap({ peers }: WorldMapProps) {
         const svgX = (mouseX / rect.width) * width;
         const svgY = (mouseY / rect.height) * height;
 
-        const pointX = (svgX - width / 2 - pan.x) / zoom;
-        const pointY = (svgY - height / 2 - pan.y) / zoom;
+        const currentZoom = zoomRef.current;
+        const currentPan = panRef.current;
+
+        const pointX = (svgX - width / 2 - currentPan.x) / currentZoom;
+        const pointY = (svgY - height / 2 - currentPan.y) / currentZoom;
 
         const newPanX = svgX - width / 2 - pointX * clamped;
         const newPanY = svgY - height / 2 - pointY * clamped;
@@ -203,13 +211,25 @@ export default function WorldMap({ peers }: WorldMapProps) {
         setZoom(clamped);
     };
 
-    const handleWheel = (event: React.WheelEvent) => {
-        event.preventDefault();
+    useEffect(() => {
+        const svg = containerRef.current?.querySelector("svg");
 
-        const delta = event.deltaY > 0 ? -0.3 : 0.3;
+        if (!svg) {
+            return;
+        }
 
-        zoomToPoint(zoom + delta, event.clientX, event.clientY);
-    };
+        const handleWheel = (event: WheelEvent) => {
+            event.preventDefault();
+
+            const delta = event.deltaY > 0 ? -0.3 : 0.3;
+
+            zoomToPoint(zoomRef.current + delta, event.clientX, event.clientY);
+        };
+
+        svg.addEventListener("wheel", handleWheel, { passive: false });
+
+        return () => svg.removeEventListener("wheel", handleWheel);
+    }, [width, height]);
 
     const handleZoomButton = (direction: number) => {
         const container = containerRef.current;
@@ -258,7 +278,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                 {zoom > 1 && (
                     <button
                         type="button"
-                        className="button-secondary h-7 py-0 text-sm px-2"
+                        className="button-secondary h-7 px-2 py-0 text-sm"
                         onClick={() => {
                             setZoom(1);
                             setPan({ x: 0, y: 0 });
@@ -270,7 +290,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 <button
                     type="button"
-                    className="button-secondary h-7 w-7 p-0 items-center justify-center flex"
+                    className="button-secondary flex h-7 w-7 items-center justify-center p-0"
                     disabled={zoom >= 8}
                     onClick={() => handleZoomButton(1)}
                 >
@@ -279,7 +299,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 <button
                     type="button"
-                    className="button-secondary h-7 w-7 p-0 items-center justify-center flex"
+                    className="button-secondary flex h-7 w-7 items-center justify-center p-0"
                     disabled={zoom <= 1}
                     onClick={() => handleZoomButton(-1)}
                 >
@@ -291,7 +311,6 @@ export default function WorldMap({ peers }: WorldMapProps) {
                 viewBox={`0 0 ${width} ${height}`}
                 className="w-full rounded-lg"
                 style={{ background: mapBg, cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default" }}
-                onWheel={handleWheel}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
