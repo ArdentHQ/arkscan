@@ -36,14 +36,14 @@ final class ContractAbiService
      * @var array<string, array{0: ContractAbiType, 1: string}>
      */
     private const KNOWN_METHOD_MAP = [
-        'vote'                  => [ContractAbiType::CONSENSUS, 'vote'],
-        'unvote'                => [ContractAbiType::CONSENSUS, 'unvote'],
+        'vote'                   => [ContractAbiType::CONSENSUS, 'vote'],
+        'unvote'                 => [ContractAbiType::CONSENSUS, 'unvote'],
         'validator_registration' => [ContractAbiType::CONSENSUS, 'registerValidator'],
-        'validator_resignation' => [ContractAbiType::CONSENSUS, 'resignValidator'],
-        'validator_update'      => [ContractAbiType::CONSENSUS, 'updateValidator'],
-        'multipayment'          => [ContractAbiType::MULTIPAYMENT, 'pay'],
-        'username_registration' => [ContractAbiType::USERNAMES, 'registerUsername'],
-        'username_resignation'  => [ContractAbiType::USERNAMES, 'resignUsername'],
+        'validator_resignation'  => [ContractAbiType::CONSENSUS, 'resignValidator'],
+        'validator_update'       => [ContractAbiType::CONSENSUS, 'updateValidator'],
+        'multipayment'           => [ContractAbiType::MULTIPAYMENT, 'pay'],
+        'username_registration'  => [ContractAbiType::USERNAMES, 'registerUsername'],
+        'username_resignation'   => [ContractAbiType::USERNAMES, 'resignUsername'],
     ];
 
     /**
@@ -105,7 +105,7 @@ final class ContractAbiService
 
         foreach (self::KNOWN_METHOD_MAP as $name => $mapping) {
             [$abiType, $functionName] = $mapping;
-            $hash = $this->getFunctionHash($functionName, $abiType);
+            $hash                     = $this->getFunctionHash($functionName, $abiType);
 
             if ($hash !== null) {
                 $hashes[$name] = $hash;
@@ -188,6 +188,7 @@ final class ContractAbiService
     {
         $path = $this->abiPath($type);
 
+        /** @var string $json */
         $json = file_get_contents($path);
 
         return json_decode($json, true)['abi'];
@@ -195,7 +196,9 @@ final class ContractAbiService
 
     private function abiPath(ContractAbiType $type): string
     {
-        $basePath = dirname((new \ReflectionClass(\ArkEcosystem\Crypto\Utils\AbiBase::class))->getFileName());
+        /** @var string $fileName */
+        $fileName = (new \ReflectionClass(\ArkEcosystem\Crypto\Utils\AbiBase::class))->getFileName();
+        $basePath = dirname($fileName);
 
         return match ($type) {
             ContractAbiType::CONSENSUS    => $basePath.'/Abi/json/Abi.Consensus.json',

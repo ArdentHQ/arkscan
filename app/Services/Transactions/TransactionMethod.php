@@ -52,7 +52,7 @@ final class TransactionMethod
             }
         }
 
-        $signature = app(ContractAbiService::class)->getSignature($this->methodHash);
+        $signature = $this->methodHash !== null ? app(ContractAbiService::class)->getSignature($this->methodHash) : null;
         if ($signature !== null) {
             /** @var ?string $methodName */
             $methodName = preg_replace('/\(.+\)$/', '', $signature);

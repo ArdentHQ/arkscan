@@ -76,7 +76,7 @@ trait HasPayload
 
         $methodId = $this->methodHash($payload);
 
-        $functionName = app(ContractAbiService::class)->getSignature($methodId);
+        $functionName = $methodId !== null ? app(ContractAbiService::class)->getSignature($methodId) : null;
 
         try {
             if ($tryAllAbis) {

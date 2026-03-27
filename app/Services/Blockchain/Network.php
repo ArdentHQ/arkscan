@@ -203,7 +203,7 @@ final class Network implements Contract
      */
     private function resolvedContractMethods(): array
     {
-        $abiDefaults = app(ContractAbiService::class)->getKnownMethodHashes();
+        $abiDefaults     = app(ContractAbiService::class)->getKnownMethodHashes();
         $configOverrides = array_filter($this->config['contract_methods'] ?? [], fn ($v) => $v !== null);
 
         return array_merge($abiDefaults, $configOverrides);
