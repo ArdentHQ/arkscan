@@ -21,7 +21,7 @@ final class ShowBlockController
 
     public function __invoke(Block $block): Response
     {
-        return Inertia::render('Block/Show', [
+        return Inertia::renderWithMeta('Block/Show', 'block', [
             'block' => BlockDTO::fromModel($block),
 
             'transactions' => Inertia::optional(function () use ($block) {
@@ -34,7 +34,7 @@ final class ShowBlockController
                     'noResultsMessage' => $this->noResultsMessage($paginator->count()),
                 ];
             }),
-        ])->withMeta('block', [
+        ], [
             'blockid' => $block->hash,
         ]);
     }

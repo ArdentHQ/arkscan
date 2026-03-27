@@ -15,7 +15,7 @@ final class ShowTransactionController
 {
     public function __invoke(Transaction $transaction): Response
     {
-        return Inertia::render('Transaction/Show', [
+        return Inertia::renderWithMeta('Transaction/Show', 'transaction', [
             'transaction' => function () use ($transaction) {
                 $transaction->loadMissing('votedFor', 'senderWallet', 'recipientWallet');
 
@@ -23,7 +23,7 @@ final class ShowTransactionController
             },
             'details'    => fn () => TransactionDetails::fromModel($transaction),
             'recipients' => Inertia::defer(fn () => $this->recipients($transaction)),
-        ])->withMeta('transaction', [
+        ], [
             'txid' => $transaction->hash,
         ]);
     }
