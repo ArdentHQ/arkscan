@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 
 import { IPeer } from "@/types/generated";
 import { feature } from "topojson-client";
-
 import type { Topology } from "topojson-specification";
 
 interface PeerGroup {
@@ -80,58 +79,20 @@ function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y:
     );
 }
 
-interface MapColors {
-    mapBg: string;
-    landFill: string;
-    landStroke: string;
-    dotColor: string;
-}
-
-const LIGHT_COLORS: MapColors = {
-    mapBg: "#f1f3f5",
-    landFill: "#dde1e7",
-    landStroke: "#c5cbd3",
-    dotColor: "#2563eb",
-};
-
 function getCssVar(name: string): string {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
-function useMapColors(): MapColors {
-    const [colors, setColors] = useState<MapColors>(LIGHT_COLORS);
 
-    useEffect(() => {
-        const update = () => {
-            const isDark = document.documentElement.classList.contains("dark");
 
-            if (isDark) {
-                setColors({
-                    mapBg: "#0d1117",
-                    landFill: getCssVar("--theme-color-dark-900"),
-                    landStroke: getCssVar("--theme-color-dark-700"),
-                    dotColor: getCssVar("--theme-color-dark-blue-600"),
-                });
-            } else {
-                setColors(LIGHT_COLORS);
-            }
-        };
-
-        update();
-
-        const observer = new MutationObserver(update);
-
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-        return () => observer.disconnect();
-    }, []);
-
-    return colors;
-}
 
 export default function WorldMap({ peers }: WorldMapProps) {
     const { t } = useTranslation();
-    const { mapBg, landFill, landStroke, dotColor } = useMapColors();
+    const mapBg = getCssVar("--map-background");
+    const landFill = getCssVar("--map-land");
+    const landStroke = getCssVar("--map-land-borders");
+    const dotColor = getCssVar("--map-peer");
+    
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 960, height: 480 });
     const [worldData, setWorldData] = useState<GeoJSON.FeatureCollection | null>(null);
