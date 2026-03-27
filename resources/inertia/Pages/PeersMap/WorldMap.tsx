@@ -80,25 +80,58 @@ function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y:
     );
 }
 
-function useIsDarkMode(): boolean {
-    const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains("dark"));
+interface MapColors {
+    mapBg: string;
+    landFill: string;
+    landStroke: string;
+    dotColor: string;
+}
+
+const LIGHT_COLORS: MapColors = {
+    mapBg: "#f1f3f5",
+    landFill: "#dde1e7",
+    landStroke: "#c5cbd3",
+    dotColor: "#2563eb",
+};
+
+function getCssVar(name: string): string {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function useMapColors(): MapColors {
+    const [colors, setColors] = useState<MapColors>(LIGHT_COLORS);
 
     useEffect(() => {
-        const observer = new MutationObserver(() => {
-            setIsDark(document.documentElement.classList.contains("dark"));
-        });
+        const update = () => {
+            const isDark = document.documentElement.classList.contains("dark");
+
+            if (isDark) {
+                setColors({
+                    mapBg: "#0d1117",
+                    landFill: getCssVar("--theme-color-dark-900"),
+                    landStroke: getCssVar("--theme-color-dark-700"),
+                    dotColor: getCssVar("--theme-color-dark-blue-600"),
+                });
+            } else {
+                setColors(LIGHT_COLORS);
+            }
+        };
+
+        update();
+
+        const observer = new MutationObserver(update);
 
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
         return () => observer.disconnect();
     }, []);
 
-    return isDark;
+    return colors;
 }
 
 export default function WorldMap({ peers }: WorldMapProps) {
     const { t } = useTranslation();
-    const isDark = useIsDarkMode();
+    const { mapBg, landFill, landStroke, dotColor } = useMapColors();
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 960, height: 480 });
     const [worldData, setWorldData] = useState<GeoJSON.FeatureCollection | null>(null);
@@ -254,11 +287,6 @@ export default function WorldMap({ peers }: WorldMapProps) {
     };
 
     const dotRadius = Math.max(2, 3 / Math.sqrt(zoom));
-
-    const mapBg = isDark ? "#1b2029" : "#f1f3f5";
-    const landFill = isDark ? "#2a3040" : "#dde1e7";
-    const landStroke = isDark ? "#3a4250" : "#c5cbd3";
-    const dotColor = "#3b82f6";
 
     return (
         <div ref={containerRef} className="relative w-full">
