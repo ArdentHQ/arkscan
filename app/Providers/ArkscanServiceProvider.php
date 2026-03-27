@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Contracts\Network;
 use App\Services\Blockchain\NetworkFactory;
+use App\Services\ContractAbiService;
 use ArkEcosystem\Crypto\Configuration\Network as NetworkConfiguration;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +24,8 @@ final class ArkscanServiceProvider extends ServiceProvider
             Network::class,
             fn ($app) => NetworkFactory::make($app['config']['arkscan']['network'])
         );
+
+        $this->app->singleton(ContractAbiService::class);
 
         // Used for crypto calculations, e.g. multisig address derivation
         NetworkConfiguration::set(NetworkFactory::make(Arr::get($this->app->get('config')->get('arkscan'), 'network'))->config());

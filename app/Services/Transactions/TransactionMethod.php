@@ -6,6 +6,7 @@ namespace App\Services\Transactions;
 
 use App\Enums\ContractMethod;
 use App\Models\Transaction;
+use App\Services\ContractAbiService;
 use Illuminate\Support\Str;
 
 final class TransactionMethod
@@ -51,12 +52,13 @@ final class TransactionMethod
             }
         }
 
-        if (app('translator')->has('contracts.'.$this->methodHash)) {
+        $signature = $this->methodHash !== null ? app(ContractAbiService::class)->getSignature($this->methodHash) : null;
+        if ($signature !== null) {
             /** @var ?string $methodName */
-            $methodName = preg_replace('/\(.+\)$/', '', trans('contracts.'.$this->methodHash));
+            $methodName = preg_replace('/\(.+\)$/', '', $signature);
 
             if ($methodName !== null) {
-                return Str::ucfirst($methodName);
+                return str_replace('_', ' ', Str::title(Str::snake($methodName)));
             }
         }
 

@@ -1,5 +1,5 @@
 import { INetwork, ITransaction } from "@/types/generated";
-import { i18n, TFunction } from "i18next";
+import { TFunction } from "i18next";
 
 export class TransactionMethod {
     private readonly transaction: ITransaction;
@@ -33,21 +33,18 @@ export class TransactionMethod {
         ({ functionName: this.methodName, methodId: this.methodHash } = transaction.methodData);
     }
 
-    name({ t, i18n }: { t: TFunction<"translation", undefined>; i18n: i18n }): string {
+    name({ t }: { t: TFunction<"translation", undefined>; i18n?: unknown }): string {
         for (const [method, name] of Object.entries(this.types)) {
             if (this[method as keyof TransactionMethod]) {
                 return t(`general.transaction.types.${name}`);
             }
         }
 
-        if (i18n.exists(`contracts.${this.methodHash}`)) {
-            return t(`contracts.${this.methodHash}`).replace(/\(.+\)$/, "");
-        }
-
         if (this.methodName !== null) {
             return this.methodName
-                .replace(/_/g, " ")
-                .split(" ")
+                .replace(/\(.+\)$/, "")
+                .replace(/([a-z])([A-Z])/g, "$1 $2")
+                .split(/[\s_]+/)
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                 .join(" ");
         }

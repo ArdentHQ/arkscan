@@ -9,6 +9,7 @@ use App\DTO\Inertia\INetwork;
 use App\Models\State;
 use App\Services\BigNumber;
 use App\Services\Cache\WalletCache;
+use App\Services\ContractAbiService;
 use ArkEcosystem\Crypto\Networks\AbstractNetwork;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
@@ -191,7 +192,20 @@ final class Network implements Contract
             blockReward: $this->blockReward(),
             base58Prefix: $this->base58Prefix(),
             contractAddresses: $this->knownContracts(),
-            contractMethods: $this->config['contract_methods'],
+            contractMethods: $this->resolvedContractMethods(),
         );
+    }
+
+    /**
+     * Merge ABI-derived method hashes with config env overrides.
+     *
+     * @return array<string, string>
+     */
+    private function resolvedContractMethods(): array
+    {
+        $abiDefaults     = app(ContractAbiService::class)->getKnownMethodHashes();
+        $configOverrides = array_filter($this->config['contract_methods'] ?? [], fn ($v) => $v !== null);
+
+        return array_merge($abiDefaults, $configOverrides);
     }
 }
