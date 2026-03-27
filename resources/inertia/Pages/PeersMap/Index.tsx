@@ -22,12 +22,14 @@ export default function PeersMapIndex({ peers }: PageProps<PeersMapProps>) {
             <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
                 <div className="rounded border border-theme-secondary-300 px-6 pb-6 pt-4 dark:border-theme-dark-700 md:rounded-xl">
                     <div className="mb-3 flex items-center">
-                        <span className="inline-flex items-center gap-2 rounded-lg border-2 border-white bg-theme-secondary-200 px-3 py-2 text-sm dark:border-theme-dark-900 dark:bg-theme-dark-950">
-                            <span className="h-2 w-2 rounded-full bg-theme-primary-600 outline outline-2 outline-white dark:bg-theme-dark-blue-600 dark:outline-theme-dark-900" />
+                        <span className="flex flex-1 sm:flex-none items-center gap-2 rounded-lg border-2 border-white bg-theme-secondary-200 px-3 py-2 text-sm dark:border-theme-dark-900 dark:bg-theme-dark-950">
+                            <div className="flex flex-1 gap-2 sm:flex-none items-center">
+                                <span className="h-2 w-2 rounded-full bg-theme-primary-600 outline outline-2 outline-white dark:bg-theme-dark-blue-600 dark:outline-theme-dark-900" />
 
-                            <span className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
-                                {t("pages.peers-map.active_peers")}
-                            </span>
+                                <span className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                                    {t("pages.peers-map.active_peers")}
+                                </span>
+                            </div>
 
                             <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
                                 {peers.length}
