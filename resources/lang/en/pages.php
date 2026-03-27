@@ -787,10 +787,11 @@ return [
     ],
 
     'peers-map' => [
-        'title'    => 'Peers Map',
-        'subtitle' => 'Geographic distribution of network peers.',
-        'reset'    => 'Reset',
-        'peer'     => '1 Peer',
-        'peers'    => '{{count}} Peers',
+        'title'        => 'ARK Node Map',
+        'subtitle'     => 'Geographic distribution of peers making up the ARK blockchain network.',
+        'reset'        => 'Reset',
+        'peer'         => '1 Peer',
+        'peers'        => '{{count}} Peers',
+        'active_peers' => 'Active Peers:',
     ],
 ];

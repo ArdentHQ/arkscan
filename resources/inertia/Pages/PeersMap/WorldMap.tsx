@@ -60,26 +60,45 @@ function PeerTooltip({ group, x, y, flipped }: { group: PeerGroup; x: number; y:
 
     return (
         <div
-            className="pointer-events-none absolute z-10 rounded-lg border border-white/10 bg-[#1c2333] px-3 py-2 text-sm shadow-xl"
+            className="pointer-events-none absolute z-10 rounded-lg border border-theme-secondary-300 bg-white px-3 py-2 text-sm shadow-xl dark:border-theme-dark-700 dark:bg-theme-dark-900"
             style={{
                 left: x,
                 top: y,
                 transform: flipped ? "translate(-50%, 12px)" : "translate(-50%, -100%) translateY(-12px)",
             }}
         >
-            <div className="space-y-1">
-                <div className="font-medium text-white">
+            <div className="space-y-0.5">
+                <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
                     {group.count === 1 ? t("pages.peers-map.peer") : t("pages.peers-map.peers", { count: group.count })}
                 </div>
 
-                {group.location && <div className="text-gray-400">{group.location}</div>}
+                {group.location && (
+                    <div className="text-theme-secondary-500 dark:text-theme-dark-300">{group.location}</div>
+                )}
             </div>
         </div>
     );
 }
 
+function useIsDarkMode(): boolean {
+    const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains("dark"));
+
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setIsDark(document.documentElement.classList.contains("dark"));
+        });
+
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+        return () => observer.disconnect();
+    }, []);
+
+    return isDark;
+}
+
 export default function WorldMap({ peers }: WorldMapProps) {
     const { t } = useTranslation();
+    const isDark = useIsDarkMode();
     const containerRef = useRef<HTMLDivElement>(null);
     const [dimensions, setDimensions] = useState({ width: 960, height: 480 });
     const [worldData, setWorldData] = useState<GeoJSON.FeatureCollection | null>(null);
@@ -236,13 +255,18 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     const dotRadius = Math.max(2, 3 / Math.sqrt(zoom));
 
+    const mapBg = isDark ? "#1b2029" : "#f1f3f5";
+    const landFill = isDark ? "#2a3040" : "#dde1e7";
+    const landStroke = isDark ? "#3a4250" : "#c5cbd3";
+    const dotColor = "#3b82f6";
+
     return (
         <div ref={containerRef} className="relative w-full">
             <div className="absolute right-2 top-2 z-20 flex items-center gap-1">
                 {zoom > 1 && (
                     <button
                         type="button"
-                        className="flex h-7 items-center justify-center rounded-md bg-white/10 px-2 text-xs text-white hover:bg-white/20"
+                        className="bg-theme-secondary-800/60 hover:bg-theme-secondary-800/80 dark:bg-theme-dark-700/80 flex h-7 items-center justify-center rounded-md px-2 text-xs text-white dark:hover:bg-theme-dark-700"
                         onClick={() => {
                             setZoom(1);
                             setPan({ x: 0, y: 0 });
@@ -254,7 +278,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 <button
                     type="button"
-                    className="flex h-7 w-7 items-center justify-center rounded-md bg-white/10 text-xs text-white hover:bg-white/20 disabled:opacity-30"
+                    className="bg-theme-secondary-800/60 hover:bg-theme-secondary-800/80 dark:bg-theme-dark-700/80 flex h-7 w-7 items-center justify-center rounded-md text-xs text-white disabled:opacity-30 dark:hover:bg-theme-dark-700"
                     disabled={zoom >= 8}
                     onClick={() => handleZoomButton(1)}
                 >
@@ -263,7 +287,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 <button
                     type="button"
-                    className="flex h-7 w-7 items-center justify-center rounded-md bg-white/10 text-xs text-white hover:bg-white/20 disabled:opacity-30"
+                    className="bg-theme-secondary-800/60 hover:bg-theme-secondary-800/80 dark:bg-theme-dark-700/80 flex h-7 w-7 items-center justify-center rounded-md text-xs text-white disabled:opacity-30 dark:hover:bg-theme-dark-700"
                     disabled={zoom <= 1}
                     onClick={() => handleZoomButton(-1)}
                 >
@@ -273,8 +297,8 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
             <svg
                 viewBox={`0 0 ${width} ${height}`}
-                className="w-full"
-                style={{ background: "#0d1117", cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default" }}
+                className="w-full rounded-lg"
+                style={{ background: mapBg, cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default" }}
                 onWheel={handleWheel}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
@@ -288,8 +312,8 @@ export default function WorldMap({ peers }: WorldMapProps) {
                         <path
                             key={index}
                             d={pathGenerator(feature) || ""}
-                            fill="#1c2333"
-                            stroke="#2d3748"
+                            fill={landFill}
+                            stroke={landStroke}
                             strokeWidth={0.5 / zoom}
                         />
                     ))}
@@ -311,7 +335,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                     cx={coords[0]}
                                     cy={coords[1]}
                                     r={dotRadius}
-                                    fill="#818cf8"
+                                    fill={dotColor}
                                     opacity={0}
                                     style={{ pointerEvents: "none" }}
                                 >
@@ -335,7 +359,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                     cx={coords[0]}
                                     cy={coords[1]}
                                     r={dotRadius}
-                                    fill="#818cf8"
+                                    fill={dotColor}
                                     opacity={isHovered ? 1 : 0.8}
                                 />
 
