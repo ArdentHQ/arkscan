@@ -10,7 +10,7 @@ use kornrunner\Keccak;
 
 final class ContractAbiService
 {
-    private const CACHE_KEY = 'contract_abi_signatures';
+    public const CACHE_KEY = 'contract_abi_signatures';
 
     /**
      * ERC-20 standard method signatures not included in Mainsail ABIs.
