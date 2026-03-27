@@ -128,6 +128,12 @@ export type INetwork = {
         batch_transfer: string;
     };
 };
+export type IPeer = {
+    latitude: number | null;
+    longitude: number | null;
+    country: string | null;
+    city: string | null;
+};
 export type IPriceTickerData = {
     currency: string;
     isPriceAvailable: boolean;

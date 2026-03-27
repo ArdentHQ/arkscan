@@ -8,10 +8,8 @@
     },
     "devDependencies": {
         "@babel/runtime": "^7.24.4",
-        "@types/jest": "^29.5.14",
-        "jest": "^29.7.0",
-        "ts-jest": "^29.2.0",
         "@popperjs/core": "^2.11.8",
+        "@types/jest": "^29.5.14",
         "@types/node": "^20.12.7",
         "@types/pikaday": "^1.7.10",
         "@types/react": "^19.1.9",
@@ -26,6 +24,7 @@
         "focus-trap": "^6.9.4",
         "focus-visible": "^5.2.0",
         "glob-all": "^3.3.1",
+        "jest": "^29.7.0",
         "laravel-echo": "^1.16.1",
         "laravel-vite-plugin": "^1.0.2",
         "php-array-reader": "^2.1.2",
@@ -39,6 +38,7 @@
         "resolve-url-loader": "^5.0.0",
         "tailwindcss": "^3.4.3",
         "tippy.js": "^6.3.7",
+        "ts-jest": "^29.2.0",
         "typescript": "^5.9.2",
         "vite": "^5.2.10",
         "vite-plugin-svgr": "^4.3.0"
@@ -57,9 +57,13 @@
         "@radix-ui/react-select": "^2.2.6",
         "@radix-ui/react-slot": "^1.2.4",
         "@tippyjs/react": "^4.2.6",
+        "@types/d3-geo": "^3.1.0",
+        "@types/topojson-client": "^3.1.5",
+        "@types/topojson-specification": "^1.0.5",
         "axios": "^1.6.8",
         "bignumber.js": "^9.3.1",
         "classnames": "^2.5.1",
+        "d3-geo": "^3.1.1",
         "decimal.js": "^10.4.3",
         "i18next": "^25.5.2",
         "radix-ui": "^1.4.3",
@@ -67,6 +71,8 @@
         "react-dom": "^19.1.1",
         "react-i18next": "^15.7.3",
         "react-qr-code": "^2.0.18",
-        "tailwind-merge": "^3.3.1"
+        "tailwind-merge": "^3.3.1",
+        "topojson-client": "^3.1.0",
+        "world-atlas": "^2.0.2"
     }
 }

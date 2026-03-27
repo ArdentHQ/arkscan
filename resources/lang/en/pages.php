@@ -787,4 +787,13 @@ return [
             'subtitle' => 'On every page featuring addresses, transactions, and blocks, you\'ll find a flag icon for bookmarking on the right side.',
         ],
     ],
+
+    'peers-map' => [
+        'title'        => 'ARK Node Map',
+        'subtitle'     => 'Geographic distribution of peers making up the ARK blockchain network.',
+        'reset'        => 'Reset',
+        'peer'         => '1 Peer',
+        'peers'        => '{{count}} Peers',
+        'active_peers' => 'Active Peers:',
+    ],
 ];
