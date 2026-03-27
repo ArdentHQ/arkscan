@@ -64,7 +64,7 @@ final class PeersSyncer
                 $data  = $response['data'] ?? [];
                 $peers = array_merge($peers, $data);
 
-                $lastPage = $response['meta']['last'] ?? $response['meta']['lastPage'] ?? 1;
+                $lastPage = $response['meta']['pageCount'] ?? 1;
                 $page++;
             } while ($page <= $lastPage);
 

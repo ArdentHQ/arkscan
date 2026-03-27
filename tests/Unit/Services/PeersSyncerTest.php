@@ -28,7 +28,7 @@ it('should sync new peers', function () {
                 ['ip' => '185.220.101.1', 'port' => 4000],
                 ['ip' => '195.201.175.10', 'port' => 4000],
             ],
-            'meta' => ['last' => 1],
+            'meta' => ['pageCount' => 1],
         ]),
     ]);
 
@@ -59,7 +59,7 @@ it('should handle pagination across multiple pages', function () {
                 'data' => [
                     ['ip' => '185.220.101.1', 'port' => 4000],
                 ],
-                'meta' => ['last' => 2],
+                'meta' => ['pageCount' => 2],
             ]);
         }
 
@@ -67,7 +67,7 @@ it('should handle pagination across multiple pages', function () {
             'data' => [
                 ['ip' => '195.201.175.10', 'port' => 4000],
             ],
-            'meta' => ['last' => 2],
+            'meta' => ['pageCount' => 2],
         ]);
     });
 
@@ -93,7 +93,7 @@ it('should remove peers no longer in the API', function () {
             'data' => [
                 ['ip' => '5.6.7.8', 'port' => 4000],
             ],
-            'meta' => ['last' => 1],
+            'meta' => ['pageCount' => 1],
         ]),
     ]);
 
@@ -119,7 +119,7 @@ it('should not re-create existing peers', function () {
             'data' => [
                 ['ip' => '185.220.101.1', 'port' => 4000],
             ],
-            'meta' => ['last' => 1],
+            'meta' => ['pageCount' => 1],
         ]),
     ]);
 
@@ -143,7 +143,7 @@ it('should handle geoip failures gracefully', function () {
             'data' => [
                 ['ip' => '185.220.101.1', 'port' => 4000],
             ],
-            'meta' => ['last' => 1],
+            'meta' => ['pageCount' => 1],
         ]),
     ]);
 
@@ -165,7 +165,7 @@ it('should handle default location', function () {
             'data' => [
                 ['ip' => '127.0.0.1', 'port' => 4000],
             ],
-            'meta' => ['last' => 1],
+            'meta' => ['pageCount' => 1],
         ]),
     ]);
 
