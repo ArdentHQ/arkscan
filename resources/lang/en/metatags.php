@@ -139,5 +139,6 @@ return [
     'peers-map'       => [
         'title'       => 'ARK Node Map | :name Blockchain Explorer',
         'description' => 'Geographic distribution of peers making up the :name blockchain network.',
+        'image'       => 'metadata/peers.png',
     ],
 ];
