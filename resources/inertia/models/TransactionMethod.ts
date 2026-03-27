@@ -41,7 +41,13 @@ export class TransactionMethod {
         }
 
         if (i18n.exists(`contracts.${this.methodHash}`)) {
-            return t(`contracts.${this.methodHash}`).replace(/\(.+\)$/, "");
+            const name = t(`contracts.${this.methodHash}`).replace(/\(.+\)$/, "");
+
+            return name
+                .replace(/([a-z])([A-Z])/g, "$1 $2")
+                .split(/[\s_]+/)
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(" ");
         }
 
         if (this.methodName !== null) {

@@ -58,7 +58,7 @@ final class TransactionMethod
             $methodName = preg_replace('/\(.+\)$/', '', $signature);
 
             if ($methodName !== null) {
-                return Str::ucfirst($methodName);
+                return str_replace('_', ' ', Str::title(Str::snake($methodName)));
             }
         }
 

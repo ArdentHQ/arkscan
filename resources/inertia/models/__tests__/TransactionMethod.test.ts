@@ -353,7 +353,7 @@ describe("TransactionMethod", () => {
                 network,
             );
 
-            expect(m.name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("transfer");
+            expect(m.name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("Transfer");
         });
     });
 });
