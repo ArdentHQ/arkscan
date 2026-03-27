@@ -6,6 +6,9 @@ import { IPeer } from "@/types/generated";
 import { feature } from "topojson-client";
 import type { Topology } from "topojson-specification";
 
+import PlusIcon from "@icons/plus.svg?react";
+import MinusIcon from "@icons/minus.svg?react";
+
 interface PeerGroup {
     latitude: number;
     longitude: number;
@@ -255,7 +258,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                 {zoom > 1 && (
                     <button
                         type="button"
-                        className="bg-theme-secondary-800/60 hover:bg-theme-secondary-800/80 dark:bg-theme-dark-700/80 flex h-7 items-center justify-center rounded-md px-2 text-xs text-white dark:hover:bg-theme-dark-700"
+                        className="dark:bg-theme-dark-700/80 flex h-7 items-center justify-center rounded-md bg-theme-primary-100 px-2 text-xs text-theme-primary-600 hover:bg-theme-primary-600 hover:text-white dark:hover:bg-theme-dark-700"
                         onClick={() => {
                             setZoom(1);
                             setPan({ x: 0, y: 0 });
@@ -267,20 +270,20 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 <button
                     type="button"
-                    className="bg-theme-secondary-800/60 hover:bg-theme-secondary-800/80 dark:bg-theme-dark-700/80 flex h-7 w-7 items-center justify-center rounded-md text-xs text-white disabled:opacity-30 dark:hover:bg-theme-dark-700"
+                    className="button-secondary h-7 w-7 p-0"
                     disabled={zoom >= 8}
                     onClick={() => handleZoomButton(1)}
                 >
-                    +
+                    <PlusIcon className="h-4 w-4" />
                 </button>
 
                 <button
                     type="button"
-                    className="bg-theme-secondary-800/60 hover:bg-theme-secondary-800/80 dark:bg-theme-dark-700/80 flex h-7 w-7 items-center justify-center rounded-md text-xs text-white disabled:opacity-30 dark:hover:bg-theme-dark-700"
+                    className="button-secondary h-7 w-7 p-0"
                     disabled={zoom <= 1}
                     onClick={() => handleZoomButton(-1)}
                 >
-                    &minus;
+                    <MinusIcon className="h-4 w-4" />
                 </button>
             </div>
 
