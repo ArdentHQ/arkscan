@@ -1,9 +1,11 @@
 import Badge from "@/Components/General/Badge";
 import classNames from "classnames";
 import TimeToForge from "./TimeToForge";
+import Tooltip from "@/Components/General/Tooltip";
 import { useValidatorStatus } from "@/Providers/ValidatorStatus/ValidatorStatusContext";
 import { ForgingStatusGenerated, ForgingStatusMissed, ForgingStatusPending } from "@/Providers/ValidatorStatus/types";
 import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
 
 export default function Status({
     width = "min-w-[8.75rem]",
@@ -77,9 +79,21 @@ export default function Status({
 
                     {hasForged && <span>{t("tables.validator-monitor.forging-status.block_generated")}</span>}
                     {justMissed && (
-                        <span>
-                            {t("tables.validator-monitor.forging-status.blocks_missed", { count: wallet.missedCount })}
-                        </span>
+                        <Tooltip
+                            content={
+                                validator.lastBlock?.timestamp
+                                    ? t("pages.validator-monitor.last_block_forged_at", {
+                                          time: dayjs.unix(validator.lastBlock.timestamp).format("D MMM YYYY HH:mm:ss"),
+                                      })
+                                    : t("pages.validator-monitor.no_blocks_forged_yet")
+                            }
+                        >
+                            <span>
+                                {t("tables.validator-monitor.forging-status.blocks_missed", {
+                                    count: wallet.missedCount,
+                                })}
+                            </span>
+                        </Tooltip>
                     )}
 
                     {!isPending && !hasForged && !justMissed && (
