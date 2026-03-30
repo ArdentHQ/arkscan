@@ -3,8 +3,7 @@ import { useTranslation } from "react-i18next";
 import Number from "@/Components/General/Number";
 import { StatisticsRecord } from "@/Pages/Statistics.contracts";
 import { networkCurrency } from "@/utils/number-formatter";
-import dayjs from "dayjs";
-import { DATE_FORMAT } from "@/constants";
+import { formatDate } from "@/utils/formatter";
 
 export default function TransactionRecordMobileRow({
     recordKey,
@@ -46,7 +45,7 @@ export default function TransactionRecordMobileRow({
         return t("general.na");
     })();
 
-    const dateFormatted = dayjs(record.timestamp * 1000).format(DATE_FORMAT);
+    const dateFormatted = formatDate(record.timestamp);
     const recordUrl = record.type === "transaction" ? route("transaction", record.hash) : record.url;
 
     return (
