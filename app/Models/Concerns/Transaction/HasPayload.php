@@ -157,11 +157,11 @@ trait HasPayload
     {
         $key = $type->name;
 
-        if (! isset($abiDecoderCache[$key])) {
-            $abiDecoderCache[$key] = new AbiDecoder($type);
+        if (! isset(static::$abiDecoderCache[$key])) {
+            static::$abiDecoderCache[$key] = new AbiDecoder($type);
         }
 
-        return $abiDecoderCache[$key];
+        return static::$abiDecoderCache[$key];
     }
 
     private function payloadArguments(string $payload): ?array
