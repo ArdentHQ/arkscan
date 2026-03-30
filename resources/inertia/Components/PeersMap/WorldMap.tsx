@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { IPeer } from "@/types/generated";
+import useSettings from "@/Providers/Settings/useSettings";
 import { feature } from "topojson-client";
 import type { Topology } from "topojson-specification";
 
@@ -66,10 +67,27 @@ function getCssVar(name: string): string {
 
 export default function WorldMap({ peers }: WorldMapProps) {
     const { t } = useTranslation();
-    const mapBg = getCssVar("--map-background");
-    const landFill = getCssVar("--map-land");
-    const landStroke = getCssVar("--map-land-borders");
-    const dotColor = getCssVar("--map-peer");
+    const { theme } = useSettings();
+
+    const [mapColors, setMapColors] = useState(() => ({
+        bg: getCssVar("--map-background"),
+        land: getCssVar("--map-land"),
+        stroke: getCssVar("--map-land-borders"),
+        dot: getCssVar("--map-peer"),
+    }));
+
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            setMapColors({
+                bg: getCssVar("--map-background"),
+                land: getCssVar("--map-land"),
+                stroke: getCssVar("--map-land-borders"),
+                dot: getCssVar("--map-peer"),
+            });
+        });
+    }, [theme]);
+
+    const { bg: mapBg, land: landFill, stroke: landStroke, dot: dotColor } = mapColors;
 
     const containerRef = useRef<HTMLDivElement>(null);
     const svgRef = useRef<SVGSVGElement>(null);
