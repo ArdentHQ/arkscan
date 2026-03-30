@@ -200,39 +200,53 @@ export default function WorldMap({ peers }: WorldMapProps) {
     panRef.current = pan;
     dimensionsRef.current = dimensions;
 
-    const applyZoom = useCallback((newZoom: number, centerX?: number, centerY?: number) => {
-        const clamped = Math.min(Math.max(newZoom, 1), 8);
+    const clampPan = useCallback((p: { x: number; y: number }, z: number) => {
         const { width: w, height: h } = dimensionsRef.current;
-
-        if (clamped === 1) {
-            setPan({ x: 0, y: 0 });
-            setZoom(1);
-            return;
-        }
-
-        const svg = svgRef.current;
-
-        if (!svg) {
-            setZoom(clamped);
-            return;
-        }
-
-        const rect = svg.getBoundingClientRect();
-        const mouseX = (centerX ?? rect.left + rect.width / 2) - rect.left;
-        const mouseY = (centerY ?? rect.top + rect.height / 2) - rect.top;
-
-        const svgX = (mouseX / rect.width) * w;
-        const svgY = (mouseY / rect.height) * h;
-
-        const curZoom = zoomRef.current;
-        const curPan = panRef.current;
-
-        const pointX = (svgX - w / 2 - curPan.x) / curZoom;
-        const pointY = (svgY - h / 2 - curPan.y) / curZoom;
-
-        setPan({ x: svgX - w / 2 - pointX * clamped, y: svgY - h / 2 - pointY * clamped });
-        setZoom(clamped);
+        const maxX = (w / 2) * (z - 1);
+        const maxY = (h / 2) * (z - 1);
+        return {
+            x: Math.min(Math.max(p.x, -maxX), maxX),
+            y: Math.min(Math.max(p.y, -maxY), maxY),
+        };
     }, []);
+
+    const applyZoom = useCallback(
+        (newZoom: number, centerX?: number, centerY?: number) => {
+            const clamped = Math.min(Math.max(newZoom, 1), 8);
+            const { width: w, height: h } = dimensionsRef.current;
+
+            if (clamped === 1) {
+                setPan({ x: 0, y: 0 });
+                setZoom(1);
+                return;
+            }
+
+            const svg = svgRef.current;
+
+            if (!svg) {
+                setZoom(clamped);
+                return;
+            }
+
+            const rect = svg.getBoundingClientRect();
+            const mouseX = (centerX ?? rect.left + rect.width / 2) - rect.left;
+            const mouseY = (centerY ?? rect.top + rect.height / 2) - rect.top;
+
+            const svgX = (mouseX / rect.width) * w;
+            const svgY = (mouseY / rect.height) * h;
+
+            const curZoom = zoomRef.current;
+            const curPan = panRef.current;
+
+            const pointX = (svgX - w / 2 - curPan.x) / curZoom;
+            const pointY = (svgY - h / 2 - curPan.y) / curZoom;
+
+            const newPan = { x: svgX - w / 2 - pointX * clamped, y: svgY - h / 2 - pointY * clamped };
+            setPan(clampPan(newPan, clamped));
+            setZoom(clamped);
+        },
+        [clampPan],
+    );
 
     useEffect(() => {
         const svg = svgRef.current;
@@ -275,10 +289,15 @@ export default function WorldMap({ peers }: WorldMapProps) {
         const dx = event.clientX - panStart.current.x;
         const dy = event.clientY - panStart.current.y;
 
-        setPan({
-            x: panStart.current.panX + dx,
-            y: panStart.current.panY + dy,
-        });
+        setPan(
+            clampPan(
+                {
+                    x: panStart.current.panX + dx,
+                    y: panStart.current.panY + dy,
+                },
+                zoom,
+            ),
+        );
     };
 
     const handleMouseUp = () => {
@@ -373,10 +392,15 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 const scaleFactor = rect.width > 0 ? w / rect.width : 1;
 
-                setPan({
-                    x: cx - w / 2 - pointX * clamped + dx * scaleFactor,
-                    y: cy - h / 2 - pointY * clamped + dy * scaleFactor,
-                });
+                setPan(
+                    clampPan(
+                        {
+                            x: cx - w / 2 - pointX * clamped + dx * scaleFactor,
+                            y: cy - h / 2 - pointY * clamped + dy * scaleFactor,
+                        },
+                        clamped,
+                    ),
+                );
                 setZoom(clamped);
             } else if (event.touches.length === 1 && touchRef.current.isSingleTouch && zoomRef.current > 1) {
                 const dx = event.touches[0].clientX - touchRef.current.startCenter.x;
@@ -386,10 +410,15 @@ export default function WorldMap({ peers }: WorldMapProps) {
                 const { width: w } = dimensionsRef.current;
                 const scaleFactor = rect.width > 0 ? w / rect.width : 1;
 
-                setPan({
-                    x: touchRef.current.startPan.x + dx * scaleFactor,
-                    y: touchRef.current.startPan.y + dy * scaleFactor,
-                });
+                setPan(
+                    clampPan(
+                        {
+                            x: touchRef.current.startPan.x + dx * scaleFactor,
+                            y: touchRef.current.startPan.y + dy * scaleFactor,
+                        },
+                        zoomRef.current,
+                    ),
+                );
             }
         };
 
@@ -468,7 +497,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
             svg.removeEventListener("touchmove", handleTouchMove);
             svg.removeEventListener("touchend", handleTouchEnd);
         };
-    }, []);
+    }, [clampPan]);
 
     const dotRadius = Math.max(2, 3 / Math.sqrt(zoom));
 
