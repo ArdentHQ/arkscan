@@ -87,6 +87,8 @@ export default function WorldMap({ peers }: WorldMapProps) {
     const panStart = useRef({ x: 0, y: 0, panX: 0, panY: 0 });
 
     const peerGroups = useMemo(() => groupPeersByLocation(peers), [peers]);
+    const peerGroupsRef = useRef(peerGroups);
+    peerGroupsRef.current = peerGroups;
 
     const pulseDelays = useMemo(() => peerGroups.map(() => Math.random() * 10), [peerGroups]);
 
@@ -369,6 +371,34 @@ export default function WorldMap({ peers }: WorldMapProps) {
         const handleTouchEnd = (event: TouchEvent) => {
             if (event.touches.length === 0) {
                 setIsPanning(false);
+
+                if (!touchMovedRef.current && touchRef.current.isSingleTouch) {
+                    const { x, y } = touchRef.current.startCenter;
+                    const element = document.elementFromPoint(x, y);
+
+                    if (element instanceof SVGCircleElement && element.dataset.peerIndex !== undefined) {
+                        const index = parseInt(element.dataset.peerIndex, 10);
+                        const group = peerGroupsRef.current[index];
+
+                        if (group) {
+                            const container = containerRef.current;
+
+                            if (container) {
+                                const circleRect = element.getBoundingClientRect();
+                                const containerRect = container.getBoundingClientRect();
+                                const tooltipX = circleRect.left + circleRect.width / 2 - containerRect.left;
+                                const tooltipY = circleRect.top - containerRect.top;
+                                const flipped = tooltipY < 60;
+
+                                setHoveredGroup((prev) =>
+                                    prev?.group === group ? null : { group, x: tooltipX, y: tooltipY, flipped },
+                                );
+                            }
+                        }
+                    } else {
+                        setHoveredGroup(null);
+                    }
+                }
             }
         };
 
@@ -495,6 +525,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                     r={Math.max(dotRadius, 8 / zoom)}
                                     fill="transparent"
                                     className="cursor-pointer"
+                                    data-peer-index={index}
                                     onMouseEnter={(e) => handleGroupHover(group, e)}
                                     onMouseLeave={() => setHoveredGroup(null)}
                                     onClick={(e) => handleGroupClick(group, e)}
