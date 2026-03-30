@@ -126,6 +126,13 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     const pathGenerator = geoPath().projection(projection);
 
+    const projectedPositions = useMemo(
+        () => peerGroups.map((group) => projection([group.longitude, group.latitude])),
+        [peerGroups, width, height],
+    );
+    const projectedPositionsRef = useRef(projectedPositions);
+    projectedPositionsRef.current = projectedPositions;
+
     const touchMovedRef = useRef(false);
 
     const showTooltipForCircle = (group: PeerGroup, circle: SVGCircleElement) => {
@@ -373,27 +380,59 @@ export default function WorldMap({ peers }: WorldMapProps) {
                 setIsPanning(false);
 
                 if (!touchMovedRef.current && touchRef.current.isSingleTouch) {
-                    const { x, y } = touchRef.current.startCenter;
-                    const element = document.elementFromPoint(x, y);
+                    const { x: clientX, y: clientY } = touchRef.current.startCenter;
+                    const rect = svg.getBoundingClientRect();
+                    const { width: w, height: h } = dimensionsRef.current;
+                    const curZoom = zoomRef.current;
+                    const curPan = panRef.current;
 
-                    if (element instanceof SVGCircleElement && element.dataset.peerIndex !== undefined) {
-                        const index = parseInt(element.dataset.peerIndex, 10);
-                        const group = peerGroupsRef.current[index];
+                    const svgX = ((clientX - rect.left) / rect.width) * w;
+                    const svgY = ((clientY - rect.top) / rect.height) * h;
 
-                        if (group) {
-                            const container = containerRef.current;
+                    const mapX = (svgX - w / 2 - curPan.x) / curZoom + w / 2;
+                    const mapY = (svgY - h / 2 - curPan.y) / curZoom + h / 2;
 
-                            if (container) {
-                                const circleRect = element.getBoundingClientRect();
-                                const containerRect = container.getBoundingClientRect();
-                                const tooltipX = circleRect.left + circleRect.width / 2 - containerRect.left;
-                                const tooltipY = circleRect.top - containerRect.top;
-                                const flipped = tooltipY < 60;
+                    const hitRadius = Math.max(8 / curZoom, 12);
+                    let closestIndex = -1;
+                    let closestDist = Infinity;
 
-                                setHoveredGroup((prev) =>
-                                    prev?.group === group ? null : { group, x: tooltipX, y: tooltipY, flipped },
-                                );
-                            }
+                    const groups = peerGroupsRef.current;
+                    const positions = projectedPositionsRef.current;
+
+                    for (let i = 0; i < groups.length; i++) {
+                        const pos = positions[i];
+
+                        if (!pos) {
+                            continue;
+                        }
+
+                        const dx = mapX - pos[0];
+                        const dy = mapY - pos[1];
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < hitRadius && dist < closestDist) {
+                            closestDist = dist;
+                            closestIndex = i;
+                        }
+                    }
+
+                    if (closestIndex >= 0) {
+                        const group = groups[closestIndex];
+                        const pos = positions[closestIndex]!;
+                        const container = containerRef.current;
+
+                        if (container) {
+                            const screenX = (pos[0] - w / 2) * curZoom + w / 2 + curPan.x;
+                            const screenY = (pos[1] - h / 2) * curZoom + h / 2 + curPan.y;
+
+                            const containerRect = container.getBoundingClientRect();
+                            const tooltipX = (screenX / w) * rect.width + rect.left - containerRect.left;
+                            const tooltipY = (screenY / h) * rect.height + rect.top - containerRect.top;
+                            const flipped = tooltipY < 60;
+
+                            setHoveredGroup((prev) =>
+                                prev?.group === group ? null : { group, x: tooltipX, y: tooltipY, flipped },
+                            );
                         }
                     } else {
                         setHoveredGroup(null);
