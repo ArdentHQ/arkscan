@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { PageSection } from "@/Components/PageSection";
-import { weiToArk } from "@/utils/UnitConverter";
+import { UnitConverter } from "@arkecosystem/typescript-crypto";
 import CompactAmount from "@/Components/Tokens/CompactAmount";
 import TransactionAddress from "./Address";
 import TableHeader from "@/Components/Tables/Desktop/TableHeader";
@@ -52,7 +52,7 @@ export default function TransferDetails({
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <CompactAmount
-                                            amount={weiToArk(transfer.amount)}
+                                            amount={UnitConverter.weiToArk(transfer.amount)}
                                             tokenSymbol={tokenSymbol}
                                             fullTokenSymbol={fullTokenSymbol}
                                         />

@@ -8,7 +8,7 @@ import Badge from "@/Components/General/Badge";
 import ContractIcon from "@ui/icons/transaction/contract.svg?react";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
 import useSharedData from "@/hooks/use-shared-data";
-import { weiToArk } from "@/utils/UnitConverter";
+import { UnitConverter } from "@arkecosystem/typescript-crypto";
 import { Transaction } from "@/models/Transaction";
 import CompactAmount from "@/Components/Tokens/CompactAmount";
 
@@ -40,7 +40,8 @@ function ApproveActionRow({
     const tokenSymbol = details.token?.symbol ?? network?.currency;
 
     const isUnlimited = tokenApproval.isUnlimited;
-    const rawAmount = !isUnlimited && tokenApproval.amount !== null ? Number(weiToArk(tokenApproval.amount)) : null;
+    const rawAmount =
+        !isUnlimited && tokenApproval.amount !== null ? Number(UnitConverter.weiToArk(tokenApproval.amount)) : null;
 
     let rowTitle = "";
     if (tokenApproval.isRevoke) {

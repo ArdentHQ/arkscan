@@ -4,7 +4,7 @@ import useSettings from "@/Providers/Settings/useSettings";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import TransactionAddress from "./Address";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
-import { formatUnits, weiToArk } from "@/utils/UnitConverter";
+import { UnitConverter } from "@arkecosystem/typescript-crypto";
 import { currency } from "@/utils/number-formatter";
 import CompactAmount from "@/Components/Tokens/CompactAmount";
 import { Transaction } from "@/models/Transaction";
@@ -28,7 +28,7 @@ export default function TransactionToken({
     if (transaction.method.isBatchTransfer) {
         const transfers = details.batchTokenTransfers;
         const totalRaw = transfers.reduce((sum, tf) => {
-            return sum.plus(weiToArk(tf.amount));
+            return sum.plus(UnitConverter.weiToArk(tf.amount));
         }, new BigNumber(0));
 
         return (
@@ -69,7 +69,7 @@ export default function TransactionToken({
 
     const tokenTransfer = details.tokenTransfer;
 
-    const rawAmount = tokenTransfer.amount !== null ? formatUnits(tokenTransfer.amount, "ark") : null;
+    const rawAmount = tokenTransfer.amount !== null ? UnitConverter.formatUnits(tokenTransfer.amount, "ark") : null;
 
     return (
         <PageSection title={t("pages.transaction.tokens_transferred")}>
