@@ -317,7 +317,7 @@ describe("TransactionMethod", () => {
             );
         });
 
-        it("returns a formatted name from methodName when no type matches and i18n key does not exist", () => {
+        it("returns a formatted name from methodName when no type matches", () => {
             const m = new TransactionMethod(
                 makeTransaction({
                     methodData: { functionName: "my_custom_function", methodId: "deadbeef", arguments: [] },
@@ -328,7 +328,22 @@ describe("TransactionMethod", () => {
             expect(m.name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("My Custom Function");
         });
 
-        it("falls back to 0x-prefixed hash when no type, no i18n key, and no methodName", () => {
+        it("strips signature params from methodName and formats as title case", () => {
+            const m = new TransactionMethod(
+                makeTransaction({
+                    methodData: {
+                        functionName: "getRounds(uint256,uint256)",
+                        methodId: "40f74f47",
+                        arguments: [],
+                    },
+                }),
+                network,
+            );
+
+            expect(m.name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("Get Rounds");
+        });
+
+        it("falls back to 0x-prefixed hash when no type and no methodName", () => {
             const m = new TransactionMethod(
                 makeTransaction({
                     methodData: { functionName: null, methodId: "deadbeef", arguments: [] },
@@ -337,23 +352,6 @@ describe("TransactionMethod", () => {
             );
 
             expect(m.name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("0xdeadbeef");
-        });
-
-        it("returns an i18n contract key name (stripped of arguments) when i18n key exists", () => {
-            mockI18nExists.mockReturnValue(true);
-            mockT.mockImplementation((key: string) => {
-                if (key === "contracts.deadbeef") return "transfer(address,uint256)";
-                return key;
-            });
-
-            const m = new TransactionMethod(
-                makeTransaction({
-                    methodData: { functionName: null, methodId: "deadbeef", arguments: [] },
-                }),
-                network,
-            );
-
-            expect(m.name({ t: mockT, i18n: { exists: mockI18nExists } })).toBe("transfer");
         });
     });
 });

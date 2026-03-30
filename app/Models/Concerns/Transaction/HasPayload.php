@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns\Transaction;
 
+use App\Services\ContractAbiService;
 use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
 
@@ -75,10 +76,7 @@ trait HasPayload
 
         $methodId = $this->methodHash($payload);
 
-        $functionName = null;
-        if (app('translator')->has('contracts.'.$methodId)) {
-            $functionName = trans('contracts.'.$methodId);
-        }
+        $functionName = $methodId !== null ? app(ContractAbiService::class)->getSignature($methodId) : null;
 
         try {
             if ($tryAllAbis) {
