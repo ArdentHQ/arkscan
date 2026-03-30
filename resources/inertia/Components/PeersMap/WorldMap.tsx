@@ -1,5 +1,5 @@
 import { geoNaturalEarth1, geoPath } from "d3-geo";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { IPeer } from "@/types/generated";
@@ -154,7 +154,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
     panRef.current = pan;
     dimensionsRef.current = dimensions;
 
-    const applyZoom = useRef((newZoom: number, centerX?: number, centerY?: number) => {
+    const applyZoom = useCallback((newZoom: number, centerX?: number, centerY?: number) => {
         const clamped = Math.min(Math.max(newZoom, 1), 8);
         const { width: w, height: h } = dimensionsRef.current;
 
@@ -186,7 +186,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
         setPan({ x: svgX - w / 2 - pointX * clamped, y: svgY - h / 2 - pointY * clamped });
         setZoom(clamped);
-    }).current;
+    }, []);
 
     useEffect(() => {
         const svg = svgRef.current;
@@ -206,7 +206,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
         svg.addEventListener("wheel", handleWheel, { passive: false });
 
         return () => svg.removeEventListener("wheel", handleWheel);
-    }, []);
+    }, [applyZoom]);
 
     const handleZoomButton = (direction: number) => {
         applyZoom(zoomRef.current + direction * 0.5);
@@ -239,11 +239,134 @@ export default function WorldMap({ peers }: WorldMapProps) {
         setIsPanning(false);
     };
 
+    const touchRef = useRef<{
+        startDistance: number;
+        startZoom: number;
+        startPan: { x: number; y: number };
+        startCenter: { x: number; y: number };
+        isSingleTouch: boolean;
+    }>({
+        startDistance: 0,
+        startZoom: 1,
+        startPan: { x: 0, y: 0 },
+        startCenter: { x: 0, y: 0 },
+        isSingleTouch: false,
+    });
+
+    useEffect(() => {
+        const svg = svgRef.current;
+
+        if (!svg) {
+            return;
+        }
+
+        const getTouchDistance = (touches: TouchList) => {
+            const dx = touches[0].clientX - touches[1].clientX;
+            const dy = touches[0].clientY - touches[1].clientY;
+            return Math.sqrt(dx * dx + dy * dy);
+        };
+
+        const getTouchCenter = (touches: TouchList) => ({
+            x: (touches[0].clientX + touches[1].clientX) / 2,
+            y: (touches[0].clientY + touches[1].clientY) / 2,
+        });
+
+        const handleTouchStart = (event: TouchEvent) => {
+            event.preventDefault();
+
+            if (event.touches.length === 2) {
+                touchRef.current = {
+                    startDistance: getTouchDistance(event.touches),
+                    startZoom: zoomRef.current,
+                    startPan: { ...panRef.current },
+                    startCenter: getTouchCenter(event.touches),
+                    isSingleTouch: false,
+                };
+            } else if (event.touches.length === 1) {
+                touchRef.current = {
+                    startDistance: 0,
+                    startZoom: zoomRef.current,
+                    startPan: { ...panRef.current },
+                    startCenter: { x: event.touches[0].clientX, y: event.touches[0].clientY },
+                    isSingleTouch: true,
+                };
+                setIsPanning(true);
+            }
+        };
+
+        const handleTouchMove = (event: TouchEvent) => {
+            event.preventDefault();
+
+            if (event.touches.length === 2) {
+                const currentDistance = getTouchDistance(event.touches);
+                const scale = currentDistance / touchRef.current.startDistance;
+                const newZoom = touchRef.current.startZoom * scale;
+
+                const center = getTouchCenter(event.touches);
+                const dx = center.x - touchRef.current.startCenter.x;
+                const dy = center.y - touchRef.current.startCenter.y;
+
+                const clamped = Math.min(Math.max(newZoom, 1), 8);
+
+                if (clamped === 1) {
+                    setPan({ x: 0, y: 0 });
+                    setZoom(1);
+                    return;
+                }
+
+                const rect = svg.getBoundingClientRect();
+                const { width: w, height: h } = dimensionsRef.current;
+
+                const cx = ((touchRef.current.startCenter.x - rect.left) / rect.width) * w;
+                const cy = ((touchRef.current.startCenter.y - rect.top) / rect.height) * h;
+
+                const pointX = (cx - w / 2 - touchRef.current.startPan.x) / touchRef.current.startZoom;
+                const pointY = (cy - h / 2 - touchRef.current.startPan.y) / touchRef.current.startZoom;
+
+                const scaleFactor = rect.width > 0 ? w / rect.width : 1;
+
+                setPan({
+                    x: cx - w / 2 - pointX * clamped + dx * scaleFactor,
+                    y: cy - h / 2 - pointY * clamped + dy * scaleFactor,
+                });
+                setZoom(clamped);
+            } else if (event.touches.length === 1 && touchRef.current.isSingleTouch && zoomRef.current > 1) {
+                const dx = event.touches[0].clientX - touchRef.current.startCenter.x;
+                const dy = event.touches[0].clientY - touchRef.current.startCenter.y;
+
+                const rect = svg.getBoundingClientRect();
+                const { width: w } = dimensionsRef.current;
+                const scaleFactor = rect.width > 0 ? w / rect.width : 1;
+
+                setPan({
+                    x: touchRef.current.startPan.x + dx * scaleFactor,
+                    y: touchRef.current.startPan.y + dy * scaleFactor,
+                });
+            }
+        };
+
+        const handleTouchEnd = (event: TouchEvent) => {
+            if (event.touches.length === 0) {
+                setIsPanning(false);
+            }
+        };
+
+        svg.addEventListener("touchstart", handleTouchStart, { passive: false });
+        svg.addEventListener("touchmove", handleTouchMove, { passive: false });
+        svg.addEventListener("touchend", handleTouchEnd);
+
+        return () => {
+            svg.removeEventListener("touchstart", handleTouchStart);
+            svg.removeEventListener("touchmove", handleTouchMove);
+            svg.removeEventListener("touchend", handleTouchEnd);
+        };
+    }, []);
+
     const dotRadius = Math.max(2, 3 / Math.sqrt(zoom));
 
     return (
         <div ref={containerRef} className="relative w-full">
-            <div className="absolute right-2 top-2 z-20 flex items-center gap-1">
+            <div className="absolute bottom-2 right-2 z-20 flex items-center gap-1">
                 {zoom > 1 && (
                     <button
                         type="button"
@@ -279,7 +402,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
             <svg
                 ref={svgRef}
                 viewBox={`0 0 ${width} ${height}`}
-                className="w-full rounded-lg"
+                className="w-full touch-none rounded-lg"
                 style={{ background: mapBg, cursor: zoom > 1 ? (isPanning ? "grabbing" : "grab") : "default" }}
                 onMouseDown={handleMouseDown}
                 onMouseMove={handleMouseMove}
