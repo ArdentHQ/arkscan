@@ -24,6 +24,7 @@ use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\ValidatorUpdateScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use ArkEcosystem\Crypto\Utils\TransactionTypeIdentifier;
 use Brick\Math\RoundingMode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -210,6 +211,10 @@ final class Transaction extends Model
 
     public function getVotedForAddressAttribute(): ?string
     {
+        if (! TransactionTypeIdentifier::isVote((string) $this->data)) {
+            return null;
+        }
+
         $methodData = $this->getMethodData();
         if ($methodData !== null) {
             return $methodData[2][0] ?? null;
