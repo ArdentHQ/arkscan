@@ -124,9 +124,10 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     const pathGenerator = geoPath().projection(projection);
 
-    const handleGroupHover = (group: PeerGroup, event: React.MouseEvent<SVGCircleElement>) => {
+    const touchMovedRef = useRef(false);
+
+    const showTooltipForCircle = (group: PeerGroup, circle: SVGCircleElement) => {
         const container = containerRef.current;
-        const circle = event.currentTarget;
 
         if (!container) {
             return;
@@ -145,6 +146,24 @@ export default function WorldMap({ peers }: WorldMapProps) {
             y,
             flipped,
         });
+    };
+
+    const handleGroupHover = (group: PeerGroup, event: React.MouseEvent<SVGCircleElement>) => {
+        showTooltipForCircle(group, event.currentTarget);
+    };
+
+    const handleGroupClick = (group: PeerGroup, event: React.MouseEvent<SVGCircleElement>) => {
+        if (touchMovedRef.current) {
+            return;
+        }
+
+        event.stopPropagation();
+
+        if (hoveredGroup?.group === group) {
+            setHoveredGroup(null);
+        } else {
+            showTooltipForCircle(group, event.currentTarget);
+        }
     };
 
     const zoomRef = useRef(zoom);
@@ -273,6 +292,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
         const handleTouchStart = (event: TouchEvent) => {
             event.preventDefault();
+            touchMovedRef.current = false;
 
             if (event.touches.length === 2) {
                 touchRef.current = {
@@ -296,6 +316,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
         const handleTouchMove = (event: TouchEvent) => {
             event.preventDefault();
+            touchMovedRef.current = true;
 
             if (event.touches.length === 2) {
                 const currentDistance = getTouchDistance(event.touches);
@@ -408,6 +429,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
+                onClick={() => setHoveredGroup(null)}
             >
                 <g
                     transform={`translate(${width / 2 + pan.x}, ${height / 2 + pan.y}) scale(${zoom}) translate(${-width / 2}, ${-height / 2})`}
@@ -470,11 +492,12 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                 <circle
                                     cx={coords[0]}
                                     cy={coords[1]}
-                                    r={dotRadius}
+                                    r={Math.max(dotRadius, 8 / zoom)}
                                     fill="transparent"
                                     className="cursor-pointer"
                                     onMouseEnter={(e) => handleGroupHover(group, e)}
                                     onMouseLeave={() => setHoveredGroup(null)}
+                                    onClick={(e) => handleGroupClick(group, e)}
                                 />
                             </g>
                         );
