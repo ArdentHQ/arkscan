@@ -8,8 +8,13 @@ use App\Services\ContractAbiService;
 use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
 
+/**
+ * @property array<string, AbiDecoder> $abiDecoderCache
+ */
 trait HasPayload
 {
+    private static array $abiDecoderCache = [];
+
     public function hasPayload(): bool
     {
         return $this->rawPayload() !== null;
@@ -82,7 +87,7 @@ trait HasPayload
             if ($tryAllAbis) {
                 $method = $this->decodeFunctionData($payload);
             } else {
-                $method = (new AbiDecoder())->decodeFunctionData($payload);
+                $method = $this->cachedAbiDecoder(ContractAbiType::CONSENSUS)->decodeFunctionData($payload);
             }
 
             // @codeCoverageIgnoreStart
@@ -139,13 +144,24 @@ trait HasPayload
 
         foreach ($contractAbiTypes as $type) {
             try {
-                return (new AbiDecoder($type))->decodeFunctionData($payload);
+                return $this->cachedAbiDecoder($type)->decodeFunctionData($payload);
             } catch (\Throwable $e) {
                 // If the ABI type is not found, we will try the next one
             }
         }
 
         throw new \Exception('Unable to decode function data from payload.');
+    }
+
+    private function cachedAbiDecoder(ContractAbiType $type): AbiDecoder
+    {
+        $key = $type->name;
+
+        if (! isset($abiDecoderCache[$key])) {
+            $abiDecoderCache[$key] = new AbiDecoder($type);
+        }
+
+        return $abiDecoderCache[$key];
     }
 
     private function payloadArguments(string $payload): ?array
