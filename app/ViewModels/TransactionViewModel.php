@@ -49,13 +49,13 @@ final class TransactionViewModel implements ViewModel
 
     public function fee(): float
     {
-        return UnitConverter::formatUnits((string) $this->transaction->fee(), 'ark');
+        return UnitConverter::formatUnits((string) $this->transaction->fee(), 'ark')->toFloat();
     }
 
     public function amount(): float
     {
         if (! $this->isMultiPayment()) {
-            return UnitConverter::formatUnits((string) $this->transaction->value, 'ark');
+            return UnitConverter::formatUnits((string) $this->transaction->value, 'ark')->toFloat();
         }
 
         $amount = BigNumber::zero();

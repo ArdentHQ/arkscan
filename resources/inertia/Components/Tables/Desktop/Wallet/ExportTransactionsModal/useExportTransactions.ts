@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
 import { useTranslation } from "react-i18next";
 import { TransactionsApi } from "@js/api/transactions";
 import { ExportStatus } from "@js/includes/enums";
@@ -13,8 +12,7 @@ import {
     generateCsv,
     FailedExportRequest,
 } from "@js/includes/helpers";
-
-dayjs.extend(localizedFormat);
+import { parseTimestamp, formatDateKey, formatLocalizedDateTime } from "@/utils/formatter";
 
 interface UseExportTransactionsProps {
     isOpen: boolean;
@@ -106,44 +104,6 @@ export default function useExportTransactions({
 
     const abortControllerRef = useRef<AbortController | null>(null);
 
-    const parseTimestamp = useCallback((transaction: any) => {
-        const { timestamp } = transaction || {};
-
-        if (timestamp === undefined || timestamp === null) {
-            return dayjs(0);
-        }
-
-        if (typeof timestamp === "object") {
-            if (typeof timestamp.unix === "number") {
-                return dayjs.unix(timestamp.unix);
-            }
-
-            if (typeof timestamp.epoch === "number") {
-                return dayjs.unix(timestamp.epoch);
-            }
-
-            if (typeof timestamp.human === "string") {
-                return dayjs(timestamp.human);
-            }
-        }
-
-        const numericTimestamp = Number(timestamp);
-
-        if (!Number.isNaN(numericTimestamp)) {
-            if (`${timestamp}`.length > 10) {
-                return dayjs(numericTimestamp);
-            }
-
-            return dayjs.unix(numericTimestamp);
-        }
-
-        try {
-            return dayjs(timestamp);
-        } catch (error) {
-            return dayjs(0);
-        }
-    }, []);
-
     const resolveNumericField = useCallback((transaction: any, keys: string[]) => {
         for (const key of keys) {
             const value = transaction?.[key];
@@ -231,17 +191,17 @@ export default function useExportTransactions({
 
     const getTransactionRate = useCallback(
         (transaction: any) => {
-            const dateKey = parseTimestamp(transaction).format("YYYY-MM-DD");
+            const dateKey = formatDateKey(parseTimestamp(transaction).valueOf());
 
             return rates?.[dateKey] ?? 0;
         },
-        [parseTimestamp, rates],
+        [rates],
     );
 
     const columnMapping = useMemo(() => {
         return {
             id: (transaction: any) => transaction?.hash ?? transaction?.id ?? "",
-            timestamp: (transaction: any) => parseTimestamp(transaction).format("L LTS"),
+            timestamp: (transaction: any) => formatLocalizedDateTime(parseTimestamp(transaction).valueOf()),
             sender: (transaction: any) => transaction?.from ?? transaction?.sender ?? "",
             recipient: (transaction: any) => transaction?.to ?? transaction?.recipient ?? "",
             amount: (transaction: any) => getTransactionAmount(transaction),
@@ -252,7 +212,7 @@ export default function useExportTransactions({
             totalFiat: (transaction: any) => getTransactionTotal(transaction) * getTransactionRate(transaction),
             rate: (transaction: any) => getTransactionRate(transaction),
         };
-    }, [getTransactionAmount, getTransactionFee, getTransactionRate, getTransactionTotal, parseTimestamp]);
+    }, [getTransactionAmount, getTransactionFee, getTransactionRate, getTransactionTotal]);
 
     const getColumnLabel = useCallback(
         (columnKey: string) => {

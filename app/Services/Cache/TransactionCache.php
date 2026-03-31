@@ -36,6 +36,9 @@ final class TransactionCache implements Contract
         $this->put(sprintf('type/historical/%s', $type), $count);
     }
 
+    /**
+     * @return array{count: int, amount: int, fee: float}
+     */
     public function getHistoricalAverages(): array
     {
         return $this->get('averages', [
@@ -45,6 +48,9 @@ final class TransactionCache implements Contract
         ]);
     }
 
+    /**
+     * @param array{count: int, amount: int, fee: float} $averages
+     */
     public function setHistoricalAverages(array $averages): void
     {
         $this->put('averages', $averages);

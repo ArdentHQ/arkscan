@@ -6,8 +6,7 @@ import type {
     TransactionDetails as TransactionDetailsProps,
     TransactionShowProps,
 } from "@/Pages/Transaction.contracts";
-import { DATE_TIME_FORMAT } from "@/constants";
-import dayjs from "dayjs";
+import { formatDateTime } from "@/utils/formatter";
 
 export default function TransactionDetails({
     transaction,
@@ -20,7 +19,7 @@ export default function TransactionDetails({
 }) {
     const { t } = useTranslation();
 
-    const timestamp = dayjs(transaction.timestamp * 1000).format(DATE_TIME_FORMAT);
+    const timestamp = formatDateTime(transaction.timestamp);
 
     return (
         <PageSection title={t("pages.transaction.transaction_details")}>

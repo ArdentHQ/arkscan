@@ -1,10 +1,6 @@
-import { DATE_TIME_FORMAT } from "@/constants";
 import classNames from "classnames";
-import dayjs from "dayjs";
-import dayjsRelativeTime from "dayjs/plugin/relativeTime";
+import { formatAge } from "@/utils/formatter";
 import Tooltip from "../General/Tooltip";
-
-dayjs.extend(dayjsRelativeTime);
 
 export default function Age({
     timestamp,
@@ -13,18 +9,17 @@ export default function Age({
     timestamp: number;
     className?: string;
 }) {
-    const date = dayjs(timestamp * 1000);
-    const formattedAge = dayjs().to(date);
+    const { relative, tooltip } = formatAge(timestamp);
 
     return (
-        <Tooltip content={date.format(DATE_TIME_FORMAT)}>
+        <Tooltip content={tooltip}>
             <span
                 className={classNames({
                     "text-sm font-semibold leading-4.25": true,
                     [className]: true,
                 })}
             >
-                {formattedAge}
+                {relative}
             </span>
         </Tooltip>
     );
