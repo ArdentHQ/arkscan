@@ -1,6 +1,5 @@
-import { DATE_TIME_FORMAT } from "@/constants";
 import { IBlock } from "@/types/generated";
-import dayjs from "dayjs";
+import { formatDateTime } from "@/utils/formatter";
 
 export class Block {
     constructor(data: IBlock) {
@@ -20,7 +19,7 @@ export class Block {
     }
 
     get timestampFormatted(): string {
-        return dayjs(this.timestamp * 1000).format(DATE_TIME_FORMAT);
+        return formatDateTime(this.timestamp);
     }
 
     fiatRate(currency: string): number {
