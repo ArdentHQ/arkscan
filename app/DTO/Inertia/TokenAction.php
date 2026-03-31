@@ -36,7 +36,7 @@ class TokenAction extends Data
             transaction_hash: $transfer->transaction_hash,
             from: MemoryWallet::fromAddress($transfer->from),
             to: MemoryWallet::fromAddress($transfer->to),
-            amount: UnitConverter::formatUnits((string) $transfer->value, 'ark'),
+            amount: UnitConverter::formatUnits((string) $transfer->value, 'ark')->toFloat(),
             value: (string) $transfer->value,
             block_number: $transfer->block_number,
             index: $transfer->index,
