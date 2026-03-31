@@ -1,3 +1,15 @@
 Nov: 0
-Dec: 100000.0
+Dec:
+    sign: 1
+    unscaledValue: { bitLength: 17, lowestSetBit: 5, even: true, odd: false, sign: 1, zero: false, negative: false, negativeOrZero: false, positive: true, positiveOrZero: true }
+    scale: 0
+    precision: 6
+    integralPart: '100000'
+    fractionalPart: ''
+    nonZeroFractionalPart: false
+    zero: false
+    negative: false
+    negativeOrZero: false
+    positive: true
+    positiveOrZero: true
 Jan: 0
