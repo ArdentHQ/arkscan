@@ -18,11 +18,11 @@ export default function HeaderBanner() {
             <div
                 className={classNames(["mx-auto flex flex-1 flex-col items-center bg-right bg-no-repeat md:flex-row"])}
             >
-                <div className="flex flex-col justify-center space-y-2 p-4 md:max-w-[356px] md:p-0 md-lg:max-w-[568px] xl:max-w-none">
+                <div className="flex flex-col justify-center space-y-1.5 p-4 md:max-w-[356px] md:p-0 md-lg:max-w-[568px] xl:max-w-none">
                     <span
                         className={classNames([
                             "space-x-1 text-sm font-semibold leading-5.25 sm:text-lg",
-                            "text-theme-secondary-900 dark:text-theme-dark-50",
+                            "text-theme-primary-900 dark:text-theme-dark-50",
                         ])}
                     >
                         <span>{t("pages.bookmarks.header.title")}</span>
@@ -30,8 +30,8 @@ export default function HeaderBanner() {
 
                     <span
                         className={classNames([
-                            "text-xs font-semibold leading-5",
-                            "text-theme-secondary-700 dim:text-theme-dark-blue-600 dark:text-theme-dark-200",
+                            "text-xs font-semibold leading-5 xl:leading-3.75",
+                            "text-theme-secondary-700 dark:text-theme-dark-200",
                         ])}
                     >
                         {t("pages.bookmarks.header.subtitle")}
