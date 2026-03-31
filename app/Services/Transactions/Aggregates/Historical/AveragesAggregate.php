@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 
 final class AveragesAggregate
 {
+    /**
+     * @return array{count: int, amount: int, fee: float}
+     */
     public function aggregate(): array
     {
         /** @var object{count: int, fee: string, value: BigNumber, recipient_value: BigNumber} */
@@ -44,7 +47,7 @@ final class AveragesAggregate
             'fee'    => UnitConverter::formatUnits(
                 (string) BigNumber::new($data->fee)->valueOf()->dividedBy($daysSinceEpoch, null, RoundingMode::DOWN),
                 'ark'
-            ),
+            )->toFloat(),
         ];
     }
 }

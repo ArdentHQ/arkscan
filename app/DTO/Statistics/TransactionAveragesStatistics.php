@@ -12,13 +12,19 @@ final class TransactionAveragesStatistics
 
     public float $fees;
 
+    /**
+     * @param array{count: int, amount: int, fee: float} $data
+     */
     public function __construct(array $data)
     {
         $this->count  = $data['count'];
         $this->volume = (float) $data['amount'];
-        $this->fees   = (float) $data['fee'];
+        $this->fees   = $data['fee'];
     }
 
+    /**
+     * @param array{count: int, amount: int, fee: float} $data
+     */
     public static function make(array $data): self
     {
         return new self($data);
