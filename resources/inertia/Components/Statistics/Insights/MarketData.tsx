@@ -4,8 +4,7 @@ import InsightsContainer from "./Container";
 import { StatisticsMarketDataInsights } from "@/Pages/Statistics.contracts";
 import useSettings from "@/Providers/Settings/useSettings";
 import { currency as formatCurrency, currencyWithDecimals, isFiat } from "@/utils/number-formatter";
-import dayjs from "dayjs";
-import { DATE_FORMAT } from "@/constants";
+import { formatDate } from "@/utils/formatter";
 
 function useMarketFormatters() {
     const { currency: userCurrency } = useSettings();
@@ -59,7 +58,7 @@ export default function MarketDataInsights({
     const fmtPriceVal = (v: number | null) => (v !== null ? formatPrice(v) : null);
     const fmtVolVal = (v: number | null) => (v !== null ? formatVolume(v) : null);
     const fmtCapVal = (v: number | null) => (v !== null ? formatVolume(v) : null);
-    const fmtDate = (ts: number | null) => (ts !== null ? dayjs(ts * 1000).format(DATE_FORMAT) : null);
+    const fmtDate = (ts: number | null) => (ts !== null ? formatDate(ts) : null);
 
     return (
         <div className={activeTab !== "market_data" ? "hidden md:block" : undefined}>

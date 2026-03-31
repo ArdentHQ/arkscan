@@ -1,6 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import dayjs from "dayjs";
-import localizedFormat from "dayjs/plugin/localizedFormat";
 import { useTranslation } from "react-i18next";
 import { BlocksApi } from "@js/api/blocks";
 import { ExportStatus } from "@js/includes/enums";
@@ -13,8 +11,7 @@ import {
     getDateRange,
     queryTimestamp,
 } from "@js/includes/helpers";
-
-dayjs.extend(localizedFormat);
+import { formatLocalizedDateTime, formatDateKey } from "@/utils/formatter";
 
 interface UseExportBlocksProps {
     isOpen: boolean;
@@ -100,7 +97,7 @@ export default function useExportBlocks({
             timestamp: (block: any) => {
                 const numericTimestamp = Number.parseInt(block?.timestamp ?? 0, 10);
 
-                return dayjs(numericTimestamp).format("L LTS");
+                return formatLocalizedDateTime(numericTimestamp);
             },
             numberOfTransactions: (block: any) => block?.transactionsCount ?? block?.transactionCount ?? 0,
             volume: (block: any) => arktoshiToNumber(Number(block?.amount ?? 0)),
@@ -119,7 +116,7 @@ export default function useExportBlocks({
             },
             rate: (block: any) => {
                 const numericTimestamp = Number.parseInt(block?.timestamp ?? 0, 10);
-                const dateKey = dayjs(numericTimestamp).format("YYYY-MM-DD");
+                const dateKey = formatDateKey(numericTimestamp);
 
                 return rates?.[dateKey] ?? 0;
             },

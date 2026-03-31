@@ -32,6 +32,7 @@ use App\Console\Commands\GenerateVoteReport;
 use App\Console\Commands\LoadExchanges;
 use App\Console\Commands\ScoutIndexModels;
 use App\Facades\Network;
+use App\Support\Broadcasting;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -115,7 +116,7 @@ final class Kernel extends ConsoleKernel
             $schedule->command(ScoutIndexModels::class)->everyMinute()->withoutOverlapping();
         }
 
-        if (config('broadcasting.default') !== 'reverb') {
+        if (! Broadcasting::usesWebSockets()) {
             $schedule->command(CacheBlocks::class)
                 ->everyFiveMinutes()
                 ->withoutOverlapping();

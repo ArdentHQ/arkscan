@@ -14,6 +14,7 @@ use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\ExchangeRate;
+use App\Support\Broadcasting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -60,7 +61,7 @@ class HandleInertiaRequests extends Middleware
                 'supportEnabled'       => fn () => config('arkscan.support.enabled'),
                 'currencies'           => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
                 'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
-                'usesBroadcasting'     => config('broadcasting.default') === 'reverb',
+                'usesBroadcasting'     => Broadcasting::usesWebSockets(),
                 'networkName'          => fn () => config('arkscan.network'),
                 'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
                 'isProduction'         => fn () => config('arkscan.network') === 'production',

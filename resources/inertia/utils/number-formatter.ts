@@ -200,6 +200,11 @@ export function networkCurrency(
     return `${formatted} ${networkCurrency}`;
 }
 
+export function formatGwei(value: string | number): string {
+    const val = Number(value);
+    return parseFloat(val.toFixed(2)).toString();
+}
+
 export function currencyShortNotation(value: number): string {
     if (value < 1000) {
         return Math.floor(value).toString();

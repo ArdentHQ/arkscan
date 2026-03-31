@@ -39,7 +39,7 @@ it('does not schedule the `scout:index-models` command if disabled', function ()
     expect($events->count())->toBe(0);
 });
 
-it('schedules the `explorer:cache-blocks` command if using reverb', function () {
+it('does not schedule the `explorer:cache-blocks` command if using websockets', function () {
     Config::set('broadcasting.default', 'reverb');
 
     $schedule = app()->make(Schedule::class);
@@ -51,7 +51,7 @@ it('schedules the `explorer:cache-blocks` command if using reverb', function () 
     expect($events->count())->toBe(0);
 });
 
-it('does not schedule the `explorer:cache-blocks` command if disabled', function () {
+it('schedules the `explorer:cache-blocks` command if not using websockets', function () {
     Config::set('broadcasting.default', null);
 
     $schedule = app()->make(Schedule::class);

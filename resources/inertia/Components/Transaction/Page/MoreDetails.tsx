@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { ITransaction } from "@/types/generated";
 import { PageSection, SectionDetailRow } from "@/Components/PageSection";
 import { TransactionDetails } from "@/Pages/Transaction.contracts";
-import { formatUnits } from "@/utils/UnitConverter";
+import { UnitConverter } from "@arkecosystem/typescript-crypto";
 import Number from "@/Components/General/Number";
 import Badge from "@/Components/General/Badge";
 import MobileTableRow from "@/Components/Tables/Mobile/Row";
@@ -23,8 +23,8 @@ export default function TransactionMoreDetails({
     const [isMobilePayloadExpanded, setIsMobilePayloadExpanded] = useState(false);
     const [isDesktopPayloadExpanded, setIsDesktopPayloadExpanded] = useState(false);
 
-    const gasLimit = formatUnits(transaction.gas, "wei");
-    const gasUsed = formatUnits(transaction.gas_used, "wei");
+    const gasLimit = UnitConverter.formatUnits(transaction.gas, "wei");
+    const gasUsed = UnitConverter.formatUnits(transaction.gas_used, "wei");
     const payload = details.payload;
 
     return (
