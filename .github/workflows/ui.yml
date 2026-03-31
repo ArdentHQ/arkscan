@@ -106,14 +106,11 @@ jobs:
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
 
-              # We are using 2.8.0 svgo as that seems to be the most compatible with out SVGs.
-              # Anything higher and some SVGs get re-formatted incorrectly.
-              # Task to update to latest svgo version: https://app.clickup.com/t/86dtdax3n
             - name: Optimize SVGs
               id: svgo
               run: |
                   export PATH="$(pnpm global bin):$PATH"
-                  pnpm add -g svgo@2.8.0
+                  pnpm add -g svgo@latest
                   pnpm svgo --config .svgo.js ./resources/**/*.svg
 
             - name: Commit optimizations
