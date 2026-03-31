@@ -211,7 +211,8 @@ final class Transaction extends Model
 
     public function getVotedForAddressAttribute(): ?string
     {
-        if (! TransactionTypeIdentifier::isVote((string) $this->data)) {
+        $payload = $this->rawPayload();
+        if ($payload !== null && ! TransactionTypeIdentifier::isVote($payload)) {
             return null;
         }
 
