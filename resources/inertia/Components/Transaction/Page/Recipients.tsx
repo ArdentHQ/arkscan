@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { PageSection } from "@/Components/PageSection";
 import { TransactionRecipient } from "@/Pages/Transaction.contracts";
-import { weiToArk } from "@/utils/UnitConverter";
+import { UnitConverter } from "@arkecosystem/typescript-crypto";
 import CompactAmount from "@/Components/Tokens/CompactAmount";
 import TransactionAddress from "./Address";
 import TableHeader from "@/Components/Tables/Desktop/TableHeader";
@@ -65,7 +65,7 @@ export default function TransactionRecipients({ recipients }: { recipients: Tran
                                         />
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <CompactAmount amount={weiToArk(recipient.amount)} hideSymbol />
+                                        <CompactAmount amount={UnitConverter.weiToArk(recipient.amount)} hideSymbol />
                                     </TableCell>
                                 </tr>
                             ))}

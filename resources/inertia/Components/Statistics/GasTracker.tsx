@@ -4,7 +4,8 @@ import Tooltip from "@/Components/General/Tooltip";
 import useSharedData from "@/hooks/use-shared-data";
 import useSettings from "@/Providers/Settings/useSettings";
 import { GasTrackerData } from "@/Pages/Statistics.contracts";
-import { formatGwei, gweiToArk } from "@/utils/UnitConverter";
+import { UnitConverter } from "@arkecosystem/typescript-crypto";
+import { formatGwei } from "@/utils/number-formatter";
 import { currency } from "@/utils/number-formatter";
 import GasLowIcon from "@icons/gas/low.svg?react";
 import GasAverageIcon from "@icons/gas/average.svg?react";
@@ -31,7 +32,7 @@ function GasTrackerCard({
     const { network } = useSharedData();
     const { currency: selectedCurrency } = useSettings();
 
-    const tooltipValue = gweiToArk(fee.amount, network.currency);
+    const tooltipValue = UnitConverter.gweiToArk(fee.amount, network.currency);
 
     return (
         <div className="flex flex-1 flex-col rounded border border-white bg-white px-4 py-3 font-semibold dark:border-theme-dark-900 dark:bg-theme-dark-900 dark:text-theme-dark-200 md:rounded-lg">

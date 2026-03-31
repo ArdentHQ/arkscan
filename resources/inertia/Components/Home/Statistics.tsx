@@ -9,7 +9,7 @@ import ChartContent from "@/Components/Home/Chart/ChartContent";
 import Number from "../General/Number";
 import { Link } from "@inertiajs/react";
 import { currency, currencyShortNotation, isFiat } from "@/utils/number-formatter";
-import { formatGwei } from "@/utils/UnitConverter";
+import { formatGwei } from "@/utils/number-formatter";
 function StatEntry({
     label,
     value,

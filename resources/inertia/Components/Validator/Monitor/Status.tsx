@@ -5,7 +5,7 @@ import Tooltip from "@/Components/General/Tooltip";
 import { useValidatorStatus } from "@/Providers/ValidatorStatus/ValidatorStatusContext";
 import { ForgingStatusGenerated, ForgingStatusMissed, ForgingStatusPending } from "@/Providers/ValidatorStatus/types";
 import { useTranslation } from "react-i18next";
-import dayjs from "dayjs";
+import { formatUnixDateTime } from "@/utils/formatter";
 
 export default function Status({
     width = "min-w-[8.75rem]",
@@ -83,7 +83,7 @@ export default function Status({
                             content={
                                 validator.lastBlock?.timestamp
                                     ? t("pages.validator-monitor.last_block_forged_at", {
-                                          time: dayjs.unix(validator.lastBlock.timestamp).format("D MMM YYYY HH:mm:ss"),
+                                          time: formatUnixDateTime(validator.lastBlock.timestamp),
                                       })
                                     : t("pages.validator-monitor.no_blocks_forged_yet")
                             }

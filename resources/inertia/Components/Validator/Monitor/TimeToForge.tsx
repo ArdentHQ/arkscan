@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
-import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import classNames from "classnames";
 import { useValidatorStatus } from "@/Providers/ValidatorStatus/ValidatorStatusContext";
 import {
@@ -9,8 +7,7 @@ import {
     ForgingStatusMissed,
 } from "@/Providers/ValidatorStatus/types";
 import Tooltip from "@/Components/General/Tooltip";
-
-dayjs.extend(dayjsRelativeTime);
+import { formatDayjsDateTime } from "@/utils/formatter";
 
 export default function TimeToForge({
     className = "text-theme-secondary-900 dark:text-theme-dark-50",
@@ -22,7 +19,7 @@ export default function TimeToForge({
     const { dateTime, output, status } = useValidatorStatus();
 
     useEffect(() => {
-        setTooltip(dateTime.format("D MMM YYYY HH:mm:ss"));
+        setTooltip(formatDayjsDateTime(dateTime));
     }, [dateTime]);
 
     return (
