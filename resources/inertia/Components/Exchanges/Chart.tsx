@@ -100,7 +100,7 @@ function PeriodTabs({
 
 export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) {
     const { t } = useTranslation();
-    const { broadcasting, network } = useSharedData<ExchangesProps>();
+    const { usesBroadcasting, network } = useSharedData<ExchangesProps>();
     const { currency: selectedCurrency, theme } = useSettings();
     const previousCurrencyRef = useRef(selectedCurrency);
     const [selectedPeriod, setSelectedPeriod] = useState<ExchangeChartPeriod>(chart.period);
@@ -150,7 +150,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
             },
         },
         {
-            autoStart: broadcasting !== "reverb" && (network?.canBeExchanged ?? false),
+            autoStart: !usesBroadcasting && (network?.canBeExchanged ?? false),
         },
     );
 
