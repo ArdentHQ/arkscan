@@ -3,5 +3,17 @@
 '28.12': 0
 '29.12': 0
 '30.12': 0
-'31.12': 100000.0
+'31.12':
+    sign: 1
+    unscaledValue: { bitLength: 17, lowestSetBit: 5, even: true, odd: false, sign: 1, zero: false, negative: false, negativeOrZero: false, positive: true, positiveOrZero: true }
+    scale: 0
+    precision: 6
+    integralPart: '100000'
+    fractionalPart: ''
+    nonZeroFractionalPart: false
+    zero: false
+    negative: false
+    negativeOrZero: false
+    positive: true
+    positiveOrZero: true
 '01.01': 0

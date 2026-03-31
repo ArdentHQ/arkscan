@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\Transactions\Aggregates\Fees\Historical\RangeAggregate;
+use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -37,7 +38,7 @@ it('should aggregate the fees for the given range', function () {
 
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result->toArray())->toEqual([
-        $startTime->format('Y-m-d') => 100000,
-        $endTime->format('Y-m-d')   => 100000,
+        $startTime->format('Y-m-d') => BigDecimal::of(100000),
+        $endTime->format('Y-m-d')   => BigDecimal::of(100000),
     ]);
 });

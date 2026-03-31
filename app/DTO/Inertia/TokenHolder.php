@@ -24,7 +24,7 @@ class TokenHolder extends Data
         return new self(
             wallet: MemoryWallet::fromAddress($holder->address),
             token: Token::fromModel($holder->token),
-            balance: UnitConverter::formatUnits((string) $holder->balance, 'ark'),
+            balance: UnitConverter::formatUnits((string) $holder->balance, 'ark')->toFloat(),
         );
     }
 }
