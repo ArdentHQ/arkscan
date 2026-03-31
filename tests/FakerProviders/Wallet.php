@@ -28,6 +28,10 @@ final class Wallet extends Base
 
     public function wallet(): array
     {
+        if ($this->availableWallets->isEmpty()) {
+            $this->availableWallets = collect(self::$wallets)->shuffle();
+        }
+
         return $this->availableWallets->shift();
     }
 
