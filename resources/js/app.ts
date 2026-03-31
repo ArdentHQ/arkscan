@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import "focus-visible";
 import "@ui/js/clipboard.js";
 import "@ui/js/tippy.js";
@@ -11,7 +13,7 @@ import Pusher from "pusher-js";
 window.Pusher = Pusher;
 
 if (import.meta.env.VITE_BROADCAST_DRIVER === "reverb") {
-    const options = {
+    const options: Record<string, unknown> = {
         broadcaster: "reverb",
         key: import.meta.env.VITE_REVERB_APP_KEY,
         wsHost: import.meta.env.VITE_REVERB_HOST,

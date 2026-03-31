@@ -20,18 +20,25 @@ declare module "@inertiajs/core" {
     }
 }
 
+type WebhookHandler = (...args: unknown[]) => void;
+
 declare global {
     var route: typeof routeFn;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    var Echo: any;
+    var emitter: WebhookHandler;
+
     interface Window {
-        Echo?: {
-            channel: (channel: string) => {
-                listen: (event: string, callback: WebhookHandler) => void;
-                stopListening: (event: string, callback: WebhookHandler) => void;
-                subscribe?: () => void;
-                unsubscribe?: () => void;
-            };
-            leave: (channel: string) => void;
+        Pusher: typeof import("pusher-js").default;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        Echo?: any;
+
+        Webhook?: {
+            listeners: Record<string, Record<string, Record<string, WebhookHandler | undefined>>>;
+            listen: (channel: string, event: string, emit: string) => void;
+            remove: (channel: string, event: string, emit: string) => void;
         };
 
         sa_event: (event: string, callback?: () => void) => void;
