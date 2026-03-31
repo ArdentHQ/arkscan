@@ -13,8 +13,6 @@ use ArkEcosystem\Crypto\Utils\AbiDecoder;
  */
 trait HasPayload
 {
-    private static array $abiDecoderCache = [];
-
     public function hasPayload(): bool
     {
         return $this->rawPayload() !== null;
@@ -155,13 +153,15 @@ trait HasPayload
 
     private function cachedAbiDecoder(ContractAbiType $type): AbiDecoder
     {
+        static $abiDecoderCache = [];
+
         $key = $type->name;
 
-        if (! isset(static::$abiDecoderCache[$key])) {
-            static::$abiDecoderCache[$key] = new AbiDecoder($type);
+        if (! isset($abiDecoderCache[$key])) {
+            $abiDecoderCache[$key] = new AbiDecoder($type);
         }
 
-        return static::$abiDecoderCache[$key];
+        return $abiDecoderCache[$key];
     }
 
     private function payloadArguments(string $payload): ?array
