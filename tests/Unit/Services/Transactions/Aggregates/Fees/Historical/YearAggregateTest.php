@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Transaction;
 use App\Services\Transactions\Aggregates\Fees\Historical\YearAggregate;
-use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
@@ -40,9 +39,9 @@ it('should aggregate the fees for 12 months', function () {
         'Jul' => 0,
         'Aug' => 0,
         'Sep' => 0,
-        'Oct' => BigDecimal::of(100000.0),
+        'Oct' => 100000.0,
         'Nov' => 0,
-        'Dec' => BigDecimal::of(100000.0),
+        'Dec' => 100000.0,
         'Jan' => 0,
     ]);
 });

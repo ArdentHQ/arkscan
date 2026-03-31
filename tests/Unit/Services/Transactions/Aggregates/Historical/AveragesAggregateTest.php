@@ -8,7 +8,6 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Transactions\Aggregates\Historical\AveragesAggregate;
-use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Tests\Stubs\NetworkStub;
 
@@ -44,9 +43,11 @@ it('should return count for non-multipayment', function () {
 
     expect(Transaction::count())->toBe($transactionCount);
 
-    expect((new AveragesAggregate())->aggregate()['count'])->toBe($transactionCount / $daysSinceEpoch);
-    expect((new AveragesAggregate())->aggregate()['amount'])->toBe(120 / $daysSinceEpoch);
-    expect((new AveragesAggregate())->aggregate()['fee']->toFloat())->toBe(BigDecimal::of((((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e18)->toFloat());
+    expect((new AveragesAggregate())->aggregate())->toBe([
+        'count'  => $transactionCount / $daysSinceEpoch,
+        'amount' => 120 / $daysSinceEpoch,
+        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e18,
+    ]);
 });
 
 it('should return count for multipayment', function () {
@@ -107,7 +108,9 @@ it('should return count for multipayment', function () {
 
     expect(Transaction::count())->toBe($transactionCount);
 
-    expect((new AveragesAggregate())->aggregate()['count'])->toBe((int) round($transactionCount / $daysSinceEpoch));
-    expect((new AveragesAggregate())->aggregate()['amount'])->toBe(62 / $daysSinceEpoch);
-    expect((new AveragesAggregate())->aggregate()['fee']->toFloat())->toBe(BigDecimal::of((((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e18)->toFloat());
+    expect((new AveragesAggregate())->aggregate())->toBe([
+        'count'  => (int) round($transactionCount / $daysSinceEpoch),
+        'amount' => 62 / $daysSinceEpoch,
+        'fee'    => (float) (((25 * 21000) * $transactionCount) / $daysSinceEpoch) / 1e18,
+    ]);
 });
