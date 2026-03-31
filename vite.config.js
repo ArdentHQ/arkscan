@@ -10,7 +10,7 @@ export default ({ mode }) =>
         plugins: [
             laravel([
                 "resources/css/app.css",
-                "resources/js/app.ts",
+                "resources/js/app.js",
                 "resources/js/app-inertia.tsx",
                 "resources/js/chart-tooltip.ts",
                 "resources/js/webhooks.ts",
