@@ -11,7 +11,6 @@ use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Services\BigNumber;
 use App\Services\Cache\TransactionCache;
-use Brick\Math\BigDecimal;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Event;
@@ -150,9 +149,11 @@ it('should cache data', function (): void {
         ],
     ]);
 
-    expect($cache->getHistoricalAverages()['count'])->toBe($transactionCount);
-    expect($cache->getHistoricalAverages()['amount'])->toBe($totalAmount);
-    expect($cache->getHistoricalAverages()['fee']->toFloat())->toBe(BigDecimal::of($totalFees)->toFloat());
+    expect($cache->getHistoricalAverages())->toBe([
+        'count'  => $transactionCount,
+        'amount' => $totalAmount,
+        'fee'    => $totalFees,
+    ]);
     expect($cache->getLargestIdByAmount())->toBe($largestTransaction->hash);
 
     Event::assertDispatchedTimes(TransactionDetails::class, 1);
