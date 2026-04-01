@@ -10,7 +10,6 @@ use App\Services\Search\Traits\ValidatesTerm;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Meilisearch\Contracts\SearchQuery;
 
 final class WalletSearch implements Search
@@ -36,10 +35,9 @@ final class WalletSearch implements Search
         $builder = Wallet::where('address', 'ilike', sprintf('%%%s%%', $query));
 
         if ($this->couldBeUsername($query)) {
-            $quoted = substr(DB::connection('explorer')->getPdo()->quote($query), 1, -1);
-
             $builder->orWhereRaw(
-                'lower(attributes::text)::jsonb @> lower(\'{"username":"'.$quoted.'"}\')::jsonb'
+                "lower(attributes->>'username') like ?",
+                ['%'.strtolower($query).'%']
             );
         }
 
