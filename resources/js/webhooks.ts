@@ -1,7 +1,11 @@
-window.Webhook = {
-    listeners: {},
+type WebhookHandler = (...args: unknown[]) => void;
 
-    listen(channel, event, emit) {
+type ListenerMap = Record<string, Record<string, Record<string, WebhookHandler | undefined>>>;
+
+window.Webhook = {
+    listeners: {} as ListenerMap,
+
+    listen(channel: string, event: string, emit: string) {
         if (this.listeners[channel] === undefined) {
             this.listeners[channel] = {};
         }
@@ -20,7 +24,7 @@ window.Webhook = {
         this.listeners[channel][event][emit] = emitter;
     },
 
-    remove(channel, event, emit) {
+    remove(channel: string, event: string, emit: string) {
         if (this.listeners[channel] === undefined) {
             return;
         }

@@ -3,11 +3,11 @@ import customParseFormat from "dayjs/esm/plugin/customParseFormat/index.js";
 
 dayjs.extend(customParseFormat);
 
-window.chartTooltip = (context) => {
+window.chartTooltip = (context: { chart: any; tooltip: any }) => {
     const { chart, tooltip } = context;
-    let tooltipEl = chart.canvas.parentNode.querySelector("div");
+    let tooltipEl = chart.canvas.parentNode.querySelector("div") as HTMLDivElement | null;
 
-    const getCurrencyValue = (value) => {
+    const getCurrencyValue = (value: number): string => {
         return new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: chart.options.currency,
@@ -28,7 +28,7 @@ window.chartTooltip = (context) => {
             "p-2",
         );
 
-        tooltipEl.style.opacity = 1;
+        tooltipEl.style.opacity = "1";
         tooltipEl.style.pointerEvents = "none";
         tooltipEl.style.position = "absolute";
         tooltipEl.style.transform = "translate(-50%, 0)";
@@ -42,11 +42,11 @@ window.chartTooltip = (context) => {
     }
 
     if (tooltip.opacity === 0) {
-        tooltipEl.style.opacity = 0;
+        tooltipEl.style.opacity = "0";
         return;
     }
 
-    const titleLines = tooltip.title || [];
+    const titleLines: string[] = tooltip.title || [];
     const dataValue = tooltip.dataPoints[0].dataset.data[tooltip.dataPoints[0].dataIndex];
 
     const tableHead = document.createElement("thead");
@@ -56,10 +56,10 @@ window.chartTooltip = (context) => {
 
     const tr = document.createElement("tr");
     tr.style.backgroundColor = "inherit";
-    tr.style.borderWidth = 0;
+    tr.style.borderWidth = "0";
 
     const th = document.createElement("th");
-    th.style.borderWidth = 0;
+    th.style.borderWidth = "0";
 
     const text = document.createElement("span");
     text.innerHTML = getCurrencyValue(dataValue);
@@ -74,10 +74,10 @@ window.chartTooltip = (context) => {
 
     titleLines.forEach((dateString) => {
         const tr = document.createElement("tr");
-        tr.style.borderWidth = 0;
+        tr.style.borderWidth = "0";
 
         const td = document.createElement("td");
-        td.style.borderWidth = 0;
+        td.style.borderWidth = "0";
         td.classList.add("pt-1.5");
 
         const date = dayjs(dateString.replace("p.m.", "pm"), "MMM D, YYYY, H:mm:ss a");
@@ -96,7 +96,7 @@ window.chartTooltip = (context) => {
         tableBody.appendChild(tr);
     });
 
-    const tableRoot = tooltipEl.querySelector("table");
+    const tableRoot = tooltipEl.querySelector("table")!;
 
     // Remove old children
     while (tableRoot.firstChild) {
@@ -110,7 +110,7 @@ window.chartTooltip = (context) => {
     const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
 
     // Display, position, and set styles for font
-    tooltipEl.style.opacity = 1;
+    tooltipEl.style.opacity = "1";
     tooltipEl.style.left = positionX + tooltip.caretX + "px";
     tooltipEl.style.top = positionY + tooltip.caretY - tooltipEl.clientHeight - 16 + "px";
 };
