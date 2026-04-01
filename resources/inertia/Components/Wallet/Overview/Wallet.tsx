@@ -13,9 +13,11 @@ import useWalletFormatting from "@/hooks/use-wallet-formatting";
 export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { t } = useTranslation();
     const { network, tokenHoldingsCount } = useSharedData<WalletProps>();
-    const { formattedBalanceTwoDecimals, formattedBalanceFull, fiatValue } = useWalletFormatting(wallet.balance);
+    const { formattedBalanceTwoDecimals, formattedBalanceFull, formattedBalanceAllDecimals, fiatValue } =
+        useWalletFormatting(wallet.balance);
 
     const showTooltip = formattedBalanceTwoDecimals !== formattedBalanceFull;
+    const largeRoundingDifference = formattedBalanceTwoDecimals !== formattedBalanceAllDecimals;
 
     return (
         <WalletOverviewItem title={t("general.overview")}>
@@ -26,16 +28,39 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                 value={
                     <>
                         {showTooltip && (
-                            <div className="sm:hidden">
-                                <Tooltip content={formattedBalanceFull}>
-                                    <span>{formattedBalanceTwoDecimals}</span>
-                                </Tooltip>
-                            </div>
+                            <>
+                                <div className="sm:hidden">
+                                    <Tooltip
+                                        content={
+                                            largeRoundingDifference ? formattedBalanceAllDecimals : formattedBalanceFull
+                                        }
+                                    >
+                                        <span>{formattedBalanceTwoDecimals}</span>
+                                    </Tooltip>
+                                </div>
+
+                                {formattedBalanceAllDecimals !== formattedBalanceFull && (
+                                    <div className="hidden sm:inline">
+                                        <Tooltip content={formattedBalanceAllDecimals}>
+                                            <span>{formattedBalanceFull}</span>
+                                        </Tooltip>
+                                    </div>
+                                )}
+
+                                {formattedBalanceAllDecimals === formattedBalanceFull && (
+                                    <div className="hidden sm:inline">
+                                        <span>{formattedBalanceFull}</span>
+                                    </div>
+                                )}
+                            </>
                         )}
 
-                        {!showTooltip && <span className="sm:hidden">{formattedBalanceTwoDecimals}</span>}
-
-                        <span className="hidden sm:inline">{formattedBalanceFull}</span>
+                        {!showTooltip && (
+                            <>
+                                <span className="sm:hidden">{formattedBalanceTwoDecimals}</span>
+                                <span className="hidden sm:inline">{formattedBalanceFull}</span>
+                            </>
+                        )}
                     </>
                 }
             />
