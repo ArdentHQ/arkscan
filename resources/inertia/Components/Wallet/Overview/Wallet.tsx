@@ -16,8 +16,15 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
     const { formattedBalanceTwoDecimals, formattedBalanceFull, formattedBalanceAllDecimals, fiatValue } =
         useWalletFormatting(wallet.balance);
 
-    const showTooltip = formattedBalanceTwoDecimals !== formattedBalanceFull;
-    const largeRoundingDifference = formattedBalanceTwoDecimals !== formattedBalanceAllDecimals;
+    const mobileTooltip =
+        formattedBalanceTwoDecimals !== formattedBalanceFull
+            ? formattedBalanceTwoDecimals !== formattedBalanceAllDecimals
+                ? formattedBalanceAllDecimals
+                : formattedBalanceFull
+            : null;
+
+    const desktopTooltip =
+        formattedBalanceFull !== formattedBalanceAllDecimals ? formattedBalanceAllDecimals : null;
 
     return (
         <WalletOverviewItem title={t("general.overview")}>
@@ -27,40 +34,31 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                 title={t("pages.wallet.balance")}
                 value={
                     <>
-                        {showTooltip && (
-                            <>
-                                <div className="sm:hidden">
-                                    <Tooltip
-                                        content={
-                                            largeRoundingDifference ? formattedBalanceAllDecimals : formattedBalanceFull
-                                        }
-                                    >
-                                        <span>{formattedBalanceTwoDecimals}</span>
-                                    </Tooltip>
-                                </div>
+                        <span
+                            className="sm:hidden"
+                            data-testid="wallet:balance:mobile"
+                        >
+                            {mobileTooltip ? (
+                                <Tooltip content={mobileTooltip}>
+                                    <span>{formattedBalanceTwoDecimals}</span>
+                                </Tooltip>
+                            ) : (
+                                formattedBalanceTwoDecimals
+                            )}
+                        </span>
 
-                                {formattedBalanceAllDecimals !== formattedBalanceFull && (
-                                    <div className="hidden sm:inline">
-                                        <Tooltip content={formattedBalanceAllDecimals}>
-                                            <span>{formattedBalanceFull}</span>
-                                        </Tooltip>
-                                    </div>
-                                )}
-
-                                {formattedBalanceAllDecimals === formattedBalanceFull && (
-                                    <div className="hidden sm:inline">
-                                        <span>{formattedBalanceFull}</span>
-                                    </div>
-                                )}
-                            </>
-                        )}
-
-                        {!showTooltip && (
-                            <>
-                                <span className="sm:hidden">{formattedBalanceTwoDecimals}</span>
-                                <span className="hidden sm:inline">{formattedBalanceFull}</span>
-                            </>
-                        )}
+                        <span
+                            className="hidden sm:inline"
+                            data-testid="wallet:balance:desktop"
+                        >
+                            {desktopTooltip ? (
+                                <Tooltip content={desktopTooltip}>
+                                    <span>{formattedBalanceFull}</span>
+                                </Tooltip>
+                            ) : (
+                                formattedBalanceFull
+                            )}
+                        </span>
                     </>
                 }
             />
