@@ -499,7 +499,8 @@ export default function WorldMap({ peers }: WorldMapProps) {
         };
     }, [clampPan]);
 
-    const dotRadius = Math.max(2, 3 / Math.sqrt(zoom));
+    const dotRadius = Math.max(0.5, 3 / zoom);
+    const pulseExpansion = 5 / zoom;
 
     return (
         <div ref={containerRef} className="relative w-full">
@@ -583,7 +584,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
                                 >
                                     <animate
                                         attributeName="r"
-                                        values={`${dotRadius};${dotRadius + 5};${dotRadius}`}
+                                        values={`${dotRadius};${dotRadius + pulseExpansion};${dotRadius}`}
                                         dur={`${duration}s`}
                                         begin={`${delay}s`}
                                         repeatCount="indefinite"

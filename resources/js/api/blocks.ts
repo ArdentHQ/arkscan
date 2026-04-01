@@ -1,8 +1,22 @@
 import { FailedExportRequest } from "../includes/helpers";
 import axios from "axios";
 
+interface FetchAllParams {
+    host: string;
+    query: Record<string, unknown>;
+    address: string;
+    limit?: number;
+    blocks?: Record<string, unknown>[];
+    orderBy?: string;
+    height?: number;
+}
+
+interface Abortable {
+    hasAborted: () => boolean;
+}
+
 export class BlocksApi {
-    static async request(host, query, address) {
+    static async request(host: string, query: Record<string, unknown>, address: string) {
         const response = await axios.get(`${host}/validators/${address}/blocks`, {
             params: query,
         });
@@ -11,9 +25,9 @@ export class BlocksApi {
     }
 
     static async fetchAll(
-        { host, query, address, limit = 100, blocks = [], orderBy = "number:desc", height },
-        instance,
-    ) {
+        { host, query, address, limit = 100, blocks = [], orderBy = "number:desc", height }: FetchAllParams,
+        instance?: Abortable,
+    ): Promise<Record<string, unknown>[]> {
         try {
             const page = await this.request(
                 host,
@@ -54,7 +68,17 @@ export class BlocksApi {
         );
     }
 
-    static async fetch({ host, query, address, orderBy }) {
+    static async fetch({
+        host,
+        query,
+        address,
+        orderBy,
+    }: {
+        host: string;
+        query: Record<string, unknown>;
+        address: string;
+        orderBy: string;
+    }) {
         const page = await this.request(
             host,
             {

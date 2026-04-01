@@ -2,67 +2,53 @@ import { defineConfig, loadEnv } from "vite";
 import { resolve } from "path";
 import laravel from "laravel-vite-plugin";
 import { detectServerConfig } from "./vendor/arkecosystem/foundation/resources/vite.config";
-import i18n from './resources/js/vite/i18n/i18n';
+import i18n from "./resources/js/vite/i18n/i18n";
 import svgr from "vite-plugin-svgr";
 
-export default ({ mode }) => defineConfig({
-    plugins: [
-        laravel([
-            'resources/css/app.css',
-            'resources/js/app.js',
-            'resources/js/app-inertia.tsx',
-            'resources/js/chart-tooltip.js',
-            'resources/js/webhooks.js',
-        ]),
-        i18n({
-            paths: [
-                'resources/lang',
-                {
-                    src: 'vendor/arkecosystem/foundation/resources/lang',
-                    dest: 'resources/lang/ui',
-                },
-            ],
-        }),
-        svgr(),
-    ],
-    resolve: {
-        alias: {
-            "@": resolve(
-                __dirname,
-                "resources/inertia/"
-            ),
-            "@icons": resolve(
-                __dirname,
-                "resources/icons/"
-            ),
-            "@images": resolve(
-                __dirname,
-                "resources/images/"
-            ),
-            "@ui": resolve(
-                __dirname,
-                "vendor/arkecosystem/foundation/resources/assets/"
-            ),
-            "@js": resolve(
-                __dirname,
-                "resources/js/"
-            ),
-        },
-    },
-    // Suppress warnings about use client from radix ui
-    build: {
-        rollupOptions: {
-            onwarn(warning, warn) {
-                if (warning.code === "MODULE_LEVEL_DIRECTIVE" && /use client/i.test(warning.message)) {
-                    return;
-                }
-
-                warn(warning);
+export default ({ mode }) =>
+    defineConfig({
+        plugins: [
+            laravel([
+                "resources/css/app.css",
+                "resources/js/app.js",
+                "resources/js/app-inertia.tsx",
+                "resources/js/chart-tooltip.ts",
+                "resources/js/webhooks.ts",
+            ]),
+            i18n({
+                paths: [
+                    "resources/lang",
+                    {
+                        src: "vendor/arkecosystem/foundation/resources/lang",
+                        dest: "resources/lang/ui",
+                    },
+                ],
+            }),
+            svgr(),
+        ],
+        resolve: {
+            alias: {
+                "@": resolve(__dirname, "resources/inertia/"),
+                "@icons": resolve(__dirname, "resources/icons/"),
+                "@images": resolve(__dirname, "resources/images/"),
+                "@ui": resolve(__dirname, "vendor/arkecosystem/foundation/resources/assets/"),
+                "@js": resolve(__dirname, "resources/js/"),
             },
         },
-    },
-    server: detectServerConfig(mode) || {
-        host: loadEnv(mode, process.cwd()).VITE_HOST ?? 'localhost',
-        port: 3000,
-    },
-});
+        // Suppress warnings about use client from radix ui
+        build: {
+            rollupOptions: {
+                onwarn(warning, warn) {
+                    if (warning.code === "MODULE_LEVEL_DIRECTIVE" && /use client/i.test(warning.message)) {
+                        return;
+                    }
+
+                    warn(warning);
+                },
+            },
+        },
+        server: detectServerConfig(mode) || {
+            host: loadEnv(mode, process.cwd()).VITE_HOST ?? "localhost",
+            port: 3000,
+        },
+    });

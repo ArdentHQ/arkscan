@@ -77,6 +77,30 @@ it('should search for a wallet by username', function () {
     expect($result->first()->address)->toBe($wallet->address);
 });
 
+it('should search for a wallet by partial username', function () {
+    $wallet1 = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'genesis_19',
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'genesis_11',
+        ],
+    ]);
+
+    Wallet::factory(5)->create();
+
+    $result = (new WalletSearch())->search('genesis', 5);
+
+    $foundAddresses = $result->pluck('address');
+
+    expect($result)->toHaveCount(2);
+    expect($foundAddresses)->toContain($wallet1->address);
+    expect($foundAddresses)->toContain($wallet2->address);
+});
+
 it('should search for a wallet by username case insensitive', function () {
     $wallet = Wallet::factory()->create([
         'attributes' => [
@@ -90,6 +114,30 @@ it('should search for a wallet by username case insensitive', function () {
 
     expect($result)->toHaveCount(1);
     expect($result->first()->address)->toBe($wallet->address);
+});
+
+it('should search for a wallet by partial username case insensitive', function () {
+    $wallet1 = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'Genesis_19',
+        ],
+    ]);
+
+    $wallet2 = Wallet::factory()->create([
+        'attributes' => [
+            'username' => 'Genesis_22',
+        ],
+    ]);
+
+    Wallet::factory(5)->create();
+
+    $result = (new WalletSearch())->search('gene', 5);
+
+    $foundAddresses = $result->pluck('address');
+
+    expect($result)->toHaveCount(2);
+    expect($foundAddresses)->toContain($wallet1->address);
+    expect($foundAddresses)->toContain($wallet2->address);
 });
 
 it('should return both address and username matches', function () {
