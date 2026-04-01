@@ -23,8 +23,7 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                 : formattedBalanceFull
             : null;
 
-    const desktopTooltip =
-        formattedBalanceFull !== formattedBalanceAllDecimals ? formattedBalanceAllDecimals : null;
+    const desktopTooltip = formattedBalanceFull !== formattedBalanceAllDecimals ? formattedBalanceAllDecimals : null;
 
     return (
         <WalletOverviewItem title={t("general.overview")}>
@@ -34,10 +33,7 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                 title={t("pages.wallet.balance")}
                 value={
                     <>
-                        <span
-                            className="sm:hidden"
-                            data-testid="wallet:balance:mobile"
-                        >
+                        <span className="sm:hidden" data-testid="wallet:balance:mobile">
                             {mobileTooltip ? (
                                 <Tooltip content={mobileTooltip}>
                                     <span>{formattedBalanceTwoDecimals}</span>
@@ -47,10 +43,7 @@ export default function WalletOverviewWallet({ wallet }: { wallet: IWallet }) {
                             )}
                         </span>
 
-                        <span
-                            className="hidden sm:inline"
-                            data-testid="wallet:balance:desktop"
-                        >
+                        <span className="hidden sm:inline" data-testid="wallet:balance:desktop">
                             {desktopTooltip ? (
                                 <Tooltip content={desktopTooltip}>
                                     <span>{formattedBalanceFull}</span>
