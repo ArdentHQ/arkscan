@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return [
-    'ipfs'       => 'https://cloudflare-ipfs.com/ipfs/:hash',
     'github'     => 'https://github.com/ardenthq/arkscan',
     'arkvault'   => 'https://arkvault.io/',
     'arkconnect' => 'https://arkconnect.io/',
