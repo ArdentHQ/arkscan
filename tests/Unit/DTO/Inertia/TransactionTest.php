@@ -14,8 +14,6 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
 
-use function Tests\fakeCryptoCompare;
-
 function safeUtf8(string $value): string
 {
     if (preg_match('//u', $value) === 1) {
@@ -486,7 +484,7 @@ it('normalizes invalid utf8 payloads for the dto', function () {
             'status'       => true,
         ]);
 
-    $dto = TransactionDTO::fromModel($transaction);
+    $dto     = TransactionDTO::fromModel($transaction);
     $payload = $dto->payload;
 
     expect($payload)->not->toBeNull();
