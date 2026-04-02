@@ -1,4 +1,5 @@
 import { INetwork, ITransaction } from "@/types/generated";
+import { TransactionTypeIdentifier } from "@arkecosystem/typescript-crypto";
 import { TFunction } from "i18next";
 
 export class TransactionMethod {
@@ -57,55 +58,99 @@ export class TransactionMethod {
     }
 
     get isTokenTransfer(): boolean {
-        return this.methodHash === this.network.contractMethods.transfer;
-    }
-
-    get isMultiPayment(): boolean {
-        return this.methodHash === this.network.contractMethods.multipayment;
-    }
-
-    get isVote(): boolean {
-        return this.methodHash === this.network.contractMethods.vote;
-    }
-
-    get isUnvote(): boolean {
-        return this.methodHash === this.network.contractMethods.unvote;
-    }
-
-    get isValidatorRegistration(): boolean {
-        return this.methodHash === this.network.contractMethods.validator_registration;
-    }
-
-    get isValidatorResignation(): boolean {
-        return this.methodHash === this.network.contractMethods.validator_resignation;
-    }
-
-    get isValidatorUpdate(): boolean {
-        return this.methodHash === this.network.contractMethods.validator_update;
-    }
-
-    get isUsernameRegistration(): boolean {
-        return this.methodHash === this.network.contractMethods.username_registration;
-    }
-
-    get isUsernameResignation(): boolean {
-        return this.methodHash === this.network.contractMethods.username_resignation;
-    }
-
-    get isApprove(): boolean {
-        return this.methodHash === this.network.contractMethods.approve;
-    }
-
-    get isRevoke(): boolean {
-        if (!this.isApprove) {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
             return false;
         }
 
-        return this.transaction.tokenApprovalDetails?.isRevoke === true;
+        return TransactionTypeIdentifier.isTokenTransfer(this.transaction.payload.raw);
+    }
+
+    get isMultiPayment(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isMultiPayment(this.transaction.payload.raw);
+    }
+
+    get isVote(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isVote(this.transaction.payload.raw);
+    }
+
+    get isUnvote(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isUnvote(this.transaction.payload.raw);
+    }
+
+    get isValidatorRegistration(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isValidatorRegistration(this.transaction.payload.raw);
+    }
+
+    get isValidatorResignation(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isValidatorResignation(this.transaction.payload.raw);
+    }
+
+    get isValidatorUpdate(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isUpdateValidator(this.transaction.payload.raw);
+    }
+
+    get isUsernameRegistration(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isUsernameRegistration(this.transaction.payload.raw);
+    }
+
+    get isUsernameResignation(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isUsernameResignation(this.transaction.payload.raw);
+    }
+
+    get isApprove(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isApprove(this.transaction.payload.raw);
+    }
+
+    get isRevoke(): boolean {
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isRevoke(this.transaction.payload.raw);
     }
 
     get isBatchTransfer(): boolean {
-        return this.methodHash === this.network.contractMethods.batch_transfer;
+        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+            return false;
+        }
+
+        return TransactionTypeIdentifier.isBatchTransfer(this.transaction.payload.raw);
     }
 
     get isContractDeployment(): boolean {
