@@ -92,36 +92,46 @@ export const makeToken = (overrides: Partial<IToken> = {}): IToken => ({
     ...overrides,
 });
 
-export const makeTransaction = (overrides: Partial<ITransaction> = {}): ITransaction => ({
-    hash: "0xabc123",
-    block_hash: "0xblock123",
-    block_number: 1,
-    transaction_index: 0,
-    timestamp: 1000000,
-    nonce: 1,
-    sender_public_key: "pubkey123",
-    from: "sender-address",
-    to: "recipient-address",
-    value: "1000000000000000000",
-    gas_price: "100",
-    gas: "21000",
-    status: true,
-    gas_used: "100",
-    gas_refunded: "0",
-    deployed_contract_address: null,
-    decoded_error: null,
-    multiPaymentRecipients: [],
-    exchangeRates: { USD: 1.0 },
-    url: "https://example.com/tx/0xabc123",
-    methodData: { functionName: null, methodId: null, arguments: [] },
-    tokenApprovalDetails: null,
-    validatorRegistration: null,
-    votedFor: null,
-    votedForUsername: null,
-    sender: null,
-    recipient: null,
-    ...overrides,
-});
+export const makeTransaction = (overrides: Partial<ITransaction> = {}): ITransaction => {
+    const methodData = overrides.methodData ?? { functionName: null, methodId: null, arguments: [] };
+    const payload = overrides.payload ?? (methodData.methodId ? {
+        formatted: null,
+        utf8: null,
+        raw: `0x${methodData.methodId}`,
+    } : null);
+
+    return {
+        hash: "0xabc123",
+        block_hash: "0xblock123",
+        block_number: 1,
+        transaction_index: 0,
+        timestamp: 1000000,
+        nonce: 1,
+        sender_public_key: "pubkey123",
+        from: "sender-address",
+        to: "recipient-address",
+        value: "1000000000000000000",
+        gas_price: "100",
+        gas: "21000",
+        status: true,
+        gas_used: "100",
+        gas_refunded: "0",
+        deployed_contract_address: null,
+        decoded_error: null,
+        multiPaymentRecipients: [],
+        exchangeRates: { USD: 1.0 },
+        url: "https://example.com/tx/0xabc123",
+        methodData,
+        tokenApprovalDetails: null,
+        validatorRegistration: null,
+        votedFor: null,
+        votedForUsername: null,
+        sender: null,
+        recipient: null,
+        payload,
+        ...overrides,
+    };
+};
 
 export const makeBlock = (overrides: Partial<IBlock> = {}): IBlock => ({
     hash: "0xblock123",
