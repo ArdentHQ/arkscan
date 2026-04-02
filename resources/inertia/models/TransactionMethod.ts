@@ -58,7 +58,7 @@ export class TransactionMethod {
     }
 
     get isTokenTransfer(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -66,7 +66,7 @@ export class TransactionMethod {
     }
 
     get isMultiPayment(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -74,7 +74,7 @@ export class TransactionMethod {
     }
 
     get isVote(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -82,7 +82,7 @@ export class TransactionMethod {
     }
 
     get isUnvote(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -90,7 +90,7 @@ export class TransactionMethod {
     }
 
     get isValidatorRegistration(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -98,7 +98,7 @@ export class TransactionMethod {
     }
 
     get isValidatorResignation(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -106,7 +106,7 @@ export class TransactionMethod {
     }
 
     get isValidatorUpdate(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -114,7 +114,7 @@ export class TransactionMethod {
     }
 
     get isUsernameRegistration(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -122,7 +122,7 @@ export class TransactionMethod {
     }
 
     get isUsernameResignation(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -130,7 +130,7 @@ export class TransactionMethod {
     }
 
     get isApprove(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -138,7 +138,7 @@ export class TransactionMethod {
     }
 
     get isRevoke(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 
@@ -146,7 +146,7 @@ export class TransactionMethod {
     }
 
     get isBatchTransfer(): boolean {
-        if (! this.transaction.payload || ! this.transaction.payload.raw) {
+        if (!this.transaction.payload || !this.transaction.payload.raw) {
             return false;
         }
 

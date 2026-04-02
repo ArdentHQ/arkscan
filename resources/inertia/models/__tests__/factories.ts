@@ -94,11 +94,15 @@ export const makeToken = (overrides: Partial<IToken> = {}): IToken => ({
 
 export const makeTransaction = (overrides: Partial<ITransaction> = {}): ITransaction => {
     const methodData = overrides.methodData ?? { functionName: null, methodId: null, arguments: [] };
-    const payload = overrides.payload ?? (methodData.methodId ? {
-        formatted: null,
-        utf8: null,
-        raw: `0x${methodData.methodId}`,
-    } : null);
+    const payload =
+        overrides.payload ??
+        (methodData.methodId
+            ? {
+                  formatted: null,
+                  utf8: null,
+                  raw: `0x${methodData.methodId}`,
+              }
+            : null);
 
     return {
         hash: "0xabc123",
