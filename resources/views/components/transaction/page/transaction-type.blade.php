@@ -64,6 +64,11 @@
                         {{ $transaction->ipfsHash() }}
                     </x-truncate-middle>
                 </span>
+
+                <x-clipboard
+                    :value="$transaction->ipfsHash()"
+                    :tooltip="trans('pages.wallet.ipfs_hash_copied')"
+                />
             </span>
         </x-transaction.page.section-detail.row>
     @elseif ($transaction->isDelegateRegistration() || $transaction->isDelegateResignation())
