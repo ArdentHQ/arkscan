@@ -43,9 +43,11 @@ export default function SettingsProvider({
 
     useEffect(() => {
         return router.on("success", (event) => {
-            const tickerData = event.detail.page.props.priceTickerData as IPriceTickerData;
-            setCurrentTickerData(tickerData);
-            setCurrentCurrency(tickerData.currency);
+            const tickerData = event.detail.page.props.priceTickerData as IPriceTickerData | undefined;
+            if (tickerData) {
+                setCurrentTickerData(tickerData);
+                setCurrentCurrency(tickerData.currency);
+            }
         });
     }, []);
 
