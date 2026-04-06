@@ -58,6 +58,55 @@ it('generates vote report file', function () {
     @unlink($outputPath);
 });
 
+it('includes second page validators in the report', function () {
+    $validatorCount = Network::validatorCount();
+
+    Http::fake([
+        "*/validators?page=1&limit={$validatorCount}" => Http::response([
+            'data' => [
+                [
+                    'address'    => '0xActiveValidator1',
+                    'publicKey'  => 'pubkey1',
+                    'attributes' => [
+                        'validatorRank'        => 1,
+                        'validatorApproval'    => 10.00,
+                        'validatorVoteBalance' => '10000000000000000000000',
+                        'validatorVotersCount' => 50,
+                    ],
+                ],
+            ],
+        ]),
+        "*/validators?page=2&limit={$validatorCount}" => Http::response([
+            'data' => [
+                [
+                    'address'    => '0xStandbyValidator1',
+                    'publicKey'  => 'pubkey2',
+                    'attributes' => [
+                        'validatorRank'        => 54,
+                        'validatorApproval'    => 0.01,
+                        'validatorVoteBalance' => '1000000000000000000000',
+                        'validatorVotersCount' => 5,
+                    ],
+                ],
+            ],
+        ]),
+        '*/blockchain' => Http::response([
+            'data' => ['supply' => '100000000000000000000000'],
+        ]),
+    ]);
+
+    (new GenerateVoteReport())->handle();
+
+    $outputPath = public_path('VoteReport.txt');
+    $content    = file_get_contents($outputPath);
+
+    expect($content)->toContain('0xActiveValidator1');
+    expect($content)->toContain('0xStandbyValidator1');
+    expect($content)->toContain('Total Voters : 50');
+
+    @unlink($outputPath);
+});
+
 it('handles null api responses gracefully', function () {
     Http::fake([
         '*' => Http::response(null, 500),
