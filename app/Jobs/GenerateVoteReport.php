@@ -31,7 +31,7 @@ final class GenerateVoteReport implements ShouldQueue
         $validatorCount = Network::validatorCount();
 
         $validatorsPage1 = Http::get("{$api}/validators", ['page' => 1, 'limit' => $validatorCount])->json();
-        $validatorsPage2 = Http::get("{$api}/validators", ['limit' => $validatorCount, 'offset' => $validatorCount])->json();
+        $validatorsPage2 = Http::get("{$api}/validators", ['page' => 2, 'limit' => $validatorCount])->json();
 
         if ($validatorsPage1 === null || $validatorsPage2 === null) {
             return;

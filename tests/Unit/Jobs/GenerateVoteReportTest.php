@@ -34,7 +34,7 @@ it('generates vote report file', function () {
                 ],
             ],
         ]),
-        "*/validators?limit={$validatorCount}&offset={$validatorCount}" => Http::response([
+        "*/validators?page=2&limit={$validatorCount}" => Http::response([
             'data' => [],
         ]),
         '*/blockchain' => Http::response([
