@@ -82,6 +82,101 @@ describe('Overview', function () {
         });
     });
 
+    it('should show balance without tooltip when it has no significant decimal places', function () {
+        $wallet = Wallet::factory()
+            ->create([
+                'balance' => 32423 * 1e18,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->resize($this->resolutions['xs']['width'], $this->resolutions['xs']['height'])
+                ->pause(100)
+                ->assertSeeIn('[data-testid="wallet:balance:mobile"]', '32,423 DARK')
+                ->assertMissing('[data-testid="wallet:balance:mobile"] .tooltip-content');
+
+            $browser->resize($this->resolutions['desktop']['width'], $this->resolutions['desktop']['height'])
+                ->pause(100)
+                ->assertSeeIn('[data-testid="wallet:balance:desktop"]', '32,423 DARK')
+                ->assertMissing('[data-testid="wallet:balance:desktop"] .tooltip-content');
+        });
+    });
+
+    it('should show tooltip on mobile but not desktop when balance has up to 8 decimal places', function () {
+        $wallet = Wallet::factory()
+            ->create([
+                'balance' => 32423.32465432 * 1e18,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->resize($this->resolutions['xs']['width'], $this->resolutions['xs']['height'])
+                ->pause(100)
+                ->assertSeeIn('[data-testid="wallet:balance:mobile"]', '32,423.32 DARK')
+                ->mouseOver('[data-testid="wallet:balance:mobile"] .tooltip-content')
+                ->waitForText('32,423.32465432 DARK');
+
+            $browser->resize($this->resolutions['desktop']['width'], $this->resolutions['desktop']['height'])
+                ->pause(100)
+                ->assertSeeIn('[data-testid="wallet:balance:desktop"]', '32,423.32465432 DARK')
+                ->assertMissing('[data-testid="wallet:balance:desktop"] .tooltip-content');
+        });
+    });
+
+    it('should show tooltip on both mobile and desktop when balance has more than 8 decimal places', function () {
+        $wallet = Wallet::factory()
+            ->create([
+                'balance' => 100.123456789 * 1e18,
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->resize($this->resolutions['xs']['width'], $this->resolutions['xs']['height'])
+                ->pause(100)
+                ->assertSeeIn('[data-testid="wallet:balance:mobile"]', '100.12 DARK')
+                ->mouseOver('[data-testid="wallet:balance:mobile"] .tooltip-content')
+                ->waitForText('100.123456789 DARK');
+
+            $browser->resize($this->resolutions['desktop']['width'], $this->resolutions['desktop']['height'])
+                ->pause(100)
+                ->assertSeeIn('[data-testid="wallet:balance:desktop"]', '100.12345678 DARK')
+                ->mouseOver('[data-testid="wallet:balance:desktop"] .tooltip-content')
+                ->waitForText('100.123456789 DARK');
+        });
+    });
+
+    it('should not round up a near-whole-number balance to 1 due to float precision', function () {
+        $wallet = Wallet::factory()
+            ->create([
+                'balance' => '999999999999988500',
+            ]);
+
+        $this->browse(function (Browser $browser) use ($wallet) {
+            $browser->visitRoute('wallet', $wallet)
+                ->waitForText(substr($wallet->address, 0, 7));
+
+            $browser->resize($this->resolutions['xs']['width'], $this->resolutions['xs']['height'])
+                ->pause(100)
+                ->assertSeeIn('[data-testid="wallet:balance:mobile"]', '0.99 DARK')
+                ->assertDontSeeIn('[data-testid="wallet:balance:mobile"]', '1 DARK')
+                ->mouseOver('[data-testid="wallet:balance:mobile"] .tooltip-content')
+                ->waitForText('0.9999999999999885 DARK');
+
+            $browser->resize($this->resolutions['desktop']['width'], $this->resolutions['desktop']['height'])
+                ->pause(100)
+                ->assertSeeIn('[data-testid="wallet:balance:desktop"]', '0.99999999 DARK')
+                ->assertDontSeeIn('[data-testid="wallet:balance:desktop"]', '1 DARK')
+                ->mouseOver('[data-testid="wallet:balance:desktop"] .tooltip-content')
+                ->waitForText('0.9999999999999885 DARK');
+        });
+    });
+
     it('should copy address to clipboard', function () {
         $wallet = Wallet::factory()->create();
 
