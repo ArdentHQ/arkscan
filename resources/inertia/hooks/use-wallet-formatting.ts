@@ -14,6 +14,7 @@ export default function useWalletFormatting(balance: string) {
         balanceFloat,
         formattedBalanceTwoDecimals: formatWithCurrencyCustom(balanceStr, network.currency, 2),
         formattedBalanceFull: formatWithCurrencyCustom(balanceStr, network.currency, null),
+        formattedBalanceAllDecimals: formatWithCurrencyCustom(balanceStr, network.currency, 18, true),
         formattedBalanceFullWithoutSuffix: networkCurrency(balanceStr, 8, false),
         fiatValue: formatCurrency(balanceFloat * rate, selectedCurrency),
     };

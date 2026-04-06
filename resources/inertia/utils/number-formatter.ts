@@ -44,27 +44,28 @@ export function formatWithCurrencyCustom(
     value: number | string,
     currency: string,
     decimals: number | null = null,
+    stripTrailingZeros = false,
 ): string {
     let result = Number(value).toLocaleString("en-US");
 
     const valueStr = String(value);
 
     if (valueStr.includes(".")) {
-        const numericValue = Number(value);
         const effectiveDecimals = decimals ?? 8;
-        result = numericValue.toFixed(effectiveDecimals);
+        const truncated = new BigNumber(value).decimalPlaces(effectiveDecimals, BigNumber.ROUND_DOWN);
+        const truncatedNum = Number(truncated.toFixed(effectiveDecimals));
 
         result = new Intl.NumberFormat("en-US", {
             minimumFractionDigits: 0,
             maximumFractionDigits: effectiveDecimals,
             useGrouping: true,
-        }).format(numericValue);
+        }).format(truncatedNum);
     } else if (valueStr.includes(",")) {
         result = valueStr;
     }
 
     // Gets rid of trailing .00 if amount of decimals is 0
-    if (decimals === 0 && result.includes(".")) {
+    if ((decimals === 0 || stripTrailingZeros) && result.includes(".")) {
         result = result.replace(/0+$/, "").replace(/\.$/, "");
     }
 
@@ -155,7 +156,7 @@ export function networkCurrency(
 ): string {
     const parsedValue = new BigNumber(value);
     const safeValue = parsedValue.isFinite() ? parsedValue : new BigNumber(0);
-    const rounded = safeValue.decimalPlaces(decimals, BigNumber.ROUND_HALF_UP);
+    const rounded = safeValue.decimalPlaces(decimals, BigNumber.ROUND_DOWN);
     const minimumFractionDigits = Math.min(2, decimals);
 
     let [integerPart, fractionalPart = ""] = rounded.toFixed(decimals).split(".");
