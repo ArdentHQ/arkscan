@@ -86,7 +86,7 @@ final class GenerateVoteReport implements ShouldQueue
 
         $lines[] = $separator;
         $lines[] = '';
-        $lines[] = sprintf(' %s UTC / VoteReport (PHP) / ark.io ', now()->utc()->format('Y-m-d H:i:s'));
+        $lines[] = sprintf(' %s UTC / VoteReport / ark.io ', now()->utc()->format('Y-m-d H:i:s'));
         $lines[] = '';
         $lines[] = sprintf(' NOTE: This report is based on the %d active validators only! ', $validatorCount);
         $lines[] = '';
