@@ -80,8 +80,6 @@ final class GenerateVoteReport implements ShouldQueue
             $lines[] = $this->formatValidatorLine($validator);
         }
 
-        $lines[] = $separator;
-
         foreach ($validatorsPage2['data'] ?? [] as $validator) {
             $lines[] = $this->formatValidatorLine($validator);
         }
