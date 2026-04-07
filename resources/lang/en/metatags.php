@@ -136,8 +136,8 @@ return [
         'image'       => 'metadata/bookmarks.png',
     ],
 
-    'peers-map'       => [
-        'title'       => 'ARK Node Map | :name Blockchain Explorer',
+    'network-map'       => [
+        'title'       => 'ARK Network Map | :name Blockchain Explorer',
         'description' => 'Geographic distribution of peers making up the :name blockchain network.',
         'image'       => 'metadata/peers.png',
     ],

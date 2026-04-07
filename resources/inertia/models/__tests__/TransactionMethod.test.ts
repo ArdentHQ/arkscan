@@ -9,6 +9,28 @@ jest.mock("react-i18next", () => ({
     }),
 }));
 
+jest.mock("@arkecosystem/typescript-crypto", () => {
+    const normalize = (raw: string) => raw.toLowerCase().replace(/^0x/, "");
+    const isMethod = (raw: string, methodId: string) => normalize(raw).startsWith(methodId.toLowerCase());
+
+    return {
+        TransactionTypeIdentifier: {
+            isTokenTransfer: (raw: string) => isMethod(raw, "a9059cbb"),
+            isMultiPayment: (raw: string) => isMethod(raw, "1234abcd"),
+            isVote: (raw: string) => isMethod(raw, "5678ef01"),
+            isUnvote: (raw: string) => isMethod(raw, "9abcdef0"),
+            isValidatorRegistration: (raw: string) => isMethod(raw, "11223344"),
+            isValidatorResignation: (raw: string) => isMethod(raw, "55667788"),
+            isUpdateValidator: (raw: string) => isMethod(raw, "99aabbcc"),
+            isUsernameRegistration: (raw: string) => isMethod(raw, "ddeeff00"),
+            isUsernameResignation: (raw: string) => isMethod(raw, "ff112233"),
+            isApprove: (raw: string) => isMethod(raw, "095ea7b3"),
+            isRevoke: (raw: string) => isMethod(raw, "9faf57c0"),
+            isBatchTransfer: (raw: string) => isMethod(raw, "33333333"),
+        },
+    };
+});
+
 import { TransactionMethod } from "../TransactionMethod";
 import { CONTRACT_METHODS, makeMemoryWallet, makeNetwork, makeTransaction } from "./factories";
 
@@ -144,8 +166,13 @@ describe("TransactionMethod", () => {
     });
 
     describe("isRevoke", () => {
-        it("returns true when isApprove and tokenApprovalDetails.isRevoke is true", () => {
+        it("returns true when payload matches the revoke method", () => {
             const m = method(CONTRACT_METHODS.approve, {
+                payload: {
+                    formatted: null,
+                    utf8: null,
+                    raw: "0x9faf57c0",
+                },
                 tokenApprovalDetails: {
                     spender: makeMemoryWallet({ address: "spender-address" }),
                     amount: null,
@@ -157,7 +184,7 @@ describe("TransactionMethod", () => {
             expect(m.isRevoke).toBe(true);
         });
 
-        it("returns false when isApprove but tokenApprovalDetails.isRevoke is false", () => {
+        it("returns false when payload is approve but not revoke", () => {
             const m = method(CONTRACT_METHODS.approve, {
                 tokenApprovalDetails: {
                     spender: makeMemoryWallet({ address: "spender-address" }),
@@ -170,13 +197,13 @@ describe("TransactionMethod", () => {
             expect(m.isRevoke).toBe(false);
         });
 
-        it("returns false when isApprove but tokenApprovalDetails is null", () => {
+        it("returns false when payload is approve and tokenApprovalDetails is null", () => {
             const m = method(CONTRACT_METHODS.approve, { tokenApprovalDetails: null });
 
             expect(m.isRevoke).toBe(false);
         });
 
-        it("returns false when not isApprove", () => {
+        it("returns false when payload does not match revoke", () => {
             const m = method(CONTRACT_METHODS.vote, {
                 tokenApprovalDetails: {
                     spender: makeMemoryWallet({ address: "spender-address" }),

@@ -6,6 +6,20 @@ jest.mock("react-i18next", () => ({
 }));
 
 jest.mock("@arkecosystem/typescript-crypto", () => ({
+    TransactionTypeIdentifier: {
+        isTokenTransfer: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("a9059cbb"),
+        isMultiPayment: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("1234abcd"),
+        isVote: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("5678ef01"),
+        isUnvote: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("9abcdef0"),
+        isValidatorRegistration: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("11223344"),
+        isValidatorResignation: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("55667788"),
+        isUpdateValidator: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("99aabbcc"),
+        isUsernameRegistration: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("ddeeff00"),
+        isUsernameResignation: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("ff112233"),
+        isApprove: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("095ea7b3"),
+        isRevoke: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("9faf57c0"),
+        isBatchTransfer: (raw: string) => raw.toLowerCase().replace(/^0x/, "").startsWith("33333333"),
+    },
     UnitConverter: {
         formatUnits: (value: string, _unit: string) => Number(value) / 1e8,
     },

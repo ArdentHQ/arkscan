@@ -9,7 +9,7 @@ use App\Models\Peer;
 use Inertia\Inertia;
 use Inertia\Response;
 
-final class PeersMapController
+final class NetworkMapController
 {
     public function __invoke(): Response
     {
@@ -19,7 +19,7 @@ final class PeersMapController
             ->map(fn (Peer $peer) => PeerDTO::fromModel($peer))
             ->toArray();
 
-        return Inertia::renderWithMeta('PeersMap/Index', 'peers-map', [
+        return Inertia::renderWithMeta('NetworkMap/Index', 'network-map', [
             'peers' => $peers,
         ]);
     }

@@ -8,10 +8,10 @@ use Inertia\Testing\AssertableInertia as Assert;
 it('should render the page without any errors', function () {
     $this->withoutExceptionHandling();
 
-    $this->get(route('peers-map'))
+    $this->get(route('network-map'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('PeersMap/Index'));
+            ->component('NetworkMap/Index'));
 });
 
 it('should return peers with coordinates', function () {
@@ -27,10 +27,10 @@ it('should return peers with coordinates', function () {
         'longitude' => null,
     ]);
 
-    $this->get(route('peers-map'))
+    $this->get(route('network-map'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('PeersMap/Index')
+            ->component('NetworkMap/Index')
             ->has('peers', 1)
             ->where('peers.0.latitude', $peer->latitude)
             ->where('peers.0.longitude', $peer->longitude));
