@@ -21,6 +21,7 @@ return [
     'docs'              => 'Docs',
     'api'               => 'API',
     'github'            => 'GitHub',
+    'network_map'       => 'Network Map',
 
     'tokens' => [
         'transfers' => 'Token Transfers',
