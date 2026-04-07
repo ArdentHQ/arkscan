@@ -89,6 +89,7 @@ return [
         'transaction_type'      => 'Transaction Type',
         'transaction_id'        => 'Transaction ID',
         'transaction_id_copied' => 'Transaction ID Copied',
+        'ipfs_hash_copied'      => 'IPFS Hash Copied',
         'transaction_details'   => 'Transaction Details',
         'addressing'            => 'Addressing',
         'memo'                  => 'Memo (SmartBridge)',
