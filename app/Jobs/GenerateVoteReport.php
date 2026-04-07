@@ -104,11 +104,11 @@ final class GenerateVoteReport implements ShouldQueue
         $attributes = $validator['attributes'] ?? [];
 
         $rank     = str_pad((string) ($attributes['validatorRank'] ?? 0), 4, ' ', STR_PAD_LEFT);
-        $address  = str_pad($validator['address'] ?? '', 42);
+        $name     = str_pad($attributes['username'] ?? $validator['address'] ?? '', 42);
         $approval = str_pad(number_format((float) ($attributes['validatorApproval'] ?? 0), 2), 6, ' ', STR_PAD_LEFT);
         $votes    = str_pad(number_format(BigNumber::new($attributes['validatorVoteBalance'] ?? '0')->toFloat(), 0, '.', ','), 15, ' ', STR_PAD_LEFT);
         $voters   = str_pad((string) ($attributes['validatorVotersCount'] ?? 0), 6, ' ', STR_PAD_LEFT);
 
-        return sprintf('| %s | %s | %s | %s | %s |', $rank, $address, $approval, $votes, $voters);
+        return sprintf('| %s | %s | %s | %s | %s |', $rank, $name, $approval, $votes, $voters);
     }
 }
