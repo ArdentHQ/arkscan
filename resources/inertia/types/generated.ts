@@ -226,6 +226,7 @@ export type ITransaction = {
     votedForUsername: string | null;
     sender: IWalletReference | null;
     recipient: IWalletReference | null;
+    payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
 };
 export type ITransactionDetails = {
     confirmations: number;
@@ -236,7 +237,6 @@ export type ITransactionDetails = {
     tokenTransfer: { recipient: IWalletReference; amount: string | null } | null;
     tokenApproval: { spender: IWalletReference; amount: string | null; isUnlimited: boolean; isRevoke: boolean } | null;
     token: IToken | null;
-    payload: { formatted: string | null; utf8: string | null; raw: string | null } | null;
     batchTokenTransfers: { recipient: IWalletReference; amount: string }[];
 };
 export type IValidator = {

@@ -14,6 +14,33 @@ use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
 
+function safeUtf8(string $value): string
+{
+    if (preg_match('//u', $value) === 1) {
+        return $value;
+    }
+
+    $previousSubstitute = mb_substitute_character();
+    mb_substitute_character(0xFFFD);
+    $converted = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+    mb_substitute_character($previousSubstitute);
+
+    return $converted;
+}
+
+function payloadDetails(TransactionViewModel $transaction): ?array
+{
+    if (! $transaction->hasPayload()) {
+        return null;
+    }
+
+    return [
+        'formatted' => safeUtf8($transaction->formattedPayload() ?? ''),
+        'utf8'      => safeUtf8($transaction->utf8Payload() ?? ''),
+        'raw'       => safeUtf8($transaction->rawPayload() ?? ''),
+    ];
+}
+
 it('should make an instance', function () {
     $this->freezeTime();
     $this->travelTo('2025-09-11 12:00:00');
@@ -100,6 +127,7 @@ it('should make an instance', function () {
             'methodId'     => null,
             'arguments'    => null,
         ],
+        'payload' => null,
     ]);
 });
 
@@ -189,6 +217,7 @@ it('should make an instance for a vote transaction', function () {
                 $walletTo->address,
             ],
         ],
+        'payload' => payloadDetails($viewModel),
     ]);
 });
 
@@ -312,6 +341,7 @@ it('should make an instance for a validator resignation transaction', function (
                     str_pad($blsPublicKey, 64, '0', STR_PAD_LEFT),
                 ],
             ],
+            'payload' => payloadDetails($regViewModel),
         ],
         'votedFor' => null,
         'sender'   => [
@@ -326,6 +356,7 @@ it('should make an instance for a validator resignation transaction', function (
             'methodId'     => ContractMethod::validatorResignation(),
             'arguments'    => [],
         ],
+        'payload' => payloadDetails($viewModel),
     ]);
 });
 
@@ -443,4 +474,22 @@ it('should stub sender wallet when address is not in db', function () {
     expect($subject->sender)->not->toBeNull();
     expect(strtolower($subject->sender->address))->toBe(strtolower($senderWallet->address));
     expect($subject->sender->username)->toBeNull();
+});
+
+it('normalizes invalid utf8 payloads for the dto', function () {
+    $transaction = Transaction::factory()
+        ->withPayload('c328')
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $dto     = TransactionDTO::fromModel($transaction);
+    $payload = $dto->payload;
+
+    expect($payload)->not->toBeNull();
+    expect($payload['raw'])->toBe('c328');
+    expect($payload['formatted'])->toBeString();
+    expect($payload['utf8'])->toBeString();
+    expect(preg_match('//u', $payload['utf8']))->toBe(1);
 });
