@@ -16,6 +16,7 @@ it('generates vote report file', function () {
                     'address'    => '0xe5a97E663158dEaF3b65bBF88897b8359Dc19F81',
                     'publicKey'  => 'pubkey1',
                     'attributes' => [
+                        'username'             => 'genesis_1',
                         'validatorRank'        => 1,
                         'validatorApproval'    => 15.50,
                         'validatorVoteBalance' => '30000000000000000000000',
@@ -51,7 +52,7 @@ it('generates vote report file', function () {
     expect($content)->toContain(sprintf('Top %d Validators Stats', $validatorCount));
     expect($content)->toContain('Total Votes');
     expect($content)->toContain('Total Voters : 225');
-    expect($content)->toContain('0xe5a97E663158dEaF3b65bBF88897b8359Dc19F81');
+    expect($content)->toContain('genesis_1');
     expect($content)->toContain('0xD6Z26L69gdk9qYmTv5uzk3uGepigtHY4ax');
     expect($content)->toContain(sprintf('%d active validators only', $validatorCount));
 
@@ -68,6 +69,7 @@ it('includes second page validators in the report', function () {
                     'address'    => '0xActiveValidator1',
                     'publicKey'  => 'pubkey1',
                     'attributes' => [
+                        'username'             => 'active_delegate',
                         'validatorRank'        => 1,
                         'validatorApproval'    => 10.00,
                         'validatorVoteBalance' => '10000000000000000000000',
@@ -100,7 +102,7 @@ it('includes second page validators in the report', function () {
     $outputPath = public_path('VoteReport.txt');
     $content    = file_get_contents($outputPath);
 
-    expect($content)->toContain('0xActiveValidator1');
+    expect($content)->toContain('active_delegate');
     expect($content)->toContain('0xStandbyValidator1');
     expect($content)->toContain('Total Voters : 50');
 
