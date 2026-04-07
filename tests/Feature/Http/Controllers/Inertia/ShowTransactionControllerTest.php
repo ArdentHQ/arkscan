@@ -35,7 +35,7 @@ it('should render the page without any errors', function () {
             ->where('details.confirmations', 100)
             ->where('details.recipientIsContract', false)
             ->where('details.transactionError', null)
-            ->where('details.payload', null));
+            ->where('transaction.payload', null));
 });
 
 it('should return decoded token transfer details', function () {
@@ -62,7 +62,7 @@ it('should return decoded token transfer details', function () {
             ->component('Transaction/Show')
             ->where('details.tokenTransfer.recipient.address', $recipient->address)
             ->where('details.tokenTransfer.amount', '1')
-            ->where('details.payload.raw', fn ($payload) => is_string($payload) && $payload !== ''));
+            ->where('transaction.payload.raw', fn ($payload) => is_string($payload) && $payload !== ''));
 });
 
 it('should return null token transfer details when payload has no arguments', function () {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c93bab67e705172a0ba953818668d3f",
+    "content-hash": "40413eb5491704ba303d7ce4bffef212",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -2563,18 +2563,24 @@
             "version": "4.2.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://github.com/alexbarnsley/GrahamCampbell-Analyzer.git",
-                "reference": "0d30166261732bbff4c89394e2a2b0126a647b49"
+                "url": "https://github.com/GrahamCampbell/Analyzer.git",
+                "reference": "430ca5f692ada3babc04a6b23f3ed975e022bafa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GrahamCampbell/Analyzer/zipball/430ca5f692ada3babc04a6b23f3ed975e022bafa",
+                "reference": "430ca5f692ada3babc04a6b23f3ed975e022bafa",
+                "shasum": ""
             },
             "require": {
-                "nikic/php-parser": "^5.0",
+                "nikic/php-parser": "^4.19.4 || ^5.4.0",
                 "php": "^7.4.15 || ^8.0.2",
                 "phpdocumentor/reflection-common": "^2.2",
-                "phpdocumentor/reflection-docblock": "^5.3",
-                "phpdocumentor/type-resolver": "^1.7.3"
+                "phpdocumentor/reflection-docblock": "^5.6.1",
+                "phpdocumentor/type-resolver": "^1.10.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^11.0"
+                "phpunit/phpunit": "^9.6.15 || ^10.5.1"
             },
             "suggest": {
                 "phpunit/phpunit": "Required to use the analysis trait."
@@ -2585,11 +2591,7 @@
                     "GrahamCampbell\\Analyzer\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "GrahamCampbell\\Tests\\Analyzer\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2609,7 +2611,21 @@
                 "classes",
                 "testing"
             ],
-            "time": "2024-09-23T13:21:09+00:00"
+            "support": {
+                "issues": "https://github.com/GrahamCampbell/Analyzer/issues",
+                "source": "https://github.com/GrahamCampbell/Analyzer/tree/v4.2.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/GrahamCampbell",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/graham-campbell/analyzer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-01-12T01:38:09+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -18094,5 +18110,5 @@
         "ext-gmp": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

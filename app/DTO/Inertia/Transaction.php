@@ -56,6 +56,8 @@ class Transaction extends Data
         public ?string $votedForUsername,
         public ?WalletReference $sender,
         public ?WalletReference $recipient,
+        #[LiteralTypeScriptType('{formatted: string | null; utf8: string | null; raw: string | null} | null')]
+        public ?array $payload,
     ) {
     }
 
@@ -145,6 +147,7 @@ class Transaction extends Data
             votedForUsername: $votedForUsername,
             sender: $sender,
             recipient: $recipient,
+            payload: self::payloadDetails($viewModel),
         );
     }
 
@@ -164,5 +167,39 @@ class Transaction extends Data
             ])
             ->values()
             ->toArray();
+    }
+
+    /**
+     * @return array{formatted: ?string, utf8: ?string, raw: ?string}|null
+     */
+    private static function payloadDetails(TransactionViewModel $transaction): ?array
+    {
+        if (! $transaction->hasPayload()) {
+            return null;
+        }
+
+        return [
+            // Ensure invalid UTF-8 does not break JSON serialization.
+            'formatted' => self::safeUtf8($transaction->formattedPayload() ?? ''),
+            'utf8'      => self::safeUtf8($transaction->utf8Payload() ?? ''),
+            'raw'       => self::safeUtf8($transaction->rawPayload() ?? ''),
+        ];
+    }
+
+    private static function safeUtf8(string $value): string
+    {
+        // Skip normalization when the payload is already valid UTF-8.
+        if (preg_match('//u', $value) === 1) {
+            return $value;
+        }
+
+        // Invalid UTF-8 in payloads breaks JSON encoding and causes Inertia JSON.parse errors;
+        // normalize to the replacement character to keep the response valid.
+        $previousSubstitute = mb_substitute_character();
+        mb_substitute_character(0xFFFD);
+        $converted = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+        mb_substitute_character($previousSubstitute);
+
+        return $converted;
     }
 }

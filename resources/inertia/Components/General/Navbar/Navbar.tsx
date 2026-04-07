@@ -36,6 +36,7 @@ export default function Navbar() {
                     { route: "compatible-wallets", label: t("menus.wallets") },
                     ...(canBeExchanged ? [{ route: "exchanges", label: t("menus.exchanges") }] : []),
                     { route: "bookmarks", label: t("menus.bookmarks") },
+                    { route: "network-map", label: t("menus.network_map") },
                 ],
             },
             {

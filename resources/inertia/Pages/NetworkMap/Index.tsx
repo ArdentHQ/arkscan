@@ -3,14 +3,14 @@ import Layout from "@/Layout";
 import MobileDivider from "@/Components/General/MobileDivider";
 import { PageProps } from "@inertiajs/core";
 import PageHeader from "@/Components/PageHeader/PageHeader";
-import WorldMap from "@/Components/PeersMap/WorldMap";
+import WorldMap from "@/Components/NetworkMap/WorldMap";
 import { useTranslation } from "react-i18next";
 
-interface PeersMapProps {
+interface NetworkMapProps {
     peers: IPeer[];
 }
 
-export default function PeersMapIndex({ peers }: PageProps<PeersMapProps>) {
+export default function NetworkMapIndex({ peers }: PageProps<NetworkMapProps>) {
     const { t } = useTranslation();
 
     return (
