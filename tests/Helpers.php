@@ -398,6 +398,9 @@ function createPartialRound(
             foreach ($delegates as $delegate) {
                 createBlock($height + $blockCount, $delegate['publicKey'], $context);
 
+                $blockCount++;
+                $height++;
+
                 if ($blockCount === Network::delegateCount()) {
                     $round++;
 
@@ -405,8 +408,6 @@ function createPartialRound(
                 }
             }
         }
-
-        $height += $blockCount;
 
         return createPartialRound($round, $height, $blocks, $context, $missedPublicKeys, $requiredPublicKeys, $cachePerformance, $slots);
     }
