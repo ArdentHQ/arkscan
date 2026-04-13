@@ -54,7 +54,22 @@
             :title="trans('pages.transaction.header.hash')"
             :transaction="$transaction"
         >
-            <x-transaction.page.section-detail.ipfs-link :hash="$transaction->ipfsHash()" />
+            <span class="inline-flex items-center">
+                <span class="md:hidden">
+                    <x-truncate-middle>{{ $transaction->ipfsHash() }}</x-truncate-middle>
+                </span>
+
+                <span class="hidden md:block">
+                    <x-truncate-middle length="32">
+                        {{ $transaction->ipfsHash() }}
+                    </x-truncate-middle>
+                </span>
+
+                <x-clipboard
+                    :value="$transaction->ipfsHash()"
+                    :tooltip="trans('pages.wallet.ipfs_hash_copied')"
+                />
+            </span>
         </x-transaction.page.section-detail.row>
     @elseif ($transaction->isDelegateRegistration() || $transaction->isDelegateResignation())
         <x-transaction.page.section-detail.row

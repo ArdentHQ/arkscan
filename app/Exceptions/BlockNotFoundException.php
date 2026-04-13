@@ -22,7 +22,7 @@ final class BlockNotFoundException extends ModelNotFoundException implements Ent
             'attributes' => ['length' => 17],
         ]);
 
-        $message = trans('errors.block_not_found', ['blockID' => $truncatedBlockID]);
+        $message = trans('errors.block_not_found', ['blockID' => e($truncatedBlockID)]);
 
         return new HtmlString($message);
     }
