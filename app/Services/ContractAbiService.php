@@ -165,7 +165,7 @@ final class ContractAbiService
         $fileName = (new \ReflectionClass(\ArkEcosystem\Crypto\Utils\AbiBase::class))->getFileName();
 
         if ($fileName === false) {
-            throw new \RuntimeException('Could not resolve file path for ArkEcosystem\\Crypto\\Utils\\AbiBase.');
+            throw new \RuntimeException('Could not resolve file path for ArkEcosystem\\Crypto\\Utils\\AbiBase.'); // @codeCoverageIgnore
         }
 
         $basePath = dirname($fileName);
