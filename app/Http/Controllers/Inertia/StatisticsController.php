@@ -198,7 +198,10 @@ final class StatisticsController
 
     private function totalFromChart(array $chartData): float
     {
-        return array_sum($chartData['datasets'] ?? []);
+        return array_sum(array_map(
+            static fn ($value): float => $value instanceof BigDecimal ? $value->toFloat() : (float) $value,
+            $chartData['datasets'] ?? [],
+        ));
     }
 
     private function convertFeesChart(array $chartData): array
