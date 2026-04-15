@@ -26,7 +26,7 @@ trait TestDatabasesWithMultipleConnections
 
     protected function testDatabase($database)
     {
-        $token = \Illuminate\Support\Facades\ParallelTesting::token();
+        $token = ParallelTesting::token();
 
         return "{$database}_test_{$token}";
     }
