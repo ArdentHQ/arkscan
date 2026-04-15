@@ -53,11 +53,6 @@ final class TokenAction extends Model
      */
     protected $primaryKey = 'transaction_hash';
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string
-     */
     protected $connection = 'explorer';
 
     /**

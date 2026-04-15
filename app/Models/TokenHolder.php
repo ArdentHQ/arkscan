@@ -48,11 +48,6 @@ final class TokenHolder extends Model
      */
     protected $primaryKey = 'address';
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string
-     */
     protected $connection = 'explorer';
 
     /**

@@ -207,11 +207,14 @@ final class WalletController
 
     public function getTokenHoldingsCount(Wallet $wallet): int
     {
-        return (int) Cache::remember('token_holdings_count_'.$wallet->address, now()->addMinutes(10), function () use ($wallet) {
+        return Cache::remember('token_holdings_count_'.$wallet->address, now()->addMinutes(10), function () use ($wallet) {
             return TokenHolder::where('address', $wallet->address)->count();
         });
     }
 
+    /**
+     * @return Builder<Transaction>
+     */
     private function getTransactionsQuery(Wallet $wallet): Builder
     {
         $filters = $this->filters($this->view);

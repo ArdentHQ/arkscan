@@ -26,7 +26,7 @@ use Laravel\Scout\Searchable;
  * @property int $updated_at
  * @property string $validator_username (only available when indexed by scout)
  * @property string $timestamp (only available when indexed by scout)
- * @property int $missed_blocks (only available when sorting validators by missed blocks)
+ * @property int|null $missed_blocks (only available when sorting validators by missed blocks)
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Wallet extends Model
@@ -58,11 +58,6 @@ final class Wallet extends Model
      */
     public $timestamps = false;
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string
-     */
     protected $connection = 'explorer';
 
     /**

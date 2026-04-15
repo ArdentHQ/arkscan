@@ -29,7 +29,7 @@ final class CitextArray implements CastsAttributes
             return [];
         }
 
-        return array_filter(explode(',', trim($value, '{}')));
+        return array_filter(explode(',', trim($value, '{}')), static fn (string $item): bool => $item !== '');
     }
 
     /**

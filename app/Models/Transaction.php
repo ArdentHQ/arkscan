@@ -224,26 +224,33 @@ final class Transaction extends Model
         return null;
     }
 
+    /**
+     * @return BelongsTo<Wallet, $this>
+     */
     public function senderWallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'from', 'address');
     }
 
+    /**
+     * @return BelongsTo<Wallet, $this>
+     */
     public function recipientWallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'to', 'address');
     }
 
     /**
-     * A receipt belongs to a transaction.
-     *
-     * @return HasOne
+     * @return HasOne<Wallet, $this>
      */
     public function votedFor(): HasOne
     {
         return $this->hasOne(Wallet::class, 'address', 'votedForAddress');
     }
 
+    /**
+     * @return HasMany<MultiPayment, $this>
+     */
     public function multiPaymentRecipients(): HasMany
     {
         return $this->hasMany(MultiPayment::class, 'hash', 'hash');

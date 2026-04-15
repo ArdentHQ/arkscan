@@ -24,11 +24,6 @@ final class State extends Model
      */
     public $timestamps = false;
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string
-     */
     protected $connection = 'explorer';
 
     /**
@@ -41,11 +36,6 @@ final class State extends Model
         'block_number'    => BigInteger::class,
     ];
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
     protected $table = 'state';
 
     public static function latest(): ?self

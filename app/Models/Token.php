@@ -50,11 +50,6 @@ final class Token extends Model
      */
     public $incrementing = false;
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string
-     */
     protected $connection = 'explorer';
 
     /**
