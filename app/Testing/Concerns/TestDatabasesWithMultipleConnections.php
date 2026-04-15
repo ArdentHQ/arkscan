@@ -24,6 +24,13 @@ trait TestDatabasesWithMultipleConnections
         'explorer',
     ];
 
+    protected function testDatabase($database)
+    {
+        $token = \Illuminate\Support\Facades\ParallelTesting::token();
+
+        return "{$database}_test_{$token}";
+    }
+
     /**
      * Boot a test database.
      *
