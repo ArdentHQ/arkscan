@@ -24,6 +24,11 @@ trait TestDatabasesWithMultipleConnections
         'explorer',
     ];
 
+    /*
+     * Override Laravel's `testDatabase()` — since 13.x it caches the first database name
+     * it sees in a static property and ignores subsequent arguments, so in a parallel run
+     * the `explorer` connection ends up reusing the `pgsql` per-process DB name.
+     */
     protected function testDatabase($database)
     {
         $token = ParallelTesting::token();
