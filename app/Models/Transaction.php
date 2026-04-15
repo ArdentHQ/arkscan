@@ -338,7 +338,7 @@ final class Transaction extends Model
         } elseif ($this->decoded_error === 'execution reverted') {
             $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
             $gasUsed                  = BigNumber::new($this->gas_used->valueOf()->toFloat());
-            if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
+            if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::Down)->valueOf()->toFloat() > $insufficientGasThreshold) {
                 $error = 'Out of gas?';
             }
         }

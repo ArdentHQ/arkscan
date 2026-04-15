@@ -400,7 +400,7 @@ final class StatisticsController
             return $viewModel->forgedBlocks();
         });
 
-        return array_values($rows);
+        return $rows;
     }
 
     private function validatorRow(string $key, ?Wallet $wallet, callable $valueResolver): array

@@ -43,7 +43,7 @@ final class MultiPayment extends Model
     /**
      * The connection name for the model.
      *
-     * @var string|null
+     * @var string
      */
     protected $connection = 'explorer';
 
@@ -66,7 +66,7 @@ final class MultiPayment extends Model
     /**
      * The table associated with the model.
      *
-     * @var string|null
+     * @var string
      */
     protected $table = 'multi_payments';
 

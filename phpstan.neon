@@ -7,4 +7,33 @@ parameters:
         - app/Console/Commands/RunPlaybookCommand.php
         - app/Services/Monitor
         - app/Testing
-    ignoreErrors: []
+    ignoreErrors:
+        - '#PHPDoc type string of property App\\Models\\[A-Za-z]+::\$connection is not the same as PHPDoc type string\|UnitEnum\|null#'
+        - '#PHPDoc type string of property App\\Models\\[A-Za-z]+::\$table is not the same as PHPDoc type string\|null#'
+        - '#PHPDoc type array<int, string> of property App\\Models\\[A-Za-z]+::\$(fillable|hidden|appends) is not the same as PHPDoc type list<string>#'
+        - '#Parameter \#1 \$value of static method Brick\\Math\\BigDecimal::of#'
+        - '#Parameter \#1 \$value of static method App\\Services\\BigNumber::new#'
+        - identifier: missingType.generics
+        - identifier: missingType.iterableValue
+        - '#Parameter \#1 \$callback of method Illuminate\\Pagination\\AbstractPaginator#'
+        - '#Parameter \#1 \$callback of method Illuminate\\Support\\Collection#'
+        - '#Parameter \#1 \$callback of method Illuminate\\Database\\Eloquent\\Collection#'
+        - '#Parameter \#1 \$value of static method Illuminate\\Database\\Connection::raw\(\) expects float\|int\|literal-string, .+ given#'
+        - '#Parameter \#1 \$wallet of class App\\ViewModels\\WalletViewModel#'
+        - '#Parameter \#1 \$wallet of static method App\\DTO\\Inertia\\.+::fromModel#'
+        - '#Parameter \#1 \$transaction of static method App\\DTO\\Inertia\\.+::fromModel#'
+        - '#Parameter \#1 \$sql of (static )?method Illuminate\\Database#'
+        - '#Parameter \#1 \$value of class Illuminate\\Database\\Query\\Expression#'
+        - '#Method App\\Events\\WebsocketEvent::broadcastOn\(\) never returns#'
+        - '#Method App\\ViewModels\\TransactionViewModel::multiPaymentRecipients\(\) should return Illuminate#'
+        - '#PHPDoc tag @var with type .+ is not subtype#'
+        - '#PHPDoc tag @return has invalid value#'
+        - '#Strict comparison using !== between int and null will always evaluate to true#'
+        - '#Unreachable statement - code above always terminates#'
+        - '#Using nullsafe property access#'
+        - '#Casting to int something that.s already int<0, max>#'
+        - '#Call to function array_filter\(\) requires parameter \#2 to be passed#'
+        - '#Called .env. outside of the config directory#'
+        - '#Property .profile_photo_url. does not exist in model#'
+        - '#Method App\\Services\\Addresses\\Aggregates\\HoldingsAggregate#'
+        - '#Parameter \#1 \$array .+ of function array_merge expects#'

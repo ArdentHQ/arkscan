@@ -53,7 +53,7 @@ final class Token extends Model
     /**
      * The connection name for the model.
      *
-     * @var string|null
+     * @var string
      */
     protected $connection = 'explorer';
 

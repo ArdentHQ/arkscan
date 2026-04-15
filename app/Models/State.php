@@ -27,7 +27,7 @@ final class State extends Model
     /**
      * The connection name for the model.
      *
-     * @var string|null
+     * @var string
      */
     protected $connection = 'explorer';
 
@@ -44,7 +44,7 @@ final class State extends Model
     /**
      * The table associated with the model.
      *
-     * @var string|null
+     * @var string
      */
     protected $table = 'state';
 
