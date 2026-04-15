@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ddf938030da8ae6d8b292f4e73c7de93",
+    "content-hash": "944af686485bff9fdb358294c89da5d9",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -3290,17 +3290,24 @@
         },
         {
             "name": "huddledigital/zendesk-laravel",
-            "version": "3.13.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/huddledigital/zendesk-laravel.git",
-                "reference": "master"
+                "url": "https://github.com/alfonsobries/zendesk-laravel.git",
+                "reference": "cb5d7526179f3bfb63ab9dfc95a6d50018548c9e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alfonsobries/zendesk-laravel/zipball/cb5d7526179f3bfb63ab9dfc95a6d50018548c9e",
+                "reference": "cb5d7526179f3bfb63ab9dfc95a6d50018548c9e",
+                "shasum": ""
             },
             "require": {
-                "illuminate/support": "^12.0 || ^13.0",
+                "illuminate/support": "~5.4|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
                 "php": ">=5.4.0",
-                "zendesk/zendesk_api_client_php": "^2.0 || ^3.0"
+                "zendesk/zendesk_api_client_php": "2.*|^3.0"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3314,9 +3321,27 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Huddle\\Zendesk\\": "src/"
+                    "Huddle\\Zendesk\\": "src"
                 }
-            }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Huddle Digital Ltd",
+                    "email": "info@workwithhuddle.com"
+                }
+            ],
+            "description": "Laravel wrapper for zendesk/zendesk_api_client_php package",
+            "homepage": "http://workwithhuddle.com",
+            "keywords": [
+                "zendesk"
+            ],
+            "support": {
+                "source": "https://github.com/alfonsobries/zendesk-laravel/tree/chore/laravel-13-support"
+            },
+            "time": "2026-04-15T16:53:34+00:00"
         },
         {
             "name": "iamcal/sql-parser",
@@ -3437,13 +3462,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:peoplelikeushomeexchange/laravel-timezone.git",
-                "reference": "1b3c12f38c71864a99ff0fc3b668f8991d945265"
+                "url": "https://github.com/alfonsobries/laravel-timezone.git",
+                "reference": "bbb35ab223eb7b3219c4499f175170b29c6b6b7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/peoplelikeushomeexchange/laravel-timezone/zipball/1b3c12f38c71864a99ff0fc3b668f8991d945265",
-                "reference": "1b3c12f38c71864a99ff0fc3b668f8991d945265",
+                "url": "https://api.github.com/repos/alfonsobries/laravel-timezone/zipball/bbb35ab223eb7b3219c4499f175170b29c6b6b7b",
+                "reference": "bbb35ab223eb7b3219c4499f175170b29c6b6b7b",
                 "shasum": ""
             },
             "require": {
@@ -3489,7 +3514,10 @@
                 "laravel",
                 "timezone"
             ],
-            "time": "2026-04-04T03:39:37+00:00"
+            "support": {
+                "source": "https://github.com/alfonsobries/laravel-timezone/tree/chore/laravel-13-support"
+            },
+            "time": "2026-04-15T16:53:35+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
@@ -14641,7 +14669,7 @@
         },
         {
             "name": "symfony/polyfill-intl-normalizer",
-            "version": "v1.36.0",
+            "version": "v1.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-normalizer.git",
@@ -14702,7 +14730,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.36.0"
+                "source": "https://github.com/symfony/polyfill-intl-normalizer/tree/v1.35.0"
             },
             "funding": [
                 {
@@ -18310,7 +18338,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "arkecosystem/crypto": 20,
-        "arkecosystem/foundation": 20
+        "arkecosystem/foundation": 20,
+        "huddledigital/zendesk-laravel": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
