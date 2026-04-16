@@ -1,10 +1,12 @@
-import axios from "axios";
-
 export class ValidatorsApi {
     static async request(host: string, publicKey: string) {
-        const response = await axios.get(`${host}/delegates/${publicKey}`);
+        const response = await fetch(`${host}/delegates/${publicKey}`);
 
-        return response.data;
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        return response.json();
     }
 
     static async fetch({ host, publicKey }: { host: string; publicKey: string }) {
