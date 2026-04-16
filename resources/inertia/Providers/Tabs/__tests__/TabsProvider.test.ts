@@ -1,3 +1,8 @@
+jest.mock("@inertiajs/react", () => ({
+    router: { reload: jest.fn(), on: jest.fn() },
+    usePage: jest.fn(() => ({ props: {} })),
+}));
+
 import { resolveTabQueryStringValues } from "../TabsProvider";
 import { ITabsQueryString } from "../types";
 

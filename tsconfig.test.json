@@ -3,6 +3,7 @@
     "compilerOptions": {
         "module": "CommonJS",
         "moduleResolution": "node",
+        "allowJs": true,
         "allowImportingTsExtensions": false,
         "noEmit": false,
         "noUnusedLocals": false,
