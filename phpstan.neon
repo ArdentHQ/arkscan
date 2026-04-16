@@ -45,6 +45,10 @@ parameters:
         -
             identifier: argument.type
             path: app/Services/Transactions/Aggregates/Historical/RangeAggregate.php
+        # Cache::remember returns mixed at runtime — the (int) cast is needed even though phpstan sees int
+        -
+            identifier: cast.useless
+            path: app/Http/Controllers/Inertia/WalletController.php
         # The `withScope` macro in EloquentServiceProvider returns a plain Builder (no generic), so downstream
         # `paginate()->through()` sees Paginator<int, Model> instead of the concrete model type. Refactoring
         # ~14 callsites away from the macro is out of scope for the upgrade PR.
