@@ -41,7 +41,6 @@ final class CacheKnownWallets extends Command
 
         $knownWallets = collect(Network::knownWallets());
 
-        /** @var string[] $resignedAddresses */
         $resignedAddresses = Transaction::withScope(UsernameResignationScope::class)
             ->select('from')
             ->groupBy('from')

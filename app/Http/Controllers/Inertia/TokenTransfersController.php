@@ -21,7 +21,7 @@ final class TokenTransfersController
     public function __invoke(): Response
     {
         return Inertia::renderWithMeta('Tokens/Transfers', 'token-transfers', [
-            'transfers' => Inertia::lazy(function () {
+            'transfers' => Inertia::defer(function () {
                 $paginator = $this->getTransactions();
 
                 return [

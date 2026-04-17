@@ -40,11 +40,6 @@ final class MultiPayment extends Model
      */
     public $incrementing = false;
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
     protected $connection = 'explorer';
 
     /**
@@ -63,11 +58,6 @@ final class MultiPayment extends Model
         'amount' => BigInteger::class,
     ];
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string|null
-     */
     protected $table = 'multi_payments';
 
     public function transaction(): BelongsTo

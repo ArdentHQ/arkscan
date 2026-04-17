@@ -58,6 +58,9 @@ trait ValidatorsTab
         return $this->validatorHasFilters;
     }
 
+    /**
+     * @return Builder<Wallet>
+     */
     private function getValidatorsQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;

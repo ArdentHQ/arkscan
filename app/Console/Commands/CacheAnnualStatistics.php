@@ -105,13 +105,12 @@ final class CacheAnnualStatistics extends Command
         $startOfYear = Carbon::now()->startOfYear()->getTimestampMs();
         $year        = Carbon::now()->year;
 
-        /** @var ?object{transactions: int, value: int, volume: string, fees: float} $transactionData */
         $transactionData = DB::connection('explorer')
             ->query()
             ->select([
                 DB::raw('COUNT(*) as transactions'),
                 DB::raw(sprintf('SUM(value) / 1e%d as value', config('currencies.decimals.crypto', 18))),
-                DB::raw(sprintf('SUM(gas_price * COALESCE(gas_used, 0)) as fees')),
+                DB::raw('SUM(gas_price * COALESCE(gas_used, 0)) as fees'),
             ])
             ->from('transactions')
             ->where('timestamp', '>=', $startOfYear)
@@ -123,9 +122,9 @@ final class CacheAnnualStatistics extends Command
             ->where('timestamp', '>=', $startOfYear)
             ->count();
 
-        $transactionCount = (int) $transactionData?->transactions;
-        $volume           = (string) BigNumber::new($transactionData?->value ?? '0');
-        $fees             = (string) ($transactionData?->fees ?? '0');
+        $transactionCount = (int) ($transactionData->transactions ?? 0);
+        $volume           = (string) BigNumber::new($transactionData->value ?? '0');
+        $fees             = (string) ($transactionData->fees ?? '0');
 
         if (! $this->hasChanges) {
             $existingData = $cache->getAnnualData($year) ?? [];

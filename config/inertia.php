@@ -47,22 +47,26 @@ return [
     |
     */
 
-    'ensure_pages_exist' => false,
+    'pages' => [
 
-    'page_paths' => [
+        'ensure_pages_exist' => false,
 
-        resource_path('inertia/Pages'),
+        'paths' => [
 
-    ],
+            resource_path('inertia/Pages'),
 
-    'page_extensions' => [
+        ],
 
-        'js',
-        'jsx',
-        'svelte',
-        'ts',
-        'tsx',
-        'vue',
+        'extensions' => [
+
+            'js',
+            'jsx',
+            'svelte',
+            'ts',
+            'tsx',
+            'vue',
+
+        ],
 
     ],
 
