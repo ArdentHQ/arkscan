@@ -18,7 +18,7 @@
         "body-scroll-lock": "^4.0.0-beta.0",
         "chart.js": "^3.9.1",
         "chartjs-adapter-date-fns": "^2.0.1",
-        "cross-env": "^7.0.3",
+        "cross-env": "^10.1.0",
         "date-fns": "^2.30.0",
         "dayjs": "^1.11.20",
         "focus-trap": "^8.0.1",
