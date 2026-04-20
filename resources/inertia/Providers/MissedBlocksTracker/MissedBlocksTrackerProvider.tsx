@@ -1,8 +1,6 @@
-'use client';
-
 import { useEffect, useRef, useState } from "react";
 import MissedBlocksTrackerContext from "./MissedBlocksTrackerContext";
-import { IValidator } from '../../types';
+import { IMonitorValidator } from "@/types";
 import dayjs from "dayjs";
 import dayjsRelativeTime from "dayjs/plugin/relativeTime";
 import { MissedBlocksTrackerContextType } from "./types";
@@ -14,11 +12,11 @@ export default function MissedBlocksTrackerProvider({
     validators,
     children,
 }: {
-    validators: IValidator[];
+    validators: IMonitorValidator[];
     children: React.ReactNode;
 }) {
     const tickingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const [currentForger, setCurrentForger] = useState<IValidator | undefined>();
+    const [currentForger, setCurrentForger] = useState<IMonitorValidator | undefined>();
     const [consecutiveMissedBlocks, setConsecutiveMissedBlocks] = useState<number>(0);
     const [secondsOffset, setSecondsOffset] = useState<number>(0);
 
@@ -29,32 +27,34 @@ export default function MissedBlocksTrackerProvider({
 
             const now = dayjs(new Date());
 
-            const forger = sortedValidators.filter(validator => {
-                const secondsDifference = dayjs(validator.forgingAt).diff(now, 'second');
-                if (secondsDifference < MISSED_BLOCKS_SECONDS_THRESHOLD) {
-                    return false;
-                }
+            const forger = sortedValidators
+                .filter((validator) => {
+                    const secondsDifference = dayjs(validator.forgingAt).diff(now, "second");
+                    if (secondsDifference < MISSED_BLOCKS_SECONDS_THRESHOLD) {
+                        return false;
+                    }
 
-                if (validator.wallet.hasForged) {
-                    return false
-                }
+                    if (validator.wallet.hasForged) {
+                        return false;
+                    }
 
-                if (validator.wallet.justMissed) {
-                    return false;
-                }
+                    if (validator.wallet.justMissed) {
+                        return false;
+                    }
 
-                return true;
-            }).shift();
+                    return true;
+                })
+                .shift();
 
             setCurrentForger(forger);
 
-            if (! forger) {
+            if (!forger) {
                 setConsecutiveMissedBlocks(0);
 
                 return;
             }
 
-            const missedBlocks = sortedValidators.filter(validator => validator.order < forger?.order);
+            const missedBlocks = sortedValidators.filter((validator) => validator.order < forger?.order);
             missedBlocks.sort((a, b) => b.order - a.order);
 
             let missedBlocksCount = 0;
@@ -64,7 +64,7 @@ export default function MissedBlocksTrackerProvider({
                     break;
                 }
 
-                const secondsDifference = dayjs(validator.forgingAt).diff(now, 'second');
+                const secondsDifference = dayjs(validator.forgingAt).diff(now, "second");
                 if (secondsDifference >= MISSED_BLOCKS_SECONDS_THRESHOLD) {
                     break;
                 }
@@ -80,17 +80,17 @@ export default function MissedBlocksTrackerProvider({
             if (calculatedSecondsOffset !== secondsOffset) {
                 setSecondsOffset(calculatedSecondsOffset);
             }
-        }
+        };
 
         tickingTimerRef.current = setInterval(updateCurrentForger, 100);
 
         return () => {
-            if (! tickingTimerRef.current) {
+            if (!tickingTimerRef.current) {
                 return;
             }
 
             clearInterval(tickingTimerRef.current);
-        }
+        };
     }, [validators]);
 
     const value: MissedBlocksTrackerContextType = {
@@ -99,9 +99,5 @@ export default function MissedBlocksTrackerProvider({
         secondsOffset,
     };
 
-    return (
-        <MissedBlocksTrackerContext.Provider value={value}>
-            {children}
-        </MissedBlocksTrackerContext.Provider>
-    );
-};
+    return <MissedBlocksTrackerContext.Provider value={value}>{children}</MissedBlocksTrackerContext.Provider>;
+}

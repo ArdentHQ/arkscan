@@ -15,6 +15,7 @@ use App\Models\Wallet;
 use ArkEcosystem\Crypto\Identities\Address;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Throwable;
@@ -46,6 +47,10 @@ final class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
+
+            if (App::environment('dusk')) {
+                Route::prefix('dusk-api')->group(base_path('tests/routes/dusk.php'));
+            }
         });
 
         Route::bind('wallet', function (string $walletID): Wallet {

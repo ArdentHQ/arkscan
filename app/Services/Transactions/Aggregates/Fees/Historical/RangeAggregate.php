@@ -27,6 +27,6 @@ final class RangeAggregate
             ->orderBy('formatted_date')
             ->groupBy('formatted_date')
             ->pluck('fee', 'formatted_date')
-            ->mapWithKeys(fn ($fee, $date) => [$date => UnitConverter::formatUnits($fee, 'wei')]);
+            ->mapWithKeys(fn ($fee, $date) => [$date => UnitConverter::formatUnits($fee, 'wei')->toFloat()]);
     }
 }

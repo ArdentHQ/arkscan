@@ -20,14 +20,43 @@
 :root {
     --theme-orange-dark: #a56d4c;
     --theme-orange-light: #fbeed6;
+
+    /* Peer Map Colors*/
+    --map-background: var(--theme-color-slate-100);
+    --map-land: var(--theme-color-secondary-200);
+    --map-land-borders: var(--theme-color-secondary-400);
+    --map-peer: var(--theme-color-info-600);
+    --map-peer-pulse: var(--theme-color-info-600);
 }
 
 :root.dark {
     --theme-failed-state-bg: #aa6868;
     --theme-failed-state-text: #f39b9b;
+
+    /* Peer Map Colors */
+    --map-background: #0d1117;
+    --map-land: var(--theme-color-dark-900);
+    --map-land-borders: var(--theme-color-dark-700);
+    --map-peer: var(--theme-color-dark-blue-700);
+    --map-peer-pulse: var(--theme-color-dark-blue-700);
 }
 
 :root.dim {
     --theme-failed-state-bg: #ab8282;
     --theme-failed-state-text: #caa0a0;
+
+    /* Peer Map Colors */
+    --map-background: var(--theme-color-dark-950);
+    --map-land: var(--theme-color-dim-900);
+    --map-land-borders: var(--theme-color-dim-700);
+    --map-peer: var(--theme-color-dark-blue-700);
+    --map-peer-pulse: var(--theme-color-dark-blue-700);
+}
+
+/* Disable transitions during theme change */
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+    transition: none !important;
+    animation: none !important;
 }

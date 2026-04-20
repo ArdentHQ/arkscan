@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Contracts\MarketDataProvider;
 use App\Contracts\Services\GasTracker as GasTrackerContract;
 use App\Contracts\Services\Monitor\MissedBlocksCalculator as MissedBlocksCalculatorContract;
+use App\Facades\Network;
 use App\Services\BigNumber;
 use App\Services\GasTracker;
 use App\Services\Monitor\MissedBlocksCalculator;
@@ -17,6 +18,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Inertia\ResponseFactory as InertiaResponseFactory;
 use Laravel\Fortify\Fortify;
 
 final class AppServiceProvider extends ServiceProvider
@@ -29,6 +31,8 @@ final class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Model::unguard();
+
+        Fortify::ignoreRoutes();
 
         $this->app->singleton(
             MarketDataProvider::class,
@@ -57,8 +61,6 @@ final class AppServiceProvider extends ServiceProvider
 
         $this->registerDataBags();
 
-        Fortify::loginView(fn () => abort(404));
-
         RateLimiter::for('coingecko_api_rate', fn () => Limit::perMinute(10));
     }
 
@@ -80,6 +82,21 @@ final class AppServiceProvider extends ServiceProvider
 
             /* @phpstan-ignore-next-line */
             return collect($this->items);
+        });
+
+        InertiaResponseFactory::macro('renderWithMeta', function (string $component, string $pageName, array $props = [], array $detail = []) {
+            /** @var InertiaResponseFactory $this */
+            $detail = array_merge(['name' => Network::currency()], $detail);
+
+            $response = $this->render($component, $props);
+            $response->with('metaPage', $pageName);
+            $response->with('metaDetail', $detail);
+            $response->withViewData([
+                'metaPage'   => $pageName,
+                'metaDetail' => $detail,
+            ]);
+
+            return $response;
         });
     }
 

@@ -4,7 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\DTO\Inertia\IConfigArkconnect;
+use App\DTO\Inertia\IConfigPagination;
+use App\DTO\Inertia\IConfigProductivity;
+use App\DTO\Inertia\ICurrency;
+use App\DTO\Inertia\IPriceTickerData;
+use App\DTO\Inertia\IRequestData;
 use App\Facades\Network;
+use App\Facades\Settings;
+use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\ExchangeRate;
+use App\Support\Broadcasting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -17,7 +27,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
-    protected $rootView = 'layouts.inertia';
+    protected $rootView = 'layouts.app';
 
     /**
      * Determines the current asset version.
@@ -39,9 +49,47 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return [
-            ...parent::share($request),
+            ...IRequestData::from([
+                'network'            => Network::data(),
+                'settings'           => Settings::data(),
+                'productivity'       => IConfigProductivity::from(config('arkscan.productivity')),
+                'arkconnectConfig'   => IConfigArkconnect::from([
+                    'enabled'  => config('arkscan.arkconnect.enabled'),
+                    'vaultUrl' => config('arkscan.urls.vault_url'),
+                ]),
+                'currentRoute'         => $request->route()?->getName(),
+                'supportEnabled'       => fn () => config('arkscan.support.enabled'),
+                'currencies'           => array_map(fn (array $currency) => ICurrency::from($currency), config('currencies.currencies')),
+                'pagination'           => IConfigPagination::from(config('arkscan.pagination')),
+                'usesBroadcasting'     => Broadcasting::usesWebSockets(),
+                'networkName'          => fn () => config('arkscan.network'),
+                'isDownForMaintenance' => fn () => app()->isDownForMaintenance(),
+                'isProduction'         => fn () => config('arkscan.network') === 'production',
+                'priceTickerData'      => fn () => IPriceTickerData::from([
+                    'currency'          => Settings::currency(),
+                    'isPriceAvailable'  => (new NetworkStatusBlockCache())->getIsAvailable(Network::currency(), Settings::currency()),
+                    'priceExchangeRate' => ExchangeRate::currentRate(),
+                ]),
+                'theme'                => fn () => Settings::theme(),
+                'mainnetExplorerUrl'   => fn () => Network::mainnetExplorerUrl(),
+                'testnetExplorerUrl'   => fn () => Network::testnetExplorerUrl(),
+                'navbarTag'            => fn () => config('arkscan.navbar.tag'),
+                'navbarName'           => fn () => config('app.navbar_name'),
+                'contactEmail'         => fn () => config('mail.contact_email'),
+                'urls'                 => fn () => config('arkscan.urls.public'),
 
-            'network' => Network::toArray(),
+            ])->toArray(),
+            'flash' => function () {
+                $message = flash()->getMessage();
+
+                return $message !== null
+                    ? [
+                        'message' => $message->message,
+                        'type'    => $message->level,
+                    ]
+                    : null;
+            },
+            ...parent::share($request),
         ];
     }
 }

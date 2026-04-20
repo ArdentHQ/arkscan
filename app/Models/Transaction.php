@@ -14,6 +14,7 @@ use App\Models\Concerns\Transaction\HasPayload;
 use App\Models\Scopes\ContractDeploymentScope;
 use App\Models\Scopes\MultiPaymentScope;
 use App\Models\Scopes\OtherTransactionTypesScope;
+use App\Models\Scopes\TokenTransferScope;
 use App\Models\Scopes\TransferScope;
 use App\Models\Scopes\UnvoteScope;
 use App\Models\Scopes\UsernameRegistrationScope;
@@ -23,6 +24,7 @@ use App\Models\Scopes\ValidatorResignationScope;
 use App\Models\Scopes\ValidatorUpdateScope;
 use App\Models\Scopes\VoteScope;
 use App\Services\BigNumber;
+use ArkEcosystem\Crypto\Utils\TransactionTypeIdentifier;
 use Brick\Math\RoundingMode;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,7 +40,7 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $value
  * @property BigNumber $gas
  * @property BigNumber $gas_price
- * @property int $timestamp
+ * @property \Carbon\Carbon $timestamp
  * @property int $transaction_index
  * @property string|null $to
  * @property string $from
@@ -55,6 +57,7 @@ use Laravel\Scout\Searchable;
  * @property resource|null $output
  * @property string|null $decoded_error
  * @property array $multi_payment_recipients
+ * @property string|null $multi_payment_total
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Transaction extends Model
@@ -103,13 +106,6 @@ final class Transaction extends Model
     protected $primaryKey = 'hash';
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = ['serialized'];
-
-    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -128,9 +124,7 @@ final class Transaction extends Model
         'multi_payment_recipients' => CitextArray::class,
     ];
 
-    protected $with = [
-        'multiPaymentRecipients',
-    ];
+    protected $with = [];
 
     /**
      * Get the indexable data array for the model.
@@ -155,7 +149,7 @@ final class Transaction extends Model
             'value'  => $this->value->__toString(),
             'fee'    => $this->gas_price->__toString(),
             // used to build the payments and sortable
-            'timestamp' => $this->timestamp,
+            'timestamp' => $this->timestamp->unix(),
         ];
     }
 
@@ -217,12 +211,27 @@ final class Transaction extends Model
 
     public function getVotedForAddressAttribute(): ?string
     {
+        $payload = $this->rawPayload();
+        if ($payload !== null && ! TransactionTypeIdentifier::isVote($payload)) {
+            return null;
+        }
+
         $methodData = $this->getMethodData();
         if ($methodData !== null) {
             return $methodData[2][0] ?? null;
         }
 
         return null;
+    }
+
+    public function senderWallet(): BelongsTo
+    {
+        return $this->belongsTo(Wallet::class, 'from', 'address');
+    }
+
+    public function recipientWallet(): BelongsTo
+    {
+        return $this->belongsTo(Wallet::class, 'to', 'address');
     }
 
     /**
@@ -250,6 +259,10 @@ final class Transaction extends Model
                     $query->where(function ($query) use ($filter) {
                         $query->when($filter['transfers'] === true, function ($query) {
                             $query->withScope(TransferScope::class);
+                        });
+                    })->orWhere(function ($query) use ($filter) {
+                        $query->when($filter['transfers'] === true, function ($query) {
+                            $query->withScope(TokenTransferScope::class);
                         });
                     })
                     ->orWhere(function ($query) use ($filter) {
@@ -342,6 +355,24 @@ final class Transaction extends Model
         $formatted = preg_replace('/([A-Z])/', ' \1', $error);
 
         return trim($formatted);
+    }
+
+    public function recipientAddress(): string
+    {
+        if (! is_null($this->to)) {
+            return $this->to;
+        }
+
+        if ($this->deployed_contract_address !== null) {
+            return $this->deployed_contract_address;
+        }
+
+        return $this->from;
+    }
+
+    public function url(): string
+    {
+        return route('transaction', $this->hash);
     }
 
     /**

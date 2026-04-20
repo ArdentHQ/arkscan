@@ -13,7 +13,7 @@ final class BigNumber implements Stringable
     private BigDecimal $value;
 
     /**
-     * @param int|float|string $value
+     * @param int|float|string|BigDecimal $value
      */
     private function __construct($value)
     {
@@ -31,7 +31,7 @@ final class BigNumber implements Stringable
     }
 
     /**
-     * @param int|float|string $value
+     * @param int|float|string|BigDecimal $value
      */
     public static function new($value): self
     {
@@ -85,6 +85,11 @@ final class BigNumber implements Stringable
     public function toInt(): int
     {
         return intval($this->toFloat());
+    }
+
+    public function toHex(): string
+    {
+        return $this->value->toBigInteger()->toBase(16);
     }
 
     /**

@@ -6,7 +6,6 @@ use App\Events\NewBlock;
 use App\Events\NewTransaction;
 use App\Events\Statistics\TransactionDetails;
 use App\Events\Statistics\UniqueAddresses;
-use App\Events\WalletVote;
 use App\Jobs\CacheBlocks;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -28,7 +27,7 @@ it('should not dispatch any event if insecure url', function () {
     $event = [
         'event' => 'block.applied',
         'data'  => [
-            'generatorPublicKey' => 'public-key',
+            'proposer' => 'public-key',
         ],
     ];
 
@@ -38,7 +37,6 @@ it('should not dispatch any event if insecure url', function () {
 
     Event::assertDispatchedTimes(NewBlock::class, 0);
     Event::assertDispatchedTimes(NewTransaction::class, 0);
-    Event::assertDispatchedTimes(WalletVote::class, 0);
 });
 
 it('should not dispatch a random event on webhook', function () {
@@ -58,7 +56,7 @@ describe('block', function () {
         $this->block = [
             'event' => 'block.applied',
             'data'  => [
-                'generatorPublicKey' => 'public-key',
+                'proposer' => 'public-key',
             ],
         ];
     });
@@ -159,7 +157,7 @@ describe('transaction', function () {
         $this->transaction = [
             'event' => 'transaction.applied',
             'data'  => [
-                'recipientId'     => 'address',
+                'to'              => 'address',
                 'senderPublicKey' => 'public-key',
             ],
         ];
@@ -248,7 +246,7 @@ describe('transaction', function () {
         expect($cache->getNewestAddress())->toEqual([
             'address'   => $walletA->address,
             'timestamp' => $timestamp,
-            'value'     => Carbon::createFromTimestamp($transaction->timestamp)->format(DateFormat::DATE),
+            'value'     => $transaction->timestamp->format(DateFormat::DATE),
         ]);
 
         $this
@@ -335,137 +333,5 @@ describe('transaction', function () {
             ->assertOk();
 
         Event::assertDispatchedTimes(TransactionDetails::class, 1);
-    });
-});
-
-describe('wallet', function () {
-    beforeEach(function () {
-        $this->vote = [
-            'event' => 'wallet.vote',
-            'data'  => [
-                'transaction' => [
-                    'asset' => [
-                        'votes' => [
-                            '-98765',
-                            '+12345',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-    });
-
-    it('should dispatch an event on webhook', function () {
-        Event::fake();
-
-        $secureUrl = URL::signedRoute('webhooks');
-
-        $this
-            ->post($secureUrl, $this->vote)
-            ->assertOk();
-
-        Event::assertDispatchedTimes(WalletVote::class, 2);
-
-        Event::assertDispatched(WalletVote::class, function ($event) {
-            return $event->broadcastOn()->name === 'wallet-vote.98765';
-        });
-
-        Event::assertDispatched(WalletVote::class, function ($event) {
-            return $event->broadcastOn()->name === 'wallet-vote.12345';
-        });
-    });
-
-    it('should handle only a vote', function () {
-        Event::fake();
-
-        $this->vote = [
-            'event' => 'wallet.vote',
-            'data'  => [
-                'transaction' => [
-                    'asset' => [
-                        'votes' => [
-                            '+12345',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $secureUrl = URL::signedRoute('webhooks');
-
-        $this
-            ->post($secureUrl, $this->vote)
-            ->assertOk();
-
-        Event::assertDispatchedTimes(WalletVote::class, 1);
-
-        Event::assertDispatched(WalletVote::class, function ($event) {
-            return $event->broadcastOn()->name === 'wallet-vote.12345';
-        });
-    });
-
-    it('should handle only an unvote', function () {
-        Event::fake();
-
-        $this->vote = [
-            'event' => 'wallet.vote',
-            'data'  => [
-                'transaction' => [
-                    'asset' => [
-                        'votes' => [
-                            '-98765',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $secureUrl = URL::signedRoute('webhooks');
-
-        $this
-            ->post($secureUrl, $this->vote)
-            ->assertOk();
-
-        Event::assertDispatchedTimes(WalletVote::class, 1);
-
-        Event::assertDispatched(WalletVote::class, function ($event) {
-            return $event->broadcastOn()->name === 'wallet-vote.98765';
-        });
-    });
-
-    it('should not dispatch multiple times', function () {
-        $this->freezeTime();
-
-        $this->travelTo(Carbon::parse('2024-04-14 12:25:04'));
-
-        Queue::fake();
-
-        Config::set('arkscan.webhooks.wallet-vote.ttl', 4);
-
-        $secureUrl = URL::signedRoute('webhooks');
-
-        $this->post($secureUrl, $this->vote)
-            ->assertOk();
-        $this->post($secureUrl, $this->vote)
-            ->assertOk();
-        $this->post($secureUrl, $this->vote)
-            ->assertOk();
-        $this->post($secureUrl, $this->vote)
-            ->assertOk();
-
-        $this->travel(4)->seconds();
-
-        $this->post($secureUrl, $this->vote)
-            ->assertOk();
-
-        Queue::assertPushed(BroadcastEvent::class, 4);
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'wallet-vote.98765';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'wallet-vote.12345';
-        });
     });
 });

@@ -7,6 +7,8 @@ use App\Models\MultiPayment;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\BigNumber;
+use ArkEcosystem\Crypto\Enums\ContractAbiType;
+use ArkEcosystem\Crypto\Utils\AbiDecoder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Config;
@@ -194,4 +196,92 @@ it('should get recipients', function () {
     expect($transaction->multiPaymentRecipients->count())->toBe(2);
     expect($transaction->multiPaymentRecipients->first()->to)->toBe($recipients[0]);
     expect($transaction->multiPaymentRecipients->last()->to)->toBe($recipients[1]);
+});
+
+it('should determine recipientAddress', function () {
+    $recipient = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->create([
+            'to' => $recipient->address,
+        ]);
+
+    expect($transaction->recipientAddress())->toBe($recipient->address);
+});
+
+it('should use deployment address for recipientAddress', function () {
+    $address = '0x1234567890123456789012345678901234567890';
+
+    $transaction = Transaction::factory()
+        ->create([
+            'to'                        => null,
+            'deployed_contract_address' => $address,
+        ]);
+
+    expect($transaction->recipientAddress())->toBe($address);
+});
+
+it('should use from address for recipientAddress', function () {
+    $transaction = Transaction::factory()
+        ->create([
+            'to'                        => null,
+            'deployed_contract_address' => null,
+        ]);
+
+    expect($transaction->recipientAddress())->toBe($transaction->from);
+});
+
+it('should get the url', function () {
+    expect($this->subject->url())->toBeString();
+    expect($this->subject->url())->toBe(route('transaction', $this->subject->hash));
+});
+
+it('cachedAbiDecoder returns an AbiDecoder instance', function () {
+    $transaction = Transaction::factory()->withPayload('6dd7d8ea')->create();
+
+    // Reset static cache between tests
+    $cacheProperty = new ReflectionProperty(Transaction::class, 'abiDecoderCache');
+    $cacheProperty->setValue(null, []);
+
+    $transaction->getMethodData(false);
+
+    $cache = $cacheProperty->getValue(null);
+    expect($cache)->toHaveKey(ContractAbiType::CONSENSUS->name);
+    expect($cache[ContractAbiType::CONSENSUS->name])->toBeInstanceOf(AbiDecoder::class);
+});
+
+it('cachedAbiDecoder returns the same instance on repeated calls for the same type', function () {
+    $transaction = Transaction::factory()->withPayload('6dd7d8ea')->create();
+
+    $cacheProperty = new ReflectionProperty(Transaction::class, 'abiDecoderCache');
+    $cacheProperty->setValue(null, []);
+
+    $transaction->getMethodData(false);
+    $firstInstance = $cacheProperty->getValue(null)[ContractAbiType::CONSENSUS->name];
+
+    $transaction->getMethodData(false);
+    $secondInstance = $cacheProperty->getValue(null)[ContractAbiType::CONSENSUS->name];
+
+    expect($firstInstance)->toBe($secondInstance);
+});
+
+it('cachedAbiDecoder caches separate instances per ContractAbiType', function () {
+    $transaction = Transaction::factory()->withPayload('6dd7d8ea')->create();
+
+    $cacheProperty = new ReflectionProperty(Transaction::class, 'abiDecoderCache');
+    $cacheProperty->setValue(null, []);
+
+    // tryAllAbis=true exercises CUSTOM, CONSENSUS, MULTIPAYMENT, USERNAMES decoders
+    $transaction->getMethodData(true);
+
+    $cache = $cacheProperty->getValue(null);
+
+    expect($cache)->toHaveKey(ContractAbiType::CONSENSUS->name);
+    expect($cache)->toHaveKey(ContractAbiType::MULTIPAYMENT->name);
+    expect($cache)->toHaveKey(ContractAbiType::USERNAMES->name);
+
+    expect($cache[ContractAbiType::CONSENSUS->name])
+        ->not->toBe($cache[ContractAbiType::MULTIPAYMENT->name]);
+    expect($cache[ContractAbiType::CONSENSUS->name])
+        ->not->toBe($cache[ContractAbiType::USERNAMES->name]);
 });

@@ -358,5 +358,9 @@ function mockTaggedCache($withTags = false, $withStore = true)
             ->andReturn($taggedCache);
     }
 
+    $mockedCache
+        ->shouldReceive('rememberForever')
+        ->andReturnUsing(fn ($key, $callback) => $callback());
+
     return $mockedCache;
 }

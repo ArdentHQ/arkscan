@@ -8,13 +8,14 @@ use App\Facades\Network;
 use App\Facades\Settings;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
+use App\Services\Cache\RequestScopedCache;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 final class ExchangeRate
 {
-    public static function convert(float | BigNumber $amount, ?int $timestamp = null, bool $showSmallAmounts = false): string
+    public static function convert(float | BigNumber $amount, Carbon|int|null $timestamp = null, bool $showSmallAmounts = false): string
     {
         if ($amount instanceof BigNumber) {
             $amount = $amount->toFloat();
@@ -23,12 +24,13 @@ final class ExchangeRate
         return NumberFormatter::currency(self::convertNumerical($amount, $timestamp), Settings::currency(), $showSmallAmounts);
     }
 
-    public static function convertNumerical(float $amount, ?int $timestamp = null): float
+    public static function convertNumerical(float $amount, Carbon|int|null $timestamp = null): float
     {
         $exchangeRate = 0;
         if ($timestamp !== null) {
             $prices       = (new CryptoDataCache())->getPrices(Settings::currency().'.week');
-            $exchangeRate = Arr::get($prices, Carbon::parse(static::timestamp($timestamp))->format('Y-m-d'), 0);
+            $carbon       = $timestamp instanceof Carbon ? $timestamp : Carbon::createFromTimestamp($timestamp);
+            $exchangeRate = Arr::get($prices, $carbon->format('Y-m-d'), 0);
         } else {
             $exchangeRate = static::currentRate();
         }
@@ -38,7 +40,21 @@ final class ExchangeRate
 
     public static function convertFiatToCurrency(float $amount, string $from, string $to, int $decimals = 4): ?string
     {
-        // Determine the exchange rate based on Network token currency value
+        $converted = self::convertFiatToCurrencyNumerical($amount, $from, $to);
+
+        if ($converted === null) {
+            return null;
+        }
+
+        if (! NumberFormatter::isFiat($to)) {
+            $decimals = 8;
+        }
+
+        return NumberFormatter::currencyWithDecimals($converted, Settings::currency(), $decimals);
+    }
+
+    public static function convertFiatToCurrencyNumerical(float $amount, string $from, string $to): ?float
+    {
         $cache = new NetworkStatusBlockCache();
 
         $fromValue = $cache->getPrice(Network::currency(), $from);
@@ -48,13 +64,7 @@ final class ExchangeRate
             return null;
         }
 
-        $exchangeRate = $toValue / $fromValue;
-
-        if (! NumberFormatter::isFiat($to)) {
-            $decimals = 8;
-        }
-
-        return NumberFormatter::currencyWithDecimals($amount * $exchangeRate, Settings::currency(), $decimals);
+        return $amount * ($toValue / $fromValue);
     }
 
     public static function now(): float
@@ -72,8 +82,44 @@ final class ExchangeRate
         return (new CryptoDataCache())->getPrices(Settings::currency().'.week');
     }
 
-    private static function timestamp(int $timestamp): Carbon
+    /**
+     * @return array<string, float>
+     */
+    public static function allCurrencyRates(?Carbon $timestamp = null): array
     {
-        return Timestamp::fromUnix($timestamp);
+        /** @var string[] $currencies */
+        $currencies = array_keys(config('currencies.currencies'));
+
+        if ($timestamp !== null) {
+            $date = $timestamp->format('Y-m-d');
+            $key  = 'exchange_rates_'.$date;
+        } else {
+            $date = null;
+            $key  = 'exchange_rates_current';
+        }
+
+        /** @var array<string, float> */
+        return RequestScopedCache::remember($key, function () use ($currencies, $date): array {
+            $result = [];
+
+            if ($date !== null) {
+                $cache = new CryptoDataCache();
+
+                foreach ($currencies as $currency) {
+                    $upper          = strtoupper($currency);
+                    $prices         = $cache->getPrices($upper.'.week');
+                    $result[$upper] = (float) Arr::get($prices, $date, 0);
+                }
+            } else {
+                $cache = new NetworkStatusBlockCache();
+
+                foreach ($currencies as $currency) {
+                    $upper          = strtoupper($currency);
+                    $result[$upper] = $cache->getPrice(Network::currency(), $upper) ?? 0.0;
+                }
+            }
+
+            return $result;
+        });
     }
 }

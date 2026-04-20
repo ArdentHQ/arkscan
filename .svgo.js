@@ -4,11 +4,12 @@ export default {
             name: "preset-default",
             params: {
                 overrides: {
-                    cleanupIDs: {
+                    cleanupIds: {
                         preservePrefixes: ["keep_"],
                     },
                 },
             },
         },
+        "prefixIds",
     ],
 };

@@ -8,7 +8,6 @@ use App\Actions\CacheNetworkSupply;
 use App\Contracts\ViewModel;
 use App\Models\Wallet;
 use App\Services\ArkVaultUrlBuilder;
-use App\Services\ExchangeRate;
 use App\ViewModels\Concerns\Wallet\CanBeCold;
 use App\ViewModels\Concerns\Wallet\CanBeKnownWallet;
 use App\ViewModels\Concerns\Wallet\CanBeLegacy;
@@ -32,11 +31,6 @@ final class WalletViewModel implements ViewModel
 
     public function __construct(private Wallet $wallet)
     {
-    }
-
-    public function url(): string
-    {
-        return route('wallet', $this->wallet->address);
     }
 
     public function model(): Wallet
@@ -68,14 +62,15 @@ final class WalletViewModel implements ViewModel
         return $this->wallet->balance->toFloat(scale: $scale);
     }
 
-    public function balanceFiat(): string
-    {
-        return ExchangeRate::convert($this->balance());
-    }
-
     public function balancePercentage(): float
     {
-        return Percentage::calculate($this->wallet->balance->valueOf()->toBigInteger()->toFloat(), CacheNetworkSupply::execute());
+        $networkSupply = CacheNetworkSupply::execute();
+
+        if ($networkSupply <= 0) {
+            return 0;
+        }
+
+        return Percentage::calculate($this->wallet->balance->valueOf()->toBigInteger()->toFloat(), $networkSupply);
     }
 
     public function nonce(): int

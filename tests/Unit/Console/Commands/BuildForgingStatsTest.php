@@ -93,13 +93,13 @@ it('should execute the command - with parameters', function () {
         '--height' => 7243669, '--days' => 0.01,
     ]);
 
-    expect(ForgingStats::all()->count())->toBe(212);
+    expect(ForgingStats::all()->count())->toBe(318);
 });
 
 it('should execute the command - without parameter', function () {
     Artisan::call('explorer:forging-stats:build');
 
-    expect(ForgingStats::all()->count())->toBe(265);
+    expect(ForgingStats::all()->count())->toBe(530);
 });
 
 it('should not add multiple records to database', function () {
@@ -113,7 +113,7 @@ it('should not add multiple records to database', function () {
     Artisan::call('explorer:forging-stats:build', $args);
     Artisan::call('explorer:forging-stats:build', $args);
 
-    expect(ForgingStats::all()->count())->toBe(212);
+    expect(ForgingStats::all()->count())->toBe(318);
 });
 
 it('should store the height for missed blocks', function () {
@@ -125,11 +125,13 @@ it('should store the height for missed blocks', function () {
     MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
         ->once()
         ->andReturn([
-            50000 => [
+            '50000_test-address' => [
+                'timestamp' => 50000,
                 'address'   => 'test-address',
                 'forged'    => false,
             ],
-            50001 => [
+            '50001_test-address-2' => [
+                'timestamp' => 50001,
                 'address'   => 'test-address-2',
                 'forged'    => false,
             ],
@@ -152,7 +154,8 @@ it('should batch upsert every 1000 records', function () {
 
     $calculations = [];
     foreach (range(50001, 60000) as $index => $height) {
-        $calculations[$height] = [
+        $calculations[$height.'_test-address-'.$index] = [
+            'timestamp' => $height,
             'address'   => 'test-address-'.$index,
             'forged'    => false,
         ];

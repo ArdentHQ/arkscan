@@ -1,10 +1,13 @@
 name: CI
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - "master"
             - "develop"
+            - "mainsail-develop"
+            - "inertia-migration"
     pull_request:
         types: [ready_for_review, synchronize, opened]
 
@@ -31,7 +34,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -65,7 +68,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -109,7 +112,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -136,11 +139,11 @@ jobs:
             - name: Build public-facing assets
               run: pnpm build
 
-            - name: Prepare the database
-              run: touch database/database.sqlite
-
             - name: Prepare the application
-              run: cp .env.example .env && php artisan key:generate
+              run: |
+                  cp .env.testing .env
+                  php artisan key:generate
+                  cp .env .env.testing
 
             - name: Clear Config
               run: php artisan config:clear && php artisan route:clear
@@ -159,23 +162,36 @@ jobs:
 
             - name: Run Tests
               run: composer test:coverage
-              env:
-                  # Main database
-                  DB_CONNECTION: pgsql
-                  DB_HOST: 127.0.0.1
-                  DB_PORT: 5432
-                  DB_DATABASE: arkscan_test_db
-                  DB_USERNAME: arkscan_test_db
-                  DB_PASSWORD: password
-                  # Explorer database
-                  ARKSCAN_DB_HOST: 127.0.0.1
-                  ARKSCAN_DB_PORT: 5432
-                  ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
-                  ARKSCAN_DB_USERNAME: arkscan_test_db
-                  ARKSCAN_DB_PASSWORD: password
+
+    jest:
+        needs: [conflicts, analyse, format]
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.head_ref }}
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22.11
+
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+
+            - name: Install pnpm dependencies
+              run: pnpm i --frozen-lockfile
+
+            - name: Run Tests
+              run: pnpm test
 
     browser:
-        needs: [unit]
+        needs: [unit, jest]
+
+        if: github.event_name != 'pull_request' || github.event_name == 'workflow_dispatch'
 
         runs-on: ubuntu-latest
 
@@ -203,7 +219,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.3"
+                  php-version: "8.4"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -262,19 +278,19 @@ jobs:
               run: php artisan serve --no-reload &
 
             - name: Run Tests
-              run: composer test:browser
-              env:
-                  # Main database
-                  DB_CONNECTION: pgsql
-                  DB_HOST: 127.0.0.1
-                  DB_PORT: 5432
-                  DB_DATABASE: arkscan_test_db
-                  DB_USERNAME: arkscan_test_db
-                  DB_PASSWORD: password
-                  # Explorer database
-                  ARKSCAN_DB_HOST: 127.0.0.1
-                  ARKSCAN_DB_PORT: 5432
-                  ARKSCAN_DB_DATABASE: arkscan_test_db_explorer
-                  ARKSCAN_DB_USERNAME: arkscan_test_db
-                  ARKSCAN_DB_PASSWORD: password
-                  APP_ENV: testing
+              run: composer test:browser -- --stop-on-failure --stop-on-error
+
+            - name: Sanitize Screenshot Filenames
+              if: failure()
+              run: |
+                  cd tests/Browser/screenshots
+                  for f in *'"'*; do
+                    [ -e "$f" ] && mv "$f" "$(echo "$f" | tr -d '"')"
+                  done
+
+            - name: Upload Screenshots
+              if: failure()
+              uses: actions/upload-artifact@v4
+              with:
+                  name: dusk-screenshots
+                  path: tests/Browser/screenshots

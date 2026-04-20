@@ -40,7 +40,7 @@ final class TransactionFactory extends Factory
             'status'                    => $this->faker->boolean,
             'gas_used'                  => 21000,
             'gas_refunded'              => $this->faker->numberBetween(1, 100),
-            'deployed_contract_address' => fn () => Wallet::factory()->create()->address,
+            'deployed_contract_address' => null,
             'logs'                      => [],
             'output'                    => null,
             'data'                      => function () {
@@ -61,11 +61,11 @@ final class TransactionFactory extends Factory
         ]);
     }
 
-    public function tokenTransfer(string $address, int $amount): Factory
+    public function tokenTransfer(string $address, BigNumber $amount): Factory
     {
         $payload  = ContractMethod::transfer();
         $payload .= str_pad(preg_replace('/^0x/', '', $address), 64, '0', STR_PAD_LEFT);
-        $payload .= str_pad(dechex($amount), 64, '0', STR_PAD_LEFT);
+        $payload .= str_pad($amount->toHex(), 64, '0', STR_PAD_LEFT);
 
         return $this->withPayload($payload)
             ->state(fn () => [
@@ -187,10 +187,50 @@ final class TransactionFactory extends Factory
             ]);
     }
 
+    public function approve(string $spender, BigNumber $amount): Factory
+    {
+        $payload  = ContractMethod::approve();
+        $payload .= str_pad(preg_replace('/^0x/', '', $spender), 64, '0', STR_PAD_LEFT);
+        $payload .= str_pad($amount->toHex(), 64, '0', STR_PAD_LEFT);
+
+        return $this->withPayload($payload);
+    }
+
+    /**
+     * @param array{string} $recipients
+     * @param array{BigNumber} $amounts
+     */
+    public function batchTransfer(string $tokenAddress, array $recipients, array $amounts): Factory
+    {
+        $payload  = ContractMethod::batchTransfer();
+        $payload .= str_pad(preg_replace('/^0x/', '', $tokenAddress), 64, '0', STR_PAD_LEFT);
+
+        // Encode offset for recipients array
+        $payload .= str_pad(dechex(96), 64, '0', STR_PAD_LEFT);
+        // Encode offset for amounts array
+        $count = count($recipients);
+        $payload .= str_pad(dechex(96 + 32 + $count * 32), 64, '0', STR_PAD_LEFT);
+
+        // Encode recipients array
+        $payload .= str_pad(dechex($count), 64, '0', STR_PAD_LEFT);
+        foreach ($recipients as $recipient) {
+            $payload .= str_pad(preg_replace('/^0x/', '', $recipient), 64, '0', STR_PAD_LEFT);
+        }
+
+        // Encode amounts array
+        $payload .= str_pad(dechex($count), 64, '0', STR_PAD_LEFT);
+        foreach ($amounts as $amount) {
+            $payload .= str_pad($amount->toHex(), 64, '0', STR_PAD_LEFT);
+        }
+
+        return $this->withPayload($payload);
+    }
+
     public function contractDeployment(): Factory
     {
         return $this->state(fn () => [
-            'to' => null,
+            'to'                        => null,
+            'deployed_contract_address' => fn () => Wallet::factory()->create()->address,
         ]);
     }
 

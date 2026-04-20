@@ -21,6 +21,10 @@ final class WalletSearch implements Search
      */
     public function search(string $query, int $limit): EloquentCollection
     {
+        if ($this->couldBeAddress($query)) {
+            return Wallet::where('address', 'ilike', $query)->limit(1)->get();
+        }
+
         if ($this->couldntBeAddress($query)) {
             /**
              * @var EloquentCollection<Wallet>
@@ -28,13 +32,16 @@ final class WalletSearch implements Search
             return (new Wallet())->newCollection([]);
         }
 
-        if ($this->couldBeAddress($query)) {
-            $builder = Wallet::where('address', 'ilike', $query)->limit(1);
-        } else {
-            $builder = Wallet::where('address', 'ilike', sprintf('%%%s%%', $query))->limit($limit);
+        $builder = Wallet::where('address', 'ilike', sprintf('%%%s%%', $query));
+
+        if ($this->couldBeUsername($query)) {
+            $builder->orWhereRaw(
+                "lower(attributes->>'username') like ?",
+                ['%'.strtolower($query).'%']
+            );
         }
 
-        return $builder->get();
+        return $builder->limit($limit)->get();
     }
 
     public static function mapMeilisearchResults(array $rawResults): Collection
@@ -60,6 +67,6 @@ final class WalletSearch implements Search
         return (new SearchQuery())
             ->setQuery($query)
             ->setIndexUid('wallets')
-            ->setLimit($limit);
+            ->setLimit(max($limit, 0));
     }
 }

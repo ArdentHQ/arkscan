@@ -30,13 +30,31 @@ return [
 
     'home'             => [
         'statistics' => [
-            'title'               => 'Statistics',
-            'current_supply'      => 'Current Supply',
-            'volume'              => 'Volume (24h)',
-            'market_cap'          => 'Market Cap',
-            'block_height'        => 'Block Height',
-            'currency_price'      => ':currency Price',
-            'chart_not_supported' => 'Not supported on development networks',
+            'title'                 => 'Network Statistics',
+            'title_mobile'          => 'Statistics',
+            'title_market_overview' => 'Market Overview',
+            'current_supply'        => 'Current Supply',
+            'volume'                => 'Volume (24h)',
+            'market_cap'            => 'Market Cap',
+            'block_height'          => 'Block Height',
+            'total_supply'          => 'Total Supply',
+            'voting'                => 'Voting (:percentage)',
+            'addresses'             => 'Addresses',
+            'currency_price'        => ':currency Price',
+            'chart_not_supported'   => 'Not supported on development networks',
+
+            'gas_low'           => 'Gas Low',
+            'gas_average'       => 'Gas Average',
+            'gas_high'          => 'Gas High',
+            'gas_tracker'       => 'Gas Tracker',
+            'gas_average_value' => 'Average: :value',
+            '30_seconds'        => '~30 sec',
+
+            'gas-levels' => [
+                'low'     => 'Low',
+                'average' => 'Average',
+                'high'    => 'High',
+            ],
         ],
 
         'footer' => [
@@ -84,7 +102,7 @@ return [
     ],
 
     'transaction'      => [
-        'action'                      => 'Action',
+        'action'                      => 'Transaction Action',
         'transaction_id'              => 'Transaction ID',
         'transaction_id_copied'       => 'Transaction ID Copied',
         'transaction_details'         => 'Transaction Details',
@@ -96,6 +114,8 @@ return [
         'other_attributes'            => 'Other Attributes',
         'input_data'                  => 'Input Data',
         'tokens_transferred'          => 'Tokens Transferred',
+        'multiple_count'              => 'Multiple (:count)',
+        'transfer_details'            => 'Transfer Details',
         'locked_amount_tooltip'       => 'Locked amount while the validator remains registered.',
         'unlocked_amount_tooltip'     => 'Amount returned by resigning validator.',
         'legacy_registration_tooltip' => 'This validator was registered without locking any funds.',
@@ -123,6 +143,7 @@ return [
             'gas_limit'            => 'Gas Limit',
             'usage_by_transaction' => 'Usage By Txn',
             'position_in_block'    => 'Position In Block',
+            'spender'              => 'Spender',
         ],
 
         'code-block' => [
@@ -139,6 +160,14 @@ return [
             'header'            => 'Status',
             'failed_message'    => 'Error encountered during contract execution: :error',
             'failed_no_message' => 'Error encountered during contract execution.',
+        ],
+
+        'approve' => [
+            'for_use_by'             => 'for use by',
+            'on_behalf_of'           => 'on behalf of',
+            'removed_permission_for' => 'Removed permission for',
+            'revoke'                 => 'Revoke',
+            'use_by'                 => 'use by',
         ],
     ],
 
@@ -170,6 +199,8 @@ return [
         'all_transactions'       => 'All History',
         'received_transactions'  => 'Incoming',
         'sent_transactions'      => 'Outgoing',
+        'token_holdings'         => 'Token Holdings',
+        'tokens'                 => 'Tokens',
         'voting_for'             => 'Voting For',
         'rank'                   => 'Rank',
         'commission'             => 'Commission',
@@ -187,6 +218,7 @@ return [
         'value'                  => 'Value',
         'copied_public_key'      => 'Public Key Copied',
         'address_copied'         => 'Address Copied',
+        'legacy_address_copied'  => 'Legacy Address Copied',
 
         'qrcode'                => [
             'title'                             => 'Send Funds',
@@ -243,6 +275,8 @@ return [
             'types_placeholder'   => 'Select Types',
             'columns_placeholder' => 'Select Columns',
             'success_toast'       => '<span class="font-semibold" style="word-break: break-word;">:address.csv</span> has been saved successfully',
+            'success_message'     => 'A total of :count transactions have been retrieved and are ready for download.',
+            'error'               => 'There was a problem fetching transactions.',
 
             'types_x_selected' => [
                 'singular' => 'Type Selected',
@@ -352,6 +386,7 @@ return [
                 'id'                   => 'Block ID',
                 'timestamp'            => 'Block Date',
                 'numberOfTransactions' => 'Transactions',
+                'volume'               => 'Volume [:networkCurrency]',
                 'total'                => 'Total Rewards [:networkCurrency]',
                 'totalFiat'            => 'Total Rewards [:userCurrency]',
                 'rate'                 => 'Rate [:userCurrency]',
@@ -360,48 +395,49 @@ return [
     ],
 
     'validators'        => [
-        'title'               => 'Validators',
-        'subtitle'            => 'List of validators registered on the network.',
-        'x_validators'        => '{1} 1 Validator|:count Validators',
-        'voting_x_addresses'  => 'Voting (:count Addresses)',
+        'title'                 => 'Validators',
+        'subtitle'              => 'List of validators registered on the network.',
+        'x_validators_singular' => ':value Validator',
+        'x_validators_plural'   => ':value Validators',
+        'voting_x_addresses'    => 'Voting (:value Addresses)',
 
-        'missed-blocks'      => [
+        'missed-blocks'         => [
             'title'          => 'Missed Blocks (30 Days)',
             'results_suffix' => '(30 Days)',
         ],
 
-        'recent-votes'      => [
+        'recent-votes'          => [
             'results_suffix' => '(30 Days)',
         ],
 
-        'explore'            => [
+        'explore'               => [
             'title'    => 'How can I become a validator?',
             'subtitle' => 'Step-by-step guide on how to register as a validator',
             'action'   => 'Explore',
         ],
 
-        'tabs'               => [
+        'tabs'                  => [
             'validators'     => 'Validators',
             'missed_blocks'  => 'Missed Blocks',
             'recent_votes'   => 'Recent Votes',
         ],
 
-        'active'             => 'Active',
-        'standby'            => 'Standby',
-        'resigned'           => 'Resigned',
-        'dormant'            => 'Dormant',
-        'order'              => 'Order',
-        'name'               => 'Validator Name',
-        'forging_at'         => 'Time to Forge',
-        'status'             => 'Status',
-        'block_id'           => 'Block ID',
-        'success'            => 'Block Generated',
-        'warning'            => 'Block Missed',
-        'danger'             => ':0 Blocks Missed',
-        'completed'          => 'Completed',
-        'next'               => 'Next',
-        'now'                => 'Now',
-        'monitor'            => 'Monitor',
+        'active'                => 'Active',
+        'standby'               => 'Standby',
+        'resigned'              => 'Resigned',
+        'dormant'               => 'Dormant',
+        'order'                 => 'Order',
+        'name'                  => 'Validator Name',
+        'forging_at'            => 'Time to Forge',
+        'status'                => 'Status',
+        'block_id'              => 'Block ID',
+        'success'               => 'Block Generated',
+        'warning'               => 'Block Missed',
+        'danger'                => ':0 Blocks Missed',
+        'completed'             => 'Completed',
+        'next'                  => 'Next',
+        'now'                   => 'Now',
+        'monitor'               => 'Monitor',
 
         'dormant_tooltip' => 'Inactive Validator: awaiting BLS key registration',
 
@@ -432,9 +468,11 @@ return [
     ],
 
     'validator-monitor' => [
-        'title'                 => 'Validator Monitor',
-        'subtitle'              => 'Validator block production observer tool.',
-        'missed_blocks_tooltip' => 'Validator last forged :blocks blocks ago (:time)',
+        'title'                    => 'Validator Monitor',
+        'subtitle'                 => 'Validator block production observer tool.',
+        'missed_blocks_tooltip'    => 'Validator last forged :blocks blocks ago (:time)',
+        'last_block_forged_at'     => 'Last block forged at :time',
+        'no_blocks_forged_yet'     => 'No blocks forged yet',
 
         'stats' => [
             'forging'        => 'Forging',
@@ -468,8 +506,10 @@ return [
     ],
 
     'statistics'       => [
-        'title'     => 'Statistics',
-        'subtitle'  => 'Explore information on blockchain data and fees categorized by type.',
+        'title'           => 'Statistics',
+        'subtitle'        => 'Explore information on blockchain data and fees categorized by type.',
+
+        'mainsail_notice' => 'Statistics shown do not include past transactions from before the snapshot (taken at block #:blockHeight).',
 
         'highlights' => [
             'total_supply'  => 'Total Supply',
@@ -671,6 +711,9 @@ return [
 
         'get_listed' => "Don't see a wallet listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
 
+        'dont_see_a_wallet' => 'Don\'t see a wallet listed?',
+        'let_us_know'       => 'Let us know!',
+
         'submit-modal' => [
             'title'               => 'Submit a Listing',
             'name'                => 'Wallet Name',
@@ -686,16 +729,22 @@ return [
         'title'            => 'Exchange Listings',
         'subtitle'         => 'A listing of active exchanges and their ARK pairs.',
         'get_listed'       => "Don't see an exchange listed? <span class=\"whitespace-nowrap\">Let us know!</span>",
+
         'live_price_chart' => 'Live Price Chart',
+
+        'dont_see_an_exchange' => 'Don\'t see an exchange listed?',
+        'let_us_know'          => 'Let us know!',
 
         'type' => [
             'title'       => 'Type',
+            'all'         => 'All',
             'exchanges'   => 'Exchanges',
-            'agreggators' => 'Agreggators',
+            'aggregators' => 'Aggregators',
         ],
 
         'pair' => [
             'title'       => 'Pair',
+            'all'         => 'All',
             'btc'         => 'BTC',
             'eth'         => 'ETH',
             'stablecoins' => 'Stablecoins',
@@ -720,5 +769,31 @@ return [
             'min-price'     => 'Min Price',
             'max-price'     => 'Max Price',
         ],
+    ],
+
+    'tokens' => [
+        'transfers' => [
+            'title'    => 'Token Transfers',
+            'subtitle' => 'List of token transfers on :network',
+        ],
+    ],
+
+    'bookmarks' => [
+        'title'    => 'Bookmarks',
+        'subtitle' => 'Collection of bookmarked addresses, transactions, and blocks.',
+
+        'header' => [
+            'title'    => 'How to Save a Bookmark?',
+            'subtitle' => 'On every page featuring addresses, transactions, and blocks, you\'ll find a flag icon for bookmarking on the right side.',
+        ],
+    ],
+
+    'peers-map' => [
+        'title'        => 'ARK Node Map',
+        'subtitle'     => 'Geographic distribution of peers making up the ARK blockchain network.',
+        'reset'        => 'Reset',
+        'peer'         => '1 Peer',
+        'peers'        => '{{count}} Peers',
+        'active_peers' => 'Active Peers:',
     ],
 ];

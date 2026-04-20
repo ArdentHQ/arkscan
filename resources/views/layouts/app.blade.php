@@ -4,20 +4,29 @@
     @if (config('arkscan.arkconnect.enabled'))
         x-data="Wallet({{ json_encode(Network::toArray()) }})"
     @endif
+    class="env-{{ app()->environment() }}"
 >
-    @push('scripts')
-        @vite('resources/js/webhooks.js')
-    @endpush
-
     <x-ark-pages-includes-layout-head
         :default-name="trans('metatags.home.title')"
         mask-icon-color="#de5846"
         microsoft-tile-color="#de5846"
         theme-color="#ffffff"
-    />
+        :uses-livewire="false"
+        :uses-inertia="true"
+    >
+        @if (isset($metaPage))
+            <x-metadata :page="$metaPage" :detail="isset($metaDetail) ? $metaDetail : []" />
+        @endif
 
-    <x-ark-pages-includes-layout-body class="table-compact">
-        <x-navbar.navbar />
+        @vite('resources/js/app-inertia.tsx')
+        @inertiaHead
+        @routes
+    </x-ark-pages-includes-layout-head>
+
+    <x-ark-pages-includes-layout-body class="table-compact" wrapper-class="bg-white dark:bg-theme-secondary-900" :uses-livewire="false">
+        <x-slot name="content">
+            @inertia('inertia-body')
+        </x-slot>
 
         <x-slot name="footer">
             <x-ark-footer
@@ -33,19 +42,12 @@
                 <span class="inline-flex items-center space-x-1 whitespace-nowrap">
                     <span>@lang ('general.market_data_by')</span>
 
-                    <a href="@lang ('general.urls.coingecko')" target="_blank" rel="noopener nofollow noreferrer">
+                    <a href="@lang ('general.urls.coingecko')" target="_blank" rel="noopener nofollow noreferrer" aria-label="CoinGecko">
                         <x-ark-icon name="app-coingecko" />
+                        <span class="sr-only">CoinGecko</span>
                     </a>
                 </span>
             </x-ark-footer>
-
-            <x-webhooks.currency-update :currency="Settings::currency()" />
-
-            @if (config('arkscan.arkconnect.enabled'))
-                <x-arkconnect.validator-toasts />
-            @endif
-
-            <livewire:search-modal />
 
             <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
             <script async src="https://scripts.simpleanalyticscdn.com/auto-events.js"></script>

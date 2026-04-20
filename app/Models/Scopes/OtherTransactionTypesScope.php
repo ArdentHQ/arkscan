@@ -17,20 +17,20 @@ final class OtherTransactionTypesScope implements Scope
     {
         $builder
             ->whereRaw('SUBSTRING(data FROM 1 FOR 4) != \'\'')
+            ->whereRaw('encode(SUBSTRING(data FROM 1 FOR 4), \'hex\') != ?', [ContractMethod::transfer()])
             ->where(function ($query) {
                 $query->whereNotIn('to', Network::knownContracts())
-                ->orWhere(
-                    fn ($query) => $query->where('to', Network::knownContract('consensus'))
-                        ->whereNotIn(DB::raw('SUBSTRING(encode(data, \'hex\'), 1, 8)'), [
-                            ContractMethod::transfer(),
-                            ContractMethod::multiPayment(),
-                            ContractMethod::vote(),
-                            ContractMethod::unvote(),
-                            ContractMethod::validatorRegistration(),
-                            ContractMethod::validatorResignation(),
-                            ContractMethod::validatorUpdate(),
-                        ])
-                );
+                    ->orWhere(
+                        fn ($query) => $query->where('to', Network::knownContract('consensus'))
+                            ->whereNotIn(DB::raw('SUBSTRING(encode(data, \'hex\'), 1, 8)'), [
+                                ContractMethod::multiPayment(),
+                                ContractMethod::vote(),
+                                ContractMethod::unvote(),
+                                ContractMethod::validatorRegistration(),
+                                ContractMethod::validatorResignation(),
+                                ContractMethod::validatorUpdate(),
+                            ])
+                    );
             });
     }
 }

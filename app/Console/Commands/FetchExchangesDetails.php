@@ -23,7 +23,7 @@ final class FetchExchangesDetails extends Command
     /**
      * The console command description.
      *
-     * @var string|null
+     * @var string
      */
     protected $description = 'Call the job that retrieves the volume and price for each compatible exchange';
 

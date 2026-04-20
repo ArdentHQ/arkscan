@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models\Concerns\Transaction;
 
+use App\Services\ContractAbiService;
 use ArkEcosystem\Crypto\Enums\ContractAbiType;
 use ArkEcosystem\Crypto\Utils\AbiDecoder;
 
 trait HasPayload
 {
+    private static array $abiDecoderCache = [];
+
     public function hasPayload(): bool
     {
         return $this->rawPayload() !== null;
@@ -75,16 +78,13 @@ trait HasPayload
 
         $methodId = $this->methodHash($payload);
 
-        $functionName = null;
-        if (app('translator')->has('contracts.'.$methodId)) {
-            $functionName = trans('contracts.'.$methodId);
-        }
+        $functionName = $methodId !== null ? app(ContractAbiService::class)->getSignature($methodId) : null;
 
         try {
             if ($tryAllAbis) {
                 $method = $this->decodeFunctionData($payload);
             } else {
-                $method = (new AbiDecoder())->decodeFunctionData($payload);
+                $method = $this->cachedAbiDecoder(ContractAbiType::CONSENSUS)->decodeFunctionData($payload);
             }
 
             // @codeCoverageIgnoreStart
@@ -141,13 +141,24 @@ trait HasPayload
 
         foreach ($contractAbiTypes as $type) {
             try {
-                return (new AbiDecoder($type))->decodeFunctionData($payload);
+                return $this->cachedAbiDecoder($type)->decodeFunctionData($payload);
             } catch (\Throwable $e) {
                 // If the ABI type is not found, we will try the next one
             }
         }
 
         throw new \Exception('Unable to decode function data from payload.');
+    }
+
+    private function cachedAbiDecoder(ContractAbiType $type): AbiDecoder
+    {
+        $key = $type->name;
+
+        if (! isset(static::$abiDecoderCache[$key])) {
+            static::$abiDecoderCache[$key] = new AbiDecoder($type);
+        }
+
+        return static::$abiDecoderCache[$key];
     }
 
     private function payloadArguments(string $payload): ?array

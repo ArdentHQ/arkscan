@@ -17,9 +17,15 @@ return [
     'statistics'        => 'Statistics',
     'support'           => 'Support',
     'exchanges'         => 'Exchanges',
+    'bookmarks'         => 'Bookmarks',
     'docs'              => 'Docs',
     'api'               => 'API',
     'github'            => 'GitHub',
+    'network_map'       => 'Network Map',
+
+    'tokens' => [
+        'transfers' => 'Token Transfers',
+    ],
 
     'network-select'   => [
         'main' => [

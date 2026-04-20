@@ -47,11 +47,6 @@ beforeEach(function () {
     ]);
 });
 
-it('should get the url', function () {
-    expect($this->subject->url())->toBeString();
-    expect($this->subject->url())->toBe(route('wallet', $this->subject->address()));
-});
-
 it('should get the address', function () {
     expect($this->subject->address())->toBe($this->wallet->address);
 });
@@ -908,7 +903,7 @@ it('should return count for time since last forged', function () {
     (new WalletCache())->setLastBlock($wallet->address(), [
         'id'        => $block->hash,
         'number'    => $block->number->toNumber(),
-        'timestamp' => $block->timestamp,
+        'timestamp' => $block->timestamp->unix(),
     ]);
 
     $this->travelTo(Carbon::parse('2021-04-14 13:02:14'));

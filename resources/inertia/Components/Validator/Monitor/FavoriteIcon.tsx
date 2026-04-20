@@ -1,9 +1,9 @@
-import classNames from "@/utils/class-names";
+import classNames from "classnames";
 
 // @ts-ignore
-import FavoriteStarIcon from "@/Assets/Icons/FavoriteStar";
 import { useValidatorFavorites } from "@/Providers/ValidatorFavorites/ValidatorFavoritesContext";
 import { useEffect, useState } from "react";
+import FavoriteStarIcon from "@icons/favorite-star.svg?react";
 
 export default function FavoriteIcon({ validator, label }: { validator: any; label?: string }) {
     const { favorites, isFavorite, toggleFavorite } = useValidatorFavorites();
@@ -18,21 +18,17 @@ export default function FavoriteIcon({ validator, label }: { validator: any; lab
             <button
                 type="button"
                 className={classNames({
-                    "flex items-center space-x-2 font-semibold favorite-icon": true,
-                    'dark:text-theme-dark-300': ! isFavorited,
-                    'text-theme-primary-600 favorite-icon__selected': isFavorited,
+                    "favorite-icon flex items-center space-x-2 font-semibold": true,
+                    "dark:text-theme-dark-300": !isFavorited,
+                    "favorite-icon__selected text-theme-primary-600": isFavorited,
                 })}
                 onClick={() => {
                     toggleFavorite(validator.wallet.public_key);
                 }}
             >
-                <FavoriteStarIcon className="w-[20px]" />
+                <FavoriteStarIcon name="favorite-star-icon" className="w-[20px]" />
 
-                {label && (
-                    <span className="text-sm leading-4.25">
-                        {label}
-                    </span>
-                )}
+                {label && <span className="text-sm leading-4.25">{label}</span>}
             </button>
         </div>
     );

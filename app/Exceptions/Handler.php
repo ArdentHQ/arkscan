@@ -7,18 +7,23 @@ namespace App\Exceptions;
 use App\Exceptions\Contracts\EntityNotFoundInterface;
 use App\Http\Kernel;
 use App\Http\Middleware\SubstituteBindings;
-use ARKEcosystem\Foundation\UserInterface\Exceptions\Handler as ExceptionHandler;
+use ARKEcosystem\Foundation\UserInterface\Exceptions\Concerns\OverridesExceptionView;
 use Closure;
 use Exception;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Session\SessionManager;
 use Illuminate\Support\Collection;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 final class Handler extends ExceptionHandler
 {
+    use OverridesExceptionView;
+
     /**
      * A list of the exception types that are not reported.
      *
@@ -122,13 +127,27 @@ final class Handler extends ExceptionHandler
             && is_a($mainNotFoundException, EntityNotFoundInterface::class);
     }
 
-    private function getNotFoundEntityResponse(Throwable $exception): HttpResponse
+    private function getNotFoundEntityResponse(Throwable $exception): HttpResponse|JsonResponse
     {
         $expectedException = $this->prepareException($this->mapException($exception));
 
-        return response()->view('ark::errors.404', [
-            'exception' => $expectedException,
-        ], 404);
+        $type = 'wallet';
+        if ($expectedException->getPrevious() instanceof TransactionNotFoundException) {
+            $type = 'transaction';
+        } elseif ($expectedException->getPrevious() instanceof BlockNotFoundException) {
+            $type = 'block';
+        }
+
+        /** @var EntityNotFoundInterface $previousException */
+        $previousException = $expectedException->getPrevious();
+
+        return Inertia::renderWithMeta('Error/NotFound', '404', [
+            'error' => (string) $previousException->getCustomMessage(),
+            'id'    => collect($previousException->getIds())->first(),
+            'type'  => $type,
+        ], [
+            'error' => trans('ui::errors.404'),
+        ])->toResponse(request());
     }
 
     private function isARegularGetRequest(Request $request): bool

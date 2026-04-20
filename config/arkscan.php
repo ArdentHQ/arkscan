@@ -42,9 +42,25 @@ return [
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 23)),
 
+            // Note: no default URL for production, must be set via env var
+            'whitelistedTokens' => env('ARKSCAN_NETWORK_WHITELISTED_TOKENS'),
+
             'contract_addresses' => [],
 
-            'contract_methods' => [],
+            'contract_methods' => [
+                'transfer'               => env('ARKSCAN_CONTRACT_TRANSFER_METHOD'),
+                'multipayment'           => env('ARKSCAN_CONTRACT_MULTIPAYMENT_METHOD'),
+                'vote'                   => env('ARKSCAN_CONTRACT_VOTE_METHOD'),
+                'unvote'                 => env('ARKSCAN_CONTRACT_UNVOTE_METHOD'),
+                'validator_registration' => env('ARKSCAN_CONTRACT_VALIDATOR_REGISTRATION_METHOD'),
+                'validator_resignation'  => env('ARKSCAN_CONTRACT_VALIDATOR_RESIGNATION_METHOD'),
+                'validator_update'       => env('ARKSCAN_CONTRACT_VALIDATOR_UPDATE_METHOD'),
+                'username_registration'  => env('ARKSCAN_CONTRACT_USERNAME_REGISTRATION_METHOD'),
+                'username_resignation'   => env('ARKSCAN_CONTRACT_USERNAME_RESIGNATION_METHOD'),
+                'contract_deployment'    => env('ARKSCAN_CONTRACT_DEPLOYMENT_METHOD'),
+                'approve'                => env('ARKSCAN_CONTRACT_APPROVE_METHOD'),
+                'batch_transfer'         => env('ARKSCAN_CONTRACT_BATCH_TRANSFER_METHOD'),
+            ],
         ],
         'development' => [
             'coin'               => env('ARKSCAN_NETWORK_COIN', 'Mainsail'),
@@ -66,23 +82,29 @@ return [
             'blockReward'        => intval(env('ARKSCAN_NETWORK_BLOCK_REWARD', 2)),
             'base58Prefix'       => intval(env('ARKSCAN_NETWORK_BASE58_PREFIX', 30)),
 
+            'whitelistedTokens' => env('ARKSCAN_NETWORK_WHITELISTED_TOKENS', 'https://raw.githubusercontent.com/ArkEcosystem/common/refs/heads/master/mainsail/testnet/tokens-whitelist.json'),
+
             'contract_addresses' => [
                 'consensus'    => env('ARKSCAN_CONTRACT_CONSENSUS_ADDRESS', '0x535B3D7A252fa034Ed71F0C53ec0C6F784cB64E1'),
                 'multipayment' => env('ARKSCAN_CONTRACT_MULTIPAYMENT_ADDRESS', '0x00EFd0D4639191C49908A7BddbB9A11A994A8527'),
                 'username'     => env('ARKSCAN_CONTRACT_USERNAME_ADDRESS', '0x2c1DE3b4Dbb4aDebEbB5dcECAe825bE2a9fc6eb6'),
             ],
 
+            // Method hashes are derived from arkecosystem/crypto ABIs at runtime.
+            // Env vars can still override individual hashes if needed.
             'contract_methods' => [
-                'transfer'               => env('ARKSCAN_CONTRACT_TRANSFER_METHOD', 'a9059cbb'),
-                'multipayment'           => env('ARKSCAN_CONTRACT_MULTIPAYMENT_METHOD', '084ce708'),
-                'vote'                   => env('ARKSCAN_CONTRACT_VOTE_METHOD', '6dd7d8ea'),
-                'unvote'                 => env('ARKSCAN_CONTRACT_UNVOTE_METHOD', '3174b689'),
-                'validator_registration' => env('ARKSCAN_CONTRACT_VALIDATOR_REGISTRATION_METHOD', '602a9eee'),
-                'validator_resignation'  => env('ARKSCAN_CONTRACT_VALIDATOR_RESIGNATION_METHOD', 'b85f5da2'),
-                'validator_update'       => env('ARKSCAN_CONTRACT_VALIDATOR_UPDATE_METHOD', '5a8eed73'),
-                'username_registration'  => env('ARKSCAN_CONTRACT_USERNAME_REGISTRATION_METHOD', '36a94134'),
-                'username_resignation'   => env('ARKSCAN_CONTRACT_USERNAME_RESIGNATION_METHOD', 'ebed6dab'),
-                'contract_deployment'    => env('ARKSCAN_CONTRACT_DEPLOYMENT_METHOD', '60806040'),
+                'transfer'               => env('ARKSCAN_CONTRACT_TRANSFER_METHOD'),
+                'multipayment'           => env('ARKSCAN_CONTRACT_MULTIPAYMENT_METHOD'),
+                'vote'                   => env('ARKSCAN_CONTRACT_VOTE_METHOD'),
+                'unvote'                 => env('ARKSCAN_CONTRACT_UNVOTE_METHOD'),
+                'validator_registration' => env('ARKSCAN_CONTRACT_VALIDATOR_REGISTRATION_METHOD'),
+                'validator_resignation'  => env('ARKSCAN_CONTRACT_VALIDATOR_RESIGNATION_METHOD'),
+                'validator_update'       => env('ARKSCAN_CONTRACT_VALIDATOR_UPDATE_METHOD'),
+                'username_registration'  => env('ARKSCAN_CONTRACT_USERNAME_REGISTRATION_METHOD'),
+                'username_resignation'   => env('ARKSCAN_CONTRACT_USERNAME_RESIGNATION_METHOD'),
+                'contract_deployment'    => env('ARKSCAN_CONTRACT_DEPLOYMENT_METHOD'),
+                'approve'                => env('ARKSCAN_CONTRACT_APPROVE_METHOD'),
+                'batch_transfer'         => env('ARKSCAN_CONTRACT_BATCH_TRANSFER_METHOD'),
             ],
         ],
     ],
@@ -101,7 +123,8 @@ return [
         /*
          * Number of seconds to wait before refreshing the page.
          */
-        'refreshInterval' => env('ARKSCAN_STATISTICS_REFRESH_INTERVAL', '60'),
+        'refreshInterval'         => env('ARKSCAN_STATISTICS_REFRESH_INTERVAL', '60'),
+        'snapshotLastBlockHeight' => (int) env('ARKSCAN_SNAPSHOT_LAST_BLOCK_HEIGHT', 22763437),
     ],
 
     'support'                           => [
@@ -150,9 +173,6 @@ return [
         ],
         'transaction-applied' => [
             'ttl' => (int) env('ARKSCAN_WEBHOOKS_TRANSACTION_APPLIED_TTL', 8),
-        ],
-        'wallet-vote' => [
-            'ttl' => (int) env('ARKSCAN_WEBHOOKS_WALLET_VOTE_TTL', 8),
         ],
         'currency-update' => [
             'ttl' => (int) env('ARKSCAN_WEBHOOKS_CURRENCY_UPDATE_TTL', 8),

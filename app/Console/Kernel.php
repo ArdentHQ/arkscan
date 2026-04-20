@@ -8,7 +8,6 @@ use App\Console\Commands\BuildForgingStats;
 use App\Console\Commands\CacheAddressStatistics;
 use App\Console\Commands\CacheAnnualStatistics;
 use App\Console\Commands\CacheBlocks;
-use App\Console\Commands\CacheContractAddresses;
 use App\Console\Commands\CacheCurrenciesData;
 use App\Console\Commands\CacheFees;
 use App\Console\Commands\CacheGasTrackerData;
@@ -16,6 +15,7 @@ use App\Console\Commands\CacheKnownWallets;
 use App\Console\Commands\CacheMarketDataStatistics;
 use App\Console\Commands\CacheNetworkAggregates;
 use App\Console\Commands\CachePrices;
+use App\Console\Commands\CacheTokens;
 use App\Console\Commands\CacheTransactions;
 use App\Console\Commands\CacheValidatorAggregates;
 use App\Console\Commands\CacheValidatorPerformance;
@@ -26,11 +26,13 @@ use App\Console\Commands\CacheValidatorsWithVoters;
 use App\Console\Commands\CacheValidatorVoterCounts;
 use App\Console\Commands\CacheValidatorWallets;
 use App\Console\Commands\CacheVolume;
+use App\Console\Commands\CacheWhitelistedTokens;
 use App\Console\Commands\FetchExchangesDetails;
 use App\Console\Commands\GenerateVoteReport;
 use App\Console\Commands\LoadExchanges;
 use App\Console\Commands\ScoutIndexModels;
 use App\Facades\Network;
+use App\Support\Broadcasting;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -74,7 +76,9 @@ final class Kernel extends ConsoleKernel
 
         $schedule->command(BuildForgingStats::class)->everyMinute()->withoutOverlapping();
 
-        $schedule->command(CacheContractAddresses::class)->everyMinute()->withoutOverlapping();
+        $schedule->command(CacheTokens::class)->everyMinute()->withoutOverlapping();
+
+        $schedule->command(CacheWhitelistedTokens::class)->daily()->withoutOverlapping();
 
         $schedule->command(CacheValidatorPerformance::class)->everyMinute()->withoutOverlapping();
 
@@ -112,7 +116,7 @@ final class Kernel extends ConsoleKernel
             $schedule->command(ScoutIndexModels::class)->everyMinute()->withoutOverlapping();
         }
 
-        if (config('broadcasting.default') !== 'reverb') {
+        if (! Broadcasting::usesWebSockets()) {
             $schedule->command(CacheBlocks::class)
                 ->everyFiveMinutes()
                 ->withoutOverlapping();

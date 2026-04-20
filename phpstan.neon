@@ -7,3 +7,4 @@ parameters:
         - app/Console/Commands/RunPlaybookCommand.php
         - app/Services/Monitor
         - app/Testing
+    ignoreErrors: []

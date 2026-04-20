@@ -4,15 +4,8 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Concerns\Transaction;
 
-use App\Services\Transactions\TransactionMethod;
-
 trait HasMethod
 {
-    public function typeName(): string
-    {
-        return (new TransactionMethod($this->transaction))->name();
-    }
-
     public function isTransfer(): bool
     {
         return $this->method->isTransfer();
@@ -58,6 +51,11 @@ trait HasMethod
         return $this->method->isUsernameResignation();
     }
 
+    public function isApprove(): bool
+    {
+        return $this->method->isApprove();
+    }
+
     public function isContractDeployment(): bool
     {
         return $this->method->isContractDeployment();
@@ -66,6 +64,11 @@ trait HasMethod
     public function isMultiPayment(): bool
     {
         return $this->method->isMultiPayment();
+    }
+
+    public function isBatchTransfer(): bool
+    {
+        return $this->method->isBatchTransfer();
     }
 
     public function isSelfReceiving(): bool

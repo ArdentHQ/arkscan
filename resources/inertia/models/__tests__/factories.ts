@@ -1,0 +1,164 @@
+import { IBlock, IMemoryWallet, INetwork, IToken, ITokenAction, ITransaction, IWallet } from "@/types/generated";
+
+export const CONTRACT_METHODS = {
+    transfer: "a9059cbb",
+    multipayment: "1234abcd",
+    vote: "5678ef01",
+    unvote: "9abcdef0",
+    validator_registration: "11223344",
+    validator_resignation: "55667788",
+    validator_update: "99aabbcc",
+    username_registration: "ddeeff00",
+    username_resignation: "ff112233",
+    approve: "095ea7b3",
+    contract_deployment: "22222222",
+    batch_transfer: "33333333",
+};
+
+export const makeNetwork = (overrides: Partial<INetwork> = {}): INetwork => ({
+    coin: "ARK",
+    name: "testnet",
+    api: "https://api.test",
+    alias: "ark.test",
+    nethash: "testhash",
+    mainnetExplorerUrl: "https://explorer.test",
+    testnetExplorerUrl: "https://explorer.test",
+    legacyExplorerUrl: "https://explorer.test",
+    currency: "ARK",
+    currencySymbol: "Ѧ",
+    confirmations: 51,
+    knownWallets: [],
+    knownWalletsUrl: "",
+    canBeExchanged: false,
+    epoch: "2017-03-21T13:00:00.000Z",
+    validatorCount: 51,
+    blockTime: 8,
+    blockReward: 2,
+    base58Prefix: 23,
+    contractAddresses: {
+        consensus: "0xconsensus",
+        multipayment: "0xmultipayment",
+        username: "0xusername",
+    },
+    contractMethods: CONTRACT_METHODS,
+    ...overrides,
+});
+
+export const makeWallet = (overrides: Partial<IWallet> = {}): IWallet => ({
+    address: "wallet-address",
+    balance: "1000000000000000000",
+    nonce: "1",
+    public_key: "pubkey123",
+    isActive: true,
+    isCold: false,
+    isValidator: false,
+    isLegacy: false,
+    isDormant: false,
+    isResigned: false,
+    legacyAddress: null,
+    username: null,
+    hasUsername: false,
+    isKnown: false,
+    isOwnedByExchange: false,
+    hasSecondSignature: false,
+    votes: "0",
+    productivity: 0,
+    balancePercentage: 0,
+    totalForged: "0",
+    attributes: {},
+    vote: null,
+    voteUrl: null,
+    votePercentage: null,
+    ...overrides,
+});
+
+export const makeMemoryWallet = (overrides: Partial<IMemoryWallet> = {}): IMemoryWallet => ({
+    address: "wallet-address",
+    publicKey: null,
+    isContract: false,
+    hasUsername: false,
+    username: null,
+    isValidator: false,
+    ...overrides,
+});
+
+export const makeToken = (overrides: Partial<IToken> = {}): IToken => ({
+    address: "token-address",
+    name: "Test Token",
+    symbol: "TT",
+    decimals: 18,
+    totalSupply: "1000000000000000000000",
+    deploymentHash: "0xdeployhash",
+    ...overrides,
+});
+
+export const makeTransaction = (overrides: Partial<ITransaction> = {}): ITransaction => {
+    const methodData = overrides.methodData ?? { functionName: null, methodId: null, arguments: [] };
+    const payload =
+        overrides.payload ??
+        (methodData.methodId
+            ? {
+                  formatted: null,
+                  utf8: null,
+                  raw: `0x${methodData.methodId}`,
+              }
+            : null);
+
+    return {
+        hash: "0xabc123",
+        block_hash: "0xblock123",
+        block_number: 1,
+        transaction_index: 0,
+        timestamp: 1000000,
+        nonce: 1,
+        sender_public_key: "pubkey123",
+        from: "sender-address",
+        to: "recipient-address",
+        value: "1000000000000000000",
+        gas_price: "100",
+        gas: "21000",
+        status: true,
+        gas_used: "100",
+        gas_refunded: "0",
+        deployed_contract_address: null,
+        decoded_error: null,
+        multiPaymentRecipients: [],
+        exchangeRates: { USD: 1.0 },
+        url: "https://example.com/tx/0xabc123",
+        methodData,
+        tokenApprovalDetails: null,
+        validatorRegistration: null,
+        votedFor: null,
+        votedForUsername: null,
+        sender: null,
+        recipient: null,
+        payload,
+        ...overrides,
+    };
+};
+
+export const makeBlock = (overrides: Partial<IBlock> = {}): IBlock => ({
+    hash: "0xblock123",
+    number: 100,
+    timestamp: 1000000,
+    transactionCount: 5,
+    reward: 2.0,
+    fee: 0.5,
+    exchangeRates: { USD: 1.0 },
+    proposer: makeMemoryWallet(),
+    confirmations: 10,
+    ...overrides,
+});
+
+export const makeTokenAction = (overrides: Partial<ITokenAction> = {}): ITokenAction => ({
+    transaction_hash: "0xabc123",
+    from: makeMemoryWallet({ address: "from-address" }),
+    to: makeMemoryWallet({ address: "to-address" }),
+    amount: 1.0,
+    value: "1000000000000000000",
+    block_number: 1,
+    index: 0,
+    token: makeToken(),
+    transaction: makeTransaction(),
+    ...overrides,
+});

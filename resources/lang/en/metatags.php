@@ -28,6 +28,12 @@ return [
         'image'       => 'metadata/validator-monitor.png',
     ],
 
+    'token-transfers'  => [
+        'title'       => 'Token Transfers | :name Blockchain Explorer',
+        'description' => 'View token transfer details from the :name Blockchain.',
+        'image'       => 'metadata/transactions.png',
+    ],
+
     'transactions'  => [
         'title'       => 'Transactions | :name Blockchain Explorer',
         'description' => 'View transaction details from the :name Blockchain.',
@@ -88,19 +94,51 @@ return [
         'image'       => 'metadata/wallets.png',
     ],
 
+    '401'           => [
+        'title'       => '401 Unauthorized | :name Blockchain Explorer',
+    ],
+
+    '403'           => [
+        'title'       => '403 Forbidden | :name Blockchain Explorer',
+    ],
+
     '404'           => [
         'title'       => '404 :error | :name Blockchain Explorer',
         'description' => '404 :error',
         'image'       => 'metadata/404.png',
     ],
 
+    '419'           => [
+        'title'       => '419 Page Expired | :name Blockchain Explorer',
+    ],
+
+    '429'           => [
+        'title'       => '429 Too Many Requests | :name Blockchain Explorer',
+    ],
+
     '500'           => [
         'title'       => '500 Internal Server Error | :name Blockchain Explorer',
+    ],
+
+    '503'           => [
+        'title'       => '503 Service Unavailable | :name Blockchain Explorer',
     ],
 
     'support'       => [
         'title'       => 'Support | :name Blockchain Explorer',
         'description' => 'Get help with the use of the :name Blockchain Explorer.',
         'image'       => 'metadata/support.png',
+    ],
+
+    'bookmarks'       => [
+        'title'       => 'Bookmarks | :name Blockchain Explorer',
+        'description' => 'View your bookmarked addresses, transactions, and blocks on the :name Blockchain Explorer.',
+        'image'       => 'metadata/bookmarks.png',
+    ],
+
+    'network-map'       => [
+        'title'       => 'ARK Network Map | :name Blockchain Explorer',
+        'description' => 'Geographic distribution of peers making up the :name blockchain network.',
+        'image'       => 'metadata/peers.png',
     ],
 ];

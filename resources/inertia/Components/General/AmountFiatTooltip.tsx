@@ -1,0 +1,166 @@
+import { currency as formatCurrency, networkCurrency } from "@/utils/number-formatter";
+import HintSmallIcon from "@ui/icons/hint-small.svg?react";
+import { useTranslation } from "react-i18next";
+import AmountSmall from "./AmountSmall";
+import Tooltip from "./Tooltip";
+import useSharedData from "@/hooks/use-shared-data";
+import { Transaction } from "@/models/Transaction";
+
+function AmountOutput({
+    transaction,
+    isSent,
+    isReceived,
+    isSentToSelf,
+    amount,
+    hideCurrency = false,
+    suffix,
+}: {
+    transaction?: Transaction;
+    isSent: boolean;
+    isReceived: boolean;
+    isSentToSelf: boolean;
+    amount: string | number;
+    hideCurrency?: boolean;
+    suffix?: string;
+}) {
+    const { network } = useSharedData();
+
+    return (
+        <span>
+            <span>{isSent && !isSentToSelf ? "- " : isReceived ? "+ " : ""}</span>
+
+            {typeof amount === "number" ? (
+                transaction ? (
+                    <AmountSmall amount={amount} hideTooltip hideCurrency={hideCurrency} suffix={suffix} />
+                ) : (
+                    <span>{networkCurrency(amount, 8, !hideCurrency, undefined, suffix)}</span>
+                )
+            ) : (
+                <div className="inline-flex space-x-1">
+                    <span>{amount}</span>
+                    {suffix && <span>{suffix}</span>}
+
+                    {!hideCurrency && <span>{network.currency}</span>}
+                </div>
+            )}
+        </span>
+    );
+}
+
+export default function AmountFiatTooltip({
+    transaction,
+    isSent = false,
+    isReceived = false,
+    isSentToSelf = false,
+    amount,
+    amountForItself,
+    fiat,
+    className = "text-sm",
+    withoutStyling = false,
+    hideCurrency = false,
+    suffix,
+}: {
+    transaction?: Transaction;
+    isSent?: boolean;
+    isReceived?: boolean;
+    isSentToSelf?: boolean;
+    amount: string | number;
+    amountForItself?: number;
+    fiat?: string | number;
+    className?: string;
+    withoutStyling?: boolean;
+    hideCurrency?: boolean;
+    suffix?: string;
+}) {
+    const { t } = useTranslation();
+    const { network } = useSharedData();
+
+    const classes: string[] = ["inline-flex items-center font-semibold", className];
+
+    const hasAmountForSelf = typeof amountForItself === "number" && amountForItself > 0;
+
+    let sent = isSent;
+
+    if (!withoutStyling) {
+        if (!sent && !isReceived) {
+            classes.push("text-theme-secondary-900 dark:text-theme-dark-50");
+        }
+
+        if (sent || isReceived) {
+            classes.push("flex whitespace-nowrap rounded border");
+
+            if (hasAmountForSelf) {
+                classes.push("pr-1.5");
+            } else {
+                classes.push("px-1.5 py-0.5");
+            }
+        }
+
+        if (isSentToSelf) {
+            classes.push(
+                "fiat-tooltip-sent text-theme-secondary-700 bg-theme-secondary-200 border-theme-secondary-200 dark:bg-transparent",
+                "dark:border-theme-dark-700 dark:text-theme-dark-200 dim:border-theme-dim-700 dim:text-theme-dim-200 encapsulated-badge",
+            );
+
+            sent = false;
+        } else {
+            if (sent) {
+                classes.push(
+                    "fiat-tooltip-sent text-theme-orange-dark bg-theme-orange-light border-theme-orange-light dark:bg-transparent",
+                );
+                classes.push(
+                    "dark:border-theme-failed-state-bg dim:border-theme-failed-state-bg dark:text-theme-failed-state-text dim:text-theme-failed-state-text",
+                );
+            }
+
+            if (isReceived) {
+                classes.push(
+                    "fiat-tooltip-received text-theme-success-700 bg-theme-success-100 border-theme-success-100",
+                    "dark:bg-transparent dark:border-theme-success-700 dark:text-theme-success-500",
+                );
+            }
+        }
+    }
+
+    return (
+        <span className={classes.join(" ")}>
+            {hasAmountForSelf && (
+                <Tooltip
+                    content={t("general.fiat_excluding_self", {
+                        amount: formatCurrency(amountForItself, network!.currency),
+                    })}
+                >
+                    <div className="mr-1.5 flex h-full items-center bg-[#F6DFB5] px-1.5 py-[4.5px] text-theme-orange-dark dim:bg-theme-failed-state-bg dark:bg-theme-failed-state-bg dark:text-theme-dark-50">
+                        <HintSmallIcon className="h-3 w-3" />
+                    </div>
+                </Tooltip>
+            )}
+
+            {fiat && network.canBeExchanged && (
+                <Tooltip content={fiat}>
+                    <AmountOutput
+                        transaction={transaction}
+                        isSent={isSent}
+                        isReceived={isReceived}
+                        isSentToSelf={isSentToSelf}
+                        amount={amount}
+                        hideCurrency={hideCurrency}
+                        suffix={suffix}
+                    />
+                </Tooltip>
+            )}
+
+            {(!fiat || !network.canBeExchanged) && (
+                <AmountOutput
+                    transaction={transaction}
+                    isSent={isSent}
+                    isReceived={isReceived}
+                    isSentToSelf={isSentToSelf}
+                    amount={amount}
+                    hideCurrency={hideCurrency}
+                    suffix={suffix}
+                />
+            )}
+        </span>
+    );
+}

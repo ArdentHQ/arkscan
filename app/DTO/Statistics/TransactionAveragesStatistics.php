@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace App\DTO\Statistics;
 
-use App\Facades\Network;
-use App\Services\NumberFormatter;
-
 final class TransactionAveragesStatistics
 {
     public int $count;
 
-    public string $volume;
+    public float $volume;
 
-    public string $fees;
+    public float $fees;
 
+    /**
+     * @param array{count: int, amount: int, fee: float} $data
+     */
     public function __construct(array $data)
     {
         $this->count  = $data['count'];
-        $this->volume = $this->formatCurrency($data['amount']);
-        $this->fees   = $this->formatCurrency($data['fee']);
+        $this->volume = (float) $data['amount'];
+        $this->fees   = $data['fee'];
     }
 
+    /**
+     * @param array{count: int, amount: int, fee: float} $data
+     */
     public static function make(array $data): self
     {
         return new self($data);
@@ -34,13 +37,5 @@ final class TransactionAveragesStatistics
             'transaction_volume' => $this->volume,
             'transaction_fees'   => $this->fees,
         ];
-    }
-
-    /**
-     * @param string|int|float $value
-     */
-    private function formatCurrency($value): string
-    {
-        return NumberFormatter::currency($value, Network::currency());
     }
 }

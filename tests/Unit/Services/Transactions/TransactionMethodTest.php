@@ -5,8 +5,8 @@ declare(strict_types=1);
 use App\Facades\Network;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Transactions\TransactionMethod;
-use Illuminate\Contracts\Translation\Translator;
 
 it('should determine the type', function (string $type, string $expected) {
     $transaction       = Transaction::factory()->{$type}()->create();
@@ -50,6 +50,18 @@ it('should determine the type with vote', function () {
     expect($transactionMethod->name())->toBe('Vote');
 });
 
+it('should determine the type with approve', function () {
+    $spender     = Wallet::factory()->create();
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::new(1000))
+        ->create();
+
+    $transactionMethod = new TransactionMethod($transaction);
+
+    expect($transactionMethod->isApprove())->toBeTrue();
+    expect($transactionMethod->name())->toBe('Approve');
+});
+
 it('should determine the name from the contracts if unhandled type', function () {
     $transaction       = Transaction::factory()
         // getRounds, there is no isGetRounds method
@@ -58,21 +70,35 @@ it('should determine the name from the contracts if unhandled type', function ()
 
     $transactionMethod = new TransactionMethod($transaction);
 
-    expect($transactionMethod->name())->toBe('getRounds');
+    expect($transactionMethod->name())->toBe('Get Rounds');
 });
 
-it('should return raw methodHash if no type matches and translation is missing', function () {
+it('should return raw methodHash if no type matches and signature is unknown', function () {
     $unknownMethodHash = 'deadbeef';
 
     $transaction = Transaction::factory()
         ->withPayload($unknownMethodHash.str_repeat('0', 64))
         ->create();
 
-    $this->mock(Translator::class)->shouldReceive('has')->andReturn(false);
-
     $transactionMethod = new TransactionMethod($transaction);
 
     expect($transactionMethod->name())->toBe('0x'.$unknownMethodHash);
+});
+
+it('should fall back to methodName when service has no signature', function () {
+    $unknownMethodHash = 'deadbeef';
+
+    $transaction = Transaction::factory()
+        ->withPayload($unknownMethodHash.str_repeat('0', 64))
+        ->create();
+
+    $transactionMethod = new TransactionMethod($transaction);
+
+    // Use reflection to set methodName directly (simulates a custom ABI decode)
+    $ref = new ReflectionProperty($transactionMethod, 'methodName');
+    $ref->setValue($transactionMethod, 'someCustomMethod');
+
+    expect($transactionMethod->name())->toBe('Some Custom Method');
 });
 
 it('should return the ABI name if not handled', function () {

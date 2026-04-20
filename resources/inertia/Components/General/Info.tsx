@@ -1,0 +1,76 @@
+import HintSmallIcon from "@ui/icons/hint-small.svg?react";
+import QuestionMarkSmallIcon from "@ui/icons/question-mark-small.svg?react";
+import classNames from "classnames";
+import React, { createElement } from "react";
+import Tooltip from "./Tooltip";
+
+function InfoComponent({
+    tooltip,
+    large = false,
+    className = "",
+    icon,
+    testId,
+}: {
+    tooltip?: string | React.ReactNode;
+    large?: boolean;
+    className?: string;
+    icon: React.ElementType;
+    testId?: string;
+}) {
+    return (
+        <div
+            aria-label={typeof tooltip === "string" ? tooltip : undefined}
+            data-testid={testId}
+            className={classNames({
+                "transition-default inline-block cursor-pointer rounded-full bg-theme-primary-100 text-theme-primary-600 outline-none hover:bg-theme-primary-700 hover:text-white focus-visible:ring-2 focus-visible:ring-theme-primary-500 dark:bg-theme-secondary-800 dark:text-theme-secondary-600 dark:hover:bg-theme-secondary-600 dark:hover:text-theme-secondary-800": true,
+                "p-1.5": large,
+                "p-1": !large,
+                [className]: !!className,
+            })}
+        >
+            {createElement(icon, {
+                className: classNames({
+                    "w-3 h-3": !large,
+                    "w-4 h-4": large,
+                }),
+            })}
+        </div>
+    );
+}
+
+export default function Info({
+    tooltip,
+    type = "question",
+    large = false,
+    className = "",
+    testId,
+}: {
+    tooltip?: string | React.ReactNode;
+    type?: "question" | "info";
+    large?: boolean;
+    className?: string;
+    testId?: string;
+}) {
+    let iconOutput = HintSmallIcon;
+    if (type === "question") {
+        iconOutput = QuestionMarkSmallIcon;
+    }
+
+    return (
+        <>
+            {!!tooltip && (
+                <Tooltip content={tooltip}>
+                    <InfoComponent
+                        tooltip={tooltip}
+                        large={large}
+                        className={className}
+                        icon={iconOutput}
+                        testId={testId}
+                    />
+                </Tooltip>
+            )}
+
+            {!tooltip && <InfoComponent large={large} className={className} icon={iconOutput} testId={testId} />}
+        </>
+    );
+}
