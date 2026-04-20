@@ -121,11 +121,11 @@ importers:
         specifier: ^4.0.0-beta.0
         version: 4.0.0-beta.0
       chart.js:
-        specifier: ^4.5.1
-        version: 4.5.1
+        specifier: ^3.9.1
+        version: 3.9.1
       chartjs-adapter-date-fns:
-        specifier: ^3.0.0
-        version: 3.0.0(chart.js@4.5.1)(date-fns@2.30.0)
+        specifier: ^2.0.1
+        version: 2.0.1(chart.js@3.9.1)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -739,9 +739,6 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
-
-  '@kurkle/color@0.3.4':
-    resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
 
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
@@ -2017,15 +2014,13 @@ packages:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
     engines: {node: '>=10'}
 
-  chart.js@4.5.1:
-    resolution: {integrity: sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==}
-    engines: {pnpm: '>=8'}
+  chart.js@3.9.1:
+    resolution: {integrity: sha512-Ro2JbLmvg83gXF5F4sniaQ+lTbSv18E+TIf2cOeiH1Iqd2PGFOtem+DUufMZsCJwFE7ywPOpfXFBwRTGq7dh6w==}
 
-  chartjs-adapter-date-fns@3.0.0:
-    resolution: {integrity: sha512-Rs3iEB3Q5pJ973J93OBTpnP7qoGwvq3nUnoMdtxO+9aoJof7UFcRbWcIDteXuYd1fgAvct/32T9qaLyLuZVwCg==}
+  chartjs-adapter-date-fns@2.0.1:
+    resolution: {integrity: sha512-v3WV9rdnQ05ce3A0ZCjzUekJCAbfm6+3HqSoeY2BIkdMYZoYr/4T+ril1tZyDl869lz6xdNVMXejUFT9YKpw4A==}
     peerDependencies:
       chart.js: '>=2.8.0'
-      date-fns: '>=2.0.0'
 
   chokidar@3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
@@ -4231,8 +4226,6 @@ snapshots:
       '@jridgewell/resolve-uri': 3.0.6
       '@jridgewell/sourcemap-codec': 1.4.12
 
-  '@kurkle/color@0.3.4': {}
-
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:
       '@emnapi/core': 1.10.0
@@ -5528,14 +5521,11 @@ snapshots:
 
   char-regex@1.0.2: {}
 
-  chart.js@4.5.1:
-    dependencies:
-      '@kurkle/color': 0.3.4
+  chart.js@3.9.1: {}
 
-  chartjs-adapter-date-fns@3.0.0(chart.js@4.5.1)(date-fns@2.30.0):
+  chartjs-adapter-date-fns@2.0.1(chart.js@3.9.1):
     dependencies:
-      chart.js: 4.5.1
-      date-fns: 2.30.0
+      chart.js: 3.9.1
 
   chokidar@3.5.3:
     dependencies:
