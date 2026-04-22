@@ -51,15 +51,15 @@ export function MonitorRow({
                     </div>
                 </TableCell>
 
-                <TableCell className="table-cell hidden w-[180px] text-left md:table-cell md-lg:hidden">
+                <TableCell className="md-lg:hidden! hidden table-cell w-[180px] text-left md:table-cell">
                     <Status validator={validator} withTime />
                 </TableCell>
 
-                <TableCell className="table-cell w-[180px] text-left md:hidden md-lg:table-cell xl:w-[374px]">
+                <TableCell className="md-lg:table-cell! table-cell w-[180px] text-left md:hidden xl:w-[374px]">
                     <Status validator={validator} />
                 </TableCell>
 
-                <TableCell className="w-[160px] whitespace-nowrap text-left md:table-cell md:hidden md-lg:table-cell">
+                <TableCell className="md-lg:table-cell w-[160px] text-left whitespace-nowrap md:hidden md:table-cell">
                     <TimeToForge validator={validator} />
                 </TableCell>
 
@@ -98,7 +98,7 @@ export function MonitorTable({
 
     return (
         <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
-            <div className="validator-monitor hidden w-full overflow-hidden rounded-b-xl rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700 md:block">
+            <div className="validator-monitor border-theme-secondary-300 dark:border-theme-dark-700 hidden w-full overflow-hidden rounded-t-xl rounded-b-xl border md:block">
                 <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
                     <table>
                         <thead>
@@ -111,19 +111,19 @@ export function MonitorTable({
 
                                 <th className="text-left">{t("tables.validator-monitor.validator")}</th>
 
-                                <th className="table-cell hidden text-left md:table-cell md-lg:hidden">
+                                <th className="md-lg:hidden hidden table-cell text-left md:table-cell">
                                     {t("tables.validator-monitor.status_time_to_forge")}
                                 </th>
 
-                                <th className="table-cell text-left md:hidden md-lg:table-cell">
+                                <th className="md-lg:table-cell table-cell text-left md:hidden">
                                     {t("tables.validator-monitor.status")}
                                 </th>
 
-                                <th className="table-cell whitespace-nowrap md:hidden md-lg:table-cell">
+                                <th className="md-lg:table-cell table-cell whitespace-nowrap md:hidden">
                                     {t("tables.validator-monitor.time_to_forge")}
                                 </th>
 
-                                <th className="whitespace-nowrap text-right">
+                                <th className="text-right whitespace-nowrap">
                                     {t("tables.validator-monitor.block_height")}
                                 </th>
                             </tr>
@@ -135,7 +135,7 @@ export function MonitorTable({
                         </tbody>
                     </table>
 
-                    <div className="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
+                    <div className="bg-theme-secondary-300 dark:bg-theme-dark-700 -mx-6 h-[5px]"></div>
 
                     {overflowValidators.length > 0 && (
                         <>
@@ -147,7 +147,7 @@ export function MonitorTable({
                                 </tbody>
                             </table>
 
-                            <div className="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
+                            <div className="bg-theme-secondary-300 dark:bg-theme-dark-700 -mx-6 h-[5px]"></div>
                         </>
                     )}
                 </div>

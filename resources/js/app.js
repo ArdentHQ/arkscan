@@ -2,8 +2,8 @@ import "focus-visible";
 import "@ui/js/clipboard.js";
 import "@ui/js/tippy.js";
 
-// Load images into the vite build
-import.meta.glob(["../images/**"]);
+// Load images into the Vite build manifest for Vite::asset lookups in Blade metadata.
+import.meta.glob(["../images/**"], { eager: true });
 
 import Echo from "laravel-echo";
 

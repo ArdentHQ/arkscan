@@ -36,13 +36,13 @@ export function TableHeaderWrapper({
         <div
             data-test-id="table-header"
             className={classNames({
-                "flex md:h-16 md:rounded-t-xl md:border md:border-b-0 md:border-theme-secondary-300 md:px-6 md:dark:border-theme-dark-700": true,
+                "md:border-theme-secondary-300 md:dark:border-theme-dark-700 flex md:h-16 md:rounded-t-xl md:border md:border-b-0 md:px-6": true,
                 "pb-4 md:pt-4": children !== undefined,
                 "pb-5 md:pt-5": children === undefined,
                 [breakpointClass]: true,
             })}
         >
-            <div className="font-semibold dark:text-theme-dark-200">
+            <div className="dark:text-theme-dark-200 font-semibold">
                 <span className="hidden sm:inline">
                     {t("pagination.showing_x_results", {
                         results: resultCount.toLocaleString("us", { maximumFractionDigits: 0 }),
@@ -109,7 +109,7 @@ export function Table({
 
             <div
                 className={classNames({
-                    "hidden w-full overflow-hidden border border-theme-secondary-300 dark:border-theme-dark-700 md:block": true,
+                    "border-theme-secondary-300 dark:border-theme-dark-700 hidden w-full overflow-hidden border md:block": true,
                     "rounded-t-xl": !withHeader,
                     "rounded-b-xl": !showFooter && !hidePagination,
                 })}
@@ -131,7 +131,7 @@ export function Table({
                     {resultCount === 0 && <div className="px-6 py-4 text-center">{noResultsMessage}</div>}
 
                     {!!pagination && resultCount < pagination?.per_page && !hidePagination && (
-                        <div className="-mx-6 h-[5px] bg-theme-secondary-300 dark:bg-theme-dark-700"></div>
+                        <div className="bg-theme-secondary-300 dark:bg-theme-dark-700 -mx-6 h-[5px]"></div>
                     )}
                 </div>
             </div>

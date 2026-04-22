@@ -10,16 +10,16 @@ export default function HeaderExternalLink({ exchange }: { exchange: IExchange }
             rel="noopener nofollow noreferrer"
         >
             <div className="flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full border border-theme-secondary-200 bg-white p-1.5 dark:border-theme-dark-900 dark:bg-theme-dark-900">
+                <div className="border-theme-secondary-200 dark:border-theme-dark-900 dark:bg-theme-dark-900 flex h-8 w-8 items-center justify-center rounded-full border bg-white p-1.5">
                     <img className="max-h-full max-w-full" src={exchange.iconUrl} alt="" />
                 </div>
 
-                <span className="text-sm font-semibold leading-4 text-theme-primary-600 dark:text-theme-dark-50">
+                <span className="text-theme-primary-600 dark:text-theme-dark-50 text-sm leading-4 font-semibold">
                     {exchange.name}
                 </span>
             </div>
 
-            <ArrowExternalIcon className="h-4 w-4 text-theme-secondary-500 dark:text-theme-dark-500" />
+            <ArrowExternalIcon className="text-theme-secondary-500 dark:text-theme-dark-500 h-4 w-4" />
         </a>
     );
 }

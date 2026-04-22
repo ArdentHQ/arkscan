@@ -10,7 +10,7 @@ export default function TableCell({
     return (
         <div
             className={classNames({
-                "flex flex-col space-y-2 font-semibold leading-4.25": true,
+                "flex flex-col space-y-2 leading-4.25 font-semibold": true,
                 [className]: true,
             })}
         >

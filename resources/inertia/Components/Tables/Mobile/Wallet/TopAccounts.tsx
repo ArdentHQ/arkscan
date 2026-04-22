@@ -43,7 +43,7 @@ function TopAccountRow({ wallet, rank }: { wallet: IWallet; rank: number }) {
                 })}
             >
                 {walletModel.hasUsername ? (
-                    <div className="inline-block text-theme-secondary-900 dark:text-theme-dark-50">
+                    <div className="text-theme-secondary-900 dark:text-theme-dark-50 inline-block">
                         {wallet.username}
                     </div>
                 ) : (
@@ -53,7 +53,7 @@ function TopAccountRow({ wallet, rank }: { wallet: IWallet; rank: number }) {
 
             <TableCell
                 className={classNames({
-                    "!mt-0": !walletModel.hasUsername,
+                    "mt-0!": !walletModel.hasUsername,
                 })}
                 label={t("tables.wallets.balance_currency", {
                     currency: network?.currency,

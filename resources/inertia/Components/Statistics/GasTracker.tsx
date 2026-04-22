@@ -35,9 +35,9 @@ function GasTrackerCard({
     const tooltipValue = UnitConverter.gweiToArk(fee.amount, network.currency);
 
     return (
-        <div className="flex flex-1 flex-col rounded border border-white bg-white px-4 py-3 font-semibold dark:border-theme-dark-900 dark:bg-theme-dark-900 dark:text-theme-dark-200 md:rounded-lg">
+        <div className="dark:border-theme-dark-900 dark:bg-theme-dark-900 dark:text-theme-dark-200 flex flex-1 flex-col rounded border border-white bg-white px-4 py-3 font-semibold md:rounded-lg">
             <div className="flex flex-1 items-center justify-between pb-3">
-                <div className="mb-0 flex items-center space-x-1.5 text-sm text-theme-secondary-900 dark:text-theme-dark-50">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50 mb-0 flex items-center space-x-1.5 text-sm">
                     <Icon className="h-5 w-5" />
 
                     <span>{title}</span>
@@ -48,7 +48,7 @@ function GasTrackerCard({
 
             <div
                 className={classNames(
-                    "-mx-4 -mb-3 flex rounded-b bg-theme-secondary-100 p-4 pt-3 text-sm dark:bg-theme-dark-950 md:rounded-b-lg",
+                    "bg-theme-secondary-100 dark:bg-theme-dark-950 -mx-4 -mb-3 flex rounded-b p-4 pt-3 text-sm md:rounded-b-lg",
                     {
                         "justify-between": canBeExchanged,
                         "justify-end": !canBeExchanged,
@@ -75,12 +75,12 @@ export default function GasTracker({ data }: { data: GasTrackerData }) {
     const { t } = useTranslation();
 
     return (
-        <div className="bg-theme-secondary-200 p-6 dark:bg-theme-dark-950 md:rounded-xl md:p-[9px]">
-            <h3 className="mb-[9px] text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200 md:px-[15px]">
+        <div className="bg-theme-secondary-200 dark:bg-theme-dark-950 p-6 md:rounded-xl md:p-[9px]">
+            <h3 className="text-theme-secondary-700 dark:text-theme-dark-200 mb-[9px] text-sm font-semibold md:px-[15px]">
                 {t("pages.statistics.gas-tracker.current_gas_prices")}
             </h3>
 
-            <div className="flex flex-col space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0">
+            <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
                 {(["low", "average", "high"] as const).map((level) => (
                     <GasTrackerCard
                         key={level}

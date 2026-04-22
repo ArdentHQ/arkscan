@@ -49,7 +49,7 @@ export default function NavbarResults({ onBlur, floatingRef, floatingStyles }: N
             ref={floatingRef}
             style={{ ...floatingStyles, zIndex: 10 }}
             className={classNames(
-                "search-dropdown rounded-xl border border-transparent bg-white py-1 shadow-lg transition-all duration-150 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200",
+                "search-dropdown dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200 rounded-xl border border-transparent bg-white py-1 shadow-lg transition-all duration-150",
                 {
                     "pointer-events-auto scale-100 opacity-100": open,
                     "pointer-events-none scale-95 opacity-0": !open,
@@ -59,15 +59,15 @@ export default function NavbarResults({ onBlur, floatingRef, floatingStyles }: N
             )}
         >
             {open && (
-                <div className="custom-scroll flex max-h-[410px] flex-col space-y-1 divide-y divide-dashed divide-theme-secondary-300 overflow-y-auto whitespace-nowrap px-6 py-3 text-sm font-semibold dark:divide-theme-dark-800">
+                <div className="custom-scroll divide-theme-secondary-300 dark:divide-theme-dark-800 flex max-h-[410px] flex-col space-y-1 divide-y divide-dashed overflow-y-auto px-6 py-3 text-sm font-semibold whitespace-nowrap">
                     {isLoading && (
-                        <p className="text-center text-theme-secondary-900 dark:text-theme-dark-50">
+                        <p className="text-theme-secondary-900 dark:text-theme-dark-50 text-center">
                             {t("general.search.results_will_show_up")}
                         </p>
                     )}
 
                     {!isLoading && results.length === 0 && (
-                        <p className="text-center text-theme-secondary-900 dark:text-theme-dark-50">
+                        <p className="text-theme-secondary-900 dark:text-theme-dark-50 text-center">
                             {t("general.search.no_results")}
                         </p>
                     )}
@@ -136,16 +136,16 @@ const SearchInput = ({ onEnter }: { onEnter: () => void }) => {
     }, []);
 
     return (
-        <div className="group relative flex h-8 flex-shrink-0 items-center overflow-hidden rounded border-2 border-theme-secondary-300 focus-within:border-theme-primary-600 hover:border-theme-primary-600 dark:border-theme-dark-800 focus-within:dark:border-theme-primary-600 group-hover:dark:border-theme-primary-600">
-            <div className="flex items-center pl-4 pr-2">
-                <MagnifyingGlassSmallIcon className="h-4 w-4 text-theme-secondary-500 dim:text-theme-dark-200 dark:text-theme-dark-600" />
+        <div className="group border-theme-secondary-300 focus-within:border-theme-primary-600 hover:border-theme-primary-600 dark:border-theme-dark-800 focus-within:dark:border-theme-primary-600 group-hover:dark:border-theme-primary-600 relative flex h-8 flex-shrink-0 items-center overflow-hidden rounded border-2">
+            <div className="flex items-center pr-2 pl-4">
+                <MagnifyingGlassSmallIcon className="text-theme-secondary-500 dim:text-theme-dark-200 dark:text-theme-dark-600 h-4 w-4" />
             </div>
 
             <div className="h-full flex-1 leading-none">
                 <input
                     ref={searchInputRef}
                     type="text"
-                    className="block h-full w-full overflow-ellipsis py-2 text-theme-secondary-900 dim:text-theme-dark-50 dark:bg-theme-dark-900 dark:text-theme-dark-200"
+                    className="text-theme-secondary-900 dim:text-theme-dark-50 dark:bg-theme-dark-900 dark:text-theme-dark-200 block h-full w-full py-2 overflow-ellipsis"
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
                             onEnter();
@@ -161,7 +161,7 @@ const SearchInput = ({ onEnter }: { onEnter: () => void }) => {
                 <button
                     type="button"
                     onClick={handleClear}
-                    className="button-secondary -my-px bg-transparent pr-4 text-theme-secondary-700 dim:bg-transparent dim:text-theme-dark-50 dim:shadow-none dark:bg-theme-dark-900 dark:text-theme-dark-600"
+                    className="button-secondary text-theme-secondary-700 dim:bg-transparent dim:text-theme-dark-50 dim:shadow-none dark:bg-theme-dark-900 dark:text-theme-dark-600 -my-px bg-transparent pr-4"
                 >
                     <CrossIcon className="h-3 w-3" />
                 </button>
@@ -213,7 +213,7 @@ export function NavbarResultsMobile() {
 
     return (
         <div
-            className="custom-scroll container fixed inset-0 z-50 mx-auto flex h-screen w-full flex-col overflow-auto outline-none md:hidden"
+            className="custom-scroll fixed inset-0 z-50 container mx-auto flex h-screen w-full flex-col overflow-auto outline-none md:hidden"
             tabIndex={0}
             onKeyDown={(e) => {
                 if (e.key === "Escape") {
@@ -223,15 +223,15 @@ export function NavbarResultsMobile() {
         >
             <div
                 onClick={clear}
-                className="fixed inset-0 bg-theme-secondary-900 opacity-70 dark:bg-theme-dark-800 dark:opacity-80"
+                className="bg-theme-secondary-900 dark:bg-theme-dark-800 fixed inset-0 opacity-70 dark:opacity-80"
             ></div>
 
-            <div className="relative mx-4 my-6 flex flex-col rounded-xl border border-transparent bg-white p-6 dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200 sm:m-8">
+            <div className="dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:text-theme-dark-200 relative mx-4 my-6 flex flex-col rounded-xl border border-transparent bg-white p-6 sm:m-8">
                 <SearchInput onEnter={goToFirstResult} />
 
                 <div
                     ref={searchResultsRef}
-                    className="flex flex-col space-y-1 divide-y divide-dashed divide-theme-secondary-300 whitespace-nowrap text-sm font-semibold dark:divide-theme-dark-800"
+                    className="divide-theme-secondary-300 dark:divide-theme-dark-800 flex flex-col space-y-1 divide-y divide-dashed text-sm font-semibold whitespace-nowrap"
                 >
                     {hasResults && (
                         <>
@@ -245,7 +245,7 @@ export function NavbarResultsMobile() {
                         </>
                     )}
                     {!hasResults && (
-                        <div className="mt-4 whitespace-normal text-center text-theme-secondary-900 dark:text-theme-dark-50">
+                        <div className="text-theme-secondary-900 dark:text-theme-dark-50 mt-4 text-center whitespace-normal">
                             <p>
                                 {query.length > 0
                                     ? t("general.search.no_results")
@@ -273,7 +273,7 @@ function ResultLink({
     return (
         <Link
             href={href}
-            className="group/result transition-default -mx-3 block min-w-0 cursor-pointer rounded-[10px] p-3 hover:bg-theme-secondary-200 dark:hover:bg-black"
+            className="group/result transition-default hover:bg-theme-secondary-200 -mx-3 block min-w-0 cursor-pointer rounded-[10px] p-3 dark:hover:bg-black"
             onBlur={onBlur}
         >
             {children}
@@ -316,11 +316,11 @@ export function getResultHref(result: SearchResult) {
 
 function MobileResult({ header, children }: { header: React.ReactNode; children: React.ReactNode }) {
     return (
-        <div className="rounded border border-theme-secondary-300 text-sm dark:border-theme-dark-700 md:hidden">
-            <div className="flex items-center justify-between rounded-t bg-theme-secondary-100 px-4 py-3 dark:bg-theme-dark-950">
+        <div className="border-theme-secondary-300 dark:border-theme-dark-700 rounded border text-sm md:hidden">
+            <div className="bg-theme-secondary-100 dark:bg-theme-dark-950 flex items-center justify-between rounded-t px-4 py-3">
                 {header}
             </div>
-            <div className="flex flex-col space-y-4 px-4 pb-4 pt-3 sm:flex-1 sm:flex-row sm:justify-between sm:space-y-0">
+            <div className="flex flex-col space-y-4 px-4 pt-3 pb-4 sm:flex-1 sm:flex-row sm:justify-between sm:space-y-0">
                 {children}
             </div>
         </div>
@@ -330,11 +330,11 @@ function MobileResult({ header, children }: { header: React.ReactNode; children:
 function MobileResultDetail({ title, children }: { title: React.ReactNode; children: React.ReactNode }) {
     return (
         <div className="flex flex-col space-y-2 font-semibold">
-            <div className="whitespace-nowrap text-xs leading-3.75 text-theme-secondary-700 dark:text-theme-dark-200">
+            <div className="text-theme-secondary-700 dark:text-theme-dark-200 text-xs leading-3.75 whitespace-nowrap">
                 {title}
             </div>
 
-            <div className="text-xs leading-3.75 text-theme-secondary-900 dark:text-theme-dark-50">{children}</div>
+            <div className="text-theme-secondary-900 dark:text-theme-dark-50 text-xs leading-3.75">{children}</div>
         </div>
     );
 }
@@ -352,7 +352,7 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
                     <>
                         <div
                             className={classNames(
-                                "link font-semibold hover:text-theme-primary-600 group-hover/result:no-underline",
+                                "link hover:text-theme-primary-600 font-semibold group-hover/result:no-underline",
                                 {
                                     "overflow-auto": !hasUsername,
                                 },
@@ -366,7 +366,7 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
                         </div>
 
                         {hasUsername && (
-                            <div className="ml-1 flex-1 overflow-auto text-theme-secondary-700 dark:text-theme-dark-200">
+                            <div className="text-theme-secondary-700 dark:text-theme-dark-200 ml-1 flex-1 overflow-auto">
                                 <TruncateDynamic value={result.data.address ?? ""} />
                             </div>
                         )}
@@ -389,12 +389,12 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
                         {t("general.search.address")}
                     </div>
 
-                    <div className="link font-semibold hover:text-theme-primary-600 group-hover/result:no-underline">
+                    <div className="link hover:text-theme-primary-600 font-semibold group-hover/result:no-underline">
                         {hasUsername ? result.data.username : result.data.address}
                     </div>
 
                     {hasUsername && (
-                        <div className="ml-1 truncate text-theme-secondary-700 dark:text-theme-dark-200">
+                        <div className="text-theme-secondary-700 dark:text-theme-dark-200 ml-1 truncate">
                             {result.data.address}
                         </div>
                     )}
@@ -405,7 +405,7 @@ function WalletResult({ result }: { result: SearchResult<INavbarSearchWalletResu
                         {t("general.search.balance")}
                     </div>
 
-                    <div className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
+                    <div className="text-theme-secondary-900 dark:text-theme-dark-50 truncate">
                         {currencyWithDecimals({ value: result.data.balance ?? 0, currency: network!.currency })}
                     </div>
                 </div>
@@ -423,14 +423,14 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
         <>
             <MobileResult
                 header={
-                    <div className="link min-w-0 hover:text-theme-primary-600 group-hover/result:no-underline">
+                    <div className="link hover:text-theme-primary-600 min-w-0 group-hover/result:no-underline">
                         <TruncateDynamic value={hash ?? ""} />
                     </div>
                 }
                 children={
                     <div className="flex flex-col space-y-4">
                         <MobileResultDetail title={t("general.search.generated_by")}>
-                            <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                            <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                                 <TruncateMiddle length={10}>{validator?.address}</TruncateMiddle>
                             </div>
                         </MobileResultDetail>
@@ -446,18 +446,18 @@ function BlockResult({ result }: { result: SearchResult<INavbarSearchBlockResult
                 <div className="flex items-center space-x-2">
                     <div className="text-theme-secondary-900 dark:text-theme-dark-50">{t("general.search.block")}</div>
 
-                    <div className="link min-w-0 hover:text-theme-primary-600 group-hover/result:no-underline">
+                    <div className="link hover:text-theme-primary-600 min-w-0 group-hover/result:no-underline">
                         <TruncateMiddle length={20}>{hash}</TruncateMiddle>
                     </div>
                 </div>
 
-                <div className="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+                <div className="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
                     <div className="isolate flex items-center space-x-2 text-xs">
                         <div className="text-theme-secondary-700 dark:text-theme-dark-200">
                             {t("general.search.generated_by")}
                         </div>
 
-                        <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                        <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                             <TruncateMiddle length={10}>{validator?.address}</TruncateMiddle>
                         </div>
                     </div>
@@ -479,7 +479,7 @@ const TransactionResultBadge = ({ className, children }: { className?: string; c
     return (
         <div
             className={classNames(
-                "encapsulated-badge shrink-0 rounded border border-transparent bg-theme-secondary-200 px-[3px] py-[2px] text-center text-xs font-semibold leading-3.75 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200",
+                "encapsulated-badge bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:text-theme-dark-200 shrink-0 rounded border border-transparent px-[3px] py-[2px] text-center text-xs leading-3.75 font-semibold dark:bg-transparent",
                 className,
             )}
         >
@@ -498,14 +498,14 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
         <>
             <MobileResult
                 header={
-                    <div className="link min-w-0 overflow-auto hover:text-theme-primary-600 group-hover/result:no-underline">
+                    <div className="link hover:text-theme-primary-600 min-w-0 overflow-auto group-hover/result:no-underline">
                         <TruncateDynamic value={result.data.hash ?? ""} />
                     </div>
                 }
                 children={
                     <div className="flex flex-col space-y-4">
                         <div className="flex flex-col space-y-2">
-                            <div className="text-xs leading-3.75 dark:text-theme-dark-200">
+                            <div className="dark:text-theme-dark-200 text-xs leading-3.75">
                                 <Tooltip
                                     disabled={!votedValidatorLabel}
                                     content={
@@ -522,7 +522,7 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                                     <div className="flex items-center space-x-2 text-xs">
                                         <TransactionResultBadge>{t("general.search.from")}</TransactionResultBadge>
 
-                                        <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                        <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                                             <TruncateMiddle length={10}>{result.data.sender?.address}</TruncateMiddle>
                                         </div>
                                     </div>
@@ -530,7 +530,7 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                                     <div className="flex items-center space-x-2 text-xs">
                                         <TransactionResultBadge>{t("general.search.to")}</TransactionResultBadge>
 
-                                        <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                        <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                                             <TruncateMiddle length={10}>
                                                 {result.data.recipient?.address}
                                             </TruncateMiddle>
@@ -558,7 +558,7 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                                     <div className="flex items-center space-x-2 text-xs">
                                         <TransactionResultBadge>{t("general.search.from")}</TransactionResultBadge>
 
-                                        <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                                        <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                                             <TruncateMiddle length={10}>{result.data.sender?.address}</TruncateMiddle>
                                         </div>
                                     </div>
@@ -599,21 +599,21 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                         </Tooltip>
                     </TransactionResultBadge>
 
-                    <div className="link min-w-0 flex-1 hover:text-theme-primary-600 group-hover/result:no-underline">
+                    <div className="link hover:text-theme-primary-600 min-w-0 flex-1 group-hover/result:no-underline">
                         <TruncateMiddle length={20}>{result.data.hash}</TruncateMiddle>
                     </div>
                 </div>
 
-                <div className="flex flex-col space-y-2 md:flex-row md:items-center md:space-x-4 md:space-y-0">
+                <div className="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
                     <div className="isolate flex items-center space-x-2 text-xs">
                         <TransactionResultBadge>{t("general.search.from")}</TransactionResultBadge>
 
                         {result.data.isVote || result.data.isUnvote ? (
-                            <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                            <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                                 <TruncateMiddle length={10}>{result.data.votedValidatorLabel}</TruncateMiddle>
                             </div>
                         ) : (
-                            <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                            <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                                 <TruncateMiddle length={10}>{result.data.sender?.address}</TruncateMiddle>
                             </div>
                         )}
@@ -623,7 +623,7 @@ function TransactionResult({ result }: { result: SearchResult<INavbarSearchTrans
                         <TransactionResultBadge>{t("general.search.to")}</TransactionResultBadge>
 
                         {result.data.isTransfer || result.data.isTokenTransfer ? (
-                            <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                            <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                                 <TruncateMiddle length={10}>{result.data.recipient?.address}</TruncateMiddle>
                             </div>
                         ) : (

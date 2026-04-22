@@ -44,11 +44,11 @@ export default function Exchanges() {
     const { chart, network } = useSharedData<ExchangesProps>();
 
     return (
-        <Layout className="pb-8 pt-8 md:pb-6">
+        <Layout className="pt-8 pb-8 md:pb-6">
             {chart && network?.canBeExchanged && (
                 <>
                     <div className="hidden flex-col px-6 sm:flex md:mx-auto md:max-w-7xl md:px-10">
-                        <div className="text-lg font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl">
+                        <div className="text-theme-secondary-900 dark:text-theme-dark-50 text-lg font-semibold md:text-2xl">
                             {t("pages.exchanges.live_price_chart")}
                         </div>
 
@@ -58,7 +58,7 @@ export default function Exchanges() {
                     <MobileDivider className="my-6 hidden sm:block" />
 
                     <div className="hidden flex-col px-6 sm:flex md:mx-auto md:max-w-7xl md:px-10">
-                        <hr className="my-8 hidden h-px text-theme-secondary-300 dark:text-theme-dark-700 md:block" />
+                        <hr className="text-theme-secondary-300 dark:text-theme-dark-700 my-8 hidden h-px md:block" />
                     </div>
                 </>
             )}

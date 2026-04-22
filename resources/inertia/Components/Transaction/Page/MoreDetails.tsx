@@ -36,7 +36,7 @@ export default function TransactionMoreDetails({
             >
                 <MobileTableRow
                     header={<span className="font-semibold">{t("pages.transaction.gas_information")}</span>}
-                    contentClass="!space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800"
+                    contentClass="space-y-3! divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800"
                 >
                     <TableCell label={t("pages.transaction.header.gas_limit")}>
                         <Number>{gasLimit}</Number>
@@ -65,7 +65,7 @@ export default function TransactionMoreDetails({
 
                         <button
                             type="button"
-                            className="link border-b border-dashed border-theme-primary-500 leading-5 hover:border-theme-primary-700 hover:no-underline"
+                            className="link border-theme-primary-500 hover:border-theme-primary-700 border-b border-dashed leading-5 hover:no-underline"
                             onClick={() => setIsMobilePayloadExpanded(!isMobilePayloadExpanded)}
                         >
                             {isMobilePayloadExpanded ? t("actions.hide") : t("actions.view_all")}
@@ -75,12 +75,12 @@ export default function TransactionMoreDetails({
             </PageSection>
 
             <div className="hidden px-6 sm:block md:mx-auto md:max-w-7xl md:px-10">
-                <div className="font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50 leading-5 font-semibold">
                     {t("pages.transaction.more_details")}
                 </div>
 
                 <PageSection
-                    className="mt-4 !px-0"
+                    className="mt-4 px-0!"
                     wrapperContainerClass="max-w-full"
                     wrapperClass="flex flex-1 flex-col whitespace-nowrap leading-7"
                 >
@@ -104,7 +104,7 @@ export default function TransactionMoreDetails({
                 </PageSection>
 
                 <PageSection
-                    className="!px-0"
+                    className="px-0!"
                     wrapperContainerClass="max-w-full"
                     wrapperClass="flex flex-1 flex-col whitespace-nowrap leading-7"
                 >
@@ -124,7 +124,7 @@ export default function TransactionMoreDetails({
                     <div>
                         {isDesktopPayloadExpanded && (
                             <PageSection
-                                className="!px-0 sm:mt-2"
+                                className="px-0! sm:mt-2"
                                 wrapperContainerClass="w-full"
                                 wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap max-w-full"
                             >
@@ -132,11 +132,11 @@ export default function TransactionMoreDetails({
                             </PageSection>
                         )}
 
-                        <PageSection className="mt-2 !px-0" wrapperContainerClass="max-w-full" noBorder>
+                        <PageSection className="mt-2 px-0!" wrapperContainerClass="max-w-full" noBorder>
                             <div>
                                 <button
                                     type="button"
-                                    className="link border-b border-dashed border-theme-primary-500 leading-5 hover:border-theme-primary-700 hover:no-underline"
+                                    className="link border-theme-primary-500 hover:border-theme-primary-700 border-b border-dashed leading-5 hover:no-underline"
                                     onClick={() => setIsDesktopPayloadExpanded(!isDesktopPayloadExpanded)}
                                 >
                                     {isDesktopPayloadExpanded ? t("actions.hide") : t("actions.view_all")}

@@ -8,7 +8,7 @@ export default function Tab({ text, value }: ITab) {
     return (
         <button
             type="button"
-            className="transition-default group/tab relative flex cursor-pointer items-center text-theme-secondary-700 hover:text-theme-secondary-900 dark:text-theme-dark-200 dark:hover:text-theme-secondary-200"
+            className="transition-default group/tab text-theme-secondary-700 hover:text-theme-secondary-900 dark:text-theme-dark-200 dark:hover:text-theme-secondary-200 relative flex cursor-pointer items-center"
             onClick={() => select(value)}
             onKeyDown={(e) => {
                 if (e.key === " " || e.key === "Enter") {
@@ -41,10 +41,10 @@ export default function Tab({ text, value }: ITab) {
         >
             <span
                 className={classNames({
-                    "transition-default block h-full w-full whitespace-nowrap rounded px-3 py-1.5 font-semibold sm:rounded-lg": true,
+                    "transition-default block h-full w-full rounded px-3 py-1.5 font-semibold whitespace-nowrap sm:rounded-lg": true,
                     "group-hover/tab:bg-theme-secondary-300 group-hover/tab:text-theme-secondary-900 dark:text-theme-dark-200 dark:group-hover/tab:bg-theme-dark-900 dark:group-hover/tab:text-theme-dark-50":
                         currentTab !== value,
-                    "bg-white text-theme-secondary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50":
+                    "text-theme-secondary-900 dark:bg-theme-dark-800 dark:text-theme-dark-50 bg-white":
                         currentTab === value,
                 })}
             >

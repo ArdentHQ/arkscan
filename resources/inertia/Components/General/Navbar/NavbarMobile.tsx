@@ -23,10 +23,10 @@ const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLA
         <button
             type="button"
             className={classNames(
-                "transition-default mx-1 flex items-center justify-center rounded p-2.5 focus:outline-none focus:ring-inset md:mx-4",
+                "transition-default mx-1 flex items-center justify-center rounded p-2.5 last:mr-0 focus:outline-none focus:ring-inset md:mx-4",
                 {
                     "text-theme-secondary-400": disabled,
-                    "text-theme-secondary-600 hover:bg-theme-primary-100 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:bg-theme-secondary-800 dark:hover:text-theme-secondary-100":
+                    "text-theme-secondary-600 hover:bg-theme-primary-100 hover:text-theme-primary-700 dark:text-theme-dark-300 focus:dark:bg-theme-secondary-800 focus:dark:text-theme-secondary-100":
                         !disabled,
                 },
                 className,
@@ -57,9 +57,9 @@ const NavbarMobileItem = ({
             <Link
                 href={link}
                 className={classNames(
-                    "group relative inline-flex h-full w-full py-3 font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none",
+                    "group relative inline-flex h-full w-full py-3 leading-5 font-semibold transition duration-150 ease-in-out focus:outline-none",
                     {
-                        "w-full border-l-4 border-theme-primary-600 bg-theme-primary-50 text-theme-secondary-900 dark:border-theme-dark-blue-500 dark:bg-theme-dark-950 dark:text-theme-dark-50":
+                        "border-theme-primary-600 bg-theme-primary-50 text-theme-secondary-900 dark:border-theme-dark-blue-500 dark:bg-theme-dark-950 dark:text-theme-dark-50 w-full border-l-4":
                             isActive,
                         "hover:background-theme-secondary-200 text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 dark:hover:text-theme-secondary-400":
                             !isActive,
@@ -84,9 +84,9 @@ const NavbarMobileItem = ({
             href={link}
             target="_blank"
             className={classNames(
-                "group relative inline-flex h-full w-full py-3 font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none",
+                "group relative inline-flex h-full w-full py-3 leading-5 font-semibold transition duration-150 ease-in-out focus:outline-none",
                 {
-                    "w-full border-l-4 border-theme-primary-600 bg-theme-primary-50 text-theme-secondary-900 dark:border-theme-dark-blue-500 dark:bg-theme-dark-950 dark:text-theme-dark-50":
+                    "border-theme-primary-600 bg-theme-primary-50 text-theme-secondary-900 dark:border-theme-dark-blue-500 dark:bg-theme-dark-950 dark:text-theme-dark-50 w-full border-l-4":
                         isActive,
                     "hover:background-theme-secondary-200 text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 dark:hover:text-theme-secondary-400":
                         !isActive,
@@ -126,16 +126,16 @@ const NavbarMobileListItem = ({
             <Link
                 href={link}
                 className={classNames(
-                    "transition-default group relative ml-6 inline-flex h-full w-full border-l border-theme-secondary-300 px-6 py-3 font-semibold leading-5 hover:bg-theme-secondary-200 focus:outline-none dark:border-theme-dark-500 dark:hover:bg-theme-dark-900",
+                    "transition-default group border-theme-secondary-300 hover:bg-theme-secondary-200 dark:border-theme-dark-500 focus:dark:bg-theme-dark-900 relative ml-6 inline-flex h-full w-full border-l px-6 py-3 leading-5 font-semibold focus:outline-none",
                     {
                         "text-theme-secondary-900 dark:text-theme-dark-50": isActive,
-                        "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 dark:hover:text-theme-secondary-50":
+                        "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 focus:dark:text-theme-secondary-50":
                             !isActive,
                     },
                     className,
                 )}
             >
-                <span className="transition-default flex h-full w-full items-center text-theme-secondary-700 group-hover:text-theme-secondary-900 dark:text-theme-dark-50 dark:group-hover:text-white">
+                <span className="transition-default text-theme-secondary-700 group-hover:text-theme-secondary-900 dark:text-theme-dark-50 flex h-full w-full items-center dark:group-hover:text-white">
                     <span>{children}</span>
                 </span>
             </Link>
@@ -147,7 +147,7 @@ const NavbarMobileListItem = ({
             href={link}
             target={route ? "_self" : "_blank"}
             className={classNames(
-                "transition-default group relative ml-6 inline-flex h-full w-full border-l border-theme-secondary-300 px-6 py-3 font-semibold leading-5 hover:bg-theme-secondary-200 focus:outline-none dark:border-theme-dark-500 dark:hover:bg-theme-dark-900",
+                "transition-default group border-theme-secondary-300 hover:bg-theme-secondary-200 dark:border-theme-dark-500 dark:hover:bg-theme-dark-900 relative ml-6 inline-flex h-full w-full border-l px-6 py-3 leading-5 font-semibold focus:outline-none",
                 {
                     "text-theme-secondary-900 dark:text-theme-dark-50": isActive,
                     "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 dark:hover:text-theme-secondary-50":
@@ -156,7 +156,7 @@ const NavbarMobileListItem = ({
                 className,
             )}
         >
-            <span className="transition-default flex h-full w-full items-center text-theme-secondary-700 group-hover:text-theme-secondary-900 dark:text-theme-dark-50 dark:group-hover:text-white">
+            <span className="transition-default text-theme-secondary-700 group-hover:text-theme-secondary-900 dark:text-theme-dark-50 flex h-full w-full items-center dark:group-hover:text-white">
                 <span>{children}</span>
             </span>
         </a>
@@ -171,7 +171,7 @@ const SettingsItem = ({
 }: React.HTMLAttributes<HTMLDivElement> & { title: string }) => {
     return (
         <div className={classNames("flex items-center justify-between", className)} {...props}>
-            <div className="font-semibold dark:text-theme-dark-200">{title}</div>
+            <div className="dark:text-theme-dark-200 font-semibold">{title}</div>
 
             <div>{children}</div>
         </div>
@@ -222,7 +222,7 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
 
                 <nav
                     ref={navbarRef}
-                    className="relative z-30 border-b border-theme-secondary-300 bg-white dark:border-theme-dark-800 dark:bg-theme-dark-900"
+                    className="border-theme-secondary-300 dark:border-theme-dark-800 dark:bg-theme-dark-900 relative z-30 border-b bg-white"
                 >
                     <div className="content-container relative flex h-[3.25rem] w-full justify-between sm:h-16">
                         <div className="flex flex-shrink-0 items-center">
@@ -277,12 +277,12 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                             "max-h-screen opacity-100": open,
                         })}
                     >
-                        <div className="border-t-2 border-theme-secondary-200 shadow-xl dim:border-theme-dark-700 dark:border-theme-dark-800">
-                            <div className="rounded-b-lg bg-white pt-2 dark:bg-theme-dark-700">
+                        <div className="border-theme-secondary-200 dim:border-theme-dark-700 dark:border-theme-dark-800 border-t-2 shadow-xl">
+                            <div className="dark:bg-theme-dark-700 rounded-b-lg bg-white pt-2">
                                 {navigation.map((navItem, index) => (
                                     <div key={index} className="relative h-full">
                                         {navItem.children ? (
-                                            <div className="relative h-full dark:bg-theme-dark-700">
+                                            <div className="dark:bg-theme-dark-700 relative h-full">
                                                 <button
                                                     type="button"
                                                     onClick={() =>
@@ -290,7 +290,7 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                                                             openDropdown === navItem.label ? null : navItem.label,
                                                         )
                                                     }
-                                                    className="relative inline-flex h-full w-full items-center justify-between px-6 py-3 font-semibold leading-5 text-theme-secondary-700 hover:text-theme-secondary-800 focus:outline-none focus:ring-inset dark:text-theme-dark-50"
+                                                    className="text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 relative inline-flex h-full w-full items-center justify-between px-6 py-3 leading-5 font-semibold focus:outline-none focus:ring-inset"
                                                 >
                                                     <span
                                                         className={classNames({
@@ -303,7 +303,7 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
 
                                                     <span
                                                         className={classNames(
-                                                            "ml-2 text-theme-secondary-700 dark:text-theme-dark-50",
+                                                            "text-theme-secondary-700 dark:text-theme-dark-50 ml-2",
                                                             {
                                                                 "rotate-180": openDropdown === navItem.label,
                                                             },
@@ -314,8 +314,8 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                                                 </button>
 
                                                 {openDropdown === navItem.label && (
-                                                    <div className="bg-white dark:bg-theme-dark-700">
-                                                        <div className="flex w-full flex-col pb-2 pt-2">
+                                                    <div className="dark:bg-theme-dark-700 bg-white">
+                                                        <div className="flex w-full flex-col pt-2 pb-2">
                                                             {navItem.children?.map((child, index) => (
                                                                 <NavbarMobileListItem
                                                                     key={index}
@@ -338,16 +338,16 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                                 ))}
 
                                 <div className="bg-theme-secondary-100 py-5 dark:bg-black">
-                                    <div className="mx-6 space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800">
-                                        <SettingsItem title={t("general.select_network")}>
+                                    <div className="divide-theme-secondary-300 dark:divide-theme-dark-800 mx-6 divide-y divide-dashed">
+                                        <SettingsItem title={t("general.select_network")} className="pb-3">
                                             <NavbarMobileThemeToggle />
                                         </SettingsItem>
 
-                                        <SettingsItem title={t("general.select_network")} className="pt-3">
+                                        <SettingsItem title={t("general.select_network")} className="py-3">
                                             <NetworkDropdown />
                                         </SettingsItem>
 
-                                        <div className="flex pt-3 font-semibold dark:text-theme-dark-500">
+                                        <div className="dark:text-theme-dark-500 flex pt-3 font-semibold">
                                             <PriceTicker />
                                         </div>
                                     </div>

@@ -75,7 +75,7 @@ export default function AmountFiatTooltip({
     const { t } = useTranslation();
     const { network } = useSharedData();
 
-    const classes: string[] = ["inline-flex items-center font-semibold", className];
+    const classes: string[] = ["inline-flex items-center font-semibold leading-4.25", className];
 
     const hasAmountForSelf = typeof amountForItself === "number" && amountForItself > 0;
 
@@ -130,7 +130,7 @@ export default function AmountFiatTooltip({
                         amount: formatCurrency(amountForItself, network!.currency),
                     })}
                 >
-                    <div className="mr-1.5 flex h-full items-center bg-[#F6DFB5] px-1.5 py-[4.5px] text-theme-orange-dark dim:bg-theme-failed-state-bg dark:bg-theme-failed-state-bg dark:text-theme-dark-50">
+                    <div className="text-theme-orange-dark dim:bg-theme-failed-state-bg dark:bg-theme-failed-state-bg dark:text-theme-dark-50 mr-1.5 flex h-full items-center bg-[#F6DFB5] px-1.5 py-[4.5px]">
                         <HintSmallIcon className="h-3 w-3" />
                     </div>
                 </Tooltip>

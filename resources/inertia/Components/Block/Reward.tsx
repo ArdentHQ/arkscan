@@ -27,7 +27,7 @@ export default function Reward({
                 withoutStyling={withoutStyling}
             />
 
-            {!withoutValue && <div className="mt-1 text-xs font-semibold leading-4.25 lg:hidden">{rewardFiat}</div>}
+            {!withoutValue && <div className="mt-1 text-xs leading-4.25 font-semibold lg:hidden">{rewardFiat}</div>}
         </div>
     );
 }

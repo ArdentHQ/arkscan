@@ -15,8 +15,8 @@ export default function ValidatorRowDesktop({ row }: { row: StatisticsValidatorR
     return (
         <div className="hidden w-full justify-between md:flex xl:w-[770px]">
             <div className="flex flex-1">{title}</div>
-            <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                <div className="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+            <div className="md-lg:flex-2 md-lg:flex-row md-lg:space-y-0 flex flex-1 flex-col justify-between space-y-3">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50 flex flex-1 justify-end">
                     {row.wallet ? (
                         <Link href={route("wallet", row.wallet.address)} className="link">
                             {row.wallet.hasUsername ? (
@@ -30,7 +30,7 @@ export default function ValidatorRowDesktop({ row }: { row: StatisticsValidatorR
                     )}
                 </div>
 
-                <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">
+                <div className="md-lg:pl-16 flex w-full flex-1 justify-between space-x-2">
                     <div>{valueLabel}:</div>
                     <div className="text-theme-secondary-900 dark:text-theme-dark-50">
                         <ValidatorRowValue rowKey={row.key} value={row.value} />

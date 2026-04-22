@@ -36,7 +36,7 @@ export default function ErrorShow({ error, status }: { error?: string; status: n
     return (
         <Layout className="mx:px-10 px-6 py-8">
             <div className="text-center">
-                <div className="mx-auto max-w-error-image">
+                <div className="max-w-error-image mx-auto">
                     {createElement(image, { className: "light-dark-icon h-full w-full" })}
                 </div>
 
@@ -44,7 +44,7 @@ export default function ErrorShow({ error, status }: { error?: string; status: n
                     <>
                         <h1 className="header-2 mt-8 px-2 xl:px-0">{t("errors.503_heading", { ns: "ui" })}</h1>
 
-                        <p className="mt-4 px-8 leading-loose dark:text-theme-secondary-500">
+                        <p className="dark:text-theme-secondary-500 mt-4 px-8 leading-loose">
                             {t("errors.503_message", { ns: "ui" })}
                         </p>
                     </>
@@ -52,9 +52,9 @@ export default function ErrorShow({ error, status }: { error?: string; status: n
                     <>
                         <h1 className="header-2 mt-8">{heading}</h1>
 
-                        <p className="mt-4 leading-loose dark:text-theme-secondary-500">{message}</p>
+                        <p className="dark:text-theme-secondary-500 mt-4 leading-loose">{message}</p>
 
-                        <div className="mt-8 flex flex-col space-y-3 sm:flex-row sm:justify-center sm:space-x-3 sm:space-y-0">
+                        <div className="mt-8 flex flex-col space-y-3 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-3">
                             {route().has("contact") ? (
                                 <Link className="button button-secondary" href={route("contact")}>
                                     {t("actions.contact", { ns: "ui" })}

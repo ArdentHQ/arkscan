@@ -35,16 +35,16 @@ export default function PriceTicker() {
         <div className={classNames("w-full md:w-auto", { "opacity-50": isUpdatingCurrency })}>
             <div
                 className={classNames(
-                    "flex items-center justify-between rounded border-theme-secondary-300 dark:border-transparent md:border md:bg-theme-secondary-200 md:dark:bg-theme-dark-700",
+                    "border-theme-secondary-300 md:bg-theme-secondary-200 md:dark:bg-theme-dark-700 flex items-center justify-between rounded md:border dark:border-transparent",
                     {
-                        "cursor-not-allowed select-none dark:text-theme-dark-200 md:text-theme-secondary-500 md:dark:text-theme-dark-500":
+                        "dark:text-theme-dark-200 md:text-theme-secondary-500 md:dark:text-theme-dark-500 cursor-not-allowed select-none":
                             isDisabled,
-                        "cursor-default dark:text-theme-dark-200 md:text-theme-secondary-700 md:dark:text-theme-dark-50":
+                        "dark:text-theme-dark-200 md:text-theme-secondary-700 md:dark:text-theme-dark-50 cursor-default":
                             !isDisabled,
                     },
                 )}
             >
-                <div className="transition-default font-semibold md:py-1.5 md:pl-3 md:pr-2 md:text-sm">
+                <div className="transition-default font-semibold md:py-1.5 md:pr-2 md:pl-3 md:text-sm">
                     <span>{t("general.navbar.price")}:&nbsp;</span>
                     {isDisabled ? (
                         t("general.na")
@@ -64,9 +64,9 @@ export default function PriceTicker() {
                         button={({ isOpen }) => (
                             <div
                                 className={classNames(
-                                    "transition-default group flex items-center justify-center space-x-2 py-2 pr-3 text-sm font-semibold leading-4",
+                                    "transition-default group flex items-center justify-center space-x-2 py-2 pr-3 text-sm leading-4 font-semibold",
                                     {
-                                        "cursor-not-allowed bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-dark-700 dark:text-theme-dark-500":
+                                        "bg-theme-secondary-200 text-theme-secondary-500 dark:bg-theme-dark-700 dark:text-theme-dark-500 cursor-not-allowed":
                                             isDisabled,
                                         "hover:text-theme-secondary-900 dark:text-theme-dark-50 hover:dark:text-theme-dark-50 md:dark:text-theme-dark-50":
                                             !isDisabled,
@@ -76,7 +76,7 @@ export default function PriceTicker() {
                                 <div
                                     className={classNames("h-3.5 md:block md:w-px", {
                                         "bg-theme-secondary-300 dark:bg-theme-dark-500": isDisabled,
-                                        "bg-transparent md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-dark-700":
+                                        "md:group-hover:bg-theme-secondary-300 md:group-hover:dark:bg-theme-dark-700 bg-transparent":
                                             !isDisabled,
                                     })}
                                 ></div>
@@ -89,7 +89,7 @@ export default function PriceTicker() {
                             </div>
                         )}
                     >
-                        <div className="custom-scroll flex h-full max-h-[246px] flex-col overflow-y-scroll overscroll-contain md:max-h-[332px] md-lg:pr-0.5">
+                        <div className="custom-scroll md-lg:pr-0.5 flex h-full max-h-[246px] flex-col overflow-y-scroll overscroll-contain md:max-h-[332px]">
                             {Object.values(currencies).map((item) => (
                                 <DropdownItem
                                     selected={item.currency === currency}

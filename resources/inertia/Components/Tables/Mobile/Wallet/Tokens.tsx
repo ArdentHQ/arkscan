@@ -26,7 +26,7 @@ export function TokensMobileTable() {
                     header={
                         <div className="flex w-full items-center justify-between space-x-2">
                             <div className="flex w-full min-w-0 items-center space-x-1">
-                                <div className="truncate text-theme-secondary-900 dark:text-theme-dark-50">
+                                <div className="text-theme-secondary-900 dark:text-theme-dark-50 truncate">
                                     <TruncatedValue value={token.token.name} />
                                 </div>
 

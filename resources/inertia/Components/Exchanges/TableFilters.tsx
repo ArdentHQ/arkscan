@@ -72,7 +72,7 @@ export default function ExchangeTableFilters() {
     }, []);
 
     return (
-        <div className="flex w-full flex-col space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0 md-lg:w-auto">
+        <div className="md-lg:w-auto flex w-full flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3">
             <ExchangeDropdown icon={StackIcon} items={typeOptions} onChange={(value: string) => updateType(value)}>
                 {t("pages.exchanges.type." + selectedType)}
             </ExchangeDropdown>

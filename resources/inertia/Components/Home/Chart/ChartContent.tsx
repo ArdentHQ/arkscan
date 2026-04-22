@@ -67,10 +67,10 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
         <div className="flex flex-col px-4 pb-3 sm:px-0 sm:pb-0">
             <div className="flex items-end justify-between sm:hidden sm:items-center">
                 <div className="flex flex-col space-y-2">
-                    <div className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                    <div className="text-theme-secondary-700 dark:text-theme-dark-200 text-sm font-semibold">
                         {priceTitle}
                     </div>
-                    <div className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                    <div className="text-theme-secondary-900 dark:text-theme-dark-50 text-sm font-semibold">
                         {priceValue ?? t("general.na")}
                         {currencySuffix && priceValue && <span className="ml-1">{currencySuffix}</span>}
                     </div>
@@ -79,7 +79,7 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
                 {canBeExchanged && (
                     <Link
                         href={route("exchanges")}
-                        className="link flex items-center space-x-2 rounded px-2 py-1.5 font-semibold hover:bg-theme-primary-200 hover:text-theme-primary-700 dark:hover:bg-theme-dark-700 dark:hover:text-theme-dark-50"
+                        className="link hover:bg-theme-primary-200 hover:text-theme-primary-700 dark:hover:bg-theme-dark-700 dark:hover:text-theme-dark-50 flex items-center space-x-2 rounded px-2 py-1.5 font-semibold"
                     >
                         <span>{t("actions.exchanges")}</span>
 
@@ -91,7 +91,7 @@ export default function ChartContent({ chart, canBeExchanged }: { chart: HomeCha
             <div className="hidden flex-col sm:flex">
                 <MarketOverviewHeader showExchanges={canBeExchanged} />
 
-                <div className="px-4 md-lg:px-6">
+                <div className="md-lg:px-6 px-4">
                     <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <MarketStat
                             label={t("pages.home.charts.price")}

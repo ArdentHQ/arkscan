@@ -13,10 +13,10 @@ export default function CompatibleWallets({ wallets }: PageProps<CompatibleWalle
     const { t } = useTranslation();
 
     return (
-        <Layout className="pb-8 pt-8 md:pb-6">
+        <Layout className="pt-8 pb-8 md:pb-6">
             <PageHeader title={t("pages.compatible-wallets.title")} subtitle={t("pages.compatible-wallets.subtitle")} />
 
-            <div className="border-t-4 border-theme-secondary-200 px-6 pt-6 dark:border-theme-dark-950 md:mx-auto md:max-w-7xl md:border-0 md:px-10 md:pt-0">
+            <div className="border-theme-secondary-200 dark:border-theme-dark-950 border-t-4 px-6 pt-6 md:mx-auto md:max-w-7xl md:border-0 md:px-10 md:pt-0">
                 <ArkVault />
 
                 <MobileDivider />

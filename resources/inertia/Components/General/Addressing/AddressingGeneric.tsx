@@ -29,12 +29,12 @@ export function AddressingGeneric({
     return (
         <div
             className={classNames(
-                "flex flex-col space-y-2 text-sm font-semibold sm:space-y-1 md:space-y-2 md-lg:flex-row md-lg:items-center md-lg:space-x-9 md-lg:space-y-0",
+                "md-lg:flex-row md-lg:items-center md-lg:gap-x-9 md-lg:gap-y-0 flex flex-col gap-y-2 text-sm font-semibold sm:gap-y-1 md:gap-y-2",
                 className,
             )}
             {...props}
         >
-            <div className="flex items-center space-x-2 md-lg:w-41">
+            <div className="md-lg:w-41 flex items-center space-x-2">
                 <Badge className="encapsulated-badge w-[39px] text-center">{t("tables.transactions.from")}</Badge>
 
                 <Tooltip content={senderUsername} disabled={!senderUsername} dynamic className="min-w-0 truncate">

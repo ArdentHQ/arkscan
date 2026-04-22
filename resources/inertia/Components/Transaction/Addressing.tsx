@@ -76,13 +76,13 @@ export default function Addressing({
             <div
                 className={classNames({
                     "h-[21px] w-[47px] rounded border text-center text-xs leading-5": true,
-                    "encapsulated-badge border-theme-secondary-200 bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200":
+                    "encapsulated-badge border-theme-secondary-200 bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:text-theme-dark-200 dark:bg-transparent":
                         isSentToSelf,
-                    "border-theme-success-100 bg-theme-success-100 text-theme-success-700 dark:border-theme-success-700 dark:bg-transparent dark:text-theme-success-500":
+                    "border-theme-success-100 bg-theme-success-100 text-theme-success-700 dark:border-theme-success-700 dark:text-theme-success-500 dark:bg-transparent":
                         (!isSent && !isGeneric && !isSentToSelf) || isReceived,
-                    "border-theme-orange-light bg-theme-orange-light text-theme-orange-dark dim:border-theme-failed-state-bg dim:text-theme-failed-state-text dark:border-theme-failed-state-bg dark:bg-transparent dark:text-theme-failed-state-text":
+                    "border-theme-orange-light bg-theme-orange-light text-theme-orange-dark dim:border-theme-failed-state-bg dim:text-theme-failed-state-text dark:border-theme-failed-state-bg dark:text-theme-failed-state-text dark:bg-transparent":
                         isSent && !isGeneric,
-                    "border-theme-secondary-200 bg-theme-secondary-200 dark:border-theme-dark-700 dark:bg-transparent dark:text-theme-dark-200":
+                    "border-theme-secondary-200 bg-theme-secondary-200 dark:border-theme-dark-700 dark:text-theme-dark-200 dark:bg-transparent":
                         isGeneric && !isSentToSelf,
                 })}
             >

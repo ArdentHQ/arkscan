@@ -12,7 +12,7 @@ export default function Badge({
     return (
         <div
             className={classNames({
-                "shrink-0 rounded border px-[3px] py-[2px] text-xs font-semibold leading-3.75 dark:bg-transparent": true,
+                "shrink-0 rounded border px-[3px] py-[2px] text-xs leading-3.75 font-semibold dark:bg-transparent": true,
                 [className]: true,
                 [colors]: true,
             })}

@@ -48,28 +48,28 @@ export function Row({ row: validator }: { row: IValidator }) {
                 <ValidatorStatus validator={validator} />
             </TableCell>
 
-            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+            <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
                 <div>
                     <Number>{validator.voterCount}</Number>
 
-                    <div className="divide mt-1 hidden space-x-2 divide-x divide-theme-secondary-300 text-xs leading-3.75 text-theme-secondary-700 dark:divide-theme-dark-700 dark:text-theme-dark-200 sm:flex lg:hidden">
-                        <div>
+                    <div className="divide divide-theme-secondary-300 text-theme-secondary-700 dark:divide-theme-dark-700 dark:text-theme-dark-200 mt-1 hidden space-x-2 divide-x text-xs leading-3.75 sm:flex lg:hidden">
+                        <div className="pr-2">
                             <Number>{validator.votes}</Number>
                         </div>
 
-                        <div className="pl-2">
+                        <div>
                             <Percentage>{validator.votesPercentage}</Percentage>
                         </div>
                     </div>
                 </div>
             </TableCell>
 
-            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50" responsive>
+            <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right" responsive>
                 <Votes validator={validator} />
             </TableCell>
 
             <TableCell
-                className="text-right text-theme-secondary-900 dark:text-theme-dark-50"
+                className="text-theme-secondary-900 dark:text-theme-dark-50 text-right"
                 responsive
                 breakpoint="lg"
             >
@@ -131,11 +131,11 @@ export function ValidatorsTable({
                         })}
                     </TableHeader>
 
-                    <TableHeader sortId="percentage_votes" type="number" responsive breakpoint="lg" className="!py-2.5">
+                    <TableHeader sortId="percentage_votes" type="number" responsive breakpoint="lg" className="py-2.5!">
                         {t("tables.validators.percentage")}
                     </TableHeader>
 
-                    <TableHeader sortId="missed_blocks" type="number" className="!py-2.5">
+                    <TableHeader sortId="missed_blocks" type="number" className="py-2.5!">
                         {t("tables.validators.missed_blocks")}
                     </TableHeader>
 
