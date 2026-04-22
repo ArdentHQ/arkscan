@@ -5,7 +5,7 @@ import LoadingTable from "../Table";
 
 export function MonitorMobileHeaderSkeleton() {
     return (
-        <div className="flex min-w-0 flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+        <div className="divide-theme-secondary-300 dark:divide-theme-dark-700 flex min-w-0 flex-1 divide-x">
             <div className="flex items-center pr-3">
                 <div className="items-center">
                     <LoadingText width="w-[17px]" />

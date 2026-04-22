@@ -122,7 +122,7 @@ export default function ExportTransactionsModal({
                             </div>
 
                             {dateRange === "custom" && (
-                                <div className="-mx-6 mt-4 flex space-x-3 bg-theme-primary-50 px-6 py-4 dark:bg-theme-dark-950">
+                                <div className="bg-theme-primary-50 dark:bg-theme-dark-950 -mx-6 mt-4 flex space-x-3 px-6 py-4">
                                     <div className="flex flex-1 flex-col space-y-2">
                                         <label className="dark:text-theme-dark-200">
                                             {t("general.export.date_from")}

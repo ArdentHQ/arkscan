@@ -20,24 +20,24 @@ export default function NetworkMapIndex({ peers }: PageProps<NetworkMapProps>) {
             <MobileDivider className="mb-6" />
 
             <div className="px-6 md:mx-auto md:max-w-7xl md:px-10">
-                <div className="rounded border border-theme-secondary-300 px-6 pb-6 pt-4 dark:border-theme-dark-700 md:rounded-xl">
+                <div className="border-theme-secondary-300 dark:border-theme-dark-700 rounded border px-6 pt-4 pb-6 md:rounded-xl">
                     <div className="mb-3 flex items-center">
-                        <span className="flex flex-1 items-center gap-2 rounded-lg border-2 border-white bg-theme-secondary-200 px-3 py-2 text-sm dark:border-theme-dark-900 dark:bg-theme-dark-950 sm:flex-none">
+                        <span className="bg-theme-secondary-200 dark:border-theme-dark-900 dark:bg-theme-dark-950 flex flex-1 items-center gap-2 rounded-lg border-2 border-white px-3 py-2 text-sm sm:flex-none">
                             <div className="flex flex-1 items-center gap-2 sm:flex-none">
-                                <span className="h-2 w-2 rounded-full bg-theme-primary-600 outline outline-2 outline-white dark:bg-theme-dark-blue-600 dark:outline-theme-dark-900" />
+                                <span className="bg-theme-primary-600 dark:bg-theme-dark-blue-600 dark:outline-theme-dark-900 h-2 w-2 rounded-full outline outline-2 outline-white" />
 
-                                <span className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                                <span className="text-theme-secondary-700 dark:text-theme-dark-200 text-sm font-semibold">
                                     {t("pages.peers-map.active_peers")}
                                 </span>
                             </div>
 
-                            <span className="text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                            <span className="text-theme-secondary-900 dark:text-theme-dark-50 text-sm font-semibold">
                                 {peers.length}
                             </span>
                         </span>
                     </div>
 
-                    <div className="overflow-hidden rounded-lg border border-theme-secondary-300 dark:border-theme-dark-700">
+                    <div className="border-theme-secondary-300 dark:border-theme-dark-700 overflow-hidden rounded-lg border">
                         <WorldMap peers={peers} />
                     </div>
                 </div>

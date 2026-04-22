@@ -33,7 +33,7 @@ const SelectTrigger = ({ children, placeholder, className, iconClassName, ...pro
     return (
         <SelectPrimitive.Trigger
             className={twMerge(
-                "transition-default group flex h-11 w-full items-center justify-between rounded border border-theme-secondary-400 px-4 py-3.5 outline outline-1 outline-offset-0 outline-transparent focus:outline-none dark:border-theme-dark-500",
+                "transition-default group border-theme-secondary-400 dark:border-theme-dark-500 flex h-11 w-full items-center justify-between rounded border px-4 py-3.5 outline outline-1 outline-offset-0 outline-transparent focus:outline-none",
                 "text-theme-secondary-900 dark:text-theme-dark-50",
                 "hover:border-theme-primary-400 hover:outline-theme-primary-400 dark:border-theme-dark-500 hover:dark:border-theme-dark-blue-600 hover:dark:outline-theme-dark-blue-600",
                 "data-[state=open]:border-theme-primary-400 data-[state=open]:outline-theme-primary-400 data-[state=open]:dark:border-theme-dark-blue-600 data-[state=open]:dark:outline-theme-dark-blue-600",
@@ -45,7 +45,7 @@ const SelectTrigger = ({ children, placeholder, className, iconClassName, ...pro
 
             <SelectPrimitive.Icon className="transition-default group-data-[state=open]:rotate-180">
                 <ChevronDownIcon
-                    className={twMerge("h-3 w-3 text-theme-secondary-700 dark:text-theme-dark-200", iconClassName)}
+                    className={twMerge("text-theme-secondary-700 dark:text-theme-dark-200 h-3 w-3", iconClassName)}
                 />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
@@ -57,7 +57,7 @@ const SelectContent = ({ children, className, ...props }: React.ComponentProps<t
         <SelectPrimitive.Portal>
             <SelectPrimitive.Content
                 className={twMerge(
-                    "z-50 overflow-hidden rounded-xl border border-white bg-white px-1 py-[0.125rem] shadow-lg dark:border-theme-dark-700 dark:bg-theme-dark-900",
+                    "dark:border-theme-dark-700 dark:bg-theme-dark-900 z-50 overflow-hidden rounded-xl border border-white bg-white px-1 py-[0.125rem] shadow-lg",
                     "data-[state=closed]:animate-select-out data-[state=open]:animate-opacity-in",
                     className,
                 )}
@@ -82,7 +82,7 @@ const SelectItem = ({ children, className, value, ...props }: SelectItemProps) =
         <SelectPrimitive.Item
             value={value}
             className={twMerge(
-                "transition-default my-[0.125rem] inline-flex cursor-pointer items-center justify-between rounded-lg px-5 py-[0.875rem] font-semibold leading-5 outline-none",
+                "transition-default my-[0.125rem] inline-flex cursor-pointer items-center justify-between rounded-lg px-5 py-[0.875rem] leading-5 font-semibold outline-none",
                 "text-theme-secondary-700 dark:text-theme-dark-200",
                 "hover:bg-theme-secondary-200 hover:text-theme-secondary-900 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50",
                 "data-[state=checked]:bg-theme-secondary-200 data-[state=checked]:text-theme-primary-600 data-[state=checked]:dark:bg-theme-dark-950 data-[state=checked]:dark:text-theme-dark-50",
@@ -92,7 +92,7 @@ const SelectItem = ({ children, className, value, ...props }: SelectItemProps) =
         >
             <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
             <SelectPrimitive.ItemIndicator>
-                <DoubleCheckMarkIcon className="h-4 w-4 text-theme-primary-600 dark:text-theme-dark-50" />
+                <DoubleCheckMarkIcon className="text-theme-primary-600 dark:text-theme-dark-50 h-4 w-4" />
             </SelectPrimitive.ItemIndicator>
         </SelectPrimitive.Item>
     );
@@ -101,7 +101,7 @@ const SelectItem = ({ children, className, value, ...props }: SelectItemProps) =
 const SelectSeparator = ({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Separator>) => {
     return (
         <SelectPrimitive.Separator
-            className={twMerge("my-0.5 border-t border-theme-secondary-300 dark:border-theme-dark-500", className)}
+            className={twMerge("border-theme-secondary-300 dark:border-theme-dark-500 my-0.5 border-t", className)}
             {...props}
         />
     );

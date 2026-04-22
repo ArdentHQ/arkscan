@@ -31,7 +31,7 @@ export function ValidatorsMobileTable({ validators }: Pick<ValidatorsProps, "val
                     key={index}
                     header={
                         <>
-                            <div className="flex min-w-0 flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+                            <div className="divide-theme-secondary-300 dark:divide-theme-dark-700 flex min-w-0 flex-1 divide-x">
                                 <Number className="min-w-[32px]">{validator.rank ?? 0}</Number>
 
                                 <div className="flex min-w-0 flex-1 items-center justify-between pl-3">
@@ -90,7 +90,7 @@ export function ValidatorsMobileTable({ validators }: Pick<ValidatorsProps, "val
                     {arkconnectConfig.enabled && (
                         <TableCell className="sm:hidden">
                             {votingForAddress === validator.address && (
-                                <div className="-mx-3 mb-1 flex items-center space-x-2 bg-theme-secondary-200 p-3 dark:bg-theme-dark-800 dark:text-theme-dark-200">
+                                <div className="bg-theme-secondary-200 dark:bg-theme-dark-800 dark:text-theme-dark-200 -mx-3 mb-1 flex items-center space-x-2 p-3">
                                     <div>
                                         <CheckMarkBoxIcon className="h-4 w-4" />
                                     </div>

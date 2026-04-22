@@ -13,7 +13,7 @@ export default function MobileTable({
     return (
         <>
             {resultCount === 0 ? (
-                <div className="leading-7 dark:text-theme-dark-200">{noResultsMessage}</div>
+                <div className="dark:text-theme-dark-200 leading-7">{noResultsMessage}</div>
             ) : (
                 <>
                     <div

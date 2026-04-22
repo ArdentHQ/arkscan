@@ -28,8 +28,7 @@ export default function PaginationArrow({
             <button
                 type="button"
                 className={classNames({
-                    "button-secondary focus:ring-theme-primary-500 focus:dark:ring-theme-dark-blue-300 flex h-8 w-full items-center justify-center p-0!":
-                        true,
+                    "button-secondary focus:ring-theme-primary-500 focus:dark:ring-theme-dark-blue-300 flex h-8 w-full items-center justify-center p-0!": true,
                     "sm:w-8": !text,
                     "w-8 md:w-auto md:px-4!": !!text,
                 })}

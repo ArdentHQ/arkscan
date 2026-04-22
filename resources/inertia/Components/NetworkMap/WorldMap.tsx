@@ -504,7 +504,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     return (
         <div ref={containerRef} className="relative w-full">
-            <div className="absolute bottom-2 right-2 z-20 flex items-center gap-1">
+            <div className="absolute right-2 bottom-2 z-20 flex items-center gap-1">
                 {zoom > 1 && (
                     <button
                         type="button"

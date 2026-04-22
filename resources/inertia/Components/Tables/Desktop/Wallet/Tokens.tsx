@@ -19,7 +19,7 @@ export function Row({ row }: { row: ITokenHolder }) {
         <tr className="text-sm font-semibold">
             <TableCell className="max-w-[200px]">
                 <div className="flex w-full min-w-0 items-center space-x-1">
-                    <div className="min-w-0 truncate text-theme-secondary-900 dark:text-theme-dark-50">
+                    <div className="text-theme-secondary-900 dark:text-theme-dark-50 min-w-0 truncate">
                         <TruncatedValue value={row.token.name} />
                     </div>
 

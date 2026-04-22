@@ -51,7 +51,7 @@ export default function Amount({
             })}
             data-testid={testId}
         >
-            <div className="inline-block space-x-1 whitespace-nowrap leading-4.25">
+            <div className="inline-block space-x-1 leading-4.25 whitespace-nowrap">
                 {wallet && (
                     <Tooltip content={fullFormatted} disabled={!isCompact}>
                         <AmountFiatTooltip

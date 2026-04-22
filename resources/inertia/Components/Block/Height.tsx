@@ -12,7 +12,7 @@ export default function Height({
     const formattedBlockHeight = Intl.NumberFormat().format(block.number);
 
     return (
-        <div className="flex flex-col whitespace-nowrap text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50 md:space-y-1 xl:space-y-0">
+        <div className="text-theme-secondary-900 dark:text-theme-dark-50 flex flex-col text-sm leading-4.25 font-semibold whitespace-nowrap md:space-y-1 xl:space-y-0">
             {withoutLink ? (
                 <span>{formattedBlockHeight}</span>
             ) : (
@@ -23,7 +23,7 @@ export default function Height({
 
             <Age
                 timestamp={block.timestamp}
-                className="hidden text-xs leading-3.75 text-theme-secondary-700 dark:text-theme-dark-200 md:block md-lg:hidden!"
+                className="text-theme-secondary-700 dark:text-theme-dark-200 md-lg:hidden! hidden text-xs leading-3.75 md:block"
             />
         </div>
     );

@@ -15,7 +15,7 @@ export default function Age({
         <Tooltip content={tooltip}>
             <span
                 className={classNames({
-                    "text-sm font-semibold leading-4.25": true,
+                    "text-sm leading-4.25 font-semibold": true,
                     [className]: true,
                 })}
             >

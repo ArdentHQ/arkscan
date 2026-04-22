@@ -18,7 +18,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
         <Link
             href={link}
             className={classNames({
-                "group relative mx-4 inline-flex h-full rounded px-2 pt-[2px] font-semibold leading-5 transition duration-150 ease-in-out focus:outline-none focus-visible:ring-inset": true,
+                "group relative mx-4 inline-flex h-full rounded px-2 pt-[2px] leading-5 font-semibold transition duration-150 ease-in-out focus:outline-none focus-visible:ring-inset": true,
                 "text-theme-secondary-900 dark:text-theme-dark-50": isActive,
                 "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-200 dark:hover:text-theme-secondary-400":
                     !isActive,
@@ -28,7 +28,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
                 className={classNames({
                     "flex h-full w-full items-center border-b-2": true,
                     "border-theme-primary-600": isActive,
-                    "border-transparent group-hover:border-theme-primary-300 group-hover:dark:border-theme-dark-600":
+                    "group-hover:border-theme-primary-300 group-hover:dark:border-theme-dark-600 border-transparent":
                         !isActive,
                 })}
             >
@@ -40,7 +40,7 @@ const NavbarItem = ({ routeName, label }: { routeName: string; label: string }) 
 
 export default function NavbarDesktop({ navigation }: { navigation: Navigation }) {
     return (
-        <div className="relative z-30 hidden border-b border-theme-secondary-300 bg-white dark:border-theme-dark-700 dark:bg-theme-dark-900 md:flex md:flex-col">
+        <div className="border-theme-secondary-300 dark:border-theme-dark-700 dark:bg-theme-dark-900 relative z-30 hidden border-b bg-white md:flex md:flex-col">
             <div className="content-container flex w-full items-center justify-between">
                 <div className="flex items-center">
                     <div className="flex flex-shrink-0 items-center">
@@ -67,7 +67,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                     button={({ isOpen }) => (
                                                         <div
                                                             className={classNames(
-                                                                "relative inline-flex h-full items-center justify-center border-b-2 border-transparent pt-px font-semibold leading-5 text-theme-secondary-700 transition duration-150 ease-in-out hover:border-theme-primary-300 focus:outline-none focus:ring-inset dark:text-theme-dark-200 hover:dark:text-theme-dark-50",
+                                                                "text-theme-secondary-700 hover:border-theme-primary-300 dark:text-theme-dark-200 hover:dark:text-theme-dark-50 relative inline-flex h-full items-center justify-center border-b-2 border-transparent pt-px leading-5 font-semibold transition duration-150 ease-in-out focus:outline-none focus:ring-inset",
                                                                 {
                                                                     "border-theme-primary-600!": isOpen,
                                                                     "hover:border-theme-primary-300 dark:hover:border-theme-secondary-600":
@@ -86,9 +86,9 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
 
                                                             <span
                                                                 className={classNames(
-                                                                    "ml-2 text-theme-secondary-700 transition duration-150 ease-in-out dark:text-theme-dark-200",
+                                                                    "text-theme-secondary-700 dark:text-theme-dark-200 ml-2 transition duration-150 ease-in-out",
                                                                     {
-                                                                        "rotate-180 dark:text-theme-dark-50": isOpen,
+                                                                        "dark:text-theme-dark-50 rotate-180": isOpen,
                                                                     },
                                                                 )}
                                                             >

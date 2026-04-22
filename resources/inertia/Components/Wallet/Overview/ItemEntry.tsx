@@ -19,7 +19,7 @@ export default function WalletOverviewItemEntry({
 
     return (
         <div className="flex items-center justify-between space-x-2 text-sm font-semibold md:text-base">
-            <div className="whitespace-nowrap dark:text-theme-dark-200">{title}</div>
+            <div className="dark:text-theme-dark-200 whitespace-nowrap">{title}</div>
 
             {(hasEmptyValue || !value) && (
                 <div className="text-theme-secondary-500 dark:text-theme-dark-500">{t("general.na")}</div>

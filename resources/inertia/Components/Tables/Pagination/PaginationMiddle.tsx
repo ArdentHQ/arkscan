@@ -41,9 +41,9 @@ export default function PaginationMiddle({
     return (
         <div className={classes}>
             {showSearch && (
-                <div className="absolute left-0 z-10 flex h-full w-full space-x-2 bg-white dark:bg-theme-dark-900">
-                    <div className="flex flex-1 items-center overflow-hidden rounded bg-white px-2! outline outline-2 outline-theme-primary-600 dark:bg-theme-dark-900">
-                        <MagnifyingGlassIcon className="h-5 w-5 text-theme-secondary-500 dark:text-theme-dark-700" />
+                <div className="dark:bg-theme-dark-900 absolute left-0 z-10 flex h-full w-full space-x-2 bg-white">
+                    <div className="outline-theme-primary-600 dark:bg-theme-dark-900 flex flex-1 items-center overflow-hidden rounded bg-white px-2! outline outline-2">
+                        <MagnifyingGlassIcon className="text-theme-secondary-500 dark:text-theme-dark-700 h-5 w-5" />
 
                         <input
                             ref={searchRef}
@@ -52,7 +52,7 @@ export default function PaginationMiddle({
                             max={paginator.last_page}
                             name={paginator.meta.pageName}
                             placeholder={t("actions.enter_the_page_number", { ns: "ui" })}
-                            className="w-full bg-transparent px-3 py-2 dark:text-theme-dark-200 dark:placeholder:text-theme-dark-700"
+                            className="dark:text-theme-dark-200 dark:placeholder:text-theme-dark-700 w-full bg-transparent px-3 py-2"
                             onChange={() => {
                                 if (parseInt(searchRef.current!.value) > paginator.last_page) {
                                     searchRef.current!.value = paginator.last_page.toString();
@@ -75,7 +75,7 @@ export default function PaginationMiddle({
                             }}
                         />
 
-                        <SquareReturnArrowIcon className="hidden h-4 w-4 dark:text-theme-dark-600 sm:block" />
+                        <SquareReturnArrowIcon className="dark:text-theme-dark-600 hidden h-4 w-4 sm:block" />
                     </div>
 
                     <button
@@ -93,7 +93,7 @@ export default function PaginationMiddle({
                 onClick={() => setShowSearch(!showSearch)}
                 type="button"
                 className={classNames({
-                    "button-secondary group/pagination relative inline-flex w-full items-center justify-center p-0! leading-5 focus:ring-theme-primary-500 focus:dark:ring-theme-dark-blue-300": true,
+                    "button-secondary group/pagination focus:ring-theme-primary-500 focus:dark:ring-theme-dark-blue-300 relative inline-flex w-full items-center justify-center p-0! leading-5": true,
                     "opacity-0": showSearch,
                 })}
                 disabled={disabled || paginator.last_page === 1}
