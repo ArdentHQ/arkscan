@@ -224,26 +224,33 @@ final class Transaction extends Model
         return null;
     }
 
+    /**
+     * @return BelongsTo<Wallet, $this>
+     */
     public function senderWallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'from', 'address');
     }
 
+    /**
+     * @return BelongsTo<Wallet, $this>
+     */
     public function recipientWallet(): BelongsTo
     {
         return $this->belongsTo(Wallet::class, 'to', 'address');
     }
 
     /**
-     * A receipt belongs to a transaction.
-     *
-     * @return HasOne
+     * @return HasOne<Wallet, $this>
      */
     public function votedFor(): HasOne
     {
         return $this->hasOne(Wallet::class, 'address', 'votedForAddress');
     }
 
+    /**
+     * @return HasMany<MultiPayment, $this>
+     */
     public function multiPaymentRecipients(): HasMany
     {
         return $this->hasMany(MultiPayment::class, 'hash', 'hash');
@@ -338,7 +345,7 @@ final class Transaction extends Model
         } elseif ($this->decoded_error === 'execution reverted') {
             $insufficientGasThreshold = config('arkscan.transaction.insufficient_gas_threshold', 0.95);
             $gasUsed                  = BigNumber::new($this->gas_used->valueOf()->toFloat());
-            if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::DOWN)->valueOf()->toFloat() > $insufficientGasThreshold) {
+            if ($gasUsed->dividedBy($this->gas, 2, RoundingMode::Down)->valueOf()->toFloat() > $insufficientGasThreshold) {
                 $error = 'Out of gas?';
             }
         }

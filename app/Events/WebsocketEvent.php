@@ -21,7 +21,7 @@ abstract class WebsocketEvent implements ShouldBroadcast
         //
     }
 
-    final public function broadcastOn()
+    final public function broadcastOn(): Channel
     {
         return new Channel($this->channelName());
     }

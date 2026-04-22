@@ -23,16 +23,13 @@ trait WithFilters
 
         $filters = constant('self::FILTERS');
 
-        if ($group !== null) {
-            if (! array_key_exists($group, $filters)) {
-                return [];
-            }
-
-            $filters = $filters[$group];
+        if ($group === null) {
+            return $filters;
         }
 
-        /** @var array<string, bool> $filters */
-        return $filters;
+        $groupFilters = data_get($filters, $group, []);
+
+        return is_array($groupFilters) ? $groupFilters : [];
     }
 
     protected function filters(?string $group = null): array

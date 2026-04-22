@@ -9,7 +9,6 @@ use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class CacheValidatorPerformance extends Command
@@ -63,9 +62,6 @@ final class CacheValidatorPerformance extends Command
                 $query->addSelect(DB::raw(sprintf('bool_or(blocks.number BETWEEN %s AND %s) round_%s', $start, $end, ($actualNumberOfRounds - $index - 1))));
             });
 
-        /**
-         * @var Collection $results
-         */
         $results = $query
             ->orderBy('balance', 'desc')
             ->orderBy('wallets.address', 'asc')

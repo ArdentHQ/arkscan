@@ -37,9 +37,7 @@ final class ForgingStats extends Model
     ];
 
     /**
-     * A round slot belongs to a validator.
-     *
-     * @return BelongsTo
+     * @return BelongsTo<Wallet, $this>
      */
     public function validator(): BelongsTo
     {

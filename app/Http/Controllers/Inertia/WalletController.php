@@ -212,6 +212,9 @@ final class WalletController
         });
     }
 
+    /**
+     * @return Builder<Transaction>
+     */
     private function getTransactionsQuery(Wallet $wallet): Builder
     {
         $filters = $this->filters($this->view);

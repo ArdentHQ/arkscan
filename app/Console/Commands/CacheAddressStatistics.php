@@ -59,13 +59,11 @@ final class CacheAddressStatistics extends Command
         $holdings = (new HoldingsAggregate())->aggregate();
 
         $hasChanges = false;
-        if ($holdings !== null) {
-            if ($cache->getAddressHoldings() !== $holdings->toArray()) {
-                $hasChanges = true;
-            }
-
-            $cache->setAddressHoldings($holdings->toArray());
+        if ($cache->getAddressHoldings() !== $holdings->toArray()) {
+            $hasChanges = true;
         }
+
+        $cache->setAddressHoldings($holdings->toArray());
 
         return $hasChanges;
     }
