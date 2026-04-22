@@ -36,7 +36,7 @@
                     'newWindow' => true,
                 ]"
                 :socials="config('social.networks')"
-                wrapper-class="px-6 max-w-7xl md:px-10 py-5"
+                wrapper-class="py-5 px-6 max-w-7xl md:px-10"
                 class="dark:border-transparent dark:text-theme-dark-200"
             >
                 <span class="inline-flex items-center space-x-1 whitespace-nowrap">
