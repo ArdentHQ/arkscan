@@ -182,7 +182,7 @@ it('should make an instance for a voting wallet', function () {
         'totalForged'                       => '0',
         'balancePercentage'                 => 0.0,
         'voteUrl'                           => null,
-        'votePercentage'                    => $wallet->balance->valueOf()->multipliedBy(100)->dividedBy($votedWallet->attributes['validatorVoteBalance'], 2, RoundingMode::DOWN)->toFloat(),
+        'votePercentage'                    => $wallet->balance->valueOf()->multipliedBy(100)->dividedBy($votedWallet->attributes['validatorVoteBalance'], 2, RoundingMode::Down)->toFloat(),
     ]);
 });
 

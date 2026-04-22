@@ -26,7 +26,6 @@ use Laravel\Scout\Searchable;
  * @property BigNumber $fee
  * @property int $gas_used
  * @property string $proposer
- * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Block extends Model
 {
@@ -63,11 +62,6 @@ final class Block extends Model
      */
     protected $primaryKey = 'hash';
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
     protected $connection = 'explorer';
 
     /**
@@ -139,9 +133,7 @@ final class Block extends Model
     }
 
     /**
-     * A block has many transactions.
-     *
-     * @return HasMany
+     * @return HasMany<Transaction, $this>
      */
     public function transactions(): HasMany
     {

@@ -58,6 +58,9 @@ trait RecentVotesTab
         return $this->recentVotesHasFilters;
     }
 
+    /**
+     * @return Builder<Transaction>
+     */
     private function getRecentVotesQuery(): Builder
     {
         $sortDirection = SortDirection::ASC;
