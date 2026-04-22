@@ -19,7 +19,7 @@ export function MobileBookmarkTransactionsSkeletonTable({ rowCount }: { rowCount
                     </>
                 }
             >
-                <div className="flex flex-col space-y-2 font-semibold leading-4.25">
+                <div className="flex flex-col space-y-2 leading-4.25 font-semibold">
                     <LoadingText />
 
                     <div className="flex flex-row space-x-2">

@@ -57,7 +57,7 @@ function ArkVaultButton({
     return (
         <div className="mt-2 w-full">
             {isArkConnectEnabled && (
-                <div className="flex w-full flex-col">
+                <div className="flex w-full flex-col space-y-2">
                     {!!arkconnectButton ? (
                         arkconnectButton
                     ) : (
@@ -70,7 +70,7 @@ function ArkVaultButton({
 
                     <ExternalLink
                         url={walletUri}
-                        className="button-secondary group mt-2 w-full dim:hover:border-theme-dark-blue-600 dim:hover:bg-theme-dark-blue-600 dark:hover:border-theme-dark-blue-500 dark:hover:bg-theme-dark-blue-500 dark:hover:text-white"
+                        className="button-secondary group dim:hover:border-theme-dark-blue-600 dim:hover:bg-theme-dark-blue-600 dark:hover:border-theme-dark-blue-500 dark:hover:bg-theme-dark-blue-500 w-full dark:hover:text-white"
                         iconClass="inline transition-default relative -top-1 w-3 h-3 flex-shrink-0 mt-1 ml-0.5 text-theme-primary-400 dim:text-theme-dark-300 dark:text-theme-dark-500 group-hover:text-white dim:group-hover:text-white"
                     >
                         {t("brands.arkvault")}
@@ -82,7 +82,7 @@ function ArkVaultButton({
                 <div>
                     <ExternalLink
                         url={walletUri}
-                        className="button-secondary group mt-2 w-full dim:hover:border-theme-dark-blue-600 dim:hover:bg-theme-dark-blue-600 dark:hover:border-theme-dark-blue-500 dark:hover:bg-theme-dark-blue-500 dark:hover:text-white"
+                        className="button-secondary group dim:hover:border-theme-dark-blue-600 dim:hover:bg-theme-dark-blue-600 dark:hover:border-theme-dark-blue-500 dark:hover:bg-theme-dark-blue-500 w-full dark:hover:text-white"
                         iconClass="inline relative -top-1 w-3 h-3 flex-shrink-0 mt-1 ml-0.5 w-3 h-3 text-theme-primary-400 dim:text-theme-dark-300 dark:text-theme-dark-500 group-hover:text-white dim:group-hover:text-white"
                     >
                         {t("brands.arkvault")}
@@ -115,7 +115,7 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
             width="w-[calc(100vw)] sm:max-w-[320px]"
             zIndex={30}
             button={
-                <div className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset">
+                <div className="button button-secondary button-icon w-full p-2! focus-visible:ring-inset">
                     <QRCodeIcon className="h-4 w-4" />
                 </div>
             }
@@ -131,7 +131,7 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
         >
             {showOptions && (
                 <>
-                    <div className="font-normal leading-5.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    <div className="text-theme-secondary-700 dark:text-theme-dark-200 leading-5.25 font-normal">
                         {t("pages.wallet.qrcode.description")}
                     </div>
 
@@ -164,14 +164,14 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
             )}
 
             <div className="flex justify-center">
-                <div className="inline-block rounded-lg border border-theme-secondary-300 bg-white p-2 dark:border-theme-dark-300 sm:block">
+                <div className="border-theme-secondary-300 dark:border-theme-dark-300 inline-block rounded-lg border bg-white p-2! sm:block">
                     <QRCode value={walletUri} size={224} />
                 </div>
             </div>
 
             {!showOptions && (
                 <button
-                    className="button-secondary mt-3 w-full dim:hover:border-theme-dark-blue-600 dim:hover:bg-theme-dark-blue-600 dark:hover:border-theme-dark-blue-500 dark:hover:bg-theme-dark-blue-500 dark:hover:text-white"
+                    className="button-secondary dim:hover:border-theme-dark-blue-600 dim:hover:bg-theme-dark-blue-600 dark:hover:border-theme-dark-blue-500 dark:hover:bg-theme-dark-blue-500 mt-3 w-full dark:hover:text-white"
                     onClick={() => setShowOptions(true)}
                 >
                     {t("pages.wallet.qrcode.specify_amount")}
@@ -179,19 +179,19 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
             )}
 
             {showOptions && (
-                <div className="mt-4 font-normal leading-5.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                <div className="text-theme-secondary-700 dark:text-theme-dark-200 mt-4 leading-5.25 font-normal">
                     {t("pages.wallet.qrcode.automatic_notice")}
                 </div>
             )}
 
             <div className="mt-3 flex w-full items-center space-x-3">
-                <div className="h-1px flex-1 border-t border-theme-secondary-300 dark:border-theme-dark-700"></div>
+                <div className="h-1px border-theme-secondary-300 dark:border-theme-dark-700 flex-1 border-t"></div>
 
-                <div className="font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                <div className="text-theme-secondary-700 dark:text-theme-dark-200 font-semibold">
                     {t("pages.wallet.qrcode.or_send_with")}
                 </div>
 
-                <div className="h-1px flex-1 border-t border-theme-secondary-300 dark:border-theme-dark-700"></div>
+                <div className="h-1px border-theme-secondary-300 dark:border-theme-dark-700 flex-1 border-t"></div>
             </div>
 
             <ArkVaultButton amount={amount} walletUri={walletUri} />

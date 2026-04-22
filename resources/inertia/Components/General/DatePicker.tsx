@@ -57,7 +57,7 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
     return (
         <div
             className={twMerge(
-                "flex flex-col rounded border border-theme-secondary-400 bg-white dark:border-theme-dark-500 dark:bg-theme-dark-900",
+                "border-theme-secondary-400 dark:border-theme-dark-500 dark:bg-theme-dark-900 flex flex-col rounded border bg-white",
                 className,
             )}
         >
@@ -66,7 +66,7 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
                     ref={inputRef}
                     type="text"
                     placeholder="DD/MM/YYYY"
-                    className="w-full rounded py-3 pl-4 dark:bg-theme-dark-900 dark:text-theme-dark-50 placeholder:dark:text-theme-dark-200"
+                    className="dark:bg-theme-dark-900 dark:text-theme-dark-50 dark:placeholder:text-theme-dark-200 w-full rounded py-3 pl-4"
                     onKeyDown={(e) => {
                         if (e.key === "Backspace") {
                             e.stopPropagation();
@@ -75,10 +75,10 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
                 />
 
                 <div
-                    className="flex h-full cursor-pointer items-center pl-2 pr-4"
+                    className="flex h-full cursor-pointer items-center pr-4 pl-2"
                     onClick={() => inputRef.current?.click()}
                 >
-                    <CalendarIcon className="fill-current h-5 w-5 text-theme-primary-600 dark:text-theme-dark-300" />
+                    <CalendarIcon className="text-theme-primary-600 dark:text-theme-dark-300 h-5 w-5 fill-current" />
                 </div>
             </div>
 

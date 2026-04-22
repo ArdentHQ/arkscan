@@ -35,9 +35,9 @@ export default function InputLabel({
         >
             {label ? label : t(`forms.${name}`)}
 
-            {auxiliaryTitle !== "" && <span className="ml-1 text-theme-secondary-400">{auxiliaryTitle}</span>}
+            {auxiliaryTitle !== "" && <span className="text-theme-secondary-400 ml-1">{auxiliaryTitle}</span>}
 
-            {required && <div className="mb-3 ml-px h-1 w-1 rounded-full bg-theme-danger-400 p-px"></div>}
+            {required && <div className="bg-theme-danger-400 mb-3 ml-px h-1 w-1 rounded-full p-px"></div>}
 
             {tooltip && <Info tooltip={tooltip} className={tooltipClass} type={tooltipType} />}
         </label>

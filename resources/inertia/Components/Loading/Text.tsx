@@ -13,7 +13,7 @@ export default function LoadingText({
         <div className={wrapperClass}>
             <div
                 className={classNames({
-                    "animate-pulse rounded-sm-md bg-theme-secondary-300 dark:bg-theme-dark-800": true,
+                    "rounded-sm-md bg-theme-secondary-300 dark:bg-theme-dark-800 animate-pulse": true,
                     [width]: true,
                     [height]: true,
                 })}

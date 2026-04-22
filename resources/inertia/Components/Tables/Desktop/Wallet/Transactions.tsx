@@ -195,7 +195,7 @@ export function TransactionsHeaderActions({ hasTransactions }: { hasTransactions
                 <button
                     type="button"
                     data-testid="wallet:transactions:export-button"
-                    className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
+                    className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5! sm:px-4!"
                     disabled={!hasTransactions}
                     onClick={() => setIsTransactionsExportModalOpen(true)}
                 >

@@ -26,47 +26,47 @@ function ExploreHeaderStat() {
 
     return (
         <HeaderItem
-            className="flex-none bg-theme-primary-100 dim:bg-theme-dark-700 dark:bg-theme-dark-800 xl:flex-1"
+            className="bg-theme-primary-100 dim:bg-theme-dark-700 dark:bg-theme-dark-800 flex-none xl:flex-1"
             background={
                 <>
-                    <img src={headerBg} className="hidden max-w-none dark:hidden sm:block" alt="" />
+                    <img src={headerBg} className="hidden max-w-none sm:block dark:hidden" alt="" />
 
-                    <img src={headerBgMobile} className="max-w-none dark:hidden sm:hidden" alt="" />
+                    <img src={headerBgMobile} className="max-w-none sm:hidden dark:hidden" alt="" />
 
-                    <img src={headerBgDark} className="hidden max-w-none dim:sm:hidden dark:sm:block" alt="" />
+                    <img src={headerBgDark} className="dim:sm:hidden hidden max-w-none dark:sm:block" alt="" />
 
                     <img
                         src={headerBgMobileDark}
-                        className="hidden max-w-none dim:hidden dark:block dark:sm:hidden"
+                        className="dim:hidden hidden max-w-none dark:block dark:sm:hidden"
                         alt=""
                     />
 
-                    <img src={headerBgDim} className="hidden max-w-none dark:hidden dim:sm:block" alt="" />
+                    <img src={headerBgDim} className="dim:sm:block hidden max-w-none dark:hidden" alt="" />
 
                     <img
                         src={headerBgMobileDim}
-                        className="hidden max-w-none dim:block dark:hidden dim:sm:hidden"
+                        className="dim:block dim:sm:hidden hidden max-w-none dark:hidden"
                         alt=""
                     />
                 </>
             }
         >
-            <div className="absolute right-0 top-0 z-10 h-full w-full bg-gradient-to-t from-theme-primary-100 to-theme-primary-200 dim:bg-gradient-to-b dark:from-theme-dark-800 dark:to-theme-dark-700 sm:w-[400px] sm:bg-gradient-to-r dim:sm:bg-gradient-to-l"></div>
+            <div className="from-theme-primary-100 to-theme-primary-200 dim:bg-gradient-to-b dark:from-theme-dark-800 dark:to-theme-dark-700 dim:sm:bg-gradient-to-l absolute top-0 right-0 z-10 h-full w-full bg-gradient-to-t sm:w-[400px] sm:bg-gradient-to-r"></div>
 
             <div className="relative z-30 flex flex-1 flex-col items-center space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
                 <div className="flex w-full flex-col space-y-1.5">
-                    <div className="text-sm text-theme-primary-900 dark:text-theme-dark-50 md:text-lg md:leading-5.25">
+                    <div className="text-theme-primary-900 dark:text-theme-dark-50 text-sm md:text-lg md:leading-5.25">
                         {t("pages.validators.explore.title")}
                     </div>
 
-                    <div className="text-xs leading-5 text-theme-secondary-700 dark:text-theme-dark-200 sm:leading-3.75">
+                    <div className="text-theme-secondary-700 dark:text-theme-dark-200 text-xs leading-5 sm:leading-3.75">
                         {t("pages.validators.explore.subtitle")}
                     </div>
                 </div>
 
                 <div className="w-full sm:w-auto">
                     <ExternalLink
-                        className="button-primary !flex items-center justify-center space-x-2 px-4 py-1.5"
+                        className="button-primary flex! items-center justify-center space-x-2 px-4 py-1.5"
                         url={t("urls.docs.validator")}
                         innerClass="leading-5"
                         iconClass="inline relative flex-shrink-0 text-white w-4 h-4"
@@ -100,14 +100,14 @@ export default function HeaderStats({ statistics }: { statistics?: IValidatorsSt
     }, [statistics]);
 
     return (
-        <div className="flex flex-col space-y-2 px-6 pb-6 sm:space-y-3 md:mx-auto md:max-w-7xl md:px-10 xl:flex-row xl:space-x-3 xl:space-y-0">
-            <div className="flex flex-1 flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0 md:space-x-3">
+        <div className="flex flex-col space-y-2 px-6 pb-6 sm:space-y-3 md:mx-auto md:max-w-7xl md:px-10 xl:flex-row xl:space-y-0 xl:space-x-3">
+            <div className="flex flex-1 flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 md:space-x-3">
                 <Card className="flex-1">
                     <Detail
                         title={t("pages.validators.missed-blocks.title")}
-                        className="flex space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700"
+                        className="divide-theme-secondary-300 dark:divide-theme-dark-700 flex space-x-3 divide-x"
                     >
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 pr-3">
                             {isLoading ? (
                                 <LoadingText width="w-[48px]" height="h-5" />
                             ) : (
@@ -133,7 +133,7 @@ export default function HeaderStats({ statistics }: { statistics?: IValidatorsSt
                         </div>
 
                         <Link
-                            className="link pl-3 text-sm !leading-5 md:text-base"
+                            className="link text-sm leading-5! md:text-base"
                             href={route("validators", { view: "missed-blocks" }) + "#validators:tabs:content"}
                         >
                             {t("actions.view")}

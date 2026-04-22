@@ -119,7 +119,7 @@ export default function Dropdown({
                 "dropdown-button transition-default flex items-center focus:outline-none": true,
                 "bg-theme-secondary-200 text-theme-secondary-500 dark:border-theme-dark-700 dark:bg-theme-dark-800 dark:text-theme-dark-500":
                     disabled,
-                "bg-theme-secondary-200 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 md:bg-white md:hover:text-theme-secondary-900 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600":
+                "bg-theme-secondary-200 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 dark:hover:bg-theme-dark-700 md:hover:text-theme-secondary-900 md:dark:bg-theme-dark-900 md:dark:text-theme-dark-600 md:bg-white":
                     !disabled && useDefaultButtonClasses,
                 [buttonClass]: true,
                 [buttonClassExpanded]: isOpen,

@@ -148,9 +148,9 @@ export default function ExportStatus({
                         : undefined
                 }
                 disabled={!canDownload}
-                className="flex items-center justify-between rounded border border-theme-secondary-300 px-4 disabled:cursor-default dark:border-theme-dark-500"
+                className="border-theme-secondary-300 dark:border-theme-dark-500 flex items-center justify-between rounded border px-4 disabled:cursor-default"
             >
-                <div className="flex h-12 min-w-0 items-center space-x-2 font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50 flex h-12 min-w-0 items-center space-x-2 font-semibold">
                     <CsvIcon className="fill-theme-primary-600 dark:fill-theme-dark-blue-500" />
 
                     <div className="truncate">{addressDisplay}</div>
@@ -177,11 +177,11 @@ export default function ExportStatus({
                             }`}
                         >
                             {[ExportStatusEnum.Done, ExportStatusEnum.Warning].includes(status) && (
-                                <CheckMarkSmallIcon className="h-2.5 w-2.5 text-theme-primary-600 dark:text-theme-dark-50" />
+                                <CheckMarkSmallIcon className="text-theme-primary-600 dark:text-theme-dark-50 h-2.5 w-2.5" />
                             )}
 
                             {status === ExportStatusEnum.Error && (
-                                <CrossSmallIcon className="h-2.5 w-2.5 text-theme-danger-400 dark:text-theme-dark-50" />
+                                <CrossSmallIcon className="text-theme-danger-400 dark:text-theme-dark-50 h-2.5 w-2.5" />
                             )}
                         </div>
                     )}

@@ -24,7 +24,7 @@ export default function TransferDetails({
         <PageSection title={t("pages.transaction.transfer_details")} noBorder>
             <div
                 id="transfer-details"
-                className="overflow-hidden rounded-b-xl rounded-t-xl border border-theme-secondary-300 dark:border-theme-dark-700"
+                className="border-theme-secondary-300 dark:border-theme-dark-700 overflow-hidden rounded-t-xl rounded-b-xl border"
             >
                 <div className="table-container table-encapsulated encapsulated-table-header-gradient px-6">
                     <table>

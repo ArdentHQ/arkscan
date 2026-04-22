@@ -21,7 +21,7 @@ export default function PageHeaderLegacyAddressAction({ wallet, testId }: { wall
                 <a
                     href={`${network!.legacyExplorerUrl}/addresses/${wallet.legacyAddress}`}
                     target="_blank"
-                    className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset"
+                    className="button button-secondary button-icon w-full p-2! focus-visible:ring-inset"
                 >
                     <ArrowExternalIcon className="h-4 w-4" />
                 </a>

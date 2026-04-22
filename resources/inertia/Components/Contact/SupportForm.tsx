@@ -37,8 +37,8 @@ export default function SupportForm({ subjects }: { subjects: SubjectOption[] })
     };
 
     return (
-        <div className="mt-6 flex flex-1 flex-col rounded-xl border-theme-secondary-300 px-6 dark:border-theme-dark-700 md:mt-0 md:mt-3 md:border md:py-6 lg:ml-1.5 lg:mt-0">
-            <div className="mb-2 font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-lg">
+        <div className="border-theme-secondary-300 dark:border-theme-dark-700 mt-6 flex flex-1 flex-col rounded-xl px-6 md:mt-0 md:mt-3 md:border md:py-6 lg:mt-0 lg:ml-1.5">
+            <div className="text-theme-secondary-900 dark:text-theme-dark-50 mb-2 font-semibold md:text-lg">
                 {t("pages.support.form.title")}
             </div>
 
@@ -47,8 +47,8 @@ export default function SupportForm({ subjects }: { subjects: SubjectOption[] })
             <form ref={formRef} id="contact-form" className="flex flex-1 flex-col space-y-3" onSubmit={onSubmit}>
                 <Honeypot />
 
-                <div className="flex flex-col space-y-3 md-lg:flex-row md-lg:space-x-3 md-lg:space-y-0 lg:flex-col lg:space-x-0 lg:space-y-3">
-                    <div className="flex flex-col space-y-3 md:flex-row md:space-x-3 md:space-y-0 md-lg:flex-2 lg:flex-1">
+                <div className="md-lg:flex-row md-lg:space-x-3 md-lg:space-y-0 flex flex-col space-y-3 lg:flex-col lg:space-y-3 lg:space-x-0">
+                    <div className="md-lg:flex-2 flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-3 lg:flex-1">
                         <Input
                             name="name"
                             label={t("forms.name", { ns: "ui" })}

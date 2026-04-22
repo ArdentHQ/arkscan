@@ -43,14 +43,14 @@ export default function DropdownPopup({
             zIndex={zIndex}
             testId={testId}
         >
-            <div className="flex items-center justify-between px-6 py-[0.875rem] text-left text-lg font-semibold dark:text-theme-dark-50">
-                <div className="text-lg text-theme-secondary-900 dark:text-theme-dark-200">{title}</div>
+            <div className="dark:text-theme-dark-50 flex items-center justify-between px-6 py-[0.875rem] text-left text-lg font-semibold">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-200 text-lg">{title}</div>
 
                 <div>
                     <button
                         type="button"
                         aria-label={t("actions.close")}
-                        className="button button-generic flex h-6 w-6 items-center justify-center p-0 hover:bg-theme-primary-700 hover:text-white dark:text-theme-dark-600 dark:hover:text-white"
+                        className="button button-generic hover:bg-theme-primary-700 dark:text-theme-dark-600 flex h-6 w-6 items-center justify-center p-0 hover:text-white dark:hover:text-white"
                         onClick={() => {
                             setIsOpen(false);
 
@@ -65,7 +65,7 @@ export default function DropdownPopup({
                 </div>
             </div>
 
-            <div className="border-t border-theme-secondary-300 px-6 pb-6 pt-[0.875rem] dark:border-theme-dark-700">
+            <div className="border-theme-secondary-300 dark:border-theme-dark-700 border-t px-6 pt-[0.875rem] pb-6">
                 {children}
             </div>
         </Dropdown>

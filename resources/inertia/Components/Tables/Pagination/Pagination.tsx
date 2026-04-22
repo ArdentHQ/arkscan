@@ -93,8 +93,8 @@ export default function Pagination({
     };
 
     return (
-        <div className="-mx-6 mt-4 flex flex-col items-center space-y-6 rounded-b-xl border-t border-theme-secondary-300 px-6 pt-4 dark:border-theme-dark-700 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 md:mx-0 md:mt-0 md:border md:border-t-0 md:pb-4">
-            <div className="flex items-center space-x-2 text-sm font-semibold dark:text-theme-dark-200 sm:mr-8">
+        <div className="border-theme-secondary-300 dark:border-theme-dark-700 -mx-6 mt-4 flex flex-col items-center space-y-6 rounded-b-xl border-t px-6 pt-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 md:mx-0 md:mt-0 md:border md:border-t-0 md:pb-4">
+            <div className="dark:text-theme-dark-200 flex items-center space-x-2 text-sm font-semibold sm:mr-8">
                 <span>{t("pagination.show")}</span>
 
                 <PerPageDropdown

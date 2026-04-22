@@ -18,11 +18,11 @@ export function Row({ row }: { row: IWallet }) {
                 <Address wallet={row} />
             </TableCell>
 
-            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+            <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
                 {formattedBalanceFull}
             </TableCell>
 
-            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+            <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
                 {row.votePercentage || "0.00"}%
             </TableCell>
         </tr>

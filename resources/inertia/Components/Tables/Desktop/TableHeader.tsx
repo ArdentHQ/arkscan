@@ -21,7 +21,7 @@ function SortIcon({
     return (
         <div
             className={classNames([
-                "flex flex-col text-theme-secondary-500 dark:text-theme-dark-500",
+                "text-theme-secondary-500 dark:text-theme-dark-500 flex flex-col",
                 !disabled && "group-hover/header:text-theme-secondary-900 group-hover/header:dark:text-theme-dark-50",
             ])}
         >

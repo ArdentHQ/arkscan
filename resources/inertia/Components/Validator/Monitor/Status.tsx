@@ -31,7 +31,7 @@ export default function Status({
         <Badge
             colors={classNames({
                 "inline-flex space-x-2 items-center whitespace-nowrap": true,
-                "!px-2": withText,
+                "px-2!": withText,
                 "border-transparent bg-theme-secondary-200 dark:border-theme-dark-700 encapsulated-badge":
                     withText && isPending,
                 "border-transparent bg-theme-success-100 dark:border-theme-success-700": withText && hasForged,
@@ -59,7 +59,7 @@ export default function Status({
             {withText && (
                 <div
                     className={classNames({
-                        "leading-3.75": true,
+                        "leading-3.75!": true,
                         "text-theme-secondary-700 dark:text-theme-dark-200": isPending,
                         "text-theme-success-700 dark:text-theme-success-500": hasForged,
                         "text-theme-danger-600 dark:text-theme-danger-300": justMissed,
@@ -70,7 +70,7 @@ export default function Status({
                     {isPending && (
                         <>
                             {withTime ? (
-                                <TimeToForge className="text-xs font-semibold leading-3.75" />
+                                <TimeToForge className="text-xs leading-3.75! font-semibold" />
                             ) : (
                                 <span>{t("tables.validator-monitor.forging-status.pending")}</span>
                             )}

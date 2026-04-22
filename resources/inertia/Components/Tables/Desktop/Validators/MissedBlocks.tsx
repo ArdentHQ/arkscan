@@ -29,15 +29,15 @@ export function Row({ row }: { row: IForgingStats }) {
                 <Address wallet={row.validator} />
             </TableCell>
 
-            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+            <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
                 <Number>{row.voterCount}</Number>
             </TableCell>
 
-            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+            <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
                 {networkCurrency(row.votes ?? 0, 2)}
             </TableCell>
 
-            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+            <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
                 {(row.votesPercentage ?? 0).toFixed(2)}%
             </TableCell>
         </tr>

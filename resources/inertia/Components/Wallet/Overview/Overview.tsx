@@ -19,7 +19,7 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
         <>
             <Clipboard
                 value={wallet.address}
-                className="button-secondary group flex h-auto w-full items-center p-2 focus-visible:ring-inset"
+                className="button-secondary group flex h-auto w-full items-center p-2! focus-visible:ring-inset"
                 wrapperClass="flex-1"
                 tooltipContent={t("pages.wallet.address_copied")}
                 withCheckmarks
@@ -37,7 +37,7 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
                 </>
             )}
 
-            <div className="w-full flex-1 [&>div]:w-full [&_button]:w-full">
+            <div className="w-full flex-1 [&_button]:w-full [&>div]:w-full">
                 <PageHeaderQRCodeModalAction wallet={wallet} testId="wallet:show-qr-code-modal" />
             </div>
 
@@ -62,10 +62,10 @@ export default function Overview({ wallet }: { wallet: IWallet }) {
             </PageHeaderContainer>
 
             <div className="md:mx-auto md:max-w-7xl md:px-10 md:pb-6">
-                <div className="flex flex-col md:space-y-3 md-lg:flex-row md-lg:space-x-3 md-lg:space-y-0">
+                <div className="md-lg:flex-row md-lg:space-x-3 flex flex-col">
                     <WalletOverviewWallet wallet={wallet} />
 
-                    <WalletOverviewValidator wallet={wallet} />
+                    <WalletOverviewValidator wallet={wallet} className="md-lg:pt-0 md:pt-3" />
                 </div>
             </div>
         </>

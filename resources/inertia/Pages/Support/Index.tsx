@@ -17,7 +17,7 @@ export default function SupportIndex() {
 
             <MobileDivider />
 
-            <div className="mx-auto flex max-w-7xl flex-col dark:text-theme-dark-200 md:px-10 lg:flex-row">
+            <div className="dark:text-theme-dark-200 mx-auto flex max-w-7xl flex-col md:px-10 lg:flex-row">
                 <InformationCard socialNetworkUrls={socialNetworkUrls} />
 
                 <MobileDivider />

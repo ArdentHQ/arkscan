@@ -63,7 +63,7 @@ export default function TransactionRecordDesktopRow({
         <div className="hidden w-full min-w-0 pt-1 md:flex xl:pt-0">
             <div className="flex w-full justify-between xl:w-[770px]">
                 <div className="flex flex-1">{headerTitle}</div>
-                <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
+                <div className="md-lg:flex-2 md-lg:flex-row md-lg:space-y-0 flex flex-1 flex-col justify-between space-y-3">
                     <div className="flex flex-1 justify-between">
                         <span>{titleLabel}:</span>
                         <Link href={recordUrl} className="link">
@@ -74,7 +74,7 @@ export default function TransactionRecordDesktopRow({
                             )}
                         </Link>
                     </div>
-                    <div className="flex w-full flex-1 flex-col space-y-3 md-lg:pl-16 xl:flex-row xl:space-y-0">
+                    <div className="md-lg:pl-16 flex w-full flex-1 flex-col space-y-3 xl:flex-row xl:space-y-0">
                         <div className="flex w-full flex-1 justify-between space-x-2">
                             <div>{amountLabel}:</div>
                             <div className="text-theme-secondary-900 dark:text-theme-dark-50">{amountValue}</div>
@@ -88,7 +88,7 @@ export default function TransactionRecordDesktopRow({
                 </div>
             </div>
 
-            <div className="flex justify-between space-x-2 md:hidden md-lg:pl-16 xl:flex xl:w-[330px]">
+            <div className="md-lg:pl-16 flex justify-between space-x-2 md:hidden xl:flex xl:w-[330px]">
                 <div>{t("pages.statistics.insights.transactions.header.date")}:</div>
                 <div className="text-theme-secondary-900 dark:text-theme-dark-50">{dateFormatted}</div>
             </div>

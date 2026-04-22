@@ -26,7 +26,7 @@ export default function ExchangePair({ exchange, className }: { exchange: IExcha
     return (
         <div
             className={classNames([
-                "flex space-x-2 divide-x divide-theme-secondary-300 font-semibold text-theme-secondary-900 dark:divide-theme-dark-800 dark:text-theme-dark-50",
+                "divide-theme-secondary-300 text-theme-secondary-900 dark:divide-theme-dark-800 dark:text-theme-dark-50 flex space-x-2 divide-x font-semibold",
                 className,
             ])}
         >

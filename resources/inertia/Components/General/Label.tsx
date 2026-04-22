@@ -4,7 +4,7 @@ function Label({ children, className, ...props }: React.HTMLAttributes<HTMLLabel
     return (
         <label
             className={twMerge(
-                "transition-default block pb-3 text-lg font-semibold text-theme-secondary-900 dark:text-theme-dark-50",
+                "transition-default text-theme-secondary-900 dark:text-theme-dark-50 block pb-3 text-lg font-semibold",
                 className,
             )}
             {...props}

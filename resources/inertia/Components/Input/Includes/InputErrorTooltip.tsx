@@ -25,10 +25,10 @@ export default function InputErrorTooltip({
         >
             <Tooltip content={error}>
                 <>
-                    <CircleExclamationMarkIcon className="h-5 w-5 text-theme-danger-500" />
+                    <CircleExclamationMarkIcon className="text-theme-danger-500 h-5 w-5" />
 
                     {shifted && (
-                        <div className="h-5 w-px translate-x-4 transform bg-theme-secondary-300 dark:bg-theme-secondary-800">
+                        <div className="bg-theme-secondary-300 dark:bg-theme-secondary-800 h-5 w-px translate-x-4 transform">
                             &nbsp;
                         </div>
                     )}

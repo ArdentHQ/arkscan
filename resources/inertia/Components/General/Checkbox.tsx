@@ -25,8 +25,8 @@ const CheckboxInput = ({
             onChange={handleChange}
             className={twMerge(
                 "form-checkbox input-checkbox cursor-pointer",
-                "hover:border-theme-primary-600 focus-visible:ring-2 focus-visible:ring-theme-primary-500",
-                "!h-5 !w-5",
+                "hover:border-theme-primary-600 focus-visible:ring-theme-primary-500 focus-visible:ring-2",
+                "h-5! w-5!",
                 "checked:border-theme-primary-600 checked:bg-theme-primary-600 hover:checked:bg-theme-primary-700",
                 className,
             )}
@@ -39,7 +39,7 @@ const CheckboxLabel = ({ className, ...props }: React.HTMLAttributes<HTMLSpanEle
     return (
         <span
             className={twMerge(
-                "transition-default cursor-pointer text-sm leading-5 text-theme-secondary-700 dark:text-theme-secondary-500",
+                "transition-default text-theme-secondary-700 dark:text-theme-secondary-500 cursor-pointer text-sm leading-5",
                 className,
             )}
             {...props}

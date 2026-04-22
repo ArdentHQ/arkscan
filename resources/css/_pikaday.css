@@ -1,6 +1,6 @@
 /* Container */
 .pika-single {
-    @apply mt-2 rounded border-0;
+    @apply mt-2 rounded-sm border-0;
 }
 .dark .pika-single {
     @apply bg-theme-dark-950;
@@ -27,7 +27,7 @@ html:not(.dark) .pika-single .pika-next {
 
 /* Day of Week */
 .pika-single table thead abbr {
-    @apply cursor-default bg-theme-dark-950 no-underline;
+    @apply bg-theme-dark-950 cursor-default no-underline;
 }
 .dark .pika-single table thead abbr {
     @apply text-theme-dark-200;
@@ -40,12 +40,12 @@ html:not(.dark) .pika-single .pika-next {
 
 /* Disabled Date */
 .dark .pika-single table td.is-disabled button {
-    @apply !bg-transparent text-theme-dark-300;
+    @apply text-theme-dark-300 bg-transparent!;
 }
 
 /* Selected Date */
 .dark .pika-single table td.is-selected button {
-    @apply !bg-theme-dark-400 text-theme-dark-blue-200 shadow-none;
+    @apply bg-theme-dark-400! text-theme-dark-blue-200 shadow-none;
 }
 .dark .pika-single table td.is-selected button:hover {
     @apply text-theme-dark-50;
@@ -53,7 +53,7 @@ html:not(.dark) .pika-single .pika-next {
 
 /* Available Date */
 .pika-single table td button {
-    @apply transition-default !rounded-none;
+    @apply transition-default rounded-none!;
 }
 .dark .pika-single table td button {
     @apply bg-theme-dark-600 text-theme-dark-50;

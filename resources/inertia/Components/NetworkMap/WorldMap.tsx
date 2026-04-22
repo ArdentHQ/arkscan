@@ -504,11 +504,11 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
     return (
         <div ref={containerRef} className="relative w-full">
-            <div className="absolute bottom-2 right-2 z-20 flex items-center gap-1">
+            <div className="absolute right-2 bottom-2 z-20 flex items-center gap-1">
                 {zoom > 1 && (
                     <button
                         type="button"
-                        className="button-secondary h-7 px-2 py-0 text-xs"
+                        className="button-secondary h-7 px-2! py-0! text-xs"
                         onClick={() => {
                             setZoom(1);
                             setPan({ x: 0, y: 0 });
@@ -520,7 +520,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 <button
                     type="button"
-                    className="button-secondary flex h-7 w-7 items-center justify-center p-0"
+                    className="button-secondary flex h-7 w-7 items-center justify-center p-0!"
                     disabled={zoom >= 8}
                     onClick={() => handleZoomButton(1)}
                 >
@@ -529,7 +529,7 @@ export default function WorldMap({ peers }: WorldMapProps) {
 
                 <button
                     type="button"
-                    className="button-secondary flex h-7 w-7 items-center justify-center p-0"
+                    className="button-secondary flex h-7 w-7 items-center justify-center p-0!"
                     disabled={zoom <= 1}
                     onClick={() => handleZoomButton(-1)}
                 >

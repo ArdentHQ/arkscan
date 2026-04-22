@@ -39,7 +39,7 @@ export default function VoteLink({
                         <div>
                             <button
                                 type="button"
-                                className="text-sm font-semibold text-theme-secondary-500 dark:text-theme-dark-500"
+                                className="text-theme-secondary-500 dark:text-theme-dark-500 text-sm font-semibold"
                                 disabled
                             >
                                 {t("actions.vote")}
@@ -72,7 +72,7 @@ export default function VoteLink({
                         dropdownContentClasses="bg-white dark:bg-theme-dark-900 dark:border dark:border-theme-dark-800 rounded-xl shadow-lg"
                     >
                         <div className="overflow-hidden rounded-t-xl">
-                            <div className="flex bg-theme-secondary-200 px-6 py-2 text-sm font-semibold leading-4.25 dark:bg-theme-dark-950">
+                            <div className="bg-theme-secondary-200 dark:bg-theme-dark-950 flex px-6 py-2 text-sm leading-4.25 font-semibold">
                                 {t("general.vote_with")}
                             </div>
 
@@ -80,7 +80,7 @@ export default function VoteLink({
                                 {wallet.voteUrl && (
                                     <ExternalLink
                                         url={wallet.voteUrl}
-                                        className="link flex items-center space-x-2 py-3 font-semibold leading-5"
+                                        className="link flex items-center space-x-2 py-3 leading-5 font-semibold"
                                     >
                                         {t("brands.arkvault")}
                                     </ExternalLink>
@@ -93,7 +93,7 @@ export default function VoteLink({
                                         <div>
                                             <button
                                                 type="button"
-                                                className="flex items-center space-x-2 py-3 font-semibold leading-5 text-theme-secondary-500 dark:text-theme-dark-500"
+                                                className="text-theme-secondary-500 dark:text-theme-dark-500 flex items-center space-x-2 py-3 leading-5 font-semibold"
                                                 disabled
                                             >
                                                 {t("brands.arkconnect")}
@@ -105,7 +105,7 @@ export default function VoteLink({
                                 {showVoteAction && (
                                     <button
                                         type="button"
-                                        className="link flex items-center space-x-2 py-3 font-semibold leading-5"
+                                        className="link flex items-center space-x-2 py-3 leading-5 font-semibold"
                                         onClick={() => performVote(validatorAddress)}
                                     >
                                         {t("brands.arkconnect")}
