@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb0b8395d2bc57f181b1c6d98663ddd8",
+    "content-hash": "1e0e2e696275966c50488d55539da0d0",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -118,16 +118,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "dev-refactor/additional-tailwind-css-updates",
+            "version": "21.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "33431e5a1238051026f60d07a3defc8e321582a0"
+                "reference": "b1642535162f54e4ef49075dee5f384e4233f27e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/33431e5a1238051026f60d07a3defc8e321582a0",
-                "reference": "33431e5a1238051026f60d07a3defc8e321582a0",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/b1642535162f54e4ef49075dee5f384e4233f27e",
+                "reference": "b1642535162f54e4ef49075dee5f384e4233f27e",
                 "shasum": ""
             },
             "require": {
@@ -203,9 +203,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/refactor/additional-tailwind-css-updates"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/21.0.0"
             },
-            "time": "2026-04-22T03:40:13+00:00"
+            "time": "2026-04-22T09:52:32+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -12084,16 +12084,16 @@
         },
         {
             "name": "spatie/laravel-medialibrary",
-            "version": "11.21.0",
+            "version": "11.21.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-medialibrary.git",
-                "reference": "d6e2595033ffd130d4dd5d124510ab3304794c44"
+                "reference": "422b7ff3ed9cd263c70b400bc57dabdaaf472283"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/d6e2595033ffd130d4dd5d124510ab3304794c44",
-                "reference": "d6e2595033ffd130d4dd5d124510ab3304794c44",
+                "url": "https://api.github.com/repos/spatie/laravel-medialibrary/zipball/422b7ff3ed9cd263c70b400bc57dabdaaf472283",
+                "reference": "422b7ff3ed9cd263c70b400bc57dabdaaf472283",
                 "shasum": ""
             },
             "require": {
@@ -12178,7 +12178,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-medialibrary/issues",
-                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.21.0"
+                "source": "https://github.com/spatie/laravel-medialibrary/tree/11.21.1"
             },
             "funding": [
                 {
@@ -12190,7 +12190,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-21T15:58:56+00:00"
+            "time": "2026-04-22T07:49:28+00:00"
         },
         {
             "name": "spatie/laravel-newsletter",
@@ -18316,7 +18316,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "arkecosystem/crypto": 20,
-        "arkecosystem/foundation": 20,
         "huddledigital/zendesk-laravel": 20
     },
     "prefer-stable": true,
