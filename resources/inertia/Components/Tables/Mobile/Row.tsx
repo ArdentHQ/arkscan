@@ -29,8 +29,7 @@ export default function MobileTableRow({
         >
             <div
                 className={classNames({
-                    "bg-theme-secondary-100 dark:bg-theme-dark-950 flex items-center justify-between rounded-t px-4 py-3 font-semibold":
-                        true,
+                    "bg-theme-secondary-100 dark:bg-theme-dark-950 flex items-center justify-between rounded-t px-4 py-3 font-semibold": true,
                     "rounded-b": (!children && !expandable) || (!!children && !isExpanded && expandable),
                     "sm:rounded-b-none": expandable,
                     [expandClass]: expandable,
@@ -61,8 +60,7 @@ export default function MobileTableRow({
             {children && (
                 <div
                     className={classNames({
-                        "flex flex-col space-y-4 px-4 pt-3 pb-4 sm:flex-1 sm:flex-row sm:justify-between sm:space-y-0":
-                            true,
+                        "flex flex-col space-y-4 px-4 pt-3 pb-4 sm:flex-1 sm:flex-row sm:justify-between sm:space-y-0": true,
                         "hidden sm:flex": !isExpanded,
                         [contentClass]: true,
                     })}
