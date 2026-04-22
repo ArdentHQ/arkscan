@@ -127,10 +127,10 @@ const NavbarMobileListItem = ({
             <Link
                 href={link}
                 className={classNames(
-                    "transition-default group border-theme-secondary-300 hover:bg-theme-secondary-200 dark:border-theme-dark-500 dark:hover:bg-theme-dark-900 relative ml-6 inline-flex h-full w-full border-l px-6 py-3 leading-5 font-semibold focus:outline-none",
+                    "transition-default group border-theme-secondary-300 hover:bg-theme-secondary-200 dark:border-theme-dark-500 focus:dark:bg-theme-dark-900 relative ml-6 inline-flex h-full w-full border-l px-6 py-3 leading-5 font-semibold focus:outline-none",
                     {
                         "text-theme-secondary-900 dark:text-theme-dark-50": isActive,
-                        "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 dark:hover:text-theme-secondary-50":
+                        "text-theme-secondary-700 hover:text-theme-secondary-800 dark:text-theme-dark-50 focus:dark:text-theme-secondary-50":
                             !isActive,
                     },
                     className,
