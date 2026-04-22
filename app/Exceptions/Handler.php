@@ -130,16 +130,15 @@ final class Handler extends ExceptionHandler
     private function getNotFoundEntityResponse(Throwable $exception): HttpResponse|JsonResponse
     {
         $expectedException = $this->prepareException($this->mapException($exception));
-
-        $type = 'wallet';
-        if ($expectedException->getPrevious() instanceof TransactionNotFoundException) {
-            $type = 'transaction';
-        } elseif ($expectedException->getPrevious() instanceof BlockNotFoundException) {
-            $type = 'block';
-        }
-
-        /** @var EntityNotFoundInterface $previousException */
         $previousException = $expectedException->getPrevious();
+
+        assert($previousException instanceof EntityNotFoundInterface);
+
+        $type = match (true) {
+            $previousException instanceof TransactionNotFoundException => 'transaction',
+            $previousException instanceof BlockNotFoundException       => 'block',
+            default                                                    => 'wallet',
+        };
 
         return Inertia::renderWithMeta('Error/NotFound', '404', [
             'error' => (string) $previousException->getCustomMessage(),

@@ -183,6 +183,24 @@ it('should format fee cards above threshold and convert chart datasets', functio
             ->where('informationCards.fees.periods.day.chart.datasets.0', fn ($value) => (float) $value === $expectedDataset));
 });
 
+it('should sum chart datasets containing BigDecimal instances', function () {
+    $controller = new StatisticsController();
+
+    $call = Closure::bind(function (array $chartData): float {
+        return $this->totalFromChart($chartData);
+    }, $controller, StatisticsController::class);
+
+    $total = $call([
+        'datasets' => [
+            BigDecimal::of('10000000000000000000'),
+            BigDecimal::of('5000000000000000000'),
+            2_000_000_000_000_000_000,
+        ],
+    ]);
+
+    expect($total)->toEqualWithDelta(17_000_000_000_000_000_000, 1_000_000_000);
+});
+
 it('should return null when wallet details are missing in validator records', function () {
     $controller = new StatisticsController();
 

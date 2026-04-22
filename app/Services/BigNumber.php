@@ -66,7 +66,7 @@ final class BigNumber implements Stringable
     /**
      * @param BigNumber|BigDecimal|int|float|string $value
      */
-    public function dividedBy($value, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): self
+    public function dividedBy($value, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::Unnecessary): self
     {
         if ($value instanceof self) {
             $value = $value->valueOf();
@@ -103,10 +103,10 @@ final class BigNumber implements Stringable
             $divisor = config('currencies.notation.crypto', 1e18);
         }
 
-        $value = $this->value->exactlyDividedBy($divisor);
+        $value = $this->value->dividedBy($divisor, 18, RoundingMode::Down);
 
         if ($scale !== null) {
-            $value = $value->toScale($scale, RoundingMode::DOWN);
+            $value = $value->toScale($scale, RoundingMode::Down);
         }
 
         return $value->toFloat();

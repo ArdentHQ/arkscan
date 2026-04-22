@@ -88,12 +88,14 @@ final class BlocksListController
         $blocks = Block::withScope(OrderByTimestampScope::class)
             ->where('number', '<=', $heightTo)
             ->where('number', '>', $heightFrom)
-            ->get();
+            ->get()
+            ->map(fn (Block $block) => BlockDTO::fromModel($block))
+            ->values();
 
-        return (new LengthAwarePaginator($blocks, $blockCount, $this->perPage(), $this->page(), [
+        return new LengthAwarePaginator($blocks, $blockCount, $this->perPage(), $this->page(), [
             'path'     => route('blocks'),
             'pageName' => 'page',
-        ]))->through(fn (Block $block) => BlockDTO::fromModel($block));
+        ]);
     }
 
     private function blockData(): array
