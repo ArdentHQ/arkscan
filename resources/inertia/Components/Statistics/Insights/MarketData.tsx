@@ -62,7 +62,7 @@ export default function MarketDataInsights({
 
     return (
         <div className={activeTab !== "market_data" ? "hidden md:block" : undefined}>
-            <div className="hidden px-6 font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:mx-auto md:block md:max-w-7xl md:px-10">
+            <div className="text-theme-secondary-900 dark:text-theme-dark-50 hidden px-6 font-semibold md:mx-auto md:block md:max-w-7xl md:px-10">
                 {t("pages.statistics.insights.market_data.title")}
             </div>
 
@@ -122,14 +122,14 @@ export default function MarketDataInsights({
                             <div
                                 className={classNames(
                                     "flex",
-                                    isFiatCurrency ? "flex-1" : "flex-1 md-lg:w-[150px] md-lg:flex-none",
+                                    isFiatCurrency ? "flex-1" : "md-lg:w-[150px] md-lg:flex-none flex-1",
                                 )}
                             >
                                 {t(`pages.statistics.insights.market_data.header.${item}`)}
                             </div>
 
-                            <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                                <div className="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+                            <div className="md-lg:flex-2 md-lg:flex-row md-lg:space-y-0 flex flex-1 flex-col justify-between space-y-3">
+                                <div className="text-theme-secondary-900 dark:text-theme-dark-50 flex flex-1 justify-end">
                                     {item === "daily" && (
                                         <RangeValue low={data.prices.daily.low} high={data.prices.daily.high} />
                                     )}
@@ -140,7 +140,7 @@ export default function MarketDataInsights({
                                         (fmtPriceVal(data.prices[item].value) ?? t("general.na"))}
                                 </div>
 
-                                <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">
+                                <div className="md-lg:pl-16 flex w-full flex-1 justify-between space-x-2">
                                     {(item === "atl" || item === "ath") && (
                                         <>
                                             <div>{t("pages.statistics.insights.market_data.header.date")}:</div>
@@ -191,20 +191,20 @@ export default function MarketDataInsights({
                                 <div
                                     className={classNames(
                                         "flex",
-                                        isFiatCurrency ? "flex-1" : "flex-1 md-lg:w-[150px] md-lg:flex-none",
+                                        isFiatCurrency ? "flex-1" : "md-lg:w-[150px] md-lg:flex-none flex-1",
                                     )}
                                 >
                                     {t(`pages.statistics.insights.market_data.header.${item}`)}
                                 </div>
 
-                                <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                                    <div className="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+                                <div className="md-lg:flex-2 md-lg:flex-row md-lg:space-y-0 flex flex-1 flex-col justify-between space-y-3">
+                                    <div className="text-theme-secondary-900 dark:text-theme-dark-50 flex flex-1 justify-end">
                                         {item === "today_volume"
                                             ? fmtVolVal(data.volume.today)
                                             : fmtVolVal(data.volume[item].value)}
                                     </div>
 
-                                    <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">
+                                    <div className="md-lg:pl-16 flex w-full flex-1 justify-between space-x-2">
                                         {(item === "atl" || item === "ath") && (
                                             <>
                                                 <div>{t("pages.statistics.insights.market_data.header.date")}:</div>
@@ -256,20 +256,20 @@ export default function MarketDataInsights({
                                 <div
                                     className={classNames(
                                         "flex",
-                                        isFiatCurrency ? "flex-1" : "flex-1 md-lg:w-[150px] md-lg:flex-none",
+                                        isFiatCurrency ? "flex-1" : "md-lg:w-[150px] md-lg:flex-none flex-1",
                                     )}
                                 >
                                     {t(`pages.statistics.insights.market_data.header.${item}`)}
                                 </div>
 
-                                <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
-                                    <div className="flex flex-1 justify-end text-theme-secondary-900 dark:text-theme-dark-50">
+                                <div className="md-lg:flex-2 md-lg:flex-row md-lg:space-y-0 flex flex-1 flex-col justify-between space-y-3">
+                                    <div className="text-theme-secondary-900 dark:text-theme-dark-50 flex flex-1 justify-end">
                                         {item === "today_value"
                                             ? fmtCapVal(data.caps.today)
                                             : fmtCapVal(data.caps[item].value)}
                                     </div>
 
-                                    <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">
+                                    <div className="md-lg:pl-16 flex w-full flex-1 justify-between space-x-2">
                                         {(item === "atl" || item === "ath") && (
                                             <>
                                                 <div>{t("pages.statistics.insights.market_data.header.date")}:</div>

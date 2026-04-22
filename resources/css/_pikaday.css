@@ -27,7 +27,7 @@ html:not(.dark) .pika-single .pika-next {
 
 /* Day of Week */
 .pika-single table thead abbr {
-    @apply cursor-default bg-theme-dark-950 no-underline;
+    @apply bg-theme-dark-950 cursor-default no-underline;
 }
 .dark .pika-single table thead abbr {
     @apply text-theme-dark-200;
@@ -40,7 +40,7 @@ html:not(.dark) .pika-single .pika-next {
 
 /* Disabled Date */
 .dark .pika-single table td.is-disabled button {
-    @apply bg-transparent! text-theme-dark-300;
+    @apply text-theme-dark-300 bg-transparent!;
 }
 
 /* Selected Date */

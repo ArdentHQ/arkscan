@@ -12,7 +12,7 @@ const NavbarMobileButton = ({
     return (
         <div className="relative p-2 pr-1 last:pr-2">
             {selected && (
-                <div className="transition-default absolute left-1 top-1 h-6 w-6 rounded bg-white dark:bg-theme-dark-700"></div>
+                <div className="transition-default dark:bg-theme-dark-700 absolute top-1 left-1 h-6 w-6 rounded bg-white"></div>
             )}
 
             <button
@@ -33,7 +33,7 @@ export default function NavbarMobileThemeToggle() {
 
     return (
         <div>
-            <div className="relative h-8 rounded bg-theme-secondary-200 dark:bg-theme-dark-900">
+            <div className="bg-theme-secondary-200 dark:bg-theme-dark-900 relative h-8 rounded">
                 <div className="flex items-center">
                     <NavbarMobileButton selected={theme === "light"} onClick={() => updateTheme("light")}>
                         <SunIcon className="h-4 w-4" />

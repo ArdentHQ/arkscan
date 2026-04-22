@@ -18,13 +18,13 @@ export default function SubmitCTA({
     return (
         <div
             className={classNames([
-                "flex w-full flex-col items-center justify-between space-y-3 rounded-xl bg-theme-primary-100 px-6 py-6 text-center dark:bg-theme-dark-800",
+                "bg-theme-primary-100 dark:bg-theme-dark-800 flex w-full flex-col items-center justify-between space-y-3 rounded-xl px-6 py-6 text-center",
                 className,
             ])}
         >
             <span
                 className={classNames(
-                    "space-x-1 font-semibold text-theme-primary-900 dim:text-theme-dark-50 dark:text-white",
+                    "text-theme-primary-900 dim:text-theme-dark-50 space-x-1 font-semibold dark:text-white",
                     titleClassName,
                 )}
             >

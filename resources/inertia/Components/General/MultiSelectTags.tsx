@@ -30,11 +30,11 @@ const MultiSelectTag = ({ value, onRemove, className, children, ...props }: Mult
 
             <span
                 className={twMerge(
-                    "inline-block p-1 text-theme-secondary-700 dark:text-theme-dark-200",
+                    "text-theme-secondary-700 dark:text-theme-dark-200 inline-block p-1",
                     "group-hover:text-white group-hover:dark:text-white",
                 )}
             >
-                <CrossSmallIcon className="fill-current h-2 w-2" />
+                <CrossSmallIcon className="h-2 w-2 fill-current" />
             </span>
         </button>
     );

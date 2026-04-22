@@ -33,8 +33,8 @@ const ModalRoot = ({
     <ModalContext.Provider value={{ onClose }}>
         <Dialog.Root open={isOpen} onOpenChange={onClose} {...props}>
             <Dialog.Portal>
-                <Dialog.Overlay className="custom-scroll fixed inset-0 z-50 grid place-items-start overflow-y-auto bg-overlay dim:bg-overlay-dim dark:bg-overlay-dark sm:place-items-center md:px-8 md:py-10">
-                    <Dialog.Content className="relative w-full max-w-2xl bg-white dark:bg-theme-dark-900 sm:m-auto sm:mx-auto sm:max-w-[448px] sm:rounded-xl sm:shadow-2xl">
+                <Dialog.Overlay className="custom-scroll bg-overlay dim:bg-overlay-dim dark:bg-overlay-dark fixed inset-0 z-50 grid place-items-start overflow-y-auto sm:place-items-center md:px-8 md:py-10">
+                    <Dialog.Content className="dark:bg-theme-dark-900 relative w-full max-w-2xl bg-white sm:m-auto sm:mx-auto sm:max-w-[448px] sm:rounded-xl sm:shadow-2xl">
                         {description && <Dialog.Description className="sr-only">{description}</Dialog.Description>}
                         {children}
                     </Dialog.Content>
@@ -55,12 +55,12 @@ const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: 
     return (
         <div
             className={twMerge(
-                "flex items-start justify-between border-b border-theme-secondary-300 px-6 pb-[0.875rem] pt-4 dark:border-theme-dark-700 sm:pt-[0.875rem]",
+                "border-theme-secondary-300 dark:border-theme-dark-700 flex items-start justify-between border-b px-6 pt-4 pb-[0.875rem] sm:pt-[0.875rem]",
                 className,
             )}
             {...props}
         >
-            <Dialog.Title className="m-0 text-left text-lg font-semibold dark:text-theme-dark-50">
+            <Dialog.Title className="dark:text-theme-dark-50 m-0 text-left text-lg font-semibold">
                 {children}
             </Dialog.Title>
 
@@ -69,9 +69,9 @@ const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: 
                     type="button"
                     onClick={onClose}
                     aria-label={t("actions.close")}
-                    className="button button-secondary m-0 h-6 w-6 shrink-0 rounded-none bg-transparent p-0! text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:bg-transparent dark:text-theme-dark-200 dark:shadow-none hover:dark:bg-theme-dark-blue-600 hover:dark:text-theme-dark-50 sm:rounded"
+                    className="button button-secondary text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:text-theme-dark-200 hover:dark:bg-theme-dark-blue-600 hover:dark:text-theme-dark-50 m-0 h-6 w-6 shrink-0 rounded-none bg-transparent p-0! sm:rounded dark:bg-transparent dark:shadow-none"
                 >
-                    <CrossIcon className="fill-current m-auto h-4 w-4" />
+                    <CrossIcon className="m-auto h-4 w-4 fill-current" />
                 </button>
             )}
         </div>
@@ -83,7 +83,7 @@ const ModalBody = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement
         <div
             ref={ref}
             className={twMerge(
-                "px-6 pb-4 pt-4 font-normal text-theme-secondary-700 dark:text-theme-dark-200 sm:pb-6",
+                "text-theme-secondary-700 dark:text-theme-dark-200 px-6 pt-4 pb-4 font-normal sm:pb-6",
                 className,
             )}
             {...props}
@@ -98,7 +98,7 @@ ModalBody.displayName = "ModalBody";
 const ModalFooter = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div
         className={twMerge(
-            "mb-4 flex flex-col-reverse border-t border-theme-secondary-300 px-6 pt-4 dark:border-theme-dark-700 sm:flex-row sm:justify-end sm:space-x-3",
+            "border-theme-secondary-300 dark:border-theme-dark-700 mb-4 flex flex-col-reverse border-t px-6 pt-4 sm:flex-row sm:justify-end sm:space-x-3",
             className,
         )}
         {...props}

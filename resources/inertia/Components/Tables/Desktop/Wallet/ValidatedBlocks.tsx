@@ -35,7 +35,7 @@ export function Row({ row }: { row: IBlock }) {
                 <Age timestamp={block.timestamp} />
             </TableCell>
 
-            <TableCell className="text-right text-theme-secondary-900 dark:text-theme-dark-50">
+            <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
                 {block.transactionCount}
             </TableCell>
 
@@ -86,7 +86,7 @@ export function ValidatedBlocksTable({
 
                     <TableHeader
                         className={classNames({
-                            "whitespace-nowrap text-right": true,
+                            "text-right whitespace-nowrap": true,
                             "last-until-lg": !!network?.canBeExchanged,
                         })}
                         lastOn={network?.canBeExchanged ? "lg" : undefined}
@@ -102,7 +102,7 @@ export function ValidatedBlocksTable({
 
                     {network?.canBeExchanged && (
                         <TableHeader
-                            className="whitespace-nowrap text-right"
+                            className="text-right whitespace-nowrap"
                             breakpoint="lg"
                             responsive
                             tooltip={t("pages.wallets.blocks.value_tooltip", {

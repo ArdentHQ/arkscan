@@ -9,7 +9,7 @@ export default function Container({
     return (
         <div
             className={classNames({
-                "rounded border border-theme-secondary-300 px-4 py-3 dark:border-theme-dark-700 md:rounded-xl md:px-6 md:py-4": true,
+                "border-theme-secondary-300 dark:border-theme-dark-700 rounded border px-4 py-3 md:rounded-xl md:px-6 md:py-4": true,
                 [className]: true,
             })}
         >

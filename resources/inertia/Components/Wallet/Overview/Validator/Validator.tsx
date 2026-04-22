@@ -16,7 +16,7 @@ function EmptyWalletOverviewValidator() {
         <WalletOverviewItem
             title={t("pages.wallet.validator_info")}
             maskedMessage={t("pages.wallet.validator.not_registered_text")}
-            className="hidden md-lg:block"
+            className="md-lg:block hidden"
         >
             <WalletOverviewItemEntry title={t("pages.wallet.validator.rank")} />
 

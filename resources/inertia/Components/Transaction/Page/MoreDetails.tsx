@@ -65,7 +65,7 @@ export default function TransactionMoreDetails({
 
                         <button
                             type="button"
-                            className="link border-b border-dashed border-theme-primary-500 leading-5 hover:border-theme-primary-700 hover:no-underline"
+                            className="link border-theme-primary-500 hover:border-theme-primary-700 border-b border-dashed leading-5 hover:no-underline"
                             onClick={() => setIsMobilePayloadExpanded(!isMobilePayloadExpanded)}
                         >
                             {isMobilePayloadExpanded ? t("actions.hide") : t("actions.view_all")}
@@ -75,7 +75,7 @@ export default function TransactionMoreDetails({
             </PageSection>
 
             <div className="hidden px-6 sm:block md:mx-auto md:max-w-7xl md:px-10">
-                <div className="font-semibold leading-5 text-theme-secondary-900 dark:text-theme-dark-50">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50 leading-5 font-semibold">
                     {t("pages.transaction.more_details")}
                 </div>
 
@@ -136,7 +136,7 @@ export default function TransactionMoreDetails({
                             <div>
                                 <button
                                     type="button"
-                                    className="link border-b border-dashed border-theme-primary-500 leading-5 hover:border-theme-primary-700 hover:no-underline"
+                                    className="link border-theme-primary-500 hover:border-theme-primary-700 border-b border-dashed leading-5 hover:no-underline"
                                     onClick={() => setIsDesktopPayloadExpanded(!isDesktopPayloadExpanded)}
                                 >
                                     {isDesktopPayloadExpanded ? t("actions.hide") : t("actions.view_all")}

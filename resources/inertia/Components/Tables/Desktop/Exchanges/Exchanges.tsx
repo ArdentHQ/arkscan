@@ -26,7 +26,7 @@ export function Row({ row: exchange }: { row: IExchange }) {
 
                     <ExternalLink
                         url={exchange.url}
-                        className="link flex items-center space-x-2 break-words font-semibold leading-4"
+                        className="link flex items-center space-x-2 leading-4 font-semibold break-words"
                         iconClass="inline relative flex-shrink-0 ml-0.5 text-theme-secondary-500 dark:text-theme-dark-500 w-3 h-3"
                     >
                         {exchange.name}
@@ -45,7 +45,7 @@ export function Row({ row: exchange }: { row: IExchange }) {
             <TableCell
                 breakpoint="md-lg"
                 responsive
-                className="text-right text-theme-secondary-900 dark:text-theme-dark-50"
+                className="text-theme-secondary-900 dark:text-theme-dark-50 text-right"
             >
                 <ExchangeVolume exchange={exchange} />
             </TableCell>

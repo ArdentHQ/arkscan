@@ -23,7 +23,7 @@ export default function DropdownCheckboxItem({
             id={id}
             name={name}
             className={classNames({
-                "dropdown__checkbox transition-default my-[0.125rem] select-none rounded-lg px-5 font-semibold": true,
+                "dropdown__checkbox transition-default my-[0.125rem] rounded-lg px-5 font-semibold select-none": true,
                 "dark:text-theme-dark-50! bg-theme-secondary-200 text-theme-primary-600! dark:bg-theme-dark-950":
                     checked === true,
                 "text-theme-secondary-700 hover:bg-theme-secondary-200 hover:text-theme-secondary-900 dark:text-theme-dark-200 hover:dark:bg-theme-dark-950 hover:dark:text-theme-dark-50":

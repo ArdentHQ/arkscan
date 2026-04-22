@@ -12,7 +12,7 @@ export default function ArkVault() {
 
     return (
         <Container className="w-full p-0!">
-            <div className="flex w-full flex-col md-lg:flex-row">
+            <div className="md-lg:flex-row flex w-full flex-col">
                 <div className="flex flex-1 flex-col justify-center pb-4 sm:pb-8 md:px-8 xl:py-8">
                     <div className="flex">
                         <Badge
@@ -26,14 +26,14 @@ export default function ArkVault() {
                     </div>
 
                     <div className="xl:mt-6">
-                        <h2 className="text-lg font-semibold text-theme-secondary-900 sm:text-2xl">
+                        <h2 className="text-theme-secondary-900 text-lg font-semibold sm:text-2xl">
                             <span>{t("brands.arkvault")} </span>
                             <span className="text-theme-secondary-500 dark:text-theme-dark-500">
                                 ({t("pages.compatible-wallets.arkvault.web_wallet")})
                             </span>
                         </h2>
 
-                        <p className="mt-2 leading-7 dark:text-theme-dark-200">
+                        <p className="dark:text-theme-dark-200 mt-2 leading-7">
                             {t("pages.compatible-wallets.arkvault.description")}
                         </p>
                     </div>
@@ -41,14 +41,14 @@ export default function ArkVault() {
                     <CompatibleWalletsLearnMore />
                 </div>
 
-                <div className="flex flex-1 grow pr-3 pt-2 md:py-2">
+                <div className="flex flex-1 grow pt-2 pr-3 md:py-2">
                     <img src={arkvaultImage} className="dark:hidden" alt="ARK Vault - Official ARK Wallet" />
                     <img
                         src={arkvaultImageDark}
-                        className="hidden dim:hidden dark:block"
+                        className="dim:hidden hidden dark:block"
                         alt="ARK Vault - Official ARK Wallet"
                     />
-                    <img src={arkvaultImageDim} className="hidden dim:block" alt="ARK Vault - Official ARK Wallet" />
+                    <img src={arkvaultImageDim} className="dim:block hidden" alt="ARK Vault - Official ARK Wallet" />
                 </div>
             </div>
         </Container>

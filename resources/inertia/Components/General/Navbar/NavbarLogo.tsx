@@ -17,16 +17,16 @@ export default function NavbarLogo() {
             <div className="flex space-x-0.5">
                 <Logo
                     className={classNames({
-                        "h-8 bg-theme-danger-400": true,
+                        "bg-theme-danger-400 h-8": true,
                         "rounded-l": navbarTag !== null,
                         rounded: navbarTag === null,
                     })}
                 />
 
                 {navbarTag && (
-                    <div className="flex rounded-r bg-theme-danger-100 text-theme-danger-600 dark:bg-theme-dark-800 dark:text-theme-dark-200">
+                    <div className="bg-theme-danger-100 text-theme-danger-600 dark:bg-theme-dark-800 dark:text-theme-dark-200 flex rounded-r">
                         <Tooltip content={t("general.navbar.release_tag_tooltip", { tag: navbarTag })}>
-                            <div className="flex h-full items-center px-2 text-xs font-semibold uppercase leading-none">
+                            <div className="flex h-full items-center px-2 text-xs leading-none font-semibold uppercase">
                                 {navbarTag}
                             </div>
                         </Tooltip>
@@ -34,7 +34,7 @@ export default function NavbarLogo() {
                 )}
             </div>
 
-            <span className="ml-4 hidden text-theme-secondary-900 dark:text-theme-dark-50 md:flex md:items-center">
+            <span className="text-theme-secondary-900 dark:text-theme-dark-50 ml-4 hidden md:flex md:items-center">
                 <span className="inline-flex text-lg">
                     <span className="font-bold">{navbarName ? navbarName : currency}</span>
 

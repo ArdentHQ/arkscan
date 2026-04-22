@@ -13,7 +13,7 @@ export default function AddressInsights({ data, activeTab }: { data: StatisticsA
 
     return (
         <div className={activeTab !== "addresses" ? "hidden md:block" : undefined}>
-            <div className="hidden px-6 font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:mx-auto md:block md:max-w-7xl md:px-10">
+            <div className="text-theme-secondary-900 dark:text-theme-dark-50 hidden px-6 font-semibold md:mx-auto md:block md:max-w-7xl md:px-10">
                 {t("pages.statistics.insights.addresses.title")}
             </div>
 
@@ -105,14 +105,14 @@ export default function AddressInsights({ data, activeTab }: { data: StatisticsA
 
                                 <div className="hidden w-full justify-between md:flex xl:w-[770px]">
                                     <div className="flex flex-1">{label}</div>
-                                    <div className="flex flex-1 flex-col justify-between space-y-3 md-lg:flex-2 md-lg:flex-row md-lg:space-y-0">
+                                    <div className="md-lg:flex-2 md-lg:flex-row md-lg:space-y-0 flex flex-1 flex-col justify-between space-y-3">
                                         <div className="flex flex-1 justify-between">
                                             <span>{t("pages.statistics.insights.addresses.header.address")}:</span>
                                             <Link href={route("wallet", entry.address)} className="link">
                                                 <TruncateMiddle>{entry.address}</TruncateMiddle>
                                             </Link>
                                         </div>
-                                        <div className="flex w-full flex-1 justify-between space-x-2 md-lg:pl-16">
+                                        <div className="md-lg:pl-16 flex w-full flex-1 justify-between space-x-2">
                                             <div>{valueLabel}:</div>
                                             <div className="text-theme-secondary-900 dark:text-theme-dark-50">
                                                 {desktopValue}

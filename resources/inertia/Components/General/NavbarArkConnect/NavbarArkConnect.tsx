@@ -36,16 +36,16 @@ export default function NavbarArkConnect() {
     return (
         <div
             className={classNames(
-                "flex flex-col px-6 py-3 dark:border-transparent dark:bg-theme-dark-900 dark:text-theme-dark-200 md:px-0 md:py-0",
+                "dark:bg-theme-dark-900 dark:text-theme-dark-200 flex flex-col px-6 py-3 md:px-0 md:py-0 dark:border-transparent",
                 {
-                    "border-t border-theme-secondary-300 bg-theme-secondary-200 md:border-0 md:bg-transparent":
+                    "border-theme-secondary-300 bg-theme-secondary-200 border-t md:border-0 md:bg-transparent":
                         isConnected,
                 },
             )}
         >
             {hasExtension && isSupported && !isConnected && (
                 <button
-                    className="button-secondary whitespace-nowrap px-4! py-1.5!"
+                    className="button-secondary px-4! py-1.5! whitespace-nowrap"
                     onClick={connect}
                     disabled={!hasExtension}
                 >
@@ -68,14 +68,14 @@ export default function NavbarArkConnect() {
                             </Link>
                         ) : (
                             <Tooltip content={t(`general.arkconnect.wrong_network.${network!.alias}`)}>
-                                <a className="min-w-0 flex-1 text-theme-secondary-500 dark:text-theme-dark-500">
+                                <a className="text-theme-secondary-500 dark:text-theme-dark-500 min-w-0 flex-1">
                                     <TruncateMiddle>{address ?? ""}</TruncateMiddle>
                                 </a>
                             </Tooltip>
                         )}
                     </div>
 
-                    <div className="flex space-x-4 dark:text-theme-dark-300">
+                    <div className="dark:text-theme-dark-300 flex space-x-4">
                         <Tooltip content={t("tooltips.copied")}>
                             <button type="button" onClick={copyToClipboard}>
                                 <CopyIcon className="h-4 w-4" />

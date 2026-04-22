@@ -92,7 +92,7 @@ function SelectAllOption({
     const { t } = useTranslation();
 
     return (
-        <div className="my-1 border-b border-theme-secondary-300 px-1 dark:border-theme-dark-700">
+        <div className="border-theme-secondary-300 dark:border-theme-dark-700 my-1 border-b px-1">
             <DropdownCheckboxItem
                 id="filter-select-all"
                 name="filter-select-all"
@@ -129,7 +129,7 @@ function FilterOption({
     if ("options" in filterOption) {
         return (
             <div>
-                <div className="group mx-1 rounded bg-theme-navy-50 px-5 text-xs font-semibold leading-5 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 md:rounded-lg md:px-4">
+                <div className="group bg-theme-navy-50 text-theme-secondary-700 dark:bg-theme-dark-800 dark:text-theme-dark-200 mx-1 rounded px-5 text-xs leading-5 font-semibold md:rounded-lg md:px-4">
                     {filterOption.label}
                 </div>
 

@@ -17,10 +17,10 @@ export default function MarketStat({
 
     return (
         <div className="flex flex-col space-y-2">
-            <div className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">{label}</div>
+            <div className="text-theme-secondary-700 dark:text-theme-dark-200 text-sm font-semibold">{label}</div>
 
             <div
-                className={classNames("flex items-baseline text-base font-semibold leading-5!", {
+                className={classNames("flex items-baseline text-base leading-5! font-semibold", {
                     "text-theme-secondary-900 dark:text-theme-dark-50": !isDisabled,
                     "text-theme-secondary-500 dark:text-theme-dark-500": isDisabled,
                 })}

@@ -51,7 +51,7 @@ export default function DropdownItem({
             <Slottable>{children}</Slottable>
 
             {selected && (
-                <DoubleCheckMarkIcon className="ml-2 inline h-4 w-4 text-theme-primary-600 dark:text-theme-dark-50" />
+                <DoubleCheckMarkIcon className="text-theme-primary-600 dark:text-theme-dark-50 ml-2 inline h-4 w-4" />
             )}
         </Comp>
     );

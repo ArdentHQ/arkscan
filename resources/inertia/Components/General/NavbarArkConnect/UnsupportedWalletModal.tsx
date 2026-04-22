@@ -26,8 +26,8 @@ export default function UnsupportedWalletModal() {
                     <div className="flex-col items-center space-y-4 sm:space-y-6">
                         <div className="mx-auto flex h-[104px] items-center justify-center">
                             <UnsupportedIcon className="dark:hidden" />
-                            <UnsupportedDarkIcon className="hidden dim:hidden dark:block" />
-                            <UnsupportedDimIcon className="hidden dim:block" />
+                            <UnsupportedDarkIcon className="dim:hidden hidden dark:block" />
+                            <UnsupportedDimIcon className="dim:block hidden" />
                         </div>
 
                         <Alert type="warning">{t("general.navbar.arkconnect.modal.unsupported_browser_warning")}</Alert>
@@ -51,7 +51,7 @@ export default function UnsupportedWalletModal() {
 
             <button
                 type="button"
-                className="button-secondary w-full whitespace-nowrap px-4! py-1.5! md:w-auto"
+                className="button-secondary w-full px-4! py-1.5! whitespace-nowrap md:w-auto"
                 onClick={() => setIsOpen(true)}
             >
                 {t("general.navbar.connect_wallet")}

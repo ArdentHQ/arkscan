@@ -32,7 +32,7 @@ function Row({ wallet }: { wallet: IWallet }) {
                         <Clipboard
                             value={wallet.address}
                             noStyling
-                            className="transition-default flex items-center text-theme-primary-400 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
+                            className="transition-default text-theme-primary-400 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50 flex items-center"
                             tooltipContent={t("pages.wallet.address_copied")}
                             checkmarksClass=""
                         />

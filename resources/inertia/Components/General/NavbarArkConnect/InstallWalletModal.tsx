@@ -21,7 +21,7 @@ export default function InstallWalletModal() {
                 <Modal.Title className="mt-3 pb-5">
                     {t("general.navbar.arkconnect.modal.install_title")}
 
-                    <div className="mt-1.5 text-sm font-normal leading-5.25 text-theme-secondary-700 dark:text-theme-dark-200">
+                    <div className="text-theme-secondary-700 dark:text-theme-dark-200 mt-1.5 text-sm leading-5.25 font-normal">
                         {t("general.navbar.arkconnect.modal.install_subtitle")}
                     </div>
                 </Modal.Title>
@@ -29,8 +29,8 @@ export default function InstallWalletModal() {
                 <Modal.Body>
                     <div className="mx-auto w-[301px]">
                         <InstallIcon className="dark:hidden" />
-                        <InstallDarkIcon className="hidden dim:hidden dark:block" />
-                        <InstallDimIcon className="hidden dim:block" />
+                        <InstallDarkIcon className="dim:hidden hidden dark:block" />
+                        <InstallDimIcon className="dim:block hidden" />
                     </div>
                 </Modal.Body>
 
@@ -54,7 +54,7 @@ export default function InstallWalletModal() {
 
             <button
                 type="button"
-                className="button-secondary w-full whitespace-nowrap px-4! py-1.5! md:w-auto"
+                className="button-secondary w-full px-4! py-1.5! whitespace-nowrap md:w-auto"
                 onClick={() => setIsOpen(true)}
             >
                 {t("general.navbar.connect_wallet")}

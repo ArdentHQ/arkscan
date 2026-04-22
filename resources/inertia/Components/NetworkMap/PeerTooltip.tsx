@@ -17,7 +17,7 @@ export default function PeerTooltip({
 
     return (
         <div
-            className="pointer-events-none absolute z-10 rounded-lg border border-theme-secondary-300 bg-white px-3 py-2 text-sm shadow-xl dark:border-theme-dark-700 dark:bg-theme-dark-900"
+            className="border-theme-secondary-300 dark:border-theme-dark-700 dark:bg-theme-dark-900 pointer-events-none absolute z-10 rounded-lg border bg-white px-3 py-2 text-sm shadow-xl"
             style={{
                 left: x,
                 top: y,
@@ -25,7 +25,7 @@ export default function PeerTooltip({
             }}
         >
             <div className="space-y-0.5">
-                <div className="font-semibold text-theme-secondary-900 dark:text-theme-dark-50">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold">
                     {group.count === 1 ? t("pages.peers-map.peer") : t("pages.peers-map.peers", { count: group.count })}
                 </div>
 

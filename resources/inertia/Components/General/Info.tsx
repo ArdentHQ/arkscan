@@ -22,7 +22,7 @@ function InfoComponent({
             aria-label={typeof tooltip === "string" ? tooltip : undefined}
             data-testid={testId}
             className={classNames({
-                "transition-default inline-block cursor-pointer rounded-full bg-theme-primary-100 text-theme-primary-600 outline-none hover:bg-theme-primary-700 hover:text-white focus-visible:ring-2 focus-visible:ring-theme-primary-500 dark:bg-theme-secondary-800 dark:text-theme-secondary-600 dark:hover:bg-theme-secondary-600 dark:hover:text-theme-secondary-800": true,
+                "transition-default bg-theme-primary-100 text-theme-primary-600 hover:bg-theme-primary-700 focus-visible:ring-theme-primary-500 dark:bg-theme-secondary-800 dark:text-theme-secondary-600 dark:hover:bg-theme-secondary-600 dark:hover:text-theme-secondary-800 inline-block cursor-pointer rounded-full outline-none hover:text-white focus-visible:ring-2": true,
                 "p-1.5": large,
                 "p-1": !large,
                 [className]: !!className,
