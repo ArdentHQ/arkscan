@@ -295,7 +295,7 @@ final class StatisticsController
             'url'       => $transaction->url(),
             'hash'      => $transaction->hash,
             'amount'    => $viewModel->amount(),
-            'timestamp' => $transaction->timestamp,
+            'timestamp' => $transaction->timestamp->unix(),
         ];
     }
 
@@ -309,7 +309,7 @@ final class StatisticsController
             'type'      => 'block',
             'url'       => $block->url(),
             'height'    => $block->number->toNumber(),
-            'timestamp' => $block->timestamp,
+            'timestamp' => $block->timestamp->unix(),
         ];
 
         if ($key === 'most_transactions_in_block') {
