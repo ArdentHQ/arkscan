@@ -11,13 +11,13 @@ export default function ArkVault() {
     const { t } = useTranslation();
 
     return (
-        <Container className="w-full !p-0">
+        <Container className="w-full p-0!">
             <div className="flex w-full flex-col md-lg:flex-row">
                 <div className="flex flex-1 flex-col justify-center pb-4 sm:pb-8 md:px-8 xl:py-8">
                     <div className="flex">
                         <Badge
-                            colors="dark:text-white text-theme-primary-900 bg-theme-primary-100 dark:!bg-theme-dark-blue-800 dim:bg-theme-dark-500"
-                            className="flex items-center space-x-2 border-0 !px-2 !py-1"
+                            colors="dark:text-white text-theme-primary-900 bg-theme-primary-100 dark:bg-theme-dark-blue-800! dim:bg-theme-dark-500"
+                            className="flex items-center space-x-2 border-0 px-2! py-1!"
                         >
                             <CircleInfoIcon className="h-4 w-4 shrink-0" />
 

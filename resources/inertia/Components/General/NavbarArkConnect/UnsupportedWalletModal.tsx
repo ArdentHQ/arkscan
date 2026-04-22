@@ -51,7 +51,7 @@ export default function UnsupportedWalletModal() {
 
             <button
                 type="button"
-                className="button-secondary w-full whitespace-nowrap px-4 py-1.5 md:w-auto"
+                className="button-secondary w-full whitespace-nowrap px-4! py-1.5! md:w-auto"
                 onClick={() => setIsOpen(true)}
             >
                 {t("general.navbar.connect_wallet")}

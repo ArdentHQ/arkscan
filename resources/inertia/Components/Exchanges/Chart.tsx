@@ -32,7 +32,7 @@ function PeriodSelect({
         <div className="w-full sm:w-[150px]">
             <Select value={selected} onValueChange={(value) => onSelect(value as ExchangeChartPeriod)}>
                 <Select.Trigger
-                    className="form-input transition-default h-10 w-full bg-white !px-3 !py-2 text-left !text-sm font-semibold dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200"
+                    className="form-input transition-default h-10 w-full bg-white px-3! py-2! text-left text-sm! font-semibold dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200"
                     placeholder={selectedOption?.label}
                 />
                 <Select.Content
@@ -63,7 +63,7 @@ function PeriodTabs({
     return (
         <div className="relative z-0 inline-flex">
             <div className="relative z-10 inline-flex items-center justify-between rounded-xl bg-theme-secondary-200 dark:bg-theme-dark-950 sm:p-1">
-                <div role="tablist" className="flex space-x-1 !px-0 pr-6 sm:pr-0">
+                <div role="tablist" className="flex space-x-1 px-0! pr-6 sm:pr-0">
                     {options.map((option) => {
                         const isSelected = selected === option.value;
 
@@ -184,7 +184,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                                 {t("pages.exchanges.chart.current_price")}
                             </div>
 
-                            <span className="text-lg font-semibold leading-5.25 text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl md:!leading-[29px]">
+                            <span className="text-lg font-semibold leading-5.25 text-theme-secondary-900 dark:text-theme-dark-50 md:text-2xl md:leading-[29px]!">
                                 {mainValueFormatted}
                             </span>
                         </div>
@@ -204,7 +204,7 @@ export default function ExchangesChart({ chart }: { chart: ExchangeChartData }) 
                     </div>
 
                     <div className="flex flex-1 sm:block sm:flex-none">
-                        <Link href={route("statistics")} className="button-secondary w-full px-4 py-1.5">
+                        <Link href={route("statistics")} className="button-secondary w-full px-4! py-1.5!">
                             <div className="flex items-center justify-center space-x-2">
                                 <span className="leading-5">{t("actions.statistics")}</span>
 

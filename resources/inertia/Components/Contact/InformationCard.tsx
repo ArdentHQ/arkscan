@@ -61,7 +61,7 @@ export default function InformationCard({ socialNetworkUrls }: { socialNetworkUr
                     {socialNetworks.map(({ url, icon }, index) => (
                         <SocialSquare
                             key={index}
-                            className="h-10 w-10 !rounded border border-theme-secondary-300 dark:border-theme-dark-700"
+                            className="h-10 w-10 rounded! border border-theme-secondary-300 dark:border-theme-dark-700"
                             hoverClass="hover:bg-theme-secondary-300 hover:text-theme-secondary-900 dark:hover:bg-theme-dark-700 dark:hover:text-theme-dark-50"
                             url={url}
                             icon={icon}

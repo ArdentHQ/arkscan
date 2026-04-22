@@ -19,7 +19,7 @@ export default function ID({ transaction, withoutAge = false }: { transaction: T
                     href={route("transaction", transaction.hash)}
                     className={classNames({
                         "link mx-auto whitespace-nowrap text-sm font-semibold leading-4.25": true,
-                        "!text-theme-danger-700 dark:!text-theme-failed-state-text": transaction.hasFailed,
+                        "text-theme-danger-700! dark:text-theme-failed-state-text!": transaction.hasFailed,
                     })}
                 >
                     <TruncateMiddle>{transaction.hash}</TruncateMiddle>

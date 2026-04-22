@@ -66,7 +66,7 @@ export default function DatePicker({ value, onChange, minDate, maxDate, classNam
                     ref={inputRef}
                     type="text"
                     placeholder="DD/MM/YYYY"
-                    className="w-full rounded py-3 pl-4 dark:bg-theme-dark-900 dark:text-theme-dark-50 placeholder:dark:text-theme-dark-200"
+                    className="w-full rounded py-3 pl-4 dark:bg-theme-dark-900 dark:text-theme-dark-50 dark:placeholder:text-theme-dark-200"
                     onKeyDown={(e) => {
                         if (e.key === "Backspace") {
                             e.stopPropagation();

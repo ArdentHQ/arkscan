@@ -22,7 +22,7 @@ export default function TransactionCodeBlock({ payload }: { payload: Transaction
 
     return (
         <div className="flex flex-col text-sm">
-            <div className="flex flex-col justify-between space-y-3 rounded-t-lg bg-theme-secondary-900 px-4 pt-3 text-theme-secondary-200 shadow-code-block dark:bg-theme-dark-800 dark:text-theme-dark-200 sm:h-10 sm:flex-row sm:items-center sm:space-y-0 sm:pt-0">
+            <div className="flex flex-col justify-between space-y-3 rounded-t-lg bg-theme-secondary-900 px-4! pt-3 text-theme-secondary-200 shadow-code-block dark:bg-theme-dark-800 dark:text-theme-dark-200 sm:h-10 sm:flex-row sm:items-center sm:space-y-0 sm:pt-0">
                 <div>{t("pages.transaction.input_data")}</div>
 
                 <div className="flex h-full sm:items-center sm:justify-between">
@@ -67,7 +67,7 @@ export default function TransactionCodeBlock({ payload }: { payload: Transaction
                 <Clipboard
                     value={content}
                     noStyling
-                    className="button button-secondary mt-4 flex h-8 w-full items-center justify-center space-x-2 px-4 text-base sm:w-auto"
+                    className="button button-secondary mt-4 flex h-8 w-full items-center justify-center space-x-2 px-4! text-base sm:w-auto"
                     checkmarksClass=""
                     tooltipContent={t("tooltips.copied")}
                 >

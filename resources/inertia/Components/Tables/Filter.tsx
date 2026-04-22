@@ -56,7 +56,7 @@ function FilterComponent({
             useDefaultButtonClasses={false}
             popupStyles={styles}
             closeOnClick={false}
-            buttonClass="button-secondary flex w-full flex-1 items-center justify-center rounded py-1.5 sm:flex-none sm:px-4 md:p-2"
+            buttonClass="button-secondary flex w-full flex-1 items-center justify-center rounded py-1.5! sm:flex-none sm:px-4! md:p-2!"
             zIndex={30}
             button={
                 <div className="mx-auto inline-flex items-center whitespace-nowrap">

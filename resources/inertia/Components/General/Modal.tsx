@@ -69,7 +69,7 @@ const ModalTitle = ({ children, hideCloseButton = false, className, ...props }: 
                     type="button"
                     onClick={onClose}
                     aria-label={t("actions.close")}
-                    className="button button-secondary m-0 h-6 w-6 shrink-0 rounded-none bg-transparent p-0 text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:bg-transparent dark:text-theme-dark-200 dark:shadow-none hover:dark:bg-theme-dark-blue-600 hover:dark:text-theme-dark-50 sm:rounded"
+                    className="button button-secondary m-0 h-6 w-6 shrink-0 rounded-none bg-transparent p-0! text-theme-secondary-700 dim:bg-transparent dim:shadow-none dark:bg-transparent dark:text-theme-dark-200 dark:shadow-none hover:dark:bg-theme-dark-blue-600 hover:dark:text-theme-dark-50 sm:rounded"
                 >
                     <CrossIcon className="fill-current m-auto h-4 w-4" />
                 </button>
@@ -136,7 +136,7 @@ const ModalActionButton = ({
         <Comp
             type="button"
             className={twMerge(
-                "button button-primary flex items-center justify-center sm:mb-0 sm:px-4 sm:py-1.5",
+                "button button-primary flex items-center justify-center sm:mb-0 sm:px-4! sm:py-1.5",
                 className,
             )}
             {...props}

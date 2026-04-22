@@ -203,7 +203,7 @@ export function ValidatedBlocksHeaderActions({ hasForgedBlocks }: { hasForgedBlo
                 <button
                     type="button"
                     data-testid="wallet:blocks:export-button"
-                    className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5 sm:px-4"
+                    className="button-secondary flex w-full items-center justify-center space-x-2 py-1.5! sm:px-4!"
                     disabled={!hasForgedBlocks}
                     onClick={() => setIsBlocksExportModalOpen(true)}
                 >

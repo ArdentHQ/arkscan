@@ -64,28 +64,14 @@ export default function Amount({
 
     const feeBreakpointClass = (
         {
-            "md-lg": "md-lg:hidden",
-            lg: "lg:hidden",
-            xl: "xl:hidden",
-        } as Record<string, string>
-    )[breakpoint];
-
-    const containerBreakpointClass = (
-        {
-            "md-lg": "md-lg:space-y-0",
-            lg: "lg:space-y-0",
-            xl: "xl:space-y-0",
+            "md-lg": "md-lg:hidden! md-lg:mt-0",
+            lg: "lg:hidden! lg:mt-0",
+            xl: "xl:hidden! xl:mt-0",
         } as Record<string, string>
     )[breakpoint];
 
     return (
-        <div
-            className={classNames({
-                "flex flex-col md:space-y-1": true,
-                [containerBreakpointClass]: true,
-            })}
-            data-testid={testId}
-        >
+        <div className="flex flex-col" data-testid={testId}>
             <div className="inline-block leading-4.25">
                 <AmountFiatTooltip
                     amount={amount}
@@ -99,7 +85,7 @@ export default function Amount({
                 />
 
                 {withNetworkCurrency && (
-                    <span className="text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-200">
+                    <span className="text-theme-secondary-900 dark:text-theme-dark-200 text-sm leading-4.25 font-semibold">
                         {network!.currency}
                     </span>
                 )}
@@ -109,7 +95,7 @@ export default function Amount({
                 <Fee
                     transaction={transaction}
                     className={classNames({
-                        "hidden text-xs md:block": true,
+                        "hidden text-xs md:mt-1 md:block": true,
                         [feeBreakpointClass]: true,
                     })}
                     withoutStyling

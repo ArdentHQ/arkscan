@@ -53,7 +53,7 @@ function TopAccountRow({ wallet, rank }: { wallet: IWallet; rank: number }) {
 
             <TableCell
                 className={classNames({
-                    "!mt-0": !walletModel.hasUsername,
+                    "mt-0!": !walletModel.hasUsername,
                 })}
                 label={t("tables.wallets.balance_currency", {
                     currency: network?.currency,

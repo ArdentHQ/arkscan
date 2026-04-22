@@ -61,7 +61,7 @@ export function ValidatorsMobileTable({ validators }: Pick<ValidatorsProps, "val
                             ? "space-x-3 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700"
                             : ""
                     }
-                    contentClass={arkconnectConfig.enabled ? "!pb-0 sm:!pb-3" : ""}
+                    contentClass={arkconnectConfig.enabled ? "pb-0! sm:pb-3!" : ""}
                 >
                     <TableCell label={t("tables.validators.status")}>
                         <div className="inline-block">

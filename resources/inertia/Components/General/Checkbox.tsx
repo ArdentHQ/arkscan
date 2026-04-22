@@ -26,7 +26,7 @@ const CheckboxInput = ({
             className={twMerge(
                 "form-checkbox input-checkbox cursor-pointer",
                 "hover:border-theme-primary-600 focus-visible:ring-2 focus-visible:ring-theme-primary-500",
-                "!h-5 !w-5",
+                "h-5! w-5!",
                 "checked:border-theme-primary-600 checked:bg-theme-primary-600 hover:checked:bg-theme-primary-700",
                 className,
             )}

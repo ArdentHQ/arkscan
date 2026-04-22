@@ -69,7 +69,7 @@ export default function NavbarDesktop({ navigation }: { navigation: Navigation }
                                                             className={classNames(
                                                                 "relative inline-flex h-full items-center justify-center border-b-2 border-transparent pt-px font-semibold leading-5 text-theme-secondary-700 transition duration-150 ease-in-out hover:border-theme-primary-300 focus:outline-none focus:ring-inset dark:text-theme-dark-200 hover:dark:text-theme-dark-50",
                                                                 {
-                                                                    "!border-theme-primary-600": isOpen,
+                                                                    "border-theme-primary-600!": isOpen,
                                                                     "hover:border-theme-primary-300 dark:hover:border-theme-secondary-600":
                                                                         !isOpen,
                                                                 },

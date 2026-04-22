@@ -45,7 +45,7 @@ export default function NavbarArkConnect() {
         >
             {hasExtension && isSupported && !isConnected && (
                 <button
-                    className="button-secondary whitespace-nowrap px-4 py-1.5"
+                    className="button-secondary whitespace-nowrap px-4! py-1.5!"
                     onClick={connect}
                     disabled={!hasExtension}
                 >

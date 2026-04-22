@@ -78,7 +78,7 @@ export default function NavbarSearch() {
                         name="search"
                         autoComplete="off"
                         placeholder={t("general.navbar.search_placeholder")}
-                        className="block w-full appearance-none rounded border-0 bg-transparent px-2 py-[7px] text-sm leading-4 text-theme-secondary-900 outline-none placeholder:text-theme-secondary-700 dark:text-theme-dark-50"
+                        className="block w-full appearance-none rounded border-0 bg-transparent px-2! py-[7px] text-sm leading-4 text-theme-secondary-900 outline-none placeholder:text-theme-secondary-700 dark:text-theme-dark-50"
                         onBlur={blurHandler}
                     />
 
@@ -86,7 +86,7 @@ export default function NavbarSearch() {
                         <div className="mr-4 flex items-center space-x-4">
                             <button
                                 type="button"
-                                className="button-secondary -my-px bg-transparent p-2 text-theme-secondary-700 dark:bg-theme-dark-900 dark:text-theme-dark-200 dark:shadow-none"
+                                className="button-secondary -my-px bg-transparent p-2! text-theme-secondary-700 dark:bg-theme-dark-900 dark:text-theme-dark-200 dark:shadow-none"
                                 onClick={clear}
                                 aria-label="Clear search"
                             >

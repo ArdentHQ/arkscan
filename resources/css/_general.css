@@ -7,7 +7,7 @@ body {
 }
 
 #app {
-    @apply flex-grow;
+    @apply grow;
 }
 
 /* Navbar container */
@@ -27,7 +27,7 @@ body {
     @apply flex items-center justify-center px-4 py-2 text-xs font-medium;
 }
 
-@screen md {
+@media (width >= theme(--breakpoint-md)) {
     .network-status-block {
         @apply rounded-lg px-0;
     }
@@ -36,7 +36,7 @@ body {
     }
 }
 
-@screen lg {
+@media (width >= theme(--breakpoint-lg)) {
     .network-status-block {
         @apply w-auto;
     }
@@ -52,7 +52,7 @@ body {
     @apply border-0;
 }
 .navbar-settings-option-with-border {
-    @apply navbar-settings-option border-b border-dashed pb-6;
+    @apply items-center justify-between border-b border-dashed border-theme-secondary-300 pb-6 pt-6;
 }
 .dark .navbar-settings-option {
     @apply border-theme-secondary-800;
@@ -71,31 +71,31 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply border-theme-secondary-600 text-theme-secondary-600;
 }
 
-@screen md {
+@media (width >= theme(--breakpoint-md)) {
     .transaction-icon {
         @apply flex h-11 w-11 items-center justify-center rounded-full border-2;
     }
 }
 
-@screen sm {
+@media (width >= theme(--breakpoint-sm)) {
     .chart-details > .detail-box:nth-child(2n + 1) {
         @apply border-r border-theme-secondary-300 pr-6;
     }
 }
 
-@screen md {
+@media (width >= theme(--breakpoint-md)) {
     .validator-details > .detail-box:nth-child(2n + 1) {
         @apply border-r border-theme-secondary-300 pr-6;
     }
 }
 
-@screen lg {
+@media (width >= theme(--breakpoint-lg)) {
     .validator-details > .detail-box:not(:last-child) {
         @apply border-r border-theme-secondary-300 pr-6;
     }
 }
 
-@screen xl {
+@media (width >= theme(--breakpoint-xl)) {
     .chart-details > .detail-box:not(:last-child) {
         @apply border-r border-theme-secondary-300 pr-6;
     }
@@ -125,7 +125,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply border-theme-secondary-800;
 }
 
-@screen sm {
+@media (width >= theme(--breakpoint-sm)) {
     .entity-header-item:nth-child(odd) {
         @apply pr-7;
     }
@@ -143,7 +143,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     }
 }
 
-@screen xl {
+@media (width >= theme(--breakpoint-xl)) {
     .entity-header-item:not(:first-child) {
         @apply pl-7;
     }
@@ -172,7 +172,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 
 /* Tab Badge */
 .info-badge {
-    @apply ml-1 rounded bg-theme-primary-100 text-sm;
+    @apply ml-1 rounded-sm bg-theme-primary-100 text-sm;
     padding: 2px 6px;
 }
 .dark .info-badge {
@@ -200,7 +200,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply border-theme-secondary-800;
 }
 
-@screen md {
+@media (width >= theme(--breakpoint-md)) {
     .details-grid > *:nth-child(2n + 1):nth-last-child(-n + 2),
     .details-grid > *:nth-child(2n + 1):nth-last-child(-n + 2) ~ * {
         @apply border-b-0;
@@ -216,27 +216,27 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply block;
 }
 
-@screen sm {
+@media (width >= theme(--breakpoint-sm)) {
     .round-status-history > span {
         @apply block;
     }
 }
 
 /* Validator Stats Grid */
-@screen md {
+@media (width >= theme(--breakpoint-md)) {
     .validator-statistics-grid > *:nth-child(2n + 1) {
         @apply border-r border-theme-secondary-800;
     }
 }
 
-@screen xl {
+@media (width >= theme(--breakpoint-xl)) {
     .validator-statistics-grid > *:not(:last-child) {
         @apply border-r border-theme-secondary-800;
     }
 }
 
 /* Validator name truncation */
-.validator-name-truncate {
+@utility validator-name-truncate {
     @apply w-full truncate;
 }
 .validator-name-truncate-listing {
@@ -287,7 +287,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply flex-shrink-0 border-theme-danger-500 text-theme-danger-500 dark:border-theme-danger-600 dark:text-theme-danger-600;
 }
 
-@screen lg {
+@media (width >= theme(--breakpoint-lg)) {
     .vote-circle,
     .unvote-circle {
         @apply flex h-11 w-11 items-center justify-center rounded-full border-2;
@@ -299,14 +299,18 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     font-variant-ligatures: no-contextual;
 }
 
-.chart-custom-tooltip:after {
+.chart-custom-tooltip::after {
     border: solid transparent;
     content: "";
     border-color: rgba(0, 0, 0, 0);
     border-width: 7px;
     margin-left: -7px;
 
-    @apply pointer-events-none absolute left-1/2 top-full h-0 w-0 border-t-theme-secondary-900 dark:border-t-theme-dark-800;
+    @apply pointer-events-none absolute left-1/2 top-full h-0 w-0 border-t-theme-secondary-900;
+}
+
+.dark .chart-custom-tooltip::after {
+    @apply border-t-theme-dark-800;
 }
 
 /* Search */
@@ -370,7 +374,7 @@ input.qr-code-amount[type="number"] {
 }
 
 /* Learn More */
-@screen md-lg {
+@media (width >= theme(--breakpoint-md-lg)) {
     .arkconnect-arrows {
         background-image: url("/resources/images/wallets/arrows-success.svg") !important;
     }
@@ -380,7 +384,7 @@ input.qr-code-amount[type="number"] {
     }
 }
 
-@screen xl {
+@media (width >= theme(--breakpoint-xl)) {
     .arkvault-arrows {
         background-image: url("/resources/images/wallets/arrows.svg") !important;
     }
@@ -407,7 +411,7 @@ input.qr-code-amount[type="number"] {
 }
 
 /* Code Block */
-/* Note: I've copied most of the `.custom-scroll` class here. Some of the existing 
+/* Note: I've copied most of the `.custom-scroll` class here. Some of the existing
    class makes the scrollbar "thick", like it would be on any other website. */
 .code-block-custom-scroll::-webkit-scrollbar {
     @apply h-1 w-1.5 rounded-lg;
@@ -423,7 +427,7 @@ input.qr-code-amount[type="number"] {
 
 /** Tooltips */
 .tippy-box {
-    @apply break-words;
+    @apply wrap-break-word;
 }
 
 /* No scrollbar */

@@ -16,7 +16,7 @@ export default function LearnMore({
     mobileTall = false,
     titleColor = "text-theme-secondary-900 dark:text-white",
     subtitleColor = "text-theme-secondary-700 dark:text-theme-dark-blue-400 dim:text-theme-dark-blue-600",
-    buttonColor = "dark:!bg-theme-dark-blue-500 dark:hover:!bg-theme-dark-blue-600 dim:!bg-theme-dark-blue-600 dim:hover:!bg-theme-dark-blue-700",
+    buttonColor = "dark:bg-theme-dark-blue-500! dark:hover:bg-theme-dark-blue-600! dim:bg-theme-dark-blue-600! dim:hover:bg-theme-dark-blue-700!",
 }: {
     url: string;
     icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;

@@ -46,7 +46,7 @@ export default function PageHeaderValuePopup({
 
     return (
         <div
-            className="ml-2 w-full flex-1"
+            className="w-full flex-1"
             onKeyDown={(e) => {
                 if (e.key === "Escape") {
                     setModalVisible(false);
@@ -66,7 +66,7 @@ export default function PageHeaderValuePopup({
                         hasTrackedOpen.current = true;
                     }
                 }}
-                className="button button-secondary button-icon w-full p-2 focus-visible:ring-inset"
+                className="button button-secondary button-icon w-full p-2! focus-visible:ring-inset"
             >
                 {button}
             </button>
@@ -74,14 +74,14 @@ export default function PageHeaderValuePopup({
             {modalVisible && (
                 <div
                     ref={popupRef}
-                    className="absolute left-0 right-0 z-15 mx-8 mt-4 flex w-auto items-end justify-between space-x-4 rounded-xl border border-transparent bg-white p-6 shadow-lg dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:shadow-lg-dark md:mt-1 md-lg:left-auto lg:mr-32"
+                    className="dark:border-theme-dark-800 dark:bg-theme-dark-900 dark:shadow-lg-dark md-lg:left-auto absolute right-0 left-0 z-15 mx-8 mt-4 flex w-auto items-end justify-between space-x-4 rounded-xl border border-transparent bg-white p-6 shadow-lg md:mt-1 lg:mr-32"
                 >
                     <div className="flex min-w-0 flex-col space-y-2 leading-tight">
-                        <span className="text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-500">
+                        <span className="text-theme-secondary-700 dark:text-theme-dark-500 text-sm font-semibold">
                             {title}
                         </span>
 
-                        <span className="font-semibold text-theme-secondary-900 dark:text-theme-dark-200">
+                        <span className="text-theme-secondary-900 dark:text-theme-dark-200 font-semibold">
                             <TruncateDynamic value={value} />
                         </span>
                     </div>
@@ -89,7 +89,7 @@ export default function PageHeaderValuePopup({
                     <div className="flex items-center space-x-2">
                         <Clipboard
                             value={value}
-                            className="group flex h-auto w-full items-center p-2"
+                            className="group flex h-auto w-full items-center p-2!"
                             wrapperClass="flex-1"
                             tooltipContent={copiedTooltip}
                             withCheckmarks
@@ -101,7 +101,7 @@ export default function PageHeaderValuePopup({
 
                         <button
                             type="button"
-                            className="button button-generic p-2 hover:bg-theme-primary-700 hover:text-white dark:text-theme-dark-500 dark:hover:text-white"
+                            className="button button-generic hover:bg-theme-primary-700 dark:text-theme-dark-500 p-2! hover:text-white dark:hover:text-white"
                             onClick={() => setModalVisible(false)}
                             data-testid={testId ? `${testId}:close` : undefined}
                         >

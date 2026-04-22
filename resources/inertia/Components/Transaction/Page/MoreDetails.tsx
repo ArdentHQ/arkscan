@@ -36,7 +36,7 @@ export default function TransactionMoreDetails({
             >
                 <MobileTableRow
                     header={<span className="font-semibold">{t("pages.transaction.gas_information")}</span>}
-                    contentClass="!space-y-3 divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800"
+                    contentClass="space-y-3! divide-y divide-dashed divide-theme-secondary-300 dark:divide-theme-dark-800"
                 >
                     <TableCell label={t("pages.transaction.header.gas_limit")}>
                         <Number>{gasLimit}</Number>
@@ -80,7 +80,7 @@ export default function TransactionMoreDetails({
                 </div>
 
                 <PageSection
-                    className="mt-4 !px-0"
+                    className="mt-4 px-0!"
                     wrapperContainerClass="max-w-full"
                     wrapperClass="flex flex-1 flex-col whitespace-nowrap leading-7"
                 >
@@ -104,7 +104,7 @@ export default function TransactionMoreDetails({
                 </PageSection>
 
                 <PageSection
-                    className="!px-0"
+                    className="px-0!"
                     wrapperContainerClass="max-w-full"
                     wrapperClass="flex flex-1 flex-col whitespace-nowrap leading-7"
                 >
@@ -124,7 +124,7 @@ export default function TransactionMoreDetails({
                     <div>
                         {isDesktopPayloadExpanded && (
                             <PageSection
-                                className="!px-0 sm:mt-2"
+                                className="px-0! sm:mt-2"
                                 wrapperContainerClass="w-full"
                                 wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap max-w-full"
                             >
@@ -132,7 +132,7 @@ export default function TransactionMoreDetails({
                             </PageSection>
                         )}
 
-                        <PageSection className="mt-2 !px-0" wrapperContainerClass="max-w-full" noBorder>
+                        <PageSection className="mt-2 px-0!" wrapperContainerClass="max-w-full" noBorder>
                             <div>
                                 <button
                                     type="button"

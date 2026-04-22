@@ -4,10 +4,12 @@ import laravel from "laravel-vite-plugin";
 import { detectServerConfig } from "./vendor/arkecosystem/foundation/resources/vite.config";
 import i18n from "./resources/js/vite/i18n/i18n";
 import svgr from "vite-plugin-svgr";
+import tailwindcss from "@tailwindcss/vite";
 
 export default ({ mode }) =>
     defineConfig({
         plugins: [
+            tailwindcss(),
             laravel([
                 "resources/css/app.css",
                 "resources/js/app.js",

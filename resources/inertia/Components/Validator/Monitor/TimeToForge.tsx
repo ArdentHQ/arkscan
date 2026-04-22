@@ -25,7 +25,7 @@ export default function TimeToForge({
     return (
         <div
             className={classNames({
-                "text-sm font-semibold !leading-4.25": true,
+                "text-sm font-semibold leading-4.25!": true,
                 [className]: true,
             })}
         >

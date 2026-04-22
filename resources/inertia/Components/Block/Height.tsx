@@ -23,7 +23,7 @@ export default function Height({
 
             <Age
                 timestamp={block.timestamp}
-                className="hidden text-xs leading-3.75 text-theme-secondary-700 dark:text-theme-dark-200 md:block md-lg:hidden"
+                className="hidden text-xs leading-3.75 text-theme-secondary-700 dark:text-theme-dark-200 md:block md-lg:hidden!"
             />
         </div>
     );

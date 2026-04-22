@@ -44,7 +44,7 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply h-5 w-5;
 }
 
-@screen lg {
+@media (width >= theme(--breakpoint-lg)) {
     .table-compact:not(.table-compact-until-lg) .table-container table > tbody .full-transaction-icon svg,
     .table-compact:not(.table-compact-until-lg) .table-container table > tbody .transaction-icon {
         @apply h-5 w-5 border-0;
@@ -52,7 +52,7 @@ tr:hover td.hoverable-cell .table-avatar {
 
     .table-compact:not(.table-compact-until-lg) .table-container table > tbody .avatar-wrapper,
     .table-compact:not(.table-compact-until-lg) .table-container table > tbody .status-circle {
-        @apply h-5 w-5 !important;
+        @apply h-5! w-5!;
     }
 }
 
@@ -86,7 +86,7 @@ body.table-compact-until-lg .arrow-direction {
         @apply link font-semibold;
     }
 }
-@screen lg {
+@media (width >= theme(--breakpoint-lg)) {
     body.table-compact-until-lg table .button-vote {
         @apply button-secondary;
     }
@@ -140,13 +140,19 @@ body.table-compact-until-lg .arrow-direction {
 }
 
 .table-encapsulated table > tbody > tr:hover > td.hoverable-cell > div.table-cell-bg {
-    @apply bg-theme-secondary-200 dark:bg-black !important;
+    @apply bg-theme-secondary-200! dark:bg-black!;
 }
 
 .table-encapsulated table > tbody > tr:hover > td.hoverable-cell:first-child > div.table-cell-bg::before,
 .table-encapsulated table > tbody > tr:hover > td.hoverable-cell:last-child > div.table-cell-bg:before,
 .table-encapsulated table > tbody > tr:hover > td.hoverable-cell.last-cell > div.table-cell-bg:before {
-    @apply bg-theme-secondary-200 dark:bg-black !important;
+    @apply bg-theme-secondary-200!;
+}
+
+.dark .table-encapsulated table > tbody > tr:hover > td.hoverable-cell:first-child > div.table-cell-bg::before,
+.dark .table-encapsulated table > tbody > tr:hover > td.hoverable-cell:last-child > div.table-cell-bg:before,
+.dark .table-encapsulated table > tbody > tr:hover > td.hoverable-cell.last-cell > div.table-cell-bg:before {
+    @apply bg-black!;
 }
 
 .table-encapsulated table > tbody > tr:hover > td.hoverable-cell > .table-cell-content .encapsulated-badge {
@@ -159,7 +165,7 @@ body.table-compact-until-lg .arrow-direction {
     }
 }
 
-@screen 2xl {
+@media (width >= theme(--breakpoint-2xl)) {
     .table-encapsulated table > tbody > tr > td.hoverable-cell {
         @apply align-middle;
     }
@@ -177,7 +183,10 @@ body.table-compact-until-lg .arrow-direction {
     }
     .validator-monitor-mobile > div:nth-last-child(-n + 1 of .validator-monitor-favorite)::after {
         content: "";
-        @apply absolute left-0 right-0 -mx-6 mt-6 block h-1 bg-theme-secondary-300 dark:bg-theme-dark-700;
+        @apply absolute left-0 right-0 -mx-6 mt-6 block h-1 bg-theme-secondary-300;
+    }
+    .dark .validator-monitor-mobile > div:nth-last-child(-n + 1 of .validator-monitor-favorite)::after {
+        @apply bg-theme-dark-700;
     }
 
     .validator-monitor-mobile > div:not(.validator-monitor-favorite) + .validator-monitor-favorite {
@@ -188,12 +197,15 @@ body.table-compact-until-lg .arrow-direction {
     }
 }
 
-@screen md {
+@media (width >= theme(--breakpoint-md)) {
     .validator-monitor tbody tr:nth-last-child(-n + 1 of .validator-monitor-favorite) {
         @apply relative border-b-0;
     }
     .validator-monitor tbody tr:nth-last-child(-n + 1 of .validator-monitor-favorite)::after {
         content: "";
-        @apply absolute bottom-0 left-0 right-0 -mx-6 border-b border-theme-secondary-300 dark:border-theme-dark-700;
+        @apply absolute bottom-0 left-0 right-0 -mx-6 border-b border-theme-secondary-300;
+    }
+    .dark .validator-monitor tbody tr:nth-last-child(-n + 1 of .validator-monitor-favorite)::after {
+        @apply border-theme-dark-700;
     }
 }

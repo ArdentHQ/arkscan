@@ -65,7 +65,7 @@
 }
 
 .dark .button-secondary:focus-visible {
-    @apply outline-none ring-2 ring-theme-primary-300;
+    @apply outline-hidden ring-2 ring-theme-primary-300;
 }
 
 .dark .button-secondary:hover {

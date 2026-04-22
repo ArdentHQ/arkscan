@@ -16,7 +16,7 @@ export default function ViewAllFooter({ total, suffix, href }: { total: number; 
             </div>
 
             <div className="flex w-full sm:w-auto">
-                <Link href={href} className="button-secondary h-8 w-full py-1.5">
+                <Link href={href} className="button-secondary h-8 w-full py-1.5!">
                     <div className="flex items-center justify-center space-x-2">
                         <span>{t("pagination.view_all")}</span>
 
