@@ -43,7 +43,7 @@ export function MonitorMobileHeader({ validator }: { validator: IMonitorValidato
                 </div>
 
                 <div className="flex h-[21px] items-center sm:space-x-3">
-                    <div className="flex items-center sm:hidden">
+                    <div className="flex items-center pr-3 sm:hidden">
                         <Status withText={false} />
                     </div>
 

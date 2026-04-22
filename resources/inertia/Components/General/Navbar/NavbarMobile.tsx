@@ -23,15 +23,16 @@ const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLA
         <button
             type="button"
             className={classNames(
-                "transition-default mx-1 flex items-center justify-center rounded p-2.5 focus:outline-none focus:ring-inset md:mx-4",
+                "transition-default mx-1 flex items-center justify-center rounded p-2.5 last:mr-0 focus:outline-none focus:ring-inset md:mx-4",
                 {
                     "text-theme-secondary-400": disabled,
-                    "text-theme-secondary-600 hover:bg-theme-primary-100 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:bg-theme-secondary-800 dark:hover:text-theme-secondary-100":
+                    "text-theme-secondary-600 hover:bg-theme-primary-100 hover:text-theme-primary-700 dark:text-theme-dark-300 focus:dark:bg-theme-secondary-800 focus:dark:text-theme-secondary-100":
                         !disabled,
                 },
                 className,
             )}
             disabled={disabled}
+            {...props}
         />
     );
 };
@@ -338,12 +339,12 @@ export default function NavbarMobile({ navigation }: { navigation: Navigation })
                                 ))}
 
                                 <div className="bg-theme-secondary-100 py-5 dark:bg-black">
-                                    <div className="divide-theme-secondary-300 dark:divide-theme-dark-800 mx-6 space-y-3 divide-y divide-dashed">
-                                        <SettingsItem title={t("general.select_network")}>
+                                    <div className="divide-theme-secondary-300 dark:divide-theme-dark-800 mx-6 divide-y divide-dashed">
+                                        <SettingsItem title={t("general.select_network")} className="pb-3">
                                             <NavbarMobileThemeToggle />
                                         </SettingsItem>
 
-                                        <SettingsItem title={t("general.select_network")} className="pt-3">
+                                        <SettingsItem title={t("general.select_network")} className="py-3">
                                             <NetworkDropdown />
                                         </SettingsItem>
 
