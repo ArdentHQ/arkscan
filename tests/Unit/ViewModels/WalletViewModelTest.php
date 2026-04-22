@@ -737,6 +737,17 @@ it('should determine a dormant validator with empty validator public key', funct
     expect($this->subject->isDormant())->toBeTrue();
 });
 
+it('should determine a resigned validator before dormant', function () {
+    $this->subject = new WalletViewModel(Wallet::factory()->dormantValidator()->create([
+        'attributes' => [
+            'validatorResigned' => true,
+        ],
+    ]));
+
+    expect($this->subject->isResigned())->toBeTrue();
+    expect($this->subject->isDormant())->toBeFalse();
+});
+
 it('should determine a dormant validator with null validator public key', function () {
     $this->subject = new WalletViewModel(Wallet::factory()->dormantValidator()->create([
         'attributes' => [

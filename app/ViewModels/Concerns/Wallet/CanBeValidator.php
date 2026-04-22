@@ -31,6 +31,10 @@ trait CanBeValidator
             return false;
         }
 
+        if ($this->isResigned()) {
+            return false;
+        }
+
         $validatorPublicKey = Arr::get($this->wallet, 'attributes.validatorPublicKey');
         if ($validatorPublicKey === null) {
             return true;
