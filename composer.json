@@ -19,7 +19,7 @@
         "geoip2/geoip2": "^3.3",
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "dev-master",
-        "inertiajs/inertia-laravel": "^2.0",
+        "inertiajs/inertia-laravel": "^3.0",
         "laravel/horizon": "^5.29",
         "laravel/reverb": "^1.4",
         "laravel/scout": "^10.9",

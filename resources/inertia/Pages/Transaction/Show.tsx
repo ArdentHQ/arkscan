@@ -1,4 +1,5 @@
-import { Deferred, PageProps, usePage } from "@inertiajs/react";
+import { Deferred, usePage } from "@inertiajs/react";
+import type { PageProps } from "@inertiajs/core";
 import Layout from "@/Layout";
 import { TransactionRecipient, TransactionShowProps } from "@/Pages/Transaction.contracts";
 import {

@@ -50,16 +50,16 @@ export default function Amount({
                 amount = transaction.amountExcludingItself;
             }
         }
-    }
 
-    if (transaction.method.isValidatorResignation) {
-        const registration = transaction.validatorRegistration;
-        if (registration !== null) {
-            amount = registration.amount;
+        if (transaction.method.isValidatorResignation) {
+            const registration = transaction.validatorRegistration;
+            if (registration !== null) {
+                amount = registration.amount;
+            }
+
+            isReceived = true;
+            isSent = false;
         }
-
-        isReceived = true;
-        isSent = false;
     }
 
     const feeBreakpointClass = (

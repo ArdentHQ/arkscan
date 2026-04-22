@@ -32,7 +32,6 @@ const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLA
                 className,
             )}
             disabled={disabled}
-            {...props}
         />
     );
 };
@@ -42,8 +41,12 @@ const NavbarMobileItem = ({
     routeName,
     url,
     children,
-    ...props
-}: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & { routeName?: string; url?: string }) => {
+}: {
+    className?: string;
+    routeName?: string;
+    url?: string;
+    children: React.ReactNode;
+}) => {
     const { currentRoute } = useShareData();
 
     const link = routeName ? route(routeName) : (url ?? "#");
@@ -63,7 +66,6 @@ const NavbarMobileItem = ({
                     },
                     className,
                 )}
-                {...props}
             >
                 <span
                     className={classNames("flex h-full w-full items-center", {
@@ -91,7 +93,6 @@ const NavbarMobileItem = ({
                 },
                 className,
             )}
-            {...props}
         >
             <span
                 className={classNames("flex h-full w-full items-center", {
@@ -109,8 +110,12 @@ const NavbarMobileListItem = ({
     routeName,
     url,
     children,
-    ...props
-}: Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & { routeName?: string; url?: string }) => {
+}: {
+    className?: string;
+    routeName?: string;
+    url?: string;
+    children: React.ReactNode;
+}) => {
     const { currentRoute } = useShareData();
 
     const link = routeName ? route(routeName) : (url ?? "#");
@@ -129,7 +134,6 @@ const NavbarMobileListItem = ({
                     },
                     className,
                 )}
-                {...props}
             >
                 <span className="transition-default text-theme-secondary-700 group-hover:text-theme-secondary-900 dark:text-theme-dark-50 flex h-full w-full items-center dark:group-hover:text-white">
                     <span>{children}</span>
@@ -151,7 +155,6 @@ const NavbarMobileListItem = ({
                 },
                 className,
             )}
-            {...props}
         >
             <span className="transition-default text-theme-secondary-700 group-hover:text-theme-secondary-900 dark:text-theme-dark-50 flex h-full w-full items-center dark:group-hover:text-white">
                 <span>{children}</span>

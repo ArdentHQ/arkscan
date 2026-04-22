@@ -1,4 +1,4 @@
-import { resolveTabQueryStringValues } from "../TabsProvider";
+import { resolveTabQueryStringValues } from "../resolveTabQueryStringValues";
 import { ITabsQueryString } from "../types";
 
 describe("resolveTabQueryStringValues", () => {
