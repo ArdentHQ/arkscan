@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f50db83a04149c1760d9b9f3142423c",
+    "content-hash": "bb0b8395d2bc57f181b1c6d98663ddd8",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -118,16 +118,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "dev-chore/node-24-tailwind-v4",
+            "version": "dev-refactor/additional-tailwind-css-updates",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "973137d9235586f861c638d09c0ebbc229145fdc"
+                "reference": "33431e5a1238051026f60d07a3defc8e321582a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/973137d9235586f861c638d09c0ebbc229145fdc",
-                "reference": "973137d9235586f861c638d09c0ebbc229145fdc",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/33431e5a1238051026f60d07a3defc8e321582a0",
+                "reference": "33431e5a1238051026f60d07a3defc8e321582a0",
                 "shasum": ""
             },
             "require": {
@@ -203,9 +203,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/chore/node-24-tailwind-v4"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/refactor/additional-tailwind-css-updates"
             },
-            "time": "2026-04-21T14:55:35+00:00"
+            "time": "2026-04-22T03:40:13+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -7868,11 +7868,11 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "2.1.50",
+            "version": "2.1.51",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
-                "reference": "d452086fb4cf648c6b2d8cf3b639351f79e4f3e2",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/dc3b523c45e714c70de2ac5113b958223b55dc59",
+                "reference": "dc3b523c45e714c70de2ac5113b958223b55dc59",
                 "shasum": ""
             },
             "require": {
@@ -7917,7 +7917,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-17T13:10:32+00:00"
+            "time": "2026-04-21T18:22:01+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
