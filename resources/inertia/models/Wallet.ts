@@ -35,9 +35,17 @@ export class Wallet {
     }
 
     get isDormant(): boolean {
-        if (!this.isValidator) return false;
-        const pk = this.attributes?.validatorPublicKey;
-        return pk === null || pk === "" || pk === undefined;
+        if (!this.isValidator) {
+            return false;
+        }
+
+        if (this.isResigned) {
+            return false;
+        }
+
+        const publicKey = this.attributes?.validatorPublicKey;
+
+        return publicKey === null || publicKey === "" || publicKey === undefined;
     }
 
     get isStandby(): boolean {

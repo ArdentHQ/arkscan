@@ -73,7 +73,7 @@ export default function TransactionAddress({
                 <div className="hidden items-center sm:flex">
                     <div className="border-theme-secondary-300 dark:border-theme-dark-700 mx-2 h-[17px] border-l" />
 
-                    <Badge className="bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:text-theme-dark-200 flex inline items-center space-x-1.5 border-transparent">
+                    <Badge className="bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:text-theme-dark-200 flex items-center space-x-1.5 border-transparent">
                         <ContractIcon className="h-3 w-3" />
 
                         <span>{t("general.contract")}</span>
