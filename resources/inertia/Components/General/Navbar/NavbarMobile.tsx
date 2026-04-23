@@ -32,6 +32,7 @@ const NavbarMobileButton = ({ className, disabled, ...props }: React.ButtonHTMLA
                 className,
             )}
             disabled={disabled}
+            {...props}
         />
     );
 };
