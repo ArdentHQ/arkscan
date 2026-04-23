@@ -27,8 +27,29 @@ export default function i18n(config: ConfigInterface) {
     let isPhpLocale = false;
     let files: { path: string; basename: string }[] = [];
     let exitHandlersBound = false;
+    let isBuildCommand = false;
     let jsonLocales: string[] = [];
     let phpLocales: string[] = [];
+
+    function trackFiles(nextFiles: { path: string; basename: string }[]) {
+        const uniqueFiles = new Map<string, { path: string; basename: string }>();
+
+        [...files, ...nextFiles].forEach((file) => uniqueFiles.set(file.path, file));
+
+        files = [...uniqueFiles.values()];
+    }
+
+    function refreshPhpTranslations(langDirname: string, langDestDirname: string) {
+        phpLocales = locale.getPhpLocale(langDirname);
+
+        if (phpLocales.length > 0) {
+            trackFiles(parser(langDirname, langDestDirname));
+            isPhpLocale = true;
+            return;
+        }
+
+        isPhpLocale = false;
+    }
 
     function clean() {
         files.forEach((file) => fs.existsSync(file.path) && fs.unlinkSync(file.path));
@@ -63,6 +84,9 @@ export default function i18n(config: ConfigInterface) {
     return {
         name: "i18n",
         enforce: "post",
+        configResolved(resolvedConfig) {
+            isBuildCommand = resolvedConfig.command === "build";
+        },
         config() {
             const keys: string[] = [];
 
@@ -90,12 +114,9 @@ export default function i18n(config: ConfigInterface) {
                 }
 
                 // PHP-file locales.
-                phpLocales = locale.getPhpLocale(langDirname);
+                refreshPhpTranslations(langDirname, langDestDirname);
 
-                if (phpLocales.length > 0) {
-                    files.push(...parser(langDirname, langDestDirname));
-                    isPhpLocale = true;
-
+                if (isPhpLocale) {
                     if (config?.typeTranslationKeys) {
                         pushKeys(keys, phpLocales, langDirname);
                     }
@@ -113,23 +134,29 @@ export default function i18n(config: ConfigInterface) {
                 }
             }
         },
-        buildEnd: clean,
+        buildEnd() {
+            if (isBuildCommand) {
+                clean();
+            }
+        },
         handleHotUpdate(ctx: any) {
             const keys: string[] = [];
 
             for (const langPath of langPaths) {
                 const langDirname = typeof langPath === "string" ? langPath : langPath.src;
                 const langDestDirname = typeof langPath === "string" ? langPath : langPath.dest;
+                const hasMissingGeneratedFile = files.some((file) => !fs.existsSync(file.path));
+                const touchedLangFile = /lang\/.*\.(php|json)$/.test(ctx.file);
+
+                if (hasMissingGeneratedFile || touchedLangFile) {
+                    refreshPhpTranslations(langDirname, langDestDirname);
+                }
 
                 if (config?.typeTranslationKeys) {
                     pushKeys(keys, jsonLocales, langDirname);
                 }
 
                 if (isPhpLocale) {
-                    if (/lang\/.*\.php$/.test(ctx.file)) {
-                        files.push(...parser(langDirname, langDestDirname));
-                    }
-
                     if (config?.typeTranslationKeys) {
                         pushKeys(keys, phpLocales, langDirname);
                     }
