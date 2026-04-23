@@ -23,7 +23,7 @@ export default function TransactionToken({
     const { network } = useSharedData();
     const { currency: selectedCurrency } = useSettings();
 
-    const tokenSymbol = details.token?.symbol ?? network?.currency;
+    const tokenSymbol = (details.token?.symbol ?? network?.currency).toUpperCase();
 
     if (transaction.method.isBatchTransfer) {
         const transfers = details.batchTokenTransfers;
@@ -48,7 +48,6 @@ export default function TransactionToken({
                         amount={totalRaw.toFixed()}
                         tokenSymbol={tokenSymbol}
                         fullTokenSymbol={details.token?.symbolFull}
-                        showFullOnDesktop
                     />
                 </SectionDetailRow>
 
@@ -85,7 +84,11 @@ export default function TransactionToken({
 
             {rawAmount !== null && (
                 <SectionDetailRow title={t("pages.transaction.header.amount")} headerWidthClass={headerWidthClass}>
-                    <CompactAmount amount={rawAmount} tokenSymbol={tokenSymbol} showFullOnDesktop />
+                    <CompactAmount
+                        amount={rawAmount}
+                        tokenSymbol={tokenSymbol}
+                        fullTokenSymbol={details.token?.symbolFull}
+                    />
                 </SectionDetailRow>
             )}
 

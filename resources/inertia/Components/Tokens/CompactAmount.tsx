@@ -3,50 +3,31 @@ import AmountSmall from "@/Components/General/AmountSmall";
 import Tooltip from "@/Components/General/Tooltip";
 import TokenSymbol from "./TokenSymbol";
 
+/**
+ * Note: "compact" does not mean truncated. It means that the number is formatted in a compact way, e.g. 1.2K instead of 1,200.
+ */
 export default function CompactAmount({
     amount,
     tokenSymbol,
     hideSymbol = false,
     fullTokenSymbol,
-    showFullOnDesktop = false,
 }: {
     amount: number | string;
     tokenSymbol?: string;
     hideSymbol?: boolean;
     fullTokenSymbol?: string;
-    showFullOnDesktop?: boolean;
 }) {
     const { value, suffix } = formatCompact(amount);
-    const isCompact = suffix !== undefined;
 
     const formattedFull = networkCurrency(amount, 8, false);
 
-    const compactContent = (
-        <span className="inline-flex items-center space-x-1">
-            <AmountSmall amount={value} hideTooltip hideCurrency suffix={suffix} />
-            {!hideSymbol && <TokenSymbol tokenSymbol={tokenSymbol} fullTokenSymbol={fullTokenSymbol} />}
-        </span>
+    return (
+        <Tooltip content={`${formattedFull} ${fullTokenSymbol?.toUpperCase() ?? ""}`}>
+            <span className="inline-flex items-center space-x-1">
+                <AmountSmall amount={value} hideTooltip hideCurrency suffix={suffix} />
+
+                {!hideSymbol && <TokenSymbol tokenSymbol={tokenSymbol?.toUpperCase()} />}
+            </span>
+        </Tooltip>
     );
-
-    if (showFullOnDesktop && isCompact) {
-        return (
-            <>
-                <span className="hidden md:inline">
-                    <span className="inline break-all">
-                        {formattedFull}
-                        {!hideSymbol && <TokenSymbol tokenSymbol={tokenSymbol} fullTokenSymbol={fullTokenSymbol} />}
-                    </span>
-                </span>
-                <span className="md:hidden">
-                    <Tooltip content={`${formattedFull} ${fullTokenSymbol ?? ""}`}>{compactContent}</Tooltip>
-                </span>
-            </>
-        );
-    }
-
-    if (isCompact) {
-        return <Tooltip content={`${formattedFull} ${fullTokenSymbol ?? ""}`}>{compactContent}</Tooltip>;
-    }
-
-    return compactContent;
 }

@@ -28,7 +28,7 @@ export default function Amount({
     const { value, suffix } = formatCompact(amount);
     const isCompact = suffix !== undefined;
     const fullFormatted = isCompact
-        ? `${networkCurrency(amount, 8, false)} ${tokenAction.token.symbolFull ?? tokenAction.token.symbol}`
+        ? `${networkCurrency(amount, 8, false)} ${(tokenAction.token.symbolFull ?? tokenAction.token.symbol).toUpperCase()}`
         : undefined;
 
     if (isSentToSelf) {
@@ -81,8 +81,8 @@ export default function Amount({
 
                         {!hideCurrency && (
                             <TokenSymbol
-                                tokenSymbol={tokenAction.token.symbol}
-                                fullTokenSymbol={tokenAction.token.symbolFull}
+                                tokenSymbol={tokenAction.token.symbol.toUpperCase()}
+                                fullTokenSymbol={tokenAction.token.symbolFull.toUpperCase()}
                             />
                         )}
                     </>
