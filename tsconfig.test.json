@@ -3,7 +3,6 @@
     "compilerOptions": {
         "module": "CommonJS",
         "moduleResolution": "node",
-        "allowJs": true,
         "ignoreDeprecations": "6.0",
         "rootDir": ".",
         "allowImportingTsExtensions": false,
