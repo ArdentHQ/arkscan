@@ -22,11 +22,11 @@ export default function CompactAmount({
     const formattedFull = networkCurrency(amount, 8, false);
 
     return (
-        <Tooltip content={`${formattedFull} ${fullTokenSymbol?.toUpperCase() ?? ""}`}>
+        <Tooltip content={`${formattedFull} ${fullTokenSymbol ?? ""}`}>
             <span className="inline-flex items-center space-x-1">
                 <AmountSmall amount={value} hideTooltip hideCurrency suffix={suffix} />
 
-                {!hideSymbol && <TokenSymbol tokenSymbol={tokenSymbol?.toUpperCase()} />}
+                {!hideSymbol && <TokenSymbol tokenSymbol={tokenSymbol} />}
             </span>
         </Tooltip>
     );

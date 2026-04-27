@@ -23,7 +23,7 @@ export default function TransactionToken({
     const { network } = useSharedData();
     const { currency: selectedCurrency } = useSettings();
 
-    const tokenSymbol = (details.token?.symbol ?? network?.currency).toUpperCase();
+    const tokenSymbol = details.token?.symbol ?? network?.currency;
 
     if (transaction.method.isBatchTransfer) {
         const transfers = details.batchTokenTransfers;
