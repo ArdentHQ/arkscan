@@ -1,4 +1,4 @@
-import { formatCompact, networkCurrency } from "@/utils/number-formatter";
+import { currencyWithDecimals, formatCompact, networkCurrency } from "@/utils/number-formatter";
 import AmountSmall from "@/Components/General/AmountSmall";
 import Tooltip from "@/Components/General/Tooltip";
 import TokenSymbol from "./TokenSymbol";
@@ -20,14 +20,19 @@ export default function CompactAmount({
     const { value, suffix } = formatCompact(amount);
 
     const formattedFull = networkCurrency(amount, 8, false);
+    const formattedValue = currencyWithDecimals({ value, currency: fullTokenSymbol ?? "", hideCurrency: true });
 
-    return (
-        <Tooltip content={`${formattedFull} ${fullTokenSymbol ?? ""}`}>
-            <span className="inline-flex items-center space-x-1">
-                <AmountSmall amount={value} hideTooltip hideCurrency suffix={suffix} />
+    const innerContent = (
+        <span className="inline-flex items-center space-x-1">
+            <AmountSmall amount={value} hideTooltip hideCurrency suffix={suffix} />
 
-                {!hideSymbol && <TokenSymbol tokenSymbol={tokenSymbol} />}
-            </span>
-        </Tooltip>
+            {!hideSymbol && <TokenSymbol tokenSymbol={tokenSymbol} />}
+        </span>
     );
+
+    if (formattedFull !== formattedValue) {
+        return <Tooltip content={`${formattedFull} ${fullTokenSymbol ?? ""}`}>{innerContent}</Tooltip>;
+    }
+
+    return innerContent;
 }
