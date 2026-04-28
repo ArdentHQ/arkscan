@@ -39,10 +39,10 @@ class TransactionDetails extends Data
 
     public static function fromModel(Model $transaction): self
     {
-        $viewModel = new TransactionViewModel($transaction);
-        $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
-        $recipient = $viewModel->recipient();
-        $token     = (new WalletCache())->getToken($recipient->address());
+        $viewModel         = new TransactionViewModel($transaction);
+        $username          = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
+        $recipient         = $viewModel->recipient();
+        $token             = (new WalletCache())->getToken($recipient->address());
         $tokenActionRecord = null;
         if ($token !== null) {
             $token = Token::fromModel($token);
@@ -121,11 +121,11 @@ class TransactionDetails extends Data
 
             $recipientAddress = (new ArgumentDecoder($arguments[TokenTransferArgument::RECIPIENT]))->decodeAddress();
         } else {
-            $amount = (string) $tokenActionRecord->value;
+            $amount           = (string) $tokenActionRecord->value;
             $recipientAddress = $tokenActionRecord->to;
         }
 
-        $recipientWallet = Wallet::where('address', $recipientAddress)->first();
+        $recipientWallet     = Wallet::where('address', $recipientAddress)->first();
         $recipientWalletData = $recipientWallet !== null
             ? WalletReference::fromModel($recipientWallet)
             : WalletReference::stub($recipientAddress);
