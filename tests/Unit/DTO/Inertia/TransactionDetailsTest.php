@@ -316,3 +316,35 @@ it('should handle token transfer with unknown recipient wallet', function () {
     expect(strtolower($details->tokenTransfer['recipient']->address))->toBe(strtolower($unknownAddress));
     expect($details->tokenTransfer['recipient']->username)->toBeNull();
 });
+
+it('should handle contract deployments for token transfer', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $transaction = Transaction::factory()
+        ->contractDeployment()
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $token = Token::factory()->create();
+    $recipient = Wallet::factory()->create();
+
+    TokenAction::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'block_number'     => $transaction->block_number,
+        'address'          => $token->address,
+        'from'             => $transaction->from,
+        'to'               => $recipient->address,
+        'value'            => '1000',
+        'index'            => 0,
+    ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenTransfer)->not->toBeNull();
+    expect(strtolower($details->tokenTransfer['recipient']->address))->toBe(strtolower($recipient->address));
+    expect($details->tokenTransfer['amount'])->toEqual('1000');
+});
