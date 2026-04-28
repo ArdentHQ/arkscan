@@ -121,6 +121,7 @@ class TransactionDetails extends Data
 
             $recipientAddress = (new ArgumentDecoder($arguments[TokenTransferArgument::RECIPIENT]))->decodeAddress();
         } else {
+            /** @var TokenAction $tokenActionRecord */
             $amount = (string) $tokenActionRecord->value;
             $recipientAddress = $tokenActionRecord->to;
         }
