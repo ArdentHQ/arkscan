@@ -35,6 +35,11 @@ export default function Show({ transaction: transactionData, details }: PageProp
 
     const tokenSymbol = details.token?.symbol ?? network?.currency ?? "";
 
+    const hasTokenTransfer =
+        transaction.method.isTokenTransfer ||
+        transaction.method.isBatchTransfer ||
+        transaction.method.isContractDeployment;
+
     return (
         <Layout>
             <TransactionHeader transaction={transaction} />
@@ -50,7 +55,7 @@ export default function Show({ transaction: transactionData, details }: PageProp
                     headerWidthClass={headerWidthClass}
                 />
 
-                {(transaction.method.isTokenTransfer || transaction.method.isBatchTransfer) && (
+                {hasTokenTransfer && (
                     <TransactionToken transaction={transaction} details={details} headerWidthClass={headerWidthClass} />
                 )}
 
