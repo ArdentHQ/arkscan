@@ -329,7 +329,7 @@ it('should handle contract deployments for token transfer', function () {
             'status'       => true,
         ]);
 
-    $token = Token::factory()->create();
+    $token     = Token::factory()->create();
     $recipient = Wallet::factory()->create();
 
     TokenAction::factory()->create([
