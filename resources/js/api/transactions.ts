@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FailedExportRequest } from "../includes/helpers";
 
 interface FetchAllParams {
@@ -13,13 +12,29 @@ interface Abortable {
     hasAborted: () => boolean;
 }
 
+function buildQuery(query: Record<string, unknown>): string {
+    const params = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(query)) {
+        if (value === undefined || value === null) {
+            continue;
+        }
+
+        params.set(key, String(value));
+    }
+
+    return params.toString();
+}
+
 export class TransactionsApi {
     static async fetch(host: string, query: Record<string, unknown>) {
-        const response = await axios.get(`${host}/transactions`, {
-            params: query,
-        });
+        const response = await fetch(`${host}/transactions?${buildQuery(query)}`);
 
-        return response.data;
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        return response.json();
     }
 
     static async fetchAll(
