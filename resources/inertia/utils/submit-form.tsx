@@ -1,73 +1,87 @@
 import useToast from "@/Providers/Toast/useToast";
-import { router } from "@inertiajs/react";
-import axios, { AxiosResponse } from "axios";
+import { router, useHttp } from "@inertiajs/react";
 
-export default function submitForm({
-    route,
-    formRef,
-    setErrors,
-    addToast,
-    onSuccess,
-    onFinish,
-}: {
+interface UseSubmitFormOptions {
     route: string;
     formRef: React.RefObject<HTMLFormElement | null>;
-    setErrors: React.Dispatch<React.SetStateAction<Record<string, string>>>;
-    addToast: ReturnType<typeof useToast>["addToast"];
-    onSuccess?: (response: AxiosResponse) => void;
+    setErrors?: React.Dispatch<React.SetStateAction<Record<string, string>>>;
+    onSuccess?: (response: unknown) => void;
     onFinish?: () => void;
-}) {
-    setErrors({});
+}
 
-    axios
-        .post(
-            route,
-            new FormData(formRef.current!).entries().reduce(
-                (acc: Record<string, string>, [key, value]: [string, FormDataEntryValue]) => {
-                    acc[key] = value.toString();
+export default function useSubmitForm({ route, formRef, setErrors, onSuccess, onFinish }: UseSubmitFormOptions) {
+    const { addToast } = useToast();
+    const http = useHttp<Record<string, string>>({});
 
-                    return acc;
-                },
-                {} as Record<string, string>,
-            ),
-            {
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
+    http.transform(() => {
+        if (!formRef.current) {
+            return {};
+        }
+
+        return Object.fromEntries(new FormData(formRef.current)) as Record<string, string>;
+    });
+
+    const submit = () => {
+        setErrors?.({});
+
+        http.post(route, {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
             },
-        )
-        .then((response) => {
-            formRef.current?.reset();
+            onSuccess: (response) => {
+                formRef.current?.reset();
 
-            router.reload({
-                only: ["flash"],
-            });
-
-            onSuccess?.(response);
-        })
-        .catch((e) => {
-            if (e.response?.data?.errors) {
-                setErrors(e.response.data.errors);
-            }
-
-            if (e.response?.data?.message) {
-                addToast(e.response.data.message, {
-                    type: "error",
+                router.reload({
+                    only: ["flash"],
                 });
 
-                return;
-            }
+                onSuccess?.(response);
+            },
+            onError: (errors) => {
+                setErrors?.(errors as Record<string, string>);
+            },
+            onHttpException: (response) => {
+                if (response.status === 422) {
+                    return;
+                }
 
-            addToast(e.message, {
-                type: "error",
-            });
+                type MessagePayload = { message?: string };
+                let parsed: MessagePayload | null = null;
+                try {
+                    parsed = JSON.parse(response.data) as MessagePayload;
+                } catch (e) {
+                    parsed = null;
+                }
 
-            router.reload({
-                only: ["flash"],
-            });
-        })
-        .finally(() => {
-            onFinish?.();
+                if (parsed?.message) {
+                    addToast(parsed.message, { type: "error" });
+
+                    return;
+                }
+
+                addToast(`Request failed with status ${response.status}`, { type: "error" });
+
+                router.reload({
+                    only: ["flash"],
+                });
+            },
+            onNetworkError: (error) => {
+                addToast(error.message, { type: "error" });
+
+                router.reload({
+                    only: ["flash"],
+                });
+            },
+            onFinish: () => {
+                onFinish?.();
+            },
         });
+    };
+
+    return {
+        submit,
+        errors: http.errors,
+        processing: http.processing,
+    };
 }

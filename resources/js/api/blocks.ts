@@ -1,5 +1,4 @@
 import { FailedExportRequest } from "../includes/helpers";
-import axios from "axios";
 
 interface FetchAllParams {
     host: string;
@@ -15,13 +14,29 @@ interface Abortable {
     hasAborted: () => boolean;
 }
 
+function buildQuery(query: Record<string, unknown>): string {
+    const params = new URLSearchParams();
+
+    for (const [key, value] of Object.entries(query)) {
+        if (value === undefined || value === null) {
+            continue;
+        }
+
+        params.set(key, String(value));
+    }
+
+    return params.toString();
+}
+
 export class BlocksApi {
     static async request(host: string, query: Record<string, unknown>, address: string) {
-        const response = await axios.get(`${host}/validators/${address}/blocks`, {
-            params: query,
-        });
+        const response = await fetch(`${host}/validators/${address}/blocks?${buildQuery(query)}`);
 
-        return response.data;
+        if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        return response.json();
     }
 
     static async fetchAll(
