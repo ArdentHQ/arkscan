@@ -35,13 +35,13 @@ export default function Insights({ data }: { data: StatisticsInsights }) {
         <div>
             <MobileDivider />
 
-            <div className="flex flex-col space-y-6 px-6 pb-4 pt-6 font-semibold md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
+            <div className="flex flex-col space-y-6 px-6 pt-6 pb-4 font-semibold md:mx-auto md:max-w-7xl md:px-10 md:pt-0">
                 <div className="flex flex-col space-y-1.5">
-                    <h1 className="mb-0 text-lg font-semibold leading-5.25 md:text-2xl md:leading-[1.8125rem]">
+                    <h1 className="text-lg leading-5.25 font-semibold md:text-2xl md:leading-[1.8125rem]">
                         {t("pages.statistics.insights.title")}
                     </h1>
 
-                    <span className="text-xs leading-3.75 text-theme-secondary-500 dark:text-theme-dark-200">
+                    <span className="text-theme-secondary-500 dark:text-theme-dark-200 text-xs leading-3.75">
                         {t("pages.statistics.insights.subtitle")}
                     </span>
                 </div>

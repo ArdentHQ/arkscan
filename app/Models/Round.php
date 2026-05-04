@@ -33,18 +33,8 @@ final class Round extends Model
      */
     public $timestamps = false;
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
     protected $connection = 'explorer';
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string|null
-     */
     protected $table = 'validator_rounds';
 
     /**

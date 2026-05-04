@@ -34,16 +34,16 @@ function StatEntry({
             className={classNames([
                 className,
                 withBorder &&
-                    "border-b border-dashed border-theme-secondary-300 pb-3 group-first/statistics:border-b group-first/statistics:pb-3 group-first/statistics:last:border-b-0",
+                    "border-theme-secondary-300 border-b border-dashed pb-3 group-first/statistics:border-b group-first/statistics:pb-3 group-first/statistics:last:border-b-0",
                 withBorder &&
-                    "dark:border-theme-dark-700 sm:group-first/statistics:last:border-b sm:group-last/statistics:border-b-0 sm:group-last/statistics:pb-0",
+                    "dark:border-theme-dark-700 sm:group-last/statistics:border-b-0 sm:group-last/statistics:pb-0 sm:group-first/statistics:last:border-b",
             ])}
         >
-            <div className="text-sm font-semibold dark:text-theme-dark-200">{label}</div>
+            <div className="dark:text-theme-dark-200 text-sm font-semibold">{label}</div>
 
             <div
                 className={classNames([
-                    "text-sm font-semibold !leading-5 md:text-base",
+                    "text-sm leading-5! font-semibold md:text-base",
                     !disabled && "text-theme-secondary-900 dark:text-theme-dark-50",
                     disabled && "text-theme-secondary-500 dark:text-theme-dark-500",
                 ])}
@@ -64,7 +64,7 @@ function StatRow({ children, className = "" }: { children: React.ReactNode; clas
     return (
         <div
             className={classNames(
-                "gap group/statistics space-y-3 px-4 sm:grid sm:grid-cols-3 sm:gap-3 sm:space-y-0 md-lg:px-6",
+                "gap group/statistics md-lg:px-6 space-y-3 px-4 sm:grid sm:grid-cols-3 sm:gap-3 sm:space-y-0",
                 className,
             )}
         >
@@ -118,9 +118,9 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
 
     return (
         <div className="px-6 md:mx-auto md:max-w-7xl md:border-0 md:px-10">
-            <div className="flex flex-col space-y-3 lg:flex-row lg:space-x-3 lg:space-y-0">
-                <div className="flex min-w-0 flex-1 flex-col rounded-xl border border-theme-secondary-300 pt-3 dark:border-theme-dark-700 sm:pb-3 md:py-4">
-                    <div className="mb-3 flex items-center justify-between border-b border-theme-secondary-300 px-4 pb-3 dark:border-theme-dark-700 sm:px-6 md:mb-4 md:pb-4">
+            <div className="flex flex-col space-y-3 lg:flex-row lg:space-y-0 lg:space-x-3">
+                <div className="border-theme-secondary-300 dark:border-theme-dark-700 flex min-w-0 flex-1 flex-col rounded-xl border pt-3 sm:pb-3 md:py-4">
+                    <div className="border-theme-secondary-300 dark:border-theme-dark-700 mb-3 flex items-center justify-between border-b px-4 pb-3 sm:px-6 md:mb-4 md:pb-4">
                         <h2 className="mb-0 text-lg font-semibold md:text-2xl md:leading-[29px]">
                             <span className="hidden leading-5.25 sm:inline">{t("pages.home.statistics.title")}</span>
                             <span className="leading-5.25 sm:hidden">{t("pages.home.statistics.title_mobile")}</span>
@@ -128,7 +128,7 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
 
                         <Link
                             href={route("statistics")}
-                            className="link rounded px-2 py-1.5 font-semibold hover:bg-theme-primary-200 hover:text-theme-primary-700 dark:hover:bg-theme-dark-700 dark:hover:text-theme-dark-50"
+                            className="link hover:bg-theme-primary-200 hover:text-theme-primary-700 hover:dark:bg-theme-dark-700 hover:dark:text-theme-dark-50! rounded px-2 py-1.5 font-semibold"
                         >
                             <div className="inline-flex items-center space-x-2">
                                 <span className="leading-5">{t("actions.view")}</span>
@@ -200,7 +200,7 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
                         </StatRow>
                     </div>
 
-                    <div className="rounded-b-xl bg-theme-secondary-100 dark:bg-theme-dark-950 sm:hidden">
+                    <div className="bg-theme-secondary-100 dark:bg-theme-dark-950 rounded-b-xl sm:hidden">
                         <StatEntry
                             label={t("pages.home.statistics.gas_tracker")}
                             className="space-y-2 px-4 py-3"
@@ -229,19 +229,14 @@ export default function Statistics({ statistics }: { statistics: IHomeStatistics
 
                 <div
                     className={classNames([
-                        "flex min-w-0 flex-1 flex-col rounded-xl border border-theme-secondary-300 dark:border-theme-dark-700",
-                        network.canBeExchanged && "pt-3 sm:pb-3 md:py-4",
-                        !network.canBeExchanged && "md-lg:px-6 md-lg:py-6",
+                        "border-theme-secondary-300 dark:border-theme-dark-700 min-w-0 flex-1 flex-col rounded-xl border",
+                        network.canBeExchanged && "flex pt-3 sm:pb-3 md:py-4",
+                        !network.canBeExchanged && "md-lg:px-6 md-lg:py-6 md-lg:flex hidden",
                     ])}
                 >
-                    <div
-                        className={classNames([
-                            "relative h-full w-full",
-                            !network.canBeExchanged && "hidden md-lg:block",
-                        ])}
-                    >
+                    <div className={classNames(["relative h-full w-full"])}>
                         {!network.canBeExchanged && (
-                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-sm font-semibold text-theme-secondary-500 dark:text-theme-dark-400">
+                            <div className="text-theme-secondary-500 dark:text-theme-dark-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm font-semibold whitespace-nowrap">
                                 {t("pages.home.statistics.chart_not_supported")}
                             </div>
                         )}

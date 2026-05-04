@@ -16,7 +16,7 @@ export default function LearnMore({
     mobileTall = false,
     titleColor = "text-theme-secondary-900 dark:text-white",
     subtitleColor = "text-theme-secondary-700 dark:text-theme-dark-blue-400 dim:text-theme-dark-blue-600",
-    buttonColor = "dark:!bg-theme-dark-blue-500 dark:hover:!bg-theme-dark-blue-600 dim:!bg-theme-dark-blue-600 dim:hover:!bg-theme-dark-blue-700",
+    buttonColor = "dark:bg-theme-dark-blue-500! dark:hover:bg-theme-dark-blue-600! dim:bg-theme-dark-blue-600! dim:hover:bg-theme-dark-blue-700!",
 }: {
     url: string;
     icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -46,7 +46,7 @@ export default function LearnMore({
         >
             <div
                 className={classNames([
-                    "mx-auto flex flex-1 items-center bg-right bg-no-repeat sm:ml-0 sm:mr-2",
+                    "mx-auto flex flex-1 items-center bg-right bg-no-repeat sm:mr-2 sm:ml-0",
                     mobileTall && "flex-col text-center sm:flex-row sm:text-left",
                     arrowsClass,
                 ])}
@@ -56,7 +56,7 @@ export default function LearnMore({
                 <div className="ml-3 flex flex-col justify-center space-y-2">
                     <span
                         className={classNames([
-                            "space-x-1 text-lg font-semibold leading-5.25 leading-6",
+                            "space-x-1 text-lg leading-5.25 leading-6 font-semibold",
                             mobileTall && "mt-3 flex flex-col sm:mt-0 sm:flex-row sm:space-x-1",
                             titleColor,
                         ])}
@@ -68,7 +68,7 @@ export default function LearnMore({
                         )}
                     </span>
 
-                    <span className={classNames(["text-xs font-semibold leading-3.75", subtitleColor])}>
+                    <span className={classNames(["text-xs leading-3.75 font-semibold", subtitleColor])}>
                         {subtitle}
                     </span>
                 </div>

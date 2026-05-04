@@ -50,11 +50,6 @@ final class Token extends Model
      */
     public $incrementing = false;
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
     protected $connection = 'explorer';
 
     /**
@@ -80,12 +75,12 @@ final class Token extends Model
 
     public function getSymbolNormalizedAttribute(): string
     {
-        return self::normalizeString($this->symbol, self::MAX_SYMBOL_LENGTH, '…');
+        return Str::upper(self::normalizeString($this->symbol, self::MAX_SYMBOL_LENGTH, '…'));
     }
 
     public function getSymbolFullAttribute(): string
     {
-        return self::normalizeString($this->symbol);
+        return Str::upper(self::normalizeString($this->symbol));
     }
 
     private static function normalizeString(string $value, ?int $maxLength = null, ?string $suffix = null): string

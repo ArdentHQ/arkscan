@@ -183,6 +183,24 @@ it('should format fee cards above threshold and convert chart datasets', functio
             ->where('informationCards.fees.periods.day.chart.datasets.0', fn ($value) => (float) $value === $expectedDataset));
 });
 
+it('should sum chart datasets containing BigDecimal instances', function () {
+    $controller = new StatisticsController();
+
+    $call = Closure::bind(function (array $chartData): float {
+        return $this->totalFromChart($chartData);
+    }, $controller, StatisticsController::class);
+
+    $total = $call([
+        'datasets' => [
+            BigDecimal::of('10000000000000000000'),
+            BigDecimal::of('5000000000000000000'),
+            2_000_000_000_000_000_000,
+        ],
+    ]);
+
+    expect($total)->toEqualWithDelta(17_000_000_000_000_000_000, 1_000_000_000);
+});
+
 it('should return null when wallet details are missing in validator records', function () {
     $controller = new StatisticsController();
 
@@ -311,6 +329,9 @@ it('should include market data, validators, addresses, annual data, and block re
             ->where('insights.validators.2.value', Carbon::parse('2020-01-01')->timestamp)
             ->where('insights.validators.4.key', 'most_blocks_forged')
             ->where('insights.validators.4.value', 77)
+            ->where('insights.transactions.records.largest_transaction.timestamp', Carbon::parse('2024-01-03 00:00:00')->timestamp)
+            ->where('insights.transactions.records.highest_fee.timestamp', Carbon::parse('2024-01-04')->timestamp)
+            ->where('insights.transactions.records.most_transactions_in_block.timestamp', Carbon::parse('2024-01-05')->timestamp)
             ->where('insights.transactions.records.highest_fee.fee', fn ($value) => (float) $value === $highestFeeBlock->fee->toFloat())
             ->where('insights.transactions.records.most_transactions_in_block.transactionCount', 99)
             ->where('insights.addresses.holdings.0.grouped', 1)

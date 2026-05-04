@@ -80,7 +80,7 @@ const ToastContainer = ({ toasts, onDismiss }: { toasts: ToastMessage[]; onDismi
     }
 
     return (
-        <div className="fixed bottom-0 right-0 z-50 flex flex-col items-end space-y-3 p-5">
+        <div className="fixed right-0 bottom-0 z-50 flex flex-col items-end space-y-3 p-5">
             {toasts.map((toast) => (
                 <div key={toast.id} className="z-20 flex cursor-pointer" onClick={() => onDismiss(toast.id)}>
                     <ToastItem toast={toast} onDismiss={onDismiss} />

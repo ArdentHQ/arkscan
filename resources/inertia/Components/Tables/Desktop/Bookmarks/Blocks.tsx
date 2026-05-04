@@ -36,14 +36,14 @@ function Row({ row }: { row: IBlock }) {
             </TableCell>
 
             <TableCell>
-                <div className="flex flex-col whitespace-nowrap text-sm font-semibold leading-4.25 text-theme-secondary-900 dark:text-theme-dark-50 md:space-y-1 xl:space-y-0">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50 flex flex-col text-sm leading-4.25 font-semibold whitespace-nowrap md:space-y-1 xl:space-y-0">
                     <div className="xl:hidden">
                         <Address wallet={block.proposer} truncate />
                     </div>
                     <div className="hidden xl:block">
                         <Address wallet={block.proposer} />
                     </div>
-                    <div className="mt-1 text-xs font-semibold leading-4.25 text-theme-secondary-700 dark:text-theme-dark-200 md-lg:hidden">
+                    <div className="text-theme-secondary-700 dark:text-theme-dark-200 md-lg:hidden mt-1 text-xs leading-4.25 font-semibold">
                         <span>{block.transactionCount}</span>
                         &nbsp;
                         <span>{t("tables.blocks.transactions")}</span>
@@ -54,7 +54,7 @@ function Row({ row }: { row: IBlock }) {
             <TableCell
                 breakpoint="md-lg"
                 responsive
-                className="text-right text-theme-secondary-900 dark:text-theme-dark-50"
+                className="text-theme-secondary-900 dark:text-theme-dark-50 text-right"
             >
                 {block.transactionCount}
             </TableCell>
@@ -147,7 +147,7 @@ export default function BookmarkBlocksTable({
                     </TableHeader>
                     <TableHeader
                         className={classNames({
-                            "whitespace-nowrap text-right": true,
+                            "text-right whitespace-nowrap": true,
                             "last-until-lg": !!network?.canBeExchanged,
                         })}
                         lastOn={network?.canBeExchanged ? "lg" : undefined}
@@ -158,7 +158,7 @@ export default function BookmarkBlocksTable({
                     </TableHeader>
                     {network?.canBeExchanged && (
                         <TableHeader
-                            className="whitespace-nowrap text-right"
+                            className="text-right whitespace-nowrap"
                             breakpoint="lg"
                             responsive
                             tooltip={t("pages.wallets.blocks.value_tooltip", { currency: network!.currency })}

@@ -55,7 +55,7 @@ export default function Checkbox({
                         id={id}
                         name={name}
                         type="checkbox"
-                        className="form-checkbox input-checkbox focus-visible:ring-2 focus-visible:ring-theme-primary-500"
+                        className="form-checkbox input-checkbox focus-visible:ring-theme-primary-500 focus-visible:ring-2"
                         value={value}
                         checked={checked}
                         disabled={disabled}
@@ -65,7 +65,7 @@ export default function Checkbox({
 
                 <div
                     className={classNames({
-                        "text-sm leading-5 text-theme-secondary-700 dark:text-theme-secondary-500": true,
+                        "text-theme-secondary-700 dark:text-theme-secondary-500 text-sm leading-5": true,
                         "pr-7": right,
                         "pl-7": !right,
                     })}

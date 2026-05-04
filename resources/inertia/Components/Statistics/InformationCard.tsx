@@ -18,7 +18,7 @@ function PeriodSelect({
         <div>
             <Select value={selected} onValueChange={(value) => onSelect(value as StatisticsPeriod)}>
                 <Select.Trigger
-                    className="form-input transition-default h-10 w-full bg-white !px-3 !py-2 text-left !text-sm font-semibold dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200"
+                    className="form-input transition-default dark:border-theme-dark-700 dark:bg-theme-dark-900 dark:text-theme-dark-200 h-10 w-full bg-white px-3! py-2! text-left text-sm! font-semibold"
                     placeholder={options.find((option) => option.value === selected)?.label}
                 />
                 <Select.Content
@@ -98,27 +98,27 @@ export default function InformationCard({
     const periodData = data.periods[selectedPeriod];
 
     return (
-        <div className="flex w-full flex-col rounded border border-theme-secondary-300 px-4 py-3 dark:border-theme-dark-700 md:items-stretch md:rounded-xl md:px-6 md:py-4 md:pr-6">
+        <div className="border-theme-secondary-300 dark:border-theme-dark-700 flex w-full flex-col rounded border px-4 py-3 md:items-stretch md:rounded-xl md:px-6 md:py-4 md:pr-6">
             <div className="mb-4 flex flex-1 flex-col space-y-2 md:mb-4 md:pb-4">
-                <div className="mb-0 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                <div className="text-theme-secondary-700 dark:text-theme-dark-200 text-sm leading-4.25 font-semibold">
                     {mainTitle}
                 </div>
 
-                <div className="text-lg font-semibold leading-5.25 text-theme-secondary-900 dark:text-theme-dark-50 md-lg:text-2xl md-lg:!leading-[29px]">
+                <div className="text-theme-secondary-900 dark:text-theme-dark-50 md-lg:text-2xl md-lg:leading-[29px]! text-lg leading-5.25 font-semibold">
                     {mainValue}
                 </div>
             </div>
 
-            <div className="-mx-4 -mb-4 rounded-b bg-theme-secondary-100 p-4 dark:bg-theme-dark-950 md:-mx-6 md:-my-4 md:w-auto md:rounded-b-xl md:rounded-tr-none md:px-6">
+            <div className="bg-theme-secondary-100 dark:bg-theme-dark-950 -mx-4 -mb-4 rounded-b p-4 md:-mx-6 md:-my-4 md:w-auto md:rounded-tr-none md:rounded-b-xl md:px-6">
                 <PeriodSelect options={options} selected={selectedPeriod} onSelect={setSelectedPeriod} />
 
                 <div className="flex items-end justify-between gap-4 md:w-full">
                     <div className="mt-4">
-                        <div className="mb-0 text-sm font-semibold text-theme-secondary-700 dark:text-theme-dark-200">
+                        <div className="text-theme-secondary-700 dark:text-theme-dark-200 text-sm leading-4.25 font-semibold">
                             {secondaryTitle}
                         </div>
 
-                        <div className="mt-2 whitespace-nowrap text-sm font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:text-base md:leading-5">
+                        <div className="text-theme-secondary-900 dark:text-theme-dark-50 mt-2 text-sm font-semibold whitespace-nowrap md:text-base md:leading-5">
                             {formatValue(periodData.value, periodData.aboveThreshold)}
                         </div>
                     </div>

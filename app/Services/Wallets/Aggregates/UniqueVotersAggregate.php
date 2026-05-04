@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 final class UniqueVotersAggregate
 {
-    /**
-     * @return Collection{'address': string, 'voter_count': int}>
-     */
     public function aggregate(bool $sortDescending = true): ?Collection
     {
         // phpstan-ignore-next-line

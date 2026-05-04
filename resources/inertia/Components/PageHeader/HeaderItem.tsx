@@ -35,7 +35,7 @@ export default function HeaderItem({
                 className={classNames(
                     "relative flex flex-col rounded md:rounded-xl",
                     {
-                        "px-4 py-3 ring-1 ring-inset ring-theme-secondary-300 dark:text-theme-dark-50 dark:ring-theme-dark-700 md:px-6 md:py-4":
+                        "ring-theme-secondary-300 dark:text-theme-dark-50 dark:ring-theme-dark-700 px-4 py-3 ring-1 ring-inset md:px-6 md:py-4":
                             background === null,
                         "h-full p-4 md:px-6 md:py-4": !withoutPadding && background !== null,
                         "space-y-2": title !== null,
@@ -43,9 +43,9 @@ export default function HeaderItem({
                     contentClass,
                 )}
             >
-                {title && <div className="text-sm dark:text-theme-dark-200">{title}</div>}
+                {title && <div className="dark:text-theme-dark-200 text-sm">{title}</div>}
 
-                <div className={classNames("leading-5 text-theme-secondary-900 dark:text-theme-dark-50", slotClass)}>
+                <div className={classNames("text-theme-secondary-900 dark:text-theme-dark-50 leading-5", slotClass)}>
                     {children}
                 </div>
             </div>

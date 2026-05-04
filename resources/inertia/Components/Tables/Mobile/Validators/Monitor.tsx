@@ -17,13 +17,13 @@ import { useTranslation } from "react-i18next";
 
 export function MonitorMobileHeader({ validator }: { validator: IMonitorValidator }) {
     return (
-        <div className="flex min-w-0 flex-1 divide-x divide-theme-secondary-300 dark:divide-theme-dark-700">
+        <div className="divide-theme-secondary-300 dark:divide-theme-dark-700 flex min-w-0 flex-1 divide-x">
             <div className="flex items-center">
                 <div className="hidden items-center pr-3 sm:flex">
                     <FavoriteIcon validator={validator} />
                 </div>
 
-                <span className="min-w-[32px] text-sm font-semibold leading-4.25 dark:text-theme-dark-200">
+                <span className="dark:text-theme-dark-200 min-w-[32px] text-sm leading-4.25 font-semibold">
                     {validator.order}
                 </span>
             </div>
@@ -43,7 +43,7 @@ export function MonitorMobileHeader({ validator }: { validator: IMonitorValidato
                 </div>
 
                 <div className="flex h-[21px] items-center sm:space-x-3">
-                    <div className="flex items-center sm:hidden">
+                    <div className="flex items-center pr-3 sm:hidden">
                         <Status withText={false} />
                     </div>
 
@@ -87,7 +87,7 @@ export function MonitorMobileTable({ validators }: { validators: IMonitorValidat
                             <BlockHeight validator={validator} />
                         </TableCell>
 
-                        <div className="mt-4 border-t border-theme-secondary-300 pt-4 dark:border-theme-dark-700 sm:mt-0 sm:hidden sm:border-t-0 sm:pt-0">
+                        <div className="border-theme-secondary-300 dark:border-theme-dark-700 mt-4 border-t pt-4 sm:mt-0 sm:hidden sm:border-t-0 sm:pt-0">
                             <FavoriteIcon validator={validator} label={t("tables.validator-monitor.favorite")} />
                         </div>
                     </MobileTableRow>
@@ -107,7 +107,7 @@ export function MobileFavoritesTable({ validators }: { validators: IMonitorValid
 
     return (
         <div>
-            <div className="px-6 pb-3 font-semibold text-theme-secondary-700 dark:text-theme-dark-200 md:px-10">
+            <div className="text-theme-secondary-700 dark:text-theme-dark-200 px-6 pb-3 font-semibold md:px-10">
                 My Favorites
             </div>
 

@@ -54,7 +54,7 @@ function ApproveActionRow({
         <SectionDetailRow
             title={rowTitle}
             headerWidthClass={headerWidthClass}
-            className="!items-start sm:!items-center"
+            className="items-start! sm:items-center!"
         >
             <div className="flex flex-col items-end gap-y-0.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1 sm:gap-y-1">
                 <div className="flex items-center gap-x-1">

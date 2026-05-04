@@ -29,7 +29,7 @@ export default function MobileDropdown({
                             <span>{activeLabel}</span>
                             <ChevronDownSmallIcon
                                 className={classNames(
-                                    "transition-default h-3 w-3 text-theme-secondary-700 dark:text-theme-dark-200",
+                                    "transition-default text-theme-secondary-700 dark:text-theme-dark-200 h-3 w-3",
                                     {
                                         "rotate-180": isOpen,
                                     },

@@ -7,7 +7,7 @@
 .table-filter-item__checkbox input[type="checkbox"],
 .dropdown__checkbox input[type="checkbox"],
 .export-modal__checkbox input[type="checkbox"] {
-    @apply h-5 w-5 cursor-pointer dark:border-theme-dark-600;
+    @apply dark:border-theme-dark-600 h-5 w-5 cursor-pointer;
 }
 
 .table-filter-item__checkbox input[type="checkbox"]:checked,
@@ -51,22 +51,22 @@
 
 .form-select,
 .input-text {
-    @apply transition-default outline outline-1 outline-transparent hover:border-theme-primary-400 hover:outline-theme-primary-400 focus:border-transparent;
+    @apply transition-default hover:border-theme-primary-400 hover:outline-theme-primary-400 outline-1 outline-transparent outline-solid focus:border-transparent;
 }
 
 .form-select:focus,
 .input-text:focus {
-    @apply border-theme-primary-600 outline outline-1 outline-offset-0 outline-theme-primary-600;
+    @apply border-theme-primary-600 outline-theme-primary-600 outline-1 outline-offset-0 outline-solid;
 }
 
 .input-text--error {
-    @apply border-theme-danger-500 outline outline-1 outline-offset-0 outline-theme-danger-500;
+    @apply border-theme-danger-500 outline-theme-danger-500 outline-1 outline-offset-0 outline-solid;
 }
 .input-text::placeholder {
     @apply text-theme-secondary-500;
 }
 .input-text--error:focus {
-    @apply !border-theme-danger-500 !outline-theme-danger-500;
+    @apply border-theme-danger-500! outline-theme-danger-500!;
 }
 .input-text--error:hover {
     @apply border-theme-danger-700 outline-theme-danger-700;
@@ -81,7 +81,7 @@
     @apply border-theme-danger-500 outline-theme-danger-500;
 }
 .dark :not(.light).input-text--error:focus {
-    @apply border-theme-danger-400 outline-theme-danger-400 !important;
+    @apply border-theme-danger-400! outline-theme-danger-400!;
 }
 .dark :not(.light).input-text--error:hover {
     @apply border-theme-danger-700 outline-theme-danger-700;

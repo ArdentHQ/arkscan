@@ -11,15 +11,15 @@ export default function ID({ transaction, withoutAge = false }: { transaction: T
             <div
                 className={classNames({
                     "leading-4.25": true,
-                    "box-border flex h-[21px] items-center space-x-2 rounded border border-transparent bg-theme-danger-50 px-1.5 dark:border-theme-failed-state-bg dark:bg-transparent":
+                    "bg-theme-danger-50 dark:border-theme-failed-state-bg box-border flex h-[21px] items-center space-x-2 rounded border border-transparent px-1.5 dark:bg-transparent":
                         transaction.hasFailed,
                 })}
             >
                 <Link
                     href={route("transaction", transaction.hash)}
                     className={classNames({
-                        "link mx-auto whitespace-nowrap text-sm font-semibold leading-4.25": true,
-                        "!text-theme-danger-700 dark:!text-theme-failed-state-text": transaction.hasFailed,
+                        "link mx-auto text-sm leading-4.25 font-semibold whitespace-nowrap": true,
+                        "text-theme-danger-700! dark:text-theme-failed-state-text!": transaction.hasFailed,
                     })}
                 >
                     <TruncateMiddle>{transaction.hash}</TruncateMiddle>
@@ -27,7 +27,7 @@ export default function ID({ transaction, withoutAge = false }: { transaction: T
 
                 {transaction.hasFailed && (
                     <div>
-                        <CircleMinusSmallIcon className="h-3 w-3 text-theme-danger-700 dark:text-theme-failed-state-text" />
+                        <CircleMinusSmallIcon className="text-theme-danger-700 dark:text-theme-failed-state-text h-3 w-3" />
                     </div>
                 )}
             </div>

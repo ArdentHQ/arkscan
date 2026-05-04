@@ -12,7 +12,7 @@ function HeaderActions({ hash }: { hash: string }) {
         <>
             <Clipboard
                 value={hash}
-                className="button-secondary group flex h-8 w-full items-center p-2 focus-visible:ring-inset"
+                className="button-secondary group flex h-8 w-full items-center p-2! focus-visible:ring-inset"
                 wrapperClass="flex-1"
                 tooltipContent={t("pages.transaction.transaction_id_copied")}
                 withCheckmarks

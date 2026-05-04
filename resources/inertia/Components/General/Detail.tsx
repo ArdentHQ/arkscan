@@ -20,7 +20,7 @@ export default function Detail({
         <div className="flex flex-col space-y-2 font-semibold" {...props}>
             <div
                 className={classNames({
-                    "whitespace-nowrap text-sm text-theme-secondary-700 dark:text-theme-dark-200": true,
+                    "text-theme-secondary-700 dark:text-theme-dark-200 text-sm leading-4.25 whitespace-nowrap": true,
                     [titleClass]: true,
                 })}
             >
@@ -29,7 +29,7 @@ export default function Detail({
 
             <div
                 className={classNames({
-                    "leading-5 text-theme-secondary-900 dark:text-theme-dark-50": true,
+                    "text-theme-secondary-900 dark:text-theme-dark-50 leading-5": true,
                     [className]: true,
                 })}
             >

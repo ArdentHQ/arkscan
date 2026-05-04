@@ -1,8 +1,7 @@
 import Modal from "@/Components/General/Modal";
 import { useTranslation } from "react-i18next";
 import React, { RefObject } from "react";
-import useToast from "@/Providers/Toast/useToast";
-import submitForm from "@/utils/submit-form";
+import useSubmitForm from "@/utils/submit-form";
 
 interface SubmitModalProps {
     ref: RefObject<HTMLFormElement | null>;
@@ -28,25 +27,25 @@ export default function SubmitModal({
     disabled = false,
 }: SubmitModalProps) {
     const { t } = useTranslation();
-    const { addToast } = useToast();
+
+    const { submit } = useSubmitForm({
+        route,
+        formRef: ref,
+        setErrors,
+        onSuccess: () => {
+            onClose();
+        },
+        onFinish: () => {
+            validateFields();
+        },
+    });
 
     const onFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         onSubmit(e);
 
-        submitForm({
-            route,
-            formRef: ref,
-            setErrors,
-            addToast,
-            onSuccess: () => {
-                onClose();
-            },
-            onFinish: () => {
-                validateFields();
-            },
-        });
+        submit();
     };
 
     return (

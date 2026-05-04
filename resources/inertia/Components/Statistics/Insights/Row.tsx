@@ -24,11 +24,11 @@ export default function InsightsRow({
 
     if (!hasValue && !hasChildren) {
         return (
-            <div className="flex flex-col space-y-2 pt-3 first:pt-0 md:flex-row md:items-center md:space-x-4 md:space-y-0 md:pt-0">
+            <div className="flex flex-col space-y-2 pt-3 first:pt-0 md:flex-row md:items-center md:space-y-0 md:space-x-4 md:pt-0">
                 <div className={classNames("whitespace-nowrap", headerWidthClass)}>{title}</div>
                 <div
                     className={classNames(
-                        "flex-1 space-y-3 text-theme-secondary-900 dark:text-theme-dark-50 md:text-right",
+                        "text-theme-secondary-900 dark:text-theme-dark-50 flex-1 space-y-3 md:text-right",
                         valueClass,
                     )}
                 >
@@ -41,11 +41,11 @@ export default function InsightsRow({
     const content = hasValue ? value : children;
 
     return (
-        <div className="flex flex-col space-y-2 pt-3 first:pt-0 md:flex-row md:items-center md:space-x-4 md:space-y-0 md:pt-0">
+        <div className="flex flex-col space-y-2 pt-3 first:pt-0 md:flex-row md:items-center md:space-y-0 md:space-x-4 md:pt-0">
             <div className={classNames("whitespace-nowrap", headerWidthClass)}>{title}</div>
             <div
                 className={classNames(
-                    "flex-1 space-y-3 text-theme-secondary-900 dark:text-theme-dark-50 md:text-right",
+                    "text-theme-secondary-900 dark:text-theme-dark-50 flex-1 space-y-3 md:text-right",
                     valueClass,
                 )}
             >

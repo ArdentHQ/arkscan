@@ -19,7 +19,6 @@ final class AveragesAggregate
      */
     public function aggregate(): array
     {
-        /** @var object{count: int, fee: string, value: BigNumber, recipient_value: BigNumber} */
         $data = Transaction::select([
                 DB::raw('COUNT(*) as count'),
                 DB::raw('SUM(transactions.gas_price * COALESCE(gas_used, 0)) as fee'),
@@ -29,9 +28,9 @@ final class AveragesAggregate
             ->withScope(MultiPaymentTotalAmountScope::class)
             ->first();
 
-        $daysSinceEpoch = Timestamp::daysSinceEpoch();
+        $count = (int) ($data?->getAttribute('count') ?? 0);
 
-        if ($data->count === 0) {
+        if ($count === 0 || $data === null) {
             return [
                 'count'  => 0,
                 'amount' => 0,
@@ -39,13 +38,19 @@ final class AveragesAggregate
             ];
         }
 
-        $totalAmount = $data->value->plus((string) $data->recipient_value)->toFloat();
+        $daysSinceEpoch = Timestamp::daysSinceEpoch();
+
+        $value          = BigNumber::new((string) $data->getAttribute('value'));
+        $recipientValue = BigNumber::new((string) $data->getAttribute('recipient_value'));
+        $fee            = (string) $data->getAttribute('fee');
+
+        $totalAmount = $value->plus($recipientValue->valueOf())->toFloat();
 
         return [
-            'count'  => (int) round($data->count / $daysSinceEpoch),
+            'count'  => (int) round($count / $daysSinceEpoch),
             'amount' => (int) round($totalAmount / $daysSinceEpoch),
             'fee'    => UnitConverter::formatUnits(
-                (string) BigNumber::new($data->fee)->valueOf()->dividedBy($daysSinceEpoch, null, RoundingMode::DOWN),
+                (string) BigNumber::new($fee)->valueOf()->dividedBy($daysSinceEpoch, null, RoundingMode::Down),
                 'ark'
             )->toFloat(),
         ];

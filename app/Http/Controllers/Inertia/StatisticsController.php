@@ -198,7 +198,10 @@ final class StatisticsController
 
     private function totalFromChart(array $chartData): float
     {
-        return array_sum($chartData['datasets'] ?? []);
+        return array_sum(array_map(
+            static fn ($value): float => $value instanceof BigDecimal ? $value->toFloat() : (float) $value,
+            $chartData['datasets'] ?? [],
+        ));
     }
 
     private function convertFeesChart(array $chartData): array
@@ -292,7 +295,7 @@ final class StatisticsController
             'url'       => $transaction->url(),
             'hash'      => $transaction->hash,
             'amount'    => $viewModel->amount(),
-            'timestamp' => $transaction->timestamp,
+            'timestamp' => $transaction->timestamp->unix(),
         ];
     }
 
@@ -306,7 +309,7 @@ final class StatisticsController
             'type'      => 'block',
             'url'       => $block->url(),
             'height'    => $block->number->toNumber(),
-            'timestamp' => $block->timestamp,
+            'timestamp' => $block->timestamp->unix(),
         ];
 
         if ($key === 'most_transactions_in_block') {
@@ -400,7 +403,7 @@ final class StatisticsController
             return $viewModel->forgedBlocks();
         });
 
-        return array_values($rows);
+        return $rows;
     }
 
     private function validatorRow(string $key, ?Wallet $wallet, callable $valueResolver): array

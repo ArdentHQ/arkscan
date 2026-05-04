@@ -18,7 +18,7 @@ export default function TransactionInsights({
 
     return (
         <div className={activeTab !== "transactions" ? "hidden md:block" : undefined}>
-            <div className="hidden px-6 font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md:mx-auto md:block md:max-w-7xl md:px-10">
+            <div className="text-theme-secondary-900 dark:text-theme-dark-50 hidden px-6 font-semibold md:mx-auto md:block md:max-w-7xl md:px-10">
                 {t("pages.statistics.insights.transactions.title")}
             </div>
 

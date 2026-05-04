@@ -34,7 +34,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.4"
+                  php-version: "8.5"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -68,7 +68,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.4"
+                  php-version: "8.5"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -112,7 +112,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.4"
+                  php-version: "8.5"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -127,7 +127,7 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 22.11
+                  node-version: 24.15
 
             - uses: pnpm/action-setup@v4
               with:
@@ -176,7 +176,7 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 22.11
+                  node-version: 24.15
 
             - uses: pnpm/action-setup@v4
               with:
@@ -219,7 +219,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.4"
+                  php-version: "8.5"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
                   coverage: pcov
 
@@ -234,7 +234,7 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 22.11
+                  node-version: 24.15
 
             - uses: pnpm/action-setup@v4
               with:

@@ -45,7 +45,7 @@ export default function TransactionStatus({
                 })}
             >
                 <div
-                    className={classNames("flex items-center space-x-2", {
+                    className={classNames("flex items-center space-x-2 pr-2 sm:pr-3", {
                         "text-theme-success-700 dark:text-theme-success-500": !transaction.hasFailed,
                         "text-theme-danger-700 dark:text-theme-danger-400": transaction.hasFailed,
                     })}
@@ -59,7 +59,7 @@ export default function TransactionStatus({
                     <div>{transaction.hasFailed ? t("general.failed") : t("general.success")}</div>
                 </div>
 
-                <div className="pl-2 dark:text-theme-dark-50 sm:pl-3">
+                <div className="dark:text-theme-dark-50">
                     {details.confirmations > 1000 ? (
                         <>
                             <Number>1000</Number>+ {t("general.confirmations_only")}
@@ -73,7 +73,7 @@ export default function TransactionStatus({
             </div>
 
             {transaction.hasFailed && (
-                <div className="mt-2 whitespace-normal border-t border-theme-danger-200 px-3 pt-2 dark:border-theme-dark-700 sm:mt-3 sm:pl-6 sm:pt-3 lg:hidden">
+                <div className="border-theme-danger-200 dark:border-theme-dark-700 mt-2 border-t px-3 pt-2 whitespace-normal sm:mt-3 sm:pt-3 sm:pl-6 lg:hidden">
                     {errorMessage}
                 </div>
             )}

@@ -28,7 +28,7 @@ export default function ExchangeDropdown({
                 button={({ isOpen }) => (
                     <div
                         className={classNames(
-                            "transition-default flex w-full items-center justify-between rounded font-semibold text-theme-secondary-900 dark:text-theme-dark-50 md-lg:w-50",
+                            "transition-default text-theme-secondary-900 dark:text-theme-dark-50 md-lg:w-50 flex w-full items-center justify-between rounded font-semibold",
                         )}
                     >
                         <div className="flex items-center space-x-2">
@@ -42,7 +42,7 @@ export default function ExchangeDropdown({
 
                         <span
                             className={classNames(
-                                "ml-2 text-theme-secondary-700 transition duration-150 ease-in-out dark:text-theme-dark-50",
+                                "text-theme-secondary-700 dark:text-theme-dark-50 ml-2 transition duration-150 ease-in-out",
                                 {
                                     "rotate-180": isOpen,
                                 },

@@ -63,7 +63,7 @@ export default function TransactionAddress({
             <Clipboard
                 value={resolvedAddress}
                 noStyling
-                className="transition-default ml-2 flex h-auto w-auto items-center text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50"
+                className="transition-default text-theme-secondary-700 hover:text-theme-primary-700 dark:text-theme-dark-300 dark:hover:text-theme-dark-50 ml-2 flex h-auto w-auto items-center"
                 tooltipContent={t("pages.wallet.address_copied")}
                 checkmarksClass=""
                 testId={testId ? `${testId}:address` : undefined}
@@ -71,9 +71,9 @@ export default function TransactionAddress({
 
             {isContract && (
                 <div className="hidden items-center sm:flex">
-                    <div className="mx-2 h-[17px] border-l border-theme-secondary-300 dark:border-theme-dark-700" />
+                    <div className="border-theme-secondary-300 dark:border-theme-dark-700 mx-2 h-[17px] border-l" />
 
-                    <Badge className="inline flex items-center space-x-1.5 border-transparent bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:text-theme-dark-200">
+                    <Badge className="bg-theme-secondary-200 text-theme-secondary-700 dark:border-theme-dark-700 dark:text-theme-dark-200 flex items-center space-x-1.5 border-transparent">
                         <ContractIcon className="h-3 w-3" />
 
                         <span>{t("general.contract")}</span>

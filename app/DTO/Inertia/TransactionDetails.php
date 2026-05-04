@@ -39,10 +39,11 @@ class TransactionDetails extends Data
 
     public static function fromModel(Model $transaction): self
     {
-        $viewModel = new TransactionViewModel($transaction);
-        $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
-        $recipient = $viewModel->recipient();
-        $token     = (new WalletCache())->getToken($recipient->address());
+        $viewModel         = new TransactionViewModel($transaction);
+        $username          = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
+        $recipient         = $viewModel->recipient();
+        $token             = (new WalletCache())->getToken($recipient->address());
+        $tokenActionRecord = null;
         if ($token !== null) {
             $token = Token::fromModel($token);
         } elseif ($viewModel->isBatchTransfer()) {
@@ -54,7 +55,7 @@ class TransactionDetails extends Data
             if ($firstRecord?->token !== null) {
                 $token = Token::fromModel($firstRecord->token);
             }
-        } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove()) {
+        } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove() || $viewModel->isContractDeployment()) {
             $tokenActionRecord = TokenAction::with('token')
                 ->where('transaction_hash', $transaction->hash)
                 ->first();
@@ -91,7 +92,7 @@ class TransactionDetails extends Data
             recipientIsContract: $recipient->isContract(),
             validatorPublicKey: $viewModel->validatorPublicKey(),
             username: $username,
-            tokenTransfer: self::tokenTransferDetails($viewModel),
+            tokenTransfer: self::tokenTransferDetails($viewModel, $tokenActionRecord),
             tokenApproval: self::tokenApprovalDetails($viewModel),
             token: $token,
             batchTokenTransfers: $batchTokenTransfers,
@@ -101,28 +102,34 @@ class TransactionDetails extends Data
     /**
      * @return array{recipient: WalletReference, amount: string|null}|null
      */
-    private static function tokenTransferDetails(TransactionViewModel $transaction): ?array
+    private static function tokenTransferDetails(TransactionViewModel $transaction, ?TokenAction $tokenActionRecord): ?array
     {
-        if (! $transaction->isTokenTransfer()) {
+        if (! $transaction->isTokenTransfer() && ! $transaction->isContractDeployment()) {
             return null;
         }
 
-        $arguments = $transaction->methodArguments();
-        if (count($arguments) === 0 || ! array_key_exists(TokenTransferArgument::RECIPIENT, $arguments)) {
-            return null;
+        if ($transaction->isTokenTransfer()) {
+            $arguments = $transaction->methodArguments();
+            if (count($arguments) === 0 || ! array_key_exists(TokenTransferArgument::RECIPIENT, $arguments)) {
+                return null;
+            }
+
+            $amount = null;
+            if (array_key_exists(TokenTransferArgument::AMOUNT, $arguments)) {
+                $amount = (new ArgumentDecoder($arguments[TokenTransferArgument::AMOUNT]))->decodeUnsignedInt();
+            }
+
+            $recipientAddress = (new ArgumentDecoder($arguments[TokenTransferArgument::RECIPIENT]))->decodeAddress();
+        } else {
+            /** @var TokenAction $tokenActionRecord */
+            $amount           = (string) $tokenActionRecord->value;
+            $recipientAddress = $tokenActionRecord->to;
         }
 
-        $recipient = (new ArgumentDecoder($arguments[TokenTransferArgument::RECIPIENT]))->decodeAddress();
-
-        $amount = null;
-        if (array_key_exists(TokenTransferArgument::AMOUNT, $arguments)) {
-            $amount = (new ArgumentDecoder($arguments[TokenTransferArgument::AMOUNT]))->decodeUnsignedInt();
-        }
-
-        $recipientWallet     = Wallet::where('address', $recipient)->first();
+        $recipientWallet     = Wallet::where('address', $recipientAddress)->first();
         $recipientWalletData = $recipientWallet !== null
             ? WalletReference::fromModel($recipientWallet)
-            : WalletReference::stub($recipient);
+            : WalletReference::stub($recipientAddress);
 
         return [
             'recipient' => $recipientWalletData,

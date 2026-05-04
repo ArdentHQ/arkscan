@@ -18,11 +18,11 @@ function HighlightStat({
     return (
         <HeaderItem title={label}>
             <div className="flex flex-grow flex-col justify-between space-y-2">
-                <span className="flex space-x-3 divide-x divide-theme-secondary-300 whitespace-nowrap text-sm font-semibold !leading-4.25 text-theme-secondary-900 dark:divide-theme-dark-700 dark:text-theme-dark-50 md:text-base md:!leading-5">
-                    <span>{value}</span>
+                <span className="divide-theme-secondary-300 text-theme-secondary-900 dark:divide-theme-dark-700 dark:text-theme-dark-50 flex space-x-3 divide-x text-sm leading-4.25! font-semibold whitespace-nowrap md:text-base md:leading-5!">
+                    <span className="pr-3">{value}</span>
 
                     {link && (
-                        <div className="pl-3">
+                        <div>
                             <Link href={link.href} className="link">
                                 {link.label}
                             </Link>
