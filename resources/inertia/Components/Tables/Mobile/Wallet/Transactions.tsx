@@ -55,6 +55,7 @@ export function TransactionsMobileTable({ transactions }: { transactions: IPagin
                                 transaction={transaction}
                                 hideCurrency={true}
                                 wallet={wallet}
+                                withoutFee
                             />
                         </TableCell>
 
