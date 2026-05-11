@@ -45,8 +45,8 @@ function OverviewActions({ wallet }: { wallet: IWallet }) {
                 type="addresses"
                 id={wallet.address}
                 testId="wallet:bookmark"
-                className="w-full"
-                wrapperClassName="w-full flex-1"
+                className="w-full sm:w-8"
+                wrapperClassName="w-full flex-1 sm:flex-initial"
             />
         </>
     );
