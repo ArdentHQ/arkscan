@@ -11,7 +11,7 @@ it('should broadcast on wallet vote channel', function () {
     WalletVote::dispatch();
 
     Event::assertDispatched(WalletVote::class, function ($event) {
-        return in_array('wallet-vote', $event->broadcastOn());
+        return in_array('wallet-vote', $event->broadcastOn(), true);
     });
 });
 
@@ -21,6 +21,6 @@ it('should broadcast on specific wallet vote channel', function () {
     WalletVote::dispatch('channel-id');
 
     Event::assertDispatched(WalletVote::class, function ($event) {
-        return in_array('wallet-vote.channel-id', $event->broadcastOn());
+        return in_array('wallet-vote.channel-id', $event->broadcastOn(), true);
     });
 });
