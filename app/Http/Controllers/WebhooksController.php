@@ -37,8 +37,7 @@ final class WebhooksController
         }
 
         if ($event === WebhookEvents::WalletVote->value) {
-            $this->handleWalletVote();
-            $this->handleWalletUnvote();
+            $this->handleWalletVotes();
 
             return;
         }
