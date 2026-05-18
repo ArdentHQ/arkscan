@@ -6,6 +6,7 @@ namespace App\Events;
 
 use App\Events\Concerns\ShouldBeUniqueEvent;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 
@@ -13,12 +14,13 @@ abstract class WebsocketEvent implements ShouldBroadcast
 {
     use Dispatchable;
     use ShouldBeUniqueEvent;
+    use Queueable;
 
     public const CHANNEL = 'channel';
 
     public function __construct(protected ?string $id = null)
     {
-        //
+        $this->onQueue('reverb');
     }
 
     final public function broadcastOn()
