@@ -422,7 +422,7 @@ describe('wallet', function () {
             ->post($secureUrl, $this->vote)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 2);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
             if ($event->event->queue !== 'reverb') {
@@ -528,7 +528,7 @@ describe('wallet', function () {
         $this->post($secureUrl, $this->vote)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 4);
+        Queue::assertPushed(BroadcastEvent::class, 2);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
             if ($event->event->queue !== 'reverb') {
