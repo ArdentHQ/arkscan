@@ -19,7 +19,7 @@ abstract class WebsocketEvent implements ShouldBroadcast
 
     public function __construct(string|null ...$ids)
     {
-        $this->ids = empty($ids) ? [null] : array_values($ids);
+        $this->ids = count($ids) === 0 ? [null] : array_values($ids);
         $this->onQueue('reverb');
     }
 
