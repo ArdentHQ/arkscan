@@ -10,29 +10,32 @@ trait ShouldBeUniqueEvent
 {
     public const UNIQUE_KEY = 'webhooks:event';
 
+    protected array $ids = [null];
+
+    protected ?array $broadcastChannels = null;
+
     final public function broadcastWhen(): bool
     {
-        $lock = Cache::lock(
-            $this->uniqueKey(),
-            $this->uniqueTimeout()
-        );
+        $channels = [];
 
-        if ($lock->get() === false) {
-            return false;
+        foreach ($this->ids as $id) {
+            $channelName = $this->channelName($id);
+            $lock        = Cache::lock($this->uniqueKeyForChannel($channelName), $this->uniqueTimeout());
+
+            if ($lock->get()) {
+                $channels[] = $channelName;
+            }
         }
 
-        return true;
+        $this->broadcastChannels = $channels;
+
+        return count($channels) > 0;
     }
 
     abstract protected function uniqueTimeout(): int;
 
-    // @phpstan-ignore-next-line
-    protected function uniqueKey(): string
+    protected function uniqueKeyForChannel(string $channelName): string
     {
-        return sprintf(
-            '%s:%s',
-            static::UNIQUE_KEY,
-            $this->channelName()
-        );
+        return sprintf('%s:%s', static::UNIQUE_KEY, $channelName);
     }
 }

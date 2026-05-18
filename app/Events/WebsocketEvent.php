@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Events;
 
 use App\Events\Concerns\ShouldBeUniqueEvent;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -18,28 +17,34 @@ abstract class WebsocketEvent implements ShouldBroadcast
 
     public const CHANNEL = 'channel';
 
-    public function __construct(protected ?string $id = null)
+    public function __construct(string|null ...$ids)
     {
+        $this->ids = empty($ids) ? [null] : array_values($ids);
         $this->onQueue('reverb');
     }
 
-    final public function broadcastOn()
+    /** @return array<string> */
+    final public function broadcastOn(): array
     {
-        return new Channel($this->channelName());
+        // broadcastWhen() populates this after acquiring per-channel locks.
+        // When it hasn't been called (e.g. Event::fake() in tests), fall back
+        // to all channels so assertions against the event object still work.
+        return $this->broadcastChannels
+            ?? array_map(fn ($id) => $this->channelName($id), $this->ids);
     }
 
     final public function getId(): ?string
     {
-        return $this->id;
+        return $this->ids[0] ?? null;
     }
 
-    final protected function channelName(): string
+    final protected function channelName(?string $id = null): string
     {
-        if ($this->id !== null) {
+        if ($id !== null) {
             return sprintf(
                 '%s.%s',
                 static::CHANNEL,
-                $this->id
+                $id
             );
         }
 
