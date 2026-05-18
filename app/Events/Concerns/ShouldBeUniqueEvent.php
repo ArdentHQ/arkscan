@@ -22,7 +22,10 @@ trait ShouldBeUniqueEvent
             $channelName = $this->channelName($id);
             $lock        = Cache::lock($this->uniqueKeyForChannel($channelName), $this->uniqueTimeout());
 
-            if ($lock->acquire()) {
+            /** @var bool $hasAcquiredLock */
+            $hasAcquiredLock = $lock->get();
+
+            if ($hasAcquiredLock) {
                 $channels[] = $channelName;
             }
         }
