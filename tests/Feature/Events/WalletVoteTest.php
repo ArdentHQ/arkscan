@@ -24,3 +24,17 @@ it('should broadcast on specific wallet vote channel', function () {
         return in_array('wallet-vote.channel-id', $event->broadcastOn(), true);
     });
 });
+
+it('should broadcast on multiple wallet vote channels', function () {
+    Event::fake();
+
+    WalletVote::dispatch('98765', '12345');
+
+    Event::assertDispatched(WalletVote::class, function ($event) {
+        if (! in_array('wallet-vote.98765', $event->broadcastOn(), true)) {
+            return false;
+        }
+
+        return in_array('wallet-vote.12345', $event->broadcastOn(), true);
+    });
+});
