@@ -72,11 +72,11 @@ describe('block', function () {
                 return false;
             }
 
-            if (! in_array('blocks', $event->event->broadcastOn())) {
+            if (! in_array('blocks', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('blocks.public-key', $event->event->broadcastOn());
+            return in_array('blocks.public-key', $event->event->broadcastOn(), true);
         });
     });
 
@@ -104,11 +104,11 @@ describe('block', function () {
         Queue::assertPushed(BroadcastEvent::class, 2);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if (! in_array('blocks', $event->event->broadcastOn())) {
+            if (! in_array('blocks', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('blocks.public-key', $event->event->broadcastOn());
+            return in_array('blocks.public-key', $event->event->broadcastOn(), true);
         });
     });
 
@@ -125,11 +125,11 @@ describe('block', function () {
         Queue::assertPushed(CacheBlocks::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if (! in_array('blocks', $event->event->broadcastOn())) {
+            if (! in_array('blocks', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('blocks.public-key', $event->event->broadcastOn());
+            return in_array('blocks.public-key', $event->event->broadcastOn(), true);
         });
 
         $block = Block::factory()->create([
@@ -187,15 +187,15 @@ describe('transaction', function () {
                 return false;
             }
 
-            if (! in_array('transactions', $event->event->broadcastOn())) {
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            if (! in_array('transactions.public-key', $event->event->broadcastOn())) {
+            if (! in_array('transactions.public-key', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('transactions.address', $event->event->broadcastOn());
+            return in_array('transactions.address', $event->event->broadcastOn(), true);
         });
     });
 
@@ -223,15 +223,15 @@ describe('transaction', function () {
         Queue::assertPushed(BroadcastEvent::class, 2);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if (! in_array('transactions', $event->event->broadcastOn())) {
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            if (! in_array('transactions.public-key', $event->event->broadcastOn())) {
+            if (! in_array('transactions.public-key', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('transactions.address', $event->event->broadcastOn());
+            return in_array('transactions.address', $event->event->broadcastOn(), true);
         });
     });
 
@@ -267,15 +267,15 @@ describe('transaction', function () {
                 return false;
             }
 
-            if (! in_array('transactions', $event->event->broadcastOn())) {
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            if (! in_array('transactions.public-key', $event->event->broadcastOn())) {
+            if (! in_array('transactions.public-key', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('transactions.address', $event->event->broadcastOn());
+            return in_array('transactions.address', $event->event->broadcastOn(), true);
         });
 
         $this->travelTo('2024-04-20 00:15:44');
@@ -303,15 +303,15 @@ describe('transaction', function () {
                 return false;
             }
 
-            if (! in_array('transactions', $event->event->broadcastOn())) {
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            if (! in_array('transactions.'.$transaction->recipient_id, $event->event->broadcastOn())) {
+            if (! in_array('transactions.'.$transaction->recipient_id, $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('transactions.'.$transaction->sender_public_key, $event->event->broadcastOn());
+            return in_array('transactions.'.$transaction->sender_public_key, $event->event->broadcastOn(), true);
         });
     });
 
@@ -345,15 +345,15 @@ describe('transaction', function () {
                 return false;
             }
 
-            if (! in_array('transactions', $event->event->broadcastOn())) {
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            if (! in_array('transactions.public-key', $event->event->broadcastOn())) {
+            if (! in_array('transactions.public-key', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('transactions.address', $event->event->broadcastOn());
+            return in_array('transactions.address', $event->event->broadcastOn(), true);
         });
 
         $this->travelTo('2024-04-20 00:15:44');
@@ -383,15 +383,15 @@ describe('transaction', function () {
                 return false;
             }
 
-            if (! in_array('transactions', $event->event->broadcastOn())) {
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            if (! in_array('transactions.'.$transaction->recipient_id, $event->event->broadcastOn())) {
+            if (! in_array('transactions.'.$transaction->recipient_id, $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('transactions.'.$transaction->sender_public_key, $event->event->broadcastOn());
+            return in_array('transactions.'.$transaction->sender_public_key, $event->event->broadcastOn(), true);
         });
     });
 });
@@ -429,11 +429,11 @@ describe('wallet', function () {
                 return false;
             }
 
-            if (! in_array('wallet-vote.98765', $event->event->broadcastOn())) {
+            if (! in_array('wallet-vote.98765', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('wallet-vote.12345', $event->event->broadcastOn());
+            return in_array('wallet-vote.12345', $event->event->broadcastOn(), true);
         });
     });
 
@@ -466,7 +466,7 @@ describe('wallet', function () {
                 return false;
             }
 
-            return in_array('wallet-vote.12345', $event->event->broadcastOn());
+            return in_array('wallet-vote.12345', $event->event->broadcastOn(), true);
         });
     });
 
@@ -499,7 +499,7 @@ describe('wallet', function () {
                 return false;
             }
 
-            return in_array('wallet-vote.98765', $event->event->broadcastOn());
+            return in_array('wallet-vote.98765', $event->event->broadcastOn(), true);
         });
     });
 
@@ -535,11 +535,11 @@ describe('wallet', function () {
                 return false;
             }
 
-            if (! in_array('wallet-vote.98765', $event->event->broadcastOn())) {
+            if (! in_array('wallet-vote.98765', $event->event->broadcastOn(), true)) {
                 return false;
             }
 
-            return in_array('wallet-vote.12345', $event->event->broadcastOn());
+            return in_array('wallet-vote.12345', $event->event->broadcastOn(), true);
         });
     });
 });

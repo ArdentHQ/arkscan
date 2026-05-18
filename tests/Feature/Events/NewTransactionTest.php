@@ -11,7 +11,7 @@ it('should broadcast on transactions channel', function () {
     NewTransaction::dispatch();
 
     Event::assertDispatched(NewTransaction::class, function ($event) {
-        return in_array('transactions', $event->broadcastOn());
+        return in_array('transactions', $event->broadcastOn(), true);
     });
 });
 
@@ -21,6 +21,6 @@ it('should broadcast on specific transactions channel', function () {
     NewTransaction::dispatch('channel-id');
 
     Event::assertDispatched(NewTransaction::class, function ($event) {
-        return in_array('transactions.channel-id', $event->broadcastOn());
+        return in_array('transactions.channel-id', $event->broadcastOn(), true);
     });
 });
