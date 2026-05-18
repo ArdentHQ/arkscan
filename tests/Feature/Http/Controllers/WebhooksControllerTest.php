@@ -65,22 +65,18 @@ describe('block', function () {
             ->post($secureUrl, $this->block)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 2);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
             if ($event->event->queue !== 'reverb') {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'blocks';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('blocks', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'blocks.public-key';
+            return in_array('blocks.public-key', $event->event->broadcastOn());
         });
     });
 
@@ -105,18 +101,14 @@ describe('block', function () {
         $this->post($secureUrl, $this->block)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 4);
+        Queue::assertPushed(BroadcastEvent::class, 2);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('blocks', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'blocks';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'blocks.public-key';
+            return in_array('blocks.public-key', $event->event->broadcastOn());
         });
     });
 
@@ -129,15 +121,15 @@ describe('block', function () {
             ->post($secureUrl, $this->block)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 2);
+        Queue::assertPushed(BroadcastEvent::class, 1);
         Queue::assertPushed(CacheBlocks::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'blocks';
-        });
+            if (! in_array('blocks', $event->event->broadcastOn())) {
+                return false;
+            }
 
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'blocks.public-key';
+            return in_array('blocks.public-key', $event->event->broadcastOn());
         });
 
         $block = Block::factory()->create([
@@ -188,30 +180,22 @@ describe('transaction', function () {
             ->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 3);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
             if ($event->event->queue !== 'reverb') {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.public-key';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions.public-key', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.address';
+            return in_array('transactions.address', $event->event->broadcastOn());
         });
     });
 
@@ -236,30 +220,18 @@ describe('transaction', function () {
         $this->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 6);
+        Queue::assertPushed(BroadcastEvent::class, 2);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions.public-key', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.public-key';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
-                return false;
-            }
-
-            return $event->event->broadcastOn()->name === 'transactions.address';
+            return in_array('transactions.address', $event->event->broadcastOn());
         });
     });
 
@@ -288,30 +260,22 @@ describe('transaction', function () {
             ->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 3);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
             if ($event->event->queue !== 'reverb') {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.public-key';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions.public-key', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.address';
+            return in_array('transactions.address', $event->event->broadcastOn());
         });
 
         $this->travelTo('2024-04-20 00:15:44');
@@ -332,30 +296,22 @@ describe('transaction', function () {
             ])
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 3);
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
-                return false;
-            }
-
-            return $event->event->broadcastOn()->name === 'transactions';
-        });
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) use ($transaction) {
             if ($event->event->queue !== 'reverb') {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.'.$transaction->recipient_id;
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) use ($transaction) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.'.$transaction->sender_public_key;
+            if (! in_array('transactions.'.$transaction->recipient_id, $event->event->broadcastOn())) {
+                return false;
+            }
+
+            return in_array('transactions.'.$transaction->sender_public_key, $event->event->broadcastOn());
         });
     });
 
@@ -382,30 +338,22 @@ describe('transaction', function () {
             ->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 3);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
             if ($event->event->queue !== 'reverb') {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.public-key';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions.public-key', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.address';
+            return in_array('transactions.address', $event->event->broadcastOn());
         });
 
         $this->travelTo('2024-04-20 00:15:44');
@@ -428,30 +376,22 @@ describe('transaction', function () {
             ])
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 3);
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
-                return false;
-            }
-
-            return $event->event->broadcastOn()->name === 'transactions';
-        });
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) use ($transaction) {
             if ($event->event->queue !== 'reverb') {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.'.$transaction->recipient_id;
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) use ($transaction) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('transactions', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'transactions.'.$transaction->sender_public_key;
+            if (! in_array('transactions.'.$transaction->recipient_id, $event->event->broadcastOn())) {
+                return false;
+            }
+
+            return in_array('transactions.'.$transaction->sender_public_key, $event->event->broadcastOn());
         });
     });
 });
@@ -489,15 +429,11 @@ describe('wallet', function () {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'wallet-vote.98765';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('wallet-vote.98765', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'wallet-vote.12345';
+            return in_array('wallet-vote.12345', $event->event->broadcastOn());
         });
     });
 
@@ -530,7 +466,7 @@ describe('wallet', function () {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'wallet-vote.12345';
+            return in_array('wallet-vote.12345', $event->event->broadcastOn());
         });
     });
 
@@ -563,7 +499,7 @@ describe('wallet', function () {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'wallet-vote.98765';
+            return in_array('wallet-vote.98765', $event->event->broadcastOn());
         });
     });
 
@@ -599,15 +535,11 @@ describe('wallet', function () {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'wallet-vote.98765';
-        });
-
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            if ($event->event->queue !== 'reverb') {
+            if (! in_array('wallet-vote.98765', $event->event->broadcastOn())) {
                 return false;
             }
 
-            return $event->event->broadcastOn()->name === 'wallet-vote.12345';
+            return in_array('wallet-vote.12345', $event->event->broadcastOn());
         });
     });
 });
