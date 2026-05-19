@@ -437,6 +437,29 @@ describe('wallet', function () {
         });
     });
 
+    it('should not dispatch any event if votes are empty', function () {
+        Queue::fake();
+
+        $this->vote = [
+            'event' => 'wallet.vote',
+            'data'  => [
+                'transaction' => [
+                    'asset' => [
+                        'votes' => [],
+                    ],
+                ],
+            ],
+        ];
+
+        $secureUrl = URL::signedRoute('webhooks');
+
+        $this
+            ->post($secureUrl, $this->vote)
+            ->assertOk();
+
+        Queue::assertPushed(BroadcastEvent::class, 0);
+    });
+
     it('should handle only a vote', function () {
         Queue::fake();
 
