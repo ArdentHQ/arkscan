@@ -10,6 +10,14 @@ use App\Services\Timestamp;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Event;
 
+it('should not dispatch transaction details event if no transactions exist', function () {
+    Event::fake();
+
+    (new CheckLargestTransaction())->handle();
+
+    Event::assertDispatchedTimes(TransactionDetails::class, 0);
+});
+
 it('should not dispatch transaction details event if no change', function () {
     Event::fake();
 
