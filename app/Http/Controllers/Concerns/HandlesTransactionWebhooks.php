@@ -12,18 +12,13 @@ trait HandlesTransactionWebhooks
 {
     private function handleTransactionApplied(): void
     {
-        NewTransaction::dispatch();
+        NewTransaction::dispatch(
+            null,
+            request()->input('data.senderPublicKey'),
+            request()->input('data.to'),
+        );
+
         CheckLatestWallet::dispatch();
         CheckLargestTransaction::dispatch();
-    }
-
-    private function handleSenderTransactionApplied(): void
-    {
-        NewTransaction::dispatch(request()->input('data.senderPublicKey'));
-    }
-
-    private function handleRecipientTransactionApplied(): void
-    {
-        NewTransaction::dispatch(request()->input('data.to'));
     }
 }
