@@ -9,40 +9,15 @@ use Illuminate\Support\Collection;
 
 trait HandlesWalletWebhooks
 {
-    private function handleWalletVote(): void
+    private function handleWalletVotes(): void
     {
-        $publicKey = $this->getVote();
-        if ($publicKey === null) {
+        $publicKeys = (new Collection(request()->input('data.transaction.asset.votes')))
+            ->map(fn ($vote) => trim($vote, '+-'));
+
+        if (count($publicKeys) === 0) {
             return;
         }
 
-        WalletVote::dispatch($publicKey);
-    }
-
-    /** We use the same vote key/event so we can prevent repeat events for the same public key */
-    private function handleWalletUnvote(): void
-    {
-        $publicKey = $this->getUnvote();
-        if ($publicKey === null) {
-            return;
-        }
-
-        WalletVote::dispatch($publicKey);
-    }
-
-    private function getVote(): ?string
-    {
-        return (new Collection(request()->input('data.transaction.asset.votes')))
-            ->filter(fn ($vote) => str_starts_with($vote, '+'))
-            ->map(fn ($vote) => trim($vote, '+'))
-            ->first();
-    }
-
-    private function getUnvote(): ?string
-    {
-        return (new Collection(request()->input('data.transaction.asset.votes')))
-            ->filter(fn ($vote) => str_starts_with($vote, '-'))
-            ->map(fn ($vote) => trim($vote, '-'))
-            ->first();
+        WalletVote::dispatch(...$publicKeys);
     }
 }
