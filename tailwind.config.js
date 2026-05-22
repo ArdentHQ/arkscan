@@ -22,25 +22,27 @@ module.exports = {
 
             // Remove line-height from font sizes
             fontSize: {
-                xs: '0.75rem',
-                sm: '0.875rem',
-                base: '1rem',
-                lg: '1.125rem',
-                xl: '1.25rem',
-                '2xl': '1.5rem',
-                '3xl': '1.875rem',
-                '4xl': '2.25rem',
-                '5xl': '3rem',
-                '6xl': '3.75rem',
-                '7xl': '4.5rem',
-                '8xl': '6rem',
-                '9xl': '8rem',
+                xs: "0.75rem",
+                sm: "0.875rem",
+                base: "1rem",
+                lg: "1.125rem",
+                xl: "1.25rem",
+                "2xl": "1.5rem",
+                "3xl": "1.875rem",
+                "4xl": "2.25rem",
+                "5xl": "3rem",
+                "6xl": "3.75rem",
+                "7xl": "4.5rem",
+                "8xl": "6rem",
+                "9xl": "8rem",
             },
 
             screens: {
                 ...defaultConfig.theme.extend.screens,
 
-                "xs": "370px",
+                xs: "370px",
+
+                "md-lg": "60rem",
             },
 
             colors: {
@@ -97,15 +99,14 @@ module.exports = {
 
             backgroundColor: {
                 ...defaultConfig.theme.extend.backgroundColor,
-                "overlay": "rgba(33, 34, 37, 0.75)", // #212225 (--theme-color-secondary-900), 0.75 opacity
+                overlay: "rgba(33, 34, 37, 0.75)", // #212225 (--theme-color-secondary-900), 0.75 opacity
                 "overlay-dark": "rgba(61, 68, 77, 0.5)", // #3d444d (--theme-color-secondary-800), 0.5 opacity
                 "overlay-dim": "rgba(16, 22, 39, 0.5)", // #101627 (--theme-dark-950 ), 0.5 opacity
             },
 
             animation: {
                 "move-bg": "move-bg 15s infinite linear",
-                "move-bg-start-right":
-                    "move-bg-start-right 15s infinite linear",
+                "move-bg-start-right": "move-bg-start-right 15s infinite linear",
                 "opacity-in": "opacity-in 100ms ease-out",
                 "opacity-out": "opacity-out 75ms ease-in",
             },
@@ -157,10 +158,10 @@ module.exports = {
 
             boxShadow: {
                 ...defaultConfig.theme.extend.boxShadow,
-                "search-subtle":
-                    "0 10px 15px -3px rgba(0,0,0,.03), 0 4px 6px -2px rgba(0,0,0,.03)",
-                "px": "0 0 1px 1px var(--tw-shadow-color) inset",
-                "code-block": "0px 2px 3px 0px #18181B30, 0px 6px 6px 0px #18181B29, 0px 14px 8px 0px #18181B1A, 0px 25px 10px 0px #18181B08, 0px 39px 11px 0px #18181B00",
+                "search-subtle": "0 10px 15px -3px rgba(0,0,0,.03), 0 4px 6px -2px rgba(0,0,0,.03)",
+                px: "0 0 1px 1px var(--tw-shadow-color) inset",
+                "code-block":
+                    "0px 2px 3px 0px #18181B30, 0px 6px 6px 0px #18181B29, 0px 14px 8px 0px #18181B1A, 0px 25px 10px 0px #18181B08, 0px 39px 11px 0px #18181B00",
             },
 
             zIndex: {
@@ -171,13 +172,13 @@ module.exports = {
             lineHeight: {
                 ...defaultConfig.theme.extend.lineHeight,
 
-                3.75: '0.9375rem', // 15px
-                4.25: '1.0625rem', // 17px
-                5.25: '1.3125rem', // 21px
+                3.75: "0.9375rem", // 15px
+                4.25: "1.0625rem", // 17px
+                5.25: "1.3125rem", // 21px
             },
 
             flex: {
-                2: '2 2 0%',
+                2: "2 2 0%",
             },
         },
     },
@@ -191,9 +192,5 @@ module.exports = {
         }),
     ],
 
-    content: [
-        ...defaultConfig.content,
-
-        "./resources/inertia/**/*.tsx",
-    ],
+    content: [...defaultConfig.content, "./resources/inertia/**/*.tsx"],
 };
