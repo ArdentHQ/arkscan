@@ -11,14 +11,9 @@ trait HandlesBlockWebhooks
 {
     private function handleBlockApplied(): void
     {
-        NewBlock::dispatch();
+        NewBlock::dispatch(null, request()->input('data.proposer'));
 
         // We'll run the job instead of duplicating the logic as this is the only purpose for the job.
         CacheBlocks::dispatch();
-    }
-
-    private function handleGeneratorBlockApplied(): void
-    {
-        NewBlock::dispatch(request()->input('data.proposer'));
     }
 }

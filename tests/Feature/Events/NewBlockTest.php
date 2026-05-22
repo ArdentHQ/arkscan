@@ -11,7 +11,7 @@ it('should broadcast on blocks channel', function () {
     NewBlock::dispatch();
 
     Event::assertDispatched(NewBlock::class, function ($event) {
-        return $event->broadcastOn()->name === 'blocks';
+        return in_array('blocks', $event->broadcastOn(), true);
     });
 });
 
@@ -21,6 +21,6 @@ it('should broadcast on specific blocks channel', function () {
     NewBlock::dispatch('channel-id');
 
     Event::assertDispatched(NewBlock::class, function ($event) {
-        return $event->broadcastOn()->name === 'blocks.channel-id';
+        return in_array('blocks.channel-id', $event->broadcastOn(), true);
     });
 });

@@ -24,15 +24,12 @@ final class WebhooksController
 
         if ($event === WebhookEvents::BlockApplied->value) {
             $this->handleBlockApplied();
-            $this->handleGeneratorBlockApplied();
 
             return;
         }
 
         if ($event === WebhookEvents::TransactionApplied->value) {
             $this->handleTransactionApplied();
-            $this->handleSenderTransactionApplied();
-            $this->handleRecipientTransactionApplied();
 
             return;
         }

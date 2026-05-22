@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Events\NewBlock;
-use App\Events\NewTransaction;
-use App\Events\Statistics\TransactionDetails;
-use App\Events\Statistics\UniqueAddresses;
 use App\Jobs\CacheBlocks;
 use App\Models\Block;
 use App\Models\Transaction;
@@ -17,12 +13,11 @@ use ARKEcosystem\Foundation\UserInterface\Support\DateFormat;
 use Carbon\Carbon;
 use Illuminate\Broadcasting\BroadcastEvent;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
 
 it('should not dispatch any event if insecure url', function () {
-    Event::fake();
+    Queue::fake();
 
     $event = [
         'event' => 'block.applied',
@@ -35,12 +30,11 @@ it('should not dispatch any event if insecure url', function () {
         ->post(route('webhooks'), $event)
         ->assertUnauthorized();
 
-    Event::assertDispatchedTimes(NewBlock::class, 0);
-    Event::assertDispatchedTimes(NewTransaction::class, 0);
+    Queue::assertPushed(BroadcastEvent::class, 0);
 });
 
 it('should not dispatch a random event on webhook', function () {
-    Event::fake();
+    Queue::fake();
 
     $secureUrl = URL::signedRoute('webhooks');
 
@@ -48,7 +42,7 @@ it('should not dispatch a random event on webhook', function () {
         ->post($secureUrl, ['event' => 'random.event'])
         ->assertOk();
 
-    Event::assertDispatchedTimes(NewBlock::class, 0);
+    Queue::assertPushed(BroadcastEvent::class, 0);
 });
 
 describe('block', function () {
@@ -62,7 +56,7 @@ describe('block', function () {
     });
 
     it('should dispatch an event on webhook', function () {
-        Event::fake();
+        Queue::fake();
 
         $secureUrl = URL::signedRoute('webhooks');
 
@@ -70,14 +64,18 @@ describe('block', function () {
             ->post($secureUrl, $this->block)
             ->assertOk();
 
-        Event::assertDispatchedTimes(NewBlock::class, 2);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
-        Event::assertDispatched(NewBlock::class, function ($event) {
-            return $event->broadcastOn()->name === 'blocks';
-        });
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            if ($event->event->queue !== 'reverb') {
+                return false;
+            }
 
-        Event::assertDispatched(NewBlock::class, function ($event) {
-            return $event->broadcastOn()->name === 'blocks.public-key';
+            if (! in_array('blocks', $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            return in_array('blocks.public-key', $event->event->broadcastOn(), true);
         });
     });
 
@@ -102,19 +100,18 @@ describe('block', function () {
         $this->post($secureUrl, $this->block)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 4);
+        Queue::assertPushed(BroadcastEvent::class, 2);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'blocks';
-        });
+            if (! in_array('blocks', $event->event->broadcastOn(), true)) {
+                return false;
+            }
 
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'blocks.public-key';
+            return in_array('blocks.public-key', $event->event->broadcastOn(), true);
         });
     });
 
     it('should dispatch statistics event if there is a change to block statistics', function () {
-        Event::fake();
         Queue::fake();
 
         $secureUrl = URL::signedRoute('webhooks');
@@ -123,15 +120,15 @@ describe('block', function () {
             ->post($secureUrl, $this->block)
             ->assertOk();
 
-        Event::assertDispatchedTimes(NewBlock::class, 2);
+        Queue::assertPushed(BroadcastEvent::class, 1);
         Queue::assertPushed(CacheBlocks::class, 1);
 
-        Event::assertDispatched(NewBlock::class, function ($event) {
-            return $event->broadcastOn()->name === 'blocks';
-        });
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            if (! in_array('blocks', $event->event->broadcastOn(), true)) {
+                return false;
+            }
 
-        Event::assertDispatched(NewBlock::class, function ($event) {
-            return $event->broadcastOn()->name === 'blocks.public-key';
+            return in_array('blocks.public-key', $event->event->broadcastOn(), true);
         });
 
         $block = Block::factory()->create();
@@ -142,13 +139,21 @@ describe('block', function () {
             'gas_price'        => 5,
         ]);
 
+        Queue::fake();
+
         $secureUrl = URL::signedRoute('webhooks');
 
         $this
-            ->post($secureUrl, $this->block)
+            ->post($secureUrl, [
+                'event' => 'block.applied',
+                'data'  => [
+                    'proposer' => $block->proposer,
+                ],
+            ])
             ->assertOk();
 
-        Queue::assertPushed(CacheBlocks::class, 2);
+        Queue::assertPushed(BroadcastEvent::class, 1);
+        Queue::assertPushed(CacheBlocks::class, 1);
     });
 });
 
@@ -164,7 +169,7 @@ describe('transaction', function () {
     });
 
     it('should dispatch an event on webhook', function () {
-        Event::fake();
+        Queue::fake();
 
         $secureUrl = URL::signedRoute('webhooks');
 
@@ -172,18 +177,22 @@ describe('transaction', function () {
             ->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Event::assertDispatchedTimes(NewTransaction::class, 3);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions';
-        });
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            if ($event->event->queue !== 'reverb') {
+                return false;
+            }
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions.public-key';
-        });
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
+                return false;
+            }
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions.address';
+            if (! in_array('transactions.public-key', $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            return in_array('transactions.address', $event->event->broadcastOn(), true);
         });
     });
 
@@ -208,23 +217,23 @@ describe('transaction', function () {
         $this->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Queue::assertPushed(BroadcastEvent::class, 6);
+        Queue::assertPushed(BroadcastEvent::class, 2);
 
         Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'transactions';
-        });
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
+                return false;
+            }
 
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'transactions.public-key';
-        });
+            if (! in_array('transactions.public-key', $event->event->broadcastOn(), true)) {
+                return false;
+            }
 
-        Queue::assertPushed(BroadcastEvent::class, function ($event) {
-            return $event->event->broadcastOn()->name === 'transactions.address';
+            return in_array('transactions.address', $event->event->broadcastOn(), true);
         });
     });
 
     it('should dispatch statistics event if there is a new wallet', function () {
-        Event::fake();
+        Queue::fake();
 
         $this->travelTo('2024-04-19 00:15:44');
 
@@ -253,20 +262,27 @@ describe('transaction', function () {
             ->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Event::assertDispatchedTimes(NewTransaction::class, 3);
-        Event::assertDispatchedTimes(UniqueAddresses::class, 0);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            if ($event->event->queue !== 'reverb') {
+                return false;
+            }
+
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            if (! in_array('transactions.public-key', $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            return in_array('transactions.address', $event->event->broadcastOn(), true);
         });
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions.public-key';
-        });
+        $this->travelTo('2024-04-20 00:15:44');
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions.address';
-        });
+        Queue::fake();
 
         $walletB     = Wallet::factory()->create();
         $timestamp   = Carbon::parse('2024-04-19 01:16:55')->getTimestampMs();
@@ -278,14 +294,36 @@ describe('transaction', function () {
         $walletB->fill(['updated_at' => $timestamp])->save();
 
         $this
-            ->post($secureUrl, $this->transaction)
+            ->post($secureUrl, [
+                'event' => 'transaction.applied',
+                'data'  => [
+                    'to'              => $transaction->to,
+                    'senderPublicKey' => $transaction->sender_public_key,
+                ],
+            ])
             ->assertOk();
 
-        Event::assertDispatchedTimes(UniqueAddresses::class, 1);
+        Queue::assertPushed(BroadcastEvent::class, 1);
+
+        Queue::assertPushed(BroadcastEvent::class, function ($event) use ($transaction) {
+            if ($event->event->queue !== 'reverb') {
+                return false;
+            }
+
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            if (! in_array('transactions.'.$transaction->to, $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            return in_array('transactions.'.$transaction->sender_public_key, $event->event->broadcastOn(), true);
+        });
     });
 
     it('should dispatch statistics event if there is a new largest transaction', function () {
-        Event::fake();
+        Queue::fake();
 
         $cache = new TransactionCache();
 
@@ -307,20 +345,27 @@ describe('transaction', function () {
             ->post($secureUrl, $this->transaction)
             ->assertOk();
 
-        Event::assertDispatchedTimes(NewTransaction::class, 3);
-        Event::assertDispatchedTimes(TransactionDetails::class, 0);
+        Queue::assertPushed(BroadcastEvent::class, 1);
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions';
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            if ($event->event->queue !== 'reverb') {
+                return false;
+            }
+
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            if (! in_array('transactions.public-key', $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            return in_array('transactions.address', $event->event->broadcastOn(), true);
         });
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions.public-key';
-        });
+        $this->travelTo('2024-04-20 00:15:44');
 
-        Event::assertDispatched(NewTransaction::class, function ($event) {
-            return $event->broadcastOn()->name === 'transactions.address';
-        });
+        Queue::fake();
 
         $transaction = Transaction::factory()->transfer()->create([
             'value'     => 20 * 1e8,
@@ -329,9 +374,31 @@ describe('transaction', function () {
         ]);
 
         $this
-            ->post($secureUrl, $this->transaction)
+            ->post($secureUrl, [
+                'event' => 'transaction.applied',
+                'data'  => [
+                    'to'              => $transaction->to,
+                    'senderPublicKey' => $transaction->sender_public_key,
+                ],
+            ])
             ->assertOk();
 
-        Event::assertDispatchedTimes(TransactionDetails::class, 1);
+        Queue::assertPushed(BroadcastEvent::class, 1);
+
+        Queue::assertPushed(BroadcastEvent::class, function ($event) use ($transaction) {
+            if ($event->event->queue !== 'reverb') {
+                return false;
+            }
+
+            if (! in_array('transactions', $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            if (! in_array('transactions.'.$transaction->to, $event->event->broadcastOn(), true)) {
+                return false;
+            }
+
+            return in_array('transactions.'.$transaction->sender_public_key, $event->event->broadcastOn(), true);
+        });
     });
 });
