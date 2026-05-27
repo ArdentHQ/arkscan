@@ -5,7 +5,7 @@ export default function ExternalLink({
     className = "link font-semibold inline break-words",
     innerClass = "",
     noIcon = false,
-    iconClass = "inline relative flex-shrink-0 ml-0.5 text-theme-secondary-500 w-3 h-3",
+    iconClass = "inline relative flex-shrink-0 ml-0.5 text-theme-secondary-500 dark:text-theme-dark-500 w-3 h-3",
     children,
 }: {
     url: string;
