@@ -25,18 +25,14 @@ TxtVoteReport.txt
 /resources/lang/**/php_*.json
 
 # Ignore AI assistant data
-/.claude
 /.agents
 /.codex
 /.cursor
 /.gemini
 /.junie
 /.github/skills
+.claude/settings.local.json
 
-.mcp.json
-boost.json
 opencode.json
 
-AGENTS.md
-CLAUDE.md
 GEMINI.md
