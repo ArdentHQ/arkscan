@@ -1,4 +1,4 @@
-<!-- airc v0.1.0 — managed file, do not edit -->
+<!-- airc v0.1.1 — managed file, do not edit -->
 
 # JavaScript / TypeScript
 
@@ -15,6 +15,7 @@ Code-writing rules for JS/TS files. Apply when writing or editing JS/TS code.
 ## Syntax
 
 - Named exports over default exports (except where a framework requires default, e.g. a Next.js page).
+- Use curly braces for every control structure, even single-line bodies.
 
 ## Comments
 
