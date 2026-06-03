@@ -15,15 +15,15 @@
 
 ## Conventions
 
-- Formatting/display logic lives in the **frontend (React/TS)**, not the backend.
+- Formatting/display logic lives in the **frontend (React/TS)**.
 - Reuse the domain layers before adding logic to a controller or model: `app/ViewModels/`, `app/Repositories/` (with `*WithCache` variants), `app/Aggregates/` and `app/Services/*/Aggregates/`.
 
 ## Tooling
 
-- PHP: `composer format` (**php-cs-fixer**, not Pint), `composer analyse` (PHPStan), `composer refactor` (Rector), `composer test` / `test:fast` (Pest), `composer test:browser` (Dusk).
+- PHP: `composer format` (**php-cs-fixer**), `composer analyse` (PHPStan), `composer refactor` (Rector), `composer test` / `test:fast` (Pest), `composer test:browser` (Dusk).
 - `composer test:coverage` enforces **100% coverage** — every new line needs a test.
-- Frontend: **pnpm**, `pnpm dev` / `pnpm build` (Vite). Tests are **Jest** (`jest.config.cjs`), not Vitest.
-- Pre-push: `composer format` → `composer analyse` → `composer test` (no separate linter step). Run `composer types` too if you touched a DTO.
+- Frontend: **pnpm**, `pnpm dev` / `pnpm build` (Vite). Tests are **Jest** (`jest.config.cjs`).
+- Pre-push: `composer format` → `composer analyse` → `composer test`. Run `composer types` too if you touched a DTO.
 
 <laravel-boost-guidelines>
 === foundation rules ===
