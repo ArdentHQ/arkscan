@@ -420,7 +420,7 @@ it('should stub wallet reference for contract deployment with unknown recipient'
             'status'       => true,
         ]);
 
-    $token        = Token::factory()->create();
+    $token          = Token::factory()->create();
     $unknownAddress = '0x'.str_repeat('ef', 20);
 
     TokenAction::factory()->create([
