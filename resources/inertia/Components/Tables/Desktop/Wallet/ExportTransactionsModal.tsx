@@ -74,7 +74,7 @@ export default function ExportTransactionsModal({
 
     useEffect(() => {
         if (isOpen && !hasTrackedOpen.current) {
-            window.sa_event("wallet_modal_export_transactions_opened");
+            window.sa_event?.("wallet_modal_export_transactions_opened");
 
             hasTrackedOpen.current = true;
         }
