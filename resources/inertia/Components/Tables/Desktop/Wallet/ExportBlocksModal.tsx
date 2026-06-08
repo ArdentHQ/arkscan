@@ -70,7 +70,7 @@ export default function ExportBlocksModal({
 
     useEffect(() => {
         if (isOpen && !hasTrackedOpen.current) {
-            window.sa_event("wallet_modal_export_blocks_opened");
+            window.sa_event?.("wallet_modal_export_blocks_opened");
 
             hasTrackedOpen.current = true;
         }

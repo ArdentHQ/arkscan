@@ -41,7 +41,7 @@ declare global {
             remove: (channel: string, event: string, emit: string) => void;
         };
 
-        sa_event: (event: string, callback?: () => void) => void;
+        sa_event?: (event: string, callback?: () => void) => void;
 
         chartTooltip?: (context: any) => void;
     }
