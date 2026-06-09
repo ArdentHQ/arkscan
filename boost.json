@@ -1,0 +1,16 @@
+{
+    "guidelines": true,
+    "mcp": true,
+    "nightwatch_mcp": false,
+    "sail": false,
+    "skills": [
+        "fortify-development",
+        "laravel-best-practices",
+        "configuring-horizon",
+        "scout-development",
+        "pest-testing",
+        "inertia-react-development",
+        "echo-development",
+        "tailwindcss-development"
+    ]
+}
