@@ -25,7 +25,6 @@ export default function TransactionMoreDetails({
 
     const gasLimit = UnitConverter.formatUnits(transaction.gas, "wei");
     const gasUsed = UnitConverter.formatUnits(transaction.gas_used, "wei");
-    const payload = details.payload;
 
     return (
         <>
@@ -55,11 +54,11 @@ export default function TransactionMoreDetails({
                     </TableCell>
                 </MobileTableRow>
 
-                {payload && (
+                {transaction.payload && (
                     <div className="w-full space-y-3">
                         {isMobilePayloadExpanded && (
                             <div className="w-full">
-                                <TransactionCodeBlock payload={payload} />
+                                <TransactionCodeBlock payload={transaction.payload} />
                             </div>
                         )}
 
@@ -120,7 +119,7 @@ export default function TransactionMoreDetails({
                     />
                 </PageSection>
 
-                {payload && (
+                {transaction.payload && (
                     <div>
                         {isDesktopPayloadExpanded && (
                             <PageSection
@@ -128,7 +127,7 @@ export default function TransactionMoreDetails({
                                 wrapperContainerClass="w-full"
                                 wrapperClass="flex flex-1 flex-col space-y-3 whitespace-nowrap max-w-full"
                             >
-                                <TransactionCodeBlock payload={payload} />
+                                <TransactionCodeBlock payload={transaction.payload} />
                             </PageSection>
                         )}
 

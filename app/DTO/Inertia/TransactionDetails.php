@@ -39,11 +39,19 @@ class TransactionDetails extends Data
 
     public static function fromModel(Model $transaction): self
     {
-        $viewModel         = new TransactionViewModel($transaction);
-        $username          = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
-        $recipient         = $viewModel->recipient();
-        $token             = (new WalletCache())->getToken($recipient->address());
-        $tokenActionRecord = null;
+        $viewModel = new TransactionViewModel($transaction);
+        $username  = $viewModel->isUsernameRegistration() ? $viewModel->username() : null;
+        $recipient = $viewModel->recipient();
+        $token     = (new WalletCache())->getToken($recipient->address());
+
+        $tokenActionRecord  = null;
+        $tokenActionRecords = null;
+        if ($viewModel->isTokenTransfer() || $viewModel->isApprove() || $viewModel->isContractDeployment()) {
+            $tokenActionRecord = TokenAction::with('token')
+                ->where('transaction_hash', $transaction->hash)
+                ->first();
+        }
+
         if ($token !== null) {
             $token = Token::fromModel($token);
         } elseif ($viewModel->isBatchTransfer()) {
@@ -56,17 +64,13 @@ class TransactionDetails extends Data
                 $token = Token::fromModel($firstRecord->token);
             }
         } elseif ($viewModel->isTokenTransfer() || $viewModel->isApprove() || $viewModel->isContractDeployment()) {
-            $tokenActionRecord = TokenAction::with('token')
-                ->where('transaction_hash', $transaction->hash)
-                ->first();
-
             if ($tokenActionRecord?->token !== null) {
                 $token = Token::fromModel($tokenActionRecord->token);
             }
         }
 
         $batchTokenTransfers = [];
-        if ($viewModel->isBatchTransfer() && isset($tokenActionRecords)) {
+        if ($viewModel->isBatchTransfer() && $tokenActionRecords !== null) {
             $addresses = $tokenActionRecords->pluck('to')->unique()->values()->all();
 
             $wallets = Wallet::whereIn('address', $addresses)
@@ -121,7 +125,10 @@ class TransactionDetails extends Data
 
             $recipientAddress = (new ArgumentDecoder($arguments[TokenTransferArgument::RECIPIENT]))->decodeAddress();
         } else {
-            /** @var TokenAction $tokenActionRecord */
+            if ($tokenActionRecord === null) {
+                return null;
+            }
+
             $amount           = (string) $tokenActionRecord->value;
             $recipientAddress = $tokenActionRecord->to;
         }

@@ -19,7 +19,7 @@ export default function TransactionStatus({
     const confirmationsKey =
         details.confirmations === 1 ? "general.confirmation_singular" : "general.confirmation_plural";
 
-    const wrapperContainerClass = classNames("mx-2 rounded-lg border py-2 sm:mx-0", {
+    const wrapperContainerClass = classNames("mx-2 rounded-lg border py-2 sm:mx-0 px-4", {
         "bg-theme-success-100 dark:bg-theme-success-900": !transaction.hasFailed,
         "bg-theme-danger-50 dark:bg-transparent": transaction.hasFailed,
     });
@@ -37,17 +37,15 @@ export default function TransactionStatus({
             title={t("pages.transaction.status.header")}
             borderClass={borderClass}
             wrapperContainerClass={wrapperContainerClass}
+            wrapperClass="flex flex-1 flex-col whitespace-nowrap sm:overflow-x-auto"
         >
-            <div
-                className={classNames("flex items-center space-x-2 divide-x sm:space-x-3", {
-                    "divide-theme-success-200 dark:divide-theme-success-800": !transaction.hasFailed,
-                    "divide-theme-danger-200 dark:divide-theme-dark-700": transaction.hasFailed,
-                })}
-            >
+            <div className="flex items-center space-x-2 sm:space-x-3">
                 <div
-                    className={classNames("flex items-center space-x-2 pr-2 sm:pr-3", {
-                        "text-theme-success-700 dark:text-theme-success-500": !transaction.hasFailed,
-                        "text-theme-danger-700 dark:text-theme-danger-400": transaction.hasFailed,
+                    className={classNames("flex items-center space-x-2 border-r pr-2 sm:pr-3", {
+                        "text-theme-success-700 dark:text-theme-success-500 border-theme-success-200 dark:border-theme-success-800":
+                            !transaction.hasFailed,
+                        "text-theme-danger-700 dark:text-theme-danger-400 border-theme-danger-200 dark:border-theme-dark-700":
+                            transaction.hasFailed,
                     })}
                 >
                     {transaction.hasFailed ? (
@@ -59,7 +57,12 @@ export default function TransactionStatus({
                     <div>{transaction.hasFailed ? t("general.failed") : t("general.success")}</div>
                 </div>
 
-                <div className="dark:text-theme-dark-50">
+                <div
+                    className={classNames("dark:text-theme-dark-50 pr-2 sm:pr-3 lg:border-r", {
+                        "border-theme-success-200 dark:border-theme-success-800": !transaction.hasFailed,
+                        "border-theme-danger-200 dark:border-theme-dark-700": transaction.hasFailed,
+                    })}
+                >
                     {details.confirmations > 1000 ? (
                         <>
                             <Number>1000</Number>+ {t("general.confirmations_only")}
@@ -69,11 +72,11 @@ export default function TransactionStatus({
                     )}
                 </div>
 
-                {transaction.hasFailed && <div className="hidden pl-2 sm:pl-3 lg:block">{errorMessage}</div>}
+                {transaction.hasFailed && <div className="hidden lg:block">{errorMessage}</div>}
             </div>
 
             {transaction.hasFailed && (
-                <div className="border-theme-danger-200 dark:border-theme-dark-700 mt-2 border-t px-3 pt-2 whitespace-normal sm:mt-3 sm:pt-3 sm:pl-6 lg:hidden">
+                <div className="border-theme-danger-200 dark:border-theme-dark-700 mt-2 border-t pt-2 whitespace-normal sm:mt-3 sm:pt-3 lg:hidden lg:pl-6">
                     {errorMessage}
                 </div>
             )}

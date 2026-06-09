@@ -122,7 +122,7 @@ function QRCodeContent({ wallet, testId }: { wallet: IWallet; testId?: string })
             onClosed={() => setTimeout(() => setShowOptions(false))}
             onOpened={() => {
                 if (!hasTrackedOpen.current) {
-                    window.sa_event("qr_code_opened");
+                    window.sa_event?.("qr_code_opened");
 
                     hasTrackedOpen.current = true;
                 }
