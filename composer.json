@@ -98,6 +98,9 @@
             "@php artisan package:discover --ansi",
             "@php artisan vendor:publish --provider=\"ARKEcosystem\\Foundation\\Providers\\UserInterfaceServiceProvider\" --tag=\"pagination\" --force"
         ],
+        "post-update-cmd": [
+            "npx @ardenthq/airc update"
+        ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],

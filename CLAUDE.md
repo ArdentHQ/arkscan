@@ -1,3 +1,6 @@
+@.claude/ardenthq/core.md
+@.claude/ardenthq/php.md
+@.claude/ardenthq/js.md
 <laravel-boost-guidelines>
 === foundation rules ===
 
