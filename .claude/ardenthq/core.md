@@ -1,4 +1,4 @@
-<!-- airc v0.1.1 — managed file, do not edit -->
+<!-- airc v0.2.0 — managed file, do not edit -->
 <!-- Local override: CLAUDE.local.md. Per-repo override: below the @imports in CLAUDE.md. Permanent override: PR to https://github.com/ardenthq/airc -->
 
 # Baseline
@@ -19,6 +19,7 @@ Shared rules for every repo. Apply to any stack.
 
 - Always draft (`gh pr create --draft`)
 - Base branch: the repo's default
+- If the repo has a `.github/PULL_REQUEST_TEMPLATE.md`, fill it in as the PR body and check off the items that apply. `gh pr create` ignores the template unless you pass it yourself — write the filled body to a file and use `--body-file`
 - **Never** reference Claude / AI / agents in title, body, branch name, or comments
 
 ## Pre-push checks

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Console\Commands\CacheTokens;
 use App\DTO\Inertia\TransactionDetails;
+use App\Enums\ContractMethod;
 use App\Models\Token;
 use App\Models\TokenAction;
 use App\Models\Transaction;
@@ -347,4 +348,144 @@ it('should handle contract deployments for token transfer', function () {
     expect($details->tokenTransfer)->not->toBeNull();
     expect(strtolower($details->tokenTransfer['recipient']->address))->toBe(strtolower($recipient->address));
     expect($details->tokenTransfer['amount'])->toEqual('1000');
+});
+
+it('should return null token transfer for contract deployment with no token action record', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $transaction = Transaction::factory()
+        ->contractDeployment()
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenTransfer)->toBeNull();
+    expect($details->token)->toBeNull();
+});
+
+it('should return null token transfer for token transfer with no method arguments', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $transaction = Transaction::factory()
+        ->withPayload(ContractMethod::transfer())
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenTransfer)->toBeNull();
+});
+
+it('should return null amount for token transfer with recipient but no amount argument', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $recipient = Wallet::factory()->create();
+
+    $payload = ContractMethod::transfer().str_pad(preg_replace('/^0x/', '', $recipient->address), 64, '0', STR_PAD_LEFT);
+
+    $transaction = Transaction::factory()
+        ->withPayload($payload)
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenTransfer)->not->toBeNull();
+    expect($details->tokenTransfer['recipient']->address)->toBe($recipient->address);
+    expect($details->tokenTransfer['amount'])->toBeNull();
+});
+
+it('should stub wallet reference for contract deployment with unknown recipient', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $transaction = Transaction::factory()
+        ->contractDeployment()
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $token          = Token::factory()->create();
+    $unknownAddress = '0x'.str_repeat('ef', 20);
+
+    TokenAction::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'block_number'     => $transaction->block_number,
+        'address'          => $token->address,
+        'from'             => $transaction->from,
+        'to'               => $unknownAddress,
+        'value'            => '500',
+        'index'            => 0,
+    ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenTransfer)->not->toBeNull();
+    expect(strtolower($details->tokenTransfer['recipient']->address))->toBe(strtolower($unknownAddress));
+    expect($details->tokenTransfer['recipient']->username)->toBeNull();
+    expect($details->tokenTransfer['amount'])->toBe('500');
+});
+
+it('should return null token for token action record without an associated token', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $recipient = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->tokenTransfer($recipient->address, BigNumber::new(1000))
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    TokenAction::factory()->create([
+        'transaction_hash' => $transaction->hash,
+        'block_number'     => $transaction->block_number,
+        'address'          => '0x'.str_repeat('99', 20),
+        'from'             => $transaction->from,
+        'to'               => $recipient->address,
+        'value'            => '1000',
+        'index'            => 0,
+    ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->token)->toBeNull();
+});
+
+it('should return null token transfer for approve transaction', function () {
+    fakeCryptoCompare();
+
+    (new NetworkCache())->setHeight(fn () => 1000);
+
+    $spender = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create([
+            'block_number' => 900,
+            'status'       => true,
+        ]);
+
+    $details = TransactionDetails::fromModel($transaction);
+
+    expect($details->tokenTransfer)->toBeNull();
+    expect($details->tokenApproval)->not->toBeNull();
 });

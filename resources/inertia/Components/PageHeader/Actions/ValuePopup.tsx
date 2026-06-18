@@ -61,7 +61,7 @@ export default function PageHeaderValuePopup({
                     const isVisible = !modalVisible;
                     setModalVisible(isVisible);
                     if (isVisible && !hasTrackedOpen.current) {
-                        window.sa_event(`wallet_modal_${id}_opened`);
+                        window.sa_event?.(`wallet_modal_${id}_opened`);
 
                         hasTrackedOpen.current = true;
                     }
