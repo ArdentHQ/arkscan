@@ -1,4 +1,4 @@
-<!-- airc v0.2.0 — managed file, do not edit -->
+<!-- airc v0.3.0 — managed file, do not edit -->
 <!-- Local override: CLAUDE.local.md. Per-repo override: below the @imports in CLAUDE.md. Permanent override: PR to https://github.com/ardenthq/airc -->
 
 # Baseline

@@ -127,6 +127,9 @@
         "refactor": [
             "./vendor/bin/rector process --config=vendor/arkecosystem/foundation/rector.php"
         ],
+        "types": [
+            "@php artisan typescript:transform --format"
+        ],
         "test": [
             "./vendor/bin/pest"
         ],

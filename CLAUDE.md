@@ -1,6 +1,30 @@
 @.claude/ardenthq/core.md
 @.claude/ardenthq/php.md
 @.claude/ardenthq/js.md
+
+# ARKscan
+
+## Base branch
+
+- New PRs branch from and target **`mainsail-develop`** unless told otherwise.
+
+## DTOs & generated TypeScript
+
+- Use **spatie/laravel-data** DTOs (`app/DTO/`) for data sent to Inertia/React pages — they generate the typed TS interfaces. Skip them for backend-internal data.
+- After changing a DTO, regenerate types with `composer types`. Output: `resources/inertia/types/generated.ts`.
+
+## Conventions
+
+- Formatting/display logic lives in the **frontend (React/TS)**.
+- Reuse the domain layers before adding logic to a controller or model: `app/ViewModels/`, `app/Repositories/` (with `*WithCache` variants), `app/Aggregates/` and `app/Services/*/Aggregates/`.
+
+## Tooling
+
+- PHP: `composer format` (**php-cs-fixer**), `composer analyse` (PHPStan), `composer refactor` (Rector), `composer test` / `test:fast` (Pest), `composer test:browser` (Dusk).
+- `composer test:coverage` enforces **100% coverage** — every new line needs a test.
+- Frontend: **pnpm**, `pnpm dev` / `pnpm build` (Vite). Tests are **Jest** (`jest.config.cjs`).
+- Pre-push: `composer format` → `composer analyse` → `composer test`. Run `composer types` too if you touched a DTO.
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
