@@ -287,3 +287,20 @@ it('should fallback to day period when chartPeriod is invalid', function () {
             ->component('Home/Index')
             ->where('chart.period', 'day'));
 });
+
+it('should include token approval details for approve transaction', function () {
+    $spender = Wallet::factory()->create();
+
+    Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create(['status' => true]);
+
+    $this
+        ->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Home/Index')
+            ->reloadOnly('transactions', fn (Assert $reload) => $reload
+                ->has('transactions.data', 1)
+                ->where('transactions.data.0.tokenApprovalDetails.spender.address', $spender->address)));
+});

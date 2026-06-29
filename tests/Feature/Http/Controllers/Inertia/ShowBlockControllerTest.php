@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use App\Services\Cache\NetworkCache;
 use App\Services\Cache\WalletCache;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -136,4 +137,29 @@ it('should paginate transactions', function () {
             ->component('Block/Show')
             ->has('transactions.meta')
             ->where('transactions.total', 25));
+});
+
+it('should include token approval details for approve transactions in block', function () {
+    $spender = Wallet::factory()->create();
+
+    $block = Block::factory()->create(['transactions_count' => 1]);
+
+    Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create([
+            'block_hash'   => $block->hash,
+            'block_number' => $block->number,
+            'status'       => true,
+        ]);
+
+    $this
+        ->get(route('block', $block->hash), [
+            'X-Inertia-Partial-Component' => 'Block/Show',
+            'X-Inertia-Partial-Data'      => 'transactions',
+        ])
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Block/Show')
+            ->has('transactions.data', 1)
+            ->where('transactions.data.0.tokenApprovalDetails.spender.address', $spender->address));
 });

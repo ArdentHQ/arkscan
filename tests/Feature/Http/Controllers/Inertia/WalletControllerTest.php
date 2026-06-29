@@ -1097,3 +1097,24 @@ it('should show no results message if no voters', function () {
         },
     );
 });
+
+it('should include token approval details for approve transaction in wallet transactions', function () {
+    $spender = Wallet::factory()->create();
+
+    Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create([
+            'sender_public_key' => $this->subject->public_key,
+            'from'              => $this->subject->address,
+            'status'            => true,
+        ]);
+
+    performWalletRequest(
+        $this,
+        wallet: $this->subject,
+        reloadCallback: function (Assert $reload) use ($spender) {
+            $reload->has('transactions.data', 1)
+                ->where('transactions.data.0.tokenApprovalDetails.spender.address', $spender->address);
+        },
+    );
+});

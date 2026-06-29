@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Services\BigNumber;
 use Inertia\Testing\AssertableInertia as Assert;
 
 it('should render the page without any errors', function () {
@@ -127,4 +128,25 @@ it('should return empty result when no X-Bookmarks header is provided', function
             ->component('Bookmarks/Index')
             ->has('addresses.data', 0)
             ->where('addresses.noResultsMessage', (string) trans('tables.bookmarks.addresses.no_results')));
+});
+
+it('should include token approval details for bookmarked approve transaction', function () {
+    $this->withoutExceptionHandling();
+
+    $spender = Wallet::factory()->create();
+
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create(['status' => true]);
+
+    $this->get(route('bookmarks'), [
+        'X-Inertia-Partial-Component' => 'Bookmarks/Index',
+        'X-Inertia-Partial-Data'      => 'transactions',
+        'X-Bookmarks'                 => json_encode(['transactions' => [$transaction->hash]]),
+    ])
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Bookmarks/Index')
+            ->has('transactions.data', 1)
+            ->where('transactions.data.0.tokenApprovalDetails.spender.address', $spender->address));
 });
