@@ -9,12 +9,13 @@ use App\Enums\ApproveArgument;
 use App\Models\Wallet;
 use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\Abi\ArgumentDecoder;
+use Illuminate\Support\Collection;
 
 trait WithTokenApproval
 {
     protected const UNLIMITED_APPROVAL_AMOUNT = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
 
-    protected static function tokenApprovalDetails(TransactionViewModel $transaction): ?array
+    public static function spenderAddress(TransactionViewModel $transaction): ?string
     {
         if (! $transaction->isApprove()) {
             return null;
@@ -25,7 +26,17 @@ trait WithTokenApproval
             return null;
         }
 
-        $spender = (new ArgumentDecoder($arguments[ApproveArgument::SPENDER]))->decodeAddress();
+        return (new ArgumentDecoder($arguments[ApproveArgument::SPENDER]))->decodeAddress();
+    }
+
+    protected static function tokenApprovalDetails(TransactionViewModel $transaction, ?Collection $preloadedWallets = null): ?array
+    {
+        $spender = static::spenderAddress($transaction);
+        if ($spender === null) {
+            return null;
+        }
+
+        $arguments = $transaction->methodArguments();
 
         $amount      = null;
         $isUnlimited = false;
@@ -41,7 +52,10 @@ trait WithTokenApproval
             }
         }
 
-        $spenderWallet     = Wallet::where('address', $spender)->first();
+        $spenderWallet = $preloadedWallets !== null
+            ? $preloadedWallets->get($spender)
+            : Wallet::where('address', $spender)->first();
+
         $spenderWalletData = $spenderWallet !== null
             ? WalletReference::fromModel($spenderWallet)
             : WalletReference::stub($spender);

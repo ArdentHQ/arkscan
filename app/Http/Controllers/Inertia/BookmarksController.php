@@ -12,6 +12,7 @@ use App\Http\Controllers\Inertia\Concerns\WithWalletRelations;
 use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\ViewModels\TransactionViewModel;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
@@ -68,7 +69,18 @@ final class BookmarksController
 
         $this->loadWalletRelations($paginator);
 
-        $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
+        $spenderAddresses = $paginator->getCollection()
+            ->map(fn (Transaction $t) => TransactionDTO::spenderAddress(new TransactionViewModel($t)))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $spenderWallets = count($spenderAddresses) > 0
+            ? Wallet::whereIn('address', $spenderAddresses)->get()->keyBy('address')
+            : collect();
+
+        $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, null, $spenderWallets));
 
         return $this->formatPaginator($paginator, trans('tables.bookmarks.transactions.no_results'));
     }

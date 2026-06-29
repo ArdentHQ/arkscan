@@ -22,8 +22,10 @@ use App\Services\BigNumber;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\PriceChartCache;
+use App\Models\Wallet;
 use App\Services\ExchangeRate;
 use App\Services\MarketCap;
+use App\ViewModels\TransactionViewModel;
 use ArkEcosystem\Crypto\Utils\UnitConverter;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Http\Request;
@@ -85,14 +87,36 @@ final class HomeController
 
     public function getTransactions(): LengthAwarePaginator
     {
+        // return new LengthAwarePaginator(
+        //     [],
+        //     0,
+        //     (int) config('arkscan.pagination.per_page'),
+        //     null,
+        //     [
+        //         'pageName' => 'page',
+        //     ]
+        // );
+
         $paginator = Transaction::query()
             ->withScope(OrderByTimestampScope::class)
+            // ->paginate(1);
             ->paginate((int) config('arkscan.pagination.per_page'));
 
         $this->loadWalletRelations($paginator);
         $this->loadMultiPaymentTotals($paginator);
 
-        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
+        $spenderAddresses = $paginator->getCollection()
+            ->map(fn (Transaction $t) => TransactionDTO::spenderAddress(new TransactionViewModel($t)))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $spenderWallets = count($spenderAddresses) > 0
+            ? Wallet::whereIn('address', $spenderAddresses)->get()->keyBy('address')
+            : collect();
+
+        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, null, $spenderWallets));
     }
 
     public function getBlocks(): LengthAwarePaginator
