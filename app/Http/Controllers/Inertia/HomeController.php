@@ -87,19 +87,9 @@ final class HomeController
 
     public function getTransactions(): LengthAwarePaginator
     {
-        // return new LengthAwarePaginator(
-        //     [],
-        //     0,
-        //     (int) config('arkscan.pagination.per_page'),
-        //     null,
-        //     [
-        //         'pageName' => 'page',
-        //     ]
-        // );
-
+        /** @var LengthAwarePaginator<Transaction> $paginator */
         $paginator = Transaction::query()
             ->withScope(OrderByTimestampScope::class)
-            // ->paginate(1);
             ->paginate((int) config('arkscan.pagination.per_page'));
 
         $this->loadWalletRelations($paginator);

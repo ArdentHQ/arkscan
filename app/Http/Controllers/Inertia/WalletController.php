@@ -141,6 +141,7 @@ final class WalletController
             return $emptyResults;
         }
 
+        /** @var LengthAwarePaginator<Transaction> $paginator */
         $paginator = $this->getTransactionsQuery($wallet)
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
