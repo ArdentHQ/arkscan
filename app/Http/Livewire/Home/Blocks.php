@@ -11,6 +11,7 @@ use App\Models\Scopes\OrderByHeightScope;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 /**
@@ -49,7 +50,14 @@ final class Blocks extends Component
             return new LengthAwarePaginator([], 0, $this->perPage);
         }
 
-        return Block::withScope(OrderByHeightScope::class)
-            ->paginate($this->perPage);
+        $page = $this->page ?? 1;
+
+        $total = Cache::remember('blocks_total_count', 60, fn () => Block::query()->count());
+
+        $blocks = Block::withScope(OrderByHeightScope::class)
+            ->forPage($page, $this->perPage)
+            ->get();
+
+        return new LengthAwarePaginator($blocks, $total, $this->perPage, $page);
     }
 }
