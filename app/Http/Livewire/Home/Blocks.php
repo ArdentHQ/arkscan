@@ -55,6 +55,7 @@ final class Blocks extends Component
         $total = Cache::remember('blocks_total_count', 60, fn () => Block::query()->count());
 
         $blocks = Block::withScope(OrderByHeightScope::class)
+            ->with('transactions')
             ->forPage($page, $this->perPage)
             ->get();
 

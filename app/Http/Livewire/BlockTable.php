@@ -57,6 +57,7 @@ final class BlockTable extends Component
         $heightFrom      = $heightTo - $this->perPage;
 
         $blocks = Block::withScope(OrderByTimestampScope::class)
+            ->with('transactions')
             ->where('height', '<=', $heightTo)
             ->where('height', '>', $heightFrom)
             ->get();
