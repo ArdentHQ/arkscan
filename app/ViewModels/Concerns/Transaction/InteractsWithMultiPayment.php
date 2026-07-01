@@ -40,6 +40,6 @@ trait InteractsWithMultiPayment
             return 0;
         }
 
-        return count(Arr::get($this->transaction->asset, 'payments'));
+        return count(Arr::get($this->transaction->asset, 'payments', []));
     }
 }

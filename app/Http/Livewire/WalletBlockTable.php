@@ -57,6 +57,7 @@ final class WalletBlockTable extends TabbedTableComponent
         }
 
         return Block::where('generator_public_key', $this->publicKey)
+            ->with('transactions')
             ->withScope(OrderByHeightScope::class)
             ->paginate($this->perPage);
     }
