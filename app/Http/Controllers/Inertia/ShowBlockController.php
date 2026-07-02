@@ -10,6 +10,8 @@ use App\Http\Controllers\Inertia\Concerns\WithPagination;
 use App\Models\Block;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
+use App\Models\Wallet;
+use App\ViewModels\TransactionViewModel;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
@@ -67,9 +69,20 @@ final class ShowBlockController
             ->forPage($this->page(), $this->perPage())
             ->get();
 
+        $spenderAddresses = $transactions
+            ->map(fn ($t) => TransactionDTO::spenderAddress(new TransactionViewModel($t)))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $spenderWallets = count($spenderAddresses) > 0
+            ? Wallet::whereIn('address', $spenderAddresses)->get()->keyBy('address')
+            : collect();
+
         return (new LengthAwarePaginator($transactions, $transactionCount, $this->perPage(), $this->page(), [
             'path'     => route('block', $block),
             'pageName' => 'page',
-        ]))->through(fn ($transaction) => TransactionDTO::fromModel($transaction));
+        ]))->through(fn ($transaction) => TransactionDTO::fromModel($transaction, null, $spenderWallets));
     }
 }

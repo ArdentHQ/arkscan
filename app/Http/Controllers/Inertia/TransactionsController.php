@@ -11,8 +11,10 @@ use App\Http\Controllers\Inertia\Concerns\WithWalletRelations;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Scopes\OrderByTransactionIndexScope;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\BigNumber;
 use App\Services\Cache\StatisticsCache;
+use App\ViewModels\TransactionViewModel;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Inertia\Inertia;
@@ -82,6 +84,7 @@ final class TransactionsController
             return $emptyResults;
         }
 
+        /** @var LengthAwarePaginator<Transaction> $paginator */
         $paginator = Transaction::withTypeFilter($this->filters())
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
@@ -90,6 +93,17 @@ final class TransactionsController
         $this->loadWalletRelations($paginator);
         $this->loadMultiPaymentTotals($paginator);
 
-        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction));
+        $spenderAddresses = $paginator->getCollection()
+            ->map(fn (Transaction $t) => TransactionDTO::spenderAddress(new TransactionViewModel($t)))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $spenderWallets = count($spenderAddresses) > 0
+            ? Wallet::whereIn('address', $spenderAddresses)->get()->keyBy('address')
+            : collect();
+
+        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, null, $spenderWallets));
     }
 }

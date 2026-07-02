@@ -9,6 +9,7 @@ use App\Models\MultiPayment;
 use App\Models\Transaction as Model;
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\LiteralTypeScriptType;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -61,7 +62,7 @@ class Transaction extends Data
     ) {
     }
 
-    public static function fromModel(Model $transaction, ?string $address = null): self
+    public static function fromModel(Model $transaction, ?string $address = null, ?Collection $spenderWallets = null): self
     {
         $address = $address ?? $transaction->from;
 
@@ -141,7 +142,7 @@ class Transaction extends Data
             exchangeRates: ExchangeRate::allCurrencyRates($transaction->timestamp),
             url: route('transaction', $transaction->hash),
             methodData: $methodData,
-            tokenApprovalDetails: static::tokenApprovalDetails($viewModel),
+            tokenApprovalDetails: static::tokenApprovalDetails($viewModel, $spenderWallets),
             validatorRegistration: $validatorRegistration,
             votedFor: $votedFor,
             votedForUsername: $votedForUsername,

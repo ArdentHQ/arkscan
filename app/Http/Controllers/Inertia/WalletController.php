@@ -25,6 +25,7 @@ use App\Models\TokenHolder;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Services\ExchangeRate;
+use App\ViewModels\TransactionViewModel;
 use ARKEcosystem\Foundation\UserInterface\UI;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\AbstractPaginator;
@@ -140,6 +141,7 @@ final class WalletController
             return $emptyResults;
         }
 
+        /** @var LengthAwarePaginator<Transaction> $paginator */
         $paginator = $this->getTransactionsQuery($wallet)
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)
@@ -147,7 +149,18 @@ final class WalletController
 
         $this->loadWalletRelations($paginator);
 
-        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address));
+        $spenderAddresses = $paginator->getCollection()
+            ->map(fn (Transaction $t) => TransactionDTO::spenderAddress(new TransactionViewModel($t)))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $spenderWallets = count($spenderAddresses) > 0
+            ? Wallet::whereIn('address', $spenderAddresses)->get()->keyBy('address')
+            : collect();
+
+        return $paginator->through(fn (Transaction $transaction) => TransactionDTO::fromModel($transaction, $wallet->address, $spenderWallets));
     }
 
     public function getBlocks(Wallet $wallet): AbstractPaginator

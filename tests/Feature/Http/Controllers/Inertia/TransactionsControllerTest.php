@@ -225,3 +225,30 @@ it('should return transactions and no message when results exist', function () {
             ->has('transactions.meta')
             ->where('transactions.noResultsMessage', null));
 });
+
+it('should include token approval details for approve transaction', function () {
+    $spender = Wallet::factory()->create();
+
+    Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create(['status' => true]);
+
+    $this
+        ->get(route('transactions', [
+            'transfers'           => 'false',
+            'multipayments'       => 'false',
+            'votes'               => 'false',
+            'validator'           => 'false',
+            'username'            => 'false',
+            'contract_deployment' => 'false',
+            'others'              => 'true',
+        ]), [
+            'X-Inertia-Partial-Component' => 'Transactions/List',
+            'X-Inertia-Partial-Data'      => 'transactions',
+        ])
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Transactions/List')
+            ->has('transactions.data', 1)
+            ->where('transactions.data.0.tokenApprovalDetails.spender.address', $spender->address));
+});

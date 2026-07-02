@@ -148,10 +148,14 @@ export function BlocksListTable({
 }
 
 export function BlocksListLoadingState({
+    noMargins = false,
+    header,
     blocks,
     mobile,
     rowCount = 20,
 }: {
+    noMargins?: boolean;
+    header?: React.ReactNode;
     blocks?: IPaginatedResponse<IBlock>;
     mobile?: React.ReactNode;
     rowCount?: number;
@@ -198,7 +202,14 @@ export function BlocksListLoadingState({
 
     return (
         <>
-            <LoadingTable mobile={mobile} paginator={blocks} rowCount={rowCount} columns={columns} header />
+            <LoadingTable
+                mobile={mobile}
+                paginator={blocks}
+                rowCount={rowCount}
+                header={header}
+                noMargins={noMargins}
+                columns={columns}
+            />
         </>
     );
 }
@@ -214,7 +225,7 @@ export default function BlocksListTableWrapper({
     const { blocks } = useSharedData<BlocksListProps>();
 
     if (!blocks || isLoading) {
-        return <BlocksListLoadingState blocks={blocks} mobile={mobile} rowCount={rowCount} />;
+        return <BlocksListLoadingState blocks={blocks} mobile={mobile} rowCount={rowCount} header />;
     }
 
     return (

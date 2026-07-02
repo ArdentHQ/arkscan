@@ -13,6 +13,7 @@ use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\ExchangeRate;
 use App\ViewModels\TransactionViewModel;
+use function Tests\fakeCryptoCompare;
 
 function safeUtf8(string $value): string
 {
@@ -492,4 +493,60 @@ it('normalizes invalid utf8 payloads for the dto', function () {
     expect($payload['formatted'])->toBeString();
     expect($payload['utf8'])->toBeString();
     expect(preg_match('//u', $payload['utf8']))->toBe(1);
+});
+
+it('should include token approval details for approve transaction', function () {
+    fakeCryptoCompare();
+
+    $spender = Wallet::factory()->create([
+        'attributes' => ['username' => 'spender.user'],
+    ]);
+
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::new(5000))
+        ->create(['block_number' => 900, 'status' => true]);
+
+    $dto = TransactionDTO::fromModel($transaction);
+
+    expect($dto->tokenApprovalDetails)->not->toBeNull();
+    expect($dto->tokenApprovalDetails['spender']->address)->toBe($spender->address);
+    expect($dto->tokenApprovalDetails['spender']->username)->toBe('spender.user');
+    expect($dto->tokenApprovalDetails['isUnlimited'])->toBeFalse();
+    expect($dto->tokenApprovalDetails['isRevoke'])->toBeFalse();
+});
+
+it('should use preloaded wallets collection for token approval details', function () {
+    fakeCryptoCompare();
+
+    $spender = Wallet::factory()->make([
+        'attributes' => ['username' => 'preloaded.user'],
+    ]);
+
+    $transaction = Transaction::factory()
+        ->approve($spender->address, BigNumber::new(1000))
+        ->create(['block_number' => 900, 'status' => true]);
+
+    $preloadedWallets = collect([$spender->address => $spender]);
+
+    $dto = TransactionDTO::fromModel($transaction, null, $preloadedWallets);
+
+    expect($dto->tokenApprovalDetails)->not->toBeNull();
+    expect($dto->tokenApprovalDetails['spender']->address)->toBe($spender->address);
+    expect($dto->tokenApprovalDetails['spender']->username)->toBe('preloaded.user');
+});
+
+it('should use stub when spender not found in preloaded wallets', function () {
+    fakeCryptoCompare();
+
+    $spenderAddress = '0x'.str_repeat('ab', 20);
+
+    $transaction = Transaction::factory()
+        ->approve($spenderAddress, BigNumber::new(1000))
+        ->create(['block_number' => 900, 'status' => true]);
+
+    $dto = TransactionDTO::fromModel($transaction, null, collect());
+
+    expect($dto->tokenApprovalDetails)->not->toBeNull();
+    expect(strtolower($dto->tokenApprovalDetails['spender']->address))->toBe(strtolower($spenderAddress));
+    expect($dto->tokenApprovalDetails['spender']->username)->toBeNull();
 });
