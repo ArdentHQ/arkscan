@@ -943,6 +943,12 @@ it('should get the recipients count', function () {
 
     expect($this->subject->recipientsCount())->toBe(0);
 
+    $this->subject = new TransactionViewModel(Transaction::factory()
+        ->multiPayment()
+        ->create(['asset' => ['other' => 'data']]));
+
+    expect($this->subject->recipientsCount())->toBe(0);
+
     $this->subject = new TransactionViewModel(Transaction::factory()->multiPayment()->create([
         'asset' => [
             'payments' => [

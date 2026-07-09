@@ -15,12 +15,12 @@ abstract class StatisticsUpdate extends WebsocketEvent
         return config('arkscan.webhooks.statistics-update.ttl', 8);
     }
 
-    final protected function uniqueKey(): string
+    final protected function uniqueKeyForChannel(string $channelName): string
     {
         return sprintf(
             '%s:%s:%s',
             static::UNIQUE_KEY,
-            $this->channelName(),
+            $channelName,
             $this::class,
         );
     }

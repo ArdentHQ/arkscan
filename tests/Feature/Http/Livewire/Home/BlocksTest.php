@@ -9,6 +9,7 @@ use App\Models\Block;
 use App\Models\Scopes\OrderByHeightScope;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
@@ -57,4 +58,38 @@ it('should show message if no blocks', function () {
     Livewire::test(Blocks::class)
         ->call('setIsReady')
         ->assertSee(trans('tables.blocks.no_results'));
+});
+
+it('should cache the total block count', function () {
+    Block::factory(5)->create();
+
+    expect(Cache::has('blocks_total_count'))->toBeFalse();
+
+    Livewire::test(Blocks::class)->call('setIsReady');
+
+    expect(Cache::get('blocks_total_count'))->toBe(5);
+});
+
+it('should use the cached total count instead of querying the database', function () {
+    Block::factory(5)->create();
+
+    Cache::put('blocks_total_count', 999, 60);
+
+    $component = Livewire::test(Blocks::class)->call('setIsReady');
+
+    expect($component->get('blocks')->total())->toBe(999);
+});
+
+it('should show stale total count when new blocks are added after caching', function () {
+    Block::factory(5)->create();
+
+    Livewire::test(Blocks::class)->call('setIsReady');
+
+    expect(Cache::get('blocks_total_count'))->toBe(5);
+
+    Block::factory(3)->create();
+
+    $component = Livewire::test(Blocks::class)->call('setIsReady');
+
+    expect($component->get('blocks')->total())->toBe(5);
 });
