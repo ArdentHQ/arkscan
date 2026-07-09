@@ -55,6 +55,16 @@ $environments = [
         'balanceCooldown' => 1,
         'tries'           => 1,
     ],
+    'reverb' => [
+        'connection'      => 'redis',
+        'queue'           => ['reverb'],
+        'balance'         => 'auto',
+        'minProcesses'    => 1,
+        'maxProcesses'    => 10,
+        'balanceMaxShift' => 5,
+        'balanceCooldown' => 1,
+        'tries'           => 1,
+    ],
 ];
 
 return [

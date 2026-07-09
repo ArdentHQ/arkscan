@@ -6,6 +6,7 @@ use App\Http\Livewire\Home\Transactions;
 use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
 
 it('should list the first page of transactions', function () {
@@ -25,4 +26,38 @@ it('should list the first page of transactions', function () {
         $component->assertSee('143.2232');
         $component->assertSee('0.128373');
     }
+});
+
+it('should cache the total transaction count', function () {
+    Transaction::factory(5)->transfer()->create();
+
+    expect(Cache::has('transactions_total_count'))->toBeFalse();
+
+    Livewire::test(Transactions::class)->call('setIsReady');
+
+    expect(Cache::get('transactions_total_count'))->toBe(5);
+});
+
+it('should use the cached total count instead of querying the database', function () {
+    Transaction::factory(5)->transfer()->create();
+
+    Cache::put('transactions_total_count', 999, 60);
+
+    $component = Livewire::test(Transactions::class)->call('setIsReady');
+
+    expect($component->get('transactions')->total())->toBe(999);
+});
+
+it('should show stale total count when new transactions are added after caching', function () {
+    Transaction::factory(5)->transfer()->create();
+
+    Livewire::test(Transactions::class)->call('setIsReady');
+
+    expect(Cache::get('transactions_total_count'))->toBe(5);
+
+    Transaction::factory(3)->transfer()->create();
+
+    $component = Livewire::test(Transactions::class)->call('setIsReady');
+
+    expect($component->get('transactions')->total())->toBe(5);
 });

@@ -11,6 +11,7 @@ use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 /**
@@ -49,9 +50,15 @@ final class Transactions extends Component
             return new LengthAwarePaginator([], 0, $this->perPage);
         }
 
-        return Transaction::query()
-            ->with('votedFor', 'unvotedFor')
+        $page = $this->page ?? 1;
+
+        $total = Cache::remember('transactions_total_count', 60, fn () => Transaction::query()->count());
+
+        $transactions = Transaction::query()
             ->withScope(OrderByTimestampScope::class)
-            ->paginate($this->perPage);
+            ->forPage($page, $this->perPage)
+            ->get();
+
+        return new LengthAwarePaginator($transactions, $total, $this->perPage, $page);
     }
 }
