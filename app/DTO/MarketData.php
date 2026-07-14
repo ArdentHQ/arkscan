@@ -13,11 +13,17 @@ final class MarketData
     {
     }
 
-    public static function fromCoinGeckoApiResponse(string $baseCurrency, array $data): self
+    public static function fromCoinGeckoApiResponse(string $baseCurrency, array $data): ?self
     {
+        $price = Arr::get($data, 'market_data.current_price.'.Str::lower($baseCurrency));
+
+        if ($price === null) {
+            return null;
+        }
+
         return new static(
-            price: Arr::get($data, 'market_data.current_price.'.Str::lower($baseCurrency)),
-            priceChange: Arr::get($data, 'market_data.price_change_percentage_24h_in_currency.'.Str::lower($baseCurrency), 0) / 100,
+            price: $price,
+            priceChange: (Arr::get($data, 'market_data.price_change_percentage_24h_in_currency.'.Str::lower($baseCurrency)) ?? 0) / 100,
         );
     }
 

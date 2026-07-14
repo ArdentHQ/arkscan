@@ -22,6 +22,20 @@ it('should fetch the price data for the given collection', function () {
     expect($dto->price())->toEqual(1.63);
 });
 
+it('should skip currencies without a price on the response', function () {
+    $response = json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true);
+    Arr::set($response, 'market_data.current_price.eur', null);
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response($response, 200),
+    ]);
+
+    $data = (new CoinGecko())->priceAndPriceChange('ARK', collect(['USD', 'EUR']));
+
+    expect($data->keys()->all())->toBe(['USD']);
+    expect($data->get('USD')->price())->toEqual(1.63);
+});
+
 it('should return an empty value if failed response for price data', function () {
     expect((new CoinGecko())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
 });

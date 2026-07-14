@@ -114,7 +114,8 @@ final class CoinGecko extends AbstractMarketDataProvider
         }
 
         return $targetCurrencies
-            ->mapWithKeys(fn (string $currency) => [strtoupper($currency) => MarketData::fromCoinGeckoApiResponse($currency, $data)]);
+            ->mapWithKeys(fn (string $currency) => [strtoupper($currency) => MarketData::fromCoinGeckoApiResponse($currency, $data)])
+            ->filter();
     }
 
     /**
