@@ -14,11 +14,14 @@ use App\Services\Cache\PriceChartCache;
 use App\Services\MarketDataProviders\CoinGecko;
 use App\Services\MarketDataProviders\CryptoCompare;
 use Carbon\Carbon;
+use Illuminate\Console\OutputStyle;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
 use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
@@ -26,6 +29,14 @@ beforeEach(function () {
 
     Price::truncate();
 });
+
+function newCachePricesCommand(): CachePrices
+{
+    $command = new CachePrices();
+    $command->setOutput(new OutputStyle(new ArrayInput([]), new NullOutput()));
+
+    return $command;
+}
 
 function generateMockPrices(&$expectedCrypto, &$expectedPrices): array
 {
@@ -67,7 +78,7 @@ it('should execute the command', function (string $network) {
 
     expect(Price::count())->toBe(0);
 
-    app(CachePrices::class)->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
 
     expect(Price::count())->toBe(19650);
 
@@ -100,7 +111,7 @@ it('should consolidate historic and recent prices in cache', function () {
 
     expect(Price::count())->toBe(500);
 
-    app(CachePrices::class)->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
 
     expect(Price::count())->toBe(19650 + 500);
 
@@ -137,7 +148,7 @@ it('should not update prices if coingecko returns an empty response', function (
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(0);
 
@@ -182,7 +193,7 @@ it('should not update prices if coingecko throws an exception', function () {
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(0);
 
@@ -236,7 +247,7 @@ it('should update prices if coingecko does return a response', function () {
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(2); // spans 2 days
 
@@ -305,7 +316,7 @@ it('should not have duplicate entries for the current day', function () {
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(7);
 
@@ -338,7 +349,7 @@ it('should not update prices if cryptocompare returns an empty response', functi
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
 
     expect(Price::count())->toBe(0);
 
@@ -381,7 +392,7 @@ it('should not update prices if cryptocompare throws an exception', function () 
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
 
     expect(Price::count())->toBe(0);
 
@@ -465,7 +476,7 @@ it('should update prices if cryptocompare does return a response', function () {
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
 
     expect(Price::count())->toBe(2); // spans 2 days
 
@@ -524,7 +535,7 @@ it('should stop updating prices if a response fails', function () {
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(2); // spans 2 days
 
@@ -610,7 +621,7 @@ it('should update oldest currencies first', function () {
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(2); // spans 2 days
 
@@ -696,7 +707,7 @@ it('should not update if updated within 10 minutes', function () {
 
     expect(Price::count())->toBe(0);
 
-    (new CachePrices())->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(4); // spans 4 days
 

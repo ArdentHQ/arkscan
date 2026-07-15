@@ -12,10 +12,14 @@ use App\Models\Price;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceCache;
 use App\Services\Cache\PriceChartCache;
+use App\Services\MarketDataProviders\ArkPricing;
+use App\Services\MarketDataProviders\CoinGecko;
+use App\Services\MarketDataProviders\CryptoCompare;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 final class CachePrices extends Command
 {
@@ -54,8 +58,9 @@ final class CachePrices extends Command
 
         $currencyLastUpdated = $priceCache->getLastUpdated();
 
-        $currencies = (new Collection(config('currencies')))
-            ->pluck('currency')
+        $allCurrencies = (new Collection(config('currencies')))->pluck('currency');
+
+        $currencies = $allCurrencies
             // Only update currency prices if they're 10+ minutes old
             ->filter(fn ($currency) => Arr::get($currencyLastUpdated, $currency, 0) < Carbon::now()->sub('minutes', 10)->unix())
             ->sort(function ($a, $b) use ($currencyLastUpdated) {
@@ -65,9 +70,26 @@ final class CachePrices extends Command
                 return $aLastUpdated - $bLastUpdated;
             });
 
+        $skipped = $allCurrencies->diff($currencies);
+        if ($skipped->isNotEmpty()) {
+            $this->line(sprintf('Skipping %s - updated within the last 10 minutes', $skipped->implode(', ')));
+        }
+
         foreach ($currencies as $currency) {
             $prices       = $marketDataProvider->historical(Network::currency(), $currency);
             $hourlyPrices = $marketDataProvider->historicalHourly(Network::currency(), $currency);
+
+            if ($prices->isEmpty() || $hourlyPrices->isEmpty()) {
+                $this->warn(sprintf(
+                    '%s: %d daily, %d hourly prices%s',
+                    $currency,
+                    $prices->count(),
+                    $hourlyPrices->count(),
+                    $this->emptyResponseHint($marketDataProvider),
+                ));
+            } else {
+                $this->info(sprintf('%s: %d daily, %d hourly prices', $currency, $prices->count(), $hourlyPrices->count()));
+            }
 
             $dispatchEvent = false;
             foreach (self::PERIODS as $period) {
@@ -124,6 +146,38 @@ final class CachePrices extends Command
         }
 
         $priceCache->setLastUpdated($currencyLastUpdated);
+    }
+
+    /**
+     * Explain an empty provider response using the consecutive failure
+     * counters tracked by AbstractMarketDataProvider::isAcceptableResponse().
+     */
+    private function emptyResponseHint(MarketDataProvider $marketDataProvider): string
+    {
+        $prefix = match ($marketDataProvider::class) {
+            ArkPricing::class    => 'ark_pricing',
+            CoinGecko::class     => 'coingecko',
+            CryptoCompare::class => 'cryptocompare',
+            default              => null,
+        };
+
+        if ($prefix === null) {
+            return '';
+        }
+
+        $providerName = class_basename($marketDataProvider);
+
+        $throttled = (int) Cache::get($prefix.'_response_throttled', 0);
+        if ($throttled > 0) {
+            return sprintf(' (%s is throttling - %d consecutive throttled responses)', $providerName, $throttled);
+        }
+
+        $errors = (int) Cache::get($prefix.'_response_error', 0);
+        if ($errors > 0) {
+            return sprintf(' (%d consecutive empty responses from %s)', $errors, $providerName);
+        }
+
+        return '';
     }
 
     private function statsByPeriod(string $period, Collection $datasets): Collection
