@@ -262,8 +262,11 @@ final class ArkPricing extends AbstractMarketDataProvider
 
     private function url(string $path): string
     {
-        /** @var string $baseUrl */
         $baseUrl = config('arkscan.market_data.ark_pricing.url');
+
+        if (! is_string($baseUrl) || $baseUrl === '') {
+            throw new \RuntimeException('ARK_PRICING_URL is not configured');
+        }
 
         return rtrim($baseUrl, '/').'/api/v1/'.$path;
     }

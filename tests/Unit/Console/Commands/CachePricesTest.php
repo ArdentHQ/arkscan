@@ -31,6 +31,8 @@ beforeEach(function () {
     $this->travelTo(Carbon::parse('2022-08-18 13:00:00'));
 
     Price::truncate();
+
+    Config::set('arkscan.market_data.ark_pricing.url', 'http://ark-pricing.localhost');
 });
 
 function newCachePricesCommand(bool $verbose = false): CachePrices

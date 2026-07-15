@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
+beforeEach(function () {
+    Config::set('arkscan.market_data.ark_pricing.url', 'http://ark-pricing.localhost');
+});
+
 it('should fetch the price data for the given collection', function () {
     Http::fake([
         'ark-pricing.localhost/api/v1/coins/ark/price*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/ark-pricing/price.json')), true), 200),

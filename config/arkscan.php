@@ -108,7 +108,7 @@ return [
         ],
 
         'ark_pricing' => [
-            'url'                 => env('ARK_PRICING_URL', 'http://ark-pricing.localhost'),
+            'url'                 => env('ARK_PRICING_URL'),
             'exception_frequency' => env('ARK_PRICING_EXCEPTION_FREQUENCY', 60),
             'ignore_errors'       => env('ARK_PRICING_EXCEPTION_IGNORE_ERRORS', false),
         ],
