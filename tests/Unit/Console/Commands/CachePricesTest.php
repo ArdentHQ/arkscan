@@ -11,10 +11,12 @@ use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceCache;
 use App\Services\Cache\PriceChartCache;
+use App\Services\MarketDataProviders\ArkPricing;
 use App\Services\MarketDataProviders\CoinGecko;
 use App\Services\MarketDataProviders\CryptoCompare;
 use Carbon\Carbon;
 use Illuminate\Console\OutputStyle;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
@@ -37,6 +39,43 @@ function newCachePricesCommand(): CachePrices
 
     return $command;
 }
+
+it('should exit early if network cannot be exchanged', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', false);
+
+    Http::fake();
+
+    newCachePricesCommand()->handle(app(CryptoDataCache::class), app(PriceChartCache::class), app(PriceCache::class), new CoinGecko());
+
+    Http::assertNothingSent();
+});
+
+it('should not show a hint for unknown providers', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    $provider = Mockery::mock(MarketDataProvider::class);
+    $provider->shouldReceive('historical')->andReturn(collect());
+    $provider->shouldReceive('historicalHourly')->andReturn(collect());
+
+    newCachePricesCommand()->handle(app(CryptoDataCache::class), app(PriceChartCache::class), app(PriceCache::class), $provider);
+
+    expect(Price::count())->toBe(0);
+});
+
+it('should show a throttling hint when ark-pricing is rate limited', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    Http::fake([
+        'ark-pricing.localhost/*' => Http::response(['message' => 'Too Many Attempts.'], 429),
+    ]);
+
+    Cache::forget('ark_pricing_response_throttled');
+
+    newCachePricesCommand()->handle(app(CryptoDataCache::class), app(PriceChartCache::class), app(PriceCache::class), new ArkPricing());
+
+    expect(Price::count())->toBe(0);
+    expect(Cache::get('ark_pricing_response_throttled'))->toBeGreaterThan(0);
+});
 
 function generateMockPrices(&$expectedCrypto, &$expectedPrices): array
 {

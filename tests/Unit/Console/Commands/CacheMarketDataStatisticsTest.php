@@ -111,6 +111,26 @@ it('should handle null scenarios for statistics', function () {
     Event::assertDispatchedTimes(MarketData::class, 0);
 });
 
+it('should skip all-time price stats for currencies without high/low data', function () {
+    Event::fake();
+
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    $provider = Mockery::mock(MarketDataProvider::class);
+    $provider->shouldReceive('marketChart')->andReturn([]);
+    $provider->shouldReceive('marketChartHourly')->andReturn([]);
+    $provider->shouldReceive('allTimeHighLow')->andReturn(collect([]));
+
+    $this->app->singleton(MarketDataProvider::class, fn () => $provider);
+
+    $cache = new StatisticsCache();
+
+    $this->artisan('explorer:cache-market-data-statistics');
+
+    expect($cache->getPriceAth('USD'))->toBe(null);
+    expect($cache->getPriceAtl('USD'))->toBe(null);
+});
+
 it('should should not dispatch event if no changes', function () {
     Event::fake();
 

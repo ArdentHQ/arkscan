@@ -188,6 +188,37 @@ it('should fetch exchange details for the given exchange', function () {
     ]);
 });
 
+it('should return empty array if failed response for volume', function () {
+    expect((new ArkPricing())->volume('ARK'))->toEqual([]);
+});
+
+it('should return null all-time values when high and low data is missing', function () {
+    Http::fake([
+        'ark-pricing.localhost/api/v1/coins/ark/market*' => Http::response([
+            'data' => [
+                'coin' => 'ark',
+                'USD'  => [
+                    'price' => 0.412,
+                    'ath'   => null,
+                    'atl'   => ['price' => null, 'date' => null],
+                ],
+            ],
+        ], 200),
+    ]);
+
+    $highLow = (new ArkPricing())->allTimeHighLow('ARK', collect(['USD']));
+
+    expect($highLow->get('USD'))->toEqual(['ath' => null, 'atl' => null]);
+});
+
+it('should throw an exception if the request fails for exchange details', function () {
+    Artisan::call('migrate:fresh');
+
+    $exchange = Exchange::factory()->create(['coingecko_id' => 'binance']);
+
+    (new ArkPricing())->exchangeDetails($exchange);
+})->throws(MarketDataThrottledException::class);
+
 it('should throw an exception if the API response is empty for exchange details', function () {
     Artisan::call('migrate:fresh');
 

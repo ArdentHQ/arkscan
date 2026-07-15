@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Http;
 use function Spatie\Snapshots\assertMatchesSnapshot;
 use function Tests\fakeCryptoCompare;
 
+it('should return an empty collection for all-time high and low', function () {
+    expect((new CryptoCompare())->allTimeHighLow('ARK', collect(['USD'])))->toEqual(collect());
+});
+
 it('should fetch the price data for the given collection', function () {
     fakeCryptoCompare();
 
