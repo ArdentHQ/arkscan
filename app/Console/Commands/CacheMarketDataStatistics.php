@@ -44,7 +44,6 @@ final class CacheMarketDataStatistics extends Command
         $currencies = collect($allCurrencies)->pluck('currency');
 
         $currencies->each(function ($currency) use ($cache, $marketDataProvider): void {
-            // Grab series based on last cached value from CachePrices command
             $allTimeData = $marketDataProvider->marketChart(Network::currency(), $currency);
             $dailyData   = $marketDataProvider->marketChartHourly(Network::currency(), $currency);
 
