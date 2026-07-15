@@ -21,6 +21,14 @@ final class MarketData
         );
     }
 
+    public static function fromArkPricingApiResponse(array $data): self
+    {
+        return new static(
+            price: Arr::get($data, 'price', 0),
+            priceChange: Arr::get($data, 'change24h', 0) / 100,
+        );
+    }
+
     public static function fromCryptoCompareApiResponse(string $baseCurrency, string $targetCurrency, array $data): self
     {
         return new static(

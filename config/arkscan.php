@@ -106,6 +106,12 @@ return [
             'exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
             'ignore_errors'       => env('CRYPTOCOMPARE_EXCEPTION_IGNORE_ERRORS', false),
         ],
+
+        'ark_pricing' => [
+            'url'                 => env('ARK_PRICING_URL', 'http://ark-pricing.localhost'),
+            'exception_frequency' => env('ARK_PRICING_EXCEPTION_FREQUENCY', 60),
+            'ignore_errors'       => env('ARK_PRICING_EXCEPTION_IGNORE_ERRORS', false),
+        ],
     ],
 
     'webhooks' => [
