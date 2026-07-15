@@ -23,7 +23,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use function Tests\fakeCryptoCompare;
 
 beforeEach(function () {
@@ -32,10 +33,13 @@ beforeEach(function () {
     Price::truncate();
 });
 
-function newCachePricesCommand(): CachePrices
+function newCachePricesCommand(bool $verbose = false): CachePrices
 {
     $command = new CachePrices();
-    $command->setOutput(new OutputStyle(new ArrayInput([]), new NullOutput()));
+
+    $output = new BufferedOutput($verbose ? OutputInterface::VERBOSITY_VERBOSE : OutputInterface::VERBOSITY_NORMAL);
+
+    $command->setOutput(new OutputStyle(new ArrayInput([]), $output));
 
     return $command;
 }
@@ -57,7 +61,7 @@ it('should not show a hint for unknown providers', function () {
     $provider->shouldReceive('historical')->andReturn(collect());
     $provider->shouldReceive('historicalHourly')->andReturn(collect());
 
-    newCachePricesCommand()->handle(app(CryptoDataCache::class), app(PriceChartCache::class), app(PriceCache::class), $provider);
+    newCachePricesCommand(true)->handle(app(CryptoDataCache::class), app(PriceChartCache::class), app(PriceCache::class), $provider);
 
     expect(Price::count())->toBe(0);
 });
@@ -71,10 +75,25 @@ it('should show a throttling hint when ark-pricing is rate limited', function ()
 
     Cache::forget('ark_pricing_response_throttled');
 
-    newCachePricesCommand()->handle(app(CryptoDataCache::class), app(PriceChartCache::class), app(PriceCache::class), new ArkPricing());
+    newCachePricesCommand(true)->handle(app(CryptoDataCache::class), app(PriceChartCache::class), app(PriceCache::class), new ArkPricing());
 
     expect(Price::count())->toBe(0);
     expect(Cache::get('ark_pricing_response_throttled'))->toBeGreaterThan(0);
+});
+
+it('should not show a hint when there are no provider failures', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+
+    Http::fake([
+        'api.coingecko.com/*' => Http::response(['prices' => []], 200),
+    ]);
+
+    Cache::forget('coingecko_response_error');
+    Cache::forget('coingecko_response_throttled');
+
+    newCachePricesCommand(true)->handle(app(CryptoDataCache::class), app(PriceChartCache::class), app(PriceCache::class), new CoinGecko());
+
+    expect(Price::count())->toBe(0);
 });
 
 function generateMockPrices(&$expectedCrypto, &$expectedPrices): array
@@ -117,7 +136,7 @@ it('should execute the command', function (string $network) {
 
     expect(Price::count())->toBe(0);
 
-    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
+    newCachePricesCommand(true)->handle($cryptoCache, $chartsCache, $priceCache, $marketDataProvider);
 
     expect(Price::count())->toBe(19650);
 
@@ -187,7 +206,7 @@ it('should not update prices if coingecko returns an empty response', function (
 
     expect(Price::count())->toBe(0);
 
-    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand(true)->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(0);
 
@@ -388,7 +407,7 @@ it('should not update prices if cryptocompare returns an empty response', functi
 
     expect(Price::count())->toBe(0);
 
-    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
+    newCachePricesCommand(true)->handle($cryptoCache, $chartsCache, $priceCache, new CryptoCompare());
 
     expect(Price::count())->toBe(0);
 
@@ -746,7 +765,7 @@ it('should not update if updated within 10 minutes', function () {
 
     expect(Price::count())->toBe(0);
 
-    newCachePricesCommand()->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
+    newCachePricesCommand(true)->handle($cryptoCache, $chartsCache, $priceCache, new CoinGecko());
 
     expect(Price::count())->toBe(4); // spans 4 days
 

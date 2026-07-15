@@ -70,8 +70,10 @@ final class CachePrices extends Command
                 return $aLastUpdated - $bLastUpdated;
             });
 
+        $verbose = $this->output->isVerbose();
+
         $skipped = $allCurrencies->diff($currencies);
-        if ($skipped->isNotEmpty()) {
+        if ($verbose && $skipped->isNotEmpty()) {
             $this->line(sprintf('Skipping %s - updated within the last 10 minutes', $skipped->implode(', ')));
         }
 
@@ -79,16 +81,18 @@ final class CachePrices extends Command
             $prices       = $marketDataProvider->historical(Network::currency(), $currency);
             $hourlyPrices = $marketDataProvider->historicalHourly(Network::currency(), $currency);
 
-            if ($prices->isEmpty() || $hourlyPrices->isEmpty()) {
-                $this->warn(sprintf(
-                    '%s: %d daily, %d hourly prices%s',
-                    $currency,
-                    $prices->count(),
-                    $hourlyPrices->count(),
-                    $this->emptyResponseHint($marketDataProvider),
-                ));
-            } else {
-                $this->info(sprintf('%s: %d daily, %d hourly prices', $currency, $prices->count(), $hourlyPrices->count()));
+            if ($verbose) {
+                if ($prices->isEmpty() || $hourlyPrices->isEmpty()) {
+                    $this->warn(sprintf(
+                        '%s: %d daily, %d hourly prices%s',
+                        $currency,
+                        $prices->count(),
+                        $hourlyPrices->count(),
+                        $this->emptyResponseHint($marketDataProvider),
+                    ));
+                } else {
+                    $this->info(sprintf('%s: %d daily, %d hourly prices', $currency, $prices->count(), $hourlyPrices->count()));
+                }
             }
 
             $dispatchEvent = false;
