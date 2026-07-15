@@ -152,10 +152,6 @@ final class CachePrices extends Command
         $priceCache->setLastUpdated($currencyLastUpdated);
     }
 
-    /**
-     * Explain an empty provider response using the consecutive failure
-     * counters tracked by AbstractMarketDataProvider::isAcceptableResponse().
-     */
     private function emptyResponseHint(MarketDataProvider $marketDataProvider): string
     {
         $prefix = match ($marketDataProvider::class) {

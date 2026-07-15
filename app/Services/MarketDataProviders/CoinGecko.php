@@ -151,7 +151,6 @@ final class CoinGecko extends AbstractMarketDataProvider
 
     public function volume(string $baseCurrency): array
     {
-        // Just fetch it here and return it
         $data = null;
 
         try {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services\MarketDataProviders;
 
 use App\Contracts\MarketDataProvider;
+use App\Exceptions\MarketDataThrottledException;
 use App\Services\Cache\CryptoDataCache;
 use Illuminate\Support\Facades\Cache;
 
@@ -41,7 +42,7 @@ abstract class AbstractMarketDataProvider implements MarketDataProvider
                 Cache::forget($cacheKey);
 
                 if ($throwException) {
-                    throw new \Exception($message);
+                    throw new MarketDataThrottledException($message);
                 }
             }
 
