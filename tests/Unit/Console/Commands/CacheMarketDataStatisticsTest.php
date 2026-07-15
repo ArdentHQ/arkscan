@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Contracts\MarketDataProvider;
 use App\Events\Statistics\MarketData;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
+use App\Services\MarketDataProviders\CoinGecko;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Config;
@@ -13,6 +15,12 @@ use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     $this->travelTo('2024-08-01 01:00:00');
+
+    // The seeded cache data is CoinGecko-shaped, so use the CoinGecko provider
+    $this->app->singleton(
+        MarketDataProvider::class,
+        fn () => new CoinGecko()
+    );
 });
 
 it('should cache market data statistics', function () {

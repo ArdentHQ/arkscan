@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Exceptions\CoinGeckoThrottledException;
+use App\Exceptions\MarketDataThrottledException;
 use App\Models\Exchange;
+use App\Services\Cache\CryptoDataCache;
 use App\Services\MarketDataProviders\CoinGecko;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
@@ -206,7 +208,7 @@ it('should throw an exception if the API response is empty for exchange details'
     ]);
 
     (new CoinGecko())->exchangeDetails($exchange);
-})->throws(CoinGeckoThrottledException::class);
+})->throws(MarketDataThrottledException::class);
 
 it('should throw an exception if the API response throws an exception', function () {
     Artisan::call('migrate:fresh');
@@ -220,7 +222,7 @@ it('should throw an exception if the API response throws an exception', function
     ]);
 
     (new CoinGecko())->exchangeDetails($exchange);
-})->throws(CoinGeckoThrottledException::class);
+})->throws(MarketDataThrottledException::class);
 
 it('should throw an exception if the API response indicates throttling for exchange details', function () {
     Artisan::call('migrate:fresh');
@@ -238,7 +240,7 @@ it('should throw an exception if the API response indicates throttling for excha
     ]);
 
     (new CoinGecko())->exchangeDetails($exchange);
-})->throws(CoinGeckoThrottledException::class);
+})->throws(MarketDataThrottledException::class);
 
 it('should fetch volume for the given network', function () {
     Http::fake([
@@ -270,7 +272,7 @@ it('should throw an exception if the API response is empty for volume', function
     ]);
 
     (new CoinGecko())->volume('ARK');
-})->throws(CoinGeckoThrottledException::class);
+})->throws(MarketDataThrottledException::class);
 
 it('should throw an exception if the API response throws an exception for volume', function () {
     Http::fake([
@@ -278,7 +280,7 @@ it('should throw an exception if the API response throws an exception for volume
     ]);
 
     (new CoinGecko())->volume('ARK');
-})->throws(CoinGeckoThrottledException::class);
+})->throws(MarketDataThrottledException::class);
 
 it('should throw an exception if the API response indicates throttling for volume', function () {
     Http::fake([
@@ -290,4 +292,24 @@ it('should throw an exception if the API response indicates throttling for volum
     ]);
 
     (new CoinGecko())->volume('ARK');
-})->throws(CoinGeckoThrottledException::class);
+})->throws(MarketDataThrottledException::class);
+
+it('should map all-time high and low from the cached price data', function () {
+    (new CryptoDataCache())->setPriceData('ARK', json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true));
+
+    $highLows = (new CoinGecko())->allTimeHighLow('ARK', collect(['USD']));
+
+    expect($highLows->get('USD'))->toEqual([
+        'ath' => ['value' => 10.22, 'timestamp' => Carbon::parse('2018-01-10T00:00:00.000Z')->getTimestamp()],
+        'atl' => ['value' => 0.0339403, 'timestamp' => Carbon::parse('2017-03-22T00:00:00.000Z')->getTimestamp()],
+    ]);
+});
+
+it('should return null all-time values when no price data is cached', function () {
+    $highLows = (new CoinGecko())->allTimeHighLow('ARK', collect(['USD']));
+
+    expect($highLows->get('USD'))->toEqual([
+        'ath' => null,
+        'atl' => null,
+    ]);
+});

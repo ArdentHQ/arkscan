@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services\MarketDataProviders;
 
 use App\DTO\MarketData;
-use App\Exceptions\CoinGeckoThrottledException;
+use App\Exceptions\MarketDataThrottledException;
 use App\Facades\Network;
 use App\Models\Exchange;
 use App\Services\Cache\CryptoDataCache;
@@ -136,7 +136,7 @@ final class CoinGecko extends AbstractMarketDataProvider
         }
 
         if ($this->isThrottledResponse($data) || $this->isEmptyResponse($data)) {
-            throw new CoinGeckoThrottledException();
+            throw new MarketDataThrottledException();
         }
 
         /** @var array<mixed> $data */
@@ -161,13 +161,44 @@ final class CoinGecko extends AbstractMarketDataProvider
         }
 
         if ($this->isThrottledResponse($data) || $this->isEmptyResponse($data)) {
-            throw new CoinGeckoThrottledException();
+            throw new MarketDataThrottledException();
         }
 
         /** @var array<mixed> $volume */
         $volume = Arr::get($data, 'market_data.total_volume', []);
 
         return $volume;
+    }
+
+    public function allTimeHighLow(string $baseCurrency, Collection $targetCurrencies): Collection
+    {
+        $priceData = (new CryptoDataCache())->getPriceData($baseCurrency);
+
+        return $targetCurrencies->mapWithKeys(fn (string $currency) => [strtoupper($currency) => [
+            'ath' => $this->allTimeExtreme($priceData, 'ath', $currency),
+            'atl' => $this->allTimeExtreme($priceData, 'atl', $currency),
+        ]]);
+    }
+
+    /**
+     * @return array{value: float, timestamp: int}|null
+     */
+    private function allTimeExtreme(array $priceData, string $key, string $currency): ?array
+    {
+        /** @var float|null $value */
+        $value = Arr::get($priceData, 'market_data.'.$key.'.'.strtolower($currency));
+
+        /** @var string|null $date */
+        $date = Arr::get($priceData, 'market_data.'.$key.'_date.'.strtolower($currency));
+
+        if ($value === null || $date === null) {
+            return null;
+        }
+
+        return [
+            'value'     => floatval($value),
+            'timestamp' => Carbon::parse($date)->getTimestamp(),
+        ];
     }
 
     private function isEmptyResponse(?array $data): bool

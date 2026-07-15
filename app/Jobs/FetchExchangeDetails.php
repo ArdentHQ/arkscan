@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Contracts\MarketDataProvider;
-use App\Exceptions\CoinGeckoThrottledException;
+use App\Exceptions\MarketDataThrottledException;
 use App\Models\Exchange;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -58,7 +58,7 @@ final class FetchExchangeDetails implements ShouldQueue
     {
         try {
             $result = app(MarketDataProvider::class)->exchangeDetails($this->exchange);
-        } catch (CoinGeckoThrottledException) {
+        } catch (MarketDataThrottledException) {
             if ($this->attempts() === $this->tries) {
                 $this->delete();
             } else {

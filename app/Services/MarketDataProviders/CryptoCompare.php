@@ -126,6 +126,12 @@ final class CryptoCompare extends AbstractMarketDataProvider
         throw new \Exception('Not implemented');
     }
 
+    public function allTimeHighLow(string $baseCurrency, Collection $targetCurrencies): Collection
+    {
+        /** @var Collection<string, array{ath: array{value: float, timestamp: int}|null, atl: array{value: float, timestamp: int}|null}> */
+        return collect([]);
+    }
+
     private function isEmptyResponse(?array $data, bool $checkStatus = true): bool
     {
         $errorCheck = fn () => false;
