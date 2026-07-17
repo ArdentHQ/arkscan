@@ -8,11 +8,10 @@ use App\Contracts\Network as NetworkContract;
 use App\Facades\Network;
 use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\NetworkStatusBlockCache;
-use App\Services\MarketDataProviders\CoinGecko;
-use App\Services\MarketDataProviders\CryptoCompare;
+use App\Services\MarketDataProviders\ArkPricing;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
-use function Tests\fakeCryptoCompare;
+use function Tests\fakeArkPricing;
 
 it('should execute the command', function () {
     Config::set('currencies', [
@@ -22,7 +21,7 @@ it('should execute the command', function () {
         ],
     ]);
 
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('arkscan.networks.production')));
 
@@ -46,7 +45,7 @@ it('should ignore the cache for development network', function () {
         ],
     ]);
 
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('arkscan.networks.development')));
 
@@ -65,33 +64,17 @@ it('should ignore the cache for development network', function () {
     expect($cache->getPriceChange(Network::currency(), 'USD'))->toBeNull();
 });
 
-it('should not update prices if coingecko is down', function () {
+it('should not update prices if ark-pricing is down', function () {
     $cache = app(NetworkStatusBlockCache::class);
 
     Http::fake([
-        'api.coingecko.com/*' => Http::response(null, 200),
+        'ark-pricing.localhost/*' => Http::response(null, 200),
     ]);
 
     $cache->setPrice('ARK', 'USD', 15);
     $cache->setPriceChange('ARK', 'USD', 30);
 
-    app(CacheCurrenciesData::class)->handle($cache, new CoinGecko());
-
-    expect($cache->getPrice('ARK', 'USD'))->toEqual(15);
-    expect($cache->getPriceChange('ARK', 'USD'))->toEqual(30);
-});
-
-it('should not update prices if cryptocompare is down', function () {
-    $cache = app(NetworkStatusBlockCache::class);
-
-    Http::fake([
-        'cryptocompare.com/*' => Http::response(null, 200),
-    ]);
-
-    $cache->setPrice('ARK', 'USD', 15);
-    $cache->setPriceChange('ARK', 'USD', 30);
-
-    app(CacheCurrenciesData::class)->handle($cache, new CryptoCompare());
+    app(CacheCurrenciesData::class)->handle($cache, new ArkPricing());
 
     expect($cache->getPrice('ARK', 'USD'))->toEqual(15);
     expect($cache->getPriceChange('ARK', 'USD'))->toEqual(30);

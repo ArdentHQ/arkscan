@@ -75,7 +75,7 @@ it('retries after 60s', function () {
     expect((new FetchExchangeDetails($exchange))->retryAfter())->toBe(60);
 });
 
-it('should remove the job from the queue if coingecko throttle us for too long', function () {
+it('should remove the job from the queue if the provider throttles us for too long', function () {
     $exchange = Exchange::factory()->create();
     $job      = new FetchExchangeDetails($exchange);
 

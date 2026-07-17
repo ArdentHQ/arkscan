@@ -46,7 +46,7 @@ final class FetchExchangeDetails implements ShouldQueue
      */
     public function middleware(): array
     {
-        return [new RateLimited('coingecko_api_rate')];
+        return [new RateLimited('market_data_api_rate')];
     }
 
     /**

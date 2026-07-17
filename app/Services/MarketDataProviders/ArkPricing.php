@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\MarketDataProviders;
 
+use App\Contracts\MarketDataProvider;
 use App\DTO\MarketData;
 use App\Exceptions\MarketDataThrottledException;
 use App\Facades\Network;
@@ -12,11 +13,28 @@ use App\Services\Cache\CryptoDataCache;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
-final class ArkPricing extends AbstractMarketDataProvider
+final class ArkPricing implements MarketDataProvider
 {
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function marketChart(string $source, string $target): array
+    {
+        return (new CryptoDataCache())->getHistoricalFullResponse($source, $target);
+    }
+
+    /**
+     * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
+     */
+    public function marketChartHourly(string $source, string $target): array
+    {
+        return (new CryptoDataCache())->getHistoricalHourlyFullResponse($source, $target);
+    }
+
     public function historical(string $source, string $target, string $format = 'Y-m-d'): Collection
     {
         $cache = new CryptoDataCache();
@@ -298,5 +316,32 @@ final class ArkPricing extends AbstractMarketDataProvider
             fn ($data) => $status === 429 || Arr::get($data, 'error') !== null,
             config('arkscan.market_data.ark_pricing.ignore_errors', false) === false,
         );
+    }
+
+    private function isAcceptableResponse(
+        ?array $data,
+        string $cacheKey,
+        int $threshold,
+        string $message,
+        callable $errorCheck,
+        bool $throwException = true,
+    ): bool {
+        $hasError = $errorCheck($data);
+
+        if ($hasError || $data === null) {
+            if (Cache::increment($cacheKey) > $threshold) {
+                Cache::forget($cacheKey);
+
+                if ($throwException) {
+                    throw new MarketDataThrottledException($message);
+                }
+            }
+
+            return true;
+        }
+
+        Cache::forget($cacheKey);
+
+        return false;
     }
 }

@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
-use function Tests\fakeCryptoCompare;
+use function Tests\fakeArkPricing;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 beforeEach(function (): void {
@@ -19,7 +19,7 @@ beforeEach(function (): void {
 });
 
 it('should render the component with fiat value', function () {
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     Config::set('arkscan.networks.development.canBeExchanged', true);
     Config::set('arkscan.networks.development.currency', 'ARK');
@@ -41,7 +41,7 @@ it('should render the component with non fiat value', function () {
     Settings::shouldReceive('theme')->andReturn('light');
     Settings::shouldReceive('currency')->andReturn('BTC');
 
-    fakeCryptoCompare(false, 'BTC');
+    fakeArkPricing();
 
     Config::set('arkscan.networks.development.canBeExchanged', true);
     Config::set('arkscan.networks.development.currency', 'ARK');

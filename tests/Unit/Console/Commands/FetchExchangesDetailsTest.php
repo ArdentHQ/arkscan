@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Contracts\MarketDataProvider;
 use App\Models\Exchange;
-use App\Services\MarketDataProviders\CoinGecko;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
@@ -12,23 +10,16 @@ beforeEach(function () {
     $this->freezeTime();
 
     $this->travelTo(Carbon::parse('2024-05-14 12:22:49'));
-
-    $this->app->singleton(
-        MarketDataProvider::class,
-        fn () => new CoinGecko()
-    );
 });
 
 it('should update exchange details for coingecko exchanges once per hour', function () {
     Http::fake([
-        'https://api.coingecko.com/api/v3/exchanges/binance/tickers?coin_ids=ark' => Http::response([
-            'tickers' => [
-                [
-                    'converted_last' => [
-                        'usd' => 123,
-                    ],
-                    'converted_volume' => [
-                        'usd' => 456,
+        'ark-pricing.localhost/api/v1/exchanges/binance/tickers*' => Http::response([
+            'data' => [
+                'tickers' => [
+                    [
+                        'price'  => 123,
+                        'volume' => 456,
                     ],
                 ],
             ],
@@ -68,12 +59,10 @@ it('should update exchange details for coingecko exchanges once per hour', funct
     expect($genericExchange->fresh()->volume)->toBeNull();
 });
 
-it('should do nothing if there is a coingecko error', function () {
+it('should do nothing if there is an ark-pricing error', function () {
     Http::fake([
-        'https://api.coingecko.com/api/v3/exchanges/binance/tickers?coin_ids=ark' => Http::response([
-            'status' => [
-                'error_code' => 1234,
-            ],
+        'ark-pricing.localhost/api/v1/exchanges/binance/tickers*' => Http::response([
+            'error' => 'Internal Server Error',
         ], 500),
     ]);
 

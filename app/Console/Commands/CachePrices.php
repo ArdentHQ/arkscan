@@ -12,9 +12,6 @@ use App\Models\Price;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\PriceCache;
 use App\Services\Cache\PriceChartCache;
-use App\Services\MarketDataProviders\ArkPricing;
-use App\Services\MarketDataProviders\CoinGecko;
-use App\Services\MarketDataProviders\CryptoCompare;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
@@ -88,7 +85,7 @@ final class CachePrices extends Command
                         $currency,
                         $prices->count(),
                         $hourlyPrices->count(),
-                        $this->emptyResponseHint($marketDataProvider),
+                        $this->emptyResponseHint(),
                     ));
                 } else {
                     $this->info(sprintf('%s: %d daily, %d hourly prices', $currency, $prices->count(), $hourlyPrices->count()));
@@ -152,29 +149,16 @@ final class CachePrices extends Command
         $priceCache->setLastUpdated($currencyLastUpdated);
     }
 
-    private function emptyResponseHint(MarketDataProvider $marketDataProvider): string
+    private function emptyResponseHint(): string
     {
-        $prefix = match ($marketDataProvider::class) {
-            ArkPricing::class    => 'ark_pricing',
-            CoinGecko::class     => 'coingecko',
-            CryptoCompare::class => 'cryptocompare',
-            default              => null,
-        };
-
-        if ($prefix === null) {
-            return '';
-        }
-
-        $providerName = class_basename($marketDataProvider);
-
-        $throttled = (int) Cache::get($prefix.'_response_throttled', 0);
+        $throttled = (int) Cache::get('ark_pricing_response_throttled', 0);
         if ($throttled > 0) {
-            return sprintf(' (%s is throttling - %d consecutive throttled responses)', $providerName, $throttled);
+            return sprintf(' (ArkPricing is throttling - %d consecutive throttled responses)', $throttled);
         }
 
-        $errors = (int) Cache::get($prefix.'_response_error', 0);
+        $errors = (int) Cache::get('ark_pricing_response_error', 0);
         if ($errors > 0) {
-            return sprintf(' (%d consecutive empty responses from %s)', $errors, $providerName);
+            return sprintf(' (%d consecutive empty responses from ArkPricing)', $errors);
         }
 
         return '';
