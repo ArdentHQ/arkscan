@@ -56,16 +56,6 @@ final class CryptoDataCache implements Contract
         $this->put(sprintf('volume/%s', $currency), $volume);
     }
 
-    public function getPriceData(string $currency): array
-    {
-        return $this->get(sprintf('price_data/%s', $currency), []);
-    }
-
-    public function setPriceData(string $currency, array $data): void
-    {
-        $this->put(sprintf('price_data/%s', $currency), $data);
-    }
-
     /**
      * @return array{prices: array{0:int, 1:float}[], market_caps: array{0:int, 1:float}[], total_volumes: array{0:int, 1:float}[]}|array{}
      */

@@ -90,6 +90,25 @@ it('should not update prices if ark-pricing throws an exception', function () {
     expect($crypto->getVolume('USD'))->toEqual('123');
 });
 
+it('should ignore throttled responses from ark-pricing', function () {
+    Config::set('arkscan.networks.development.canBeExchanged', true);
+    Config::set('arkscan.market_data.ark_pricing.exception_frequency', 0);
+
+    $crypto = app(CryptoDataCache::class);
+
+    $crypto->getCache()->flush();
+
+    Http::fake([
+        'ark-pricing.localhost/*' => Http::response(['error' => 'Too many requests'], 429),
+    ]);
+
+    $crypto->setVolume('USD', '123');
+
+    (new CacheVolume())->handle($crypto, new ArkPricing());
+
+    expect($crypto->getVolume('USD'))->toEqual('123');
+});
+
 it('should update prices if ark-pricing does return a response', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 

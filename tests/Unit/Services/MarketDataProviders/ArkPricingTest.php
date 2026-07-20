@@ -49,6 +49,12 @@ it('should return an empty value if empty response for price data', function () 
     expect((new ArkPricing())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
 });
 
+it('should return an empty value if the ark-pricing url is not configured', function () {
+    Config::set('arkscan.market_data.ark_pricing.url', '');
+
+    expect((new ArkPricing())->priceAndPriceChange('ARK', collect(['USD'])))->toEqual(collect());
+});
+
 it('should fetch the historical prices for the given pair', function () {
     Http::fake([
         'ark-pricing.localhost/api/v1/coins/ark/history*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/ark-pricing/history-day.json')), true), 200),
