@@ -153,7 +153,7 @@ final class ArkPricing implements MarketDataProvider
         $response = null;
 
         try {
-            $response = Http::get($this->url('exchanges/'.$exchange->coingecko_id.'/tickers'));
+            $response = Http::get($this->url('exchanges/'.$exchange->provider_exchange_id.'/tickers'));
         } catch (\Throwable) {
             //
         }

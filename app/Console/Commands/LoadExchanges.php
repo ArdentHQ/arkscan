@@ -34,42 +34,59 @@ final class LoadExchanges extends Command
 
         /**
          * @var array{
-         *     exchangeName: string,
-         *     icon: string,
-         *     baseURL: string,
-         *     exchange: bool,
-         *     aggregator: bool,
-         *     BTC: bool,
-         *     ETH: bool,
+         *     name: string,
+         *     url: string,
+         *     isExchange: bool,
+         *     isAggregator: bool,
+         *     btc: bool,
+         *     eth: bool,
          *     stablecoins: bool,
          *     other: bool,
-         *     coingeckoId: string | null
+         *     icon: string,
+         *     providerExchangeId: string | null,
+         *     price: float | null,
+         *     volume: float | null,
          * }[]
          */
-        $exchanges = $response->json();
+        $exchanges = $response->json('data');
 
         $this->validateResponseData($exchanges);
 
         $items = collect($exchanges)->map(function ($item) {
             return [
-                'name'          => $item['exchangeName'],
-                'url'           => $item['baseURL'],
-                'is_exchange'   => $item['exchange'],
-                'is_aggregator' => $item['aggregator'],
-                'btc'           => $item['BTC'],
-                'eth'           => $item['ETH'],
-                'stablecoins'   => $item['stablecoins'],
-                'other'         => $item['other'],
-                'coingecko_id'  => $item['coingeckoId'],
-                'icon'          => $item['icon'],
+                'name'                 => $item['name'],
+                'url'                  => $item['url'],
+                'is_exchange'          => $item['isExchange'],
+                'is_aggregator'        => $item['isAggregator'],
+                'btc'                  => $item['btc'],
+                'eth'                  => $item['eth'],
+                'stablecoins'          => $item['stablecoins'],
+                'other'                => $item['other'],
+                'provider_exchange_id' => $item['providerExchangeId'],
+                'icon'                 => $item['icon'],
             ];
         });
 
-        // Sync exchange data
-        Exchange::upsert($items->toArray(), 'name');
+        $names = $items->pluck('name');
+        $existingNames = Exchange::whereIn('name', $names)->pluck('name');
+
+        // Update existing records without touching updated_at so the hourly fetch throttle is preserved
+        $items->whereIn('name', $existingNames)->each(function ($item): void {
+            Exchange::withoutTimestamps(fn () => Exchange::where('name', $item['name'])->update($item));
+        });
+
+        // Insert new records with updated_at = null so they are fetched immediately
+        $newItems = $items->whereNotIn('name', $existingNames);
+        if ($newItems->isNotEmpty()) {
+            Exchange::insert($newItems->map(fn ($item) => [
+                ...$item,
+                'created_at' => now(),
+                'updated_at' => null,
+            ])->toArray());
+        }
 
         // Remove the ones that are no longer part of the list
-        Exchange::whereNotIn('name', $items->pluck('name')->toArray())->delete();
+        Exchange::whereNotIn('name', $names->toArray())->delete();
 
         return Command::SUCCESS;
     }
@@ -80,16 +97,16 @@ final class LoadExchanges extends Command
     private function validateResponseData(array $response): void
     {
         $expectedKeys = [
-            'exchangeName',
-            'baseURL',
-            'exchange',
-            'aggregator',
-            'BTC',
-            'ETH',
+            'name',
+            'url',
+            'isExchange',
+            'isAggregator',
+            'btc',
+            'eth',
             'stablecoins',
             'other',
-            'coingeckoId',
             'icon',
+            'providerExchangeId',
         ];
 
         // check that keys are the same
@@ -107,12 +124,12 @@ final class LoadExchanges extends Command
 
     private function getUrl(): string
     {
-        $url = config('arkscan.exchanges.list_src');
+        $baseUrl = config('arkscan.market_data.ark_pricing.url');
 
-        if ($url === null || '' === $url) {
-            throw new Exception('No exchanges list source configured');
+        if (! is_string($baseUrl) || $baseUrl === '') {
+            throw new Exception('ARK_PRICING_URL is not configured');
         }
 
-        return $url;
+        return rtrim($baseUrl, '/').'/api/v1/exchanges';
     }
 }

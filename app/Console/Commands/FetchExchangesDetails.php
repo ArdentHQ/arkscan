@@ -29,10 +29,10 @@ final class FetchExchangesDetails extends Command
 
     public function handle(): int
     {
-        $exchanges = Exchange::coingecko()
+        $exchanges = Exchange::withProviderId()
             ->orderBy('volume', 'desc')
             ->get()
-            ->filter(fn ($exchange) => $exchange->updated_at < Carbon::now()->subHours(1))
+            ->filter(fn ($exchange) => $exchange->updated_at === null || $exchange->updated_at < Carbon::now()->subHours(1))
             ->sort(fn ($a, $b) => ($a->updated_at?->unix() ?? 0) - ($b->updated_at?->unix() ?? 0));
 
         foreach ($exchanges as $exchange) {
