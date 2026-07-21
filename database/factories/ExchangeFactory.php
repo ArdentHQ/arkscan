@@ -28,7 +28,7 @@ class ExchangeFactory extends Factory
             'stablecoins'   => fake()->boolean(),
             'other'         => fake()->boolean(),
             'icon'          => fake()->word(),
-            'coingecko_id'  => fake()->optional()->word(),
+            'provider_exchange_id' => fake()->optional()->word(),
             'price'         => fake()->optional()->randomNumber(),
             'volume'        => fake()->optional()->randomNumber(),
         ];
