@@ -124,14 +124,14 @@ it('throws an exception if response format is unexpected', function () {
     $responseJson = [
         'data' => [
             [
-                'name'        => 'Exchange 1',
-                'url'         => 'http://exchange1.com',
-                'isExchange'  => true,
+                'name'         => 'Exchange 1',
+                'url'          => 'http://exchange1.com',
+                'isExchange'   => true,
                 'isAggregator' => false,
-                'btc'         => true,
-                'eth'         => false,
-                'stablecoins' => true,
-                'icon'        => '7b',
+                'btc'          => true,
+                'eth'          => false,
+                'stablecoins'  => true,
+                'icon'         => '7b',
             ],
             [
                 'name'               => 'Exchange 2',

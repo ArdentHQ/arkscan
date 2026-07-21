@@ -67,7 +67,7 @@ final class LoadExchanges extends Command
             ];
         });
 
-        $names = $items->pluck('name');
+        $names         = $items->pluck('name');
         $existingNames = Exchange::whereIn('name', $names)->pluck('name');
 
         // Update existing records without touching updated_at so the hourly fetch throttle is preserved
