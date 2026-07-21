@@ -186,7 +186,7 @@ it('should return an empty collection if empty response for all-time high and lo
 it('should fetch exchange details for the given exchange', function () {
     Artisan::call('migrate:fresh');
 
-    $exchange = Exchange::factory()->create(['coingecko_id' => 'binance']);
+    $exchange = Exchange::factory()->create(['provider_exchange_id' => 'binance']);
 
     Http::fake([
         'ark-pricing.localhost/api/v1/exchanges/binance/tickers*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/ark-pricing/tickers.json')), true), 200),
@@ -224,7 +224,7 @@ it('should return null all-time values when high and low data is missing', funct
 it('should throw an exception if the request fails for exchange details', function () {
     Artisan::call('migrate:fresh');
 
-    $exchange = Exchange::factory()->create(['coingecko_id' => 'binance']);
+    $exchange = Exchange::factory()->create(['provider_exchange_id' => 'binance']);
 
     (new ArkPricing())->exchangeDetails($exchange);
 })->throws(MarketDataThrottledException::class);
@@ -232,7 +232,7 @@ it('should throw an exception if the request fails for exchange details', functi
 it('should throw an exception if the API response is empty for exchange details', function () {
     Artisan::call('migrate:fresh');
 
-    $exchange = Exchange::factory()->create(['coingecko_id' => 'binance']);
+    $exchange = Exchange::factory()->create(['provider_exchange_id' => 'binance']);
 
     Http::fake([
         'ark-pricing.localhost/*' => Http::response(null, 200),

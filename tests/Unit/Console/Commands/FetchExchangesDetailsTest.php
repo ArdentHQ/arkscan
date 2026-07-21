@@ -12,7 +12,7 @@ beforeEach(function () {
     $this->travelTo(Carbon::parse('2024-05-14 12:22:49'));
 });
 
-it('should update exchange details for coingecko exchanges once per hour', function () {
+it('should update exchange details for exchanges with a provider id once per hour', function () {
     Http::fake([
         'ark-pricing.localhost/api/v1/exchanges/binance/tickers*' => Http::response([
             'data' => [
@@ -26,24 +26,24 @@ it('should update exchange details for coingecko exchanges once per hour', funct
         ], 200),
     ]);
 
-    $coingeckoExchange = Exchange::factory()->create([
-        'coingecko_id' => 'binance',
-        'volume'       => null,
-        'price'        => null,
+    $providerExchange = Exchange::factory()->create([
+        'provider_exchange_id' => 'binance',
+        'volume'               => null,
+        'price'                => null,
     ]);
 
     $genericExchange = Exchange::factory()->create([
-        'coingecko_id' => null,
-        'volume'       => null,
-        'price'        => null,
+        'provider_exchange_id' => null,
+        'volume'               => null,
+        'price'                => null,
     ]);
 
     $this->artisan('exchanges:fetch-details');
 
     $this->travel(59)->minutes();
 
-    expect($coingeckoExchange->fresh()->price)->toBeNull();
-    expect($coingeckoExchange->fresh()->volume)->toBeNull();
+    expect($providerExchange->fresh()->price)->toBeNull();
+    expect($providerExchange->fresh()->volume)->toBeNull();
 
     expect($genericExchange->fresh()->price)->toBeNull();
     expect($genericExchange->fresh()->volume)->toBeNull();
@@ -52,11 +52,38 @@ it('should update exchange details for coingecko exchanges once per hour', funct
 
     $this->artisan('exchanges:fetch-details');
 
-    expect($coingeckoExchange->fresh()->price)->toBe('123');
-    expect($coingeckoExchange->fresh()->volume)->toBe('456');
+    expect($providerExchange->fresh()->price)->toBe('123');
+    expect($providerExchange->fresh()->volume)->toBe('456');
 
     expect($genericExchange->fresh()->price)->toBeNull();
     expect($genericExchange->fresh()->volume)->toBeNull();
+});
+
+it('should fetch exchange details immediately when updated_at is null', function () {
+    Http::fake([
+        'ark-pricing.localhost/api/v1/exchanges/binance/tickers*' => Http::response([
+            'data' => [
+                'tickers' => [
+                    [
+                        'price'  => 123,
+                        'volume' => 456,
+                    ],
+                ],
+            ],
+        ], 200),
+    ]);
+
+    $exchange = Exchange::factory()->create([
+        'provider_exchange_id' => 'binance',
+        'volume'               => null,
+        'price'                => null,
+        'updated_at'           => null,
+    ]);
+
+    $this->artisan('exchanges:fetch-details');
+
+    expect($exchange->fresh()->price)->toBe('123');
+    expect($exchange->fresh()->volume)->toBe('456');
 });
 
 it('should do nothing if there is an ark-pricing error', function () {
@@ -66,24 +93,24 @@ it('should do nothing if there is an ark-pricing error', function () {
         ], 500),
     ]);
 
-    $coingeckoExchange = Exchange::factory()->create([
-        'coingecko_id' => 'binance',
-        'volume'       => null,
-        'price'        => null,
+    $providerExchange = Exchange::factory()->create([
+        'provider_exchange_id' => 'binance',
+        'volume'               => null,
+        'price'                => null,
     ]);
 
     $genericExchange = Exchange::factory()->create([
-        'coingecko_id' => null,
-        'volume'       => null,
-        'price'        => null,
+        'provider_exchange_id' => null,
+        'volume'               => null,
+        'price'                => null,
     ]);
 
     $this->artisan('exchanges:fetch-details');
 
     $this->travel(59)->minutes();
 
-    expect($coingeckoExchange->fresh()->price)->toBeNull();
-    expect($coingeckoExchange->fresh()->volume)->toBeNull();
+    expect($providerExchange->fresh()->price)->toBeNull();
+    expect($providerExchange->fresh()->volume)->toBeNull();
 
     expect($genericExchange->fresh()->price)->toBeNull();
     expect($genericExchange->fresh()->volume)->toBeNull();
@@ -92,8 +119,8 @@ it('should do nothing if there is an ark-pricing error', function () {
 
     $this->artisan('exchanges:fetch-details');
 
-    expect($coingeckoExchange->fresh()->price)->toBeNull();
-    expect($coingeckoExchange->fresh()->volume)->toBeNull();
+    expect($providerExchange->fresh()->price)->toBeNull();
+    expect($providerExchange->fresh()->volume)->toBeNull();
 
     expect($genericExchange->fresh()->price)->toBeNull();
     expect($genericExchange->fresh()->volume)->toBeNull();

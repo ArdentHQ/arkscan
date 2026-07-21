@@ -9,16 +9,16 @@ beforeEach(function () {
     Artisan::call('migrate:fresh');
 });
 
-it('filter exchanges that have coingecko id', function () {
+it('filter exchanges that have a provider id', function () {
     $exchange = Exchange::factory()->create([
-        'coingecko_id' => 'binance',
+        'provider_exchange_id' => 'binance',
     ]);
 
     Exchange::factory()->create([
-        'coingecko_id' => null,
+        'provider_exchange_id' => null,
     ]);
 
-    $exchanges = Exchange::coingecko()->get();
+    $exchanges = Exchange::withProviderId()->get();
 
     expect($exchanges->count())->toBe(1);
 
