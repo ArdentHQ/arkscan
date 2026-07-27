@@ -64,29 +64,16 @@ final class LoadExchanges extends Command
                 'other'                => $item['other'],
                 'provider_exchange_id' => $item['providerExchangeId'],
                 'icon'                 => $item['icon'],
+                'price'                => $item['price'],
+                'volume'               => $item['volume'],
             ];
         });
 
-        $names         = $items->pluck('name');
-        $existingNames = Exchange::whereIn('name', $names)->pluck('name');
-
-        // Update existing records without touching updated_at so the hourly fetch throttle is preserved
-        $items->whereIn('name', $existingNames)->each(function ($item): void {
-            Exchange::withoutTimestamps(fn () => Exchange::where('name', $item['name'])->update($item));
-        });
-
-        // Insert new records with updated_at = null so they are fetched immediately
-        $newItems = $items->whereNotIn('name', $existingNames);
-        if ($newItems->isNotEmpty()) {
-            Exchange::insert($newItems->map(fn ($item) => [
-                ...$item,
-                'created_at' => now(),
-                'updated_at' => null,
-            ])->toArray());
-        }
+        // Sync exchange data
+        Exchange::upsert($items->toArray(), 'name');
 
         // Remove the ones that are no longer part of the list
-        Exchange::whereNotIn('name', $names->toArray())->delete();
+        Exchange::whereNotIn('name', $items->pluck('name')->toArray())->delete();
 
         return Command::SUCCESS;
     }

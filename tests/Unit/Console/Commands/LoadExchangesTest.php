@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Jobs\FetchExchangeDetails;
-use App\Models\Exchange;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
@@ -18,32 +17,32 @@ it('loads and syncs exchanges', function () {
     $responseJson = [
         'data' => [
             [
-                'name'                => 'Exchange 1',
-                'url'                 => 'http://exchange1.com',
-                'isExchange'          => true,
-                'isAggregator'        => false,
-                'btc'                 => true,
-                'eth'                 => false,
-                'stablecoins'         => true,
-                'other'               => false,
-                'providerExchangeId'  => 'exchange1_id',
-                'icon'                => '7b',
-                'price'               => null,
-                'volume'              => null,
+                'name'               => 'Exchange 1',
+                'url'                => 'http://exchange1.com',
+                'isExchange'         => true,
+                'isAggregator'       => false,
+                'btc'                => true,
+                'eth'                => false,
+                'stablecoins'        => true,
+                'other'              => false,
+                'providerExchangeId' => 'exchange1_id',
+                'icon'               => '7b',
+                'price'              => 1.23,
+                'volume'             => 456.0,
             ],
             [
-                'name'                => 'Exchange 2',
-                'url'                 => 'http://exchange2.com',
-                'isExchange'          => true,
-                'isAggregator'        => true,
-                'btc'                 => false,
-                'eth'                 => true,
-                'stablecoins'         => false,
-                'other'               => true,
-                'providerExchangeId'  => 'exchange2_id',
-                'icon'                => '7b',
-                'price'               => null,
-                'volume'              => null,
+                'name'               => 'Exchange 2',
+                'url'                => 'http://exchange2.com',
+                'isExchange'         => true,
+                'isAggregator'       => true,
+                'btc'                => false,
+                'eth'                => true,
+                'stablecoins'        => false,
+                'other'              => true,
+                'providerExchangeId' => 'exchange2_id',
+                'icon'               => '7b',
+                'price'              => null,
+                'volume'             => null,
             ],
         ],
     ];
@@ -68,7 +67,8 @@ it('loads and syncs exchanges', function () {
         'other'                => false,
         'provider_exchange_id' => 'exchange1_id',
         'icon'                 => '7b',
-        'updated_at'           => null,
+        'price'                => 1.23,
+        'volume'               => 456.0,
     ]);
 
     $this->assertDatabaseHas('exchanges', [
@@ -82,42 +82,9 @@ it('loads and syncs exchanges', function () {
         'other'                => true,
         'provider_exchange_id' => 'exchange2_id',
         'icon'                 => '7b',
-        'updated_at'           => null,
+        'price'                => null,
+        'volume'               => null,
     ]);
-});
-
-it('preserves updated_at for existing exchanges on reload', function () {
-    $exchange = Exchange::factory()->create([
-        'name'       => 'Exchange 1',
-        'updated_at' => '2024-01-01 00:00:00',
-    ]);
-
-    $responseJson = [
-        'data' => [
-            [
-                'name'               => 'Exchange 1',
-                'url'                => 'http://exchange1.com',
-                'isExchange'         => true,
-                'isAggregator'       => false,
-                'btc'                => true,
-                'eth'                => false,
-                'stablecoins'        => true,
-                'other'              => false,
-                'providerExchangeId' => 'exchange1_id',
-                'icon'               => '7b',
-                'price'              => null,
-                'volume'             => null,
-            ],
-        ],
-    ];
-
-    Http::fake([
-        '*' => Http::response($responseJson),
-    ]);
-
-    $this->artisan('exchanges:load')->assertExitCode(0);
-
-    expect($exchange->fresh()->updated_at->toDateTimeString())->toBe('2024-01-01 00:00:00');
 });
 
 it('throws an exception if response format is unexpected', function () {

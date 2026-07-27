@@ -59,32 +59,6 @@ it('should update exchange details for exchanges with a provider id once per hou
     expect($genericExchange->fresh()->volume)->toBeNull();
 });
 
-it('should fetch exchange details immediately when updated_at is null', function () {
-    Http::fake([
-        'ark-pricing.localhost/api/v1/exchanges/binance/tickers*' => Http::response([
-            'data' => [
-                'tickers' => [
-                    [
-                        'price'  => 123,
-                        'volume' => 456,
-                    ],
-                ],
-            ],
-        ], 200),
-    ]);
-
-    $exchange = Exchange::factory()->create([
-        'provider_exchange_id' => 'binance',
-        'volume'               => null,
-        'price'                => null,
-        'updated_at'           => null,
-    ]);
-
-    $this->artisan('exchanges:fetch-details');
-
-    expect($exchange->fresh()->price)->toBe('123');
-    expect($exchange->fresh()->volume)->toBe('456');
-});
 
 it('should do nothing if there is an ark-pricing error', function () {
     Http::fake([
