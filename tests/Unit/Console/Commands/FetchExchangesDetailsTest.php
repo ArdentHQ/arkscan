@@ -59,7 +59,6 @@ it('should update exchange details for exchanges with a provider id once per hou
     expect($genericExchange->fresh()->volume)->toBeNull();
 });
 
-
 it('should do nothing if there is an ark-pricing error', function () {
     Http::fake([
         'ark-pricing.localhost/api/v1/exchanges/binance/tickers*' => Http::response([
