@@ -37,7 +37,7 @@
                 ]"
                 :socials="config('social.networks')"
                 wrapper-class="py-5 px-6 max-w-7xl md:px-10"
-                class="dark:border-transparent dark:text-theme-dark-200"
+                class="dark:text-theme-dark-200 dark:border-transparent"
             >
                 <span class="inline-flex items-center space-x-1 whitespace-nowrap">
                     <span>@lang ('general.market_data_by')</span>
