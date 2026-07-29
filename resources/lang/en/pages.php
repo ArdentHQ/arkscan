@@ -657,11 +657,8 @@ return [
         'page_name'      => 'Help & Support',
         'docs'           => 'https://arkscan.io/docs',
         'additional'     => 'Need more help? You can contact our support team and we can work on resolving your issue directly.',
-        'form_submitted' => 'Thank you for submitting the contact form. We\'ll be in touch soon!',
-        'form'           => [
-            'title'       => 'Contact Our Support Team',
-            'description' => '',
-        ],
+        'send_email'     => 'Send Email',
+        'email_hint'     => 'Opens your default email app.',
     ],
 
     'compatible-wallets' => [
