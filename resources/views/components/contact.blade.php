@@ -24,7 +24,7 @@
     <div class="flex flex-col pb-8 mx-auto max-w-7xl md:px-10 lg:flex-row dark:text-theme-dark-200">
         <div class="flex flex-col flex-1 justify-between rounded-xl md:border lg:mr-1.5 lg:w-1/2 border-theme-secondary-300 dark:border-theme-dark-700">
             <div class="p-6">
-                <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">{{ $helpTitle }}</div>
+                <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50 leading-5.25">{{ $helpTitle }}</div>
 
                 <div class="mt-2 paragraph-description">
                     {{ $helpDescription }}
@@ -56,7 +56,7 @@
             <hr class="mx-6 md:hidden border-theme-secondary-300 dark:border-theme-dark-700" />
 
             @if (count($contactNetworks) > 0)
-                <div class="py-6 space-y-3 md:space-y-0 px-6 md:flex md:justify-between md:items-center rounded-b-xl text-theme-secondary-900 md:bg-theme-secondary-100 dark:text-theme-dark-200 dark:md:bg-theme-dark-950">
+                <div class="md:py-4 py-6 space-y-3 md:space-y-0 px-6 md:flex md:justify-between md:items-center rounded-b-xl text-theme-secondary-900 md:bg-theme-secondary-100 dark:text-theme-dark-200 dark:md:bg-theme-dark-950">
                     <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
                         @lang('ui::pages.contact.social.subtitle')
                     </div>
@@ -78,7 +78,7 @@
 
         <x-general.mobile-divider />
 
-        <div class="flex flex-col flex-1 p-6 rounded-xl md:mt-3 md:border lg:mt-0 lg:ml-1.5 border-theme-secondary-300 dark:border-theme-dark-700">
+        <div class="flex flex-col flex-1 p-6 rounded-xl md:mt-3 md:border lg:mt-0 lg:ml-1.5 border-theme-secondary-300 dark:border-theme-dark-700 leading-5.25">
             <div class="mb-2 font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
                 {{ $additionalTitle }}
             </div>
@@ -87,7 +87,7 @@
                 {{ $additionalDescription }}
             </div>
 
-            <div class="flex justify-between items-center px-4 mt-4 space-x-3 h-[45px] md:h-14 rounded border border-theme-secondary-300 bg-theme-secondary-100 dark:border-theme-dark-700 dark:bg-theme-dark-950">
+            <div class="flex justify-between items-center px-4 mt-4 md:mt-6 space-x-3 h-[45px] md:h-14 rounded border border-theme-secondary-300 bg-theme-secondary-100 dark:border-theme-dark-700 dark:bg-theme-dark-950">
                 <div class="flex items-center space-x-2 min-w-0 text-theme-secondary-700 dark:text-theme-dark-300 leading-5.25">
                     <x-ark-icon
                         name="paper-plane"
@@ -107,12 +107,12 @@
                 </x-ark-clipboard>
             </div>
 
-            <a href="mailto:{{ $email }}" class="block mt-3 w-full button-primary bg-theme-blue-600 dark:!bg-theme-dark-blue-500">
+            <a href="mailto:{{ $email }}" class="block mt-4 w-full button-primary bg-theme-blue-600 dark:!bg-theme-dark-blue-500">
                 {{ $sendEmailLabel }}
             </a>
 
             @if ($emailHint)
-                <p class="mt-2 text-xs text-theme-secondary-500 dark:text-theme-dark-500 font-semibold">
+                <p class="mt-2 text-xs text-theme-secondary-500 dark:text-theme-dark-500 font-semibold leading-3.75">
                     {{ $emailHint }}
                 </p>
             @endif
