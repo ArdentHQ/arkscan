@@ -56,7 +56,7 @@
             <hr class="mx-6 md:hidden border-theme-secondary-300 dark:border-theme-dark-700" />
 
             @if (count($contactNetworks) > 0)
-                <div class="py-6 space-y-3 md:space-y-0 px-6 md:flex md:justify-between md:items-center rounded-b-xl text-theme-secondary-900 md:bg-theme-secondary-100 dark:text-theme-dark-200 dark:md:bg-theme-dark-950">
+                <div class="py-6 px-6 space-y-3 rounded-b-xl md:flex md:justify-between md:items-center md:space-y-0 text-theme-secondary-900 md:bg-theme-secondary-100 dark:text-theme-dark-200 dark:md:bg-theme-dark-950">
                     <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
                         @lang('ui::pages.contact.social.subtitle')
                     </div>
@@ -87,20 +87,20 @@
                 {{ $additionalDescription }}
             </div>
 
-            <div class="flex justify-between items-center px-4 mt-4 space-x-3 h-[45px] md:h-14 rounded border border-theme-secondary-300 bg-theme-secondary-100 dark:border-theme-dark-700 dark:bg-theme-dark-950">
-                <div class="flex items-center space-x-2 min-w-0 text-theme-secondary-700 dark:text-theme-dark-300 leading-5.25">
+            <div class="flex justify-between items-center px-4 mt-4 space-x-3 rounded border md:h-14 h-[45px] border-theme-secondary-300 bg-theme-secondary-100 dark:border-theme-dark-700 dark:bg-theme-dark-950">
+                <div class="flex items-center space-x-2 min-w-0 text-theme-secondary-700 leading-5.25 dark:text-theme-dark-300">
                     <x-ark-icon
                         name="paper-plane"
                         size="sm"
                         class="flex-shrink-0"
                     />
 
-                    <span class="font-semibold truncate text-lg">{{ $email }}</span>
+                    <span class="text-lg font-semibold truncate">{{ $email }}</span>
                 </div>
 
                 <x-ark-clipboard
                     :value="$email"
-                    class="md:button-secondary flex flex-shrink-0 md:h-8 md:px-4 md:py-1.5 items-center md:space-x-2"
+                    class="flex flex-shrink-0 items-center md:py-1.5 md:px-4 md:space-x-2 md:h-8 md:button-secondary"
                     no-styling
                 >
                     <span class="hidden md:inline">@lang('actions.copy')</span>
@@ -112,7 +112,7 @@
             </a>
 
             @if ($emailHint)
-                <p class="mt-2 text-xs text-theme-secondary-500 dark:text-theme-dark-500 font-semibold">
+                <p class="mt-2 text-xs font-semibold text-theme-secondary-500 dark:text-theme-dark-500">
                     {{ $emailHint }}
                 </p>
             @endif
