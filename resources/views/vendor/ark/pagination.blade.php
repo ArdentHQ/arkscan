@@ -5,8 +5,8 @@
     x-data="Pagination('{{ $pageName }}', {{ $paginator->lastPage() }})"
     class="pagination-wrapper"
 >
-    <div class="relative pagination-pages-mobile">
-        <form x-show="search" name="searchForm" type="get" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 dark:bg-theme-secondary-800">
+    <div class="pagination-pages-mobile relative">
+        <form x-show="search" name="searchForm" type="get" class="bg-theme-primary-100 dark:bg-theme-secondary-800 absolute left-0 z-10 flex h-full w-full overflow-hidden rounded px-2">
             <input
                 x-model.number="page"
                 type="number"
@@ -14,16 +14,16 @@
                 max="{{ $paginator->lastPage() }}"
                 name="{{ $pageName }}"
                 placeholder="@lang ('ui::actions.enter_the_page')"
-                class="py-2 px-3 w-full bg-transparent dark:text-theme-secondary-200"
+                class="dark:text-theme-secondary-200 w-full bg-transparent px-3 py-2"
                 x-on:blur="blurHandler"
             />
             @foreach($urlParams as $key => $value)
             <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
             @endforeach
-            <button type="submit" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" :disabled="!page">
+            <button type="submit" class="text-theme-secondary-500 dark:text-theme-secondary-200 hover:text-theme-primary-500 p-2 transition-default" :disabled="!page">
                 <x-ark-icon name="magnifying-glass" size="sm" />
             </button>
-            <button type="button" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" x-on:click="hideSearch()">
+            <button type="button" class="text-theme-secondary-500 dark:text-theme-secondary-200 hover:text-theme-primary-500 p-2 transition-default" x-on:click="hideSearch()">
                 <x-ark-icon name="cross" size="sm" />
             </button>
         </form>
@@ -47,14 +47,14 @@
         <button
             wire:click="gotoPage(1)"
             x-on:click="hideSearch"
-            class="items-center button-secondary pagination-button-mobile" @if($paginator->onFirstPage()) disabled @endif
+            class="button-secondary pagination-button-mobile items-center" @if($paginator->onFirstPage()) disabled @endif
         >
             <x-ark-icon name="arrows.double-chevron-left" size="xs" />
         </button>
         <button
             wire:click="gotoPage({{ $paginator->currentPage() - 1 }})"
             x-on:click="hideSearch"
-            class="items-center button-secondary pagination-button-mobile" @if($paginator->onFirstPage()) disabled @endif
+            class="button-secondary pagination-button-mobile items-center" @if($paginator->onFirstPage()) disabled @endif
         >
             <div class="flex items-center">
                 <x-ark-icon class="inline-block lg:hidden" name="arrows.chevron-left" size="xs" />
@@ -63,7 +63,7 @@
         </button>
 
         <div class="relative">
-            <form x-show="search" name="searchForm" type="get" class="flex overflow-hidden absolute left-0 z-10 px-2 w-full h-full rounded bg-theme-primary-100 pagination-form-desktop dark:bg-theme-secondary-800">
+            <form x-show="search" name="searchForm" type="get" class="bg-theme-primary-100 pagination-form-desktop dark:bg-theme-secondary-800 absolute left-0 z-10 flex h-full w-full overflow-hidden rounded px-2">
                 <input
                     x-ref="search"
                     x-model.number="page"
@@ -72,21 +72,21 @@
                     max="{{ $paginator->lastPage() }}"
                     name="{{ $pageName }}"
                     placeholder="@lang ('ui::actions.enter_the_page_number')"
-                    class="py-2 px-3 w-full bg-transparent dark:text-theme-secondary-200"
+                    class="dark:text-theme-secondary-200 w-full bg-transparent px-3 py-2"
                     x-on:blur="blurHandler"
                 />
                 @foreach($urlParams as $key => $value)
                 <input type="hidden" name="{{ $key }}" value="{{ $value }}" />
                 @endforeach
-                <button type="submit" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" :disabled="!page">
+                <button type="submit" class="text-theme-secondary-500 dark:text-theme-secondary-200 hover:text-theme-primary-500 p-2 transition-default" :disabled="!page">
                     <x-ark-icon name="magnifying-glass" size="sm" />
                 </button>
-                <button type="button" class="p-2 text-theme-secondary-500 transition-default dark:text-theme-secondary-200 hover:text-theme-primary-500" x-on:click="hideSearch">
+                <button type="button" class="text-theme-secondary-500 dark:text-theme-secondary-200 hover:text-theme-primary-500 p-2 transition-default" x-on:click="hideSearch">
                     <x-ark-icon name="cross" size="sm" />
                 </button>
             </form>
 
-            <div class="hidden px-2 rounded md:flex bg-theme-primary-100 flex-inline dark:bg-theme-secondary-800">
+            <div class="bg-theme-primary-100 flex-inline dark:bg-theme-secondary-800 hidden rounded px-2 md:flex">
                 @php ($pageIndex = 1)
 
                 @foreach ($elements as $element)
@@ -120,7 +120,7 @@
                 @endforeach
             </div>
 
-            <div class="md:hidden pagination-pages">
+            <div class="pagination-pages md:hidden">
                 <button
                     x-on:click="toggleSearch"
                     type="button"
@@ -140,7 +140,7 @@
         <button
             wire:click="gotoPage({{ $paginator->currentPage() + 1 }})"
             x-on:click="hideSearch"
-            class="items-center button-secondary pagination-button-mobile" @if($paginator->currentPage() === $paginator->lastPage()) disabled @endif
+            class="button-secondary pagination-button-mobile items-center" @if($paginator->currentPage() === $paginator->lastPage()) disabled @endif
         >
             <div class="flex items-center">
                 <span class="hidden lg:flex">@lang('ui::generic.next')</span>
@@ -150,7 +150,7 @@
         <button
             wire:click="gotoPage({{ $paginator->lastPage() }})"
             x-on:click="hideSearch"
-            class="items-center button-secondary pagination-button-mobile"
+            class="button-secondary pagination-button-mobile items-center"
             @if($paginator->currentPage() === $paginator->lastPage()) disabled @endif
         >
             <x-ark-icon name="arrows.double-chevron-right" size="xs" />
