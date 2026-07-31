@@ -109,7 +109,7 @@ return [
         ],
     ],
 
-    'contact_email' => 'contact@arkscan.io',
+    'contact_email' => 'support@arkscan.io',
 
     'wallet_submitted' => [
         'address' => env('ARKSCAN_MAIL_WALLET_SUBMITTED', 'support@ardenthq.com'),
