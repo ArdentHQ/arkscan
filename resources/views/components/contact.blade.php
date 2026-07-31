@@ -1,6 +1,5 @@
 @props([
-    'subject' => null,
-    'message' => null,
+    'email' => config('mail.contact_email'),
     'discordUrl' => null,
     'socialIconHoverClass' => 'hover:bg-theme-secondary-300 hover:text-theme-secondary-900 dark:hover:bg-theme-dark-700 dark:hover:text-theme-dark-50',
     'documentationUrl' => trans('ui::urls.documentation'),
@@ -10,8 +9,8 @@
     'helpDescription' => trans('ui::pages.contact.let_us_help.description'),
     'additionalTitle' => trans('ui::pages.contact.additional_support.title'),
     'additionalDescription' => trans('ui::pages.contact.additional_support.description'),
-    'formTitle' => trans('ui::pages.contact.form.title'),
-    'formDescription' => trans('ui::pages.contact.form.description'),
+    'sendEmailLabel' => trans('ui::actions.send'),
+    'emailHint' => null,
     'contactNetworks' => [
         'brands.x' => trans('ui::urls.x'),
         'brands.facebook' => trans('ui::urls.facebook'),
@@ -25,7 +24,7 @@
     <div class="flex flex-col pb-8 mx-auto max-w-7xl md:px-10 lg:flex-row dark:text-theme-dark-200">
         <div class="flex flex-col flex-1 justify-between rounded-xl md:border lg:mr-1.5 lg:w-1/2 border-theme-secondary-300 dark:border-theme-dark-700">
             <div class="p-6">
-                <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">{{ $helpTitle }}</div>
+                <div class="font-semibold md:text-lg text-theme-secondary-900 leading-5.25 dark:text-theme-dark-50">{{ $helpTitle }}</div>
 
                 <div class="mt-2 paragraph-description">
                     {{ $helpDescription }}
@@ -54,22 +53,10 @@
                 </div>
             </div>
 
-            <hr class="mx-6 border-theme-secondary-300 dark:border-theme-dark-700" />
-
-            <div class="flex-1 p-6">
-                <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
-                    {{ $additionalTitle }}
-                </div>
-
-                <div class="mt-2 paragraph-description">
-                    {{ $additionalDescription }}
-                </div>
-            </div>
-
             <hr class="mx-6 md:hidden border-theme-secondary-300 dark:border-theme-dark-700" />
 
             @if (count($contactNetworks) > 0)
-                <div class="p-6 space-y-3 rounded-b-xl text-theme-secondary-900 md:bg-theme-secondary-100 dark:text-theme-dark-200 dark:md:bg-theme-dark-950">
+                <div class="py-6 px-6 space-y-3 rounded-b-xl md:flex md:justify-between md:items-center md:py-4 md:space-y-0 text-theme-secondary-900 md:bg-theme-secondary-100 dark:text-theme-dark-200 dark:md:bg-theme-dark-950">
                     <div class="font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
                         @lang('ui::pages.contact.social.subtitle')
                     </div>
@@ -89,114 +76,46 @@
             @endif
         </div>
 
-        <x-general.mobile-divider class="mb-6" />
+        <x-general.mobile-divider />
 
-        <div
-            class="flex flex-col flex-1 px-6 rounded-xl md:py-6 md:mt-3 md:border lg:mt-0 lg:ml-1.5 border-theme-secondary-300 dark:border-theme-dark-700"
-            x-data="{ subject: '{{ old('subject', $subject) }}' }"
-        >
+        <div class="flex flex-col flex-1 p-6 rounded-xl md:mt-3 md:border lg:mt-0 lg:ml-1.5 border-theme-secondary-300 leading-5.25 dark:border-theme-dark-700">
             <div class="mb-2 font-semibold md:text-lg text-theme-secondary-900 dark:text-theme-dark-50">
-                {{ $formTitle }}
+                {{ $additionalTitle }}
             </div>
 
-            <div>
-                {{ $formDescription }}
+            <div class="paragraph-description dark:text-theme-dark-300">
+                {{ $additionalDescription }}
             </div>
 
-            <form
-                id="contact-form"
-                method="POST"
-                action="{{ route('contact') }}#contact-form"
-                class="flex flex-col flex-1 space-y-3"
-                enctype="multipart/form-data"
-            >
-                @csrf
-
-                @honeypot
-
-                <div class="flex flex-col space-y-3 lg:flex-col lg:space-y-3 lg:space-x-0 md-lg:flex-row md-lg:space-y-0 md-lg:space-x-3">
-                    <div class="flex flex-col space-y-3 md:flex-row md:space-y-0 md:space-x-3 lg:flex-1 md-lg:flex-2">
-                        <x-ark-input
-                            name="name"
-                            :label="trans('ui::forms.name')"
-                            autocomplete="name"
-                            class="flex-1"
-                            input-class="h-14"
-                            :value="old('name')"
-                            :errors="$errors"
-                        />
-
-                        <x-ark-input
-                            type="email"
-                            name="email"
-                            :label="trans('ui::forms.email')"
-                            autocomplete="email"
-                            class="flex-1"
-                            input-class="h-14"
-                            :value="old('email')"
-                            :errors="$errors"
-                        />
-                    </div>
-
-                    <x-ark-select
-                        name="subject"
-                        on-change="subject = $event.target.value"
-                        :label="trans('ui::forms.subject')"
-                        :errors="$errors"
-                        class="md-lg:flex-1"
-                        select-class="h-14"
-                    >
-                        @foreach(config('web.contact.subjects') as $contactSubject)
-                            <option
-                                value="{{ $contactSubject['value'] }}"
-                                @if(old('subject', $subject) === $contactSubject['value']) selected @endif
-                            >
-                                {{ $contactSubject['label'] }}
-                            </option>
-                        @endforeach
-                    </x-ark-select>
-                </div>
-
-                <x-ark-textarea
-                    name="message"
-                    :label="trans('ui::forms.message')"
-                    rows="2"
-                    class="w-full"
-                    :errors="$errors"
-                    :placeholder="trans('ui::pages.contact.message_placeholder')"
-                >{{ old('message', $message) }}</x-ark-textarea>
-
-                <div x-show="subject === 'job_application'" x-cloak>
-                    <x-ark-input
-                        type="file"
-                        name="attachment"
-                        :label="trans('ui::forms.attachment_pdf')"
-                        class="w-full"
-                        :errors="$errors"
-                        accept="application/pdf"
+            <div class="flex justify-between items-center px-4 mt-4 space-x-3 rounded border md:mt-6 md:h-14 h-[45px] border-theme-secondary-300 bg-theme-secondary-100 dark:border-theme-dark-700 dark:bg-theme-dark-950">
+                <div class="flex items-center space-x-2 min-w-0 text-theme-secondary-700 leading-5.25 dark:text-theme-dark-300">
+                    <x-ark-icon
+                        name="paper-plane"
+                        size="sm"
+                        class="flex-shrink-0"
                     />
+
+                    <span class="text-lg font-semibold truncate">{{ $email }}</span>
                 </div>
 
-                <div class="flex relative flex-col flex-1 justify-end pt-1">
-                    <button
-                        type="submit"
-                        x-data="{
-                            success: {{ (flash()->level === 'success') ? 'true' : 'false' }},
-                            error: {{ (flash()->level === 'error') ? 'true' : 'false' }}
-                        }"
-                        @if(flash()->message)
-                            x-init="livewire.dispatch('toastMessage', {
-                            message: '{{ flash()->message }}',
-                            type: '{{ flash()->level }}',
-                        })"
-                        @endif
-                        x-cloak
-                        class="button-primary"
-                    >
-                        @lang('ui::actions.send')
-                    </button>
-                </div>
-            </form>
+                <x-ark-clipboard
+                    :value="$email"
+                    class="flex flex-shrink-0 items-center md:py-1.5 md:px-4 md:space-x-2 md:h-8 md:button-secondary"
+                    no-styling
+                >
+                    <span class="hidden md:inline">@lang('actions.copy')</span>
+                </x-ark-clipboard>
+            </div>
+
+            <a href="mailto:{{ $email }}" class="block mt-4 w-full button-primary bg-theme-blue-600 dark:!bg-theme-dark-blue-500">
+                {{ $sendEmailLabel }}
+            </a>
+
+            @if ($emailHint)
+                <p class="mt-2 text-xs font-semibold text-theme-secondary-500 leading-3.75 dark:text-theme-dark-500">
+                    {{ $emailHint }}
+                </p>
+            @endif
         </div>
     </div>
 </div>
