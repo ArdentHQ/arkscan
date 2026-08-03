@@ -16,7 +16,6 @@ use App\Models\Block;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Route;
-use Spatie\Honeypot\ProtectAgainstSpam;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,11 +57,6 @@ Route::view('/statistics', 'app.statistics')->name('statistics');
 
 // Keep the route name as contact for use with the foundation component
 Route::get('/support', [SupportController::class, 'index'])->name('contact');
-Route::post('support', [SupportController::class, 'handle'])
-    ->middleware([
-        ProtectAgainstSpam::class,
-        'throttle:5,60',
-    ]);
 
 // Explorer 3.0 BC - Remove after some time!
 Route::redirect('/top-wallets', '/top-accounts');
