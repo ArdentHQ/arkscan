@@ -77,7 +77,7 @@ jobs:
             - name: Format
               run: |
                   export PATH="$(pnpm global bin):$PATH"
-                  pnpm add -g rustywind
+                  pnpm add -g rustywind@0.24.3
                   rustywind --write resources/views
 
             - uses: stefanzweifel/git-auto-commit-action@v5
