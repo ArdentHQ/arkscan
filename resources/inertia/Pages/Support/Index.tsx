@@ -2,14 +2,14 @@ import Layout from "@/Layout";
 import PageHeader from "@/Components/PageHeader/PageHeader";
 import { useTranslation } from "react-i18next";
 import InformationCard from "@/Components/Contact/InformationCard";
-import useShareData from "@/hooks/use-shared-data";
+import useSharedData from "@/hooks/use-shared-data";
 import { SupportProps } from "../Support.contracts";
-import SupportForm from "@/Components/Contact/SupportForm";
+import EmailContact from "@/Components/Contact/EmailContact";
 import MobileDivider from "@/Components/General/MobileDivider";
 
 export default function SupportIndex() {
     const { t } = useTranslation();
-    const { socialNetworkUrls, subjects } = useShareData<SupportProps>();
+    const { socialNetworkUrls, contactEmail } = useSharedData<SupportProps>();
 
     return (
         <Layout>
@@ -22,7 +22,7 @@ export default function SupportIndex() {
 
                 <MobileDivider />
 
-                <SupportForm subjects={subjects} />
+                <EmailContact email={contactEmail} />
             </div>
         </Layout>
     );

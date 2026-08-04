@@ -4,6 +4,7 @@ import classNames from "classnames";
 import CopyIcon from "@ui/icons/copy.svg?react";
 import DoubleCheckMarkIcon from "@ui/icons/double-check-mark.svg?react";
 import Tooltip from "./Tooltip";
+import { useTranslation } from "react-i18next";
 
 export default function Clipboard({
     value,
@@ -27,6 +28,8 @@ export default function Clipboard({
     children?: React.ReactNode;
     testId?: string;
 }) {
+    const { t } = useTranslation();
+
     const [clipboardInstance, setClipboardInstance] = useState<any>();
     const [showTooltip, setShowTooltip] = useState(false);
 
@@ -50,7 +53,7 @@ export default function Clipboard({
 
     return (
         <div className={wrapperClass} data-testid={testId}>
-            <Tooltip content={tooltipContent || ""} visible={showTooltip}>
+            <Tooltip content={tooltipContent || t("tooltips.copied")} visible={showTooltip}>
                 <button
                     type="button"
                     className={classNames({

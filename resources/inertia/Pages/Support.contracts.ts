@@ -3,12 +3,7 @@ export interface SocialNetworkUrls {
     github: string;
 }
 
-export interface SubjectOption {
-    value: string;
-    label: string;
-}
-
 export interface SupportProps {
     socialNetworkUrls: SocialNetworkUrls;
-    subjects: SubjectOption[];
+    contactEmail: string;
 }

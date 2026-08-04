@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import TwitterIcon from "@ui/icons/brands/x.svg?react";
 import GitHubIcon from "@ui/icons/brands/solid/github.svg?react";
-import Card from "../General/Card";
 import SocialSquare, { InformationCardNetwork } from "./SocialSquare";
 import { SocialNetworkUrls } from "@/Pages/Support.contracts";
 
@@ -40,19 +39,9 @@ export default function InformationCard({ socialNetworkUrls }: { socialNetworkUr
                 </div>
             </div>
 
-            <hr className="border-theme-secondary-300 dark:border-theme-dark-700 mx-6" />
-
-            <div className="flex-1 p-6">
-                <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold md:text-lg">
-                    {t("pages.contact.additional_support.title", { ns: "ui" })}
-                </div>
-
-                <div className="paragraph-description mt-2">{t("pages.support.additional")}</div>
-            </div>
-
             <hr className="border-theme-secondary-300 dark:border-theme-dark-700 mx-6 md:hidden" />
 
-            <div className="text-theme-secondary-900 dark:text-theme-dark-200 md:bg-theme-secondary-100 dark:md:bg-theme-dark-950 space-y-3 rounded-b-xl p-6">
+            <div className="text-theme-secondary-900 dark:text-theme-dark-200 md:bg-theme-secondary-100 dark:md:bg-theme-dark-950 space-y-3 rounded-b-xl px-6 py-6 md:flex md:items-center md:justify-between md:space-y-0 md:py-4">
                 <div className="text-theme-secondary-900 dark:text-theme-dark-50 font-semibold md:text-lg">
                     {t("pages.contact.social.subtitle", { ns: "ui" })}
                 </div>
