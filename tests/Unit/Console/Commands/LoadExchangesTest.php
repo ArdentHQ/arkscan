@@ -15,29 +15,35 @@ beforeEach(function () {
 
 it('loads and syncs exchanges', function () {
     $responseJson = [
-        [
-            'exchangeName' => 'Exchange 1',
-            'baseURL'      => 'http://exchange1.com',
-            'exchange'     => true,
-            'aggregator'   => false,
-            'BTC'          => true,
-            'ETH'          => false,
-            'stablecoins'  => true,
-            'other'        => false,
-            'coingeckoId'  => 'exchange1_id',
-            'icon'         => '7b',
-        ],
-        [
-            'exchangeName' => 'Exchange 2',
-            'baseURL'      => 'http://exchange2.com',
-            'exchange'     => true,
-            'aggregator'   => true,
-            'BTC'          => false,
-            'ETH'          => true,
-            'stablecoins'  => false,
-            'other'        => true,
-            'coingeckoId'  => 'exchange2_id',
-            'icon'         => '7b',
+        'data' => [
+            [
+                'name'               => 'Exchange 1',
+                'url'                => 'http://exchange1.com',
+                'isExchange'         => true,
+                'isAggregator'       => false,
+                'btc'                => true,
+                'eth'                => false,
+                'stablecoins'        => true,
+                'other'              => false,
+                'providerExchangeId' => 'exchange1_id',
+                'icon'               => '7b',
+                'price'              => 1.23,
+                'volume'             => 456.0,
+            ],
+            [
+                'name'               => 'Exchange 2',
+                'url'                => 'http://exchange2.com',
+                'isExchange'         => true,
+                'isAggregator'       => true,
+                'btc'                => false,
+                'eth'                => true,
+                'stablecoins'        => false,
+                'other'              => true,
+                'providerExchangeId' => 'exchange2_id',
+                'icon'               => '7b',
+                'price'              => null,
+                'volume'             => null,
+            ],
         ],
     ];
 
@@ -51,55 +57,61 @@ it('loads and syncs exchanges', function () {
     $this->assertDatabaseCount('exchanges', 2);
 
     $this->assertDatabaseHas('exchanges', [
-        'name'          => 'Exchange 1',
-        'url'           => 'http://exchange1.com',
-        'is_exchange'   => true,
-        'is_aggregator' => false,
-        'btc'           => true,
-        'eth'           => false,
-        'stablecoins'   => true,
-        'other'         => false,
-        'coingecko_id'  => 'exchange1_id',
-        'icon'          => '7b',
+        'name'                 => 'Exchange 1',
+        'url'                  => 'http://exchange1.com',
+        'is_exchange'          => true,
+        'is_aggregator'        => false,
+        'btc'                  => true,
+        'eth'                  => false,
+        'stablecoins'          => true,
+        'other'                => false,
+        'provider_exchange_id' => 'exchange1_id',
+        'icon'                 => '7b',
+        'price'                => 1.23,
+        'volume'               => 456.0,
     ]);
 
     $this->assertDatabaseHas('exchanges', [
-        'name'          => 'Exchange 2',
-        'url'           => 'http://exchange2.com',
-        'is_exchange'   => true,
-        'is_aggregator' => true,
-        'btc'           => false,
-        'eth'           => true,
-        'stablecoins'   => false,
-        'other'         => true,
-        'coingecko_id'  => 'exchange2_id',
-        'icon'          => '7b',
+        'name'                 => 'Exchange 2',
+        'url'                  => 'http://exchange2.com',
+        'is_exchange'          => true,
+        'is_aggregator'        => true,
+        'btc'                  => false,
+        'eth'                  => true,
+        'stablecoins'          => false,
+        'other'                => true,
+        'provider_exchange_id' => 'exchange2_id',
+        'icon'                 => '7b',
+        'price'                => null,
+        'volume'               => null,
     ]);
 });
 
 it('throws an exception if response format is unexpected', function () {
     $responseJson = [
-        [
-            'exchangeName' => 'Exchange 1',
-            'baseURL'      => 'http://exchange1.com',
-            'exchange'     => true,
-            'aggregator'   => false,
-            'BTC'          => true,
-            'ETH'          => false,
-            'stablecoins'  => true,
-            'icon'         => '7b',
-        ],
-        [
-            'exchangeName' => 'Exchange 2',
-            'baseURL'      => 'http://exchange2.com',
-            'exchange'     => true,
-            'aggregator'   => true,
-            'BTC'          => false,
-            'ETH'          => true,
-            'stablecoins'  => false,
-            'other'        => true,
-            'coingeckoId'  => 'exchange2_id',
-            'icon'         => '7b',
+        'data' => [
+            [
+                'name'         => 'Exchange 1',
+                'url'          => 'http://exchange1.com',
+                'isExchange'   => true,
+                'isAggregator' => false,
+                'btc'          => true,
+                'eth'          => false,
+                'stablecoins'  => true,
+                'icon'         => '7b',
+            ],
+            [
+                'name'               => 'Exchange 2',
+                'url'                => 'http://exchange2.com',
+                'isExchange'         => true,
+                'isAggregator'       => true,
+                'btc'                => false,
+                'eth'                => true,
+                'stablecoins'        => false,
+                'other'              => true,
+                'providerExchangeId' => 'exchange2_id',
+                'icon'               => '7b',
+            ],
         ],
     ];
 
@@ -124,11 +136,11 @@ it('throws an exception if failed to load exchanges list', function () {
     $this->artisan('exchanges:load');
 });
 
-it('throws an exception if no exchanges list source is configured', function () {
-    config()->set('arkscan.exchanges.list_src', '');
+it('throws an exception if ark pricing url is not configured', function () {
+    config()->set('arkscan.market_data.ark_pricing.url', '');
 
     $this->expectException(Exception::class);
-    $this->expectExceptionMessage('No exchanges list source configured');
+    $this->expectExceptionMessage('ARK_PRICING_URL is not configured');
 
     $this->artisan('exchanges:load');
 });

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use App\Contracts\MarketDataProvider;
-use App\Services\MarketDataProviders\CryptoCompare;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\RefreshDatabaseState;
@@ -32,10 +30,7 @@ abstract class TestCase extends BaseTestCase
 
         Config::set('arkscan.networks.development.knownWallets', null);
 
-        $this->app->singleton(
-            MarketDataProvider::class,
-            fn () => new CryptoCompare()
-        );
+        Config::set('arkscan.market_data.ark_pricing.url', 'http://ark-pricing.localhost');
     }
 
     /**

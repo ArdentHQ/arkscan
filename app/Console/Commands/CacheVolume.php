@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Contracts\MarketDataProvider;
-use App\Exceptions\CoinGeckoThrottledException;
+use App\Exceptions\MarketDataThrottledException;
 use App\Facades\Network;
 use App\Services\Cache\CryptoDataCache;
 use Illuminate\Console\Command;
@@ -52,7 +52,7 @@ final class CacheVolume extends Command
                     $crypto->setVolume($currency, (string) $volume);
                 });
             }
-        } catch (CoinGeckoThrottledException) {
+        } catch (MarketDataThrottledException) {
             // Ignore and we'll try next time
         }
 

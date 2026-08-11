@@ -8,7 +8,6 @@ use App\Console\Commands\Concerns\DispatchesStatisticsEvents;
 use App\Contracts\MarketDataProvider;
 use App\Events\Statistics\MarketData;
 use App\Facades\Network;
-use App\Services\Cache\CryptoDataCache;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -33,7 +32,7 @@ final class CacheMarketDataStatistics extends Command
      */
     protected $description = 'Cache expensive market data statistics';
 
-    public function handle(MarketDataProvider $marketDataProvider, StatisticsCache $cache, CryptoDataCache $crypto): void
+    public function handle(MarketDataProvider $marketDataProvider, StatisticsCache $cache): void
     {
         if (! Network::canBeExchanged()) {
             return;
@@ -44,10 +43,9 @@ final class CacheMarketDataStatistics extends Command
 
         $currencies = collect($allCurrencies)->pluck('currency');
 
-        $currencies->each(function ($currency) use ($cache, $crypto): void {
-            // Grab prices from cache based on last cached value from CachePrices command
-            $allTimeData = $crypto->getHistoricalFullResponse(Network::currency(), $currency);
-            $dailyData   = $crypto->getHistoricalHourlyFullResponse(Network::currency(), $currency);
+        $currencies->each(function ($currency) use ($cache, $marketDataProvider): void {
+            $allTimeData = $marketDataProvider->marketChart(Network::currency(), $currency);
+            $dailyData   = $marketDataProvider->marketChartHourly(Network::currency(), $currency);
 
             if (count($allTimeData) === 0 || count($dailyData) === 0) {
                 return;
@@ -58,7 +56,7 @@ final class CacheMarketDataStatistics extends Command
             $this->cacheMarketCapStats($currency, $allTimeData, $cache);
         });
 
-        $this->cacheAllTimePrices($currencies, $cache, $crypto);
+        $this->cacheAllTimePrices($currencies, $cache, $marketDataProvider);
 
         $this->dispatchEvent(MarketData::class);
     }
@@ -76,53 +74,40 @@ final class CacheMarketDataStatistics extends Command
         $this->cacheDailyPriceStats($currency, $dailyData, $cache);
     }
 
-    private function cacheAllTimePrices(Collection $currencies, StatisticsCache $statisticsCache, CryptoDataCache $cryptoCache): void
+    private function cacheAllTimePrices(Collection $currencies, StatisticsCache $statisticsCache, MarketDataProvider $marketDataProvider): void
     {
-        $priceData = $cryptoCache->getPriceData(Network::currency());
+        $highLows = $marketDataProvider->allTimeHighLow(Network::currency(), $currencies);
 
         foreach ($currencies as $currency) {
-            /** @var float|null $priceAtl */
-            $priceAtl = Arr::get($priceData, 'market_data.atl.'.strtolower($currency));
+            /** @var array{ath: array{value: float, timestamp: int}|null, atl: array{value: float, timestamp: int}|null}|null $highLow */
+            $highLow = $highLows->get(strtoupper($currency));
 
-            /** @var string|null $priceAtlDate */
-            $priceAtlDate = Arr::get($priceData, 'market_data.atl_date.'.strtolower($currency));
-
-            $priceAtlTimestamp = null;
-            if ($priceAtlDate !== null) {
-                $priceAtlTimestamp = Carbon::parse($priceAtlDate)->getTimestamp();
+            if ($highLow === null) {
+                continue;
             }
 
-            /** @var float|null $priceAth */
-            $priceAth = Arr::get($priceData, 'market_data.ath.'.strtolower($currency));
-
-            /** @var string|null $priceAtlDate */
-            $priceAthDate = Arr::get($priceData, 'market_data.ath_date.'.strtolower($currency));
-
-            $priceAthTimestamp = null;
-            if ($priceAthDate !== null) {
-                $priceAthTimestamp = Carbon::parse($priceAthDate)->getTimestamp();
-            }
-
-            if ($priceAtl !== null && $priceAtlTimestamp !== null) {
+            $priceAtl = $highLow['atl'];
+            if ($priceAtl !== null) {
                 $existingValue = $statisticsCache->getPriceAtl($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $priceAtlTimestamp) {
+                if (Arr::get($existingValue, 'timestamp') !== $priceAtl['timestamp']) {
                     $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== floatval($priceAtl)) {
+                } elseif (Arr::get($existingValue, 'value') !== $priceAtl['value']) {
                     $this->hasChanges = true;
                 }
 
-                $statisticsCache->setPriceAtl($currency, $priceAtlTimestamp, $priceAtl);
+                $statisticsCache->setPriceAtl($currency, $priceAtl['timestamp'], $priceAtl['value']);
             }
 
-            if ($priceAth !== null && $priceAthTimestamp !== null) {
+            $priceAth = $highLow['ath'];
+            if ($priceAth !== null) {
                 $existingValue = $statisticsCache->getPriceAth($currency) ?? [];
-                if (Arr::get($existingValue, 'timestamp') !== $priceAthTimestamp) {
+                if (Arr::get($existingValue, 'timestamp') !== $priceAth['timestamp']) {
                     $this->hasChanges = true;
-                } elseif (Arr::get($existingValue, 'value') !== floatval($priceAth)) {
+                } elseif (Arr::get($existingValue, 'value') !== $priceAth['value']) {
                     $this->hasChanges = true;
                 }
 
-                $statisticsCache->setPriceAth($currency, $priceAthTimestamp, $priceAth);
+                $statisticsCache->setPriceAth($currency, $priceAth['timestamp'], $priceAth['value']);
             }
         }
     }

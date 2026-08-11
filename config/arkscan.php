@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Services\MarketDataProviders\CoinGecko;
-
 $mainnetExplorer = env('ARKSCAN_MAINNET_EXPLORER_URL', 'https://live.arkscan.io');
 $testnetExplorer = env('ARKSCAN_TESTNET_EXPLORER_URL', 'https://test.arkscan.io');
 
@@ -11,8 +9,6 @@ return [
     'network'                           => env('ARKSCAN_NETWORK', 'development'),
 
     'vault_url'                         => env('ARKSCAN_VAULT_URL', 'https://app.arkvault.io/#/'),
-
-    'market_data_provider_service'      => env('ARKSCAN_MARKET_DATA_PROVIDER_SERVICE', CoinGecko::class),
 
     'networks'                          => [
         'production'  => [
@@ -97,14 +93,10 @@ return [
     ],
 
     'market_data' => [
-        'coingecko' => [
-            'exception_frequency' => env('COINGECKO_EXCEPTION_FREQUENCY', 60),
-            'ignore_errors'       => env('COINGECKO_EXCEPTION_IGNORE_ERRORS', false),
-        ],
-
-        'cryptocompare' => [
-            'exception_frequency' => env('CRYPTOCOMPARE_EXCEPTION_FREQUENCY', 60),
-            'ignore_errors'       => env('CRYPTOCOMPARE_EXCEPTION_IGNORE_ERRORS', false),
+        'ark_pricing' => [
+            'url'                 => env('ARK_PRICING_URL'),
+            'exception_frequency' => env('ARK_PRICING_EXCEPTION_FREQUENCY', 60),
+            'ignore_errors'       => env('ARK_PRICING_EXCEPTION_IGNORE_ERRORS', false),
         ],
     ],
 

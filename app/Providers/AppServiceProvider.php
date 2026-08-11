@@ -8,12 +8,12 @@ use App\Contracts\MarketDataProvider;
 use App\Contracts\Services\Monitor\MissedBlocksCalculator as MissedBlocksCalculatorContract;
 use App\Facades\Network;
 use App\Services\BigNumber;
+use App\Services\MarketDataProviders\ArkPricing;
 use App\Services\Monitor\MissedBlocksCalculator;
 use ARKEcosystem\Foundation\DataBags\DataBag;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -32,7 +32,7 @@ final class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(
             MarketDataProvider::class,
-            fn () => new (Config::get('arkscan.market_data_provider_service'))
+            fn () => new ArkPricing()
         );
 
         $this->app->singleton(
@@ -56,7 +56,7 @@ final class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.app', fn ($view) => $view->with(['navigationEntries' => $this->navigationEntries()]));
 
-        RateLimiter::for('coingecko_api_rate', fn () => Limit::perMinute(10));
+        RateLimiter::for('market_data_api_rate', fn () => Limit::perMinute(10));
     }
 
     private function registerCollectionMacros(): void

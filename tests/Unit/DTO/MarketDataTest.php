@@ -15,25 +15,13 @@ it('should make an instance that has all properties', function () {
     expect($subject->priceChange())->toBe(1.62);
 });
 
-it('should make an instance from the coingecko response', function () {
+it('should make an instance from the ark-pricing response', function () {
     $response = [];
 
-    Arr::set($response, 'market_data.current_price.usd', 11.21);
-    Arr::set($response, 'market_data.price_change_percentage_24h_in_currency.usd', 1.62 * 100);
+    Arr::set($response, 'price', 11.21);
+    Arr::set($response, 'change24h', 1.62 * 100);
 
-    $subject = MarketData::fromCoinGeckoApiResponse('USD', $response);
-
-    expect($subject->price())->toBe(11.21);
-    expect($subject->priceChange())->toBe(1.62);
-});
-
-it('should make an instance from the cryptocompare response', function () {
-    $response = [];
-
-    Arr::set($response, 'RAW.ARK.USD.PRICE', 11.21);
-    Arr::set($response, 'RAW.ARK.USD.CHANGEPCT24HOUR', 1.62 * 100);
-
-    $subject = MarketData::fromCryptoCompareApiResponse('ARK', 'USD', $response);
+    $subject = MarketData::fromArkPricingApiResponse($response);
 
     expect($subject->price())->toBe(11.21);
     expect($subject->priceChange())->toBe(1.62);

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Contracts\MarketDataProvider;
-use App\Exceptions\CoinGeckoThrottledException;
+use App\Exceptions\MarketDataThrottledException;
 use App\Jobs\FetchExchangeDetails;
 use App\Models\Exchange;
 use Illuminate\Queue\Events\JobProcessed;
@@ -62,7 +62,7 @@ it('should release the job again if throttled exception', function () {
     $this->mock(MarketDataProvider::class)
         ->shouldReceive('exchangeDetails')
         ->once()
-        ->andThrow(new CoinGeckoThrottledException());
+        ->andThrow(new MarketDataThrottledException());
 
     $exchange = Exchange::factory()->create();
 
@@ -75,13 +75,13 @@ it('retries after 60s', function () {
     expect((new FetchExchangeDetails($exchange))->retryAfter())->toBe(60);
 });
 
-it('should remove the job from the queue if coingecko throttle us for too long', function () {
+it('should remove the job from the queue if the provider throttles us for too long', function () {
     $exchange = Exchange::factory()->create();
     $job      = new FetchExchangeDetails($exchange);
 
     $this->mock(MarketDataProvider::class)
         ->shouldReceive('exchangeDetails')
-        ->andThrow(new CoinGeckoThrottledException())
+        ->andThrow(new MarketDataThrottledException())
         ->once();
 
     $redisJobMock = $this->mock(
@@ -107,7 +107,7 @@ it('should release the job to the queue if attempts less than tries', function (
 
     $this->mock(MarketDataProvider::class)
         ->shouldReceive('exchangeDetails')
-        ->andThrow(new CoinGeckoThrottledException())
+        ->andThrow(new MarketDataThrottledException())
         ->once();
 
     $redisJobMock = $this->mock(

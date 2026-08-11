@@ -1,0 +1,10 @@
+{
+    "data": {
+        "exchange": "binance",
+        "coins": ["ark"],
+        "tickers": [
+            { "base": "ARK", "target": "USDT", "price": 0.411, "volume": 820000, "timestamp": "2024-01-15T12:00:00Z" },
+            { "base": "ARK", "target": "BTC", "price": 0.413, "volume": 410000, "timestamp": "2024-01-15T12:00:00Z" }
+        ]
+    }
+}
