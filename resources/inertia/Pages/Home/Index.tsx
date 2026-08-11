@@ -17,7 +17,7 @@ import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 
 function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transactions">) {
     const { currentTab } = useTabs();
-    const { listen } = useWebhooks();
+    const { listen, enabled: usesBroadcasting } = useWebhooks();
 
     useTabPolling((tab: string, callback?: CallableFunction) => {
         let pollParameters: string[] = [];
@@ -35,7 +35,7 @@ function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transact
                 }
             },
         });
-    });
+    }, !usesBroadcasting);
 
     useEffect(() => {
         if (currentTab === "transactions") {
