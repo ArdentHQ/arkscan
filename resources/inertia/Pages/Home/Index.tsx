@@ -5,7 +5,7 @@ import HomeTransactionsTableWrapper from "@/Components/Home/TransactionsTable";
 import Layout from "@/Layout";
 import PageHandlerProvider from "@/Providers/PageHandler/PageHandlerProvider";
 import { PageProps } from "@inertiajs/core";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import Statistics from "@/Components/Home/Statistics";
 import TabsProvider from "@/Providers/Tabs/TabsProvider";
 import { router } from "@inertiajs/react";
@@ -13,9 +13,11 @@ import useSharedData from "@/hooks/use-shared-data";
 import { useTabPolling } from "@/hooks/use-tab-polling";
 import { useTabs } from "@/Providers/Tabs/TabsContext";
 import { useTranslation } from "react-i18next";
+import useWebhooks from "@/Providers/Webhooks/useWebhooks";
 
 function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transactions">) {
     const { currentTab } = useTabs();
+    const { listen, enabled: usesBroadcasting } = useWebhooks();
 
     useTabPolling((tab: string, callback?: CallableFunction) => {
         let pollParameters: string[] = [];
@@ -33,7 +35,21 @@ function HomeTabs({ blocks, transactions }: Pick<HomeProps, "blocks" | "transact
                 }
             },
         });
-    });
+    }, !usesBroadcasting);
+
+    useEffect(() => {
+        if (currentTab === "transactions") {
+            return listen("transactions", "NewTransaction", () => {
+                router.reload({ only: ["transactions"] });
+            });
+        }
+
+        if (currentTab === "blocks") {
+            return listen("blocks", "NewBlock", () => {
+                router.reload({ only: ["blocks"] });
+            });
+        }
+    }, [currentTab]);
 
     return (
         <div id="home:tabs:content" className="scroll-mt-13 sm:scroll-mt-16 md:scroll-mt-[123px]">

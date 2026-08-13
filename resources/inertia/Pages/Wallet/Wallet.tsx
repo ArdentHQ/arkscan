@@ -38,7 +38,7 @@ const WalletTabs = ({
     voters?: IPaginatedResponse<IWallet>;
     filters: ITabbedData<IFilters>;
 }) => {
-    const { listen } = useWebhooks();
+    const { listen, enabled: usesBroadcasting } = useWebhooks();
     const { wallet } = useSharedData<WalletProps>();
 
     const { currentTab } = useTabs();
@@ -66,7 +66,7 @@ const WalletTabs = ({
                 }
             },
         });
-    });
+    }, !usesBroadcasting);
 
     const reloadData = (only: string) => {
         router.reload({

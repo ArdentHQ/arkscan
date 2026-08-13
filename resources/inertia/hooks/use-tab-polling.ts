@@ -11,6 +11,7 @@ export function useTabPolling(
         callback?: CallableFunction,
         onCancelToken?: (onCancelToken: CancelToken) => void,
     ) => void,
+    enabled = true,
 ) {
     const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const pollingCancelTokenRef = useRef<CancelToken | null>(null);
@@ -44,6 +45,24 @@ export function useTabPolling(
             return;
         }
 
+        pollWithCancelToken(currentTab);
+
+        setRefreshPage((callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => {
+            pollWithCancelToken(currentTab, callback, onCancelToken);
+        });
+
+        setCancelPolling(cancelPolling);
+
+        if (!enabled) {
+            onTabChange((tab: ITab, isFirstLoad: boolean) => {
+                if (isFirstLoad) {
+                    pollWithCancelToken(tab.value);
+                }
+            });
+
+            return cancelPolling;
+        }
+
         const removeSuccessListener = router.on("success", () => {
             if (pollingTimerRef.current) {
                 clearTimeout(pollingTimerRef.current);
@@ -52,11 +71,7 @@ export function useTabPolling(
             pollingTimerRef.current = setTimeout(() => pollWithCancelToken(currentTab), 8000);
         });
 
-        if (!pollingTimerRef.current) {
-            pollingTimerRef.current = setTimeout(() => pollWithCancelToken(currentTab), 8000);
-
-            pollWithCancelToken(currentTab);
-        }
+        pollingTimerRef.current = setTimeout(() => pollWithCancelToken(currentTab), 8000);
 
         onTabChange((tab: ITab, isFirstLoad: boolean) => {
             cancelPolling();
@@ -68,15 +83,9 @@ export function useTabPolling(
             }
         });
 
-        setRefreshPage((callback?: CallableFunction, onCancelToken?: (onCancelToken: CancelToken) => void) => {
-            pollWithCancelToken(currentTab, callback, onCancelToken);
-        });
-
-        setCancelPolling(cancelPolling);
-
         return () => {
             removeSuccessListener();
             cancelPolling();
         };
-    }, [currentTab]);
+    }, [currentTab, enabled]);
 }
