@@ -193,7 +193,7 @@ it('should show input data', function ($resolution) {
         $browser->assertSeeInOrder([
             'Transaction Summary',
             'Input Data',
-            'Function: registerValidator(bytes)',
+            'Function: registerValidator(bytes,bytes)',
             'MethodID: 0x'.Network::contractMethod('validator_registration', '226f2645'),
             '[0]: '.$blsPublicKey,
         ]);

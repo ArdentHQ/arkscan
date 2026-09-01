@@ -17,9 +17,9 @@ it('returns all method signatures from ABIs and ERC-20', function () {
     // Consensus ABI methods
     expect($signatures)->toHaveKey('6dd7d8ea', 'vote(address)');
     expect($signatures)->toHaveKey('3174b689', 'unvote()');
-    expect($signatures)->toHaveKey('226f2645', 'registerValidator(bytes)');
+    expect($signatures)->toHaveKey('226f2645', 'registerValidator(bytes,bytes)');
     expect($signatures)->toHaveKey('b85f5da2', 'resignValidator()');
-    expect($signatures)->toHaveKey('8f062626', 'updateValidator(bytes)');
+    expect($signatures)->toHaveKey('8f062626', 'updateValidator(bytes,bytes)');
 
     // Multipayment ABI
     expect($signatures)->toHaveKey('084ce708', 'pay(address[],uint256[])');
