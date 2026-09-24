@@ -104,7 +104,7 @@ it('should error if webhook request fails with a message', function () {
 });
 
 it('should error if webhook request fails with a non-null value', function () {
-    Http::fake(Http::response(true, 200));
+    Http::fake(Http::response('true', 200));
 
     $webhook = Webhook::factory()->create();
 
@@ -128,9 +128,7 @@ it('should error if webhook request fails with a non-200 status code', function 
 });
 
 it('should error if webhook request throws an exception', function () {
-    Http::fake(Http::response(function () {
-        throw new Exception('Oops');
-    }, 403));
+    Http::fake(Http::failedConnection('Oops'));
 
     $webhook = Webhook::factory()->create();
 

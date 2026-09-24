@@ -25,6 +25,14 @@ trait TestDatabasesWithMultipleConnections
     ];
 
     /**
+     * The root database name prior to concatenating the token, keyed by
+     * connection name (see testDatabaseForConnection()).
+     *
+     * @var array<string, string>
+     */
+    protected static array $originalDatabaseNames = [];
+
+    /**
      * Boot a test database.
      *
      * @return void
@@ -36,12 +44,12 @@ trait TestDatabasesWithMultipleConnections
                 if (ParallelTesting::option('recreate_databases')) {
                     if ($connection !== null) {
                         Schema::connection($connection)
-                            ->dropDatabaseIfExists($this->testDatabase($database));
+                            ->dropDatabaseIfExists($this->testDatabaseForConnection($database, $connection));
 
                         return;
                     }
 
-                    Schema::dropDatabaseIfExists($this->testDatabase($database));
+                    Schema::dropDatabaseIfExists($this->testDatabaseForConnection($database, $connection));
                 }
             });
         });
@@ -58,7 +66,7 @@ trait TestDatabasesWithMultipleConnections
 
             if (Arr::hasAny($uses, $databaseTraits) && ! ParallelTesting::option('without_databases')) {
                 $this->whenNotUsingInMemoryDatabase(function ($database, $connection) use ($uses) {
-                    [$testDatabase, $created] = $this->ensureTestDatabaseExists($database);
+                    [$testDatabase, $created] = $this->ensureTestDatabaseExists($database, $connection);
 
                     $this->switchToDatabase($testDatabase, $connection);
 
@@ -78,12 +86,12 @@ trait TestDatabasesWithMultipleConnections
                 if (ParallelTesting::option('drop_databases')) {
                     if ($connection !== null) {
                         Schema::connection($connection)
-                            ->dropDatabaseIfExists($this->testDatabase($database));
+                            ->dropDatabaseIfExists($this->testDatabaseForConnection($database, $connection));
 
                         return;
                     }
 
-                    Schema::dropDatabaseIfExists($this->testDatabase($database));
+                    Schema::dropDatabaseIfExists($this->testDatabaseForConnection($database, $connection));
                 }
             });
         });
@@ -98,7 +106,7 @@ trait TestDatabasesWithMultipleConnections
      */
     protected function ensureTestDatabaseExists($database, $connection = null)
     {
-        $testDatabase = $this->testDatabase($database);
+        $testDatabase = $this->testDatabaseForConnection($database, $connection);
 
         try {
             $this->usingDatabase($testDatabase, function () {
@@ -114,6 +122,37 @@ trait TestDatabasesWithMultipleConnections
         }
 
         return [$testDatabase, false];
+    }
+
+    /**
+     * Returns the test database name for the given connection.
+     *
+     * Laravel's own `TestDatabases::testDatabase()` caches the *first*
+     * database name it ever sees in a single static property and reuses it
+     * for every subsequent call, regardless of connection - fine when a
+     * test suite only ever has one base database name, but it silently
+     * collapses this app's separate 'pgsql' and 'explorer' test databases
+     * onto the same physical database (the second `migrate:fresh` call then
+     * wipes out the tables the first one just created). Cache per
+     * connection instead.
+     *
+     * @param  string  $database
+     * @param null|mixed $connection
+     * @return string
+     */
+    protected function testDatabaseForConnection($database, $connection = null)
+    {
+        $key = $connection ?? 'default';
+
+        if (! isset(self::$originalDatabaseNames[$key])) {
+            self::$originalDatabaseNames[$key] = $database;
+        } else {
+            $database = self::$originalDatabaseNames[$key];
+        }
+
+        $token = ParallelTesting::token();
+
+        return "{$database}_test_{$token}";
     }
 
     /**

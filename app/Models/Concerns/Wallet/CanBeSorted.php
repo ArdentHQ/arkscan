@@ -45,7 +45,7 @@ trait CanBeSorted
 
         $voterCounts = collect($voterCounts);
 
-        $valuesList = implode(',', array_fill(0, count($voterCounts), '(?,?)'));
+        $valuesList = implode(',', array_fill(0, count($voterCounts), '(?, CAST(? AS bigint))'));
 
         $bindings = $voterCounts->flatMap(fn ($count, $publicKey) => [$publicKey, $count])->all();
 
@@ -70,7 +70,7 @@ trait CanBeSorted
                 ->selectRaw('wallets.*');
         }
 
-        $valuesList = implode(',', array_fill(0, count($missedBlocks), '(?,?)'));
+        $valuesList = implode(',', array_fill(0, count($missedBlocks), '(?, CAST(? AS bigint))'));
 
         $bindings = $missedBlocks->flatMap(fn ($forgingStat) => [$forgingStat->public_key, $forgingStat->count])->all();
 

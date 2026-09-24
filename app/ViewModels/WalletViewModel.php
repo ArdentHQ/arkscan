@@ -77,10 +77,10 @@ final class WalletViewModel implements ViewModel
 
     public function voteUrl(): string
     {
-        /** @var string $subject */
-        $subject = $this->delegateUsername() ?? $this->publicKey();
-
-        return ArkVaultUrlBuilder::get()->generateVote($subject);
+        return ArkVaultUrlBuilder::get()->generateVote(
+            $this->publicKey() ?? '',
+            $this->delegateUsername(),
+        );
     }
 
     public function name(): ?string

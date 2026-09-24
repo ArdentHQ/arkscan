@@ -652,7 +652,7 @@ it('should get the vote url with delegate', function () {
 
     expect($this->subject->voteUrl())->toStartWith('https://app.arkvault.io/#/?coin=ARK&nethash=');
     expect($this->subject->voteUrl())->toContain('&method=vote');
-    expect($this->subject->voteUrl())->not->toContain('&publicKey=');
+    expect($this->subject->voteUrl())->toContain('&publicKey=');
     expect($this->subject->voteUrl())->toContain('&delegate=john');
 });
 

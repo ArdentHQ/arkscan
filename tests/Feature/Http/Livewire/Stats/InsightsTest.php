@@ -44,7 +44,7 @@ it('should render transaction details', function (): void {
     Artisan::call('explorer:cache-transactions');
 
     $largestTransaction         = Transaction::find($transactionCache->getLargestIdByAmount());
-    $largestTransaction->amount = BigNumber::new($largestTransaction->amount->valueOf());
+    $largestTransaction->amount = BigNumber::new((string) $largestTransaction->amount);
 
     $transactionDetails = TransactionStatistics::make(
         [

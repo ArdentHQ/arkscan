@@ -61,7 +61,7 @@ trait CanBeSorted
                 ->selectRaw('forging_stats.*');
         }
 
-        $valuesList = implode(',', array_fill(0, count($delegateVotes), '(?,?)'));
+        $valuesList = implode(',', array_fill(0, count($delegateVotes), '(?, CAST(? AS bigint))'));
 
         $bindings = $delegateVotes->flatMap(fn ($votes, $publicKey) => [$publicKey, $votes])->all();
 
@@ -83,7 +83,7 @@ trait CanBeSorted
 
         $voterCounts = collect($voterCounts);
 
-        $valuesList = implode(',', array_fill(0, count($voterCounts), '(?,?)'));
+        $valuesList = implode(',', array_fill(0, count($voterCounts), '(?, CAST(? AS bigint))'));
 
         $bindings = $voterCounts->flatMap(fn ($count, $publicKey) => [$publicKey, $count])->all();
 

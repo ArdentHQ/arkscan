@@ -95,9 +95,7 @@ it('should error if webhook request fails with a non-2xx status code', function 
 });
 
 it('should error if webhook request throws an exception', function () {
-    Http::fake(Http::response(function () {
-        throw new Exception('Oops');
-    }, 403));
+    Http::fake(Http::failedConnection('Oops'));
 
     Artisan::call('ark:webhook:setup', [
         '--host'  => '1.2.3.4',
