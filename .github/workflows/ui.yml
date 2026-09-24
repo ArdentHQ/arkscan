@@ -15,7 +15,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -30,7 +30,7 @@ jobs:
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov
 
             - name: Cache Composer dependencies
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.composer/cache/files
                   key: dependencies-composer-${{ hashFiles('composer.json') }}
@@ -43,8 +43,6 @@ jobs:
                   node-version: 24.15
 
             - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -62,7 +60,7 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -72,8 +70,6 @@ jobs:
                   node-version: 24.15
 
             - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -96,7 +92,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -109,7 +105,7 @@ jobs:
                   coverage: pcov
 
             - name: Cache dependencies
-              uses: actions/cache@v4
+              uses: actions/cache@v6
               with:
                   path: ~/.composer/cache/files
                   key: dependencies-composer-${{ hashFiles('composer.json') }}
@@ -122,8 +118,6 @@ jobs:
                   node-version: 24.15
 
             - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
