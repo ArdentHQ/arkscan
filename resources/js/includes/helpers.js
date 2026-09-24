@@ -80,7 +80,7 @@ export const generateCsv = (
     columnTitles,
     columnMapping,
     delimiter,
-    includeHeaderRow
+    includeHeaderRow,
 ) => {
     const csvRows = [];
     if (includeHeaderRow) {
@@ -108,7 +108,7 @@ export const generateCsv = (
         "data:text/csv;charset=utf-8," +
             csvRows
                 .map((row) => row.join(delimiters[delimiter] || ","))
-                .join("\n")
+                .join("\n"),
     );
 };
 

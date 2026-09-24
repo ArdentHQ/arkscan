@@ -65,7 +65,7 @@ const TransactionsExport = ({
 
                     return totalAmount;
                 },
-                0
+                0,
             );
         }
 
@@ -125,7 +125,7 @@ const TransactionsExport = ({
         },
         rate: (transaction) => {
             const date = dayjs(transaction.timestamp.human).format(
-                "YYYY-MM-DD"
+                "YYYY-MM-DD",
             );
 
             return rates[date] ?? 0;
@@ -210,7 +210,7 @@ const TransactionsExport = ({
                                     ...this.requestData(true),
                                     typeGroup: TransactionTypeGroup.Magistrate,
                                 },
-                            }))
+                            })),
                         );
                     }
 
@@ -234,7 +234,7 @@ const TransactionsExport = ({
                             this.getColumnTitles(),
                             columnMapping,
                             this.delimiter,
-                            this.includeHeaderRow
+                            this.includeHeaderRow,
                         );
                     } else {
                         this.errorMessage =
@@ -248,7 +248,7 @@ const TransactionsExport = ({
 
         downloadCsv(transactions) {
             this.successMessage = `A total of ${formatNumber(
-                transactions.length
+                transactions.length,
             )} transactions have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
@@ -258,7 +258,7 @@ const TransactionsExport = ({
                 this.getColumnTitles(),
                 columnMapping,
                 this.delimiter,
-                this.includeHeaderRow
+                this.includeHeaderRow,
             );
         },
 
@@ -308,7 +308,7 @@ const TransactionsExport = ({
                         TransactionType.DelegateResignation,
                         TransactionType.HtlcLock,
                         TransactionType.HtlcClaim,
-                        TransactionType.HtlcRefund
+                        TransactionType.HtlcRefund,
                     );
                 }
 
@@ -359,7 +359,7 @@ const TransactionsExport = ({
             if (this.dateRange === "custom") {
                 const [dateFrom, dateTo] = getCustomDateRange(
                     this.dateFrom,
-                    this.dateTo
+                    this.dateTo,
                 );
 
                 if (dateFrom === null || dateTo === null) {
@@ -418,7 +418,7 @@ const TransactionsExport = ({
                         query["timestamp.to"] ??
                         timeSinceEpoch(dayjs(), this.network),
                 },
-                this
+                this,
             );
         },
 

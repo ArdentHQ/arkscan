@@ -39,7 +39,7 @@ window.Webhook = {
 
         Echo.channel(channel).stopListening(
             event,
-            this.listeners[channel][event][emit]
+            this.listeners[channel][event][emit],
         );
 
         // The best way I could find to see if there were any events remaining.

@@ -35,7 +35,7 @@ const ThemeManager = () => {
                     detail: {
                         theme: value,
                     },
-                })
+                }),
             );
 
             this._lastEvent = dayjs();

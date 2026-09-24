@@ -8,37 +8,38 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "ext-gmp": "*",
         "ardenthq/arkvault-url": "^1.1",
         "arkecosystem/crypto": "^1.9",
-        "arkecosystem/foundation": "^19.11.0",
+        "arkecosystem/foundation": "dev-chore/update-dependencies",
         "blade-ui-kit/blade-icons": "^1.8",
-        "brick/math": "^0.12",
-        "danharrin/livewire-rate-limiting": "^1.0",
+        "brick/math": "^0.12 || >=0.14 <2.0",
+        "danharrin/livewire-rate-limiting": "^2.3",
         "doctrine/dbal": "^3.2",
         "http-interop/http-factory-guzzle": "^1.2",
-        "huddledigital/zendesk-laravel": "^3.9",
+        "huddledigital/zendesk-laravel": "3.9.1",
+        "laravel/framework": "^13.0",
         "laravel/horizon": "^5.30",
         "laravel/reverb": "^1.4",
-        "laravel/scout": "^10.13",
-        "laravel/tinker": "^2.10",
+        "laravel/scout": "^11.8",
+        "laravel/tinker": "^3.0",
         "leigh/mt-rand": "^0.1",
-        "livewire/livewire": "3.6.4",
+        "livewire/livewire": "^3.8.9",
         "mattiasgeniar/php-percentages": "^1.3",
-        "meilisearch/meilisearch-php": "^1.24",
+        "meilisearch/meilisearch-php": "^1.17",
         "nyholm/psr7": "^1.8",
         "pusher/pusher-php-server": "^7.2",
-        "react/promise": "^2.2",
+        "react/promise": "^3.3",
         "savvot/random": "^0.3",
         "sentry/sentry-laravel": "^4.12",
-        "symfony/psr-http-message-bridge": "^7.2"
+        "symfony/psr-http-message-bridge": "^8.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.14",
-        "furqansiddiqui/bip39-mnemonic-php": "^0.2",
+        "barryvdh/laravel-debugbar": "^4.4",
+        "fenguoz/bip39-mnemonic-php": "^1.2",
         "laravel/dusk": "^8.3",
-        "phpdocumentor/reflection-docblock": "^5.6",
+        "phpdocumentor/reflection-docblock": "^6.0",
         "spatie/laravel-ignition": "^2.9",
         "wnx/laravel-stats": "^2.15"
     },
@@ -68,8 +69,37 @@
             "type": "git"
         },
         {
-            "url": "https://github.com/alexbarnsley/GrahamCampbell-Analyzer.git",
-            "type": "git"
+            "type": "package",
+            "package": {
+                "name": "huddledigital/zendesk-laravel",
+                "version": "3.9.1",
+                "type": "library",
+                "source": {
+                    "url": "https://github.com/huddledigital/zendesk-laravel.git",
+                    "type": "git",
+                    "reference": "57a927b9fed7670849cc5c73c0f79ffbb0cf6520"
+                },
+                "autoload": {
+                    "psr-4": {
+                        "Huddle\\Zendesk\\": "src/"
+                    }
+                },
+                "extra": {
+                    "laravel": {
+                        "providers": [
+                            "Huddle\\Zendesk\\Providers\\ZendeskServiceProvider"
+                        ],
+                        "aliases": {
+                            "Zendesk": "Huddle\\Zendesk\\Facades\\Zendesk"
+                        }
+                    }
+                },
+                "require": {
+                    "php": ">=5.4.0",
+                    "illuminate/support": "~5.4|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
+                    "zendesk/zendesk_api_client_php": "2.*|^3.0"
+                }
+            }
         }
     ],
     "autoload": {
@@ -90,8 +120,7 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan vendor:publish --provider=\"ARKEcosystem\\Foundation\\Providers\\UserInterfaceServiceProvider\" --tag=\"pagination\" --force",
-            "@php artisan horizon:publish --ansi"
+            "@php artisan vendor:publish --provider=\"ARKEcosystem\\Foundation\\Providers\\UserInterfaceServiceProvider\" --tag=\"pagination\" --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

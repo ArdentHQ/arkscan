@@ -7,7 +7,7 @@ const TableSorting = (
     sortBy = "",
     sortDirection = "asc",
     secondarySortBy = null,
-    secondarySortDirection = "asc"
+    secondarySortDirection = "asc",
 ) => {
     return {
         sortBy,
@@ -44,7 +44,7 @@ const TableSorting = (
                         if (this.windowEvent) {
                             window.removeEventListener(
                                 "updateTableSorting",
-                                this.windowEvent
+                                this.windowEvent,
                             );
 
                             this.windowEvent = null;
@@ -56,7 +56,7 @@ const TableSorting = (
                     toEl.querySelectorAll("table tbody").forEach((tbody) => {
                         Alpine.morph(
                             tbody,
-                            this.update(tbody.cloneNode(true)).outerHTML
+                            this.update(tbody.cloneNode(true)).outerHTML,
                         );
                     });
                 });
@@ -70,7 +70,7 @@ const TableSorting = (
 
                 if (secondaryElement) {
                     this.secondarySortIndex = Array.from(
-                        secondaryElement.parentNode.children
+                        secondaryElement.parentNode.children,
                     ).indexOf(secondaryElement);
                 }
             }
@@ -109,8 +109,10 @@ const TableSorting = (
             this.getTableRows(table)
                 .sort(
                     this.sortCallback(
-                        Array.from(element.parentNode.children).indexOf(element)
-                    )
+                        Array.from(element.parentNode.children).indexOf(
+                            element,
+                        ),
+                    ),
                 )
                 .forEach((tr) => {
                     table.appendChild(tr);
@@ -141,7 +143,7 @@ const TableSorting = (
                     row1,
                     row2,
                     index,
-                    this.sortAsc
+                    this.sortAsc,
                 );
 
                 if (sortResult === 0 && this.secondarySortIndex !== null) {
@@ -150,7 +152,7 @@ const TableSorting = (
                         row2,
                         this.secondarySortIndex,
                         secondarySortDirection === "asc",
-                        false
+                        false,
                     );
                 }
 
@@ -165,7 +167,7 @@ const TableSorting = (
                 this.getCellValue(row1, index),
                 this.getCellValue(row2, index),
                 sortAscending,
-                sortByRowIndex
+                sortByRowIndex,
             );
         },
     };

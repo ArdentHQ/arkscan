@@ -47,36 +47,36 @@ const Wallet = (network, xData = {}) => {
 
             window.addEventListener(
                 "ARKConnectLoaded",
-                this.handleExtensionLoadEvent.bind(this)
+                this.handleExtensionLoadEvent.bind(this),
             );
         },
 
         async handleExtensionLoadEvent() {
             this.extension().on(
                 "addressChanged",
-                this.handleAddressChangedEvent.bind(this)
+                this.handleAddressChangedEvent.bind(this),
             );
 
             this.extension().on(
                 "connected",
-                this.handleConnectionEvent.bind(this)
+                this.handleConnectionEvent.bind(this),
             );
 
             this.extension().on(
                 "disconnected",
-                this.handleConnectionEvent.bind(this)
+                this.handleConnectionEvent.bind(this),
             );
 
             this.extension().on(
                 "lockToggled",
-                this.handleLockToggledEvent.bind(this)
+                this.handleLockToggledEvent.bind(this),
             );
 
             this.hasExtension = window.arkconnect !== undefined;
 
             try {
                 await this.setConnectedStatus(
-                    await this.extension().isConnected()
+                    await this.extension().isConnected(),
                 );
             } catch (e) {
                 //
@@ -173,7 +173,7 @@ const Wallet = (network, xData = {}) => {
                 extensionNetwork.toLowerCase() ===
                 this.network.alias.toLowerCase();
             this.isWrongNetworkMessageIgnored = this.getIgnoredToastAddresses(
-                "network"
+                "network",
             ).includes(this.address);
         },
 
@@ -186,7 +186,7 @@ const Wallet = (network, xData = {}) => {
             try {
                 publicKey = await WalletsApi.getVote(
                     network.api,
-                    await this.address
+                    await this.address,
                 );
             } catch (e) {
                 if (e.response?.status === 404) {
@@ -218,17 +218,17 @@ const Wallet = (network, xData = {}) => {
             this.isVotedDelegateResigned =
                 this.votingFor.attributes?.delegate?.resigned === true;
             this.isVotedDelegateResignedIgnored = this.getIgnoredToastAddresses(
-                "resigned"
+                "resigned",
             ).includes(this.votingFor.address);
             this.isVotedDelegateOnStandbyIgnored =
                 this.getIgnoredToastAddresses("standby").includes(
-                    this.votingFor.address
+                    this.votingFor.address,
                 );
         },
 
         getIgnoredToastAddresses(type) {
             let ignoredAddresses = localStorage.getItem(
-                `ignoredToastAddresses:${type}`
+                `ignoredToastAddresses:${type}`,
             );
             if (ignoredAddresses) {
                 return JSON.parse(ignoredAddresses);
@@ -251,7 +251,7 @@ const Wallet = (network, xData = {}) => {
 
             localStorage.setItem(
                 `ignoredToastAddresses:${type}`,
-                JSON.stringify(ignoredAddresses)
+                JSON.stringify(ignoredAddresses),
             );
         },
 
@@ -385,7 +385,7 @@ const Wallet = (network, xData = {}) => {
 
                     updateVoteTimer = setTimeout(
                         updateVoteLoop,
-                        VOTE_CHECK_TIMEOUT
+                        VOTE_CHECK_TIMEOUT,
                     );
                 };
 
@@ -408,7 +408,7 @@ const Wallet = (network, xData = {}) => {
 
             if (transactionData.amount === NaN) {
                 throw new Error(
-                    `There was a problem determining Transaction Amount "${amount}"`
+                    `There was a problem determining Transaction Amount "${amount}"`,
                 );
             }
 
@@ -446,10 +446,10 @@ const Wallet = (network, xData = {}) => {
             }
 
             const isCompatible = /chrome|firefox/.test(
-                navigator.userAgent.toLowerCase()
+                navigator.userAgent.toLowerCase(),
             );
             const isMobile = /android|iphone|ipad|ipod/.test(
-                navigator.userAgent.toLowerCase()
+                navigator.userAgent.toLowerCase(),
             );
 
             return isCompatible && !isMobile;

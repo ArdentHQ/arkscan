@@ -25,7 +25,7 @@ export const TruncateDynamic = (value) => {
 
         init() {
             new ResizeObserver(() => this.throttledTruncate()).observe(
-                this.$root
+                this.$root,
             );
 
             window.addEventListener("resize", () => this.throttledTruncate());

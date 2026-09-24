@@ -13,18 +13,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7.0.1
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v7.0.0
               with:
-                  node-version: 22.11
+                  node-version: 24
 
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
+            - uses: pnpm/action-setup@v6.1.0
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -32,7 +30,7 @@ jobs:
             - name: Run prettier
               run: pnpm prettier --write 'resources/**/*.{css,js,vue}'
 
-            - uses: stefanzweifel/git-auto-commit-action@v5
+            - uses: stefanzweifel/git-auto-commit-action@v7.2.0
               with:
                   commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
@@ -41,18 +39,16 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7.0.1
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v7.0.0
               with:
-                  node-version: 22.11
+                  node-version: 24
 
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
+            - uses: pnpm/action-setup@v6.1.0
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -60,7 +56,7 @@ jobs:
             - name: Format
               run: pnpm rustywind --write resources/views
 
-            - uses: stefanzweifel/git-auto-commit-action@v5
+            - uses: stefanzweifel/git-auto-commit-action@v7.2.0
               with:
                   commit_message: "style: resolve style guide violations"
                   branch: ${{ github.head_ref }}
@@ -70,18 +66,16 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7.0.1
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v7.0.0
               with:
-                  node-version: 22.11
+                  node-version: 24
 
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
+            - uses: pnpm/action-setup@v6.1.0
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -97,7 +91,7 @@ jobs:
                   pnpm svgo --config .svgo.js ./resources/**/*.svg
 
             - name: Commit optimizations
-              uses: stefanzweifel/git-auto-commit-action@v5
+              uses: stefanzweifel/git-auto-commit-action@v7.2.0
               with:
                   commit_message: Optimize SVG(s)
 
@@ -107,7 +101,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7.0.1
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -115,12 +109,12 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.4"
+                  php-version: "8.5"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, pcov, gmp
                   coverage: pcov
 
             - name: Cache dependencies
-              uses: actions/cache@v4
+              uses: actions/cache@v6.1.0
               with:
                   path: ~/.composer/cache/files
                   key: dependencies-composer-${{ hashFiles('composer.json') }}
@@ -128,13 +122,11 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --no-ansi --no-interaction --no-suggest --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v7.0.0
               with:
-                  node-version: 22.11
+                  node-version: 24
 
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
+            - uses: pnpm/action-setup@v6.1.0
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile

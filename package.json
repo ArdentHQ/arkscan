@@ -8,7 +8,8 @@
     "devDependencies": {
         "@babel/runtime": "^7.24.4",
         "@popperjs/core": "^2.11.8",
-        "@types/node": "^20.12.7",
+        "@tailwindcss/postcss": "^4.3.2",
+        "@types/node": "^24.9.2",
         "body-scroll-lock": "^4.0.0-beta.0",
         "chart.js": "^3.9.1",
         "chartjs-adapter-date-fns": "^2.0.1",
@@ -17,31 +18,26 @@
         "dayjs": "^1.11.10",
         "ethereum-blockies-base64": "^1.0.2",
         "focus-trap": "^6.9.4",
-        "focus-visible": "^5.2.0",
+        "focus-visible": "^5.2.1",
         "glob-all": "^3.3.1",
         "laravel-echo": "^1.16.1",
-        "laravel-vite-plugin": "^1.0.2",
+        "laravel-vite-plugin": "^3.2.0",
         "pikaday": "^1.8.2",
-        "postcss": "^8.4.38",
-        "postcss-focus-visible": "^6.0.4",
-        "postcss-import": "^14.1.0",
-        "prettier": "^2.8.8",
-        "pusher-js": "8.4.0-rc2",
+        "postcss": "^8.5.28",
+        "postcss-focus-visible": "^11.0.0",
+        "prettier": "^3.9.9",
+        "pusher-js": "^8.6.0",
         "resolve-url-loader": "^5.0.0",
-        "rustywind": "^0.24.0",
-        "tailwindcss": "^3.4.3",
+        "rustywind": "^0.28.0",
+        "tailwindcss": "^4.3.2",
         "tippy.js": "^6.3.7",
-        "vite": "^5.2.10"
-    },
-    "resolutions": {
-        "autoprefixer": "10.4.5"
+        "vite": "^8.3.0"
     },
     "dependencies": {
-        "axios": "^1.6.8"
+        "axios": "^1.20.0"
     },
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "rustywind"
-        ]
-    }
+    "engines": {
+        "node": ">=24"
+    },
+    "packageManager": "pnpm@11.27.1+sha512.a81d4c21b9b09a4b0aebf90ef5e527d4262bdda322d26082978cb549023ac6d9cafc98b19fffaa5c71db438a65f70224edb78d7311187861ff96480d1cdca23c"
 }

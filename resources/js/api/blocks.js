@@ -7,7 +7,7 @@ export class BlocksApi {
             `${host}/delegates/${publicKey}/blocks`,
             {
                 params: query,
-            }
+            },
         );
 
         return response.data;
@@ -23,7 +23,7 @@ export class BlocksApi {
             orderBy = "height:desc",
             height,
         },
-        instance
+        instance,
     ) {
         try {
             const page = await this.request(
@@ -34,7 +34,7 @@ export class BlocksApi {
                     ...query,
                     "height.to": height,
                 },
-                publicKey
+                publicKey,
             );
 
             if (instance?.hasAborted()) {
@@ -51,7 +51,7 @@ export class BlocksApi {
         } catch (e) {
             throw new FailedExportRequest(
                 "There was a problem fetching blocks.",
-                blocks
+                blocks,
             );
         }
 
@@ -64,7 +64,7 @@ export class BlocksApi {
                 publicKey,
                 height,
             },
-            instance
+            instance,
         );
     }
 
@@ -76,7 +76,7 @@ export class BlocksApi {
                 orderBy,
                 ...query,
             },
-            publicKey
+            publicKey,
         );
 
         return page.data.pop();

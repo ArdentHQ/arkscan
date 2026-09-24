@@ -9,7 +9,7 @@ jobs:
     php:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7.0.1
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -17,7 +17,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.4"
+                  php-version: "8.5"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, gmp
                   coverage: none
 
@@ -27,13 +27,11 @@ jobs:
             - name: Install PHP dependencies
               run: composer update --no-ansi --no-interaction --no-progress --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v7.0.0
               with:
-                  node-version: 22.11
+                  node-version: 24
 
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
+            - uses: pnpm/action-setup@v6.1.0
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -43,7 +41,7 @@ jobs:
 
             - name: Create Pull Request
               id: cpr
-              uses: peter-evans/create-pull-request@v4
+              uses: peter-evans/create-pull-request@v8.1.1
               with:
                   token: ${{ secrets.GH_TOKEN }}
                   commit-message: "chore: update PHP dependencies"
@@ -57,7 +55,7 @@ jobs:
     js:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7.0.1
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -65,7 +63,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: "8.4"
+                  php-version: "8.5"
                   extensions: mbstring, dom, fileinfo, intl, gd, imagick, bcmath, soap, zip, sqlite, gmp
                   coverage: none
 
@@ -75,13 +73,11 @@ jobs:
             - name: Update JS dependencies
               run: npx npm-check-updates --configFilePath ./vendor/arkecosystem/foundation/
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v7.0.0
               with:
-                  node-version: 22.11
+                  node-version: 24
 
-            - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
+            - uses: pnpm/action-setup@v6.1.0
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -91,7 +87,7 @@ jobs:
 
             - name: Create Pull Request
               id: cpr
-              uses: peter-evans/create-pull-request@v4
+              uses: peter-evans/create-pull-request@v8.1.1
               with:
                   token: ${{ secrets.GH_TOKEN }}
                   commit-message: "chore: update JavaScript dependencies"

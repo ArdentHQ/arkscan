@@ -1,0 +1,4 @@
+allowBuilds:
+  rustywind: true
+onlyBuiltDependencies:
+  - rustywind

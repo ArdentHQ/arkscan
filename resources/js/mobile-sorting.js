@@ -7,7 +7,7 @@ const MobileSorting = (
     sortBy = "",
     sortDirection = "asc",
     secondarySortBy = null,
-    secondarySortDirection = "asc"
+    secondarySortDirection = "asc",
 ) => {
     return {
         livewireHook: null,
@@ -42,9 +42,9 @@ const MobileSorting = (
                         (tbody) => {
                             Alpine.morph(
                                 tbody,
-                                this.update(tbody.cloneNode(true)).outerHTML
+                                this.update(tbody.cloneNode(true)).outerHTML,
                             );
-                        }
+                        },
                     );
                 });
             }
@@ -100,7 +100,7 @@ const MobileSorting = (
                     row1,
                     row2,
                     sortBy,
-                    sortDirection === "asc"
+                    sortDirection === "asc",
                 );
 
                 if (sortResult === 0 && secondarySortBy !== null) {
@@ -109,7 +109,7 @@ const MobileSorting = (
                         row2,
                         secondarySortBy,
                         secondarySortDirection === "asc",
-                        false
+                        false,
                     );
                 }
 
@@ -124,7 +124,7 @@ const MobileSorting = (
                 this.getValue(row1, sortBy),
                 this.getValue(row2, sortBy),
                 sortAscending,
-                sortByRowIndex
+                sortByRowIndex,
             );
         },
     };
