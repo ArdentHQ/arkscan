@@ -79,8 +79,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       rustywind:
-        specifier: ^0.28.0
-        version: 0.28.0
+        specifier: ^0.24.0
+        version: 0.24.3
       tailwindcss:
         specifier: ^4.3.2
         version: 4.3.3
@@ -325,6 +325,10 @@ packages:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
     engines: {node: '>= 6.0.0'}
 
+  agent-base@7.1.4:
+    resolution: {integrity: sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==}
+    engines: {node: '>= 14'}
+
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -548,6 +552,10 @@ packages:
   https-proxy-agent@5.0.1:
     resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==}
     engines: {node: '>= 6'}
+
+  https-proxy-agent@7.0.6:
+    resolution: {integrity: sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==}
+    engines: {node: '>= 14'}
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
@@ -832,6 +840,9 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
+  proxy-from-env@1.1.0:
+    resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
+
   proxy-from-env@2.1.0:
     resolution: {integrity: sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==}
     engines: {node: '>=10'}
@@ -858,49 +869,8 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
-  rustywind-darwin-arm64@0.28.0:
-    resolution: {integrity: sha512-kn9m0GJscd6dMyy3camY5bCYJzS6AzCwHYKtNY+IViLHgcHx9ZHGWUJztzw5gZZ9uX6QQhSGnFHDGzIu7Jq2Cw==}
-    cpu: [arm64]
-    os: [darwin]
-
-  rustywind-darwin-x64@0.28.0:
-    resolution: {integrity: sha512-gO/mjUDBSUrmNw2KL23wI5gd3QNGb0b3gA0ID5LYsKwhTqSJ79kHOJo3ud4P1sZrrfrO7qjS4Ns5k0ijMytoYA==}
-    cpu: [x64]
-    os: [darwin]
-
-  rustywind-linux-arm-gnueabihf@0.28.0:
-    resolution: {integrity: sha512-WCNz5bonDiRD6E672JYocF2QuynsWzIHAEiRBtEU3ZSzjiwx1GybL8/IH8j5ojMPvh5ifsTFS625ZEeWv3RtPA==}
-    cpu: [arm]
-    os: [linux]
-
-  rustywind-linux-arm64-gnu@0.28.0:
-    resolution: {integrity: sha512-oQpezlCO5Si90iOMqDqzQITG0HWcVC7cTvs267FYC0fZmY8gp0qqdlpd2WiwMOIZiXjHSeus+Fki3BCK9Ybeng==}
-    cpu: [arm64]
-    os: [linux]
-
-  rustywind-linux-arm64-musl@0.28.0:
-    resolution: {integrity: sha512-RUWV/HAnnNclCpwUflY9fIoaHeAsgyCM1jLT+NMesYhJn/8f9ywT5pUR7tQ8bd4cJEzWUKhMVKrE1PmFGXPr9A==}
-    cpu: [arm64]
-    os: [linux]
-    libc: [musl]
-
-  rustywind-linux-x64-musl@0.28.0:
-    resolution: {integrity: sha512-IedD5BRTWK8Uk1BSxcIR1FjgOSmV17LCjE51BRix2bnEy3r9LX47tEIX486LUYbPIGgxdGGo+2kBjMlHMZ50xw==}
-    cpu: [x64]
-    os: [linux]
-
-  rustywind-win32-ia32-msvc@0.28.0:
-    resolution: {integrity: sha512-V40m8cjSbuow5qH95w49EkLjmYxqmwAp4gqHcLHBcsoiuykLN6Uni5aBb1DmjTAvt/eAMVPMVygSWf1rn5BMUQ==}
-    cpu: [ia32]
-    os: [win32]
-
-  rustywind-win32-x64-msvc@0.28.0:
-    resolution: {integrity: sha512-yUXtGPTDPjU9moN5Ys1F6i0BfxvKRTtdGAt2RVbSXJEZa9b8cz0M0VOyaAxY/NIlVa/1vtsl214489QAIFmWZg==}
-    cpu: [x64]
-    os: [win32]
-
-  rustywind@0.28.0:
-    resolution: {integrity: sha512-HR9+hnc2iUxMnrGsR3trx3W0CgMOaA95/cRNfw3orrR9dm+bPMaf/bB2xIvjRV97nDoxqnYq9+NU92Z7HfqKzw==}
+  rustywind@0.24.3:
+    resolution: {integrity: sha512-ODugTa7I9RJ1fgPibxuU9xnTz8r9xVADnBZH6ULsI3/WbXUpQA+a0oqTGZTu51ePoftnnTGRmZqL9V3HAo3epQ==}
     hasBin: true
 
   set-blocking@2.0.0:
@@ -1188,6 +1158,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  agent-base@7.1.4: {}
+
   ansi-regex@5.0.1: {}
 
   ansi-styles@4.3.0:
@@ -1401,6 +1373,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  https-proxy-agent@7.0.6:
+    dependencies:
+      agent-base: 7.1.4
+      debug: 4.4.3
+    transitivePeerDependencies:
+      - supports-color
+
   inflight@1.0.6:
     dependencies:
       once: 1.4.0
@@ -1601,6 +1580,8 @@ snapshots:
 
   prettier@3.9.9: {}
 
+  proxy-from-env@1.1.0: {}
+
   proxy-from-env@2.1.0: {}
 
   pusher-js@8.6.0:
@@ -1642,42 +1623,12 @@ snapshots:
       '@rolldown/binding-win32-arm64-msvc': 1.2.10
       '@rolldown/binding-win32-x64-msvc': 1.2.10
 
-  rustywind-darwin-arm64@0.28.0:
-    optional: true
-
-  rustywind-darwin-x64@0.28.0:
-    optional: true
-
-  rustywind-linux-arm-gnueabihf@0.28.0:
-    optional: true
-
-  rustywind-linux-arm64-gnu@0.28.0:
-    optional: true
-
-  rustywind-linux-arm64-musl@0.28.0:
-    optional: true
-
-  rustywind-linux-x64-musl@0.28.0:
-    optional: true
-
-  rustywind-win32-ia32-msvc@0.28.0:
-    optional: true
-
-  rustywind-win32-x64-msvc@0.28.0:
-    optional: true
-
-  rustywind@0.28.0:
+  rustywind@0.24.3:
     dependencies:
-      detect-libc: 2.1.2
-    optionalDependencies:
-      rustywind-darwin-arm64: 0.28.0
-      rustywind-darwin-x64: 0.28.0
-      rustywind-linux-arm-gnueabihf: 0.28.0
-      rustywind-linux-arm64-gnu: 0.28.0
-      rustywind-linux-arm64-musl: 0.28.0
-      rustywind-linux-x64-musl: 0.28.0
-      rustywind-win32-ia32-msvc: 0.28.0
-      rustywind-win32-x64-msvc: 0.28.0
+      https-proxy-agent: 7.0.6
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - supports-color
 
   set-blocking@2.0.0: {}
 
