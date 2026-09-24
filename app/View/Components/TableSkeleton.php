@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\View\Components;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\View as ViewFacade;
 use Illuminate\View\Component;
+use InvalidArgumentException;
 
 final class TableSkeleton extends Component
 {
@@ -68,7 +69,13 @@ final class TableSkeleton extends Component
             $this->device
         );
 
-        return ViewFacade::make($component, [
+        $viewFactory = app(Factory::class);
+
+        if (! $viewFactory->exists($component)) {
+            throw new InvalidArgumentException("View [{$component}] not found.");
+        }
+
+        return $viewFactory->make($component, [
             'headers'   => $headers->toArray(),
             'rows'      => $rows->toArray(),
             'rowCount'  => $this->rowCount,

@@ -36,13 +36,15 @@ trait CanBeSorted
                 ->selectRaw('forging_stats.*');
         }
 
+        $valuesList = implode(',', array_fill(0, count($delegateNames), '(?,?)'));
+
+        $bindings = $delegateNames->flatMap(fn ($name, $publicKey) => [$publicKey, $name])->all();
+
+        $query->join(DB::raw("(values {$valuesList}) as wallets (public_key, name)"), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer');
+        $query->getQuery()->addBinding($bindings, 'join');
+
         return $query->selectRaw('wallets.name AS delegate_name')
             ->selectRaw('forging_stats.*')
-            ->join(DB::raw(sprintf(
-                '(values %s) as wallets (public_key, name)',
-                $delegateNames->map(fn ($name, $publicKey) => sprintf('(\'%s\',\'%s\')', $publicKey, $name))
-                    ->join(','),
-            )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
             ->orderByRaw('delegate_name '.$sortDirection->value.', timestamp DESC');
     }
 
@@ -59,13 +61,15 @@ trait CanBeSorted
                 ->selectRaw('forging_stats.*');
         }
 
+        $valuesList = implode(',', array_fill(0, count($delegateVotes), '(?,?)'));
+
+        $bindings = $delegateVotes->flatMap(fn ($votes, $publicKey) => [$publicKey, $votes])->all();
+
+        $query->join(DB::raw("(values {$valuesList}) as wallets (public_key, votes)"), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer');
+        $query->getQuery()->addBinding($bindings, 'join');
+
         return $query->selectRaw('wallets.votes AS votes')
             ->selectRaw('forging_stats.*')
-            ->join(DB::raw(sprintf(
-                '(values %s) as wallets (public_key, votes)',
-                $delegateVotes->map(fn ($votes, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $votes))
-                    ->join(','),
-            )), 'forging_stats.public_key', '=', 'wallets.public_key', 'left outer')
             ->orderByRaw('votes '.$sortDirection->value.', timestamp DESC');
     }
 
@@ -77,14 +81,17 @@ trait CanBeSorted
                 ->selectRaw('forging_stats.*');
         }
 
+        $voterCounts = collect($voterCounts);
+
+        $valuesList = implode(',', array_fill(0, count($voterCounts), '(?,?)'));
+
+        $bindings = $voterCounts->flatMap(fn ($count, $publicKey) => [$publicKey, $count])->all();
+
+        $query->join(DB::raw("(values {$valuesList}) as voting_stats (public_key, count)"), 'forging_stats.public_key', '=', 'voting_stats.public_key', 'left outer');
+        $query->getQuery()->addBinding($bindings, 'join');
+
         return $query->selectRaw('voting_stats.count AS no_of_voters')
             ->selectRaw('forging_stats.*')
-            ->join(DB::raw(sprintf(
-                '(values %s) as voting_stats (public_key, count)',
-                collect($voterCounts)
-                    ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
-                    ->join(','),
-            )), 'forging_stats.public_key', '=', 'voting_stats.public_key', 'left outer')
             ->orderByRaw(sprintf('no_of_voters %s NULLS LAST, timestamp DESC', $sortDirection->value));
     }
 }

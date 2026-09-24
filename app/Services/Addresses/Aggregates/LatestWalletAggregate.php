@@ -65,8 +65,8 @@ final class LatestWalletAggregate
 
         $lastRun = Cache::get($cacheKey, null);
         if ($lastRun !== null) {
-            $newestQuery->whereRaw(sprintf('timestamp + %d > ?', Network::epoch()->timestamp), [$lastRun->timestamp]);
-            $newestMultipaymentQuery->whereRaw(sprintf('timestamp + %d > ?', Network::epoch()->timestamp), [$lastRun->timestamp]);
+            $newestQuery->whereRaw('timestamp + ? > ?', [Network::epoch()->timestamp, $lastRun->timestamp]);
+            $newestMultipaymentQuery->whereRaw('timestamp + ? > ?', [Network::epoch()->timestamp, $lastRun->timestamp]);
         }
 
         $newest = null;

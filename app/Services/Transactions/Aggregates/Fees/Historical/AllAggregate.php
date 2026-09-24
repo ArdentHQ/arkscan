@@ -9,7 +9,6 @@ use App\Models\Transaction;
 use App\Services\Transactions\Aggregates\Concerns\HasPlaceholders;
 use App\Services\Transactions\Aggregates\Concerns\HasQueries;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 final class AllAggregate
 {
@@ -18,13 +17,9 @@ final class AllAggregate
 
     public function aggregate(): Collection
     {
-        $select = [
-            'SUM(fee) as fee',
-            sprintf("to_char(to_timestamp(%d+timestamp) AT TIME ZONE 'UTC', '%s') as formatted_date", Network::epoch()->timestamp, 'YYYY-MM'),
-        ];
-
         return Transaction::query()
-            ->select(DB::raw(implode(', ', $select)))
+            ->selectRaw('SUM(fee) as fee')
+            ->selectRaw("to_char(to_timestamp(? + timestamp) AT TIME ZONE 'UTC', ?) as formatted_date", [Network::epoch()->timestamp, 'YYYY-MM'])
             ->orderBy('formatted_date')
             ->groupBy('formatted_date')
             ->pluck('fee', 'formatted_date')

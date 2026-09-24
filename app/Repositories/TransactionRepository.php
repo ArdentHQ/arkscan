@@ -14,9 +14,9 @@ final class TransactionRepository implements Contract
     public function allByWallet(string $address, string $publicKey): Collection
     {
         return Transaction::query()
-            ->where(fn ($query): Builder => $query->where('sender_public_key', $publicKey))
-            ->orWhere(fn ($query): Builder => $query->where('recipient_id', $address))
-            ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $address]]))
+            ->where(fn (Builder $query): Builder => $query->where('sender_public_key', $publicKey))
+            ->orWhere(fn (Builder $query): Builder => $query->where('recipient_id', $address))
+            ->orWhere(fn (Builder $query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $address]]))
             ->get();
     }
 
@@ -28,8 +28,8 @@ final class TransactionRepository implements Contract
     public function allByRecipient(string $address): Collection
     {
         return Transaction::query()
-            ->orWhere(fn ($query): Builder => $query->where('recipient_id', $address))
-            ->orWhere(fn ($query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $address]]))
+            ->orWhere(fn (Builder $query): Builder => $query->where('recipient_id', $address))
+            ->orWhere(fn (Builder $query): Builder => $query->whereJsonContains('asset->payments', [['recipientId' => $address]]))
             ->get();
     }
 

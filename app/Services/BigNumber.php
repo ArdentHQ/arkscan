@@ -11,12 +11,9 @@ final class BigNumber implements Stringable
 {
     private BigDecimal $value;
 
-    /**
-     * @param int|float|string $value
-     */
-    private function __construct($value)
+    private function __construct(int|float|string $value)
     {
-        $this->value = BigDecimal::of($value);
+        $this->value = BigDecimal::of(is_float($value) ? (string) $value : $value);
     }
 
     /**
@@ -29,10 +26,7 @@ final class BigNumber implements Stringable
         return (string) $this->value;
     }
 
-    /**
-     * @param int|float|string $value
-     */
-    public static function new($value): self
+    public static function new(int|float|string $value): self
     {
         return new static($value);
     }
@@ -59,7 +53,7 @@ final class BigNumber implements Stringable
 
     public function toFloat(): float
     {
-        return $this->value->exactlyDividedBy(1e8)->toFloat();
+        return $this->value->dividedByExact(100_000_000)->toFloat();
     }
 
     public function valueOf(): BigDecimal

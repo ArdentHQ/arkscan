@@ -149,16 +149,16 @@ trait HasTabs
 
     private function resolveView(): string
     {
-        return request()->get('view', $this->view);
+        return request()->input('view', $this->view);
     }
 
     private function resolvePage(): int
     {
-        return (int) request()->get('page', $this->getPage());
+        return (int) request()->input('page', $this->getPage());
     }
 
     private function resolvePerPage(): ?int
     {
-        return request()->get('perPage', $this->perPage);
+        return request()->input('perPage', $this->perPage);
     }
 }

@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace App\Services\Addresses\Aggregates;
 
 use App\Models\Wallet;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class HoldingsAggregate
 {
     /**
-     * @return Collection<int, array{'grouped': int, 'count': int}>
+     * @return Collection<int, Wallet>
      */
-    public function aggregate(): ?Collection
+    public function aggregate(): Collection
     {
-        // @phpstan-ignore-next-line
         return Wallet::query()
             ->select(DB::raw(
                 'CASE WHEN balance > 1000000*1e8 THEN 1000000

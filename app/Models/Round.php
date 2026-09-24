@@ -29,7 +29,7 @@ final class Round extends Model
     /**
      * The connection name for the model.
      *
-     * @var string|null
+     * @var string|\UnitEnum|null
      */
     protected $connection = 'explorer';
 

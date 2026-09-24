@@ -60,7 +60,7 @@ final class ForgingStats extends Model
     /**
      * A round slot belongs to a delegate.
      *
-     * @return BelongsTo
+     * @return BelongsTo<Wallet, $this>
      */
     public function delegate(): BelongsTo
     {

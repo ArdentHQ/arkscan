@@ -57,14 +57,9 @@ final class CacheAddressStatistics extends Command
     {
         $holdings = (new HoldingsAggregate())->aggregate();
 
-        $hasChanges = false;
-        if ($holdings !== null) {
-            if ($cache->getAddressHoldings() !== $holdings->toArray()) {
-                $hasChanges = true;
-            }
+        $hasChanges = $cache->getAddressHoldings() !== $holdings->toArray();
 
-            $cache->setAddressHoldings($holdings->toArray());
-        }
+        $cache->setAddressHoldings($holdings->toArray());
 
         return $hasChanges;
     }
@@ -108,18 +103,21 @@ final class CacheAddressStatistics extends Command
             ->first();
 
         if (count($mostTransactions) > 0) {
+            $address = Arr::get($mostTransactions, 'address');
+            $txCount = Arr::get($mostTransactions, 'tx_count');
+
             if (! $this->hasChanges) {
                 $currentValue = $cache->getMostTransactions() ?? [];
-                if (Arr::get($currentValue, 'address') !== $mostTransactions['address']) {
+                if (Arr::get($currentValue, 'address') !== $address) {
                     $this->hasChanges = true;
-                } elseif (Arr::get($currentValue, 'value') !== $mostTransactions['tx_count']) {
+                } elseif (Arr::get($currentValue, 'value') !== $txCount) {
                     $this->hasChanges = true;
                 }
             }
 
             $cache->setMostTransactions([
-                'address' => $mostTransactions['address'],
-                'value'   => $mostTransactions['tx_count'],
+                'address' => $address,
+                'value'   => $txCount,
             ]);
         }
     }

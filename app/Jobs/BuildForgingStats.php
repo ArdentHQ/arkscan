@@ -40,15 +40,14 @@ final class BuildForgingStats implements ShouldQueue
         foreach ($forgingStats as $timestamp => $statsForTimestamp) {
             $missedHeight = null;
             if ($statsForTimestamp['forged'] === false) {
-                /** @var array $missedBlock */
                 $missedBlock = Block::select('height')
                     ->withCasts(['height' => 'int'])
                     ->withScope(OrderByTimestampScope::class)
                     ->where('timestamp', '<=', $timestamp)
                     ->limit(1)
-                    ->first();
+                    ->firstOrFail();
 
-                $missedHeight = $missedBlock['height'] + 1;
+                $missedHeight = (int) $missedBlock->getAttribute('height') + 1;
             }
 
             $data[] = [
@@ -92,7 +91,7 @@ final class BuildForgingStats implements ShouldQueue
         $height = $this->height;
 
         if ($height === 0) {
-            $lastBlock = Block::orderBy('height', 'DESC')->limit(1)->firstOrFail();
+            $lastBlock = Block::orderBy('height', 'desc')->limit(1)->firstOrFail();
             $height    = $lastBlock->height->toNumber();
         }
 
@@ -103,7 +102,7 @@ final class BuildForgingStats implements ShouldQueue
     {
         $timeRange = intval($this->numberOfDays * 24 * 60 * 60);
         if ($timeRange === 0) {
-            $lastForgingInfoTs = ForgingStats::orderBy('timestamp', 'DESC')
+            $lastForgingInfoTs = ForgingStats::orderBy('timestamp', 'desc')
                 ->limit(1)
                 ->firstOr(function (): ForgingStats {
                     // by default if forging_stats table is not initialized we just build stats for last hour

@@ -15,7 +15,7 @@ trait HasDelegate
 
     public function address(): string
     {
-        return $this->delegate()->address() ?? 'Genesis';
+        return $this->delegate()->address();
     }
 
     public function username(): string

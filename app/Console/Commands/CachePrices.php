@@ -84,7 +84,6 @@ final class CachePrices extends Command
                 } elseif ($periodPrices->isEmpty()) {
                     continue;
                 } elseif ($period === StatsPeriods::WEEK || $period === StatsPeriods::ALL) {
-                    /** @var Collection $priceMapping */
                     $priceMapping = collect($periodPrices)
                         ->map(fn (float $value, string $timestamp) => [
                             'timestamp' => $timestamp.' 00:00:00',

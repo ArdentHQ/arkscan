@@ -9,7 +9,6 @@ use App\Services\Cache\PriceCache;
 use App\Services\Cache\StatisticsCache;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
 
 final class PopulateHistoricPrices extends Command
 {
@@ -48,7 +47,6 @@ final class PopulateHistoricPrices extends Command
 
             $capitalisedCurrency = strtoupper($currency);
 
-            /** @var Collection $data */
             $data = collect($jsonData['stats'])
                 ->map(fn ($item) => [
                     'timestamp' => Carbon::createFromTimestampMs($item[0])->format('Y-m-d 00:00:00'),
@@ -56,7 +54,10 @@ final class PopulateHistoricPrices extends Command
                     'value'     => floatval($item[1]),
                 ]);
 
-            if ($data->last()['timestamp'] === $data->get($data->count() - 2)['timestamp']) {
+            $lastItem     = $data->last();
+            $previousItem = $data->get($data->count() - 2);
+
+            if ($lastItem !== null && $previousItem !== null && $lastItem['timestamp'] === $previousItem['timestamp']) {
                 $data->pop();
             }
 

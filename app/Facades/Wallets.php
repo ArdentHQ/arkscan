@@ -11,13 +11,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static Builder allWithUsername()
- * @method static Builder allWithVote()
- * @method static Builder allWithPublicKey()
- * @method static Builder allWithMultiSignature()
+ * @method static Builder<Wallet> allWithUsername()
+ * @method static Builder<Wallet> allWithVote()
+ * @method static Builder<Wallet> allWithPublicKey()
+ * @method static Builder<Wallet> allWithMultiSignature()
  * @method static Wallet findByAddress(string $address)
  * @method static Wallet findByPublicKey(string $publicKey)
- * @method static Collection findByPublicKeys(array $publicKey)
+ * @method static Collection<int, Wallet> findByPublicKeys(array $publicKey)
  * @method static Wallet findByUsername(string $username)
  * @method static Wallet findByIdentifier(string $identifier)
  */

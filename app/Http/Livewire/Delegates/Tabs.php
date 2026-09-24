@@ -20,7 +20,7 @@ final class Tabs extends Component
 
     public string $view = 'delegates';
 
-    public ?string $previousView = 'delegates';
+    public string $previousView = 'delegates';
 
     public array $tabQueryData = [];
 

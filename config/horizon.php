@@ -121,7 +121,7 @@ return [
 
     'prefix'           => env(
         'HORIZON_PREFIX',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_horizon:'
+        Str::slug((string) env('APP_NAME', 'laravel'), '_').'_horizon:'
     ),
 
     /*
@@ -246,4 +246,16 @@ return [
 
         'local'      => $environments,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Horizon Access Addresses
+    |--------------------------------------------------------------------------
+    |
+    | Comma-separated list of IP addresses allowed to access the Horizon
+    | dashboard in non-local environments.
+    |
+    */
+
+    'addresses'        => env('HORIZON_ADDRESSES', ''),
 ];

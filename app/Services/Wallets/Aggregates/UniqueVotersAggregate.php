@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace App\Services\Wallets\Aggregates;
 
 use App\Models\Wallet;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class UniqueVotersAggregate
 {
     /**
-     * @return Collection{'public_key': string, 'voter_count': int}>
+     * @return array{public_key: string, voter_count: int}|null
      */
-    public function aggregate(bool $sortDescending = true): ?Collection
+    public function aggregate(bool $sortDescending = true): ?array
     {
-        // phpstan-ignore-next-line
         $result = Wallet::query()
             ->select(DB::raw('attributes->>\'vote\' as public_key, COUNT(*) as voter_count'))
             ->where('balance', '>=', 1 * 1e8)
@@ -26,9 +24,12 @@ final class UniqueVotersAggregate
             ->first();
 
         if ($result === null) {
-            return $result;
+            return null;
         }
 
-        return collect($result);
+        return [
+            'public_key'  => (string) $result->getAttribute('public_key'),
+            'voter_count' => (int) $result->getAttribute('voter_count'),
+        ];
     }
 }

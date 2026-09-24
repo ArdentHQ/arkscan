@@ -43,14 +43,17 @@ trait CanBeSorted
                 ->selectRaw('wallets.*');
         }
 
+        $voterCounts = collect($voterCounts);
+
+        $valuesList = implode(',', array_fill(0, count($voterCounts), '(?,?)'));
+
+        $bindings = $voterCounts->flatMap(fn ($count, $publicKey) => [$publicKey, $count])->all();
+
+        $query->join(DB::raw("(values {$valuesList}) as voting_stats (public_key, count)"), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer');
+        $query->getQuery()->addBinding($bindings, 'join');
+
         return $query->selectRaw('voting_stats.count AS no_of_voters')
             ->selectRaw('wallets.*')
-            ->join(DB::raw(sprintf(
-                '(values %s) as voting_stats (public_key, count)',
-                collect($voterCounts)
-                    ->map(fn ($count, $publicKey) => sprintf('(\'%s\',%d)', $publicKey, $count))
-                    ->join(','),
-            )), 'wallets.public_key', '=', 'voting_stats.public_key', 'left outer')
             ->orderByRaw(sprintf('no_of_voters %s NULLS LAST', $sortDirection->value))
             ->orderByRaw('("attributes"->\'delegate\'->>\'rank\')::numeric ASC');
     }
@@ -67,13 +70,15 @@ trait CanBeSorted
                 ->selectRaw('wallets.*');
         }
 
+        $valuesList = implode(',', array_fill(0, count($missedBlocks), '(?,?)'));
+
+        $bindings = $missedBlocks->flatMap(fn ($forgingStat) => [$forgingStat->public_key, $forgingStat->count])->all();
+
+        $query->join(DB::raw("(values {$valuesList}) as forging_stats (public_key, count)"), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer');
+        $query->getQuery()->addBinding($bindings, 'join');
+
         return $query->selectRaw('COALESCE(forging_stats.count, 0) AS missed_blocks')
             ->selectRaw('wallets.*')
-            ->join(DB::raw(sprintf(
-                '(values %s) as forging_stats (public_key, count)',
-                $missedBlocks->map(fn ($forgingStat) => sprintf('(\'%s\',%d)', $forgingStat->public_key, $forgingStat->count))
-                    ->join(','),
-            )), 'wallets.public_key', '=', 'forging_stats.public_key', 'left outer')
             ->when($sortDirection === SortDirection::ASC, fn ($query) => $query->orderByRaw(sprintf(
                 'CASE WHEN ("attributes"->\'delegate\'->>\'rank\')::numeric <= %d THEN 0 ELSE 1 END ASC',
                 Network::delegateCount(),

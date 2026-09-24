@@ -36,7 +36,7 @@ final class HorizonServiceProvider extends HorizonApplicationServiceProvider
     protected function gate(): void
     {
         Gate::define('viewHorizon', function ($user): bool {
-            $horizonAddresses = (string) env('HORIZON_ADDRESSES', '');
+            $horizonAddresses = (string) config('horizon.addresses', '');
 
             return in_array(request()->ip(), explode(',', $horizonAddresses), true);
         });

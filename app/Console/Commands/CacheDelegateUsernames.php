@@ -6,9 +6,9 @@ namespace App\Console\Commands;
 
 use App\Facades\Network;
 use App\Facades\Wallets;
+use App\Models\Wallet;
 use App\Services\Cache\WalletCache;
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Model;
 
 final class CacheDelegateUsernames extends Command
 {
@@ -40,14 +40,13 @@ final class CacheDelegateUsernames extends Command
                 'public_key',
             ])
             ->get()
-            ->each(function (Model $wallet) use ($cache, $knownWallets) : void {
-                /** @var \stdClass $wallet */
+            ->each(function (Wallet $wallet) use ($cache, $knownWallets) : void {
                 $knownWallet = $knownWallets->firstWhere('address', $wallet->address);
 
                 if (! is_null($knownWallet)) {
                     $username = $knownWallet['name'];
                 } else {
-                    $username = $wallet->username;
+                    $username = $wallet->getAttribute('username');
                 }
 
                 $cache->setUsernameByAddress($wallet->address, $username);
