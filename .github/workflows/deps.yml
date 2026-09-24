@@ -9,7 +9,7 @@ jobs:
     php:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -32,8 +32,6 @@ jobs:
                   node-version: 24.15
 
             - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
@@ -57,7 +55,7 @@ jobs:
     js:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
               with:
                   ref: ${{ github.head_ref }}
                   token: ${{ secrets.GH_TOKEN }}
@@ -80,8 +78,6 @@ jobs:
                   node-version: 24.15
 
             - uses: pnpm/action-setup@v4
-              with:
-                  version: 10
 
             - name: Install pnpm dependencies
               run: pnpm i --frozen-lockfile
