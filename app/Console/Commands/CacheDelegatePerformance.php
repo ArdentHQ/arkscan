@@ -10,7 +10,6 @@ use App\Services\Cache\WalletCache;
 use App\Services\Monitor\Monitor;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
-use LogicException;
 
 final class CacheDelegatePerformance extends Command
 {
@@ -39,20 +38,15 @@ final class CacheDelegatePerformance extends Command
             ->selectRaw('MAX(rounds.balance) as balance')
             ->join('blocks', 'blocks.generator_public_key', '=', 'rounds.public_key');
 
-        collect(range($round - 2, $round - 1))
-            ->each(function ($round, int $index) use ($query) : void {
-                [$start, $end] = Monitor::heightRangeByRound($round);
+        foreach ([0 => $round - 2, 1 => $round - 1] as $index => $pastRound) {
+            [$start, $end] = Monitor::heightRangeByRound($pastRound);
 
-                // `bool_or` is equivalent to `some` in PGSQL and is used here to
-                // check if there is at least one block on the range.
-                $alias = match ($index) {
-                    0       => 'round_0',
-                    1       => 'round_1',
-                    default => throw new LogicException("Unexpected round index: {$index}"),
-                };
+            // `bool_or` is equivalent to `some` in PGSQL and is used here to
+            // check if there is at least one block on the range.
+            $alias = $index === 0 ? 'round_0' : 'round_1';
 
-                $query->selectRaw("bool_or(blocks.height BETWEEN ? AND ?) AS {$alias}", [$start, $end]);
-            });
+            $query->selectRaw("bool_or(blocks.height BETWEEN ? AND ?) AS {$alias}", [$start, $end]);
+        }
 
         /**
          * @var Collection<int, Round> $results
