@@ -54,7 +54,10 @@ jobs:
               run: pnpm i --frozen-lockfile
 
             - name: Format
-              run: pnpm rustywind --write resources/views
+              # resources/views/vendor is republished from packages on every composer install
+              # and shouldn't be hand-sorted here (rustywind flip-flops the class order on it
+              # between runs, since foundation's own published order doesn't match rustywind's).
+              run: pnpm rustywind --write resources/views/app resources/views/auth resources/views/components resources/views/layouts resources/views/livewire resources/views/mails
 
             - uses: stefanzweifel/git-auto-commit-action@v7.2.0
               with:
