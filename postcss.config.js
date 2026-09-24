@@ -1,10 +1,8 @@
-import postcssImport from 'postcss-import';
 import postcssFocusVisible from 'postcss-focus-visible';
-import tailwindcss from 'tailwindcss';
+import tailwindcss from '@tailwindcss/postcss';
 
 export default {
     plugins: [
-        postcssImport,
         tailwindcss,
         postcssFocusVisible,
     ],

@@ -27,7 +27,7 @@ body {
     @apply flex items-center justify-center px-4 py-2 text-xs font-medium;
 }
 
-@screen md {
+@variant md {
     .network-status-block {
         @apply px-0 rounded-lg;
     }
@@ -36,26 +36,10 @@ body {
     }
 }
 
-@screen lg {
+@variant lg {
     .network-status-block {
         @apply w-auto;
     }
-}
-
-.navbar-settings-option {
-    @apply items-center justify-between pt-6 border-theme-secondary-300;
-}
-.navbar-settings-option:first-child {
-    @apply pt-0;
-}
-.navbar-settings-option:last-child {
-    @apply border-0;
-}
-.navbar-settings-option-with-border {
-    @apply pb-6 border-b border-dashed navbar-settings-option;
-}
-.dark .navbar-settings-option {
-    @apply border-theme-secondary-800;
 }
 
 /* Transaction Icon */
@@ -71,31 +55,31 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply text-theme-secondary-600 border-theme-secondary-600;
 }
 
-@screen md {
+@variant md {
     .transaction-icon {
         @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
     }
 }
 
-@screen sm {
+@variant sm {
     .chart-details > .detail-box:nth-child(2n + 1) {
         @apply pr-6 border-r border-theme-secondary-300;
     }
 }
 
-@screen md {
+@variant md {
     .delegate-details > .detail-box:nth-child(2n + 1) {
         @apply pr-6 border-r border-theme-secondary-300;
     }
 }
 
-@screen lg {
+@variant lg {
     .delegate-details > .detail-box:not(:last-child) {
         @apply pr-6 border-r border-theme-secondary-300;
     }
 }
 
-@screen xl {
+@variant xl {
     .chart-details > .detail-box:not(:last-child) {
         @apply pr-6 border-r border-theme-secondary-300;
     }
@@ -125,7 +109,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply border-theme-secondary-800;
 }
 
-@screen sm {
+@variant sm {
     .entity-header-item:nth-child(odd) {
         @apply pr-7;
     }
@@ -143,7 +127,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     }
 }
 
-@screen xl {
+@variant xl {
     .entity-header-item:not(:first-child) {
         @apply pl-7;
     }
@@ -200,7 +184,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply border-theme-secondary-800;
 }
 
-@screen md {
+@variant md {
     .details-grid > *:nth-child(2n + 1):nth-last-child(-n + 2),
     .details-grid > *:nth-child(2n + 1):nth-last-child(-n + 2) ~ * {
         @apply border-b-0;
@@ -216,20 +200,20 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply block;
 }
 
-@screen sm {
+@variant sm {
     .round-status-history > span {
         @apply block;
     }
 }
 
 /* Delegate Stats Grid */
-@screen md {
+@variant md {
     .delegate-statistics-grid > *:nth-child(2n + 1) {
         @apply border-r border-theme-secondary-800;
     }
 }
 
-@screen xl {
+@variant xl {
     .delegate-statistics-grid > *:not(:last-child) {
         @apply border-r border-theme-secondary-800;
     }
@@ -240,7 +224,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply w-full truncate;
 }
 .delegate-name-truncate-listing {
-    @apply delegate-name-truncate;
+    @apply w-full truncate;
     max-width: 7rem;
 }
 
@@ -251,7 +235,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
 }
 
 .delegate-name-truncate-prefix {
-    @apply delegate-name-truncate;
+    @apply w-full truncate;
     max-width: 6rem;
 }
 
@@ -287,7 +271,7 @@ body.table-compact:not(.table-compact-until-lg) .transparent {
     @apply flex-shrink-0 text-theme-danger-500 border-theme-danger-500 dark:text-theme-danger-600 dark:border-theme-danger-600;
 }
 
-@screen lg {
+@variant lg {
     .vote-circle,
     .unvote-circle {
         @apply flex items-center justify-center border-2 rounded-full w-11 h-11;
@@ -370,7 +354,7 @@ input.qr-code-amount[type="number"] {
 }
 
 /* Learn More */
-@screen md-lg {
+@variant md-lg {
     .arkconnect-arrows {
         background-image: url("/resources/images/wallets/arrows-success.svg") !important;
     }
@@ -380,7 +364,7 @@ input.qr-code-amount[type="number"] {
     }
 }
 
-@screen xl {
+@variant xl {
     .arkvault-arrows {
         background-image: url("/resources/images/wallets/arrows.svg") !important;
     }

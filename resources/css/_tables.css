@@ -79,7 +79,7 @@ tr:hover td.hoverable-cell .table-avatar {
     @apply w-5 h-5;
 }
 
-@screen lg {
+@variant lg {
     .table-compact:not(.table-compact-until-lg)
         .table-container
         table
@@ -104,7 +104,7 @@ tr:hover td.hoverable-cell .table-avatar {
         table
         > tbody
         .status-circle {
-        @apply w-5 h-5 !important;
+        @apply w-5! h-5!;
     }
 }
 
@@ -138,7 +138,7 @@ body.table-compact-until-lg .arrow-direction {
         @apply link font-semibold;
     }
 }
-@screen lg {
+@variant lg {
     body.table-compact-until-lg table .button-vote {
         @apply button-secondary;
     }
@@ -202,7 +202,7 @@ body.table-compact-until-lg .arrow-direction {
     > tr:hover
     > td.hoverable-cell
     > div.table-cell-bg {
-    @apply bg-theme-secondary-200 dark:bg-black !important;
+    @apply bg-theme-secondary-200! dark:bg-black!;
 }
 
 .table-encapsulated
@@ -223,7 +223,7 @@ body.table-compact-until-lg .arrow-direction {
     > tr:hover
     > td.hoverable-cell.last-cell
     > div.table-cell-bg:before {
-    @apply bg-theme-secondary-200 dark:bg-black !important;
+    @apply bg-theme-secondary-200! dark:bg-black!;
 }
 
 .table-encapsulated
@@ -242,7 +242,7 @@ body.table-compact-until-lg .arrow-direction {
     }
 }
 
-@screen 2xl {
+@variant 2xl {
     .table-encapsulated table > tbody > tr > td.hoverable-cell {
         @apply align-middle;
     }
@@ -277,7 +277,7 @@ body.table-compact-until-lg .arrow-direction {
     }
 }
 
-@screen md {
+@variant md {
     .delegate-monitor
         tbody
         tr:nth-last-child(-n + 1 of .delegate-monitor-favorite) {
