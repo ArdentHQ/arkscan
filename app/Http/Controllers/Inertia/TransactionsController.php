@@ -84,7 +84,7 @@ final class TransactionsController
             return $emptyResults;
         }
 
-        /** @var LengthAwarePaginator<Transaction> $paginator */
+        /** @var LengthAwarePaginator<int, Transaction> $paginator */
         $paginator = Transaction::withTypeFilter($this->filters())
             ->withScope(OrderByTimestampScope::class)
             ->withScope(OrderByTransactionIndexScope::class)

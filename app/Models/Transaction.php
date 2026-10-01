@@ -261,64 +261,64 @@ final class Transaction extends Model
         $hasAdjustedFilters = in_array(false, $filter, true);
 
         return $query
-            ->when($hasAdjustedFilters, function ($query) use ($filter) {
-                $query->where(function ($query) use ($filter) {
-                    $query->where(function ($query) use ($filter) {
-                        $query->when($filter['transfers'] === true, function ($query) {
+            ->when($hasAdjustedFilters, function (Builder $query) use ($filter) {
+                $query->where(function (Builder $query) use ($filter) {
+                    $query->where(function (Builder $query) use ($filter) {
+                        $query->when($filter['transfers'] === true, function (Builder $query) {
                             $query->withScope(TransferScope::class);
                         });
-                    })->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['transfers'] === true, function ($query) {
+                    })->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['transfers'] === true, function (Builder $query) {
                             $query->withScope(TokenTransferScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['multipayments'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['multipayments'] === true, function (Builder $query) {
                             $query->withScope(MultiPaymentScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['votes'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['votes'] === true, function (Builder $query) {
                             $query->withScope(VoteScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['votes'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['votes'] === true, function (Builder $query) {
                             $query->withScope(UnvoteScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['validator'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['validator'] === true, function (Builder $query) {
                             $query->withScope(ValidatorRegistrationScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['validator'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['validator'] === true, function (Builder $query) {
                             $query->withScope(ValidatorResignationScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['validator'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['validator'] === true, function (Builder $query) {
                             $query->withScope(ValidatorUpdateScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['username'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['username'] === true, function (Builder $query) {
                             $query->withScope(UsernameRegistrationScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['username'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['username'] === true, function (Builder $query) {
                             $query->withScope(UsernameResignationScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['contract_deployment'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['contract_deployment'] === true, function (Builder $query) {
                             $query->withScope(ContractDeploymentScope::class);
                         });
                     })
-                    ->orWhere(function ($query) use ($filter) {
-                        $query->when($filter['others'] === true, function ($query) {
+                    ->orWhere(function (Builder $query) use ($filter) {
+                        $query->when($filter['others'] === true, function (Builder $query) {
                             $query->withScope(OtherTransactionTypesScope::class);
                         });
                     });

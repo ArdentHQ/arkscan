@@ -28,9 +28,17 @@ final class AveragesAggregate
             ->withScope(MultiPaymentTotalAmountScope::class)
             ->first();
 
-        $count = (int) ($data?->getAttribute('count') ?? 0);
+        if (! $data instanceof Transaction) {
+            return [
+                'count'  => 0,
+                'amount' => 0,
+                'fee'    => 0,
+            ];
+        }
 
-        if ($count === 0 || $data === null) {
+        $count = (int) $data->getAttribute('count');
+
+        if ($count === 0) {
             return [
                 'count'  => 0,
                 'amount' => 0,
