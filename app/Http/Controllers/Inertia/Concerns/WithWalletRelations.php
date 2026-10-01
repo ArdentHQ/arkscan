@@ -14,6 +14,8 @@ trait WithWalletRelations
     /**
      * Load senderWallet, recipientWallet, and votedFor relations
      * using a single wallet query instead of three separate eager loads.
+     *
+     * @param  LengthAwarePaginator<int, Transaction>  $paginator
      */
     private function loadWalletRelations(LengthAwarePaginator $paginator): void
     {
@@ -43,6 +45,8 @@ trait WithWalletRelations
     /**
      * Load multi-payment totals (SUM) in a single query instead of
      * eager-loading all individual recipient rows.
+     *
+     * @param  LengthAwarePaginator<int, Transaction>  $paginator
      */
     private function loadMultiPaymentTotals(LengthAwarePaginator $paginator): void
     {

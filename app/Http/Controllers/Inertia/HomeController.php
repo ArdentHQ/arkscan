@@ -87,7 +87,7 @@ final class HomeController
 
     public function getTransactions(): LengthAwarePaginator
     {
-        /** @var LengthAwarePaginator<Transaction> $paginator */
+        /** @var LengthAwarePaginator<int, Transaction> $paginator */
         $paginator = Transaction::query()
             ->withScope(OrderByTimestampScope::class)
             ->paginate((int) config('arkscan.pagination.per_page'));

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Scope;
 
 final class OrderByTimestampScope implements Scope
 {
+    /** @param 'asc'|'desc' $direction */
     public function __construct(private string $direction = 'desc')
     {
         //
