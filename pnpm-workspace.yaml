@@ -1,0 +1,3 @@
+allowBuilds:
+  '@ardenthq/arkvault-url': true
+  unrs-resolver: true
