@@ -104,7 +104,7 @@ it('should error if webhook request fails with a message', function () {
 });
 
 it('should error if webhook request fails with a non-null value', function () {
-    Http::fake(Http::response(true, 200));
+    Http::fake(Http::response('1', 200));
 
     $webhook = Webhook::factory()->create();
 
