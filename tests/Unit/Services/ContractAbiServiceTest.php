@@ -17,9 +17,9 @@ it('returns all method signatures from ABIs and ERC-20', function () {
     // Consensus ABI methods
     expect($signatures)->toHaveKey('6dd7d8ea', 'vote(address)');
     expect($signatures)->toHaveKey('3174b689', 'unvote()');
-    expect($signatures)->toHaveKey('602a9eee', 'registerValidator(bytes)');
+    expect($signatures)->toHaveKey('226f2645', 'registerValidator(bytes,bytes)');
     expect($signatures)->toHaveKey('b85f5da2', 'resignValidator()');
-    expect($signatures)->toHaveKey('5a8eed73', 'updateValidator(bytes)');
+    expect($signatures)->toHaveKey('8f062626', 'updateValidator(bytes,bytes)');
 
     // Multipayment ABI
     expect($signatures)->toHaveKey('084ce708', 'pay(address[],uint256[])');
@@ -52,9 +52,9 @@ it('resolves known method hashes from ABIs', function () {
 
     expect($service->getKnownMethodHash('vote'))->toBe('6dd7d8ea');
     expect($service->getKnownMethodHash('unvote'))->toBe('3174b689');
-    expect($service->getKnownMethodHash('validator_registration'))->toBe('602a9eee');
+    expect($service->getKnownMethodHash('validator_registration'))->toBe('226f2645');
     expect($service->getKnownMethodHash('validator_resignation'))->toBe('b85f5da2');
-    expect($service->getKnownMethodHash('validator_update'))->toBe('5a8eed73');
+    expect($service->getKnownMethodHash('validator_update'))->toBe('8f062626');
     expect($service->getKnownMethodHash('multipayment'))->toBe('084ce708');
     expect($service->getKnownMethodHash('username_registration'))->toBe('36a94134');
     expect($service->getKnownMethodHash('username_resignation'))->toBe('ebed6dab');

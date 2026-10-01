@@ -336,7 +336,7 @@ it('should make an instance for a validator resignation transaction', function (
             'votedForUsername'                => null,
             'tokenApprovalDetails'            => null,
             'methodData'                      => [
-                'functionName' => 'registerValidator(bytes)',
+                'functionName' => 'registerValidator(bytes,bytes)',
                 'methodId'     => ContractMethod::validatorRegistration(),
                 'arguments'    => [
                     str_pad($blsPublicKey, 64, '0', STR_PAD_LEFT),
