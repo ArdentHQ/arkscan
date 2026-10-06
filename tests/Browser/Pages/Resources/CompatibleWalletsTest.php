@@ -17,20 +17,17 @@ it('should have the correct url for learn more links', function ($resolution) {
     });
 })->with('resolutions');
 
-it('should submit modal', function ($resolution) {
+it('should link the submit button to a mailto', function ($resolution) {
     $this->browse(function (Browser $browser) use ($resolution) {
         $browser->resize($resolution['width'], $resolution['height']);
 
         $browser->visitRoute('compatible-wallets')
             ->assertSee('Compatible Wallets')
-            ->clickLink('Submit Wallet', 'button')
-            ->assertSee('Submit a Listing')
-            ->value('input[name="name"]', 'My Wallet')
-            ->type('input[name="website"]', 'https://mywallet.com')
-            ->value('textarea[name="message"]', 'I would like to submit my wallet for listing.')
-            ->assertAttributeMissing('button[type="submit"]', 'disabled')
-            ->click('button[type="submit"]')
-            ->waitForText(trans('pages.compatible-wallets.submit-modal.success_toast'));
+            ->assertSeeLink('Submit Wallet');
+
+        $href = 'mailto:'.config('mail.contact_email').'?subject='.rawurlencode(trans('pages.compatible-wallets.submit_email_subject'));
+
+        expect($browser->driver->findElements(WebDriverBy::xpath('//a[@href="'.$href.'"]')))->toHaveCount(1);
     });
 })->with('resolutions');
 
