@@ -76,10 +76,7 @@ jobs:
 
             - name: Optimize SVGs
               id: svgo
-              run: |
-                  export PATH="$(pnpm global bin):$PATH"
-                  pnpm add -g svgo@latest
-                  pnpm svgo --config .svgo.js ./resources/**/*.svg
+              run: pnpm dlx svgo@latest --config .svgo.js ./resources/**/*.svg
 
             - name: Commit optimizations
               uses: stefanzweifel/git-auto-commit-action@v5

@@ -77,7 +77,7 @@ it('should update cache', function () {
 
 it('should revert to cache if request fails', function () {
     Http::fake([
-        '*' => Http::response(fn () => throw new Exception('Failed to connect')),
+        '*' => Http::failedConnection(),
     ]);
 
     $cache = new MainsailCache();

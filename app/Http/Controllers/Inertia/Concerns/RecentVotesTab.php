@@ -75,11 +75,11 @@ trait RecentVotesTab
             ->with('votedFor')
             ->where('status', true)
             ->where('timestamp', '>=', Timestamp::now()->subDays(30)->unix() * 1000)
-            ->where(function ($query) use ($defaultFilters) {
-                $query->where(fn ($query) => $query->when($this->hasFilter('vote', $defaultFilters['vote']), function ($query) {
+            ->where(function (Builder $query) use ($defaultFilters) {
+                $query->where(fn (Builder $query) => $query->when($this->hasFilter('vote', $defaultFilters['vote']), function (Builder $query) {
                     $query->withScope(VoteScope::class);
                 }))
-                ->orWhere(fn ($query) => $query->when($this->hasFilter('unvote', $defaultFilters['unvote']), function ($query) {
+                ->orWhere(fn (Builder $query) => $query->when($this->hasFilter('unvote', $defaultFilters['unvote']), function (Builder $query) {
                     $query->withScope(UnvoteScope::class);
                 }));
             })

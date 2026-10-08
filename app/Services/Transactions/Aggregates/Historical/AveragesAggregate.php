@@ -30,7 +30,7 @@ final class AveragesAggregate
 
         $count = (int) ($data?->getAttribute('count') ?? 0);
 
-        if ($count === 0 || $data === null) {
+        if ($count === 0) {
             return [
                 'count'  => 0,
                 'amount' => 0,
