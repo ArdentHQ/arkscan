@@ -20,7 +20,7 @@
         "http-interop/http-factory-guzzle": "^1.2",
         "huddledigital/zendesk-laravel": "dev-master",
         "inertiajs/inertia-laravel": "^3.0",
-        "laravel/horizon": "^5.29",
+        "laravel/horizon": "^5.50",
         "laravel/reverb": "^1.4",
         "laravel/scout": "^10.9",
         "laravel/tinker": "^3.0",
