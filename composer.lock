@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "235281520de619adb0ad09c98896d873",
+    "content-hash": "31930d55dd92a0b2a027e16c42958ec0",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -119,16 +119,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "22.0.0",
+            "version": "22.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "670441cd0def03b97c29a2c209c684290e1c7e49"
+                "reference": "240857691e201a8baefc4184716578316e0bf71a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/670441cd0def03b97c29a2c209c684290e1c7e49",
-                "reference": "670441cd0def03b97c29a2c209c684290e1c7e49",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/240857691e201a8baefc4184716578316e0bf71a",
+                "reference": "240857691e201a8baefc4184716578316e0bf71a",
                 "shasum": ""
             },
             "require": {
@@ -140,7 +140,6 @@
                 "friendsofphp/php-cs-fixer": "^3.86",
                 "graham-campbell/analyzer": "^5.0",
                 "guzzlehttp/guzzle": "^7.7",
-                "jamesmills/laravel-timezone": "dev-master",
                 "jenssegers/agent": "^2.6",
                 "larastan/larastan": "^3.0",
                 "laravel/fortify": "^1.25",
@@ -168,7 +167,8 @@
                 "spatie/laravel-sluggable": "^3.6",
                 "spatie/pest-plugin-snapshots": "^2.2",
                 "spatie/regex": "^3.1",
-                "spatie/yaml-front-matter": "^2.0"
+                "spatie/yaml-front-matter": "^2.0",
+                "torann/geoip": "^3.0"
             },
             "require-dev": {
                 "orchestra/testbench": "^11.0",
@@ -203,9 +203,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/22.0.0"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/22.2.0"
             },
-            "time": "2026-10-01T08:33:47+00:00"
+            "time": "2026-10-08T15:15:04+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -3399,68 +3399,6 @@
                 "source": "https://github.com/inertiajs/inertia-laravel/tree/v3.0.6"
             },
             "time": "2026-04-10T14:29:45+00:00"
-        },
-        {
-            "name": "jamesmills/laravel-timezone",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/peoplelikeushomeexchange/laravel-timezone.git",
-                "reference": "1b3c12f38c71864a99ff0fc3b668f8991d945265"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/peoplelikeushomeexchange/laravel-timezone/zipball/1b3c12f38c71864a99ff0fc3b668f8991d945265",
-                "reference": "1b3c12f38c71864a99ff0fc3b668f8991d945265",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "5.6.*|5.7.*|5.8.*|^6|^7|^8|^9|^10.0|^11.0|^12.0|^13.0",
-                "nesbot/carbon": "^1.0|^2.0|^3.0",
-                "php": ">=7.4",
-                "torann/geoip": "^3.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.12|^3.14"
-            },
-            "default-branch": true,
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "JamesMills\\LaravelTimezone\\LaravelTimezoneServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "JamesMills\\LaravelTimezone\\": "src/",
-                    "JamesMills\\LaravelTimezone\\Database\\Seeds\\": "database/seeds/"
-                }
-            },
-            "scripts": {
-                "pre-package-install": [
-                    "@php artisan config:clear"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "James Mills",
-                    "email": "james@jamesmills.co.uk"
-                }
-            ],
-            "description": "Timezone storage and retrieval for Laravel",
-            "keywords": [
-                "laravel",
-                "timezone"
-            ],
-            "support": {
-                "source": "https://github.com/peoplelikeushomeexchange/laravel-timezone/tree/master"
-            },
-            "time": "2026-04-04T03:39:37+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
