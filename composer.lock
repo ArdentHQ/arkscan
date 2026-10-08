@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b2286816922b2ba0721fe801abf53ce",
+    "content-hash": "09622002548c706371a12f09d0320379",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -3252,11 +3252,11 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/alexbarnsley/laravel-timezone.git",
-                "reference": "c12ff30f503341c874ed6008c59cd8977969185b"
+                "url": "https://github.com/ArdentHQ/laravel-timezone.git",
+                "reference": "1b3c12f38c71864a99ff0fc3b668f8991d945265"
             },
             "require": {
-                "laravel/framework": "5.6.*|5.7.*|5.8.*|^6|^7|^8|^9|^10.0|^11.0",
+                "laravel/framework": "5.6.*|5.7.*|5.8.*|^6|^7|^8|^9|^10.0|^11.0|^12.0|^13.0",
                 "nesbot/carbon": "^1.0|^2.0|^3.0",
                 "php": ">=7.4",
                 "torann/geoip": "^3.0"
@@ -3298,7 +3298,7 @@
                 "laravel",
                 "timezone"
             ],
-            "time": "2024-05-30T12:36:05+00:00"
+            "time": "2026-04-04T03:39:37+00:00"
         },
         {
             "name": "jaybizzle/crawler-detect",
@@ -17100,5 +17100,5 @@
         "ext-gmp": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

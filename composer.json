@@ -64,7 +64,7 @@
     },
     "repositories": [
         {
-            "url": "https://github.com/alexbarnsley/laravel-timezone.git",
+            "url": "https://github.com/ArdentHQ/laravel-timezone.git",
             "type": "git"
         },
         {
