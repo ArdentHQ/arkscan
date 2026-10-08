@@ -1,4 +1,4 @@
-<!-- airc v0.3.0 — managed file, do not edit -->
+<!-- airc v0.4.1 - managed file, do not edit -->
 
 # JavaScript / TypeScript
 
@@ -7,7 +7,7 @@ Code-writing rules for JS/TS files. Apply when writing or editing JS/TS code.
 ## Types
 
 - TypeScript in strict mode. Don't disable strict checks per file.
-- Avoid `any` — use `unknown` and narrow, or a precise type.
+- Avoid `any` - use `unknown` and narrow, or a precise type.
 - Add explicit return types to exported functions.
 
 ## Syntax
@@ -25,4 +25,4 @@ Code-writing rules for JS/TS files. Apply when writing or editing JS/TS code.
 
 ## Avoid
 
-- Mutating arguments or inputs — take them immutable, return new values.
+- Mutating arguments or inputs - take them immutable, return new values.

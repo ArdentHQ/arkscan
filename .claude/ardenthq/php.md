@@ -1,4 +1,4 @@
-<!-- airc v0.3.0 — managed file, do not edit -->
+<!-- airc v0.4.1 - managed file, do not edit -->
 
 # PHP
 
@@ -55,9 +55,9 @@ $d = new DateTime('now')->modify('+1 day');
 
 Use the standard scripts; don't invoke the underlying tool directly:
 
-- `composer format` — formatter (Pint)
-- `composer analyse` — static analysis (phpstan)
-- `composer test` / `composer test:coverage` — tests (Pest)
+- `composer format` - formatter (Pint)
+- `composer analyse` - static analysis (phpstan)
+- `composer test` / `composer test:coverage` - tests (Pest)
 
 If a script is missing, add it to `composer.json`:
 
@@ -71,5 +71,5 @@ If a script is missing, add it to `composer.json`:
 
 ## Avoid
 
-- Mutating function arguments — take immutable inputs, return new values.
+- Mutating function arguments - take immutable inputs, return new values.
 - Static state (singletons, statics for caching). Prefer dependency injection.

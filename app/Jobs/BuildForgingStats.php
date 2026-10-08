@@ -110,7 +110,7 @@ final class BuildForgingStats implements ShouldQueue
         $height = $this->height;
 
         if ($height === 0) {
-            $lastBlock = Block::orderBy('number', 'DESC')->limit(1)->firstOrFail();
+            $lastBlock = Block::orderBy('number', 'desc')->limit(1)->firstOrFail();
             $height    = $lastBlock->number->toNumber();
         }
 
@@ -121,7 +121,7 @@ final class BuildForgingStats implements ShouldQueue
     {
         $timeRange = intval($this->numberOfDays * 24 * 60 * 60);
         if ($timeRange === 0) {
-            $lastForgingInfoTs = ForgingStats::orderBy('timestamp', 'DESC')
+            $lastForgingInfoTs = ForgingStats::orderBy('timestamp', 'desc')
                 ->limit(1)
                 ->firstOr(function (): ForgingStats {
                     // by default if forging_stats table is not initialized we just build stats for past 30 days

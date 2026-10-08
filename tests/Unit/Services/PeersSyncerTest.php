@@ -131,7 +131,7 @@ it('should not re-create existing peers', function () {
 
 it('should return 0 when API fails', function () {
     Http::fake([
-        '*/peers*' => Http::response(fn () => throw new Exception('Connection failed')),
+        '*/peers*' => Http::failedConnection(),
     ]);
 
     expect((new PeersSyncer())->sync())->toBe(0);
