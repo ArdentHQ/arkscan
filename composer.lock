@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "31930d55dd92a0b2a027e16c42958ec0",
+    "content-hash": "8a9bb6b9a36c30c184a6fba999ac8fd3",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -119,16 +119,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "22.2.0",
+            "version": "dev-fix/missing-components",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "240857691e201a8baefc4184716578316e0bf71a"
+                "reference": "1f96f5c2ab7aa1f24038b173647c1c219f990992"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/240857691e201a8baefc4184716578316e0bf71a",
-                "reference": "240857691e201a8baefc4184716578316e0bf71a",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/1f96f5c2ab7aa1f24038b173647c1c219f990992",
+                "reference": "1f96f5c2ab7aa1f24038b173647c1c219f990992",
                 "shasum": ""
             },
             "require": {
@@ -203,9 +203,9 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/22.2.0"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/fix/missing-components"
             },
-            "time": "2026-10-08T15:15:04+00:00"
+            "time": "2026-10-09T17:16:53+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -18790,10 +18790,18 @@
             "time": "2026-03-12T19:55:31+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "arkecosystem/foundation",
+            "version": "dev-fix/missing-components",
+            "alias": "22.2.1",
+            "alias_normalized": "22.2.1.0"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "arkecosystem/crypto": 20,
+        "arkecosystem/foundation": 20,
         "huddledigital/zendesk-laravel": 20
     },
     "prefer-stable": true,
