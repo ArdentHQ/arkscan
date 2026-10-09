@@ -12,7 +12,7 @@
         "ext-gmp": "*",
         "ardenthq/arkvault-url": "^1.2",
         "arkecosystem/crypto": "dev-feat/mainsail",
-        "arkecosystem/foundation": "^22.0.0",
+        "arkecosystem/foundation": "^22.2.0",
         "blade-ui-kit/blade-icons": "^1.7",
         "brick/math": "^0.14.2",
         "doctrine/dbal": "^3.0",
@@ -69,10 +69,6 @@
         }
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/peoplelikeushomeexchange/laravel-timezone.git"
-        },
         {
             "type": "vcs",
             "url": "https://github.com/alfonsobries/zendesk-laravel.git"
