@@ -5,13 +5,15 @@ export default function SubmitCTA({
     subtitle,
     button,
     onClick,
+    href,
     className = "mt-6 sm:flex-row sm:space-y-0 sm:py-2 sm:text-start",
     titleClassName = "sm:text-lg",
 }: {
     title: string;
     subtitle: string;
     button: string;
-    onClick: () => void;
+    onClick?: () => void;
+    href?: string;
     className?: string;
     titleClassName?: string;
 }) {
@@ -33,9 +35,15 @@ export default function SubmitCTA({
                 <span className="whitespace-nowrap">{subtitle}</span>
             </span>
 
-            <button type="button" className="button-primary w-full sm:w-auto" onClick={onClick}>
-                {button}
-            </button>
+            {href !== undefined ? (
+                <a href={href} className="button-primary w-full sm:w-auto">
+                    {button}
+                </a>
+            ) : (
+                <button type="button" className="button-primary w-full sm:w-auto" onClick={onClick}>
+                    {button}
+                </button>
+            )}
         </div>
     );
 }

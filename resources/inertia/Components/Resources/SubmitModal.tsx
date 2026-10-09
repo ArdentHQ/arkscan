@@ -5,6 +5,7 @@ import useSubmitForm from "@/utils/submit-form";
 
 interface SubmitModalProps {
     ref: RefObject<HTMLFormElement | null>;
+    title: string;
     route: string;
     isOpen: boolean;
     onClose: () => void;
@@ -17,6 +18,7 @@ interface SubmitModalProps {
 
 export default function SubmitModal({
     ref,
+    title,
     route,
     isOpen,
     onClose,
@@ -50,7 +52,7 @@ export default function SubmitModal({
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} description="Export Table">
-            <Modal.Title>{t("pages.compatible-wallets.submit-modal.title")}</Modal.Title>
+            <Modal.Title>{title}</Modal.Title>
 
             <Modal.Body>
                 <form ref={ref} onSubmit={onFormSubmit} className="space-y-5">
