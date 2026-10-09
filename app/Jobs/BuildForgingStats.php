@@ -47,7 +47,7 @@ final class BuildForgingStats implements ShouldQueue
         $blockNumbers = Block::select('number', 'timestamp')
             ->withCasts(['number' => 'int'])
             ->withScope(OrderByTimestampScope::class)
-            ->where('number', '>=', $startHeight - Network::validatorCount())
+            ->where('number', '>=', $startHeight - (Network::validatorCount() * 2))
             ->where('number', '<=', $height)
             ->get()
             ->mapWithKeys(fn ($block) => [$block->timestamp->unix() => $block]); // @phpstan-ignore property.notFound
@@ -66,6 +66,10 @@ final class BuildForgingStats implements ShouldQueue
                     $missedBlock = $blockData;
 
                     break;
+                }
+
+                if ($missedBlock === null) {
+                    continue;
                 }
 
                 $missedHeight = $missedBlock['number'] + 1;

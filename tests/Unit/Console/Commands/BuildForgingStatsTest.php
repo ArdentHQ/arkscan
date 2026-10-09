@@ -146,6 +146,60 @@ it('should store the height for missed blocks', function () {
     expect($forgingStats->get(1)->missed_height)->toBe(21);
 });
 
+it('should store the height for missed blocks in the round before the start height', function () {
+    Block::factory()->create([
+        'timestamp' => 10000,
+        'number'    => 120,
+    ]);
+
+    Block::factory()->create([
+        'timestamp' => 45000,
+        'number'    => 200,
+    ]);
+
+    MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
+        ->once()
+        ->andReturn([
+            '10_test-address' => [
+                'timestamp' => 10,
+                'address'   => 'test-address',
+                'forged'    => false,
+            ],
+        ]);
+
+    Artisan::call('explorer:forging-stats:build', ['--height' => 200]);
+
+    expect(ForgingStats::where('forged', false)->sole()->missed_height)->toBe(121);
+});
+
+it('should skip missed blocks without an earlier block', function () {
+    Block::factory()->create([
+        'timestamp' => 45000,
+        'number'    => 200,
+    ]);
+
+    MissedBlocksCalculator::shouldReceive('calculateFromHeightGoingBack')
+        ->once()
+        ->andReturn([
+            '10_test-address' => [
+                'timestamp' => 10,
+                'address'   => 'test-address',
+                'forged'    => false,
+            ],
+            '45_test-address-2' => [
+                'timestamp' => 45,
+                'address'   => 'test-address-2',
+                'forged'    => false,
+            ],
+        ]);
+
+    Artisan::call('explorer:forging-stats:build', ['--height' => 200]);
+
+    expect(ForgingStats::where('forged', false)->sole())
+        ->address->toBe('test-address-2')
+        ->missed_height->toBe(201);
+});
+
 it('should batch upsert every 1000 records', function () {
     Block::factory()->create([
         'timestamp' => 45000,
