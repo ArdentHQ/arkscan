@@ -14,7 +14,6 @@ use App\Services\Cache\PriceChartCache;
 use App\Services\MarketDataProviders\CoinGecko;
 use App\Services\MarketDataProviders\CryptoCompare;
 use Carbon\Carbon;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
@@ -168,9 +167,7 @@ it('should not update prices if coingecko throws an exception', function () {
     $priceCache->getCache()->flush();
 
     Http::fake([
-        'api.coingecko.com/*' => Http::response(function () {
-            throw new ConnectionException();
-        }),
+        'api.coingecko.com/*' => Http::failedConnection(),
     ]);
 
     $cryptoCache->setPrices('USD.day', collect([1, 2, 3]));
@@ -367,9 +364,7 @@ it('should not update prices if cryptocompare throws an exception', function () 
     $priceCache->getCache()->flush();
 
     Http::fake([
-        'cryptocompare.com/*' => Http::response(function () {
-            throw new ConnectionException();
-        }),
+        'cryptocompare.com/*' => Http::failedConnection(),
     ]);
 
     $cryptoCache->setPrices('USD.day', collect([1, 2, 3]));

@@ -212,7 +212,7 @@ it('should throw an exception if the API response throws an exception', function
     Artisan::call('migrate:fresh');
 
     Http::fake([
-        'api.coingecko.com/*' => Http::response(fn () => throw new Exception('Test')),
+        'api.coingecko.com/*' => Http::failedConnection(),
     ]);
 
     $exchange = Exchange::factory()->create([
@@ -274,7 +274,7 @@ it('should throw an exception if the API response is empty for volume', function
 
 it('should throw an exception if the API response throws an exception for volume', function () {
     Http::fake([
-        'api.coingecko.com/*' => Http::response(fn () => throw new Exception('Test')),
+        'api.coingecko.com/*' => Http::failedConnection(),
     ]);
 
     (new CoinGecko())->volume('ARK');

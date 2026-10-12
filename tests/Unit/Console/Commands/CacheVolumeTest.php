@@ -8,7 +8,6 @@ use App\Services\Blockchain\Network as Blockchain;
 use App\Services\Cache\CryptoDataCache;
 use App\Services\MarketDataProviders\CoinGecko;
 use Carbon\Carbon;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
@@ -80,9 +79,7 @@ it('should not update prices if coingecko throws an exception', function () {
     $crypto->getCache()->flush();
 
     Http::fake([
-        'api.coingecko.com/*' => Http::response(function () {
-            throw new ConnectionException();
-        }),
+        'api.coingecko.com/*' => Http::failedConnection(),
     ]);
 
     $crypto->setVolume('USD', '123');
