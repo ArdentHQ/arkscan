@@ -43,5 +43,6 @@
         "onlyBuiltDependencies": [
             "rustywind"
         ]
-    }
+    },
+    "packageManager": "pnpm@12.11.2"
 }
