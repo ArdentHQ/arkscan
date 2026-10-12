@@ -26,7 +26,7 @@ function FavoriteDelegates() {
         save() {
             localStorage.setItem(
                 "favorite-delegates",
-                JSON.stringify(this.favorites)
+                JSON.stringify(this.favorites),
             );
         },
     });

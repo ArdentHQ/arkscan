@@ -25,7 +25,7 @@ window.chartTooltip = (context) => {
             "text-white",
             "leading-3.75",
             "text-left",
-            "p-2"
+            "p-2",
         );
 
         tooltipEl.style.opacity = 1;
@@ -58,7 +58,7 @@ window.chartTooltip = (context) => {
         "font-semibold",
         "text-theme-secondary-500",
         "dark:text-theme-dark-200",
-        "text-xs"
+        "text-xs",
     );
 
     const tr = document.createElement("tr");
@@ -89,7 +89,7 @@ window.chartTooltip = (context) => {
 
         const date = dayjs(
             dateString.replace("p.m.", "pm"),
-            "MMM D, YYYY, H:mm:ss a"
+            "MMM D, YYYY, H:mm:ss a",
         );
         const text = document.createElement("span");
         text.innerHTML = date.format("D MMM YYYY HH:mm:ss");
@@ -98,7 +98,7 @@ window.chartTooltip = (context) => {
             "text-theme-secondary-500",
             "dark:text-theme-dark-200",
             "text-xs",
-            "whitespace-nowrap"
+            "whitespace-nowrap",
         );
 
         td.appendChild(text);
