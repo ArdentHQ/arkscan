@@ -39,10 +39,5 @@
     "dependencies": {
         "axios": "^1.6.8"
     },
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "rustywind"
-        ]
-    },
     "packageManager": "pnpm@12.11.2"
 }
