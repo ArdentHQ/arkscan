@@ -45,6 +45,7 @@ export default function ExchangesSubmitCTA() {
 
             <SubmitModal
                 ref={formRef}
+                title={t("pages.exchanges.submit-modal.title")}
                 route={route("exchanges.submit")}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
