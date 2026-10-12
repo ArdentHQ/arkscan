@@ -41,19 +41,18 @@ final class CacheDelegateUsernames extends Command
             ])
             ->get()
             ->each(function (Model $wallet) use ($cache, $knownWallets) : void {
-                /** @var \stdClass $wallet */
-                $knownWallet = $knownWallets->firstWhere('address', $wallet->address);
+                $knownWallet = $knownWallets->firstWhere('address', $wallet->getAttribute('address'));
 
                 if (! is_null($knownWallet)) {
                     $username = $knownWallet['name'];
                 } else {
-                    $username = $wallet->username;
+                    $username = $wallet->getAttribute('username');
                 }
 
-                $cache->setUsernameByAddress($wallet->address, $username);
+                $cache->setUsernameByAddress($wallet->getAttribute('address'), $username);
 
-                if (! is_null($wallet->public_key)) {
-                    $cache->setUsernameByPublicKey($wallet->public_key, $username);
+                if (! is_null($wallet->getAttribute('public_key'))) {
+                    $cache->setUsernameByPublicKey($wallet->getAttribute('public_key'), $username);
                 }
             });
     }

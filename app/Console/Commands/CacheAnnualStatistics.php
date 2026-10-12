@@ -93,11 +93,11 @@ final class CacheAnnualStatistics extends Command
             // Find corresponding multipayment amount
             $multipaymentAmount = $multipaymentData->first(function ($value) use ($item) {
                 return $value->year === $item->year;
-            })?->amount ?? '0';
+            })->amount ?? '0';
 
             $volume = BigNumber::new($item->amount)->plus($multipaymentAmount)->__toString();
 
-            $blocks = $blocksData->get($key)?->blocks ?? 0;
+            $blocks = $blocksData->get($key)->blocks ?? 0;
 
             if (! $this->hasChanges) {
                 $existingData = $cache->getAnnualData((int) $item->year) ?? [];
@@ -126,7 +126,7 @@ final class CacheAnnualStatistics extends Command
         $startOfYear = (int) Carbon::now()->startOfYear()->timestamp;
         $year        = Carbon::now()->year;
 
-        /** @var ?object{transactions: int, amount: int, volume: string, fees: float} $transactionData */
+        /** @var \stdClass|null $transactionData */
         $transactionData = DB::connection('explorer')
             ->query()
             ->select([
@@ -144,7 +144,7 @@ final class CacheAnnualStatistics extends Command
             ->fromRaw('transactions LEFT JOIN LATERAL jsonb_array_elements(asset->\'payments\') AS payment on true')
             ->where('transactions.type', '=', CoreTransactionTypeEnum::MULTI_PAYMENT)
             ->where('timestamp', '>=', $startOfYear - $epoch)
-            ->first()?->amount ?? '0';
+            ->first()->amount ?? '0';
 
         $blocksData = DB::connection('explorer')
             ->query()
@@ -153,8 +153,8 @@ final class CacheAnnualStatistics extends Command
             ->count();
 
         $transactionCount = (int) $transactionData?->transactions;
-        $volume           = BigNumber::new($transactionData?->amount ?? '0')->plus($multipaymentAmount)->__toString();
-        $fees             = (string) ($transactionData?->fees ?? '0');
+        $volume           = BigNumber::new($transactionData->amount ?? '0')->plus($multipaymentAmount)->__toString();
+        $fees             = (string) ($transactionData->fees ?? '0');
 
         if (! $this->hasChanges) {
             $existingData = $cache->getAnnualData($year) ?? [];

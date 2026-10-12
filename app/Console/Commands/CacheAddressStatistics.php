@@ -57,14 +57,9 @@ final class CacheAddressStatistics extends Command
     {
         $holdings = (new HoldingsAggregate())->aggregate();
 
-        $hasChanges = false;
-        if ($holdings !== null) {
-            if ($cache->getAddressHoldings() !== $holdings->toArray()) {
-                $hasChanges = true;
-            }
+        $hasChanges = $cache->getAddressHoldings() !== $holdings->toArray();
 
-            $cache->setAddressHoldings($holdings->toArray());
-        }
+        $cache->setAddressHoldings($holdings->toArray());
 
         return $hasChanges;
     }
@@ -93,7 +88,7 @@ final class CacheAddressStatistics extends Command
 
     private function cacheMostTransactions(StatisticsCache $cache): void
     {
-        /** @var array{address?: string, tx_count?: int} $mostTransactions */
+        /** @var array{}|array{address: string, tx_count: int} $mostTransactions */
         $mostTransactions = (array) DB::connection('explorer')
             ->query()
             ->select([

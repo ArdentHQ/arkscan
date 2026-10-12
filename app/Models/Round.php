@@ -26,11 +26,6 @@ final class Round extends Model
      */
     public $incrementing = false;
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
     protected $connection = 'explorer';
 
     /**
