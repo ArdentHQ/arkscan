@@ -9,10 +9,10 @@ use App\Models\Wallet;
 use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use Livewire\Livewire;
-use function Tests\fakeCryptoCompare;
+use function Tests\fakeArkPricing;
 
 beforeEach(function () {
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     $this->subject = Wallet::factory()->create();
 });

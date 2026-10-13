@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
-use function Tests\fakeCryptoCompare;
+use function Tests\fakeArkPricing;
 use Tests\Feature\Http\Livewire\__stubs\NetworkStub;
 
 beforeEach(function (): void {
@@ -18,7 +18,7 @@ beforeEach(function (): void {
 });
 
 it('should render the component with fiat value', function () {
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     Settings::shouldReceive('currency')
         ->andReturn('BTC')
@@ -51,7 +51,7 @@ it('should render the component with non fiat value', function () {
     Settings::shouldReceive('theme')->andReturn('light');
     Settings::shouldReceive('currency')->andReturn('BTC');
 
-    fakeCryptoCompare(false, 'BTC');
+    fakeArkPricing();
 
     Settings::shouldReceive('currency')
         ->andReturn('BTC')
@@ -80,7 +80,7 @@ it('should render the component with non fiat value', function () {
 });
 
 it('should not render the component', function () {
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     Settings::shouldReceive('currency')
         ->andReturn('BTC')
@@ -109,7 +109,7 @@ it('should not render the component', function () {
 });
 
 it('should filter by year', function () {
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     Settings::shouldReceive('currency')
         ->andReturn('BTC')
@@ -138,7 +138,7 @@ it('should filter by year', function () {
 });
 
 it('should render min max price and percentage', function () {
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     Settings::shouldReceive('currency')
         ->andReturn('BTC')
@@ -169,7 +169,7 @@ it('should render min max price and percentage', function () {
 });
 
 it('should show fiat data', function () {
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     Settings::shouldReceive('currency')
         ->andReturn('USD')

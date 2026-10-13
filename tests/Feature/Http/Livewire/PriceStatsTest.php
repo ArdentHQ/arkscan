@@ -6,13 +6,13 @@ use App\Http\Livewire\PriceStats;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
-use function Tests\fakeCryptoCompare;
+use function Tests\fakeArkPricing;
 
 it('should render the values', function () {
     Config::set('arkscan.networks.development.canBeExchanged', true);
     Config::set('arkscan.networks.development.currency', 'ARK');
 
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     Artisan::call('explorer:cache-currencies-data');
     Artisan::call('explorer:cache-prices');
@@ -25,7 +25,7 @@ it('should render the placeholder values when no price cached yet', function () 
     Config::set('arkscan.networks.development.canBeExchanged', true);
     Config::set('arkscan.networks.development.currency', 'ARK');
 
-    fakeCryptoCompare();
+    fakeArkPricing();
 
     Livewire::test(PriceStats::class)
         ->assertSee('[4,5,2,2,2,3,5,1,4,5,6,5,3,3,4,5,6,4,4,4,5,8,8,10]');
