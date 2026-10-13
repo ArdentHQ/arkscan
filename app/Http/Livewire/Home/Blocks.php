@@ -24,8 +24,9 @@ final class Blocks extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'setBlocksReady'  => 'setIsReady',
-        'currencyChanged' => '$refresh',
+        'setBlocksReady'       => 'setIsReady',
+        'currencyChanged'      => '$refresh',
+        'echo:blocks,NewBlock' => '$refresh',
     ];
 
     public function render(): View
