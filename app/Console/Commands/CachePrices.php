@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 final class CachePrices extends Command
 {
@@ -54,8 +55,9 @@ final class CachePrices extends Command
 
         $currencyLastUpdated = $priceCache->getLastUpdated();
 
-        $currencies = (new Collection(config('currencies')))
-            ->pluck('currency')
+        $allCurrencies = (new Collection(config('currencies')))->pluck('currency');
+
+        $currencies = $allCurrencies
             // Only update currency prices if they're 10+ minutes old
             ->filter(fn ($currency) => Arr::get($currencyLastUpdated, $currency, 0) < Carbon::now()->sub('minutes', 10)->unix())
             ->sort(function ($a, $b) use ($currencyLastUpdated) {
@@ -65,9 +67,30 @@ final class CachePrices extends Command
                 return $aLastUpdated - $bLastUpdated;
             });
 
+        $verbose = $this->output->isVerbose();
+
+        $skipped = $allCurrencies->diff($currencies);
+        if ($verbose && $skipped->isNotEmpty()) {
+            $this->line(sprintf('Skipping %s - updated within the last 10 minutes', $skipped->implode(', ')));
+        }
+
         foreach ($currencies as $currency) {
             $prices       = $marketDataProvider->historical(Network::currency(), $currency);
             $hourlyPrices = $marketDataProvider->historicalHourly(Network::currency(), $currency);
+
+            if ($verbose) {
+                if ($prices->isEmpty() || $hourlyPrices->isEmpty()) {
+                    $this->warn(sprintf(
+                        '%s: %d daily, %d hourly prices%s',
+                        $currency,
+                        $prices->count(),
+                        $hourlyPrices->count(),
+                        $this->emptyResponseHint(),
+                    ));
+                } else {
+                    $this->info(sprintf('%s: %d daily, %d hourly prices', $currency, $prices->count(), $hourlyPrices->count()));
+                }
+            }
 
             $dispatchEvent = false;
             foreach (self::PERIODS as $period) {
@@ -124,6 +147,21 @@ final class CachePrices extends Command
         }
 
         $priceCache->setLastUpdated($currencyLastUpdated);
+    }
+
+    private function emptyResponseHint(): string
+    {
+        $throttled = (int) Cache::get('ark_pricing_response_throttled', 0);
+        if ($throttled > 0) {
+            return sprintf(' (ArkPricing is throttling - %d consecutive throttled responses)', $throttled);
+        }
+
+        $errors = (int) Cache::get('ark_pricing_response_error', 0);
+        if ($errors > 0) {
+            return sprintf(' (%d consecutive empty responses from ArkPricing)', $errors);
+        }
+
+        return '';
     }
 
     private function statsByPeriod(string $period, Collection $datasets): Collection

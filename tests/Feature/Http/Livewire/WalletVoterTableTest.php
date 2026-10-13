@@ -10,10 +10,10 @@ use App\Services\NumberFormatter;
 use App\ViewModels\ViewModelFactory;
 use App\ViewModels\WalletViewModel;
 use Livewire\Livewire;
-use function Tests\fakeCryptoCompare;
+use function Tests\fakeArkPricing;
 
 beforeEach(function () {
-    fakeCryptoCompare();
+    fakeArkPricing();
 });
 
 it('should list all voters for the given public key', function () {

@@ -12,9 +12,9 @@ final class Exchange extends Model
 {
     use HasFactory;
 
-    public function scopeCoingecko(Builder $query): Builder
+    public function scopeWithProviderId(Builder $query): Builder
     {
-        return $query->whereNotNull('coingecko_id');
+        return $query->whereNotNull('provider_exchange_id');
     }
 
     public function scopeFilterByType(Builder $query, ?string $type): Builder

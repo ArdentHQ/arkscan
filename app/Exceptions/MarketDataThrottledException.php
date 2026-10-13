@@ -6,7 +6,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-final class CoinGeckoThrottledException extends Exception
+final class MarketDataThrottledException extends Exception
 {
     //
 }
