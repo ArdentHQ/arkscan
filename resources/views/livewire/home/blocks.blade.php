@@ -1,7 +1,9 @@
 <div
     class="w-full"
-    @if ($this->isReady)
-        wire:poll.10s
+    @if (config('broadcasting.default') !== 'reverb')
+        @if ($this->isReady)
+            wire:poll.10s
+        @endif
     @endif
 >
     <x-skeletons.home.blocks :row-count="$this->perPage">

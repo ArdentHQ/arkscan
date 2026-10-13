@@ -24,8 +24,9 @@ final class Transactions extends Component
 
     /** @var mixed */
     protected $listeners = [
-        'setTransactionsReady' => 'setIsReady',
-        'currencyChanged'      => '$refresh',
+        'setTransactionsReady'             => 'setIsReady',
+        'currencyChanged'                  => '$refresh',
+        'echo:transactions,NewTransaction' => '$refresh',
     ];
 
     public function render(): View

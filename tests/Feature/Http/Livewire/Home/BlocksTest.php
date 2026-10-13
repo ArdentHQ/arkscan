@@ -93,3 +93,32 @@ it('should show stale total count when new blocks are added after caching', func
 
     expect($component->get('blocks')->total())->toBe(5);
 });
+
+it('should reload on new block websocket event', function () {
+    $component = Livewire::test(Blocks::class)
+        ->call('setIsReady');
+
+    $block = Block::factory()->create([
+        'height' => 12345,
+    ]);
+
+    $component->assertDontSee($block->id)
+        ->dispatch('echo:blocks,NewBlock')
+        ->assertSee($block->id);
+});
+
+it('should poll when broadcasting driver is not reverb', function () {
+    Config::set('broadcasting.default', 'log');
+
+    Livewire::test(Blocks::class)
+        ->call('setIsReady')
+        ->assertSee('wire:poll.10s', false);
+});
+
+it('should not poll when broadcasting driver is reverb', function () {
+    Config::set('broadcasting.default', 'reverb');
+
+    Livewire::test(Blocks::class)
+        ->call('setIsReady')
+        ->assertDontSee('wire:poll.10s', false);
+});

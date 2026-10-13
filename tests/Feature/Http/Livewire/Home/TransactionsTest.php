@@ -7,6 +7,7 @@ use App\Models\Scopes\OrderByTimestampScope;
 use App\Models\Transaction;
 use App\ViewModels\ViewModelFactory;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 
 it('should list the first page of transactions', function () {
@@ -60,4 +61,31 @@ it('should show stale total count when new transactions are added after caching'
     $component = Livewire::test(Transactions::class)->call('setIsReady');
 
     expect($component->get('transactions')->total())->toBe(5);
+});
+
+it('should reload on new transaction websocket event', function () {
+    $component = Livewire::test(Transactions::class)
+        ->call('setIsReady');
+
+    $transaction = Transaction::factory()->transfer()->create();
+
+    $component->assertDontSee($transaction->id)
+        ->dispatch('echo:transactions,NewTransaction')
+        ->assertSee($transaction->id);
+});
+
+it('should poll when broadcasting driver is not reverb', function () {
+    Config::set('broadcasting.default', 'log');
+
+    Livewire::test(Transactions::class)
+        ->call('setIsReady')
+        ->assertSee('wire:poll.10s', false);
+});
+
+it('should not poll when broadcasting driver is reverb', function () {
+    Config::set('broadcasting.default', 'reverb');
+
+    Livewire::test(Transactions::class)
+        ->call('setIsReady')
+        ->assertDontSee('wire:poll.10s', false);
 });
