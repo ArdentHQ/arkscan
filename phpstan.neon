@@ -7,3 +7,14 @@ parameters:
         - app/Console/Commands/RunPlaybookCommand.php
         - app/Services/Monitor
         - app/Testing
+    ignoreErrors:
+        # larastan demands literal-string for DB::raw()/whereRaw() to guard against SQL injection. These usages
+        # build trusted SQL with sprintf + config/epoch values or PDO-quoted input (never raw user input), same
+        # reasoning as the suppression on mainsail-develop.
+        -
+            message: '#::(raw|whereRaw|orWhereRaw)\(\) expects#'
+            identifier: argument.type
+        # The skeleton view name is built dynamically from the encapsulated/device flags.
+        -
+            identifier: argument.type
+            path: app/View/Components/TableSkeleton.php

@@ -48,7 +48,6 @@ trait DelegateData
                     },
                 ]);
 
-            /** @var Collection $lastBlocks */
             $lastBlocks = Block::whereIn('id', $lastBlockIds->pluck('last_block_id'))
                 ->get()
                 ->groupBy('generator_public_key');
@@ -58,8 +57,7 @@ trait DelegateData
 
                 // The delegate hasn't forged in some rounds.
                 if (is_null($block) && $lastBlocks->has($delegate)) {
-                    $block = $lastBlocks->get($delegate)
-                        ->first();
+                    $block = $lastBlocks->get($delegate)?->first();
                 }
 
                 // The delegate has never forged.

@@ -49,11 +49,6 @@ final class Webhook extends Model
      */
     protected $table = 'core_webhooks';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'id',
         'token',

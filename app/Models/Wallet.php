@@ -24,7 +24,7 @@ use Laravel\Scout\Searchable;
  * @property array $attributes
  * @property string $delegate_username (only available when indexed by scout)
  * @property string $timestamp (only available when indexed by scout)
- * @property int $missed_blocks (only available when sorting delegates by missed blocks)
+ * @property int|null $missed_blocks (only available when sorting delegates by missed blocks)
  * @method static \Illuminate\Database\Eloquent\Builder withScope(string $scope)
  */
 final class Wallet extends Model
@@ -49,11 +49,6 @@ final class Wallet extends Model
      */
     public $keyType = 'string';
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
     protected $connection = 'explorer';
 
     protected $primaryKey = 'address';

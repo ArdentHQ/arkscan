@@ -10,10 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 final class HoldingsAggregate
 {
-    /**
-     * @return Collection<int, array{'grouped': int, 'count': int}>
-     */
-    public function aggregate(): ?Collection
+    public function aggregate(): Collection
     {
         // @phpstan-ignore-next-line
         return Wallet::query()

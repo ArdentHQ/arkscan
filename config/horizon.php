@@ -69,6 +69,8 @@ $environments = [
 
 return [
 
+    'addresses' => (string) env('HORIZON_ADDRESSES', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Horizon Domain
