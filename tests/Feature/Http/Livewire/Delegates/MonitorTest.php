@@ -25,8 +25,22 @@ use function Tests\createFullRound;
 use function Tests\createPartialRound;
 use function Tests\createRealisticRound;
 use function Tests\createRoundEntry;
+use function Tests\faker;
 use function Tests\getRoundDelegates;
 use function Tests\mockTaggedCache;
+
+beforeEach(function () {
+    // The forging order depends on the delegates' public keys and round balances, so random wallets and
+    // balances can place the missed delegates in slots (e.g. the last one) that change the expected
+    // overflow and slot states. Seed both so every run builds the same rounds.
+    faker()->seed(1);
+    faker()->seedWallets(1);
+
+    // The round helpers travel relative to "now", so a moving clock can shift slots between assertions.
+    $this->freezeTime();
+});
+
+afterEach(fn () => faker()->seed());
 
 describe('Monitor', function () {
     function createRoundWithDelegates(): void

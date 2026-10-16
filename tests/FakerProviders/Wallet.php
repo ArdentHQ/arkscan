@@ -8,6 +8,8 @@ use Faker\Generator;
 use Faker\Provider\Base;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Random\Engine\Mt19937;
+use Random\Randomizer;
 
 final class Wallet extends Base
 {
@@ -24,6 +26,15 @@ final class Wallet extends Base
         }
 
         $this->availableWallets = collect(self::$wallets)->shuffle();
+    }
+
+    /**
+     * Reorder the available wallets deterministically so tests that depend on
+     * the delegate order (e.g. the forging order of a round) are reproducible.
+     */
+    public function seedWallets(int $seed): void
+    {
+        $this->availableWallets = collect((new Randomizer(new Mt19937($seed)))->shuffleArray(self::$wallets));
     }
 
     public function wallet(): array
