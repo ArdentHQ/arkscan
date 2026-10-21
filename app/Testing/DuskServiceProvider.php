@@ -6,7 +6,6 @@ namespace App\Testing;
 
 use App\Contracts\Network as NetworkContract;
 use App\Facades\Network as NetworkFacade;
-use Huddle\Zendesk\Facades\Zendesk;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Dusk\Browser;
@@ -100,7 +99,6 @@ class DuskServiceProvider extends ServiceProvider
         $network = new DuskNetworkStub($this->app->make(NetworkContract::class));
         NetworkFacade::swap($network);
 
-        Zendesk::swap(new FakeZendesk());
         Mail::fake();
     }
 }
