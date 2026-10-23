@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Contracts;
 
 use App\Services\BigNumber;
+use ArkEcosystem\Crypto\Networks\AbstractNetwork;
 use Carbon\Carbon;
 
 interface Network
@@ -39,7 +40,7 @@ interface Network
 
     public function supply(): BigNumber;
 
-    public function config(): \BitWasp\Bitcoin\Network\Network;
+    public function config(): AbstractNetwork;
 
     public function toArray(): array;
 }

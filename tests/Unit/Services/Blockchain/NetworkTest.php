@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use App\Services\Blockchain\Network;
+use ArkEcosystem\Crypto\Networks\AbstractNetwork;
 use ArkEcosystem\Crypto\Networks\Devnet;
 use ArkEcosystem\Crypto\Networks\Mainnet;
-use BitWasp\Bitcoin\Network\Network as Bitwasp;
 use Carbon\Carbon;
 use function Tests\fakeKnownWallets;
 
@@ -36,7 +36,7 @@ it('should have all required properties', function (array $config) {
     expect($subject->delegateCount())->toBe($config['delegateCount']);
     expect($subject->blockTime())->toBe($config['blockTime']);
     expect($subject->blockReward())->toBe($config['blockReward']);
-    expect($subject->config())->toBeInstanceOf(Bitwasp::class);
+    expect($subject->config())->toBeInstanceOf(AbstractNetwork::class);
     expect($subject->nethash())->toBe($config['nethash']);
 })->with([
     [[

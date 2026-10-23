@@ -1,0 +1,26 @@
+[
+    {
+        "level": "SEVERE",
+        "message": "https:\/\/arkscan.test:3000\/resources\/css\/app.css - Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "source": "network",
+        "timestamp": 1771348059188
+    },
+    {
+        "level": "SEVERE",
+        "message": "https:\/\/arkscan.test:3000\/@vite\/client - Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "source": "network",
+        "timestamp": 1771348059201
+    },
+    {
+        "level": "SEVERE",
+        "message": "https:\/\/arkscan.test:3000\/resources\/js\/app-inertia.tsx - Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "source": "network",
+        "timestamp": 1771348059201
+    },
+    {
+        "level": "SEVERE",
+        "message": "https:\/\/arkscan.test:3000\/resources\/js\/app.js - Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "source": "network",
+        "timestamp": 1771348059201
+    }
+]
