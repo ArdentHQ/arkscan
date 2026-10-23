@@ -9,6 +9,7 @@ use App\Http\Livewire\Concerns\DeferLoading;
 use App\ViewModels\WalletViewModel;
 use ARKEcosystem\Foundation\UserInterface\Http\Livewire\Concerns\HasModal;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Livewire\Component;
 
 final class ExportBlocks extends Component
@@ -43,6 +44,6 @@ final class ExportBlocks extends Component
     {
         $wallet = Wallets::findByPublicKey($this->publicKey);
 
-        $this->hasForgedBlocks = $wallet->blocks()->count() > 0;
+        $this->hasForgedBlocks = Arr::get($wallet->attributes, 'delegate.producedBlocks', 0) > 0;
     }
 }
