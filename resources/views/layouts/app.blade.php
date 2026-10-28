@@ -28,15 +28,32 @@
                 ]"
                 :socials="config('social.networks')"
                 wrapper-class="py-5 px-6 max-w-7xl md:px-10"
-                class="dark:border-transparent dark:text-theme-dark-200"
+                class="dark:border-transparent text-[#A4B1BC] dim:text-theme-dark-200"
             >
-                <span class="inline-flex items-center space-x-1 whitespace-nowrap">
+                <a
+                    href="@lang ('general.urls.coingecko')"
+                    target="_blank"
+                    rel="noopener nofollow noreferrer"
+                    class="inline-flex items-center space-x-1 whitespace-nowrap group"
+                >
                     <span>@lang ('general.market_data_by')</span>
 
-                    <a href="@lang ('general.urls.coingecko')" target="_blank" rel="noopener nofollow noreferrer">
-                        <x-ark-icon name="app-coingecko" />
-                    </a>
-                </span>
+                    <x-ark-icon name="app-coingecko" size="sm" />
+                </a>
+
+                <span class="mx-0.5">|</span>
+
+                <a
+                    href="@lang ('general.urls.simpleanalytics', ['domain' => parse_url(config('app.url'), PHP_URL_HOST)])"
+                    target="_blank"
+                    rel="noopener nofollow"
+                    referrerpolicy="origin"
+                    class="inline-flex items-center space-x-1 whitespace-nowrap group"
+                >
+                    <span>@lang ('general.analytics_by')</span>
+
+                    <x-ark-icon name="app-simpleanalytics" size="sm" />
+                </a>
             </x-ark-footer>
 
             <livewire:search-modal />

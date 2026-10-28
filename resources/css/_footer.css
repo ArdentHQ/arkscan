@@ -1,0 +1,49 @@
+[class^="coingecko-icon__"],
+.simpleanalytics-icon__bar {
+    @apply transition-default;
+}
+
+.dim .coingecko-icon__background {
+    fill: var(--theme-color-dim-800);
+}
+
+.dim .coingecko-icon__body {
+    fill: var(--theme-color-dim-400);
+}
+
+.dim .coingecko-icon__eye,
+.dim .simpleanalytics-icon__bar {
+    fill: var(--theme-color-dim-200);
+}
+
+.dim .coingecko-icon__pupil {
+    fill: var(--theme-color-dim-900);
+}
+
+.dim .coingecko-icon__mouth {
+    fill: var(--theme-color-dim-500);
+}
+
+.group:hover .coingecko-icon__background {
+    fill: #ffe866;
+}
+
+.group:hover .coingecko-icon__body {
+    fill: #4bcc00;
+}
+
+.group:hover .coingecko-icon__eye {
+    fill: #ffffff;
+}
+
+.group:hover .coingecko-icon__pupil {
+    fill: #0d1217;
+}
+
+.group:hover .coingecko-icon__mouth {
+    fill: #35af00;
+}
+
+.group:hover .simpleanalytics-icon__bar {
+    fill: #de3244;
+}
