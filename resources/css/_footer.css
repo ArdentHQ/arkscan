@@ -3,6 +3,27 @@
     @apply transition-default;
 }
 
+.dim .coingecko-icon__background {
+    fill: var(--theme-color-dim-800);
+}
+
+.dim .coingecko-icon__body {
+    fill: var(--theme-color-dim-400);
+}
+
+.dim .coingecko-icon__eye,
+.dim .simpleanalytics-icon__bar {
+    fill: var(--theme-color-dim-200);
+}
+
+.dim .coingecko-icon__pupil {
+    fill: var(--theme-color-dim-900);
+}
+
+.dim .coingecko-icon__mouth {
+    fill: var(--theme-color-dim-500);
+}
+
 .group:hover .coingecko-icon__background {
     fill: #ffe866;
 }
