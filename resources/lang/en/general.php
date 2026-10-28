@@ -28,6 +28,7 @@ return [
     'confirmations'       => ':count Confirmation|:count Confirmations',
     'confirmations_only'  => 'Confirmations',
     'market_data_by'      => 'Market Data by',
+    'analytics_by'        => 'Analytics by',
     'select_theme'        => 'Select Theme',
     'select_network'      => 'Select Network',
     'na'                  => 'N/A',
@@ -198,8 +199,9 @@ return [
     ],
 
     'urls'                    => [
-        'ardent'    => 'https://ardenthq.com',
-        'coingecko' => 'https://www.coingecko.com/',
+        'ardent'          => 'https://ardenthq.com',
+        'coingecko'       => 'https://www.coingecko.com/',
+        'simpleanalytics' => 'https://www.simpleanalytics.com?utm_source=:domain&utm_content=badge',
     ],
 
     'search' => [
