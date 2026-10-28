@@ -28,7 +28,7 @@
                 ]"
                 :socials="config('social.networks')"
                 wrapper-class="py-5 px-6 max-w-7xl md:px-10"
-                class="text-[#A4B1BC] dark:border-transparent dim:text-theme-dark-200"
+                class="dark:border-transparent text-[#A4B1BC] dim:text-theme-dark-200"
             >
                 <a
                     href="@lang ('general.urls.coingecko')"
