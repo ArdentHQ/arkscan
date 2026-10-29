@@ -19,7 +19,12 @@
             <x-compatible-wallets.wallet-grid />
 
             <x-information-pages.cta :text="trans('pages.compatible-wallets.get_listed')">
-                <livewire:modals.submit-wallet />
+                <a
+                    href="mailto:{{ config('mail.contact_email') }}?subject={{ rawurlencode(trans('pages.compatible-wallets.submit_email_subject')) }}"
+                    class="w-full sm:w-auto button-primary"
+                >
+                    @lang('actions.submit_wallet')
+                </a>
             </x-information-pages.cta>
         </div>
     @endsection

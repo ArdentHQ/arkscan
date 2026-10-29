@@ -4,7 +4,7 @@ const Search = {
             ...data,
             blurHandler(event) {
                 const blurredOutside = !this.$refs.search.contains(
-                    event.relatedTarget
+                    event.relatedTarget,
                 );
 
                 if (blurredOutside) {

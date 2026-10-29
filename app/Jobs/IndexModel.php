@@ -49,9 +49,10 @@ abstract class IndexModel implements ShouldQueue, ShouldBeUnique
         // @phpstan-ignore-next-line
         $query->searchable();
 
-        /** @var mixed */
-        $latestItem      = $query->orderBy('timestamp', 'desc')->first();
-        $latestTimestamp = $latestItem->timestamp;
+        $latestItem = $query->orderBy('timestamp', 'desc')->first();
+
+        /** @var int $latestTimestamp */
+        $latestTimestamp = $latestItem?->getAttribute('timestamp');
 
         $this->updateLatestIndexedTimestamp($indexName, $latestTimestamp);
     }

@@ -59,7 +59,7 @@ final class BigNumber implements Stringable
 
     public function toFloat(): float
     {
-        return $this->value->exactlyDividedBy(1e8)->toFloat();
+        return $this->value->dividedByExact(1e8)->toFloat();
     }
 
     public function valueOf(): BigDecimal

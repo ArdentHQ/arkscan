@@ -1,0 +1,12 @@
+{
+    "data": {
+        "coin": "ark",
+        "currency": "USD",
+        "interval": "hour",
+        "prices": [
+            { "date": "2024-01-15T10:00:00Z", "open": 0.405, "close": 0.407, "high": 0.409, "low": 0.404, "marketCap": 40700000, "volume": 1190000 },
+            { "date": "2024-01-15T11:00:00Z", "open": 0.407, "close": 0.41, "high": 0.412, "low": 0.406, "marketCap": 41000000, "volume": 1210000 },
+            { "date": "2024-01-15T12:00:00Z", "open": 0.41, "close": 0.412, "high": 0.413, "low": 0.409, "marketCap": 41200000, "volume": 1230000 }
+        ]
+    }
+}

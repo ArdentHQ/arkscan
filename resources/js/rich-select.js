@@ -4,7 +4,7 @@ const RichSelect = (
     initialValue = "",
     initialText = "",
     grouped = false,
-    dispatchEvent = undefined
+    dispatchEvent = undefined,
 ) => ({
     options,
     onInput($dispatch, $event) {
