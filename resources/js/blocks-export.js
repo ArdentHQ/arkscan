@@ -131,7 +131,7 @@ const BlocksExport = ({
                             this.getColumnTitles(),
                             columnMapping,
                             this.delimiter,
-                            this.includeHeaderRow
+                            this.includeHeaderRow,
                         );
                     } else {
                         this.errorMessage =
@@ -145,7 +145,7 @@ const BlocksExport = ({
 
         downloadCsv(blocks) {
             this.successMessage = `A total of ${formatNumber(
-                blocks.length
+                blocks.length,
             )} blocks have been retrieved and are ready for download.`;
             this.hasFinishedExport = true;
 
@@ -155,7 +155,7 @@ const BlocksExport = ({
                 this.getColumnTitles(),
                 columnMapping,
                 this.delimiter,
-                this.includeHeaderRow
+                this.includeHeaderRow,
             );
         },
 
@@ -190,21 +190,21 @@ const BlocksExport = ({
 
                 if (lastForgedBlockEpoch < dateToEpoch) {
                     return {
-                        "height.from": await this.getFirstBlockHeightAfterEpoch(
-                            dateFromEpoch
-                        ),
-                        "height.to": await this.getFirstBlockHeightBeforeEpoch(
-                            lastForgedBlockEpoch
-                        ),
+                        "height.from":
+                            await this.getFirstBlockHeightAfterEpoch(
+                                dateFromEpoch,
+                            ),
+                        "height.to":
+                            await this.getFirstBlockHeightBeforeEpoch(
+                                lastForgedBlockEpoch,
+                            ),
                     };
                 }
 
-                data["height.from"] = await this.getFirstBlockHeightAfterEpoch(
-                    dateFromEpoch
-                );
-                data["height.to"] = await this.getFirstBlockHeightBeforeEpoch(
-                    dateToEpoch
-                );
+                data["height.from"] =
+                    await this.getFirstBlockHeightAfterEpoch(dateFromEpoch);
+                data["height.to"] =
+                    await this.getFirstBlockHeightBeforeEpoch(dateToEpoch);
             }
 
             return data;
@@ -300,7 +300,7 @@ const BlocksExport = ({
             if (this.dateRange === "custom") {
                 const [dateFrom, dateTo] = getCustomDateRange(
                     this.dateFrom,
-                    this.dateTo
+                    this.dateTo,
                 );
 
                 if (dateFrom === null || dateTo === null) {
@@ -351,7 +351,7 @@ const BlocksExport = ({
                     publicKey,
                     height: query["height.to"],
                 },
-                this
+                this,
             );
         },
 

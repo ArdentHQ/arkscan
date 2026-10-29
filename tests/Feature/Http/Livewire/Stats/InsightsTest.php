@@ -21,7 +21,7 @@ use App\Services\Cache\NetworkCache;
 use App\Services\Cache\NetworkStatusBlockCache;
 use App\Services\Cache\StatisticsCache;
 use App\Services\Cache\TransactionCache;
-use App\Services\MarketDataProviders\CoinGecko;
+use App\Services\MarketDataProviders\ArkPricing;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
@@ -254,14 +254,14 @@ it('should render marketdata statistics for fiat', function (): void {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 
     Http::fake([
-        'api.coingecko.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true), 200),
+        'ark-pricing.localhost/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/ark-pricing/market-coin.json')), true), 200),
     ]);
 
     $this->app->singleton(NetworkContract::class, fn () => new Blockchain(config('arkscan.networks.production')));
 
     $crypto = app(CryptoDataCache::class);
 
-    app(CacheVolume::class)->handle($crypto, new CoinGecko());
+    app(CacheVolume::class)->handle($crypto, new ArkPricing());
 
     $currentDate = Carbon::now();
     $currency    = 'USD';
@@ -310,7 +310,7 @@ it('should render marketdata statistics for crypto', function (): void {
     Config::set('arkscan.networks.development.canBeExchanged', true);
 
     Http::fake([
-        'api.coingecko.com/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/coingecko/coin.json')), true), 200),
+        'ark-pricing.localhost/*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/ark-pricing/market-coin.json')), true), 200),
     ]);
 
     Settings::shouldReceive('currency')
@@ -320,7 +320,7 @@ it('should render marketdata statistics for crypto', function (): void {
 
     $crypto = app(CryptoDataCache::class);
 
-    app(CacheVolume::class)->handle($crypto, new CoinGecko());
+    app(CacheVolume::class)->handle($crypto, new ArkPricing());
 
     $currentDate = Carbon::now();
     $currency    = 'BTC';

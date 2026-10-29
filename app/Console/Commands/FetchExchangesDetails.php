@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Contracts\MarketDataProvider;
-use App\Exceptions\CoinGeckoThrottledException;
+use App\Exceptions\MarketDataThrottledException;
 use App\Models\Exchange;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -29,7 +29,7 @@ final class FetchExchangesDetails extends Command
 
     public function handle(): int
     {
-        $exchanges = Exchange::coingecko()
+        $exchanges = Exchange::withProviderId()
             ->orderBy('volume', 'desc')
             ->get()
             ->filter(fn ($exchange) => $exchange->updated_at < Carbon::now()->subHours(1))
@@ -38,7 +38,7 @@ final class FetchExchangesDetails extends Command
         foreach ($exchanges as $exchange) {
             try {
                 $result = app(MarketDataProvider::class)->exchangeDetails($exchange);
-            } catch (CoinGeckoThrottledException) {
+            } catch (MarketDataThrottledException) {
                 continue;
             }
 

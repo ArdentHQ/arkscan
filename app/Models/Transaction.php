@@ -95,11 +95,6 @@ final class Transaction extends Model
      */
     public $incrementing = false;
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = ['serialized'];
 
     /**
@@ -240,7 +235,7 @@ final class Transaction extends Model
     /**
      * A receipt belongs to a transaction.
      *
-     * @return HasOne
+     * @return HasOne<Wallet, $this>
      */
     public function votedFor(): HasOne
     {
@@ -250,7 +245,7 @@ final class Transaction extends Model
     /**
      * A receipt belongs to a transaction.
      *
-     * @return HasOne
+     * @return HasOne<Wallet, $this>
      */
     public function unvotedFor(): HasOne
     {

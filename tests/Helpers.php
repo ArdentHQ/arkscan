@@ -22,7 +22,6 @@ use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 
 function faker(): Generator
 {
@@ -142,15 +141,15 @@ function fakeKnownWallets(): void
     ]);
 }
 
-function fakeCryptoCompare(bool $setToZero = false, string $currency = 'USD'): void
+function fakeArkPricing(bool $setToZero = false): void
 {
-    $histohour = 'histohour'.($setToZero ? '-zero' : '');
+    $hourly = 'historical-hourly'.($setToZero ? '-zero' : '');
 
     Http::fake([
-        'cryptocompare.com/data/pricemultifull*' => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/pricemultifull.json')), true), 200),
-        'cryptocompare.com/data/price*'          => Http::response([Str::upper($currency) => 0.2907, 'BTC' => 0.00002907], 200),
-        'cryptocompare.com/data/histoday*'       => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/cryptocompare/historical.json')), true), 200),
-        'cryptocompare.com/data/histohour*'      => Http::response(json_decode(file_get_contents(base_path("tests/fixtures/cryptocompare/{$histohour}.json")), true), 200),
+        'ark-pricing.localhost/api/v1/coins/*/price*'                  => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/ark-pricing/prices.json')), true), 200),
+        'ark-pricing.localhost/api/v1/coins/*/history?*interval=day*'  => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/ark-pricing/historical-all.json')), true), 200),
+        'ark-pricing.localhost/api/v1/coins/*/history?*interval=hour*' => Http::response(json_decode(file_get_contents(base_path("tests/fixtures/ark-pricing/{$hourly}.json")), true), 200),
+        'ark-pricing.localhost/api/v1/coins/*/market*'                 => Http::response(json_decode(file_get_contents(base_path('tests/fixtures/ark-pricing/market-coin.json')), true), 200),
     ]);
 }
 

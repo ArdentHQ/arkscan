@@ -12,7 +12,7 @@ export class TransactionsApi {
 
     static async fetchAll(
         { host, query, limit = 100, transactions = [], timestamp },
-        instance
+        instance,
     ) {
         try {
             const page = await this.fetch(host, {
@@ -37,7 +37,7 @@ export class TransactionsApi {
         } catch (e) {
             throw new FailedExportRequest(
                 "There was a problem fetching transactions.",
-                transactions
+                transactions,
             );
         }
 
@@ -49,7 +49,7 @@ export class TransactionsApi {
                 transactions,
                 timestamp,
             },
-            instance
+            instance,
         );
     }
 }

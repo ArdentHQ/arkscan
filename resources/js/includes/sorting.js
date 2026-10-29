@@ -4,7 +4,7 @@ export const sortRow = (
     row1Value,
     row2Value,
     sortAscending,
-    sortByRowIndex
+    sortByRowIndex,
 ) => {
     const isRow1Numeric =
         row1Value !== "" && !isNaN(row1Value) && row1Value !== null;

@@ -48,11 +48,6 @@ final class Block extends Model
      */
     public $incrementing = false;
 
-    /**
-     * The connection name for the model.
-     *
-     * @var string|null
-     */
     protected $connection = 'explorer';
 
     /**
@@ -126,7 +121,7 @@ final class Block extends Model
     /**
      * A block has many transactions.
      *
-     * @return HasMany
+     * @return HasMany<Transaction, $this>
      */
     public function transactions(): HasMany
     {

@@ -30,7 +30,7 @@ final class AnalysisTest extends TestCase
             'Spatie\Snapshots\assertMatchesSnapshot',
             'Tests\bip39',
             'Tests\faker',
-            'Tests\fakeCryptoCompare',
+            'Tests\fakeArkPricing',
             'Tests\fakeKnownWallets',
             'Tests\createBlock',
             'Tests\createRoundEntry',

@@ -33,8 +33,6 @@ final class CustomNetwork extends AbstractNetwork
 
     public function __construct(array $config)
     {
-        parent::__construct();
-
         $this->base58PrefixMap[self::BASE58_ADDRESS_P2PKH] = dechex($config['base58Prefix']);
         $this->epoch                                       = $config['epoch'];
     }
