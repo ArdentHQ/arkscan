@@ -4,6 +4,7 @@ sudo chown -R arkscan:www-data /var/www/arkscan
 touch database/database.sqlite
 #--- run installs & build files
 composer install --no-interaction --prefer-dist --optimize-autoloader
+pnpm config set --global enable-global-virtual-store false
 pnpm install
 pnpm build
 #--- fire up services
@@ -11,7 +12,7 @@ sudo supervisord &
 sudo chmod -R 775 /var/www/arkscan/database
 sudo chmod -R 775 /var/www/arkscan/storage
 sudo chmod -R 775 /var/www/arkscan/bootstrap/cache
-yarn cache clean
+pnpm store prune
 rm -rf ~/.composer/
 #--- laravel and cache setup
 php artisan key:generate --force
