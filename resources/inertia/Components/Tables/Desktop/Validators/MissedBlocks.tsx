@@ -15,6 +15,8 @@ import { networkCurrency } from "@/utils/number-formatter";
 import TableSortingProvider from "@/Providers/TableSorting/TableSortingProvider";
 
 export function Row({ row }: { row: IForgingStats }) {
+    const { t } = useTranslation();
+
     return (
         <tr className="text-sm font-semibold">
             <TableCell>
@@ -25,12 +27,10 @@ export function Row({ row }: { row: IForgingStats }) {
                 <Age timestamp={row.timestamp} />
             </TableCell>
 
-            <TableCell>
-                <Address wallet={row.validator} />
-            </TableCell>
+            <TableCell>{row.validator ? <Address wallet={row.validator} /> : t("general.na")}</TableCell>
 
             <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
-                <Number>{row.voterCount}</Number>
+                <Number>{row.voterCount ?? 0}</Number>
             </TableCell>
 
             <TableCell className="text-theme-secondary-900 dark:text-theme-dark-50 text-right">
