@@ -172,3 +172,25 @@ it('should calculate the missed blocks', function () {
     }
     $this->assertEquals($delegateStats, $expectedStats);
 });
+
+it('should calculate the whole round regardless of the order blocks were stored', function () {
+    Round::factory(51)->create(['round' => '136674']);
+
+    Block::factory()->create([
+        'height'    => 6970323,
+        'timestamp' => 124595288,
+    ]);
+
+    // Stored newest first so an unordered query returns the earliest timestamp last
+    foreach (range(50, 0) as $index) {
+        Block::factory()->create([
+            'height'    => 6970324 + $index,
+            'timestamp' => 124595296 + $index * 8,
+        ]);
+    }
+
+    $blocksInfo = MissedBlocksCalculator::calculateForRound(6970364);
+
+    expect($blocksInfo)->toHaveCount(51);
+    expect(collect($blocksInfo)->every(fn ($blockInfo) => $blockInfo['forged']))->toBeTrue();
+});
