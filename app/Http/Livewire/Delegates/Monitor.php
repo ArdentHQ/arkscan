@@ -46,12 +46,15 @@ final class Monitor extends Component
             $height = CacheNetworkHeight::execute();
         }
 
+        $overflowDelegates = $this->overflowDelegates;
+
         return view('livewire.delegates.monitor', [
             'round'             => Rounds::current(),
             'delegates'         => $this->delegates,
-            'overflowDelegates' => $this->overflowDelegates,
+            'overflowDelegates' => $overflowDelegates,
             'height'            => $height,
             'statistics'        => $this->statistics,
+            'refreshDelay'      => $this->refreshDelay($overflowDelegates),
         ]);
     }
 
@@ -260,5 +263,33 @@ final class Monitor extends Component
         }
 
         return $overflowSlots;
+    }
+
+    /**
+     * Milliseconds until the next slot's block should be in, used as a fallback refresh when broadcasting
+     * since a missed slot or a throttled NewBlock event would otherwise leave the table stale.
+     *
+     * @param array<Slot> $overflowDelegates
+     */
+    private function refreshDelay(array $overflowDelegates): int
+    {
+        $blockTimeInMilliseconds = Network::blockTime() * 1000;
+
+        /** @var ?Slot $nextSlot */
+        $nextSlot = collect([...$this->delegates, ...$overflowDelegates])
+            ->first(fn (Slot $slot) => $slot->isNext());
+
+        if ($nextSlot === null) {
+            return $blockTimeInMilliseconds;
+        }
+
+        $delay = (int) Carbon::now()->diffInMilliseconds($nextSlot->forgingAt()->copy()->addSecond(), false);
+
+        // Once the expected forging time has passed it no longer moves, so keep retrying every block time
+        if ($delay <= 0) {
+            return $blockTimeInMilliseconds;
+        }
+
+        return $delay;
     }
 }

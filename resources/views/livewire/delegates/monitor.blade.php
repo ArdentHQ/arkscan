@@ -8,6 +8,21 @@
         @endif
     @endif
 >
+    @if (config('broadcasting.default') === 'reverb' && $this->isReady)
+        <div
+            wire:key="monitor-refresh-{{ now()->getTimestampMs() }}"
+            x-data="{
+                timeout: null,
+                init() {
+                    this.timeout = setTimeout(() => $wire.pollData(), {{ $refreshDelay }});
+                },
+                destroy() {
+                    clearTimeout(this.timeout);
+                },
+            }"
+        ></div>
+    @endif
+
     <div class="px-6 pb-6 md:px-10 md:mx-auto md:max-w-7xl">
         <x-delegates.monitor.data-boxes
             :statistics="$statistics"
