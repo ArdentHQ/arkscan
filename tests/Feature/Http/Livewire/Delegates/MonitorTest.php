@@ -567,7 +567,7 @@ describe('Monitor', function () {
 
         $component->assertDontSee('wire:poll', false)
             ->assertSee('monitor-refresh-', false)
-            ->assertSee('$wire.pollData(), '.$expectedDelay.')', false);
+            ->assertSee('data-refresh-delay="'.$expectedDelay.'"', false);
     });
 
     it('should retry every block time once the next delegate should have already forged', function () {
@@ -587,7 +587,7 @@ describe('Monitor', function () {
         Livewire::test(Monitor::class)
             ->call('setIsReady')
             ->call('pollData')
-            ->assertSee('$wire.pollData(), '.(Network::blockTime() * 1000).')', false);
+            ->assertSee('data-refresh-delay="'.(Network::blockTime() * 1000).'"', false);
     });
 
     it('should retry every block time when there are no delegates yet', function () {
@@ -595,7 +595,7 @@ describe('Monitor', function () {
 
         Livewire::test(Monitor::class)
             ->call('setIsReady')
-            ->assertSee('$wire.pollData(), '.(Network::blockTime() * 1000).')', false);
+            ->assertSee('data-refresh-delay="'.(Network::blockTime() * 1000).'"', false);
     });
 
     it('should show no overflow delegates if no missed blocks', function () {

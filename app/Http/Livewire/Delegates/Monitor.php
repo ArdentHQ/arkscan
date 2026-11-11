@@ -55,6 +55,7 @@ final class Monitor extends Component
             'height'            => $height,
             'statistics'        => $this->statistics,
             'refreshDelay'      => $this->refreshDelay($overflowDelegates),
+            'retryDelay'        => Network::blockTime() * 1000,
         ]);
     }
 

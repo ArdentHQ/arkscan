@@ -11,10 +11,19 @@
     @if (config('broadcasting.default') === 'reverb' && $this->isReady)
         <div
             wire:key="monitor-refresh-{{ now()->getTimestampMs() }}"
+            data-refresh-delay="{{ $refreshDelay }}"
+            data-retry-delay="{{ $retryDelay }}"
             x-data="{
                 timeout: null,
                 init() {
-                    this.timeout = setTimeout(() => $wire.pollData(), {{ $refreshDelay }});
+                    this.schedule(Number(this.$el.dataset.refreshDelay));
+                },
+                schedule(delay) {
+                    this.timeout = setTimeout(() => {
+                        $wire.pollData();
+
+                        this.schedule(Number(this.$el.dataset.retryDelay));
+                    }, delay);
                 },
                 destroy() {
                     clearTimeout(this.timeout);
