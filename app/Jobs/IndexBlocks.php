@@ -11,7 +11,7 @@ final class IndexBlocks extends IndexModel
 {
     public function handle(): void
     {
-        $this->execute(indexName: 'blocks');
+        $this->execute(indexName: (new Block())->searchableAs());
     }
 
     protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder

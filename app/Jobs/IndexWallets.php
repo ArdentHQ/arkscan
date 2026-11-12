@@ -12,7 +12,7 @@ final class IndexWallets extends IndexModel
 {
     public function handle(): void
     {
-        $this->execute(indexName: 'wallets');
+        $this->execute(indexName: (new Wallet())->searchableAs());
     }
 
     protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder
