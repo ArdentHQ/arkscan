@@ -40,11 +40,11 @@ export function MissedBlocksMobileTable({ blocks }: { blocks: IPaginatedResponse
                     }
                 >
                     <TableCell label={t("tables.missed-blocks.validator")} className="sm:hidden">
-                        <Address wallet={block.validator} />
+                        {block.validator ? <Address wallet={block.validator} /> : t("general.na")}
                     </TableCell>
 
                     <TableCell label={t("tables.missed-blocks.no_of_voters")}>
-                        <Number>{block.voterCount}</Number>
+                        <Number>{block.voterCount ?? 0}</Number>
                     </TableCell>
 
                     <TableCell
