@@ -79,6 +79,7 @@ class MissedBlocksCalculator
     {
         return Block::where('height', '>', $lastRoundLastBlockHeight)
             ->where('height', '<=', $lastRoundLastBlockHeight + $activeDelegates)
+            ->orderBy('height')
             ->pluck('timestamp')
             ->toArray();
     }
