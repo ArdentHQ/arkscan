@@ -11,7 +11,7 @@ final class IndexTransactions extends IndexModel
 {
     public function handle(): void
     {
-        $this->execute(indexName: 'transactions');
+        $this->execute(indexName: (new Transaction())->searchableAs());
     }
 
     protected function elementsToIndexQuery(int $latestIndexedTimestamp): Builder

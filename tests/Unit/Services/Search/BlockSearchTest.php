@@ -106,3 +106,11 @@ it('should handle a negative limit', function () {
         'filter'   => ['id = "a b"'],
     ]);
 });
+
+it('should prefix the index with the scout prefix', function () {
+    config(['scout.prefix' => 'testnet_']);
+
+    $query = BlockSearch::buildSearchQueryForIndex('13114381566690093367', 5);
+
+    expect($query->toArray()['indexUid'])->toBe('testnet_blocks');
+});
