@@ -70,3 +70,11 @@ it('should handle a negative limit', function () {
         'q'        => 'aaaaaabbbbbbbccccccdddddd3',
     ]);
 });
+
+it('should prefix the index with the scout prefix', function () {
+    config(['scout.prefix' => 'testnet_']);
+
+    $query = WalletSearch::buildSearchQueryForIndex('aaaaaabbbbbbbccccccdddddd3', 5);
+
+    expect($query->toArray()['indexUid'])->toBe('testnet_wallets');
+});

@@ -19,6 +19,7 @@ use App\ViewModels\WalletViewModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
 use function Tests\createBlock;
 use function Tests\createFullRound;
@@ -526,6 +527,75 @@ describe('Monitor', function () {
                 $delegate->username(),
                 'Delegate last forged 199 blocks ago (more than a day)',
             ]);
+    });
+
+    it('should poll instead of scheduling a refresh when broadcasting driver is not reverb', function () {
+        Config::set('broadcasting.default', 'log');
+
+        createRealisticRound([
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+        ], $this);
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData')
+            ->assertSee('wire:poll.1s', false)
+            ->assertDontSee('monitor-refresh-', false);
+    });
+
+    it('should schedule a refresh for when the next delegate should have forged', function () {
+        Config::set('broadcasting.default', 'reverb');
+
+        [, $round, $height] = createRealisticRound([
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+        ], $this);
+
+        createPartialRound($round, $height, 10, $this);
+
+        $component = Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData');
+
+        $delegates = (new ReflectionProperty(Monitor::class, 'delegates'))->getValue($component->instance());
+        $nextSlot  = collect($delegates)->first(fn ($slot) => $slot->isNext());
+
+        $expectedDelay = (int) Carbon::now()->diffInMilliseconds($nextSlot->forgingAt()->copy()->addSecond(), false);
+
+        expect($expectedDelay)->toBeGreaterThan(0);
+
+        $component->assertDontSee('wire:poll', false)
+            ->assertSee('monitor-refresh-', false)
+            ->assertSee('data-refresh-delay="'.$expectedDelay.'"', false);
+    });
+
+    it('should retry every block time once the next delegate should have already forged', function () {
+        Config::set('broadcasting.default', 'reverb');
+
+        $this->travelTo(Carbon::parse('2024-02-01 14:00:00Z'));
+
+        $this->freezeTime();
+
+        createRealisticRound([
+            array_fill(0, 51, true),
+            array_fill(0, 51, true),
+        ], $this);
+
+        $this->travelTo(Carbon::parse('2024-02-03 15:00:00Z'));
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->call('pollData')
+            ->assertSee('data-refresh-delay="'.(Network::blockTime() * 1000).'"', false);
+    });
+
+    it('should retry every block time when there are no delegates yet', function () {
+        Config::set('broadcasting.default', 'reverb');
+
+        Livewire::test(Monitor::class)
+            ->call('setIsReady')
+            ->assertSee('data-refresh-delay="'.(Network::blockTime() * 1000).'"', false);
     });
 
     it('should show no overflow delegates if no missed blocks', function () {
