@@ -45,7 +45,7 @@ export default function Highlights({ data }: { data: HighlightsData }) {
                     <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-2 md:gap-3 xl:grid-cols-4">
                         <HighlightStat
                             label={t("pages.statistics.highlights.total_supply")}
-                            value={networkCurrency(data.totalSupply, 8, true)}
+                            value={networkCurrency(data.totalSupply, 0, true)}
                         />
 
                         <HighlightStat
