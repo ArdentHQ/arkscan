@@ -43,7 +43,6 @@ final class BuildForgingStats implements ShouldQueue
 
         $forgingStats = MissedBlocksCalculator::calculateFromHeightGoingBack($startHeight, $height);
 
-        /** @var \Illuminate\Support\Collection $blockNumbers */
         $blockNumbers = Block::select('number', 'timestamp')
             ->withCasts(['number' => 'int'])
             ->withScope(OrderByTimestampScope::class)
