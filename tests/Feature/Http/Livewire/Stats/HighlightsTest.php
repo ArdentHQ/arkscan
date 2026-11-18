@@ -36,3 +36,11 @@ it('should render the component', function (): void {
             '10',
         ]);
 });
+
+it('should round the total supply down to a whole number', function (): void {
+    Wallet::factory()->create(['balance' => '1766915279000000']);
+
+    Livewire::test(Highlights::class)
+        ->assertSee('17,669,152 '.Network::currency())
+        ->assertDontSee('17,669,153');
+});

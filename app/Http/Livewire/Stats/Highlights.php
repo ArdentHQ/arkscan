@@ -39,7 +39,7 @@ final class Highlights extends Component
 
     private function getTotalSupply(): string
     {
-        $supply = CacheNetworkSupply::execute() / 1e8;
+        $supply = floor(CacheNetworkSupply::execute() / 1e8);
 
         return NumberFormatter::number($supply);
     }
