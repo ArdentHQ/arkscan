@@ -18,9 +18,7 @@ import TruncateDynamic from "@/Components/General/TruncateDynamic";
 import { Link, router } from "@inertiajs/react";
 
 type SearchResultData =
-    | INavbarSearchWalletResultData
-    | INavbarSearchBlockResultData
-    | INavbarSearchTransactionResultData;
+    INavbarSearchWalletResultData | INavbarSearchBlockResultData | INavbarSearchTransactionResultData;
 
 export type SearchResult<TData = SearchResultData> = {
     type: string;
