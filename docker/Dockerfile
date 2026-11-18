@@ -1,7 +1,8 @@
 FROM php:fpm-alpine
 
-ENV NODE_VERSION 20.4.0
-ENV YARN_VERSION 1.22.21
+ENV NODE_VERSION 24.22.2
+ENV PNPM_HOME=/var/www/arkscan/.pnpm
+ENV PATH="${PATH}:${PNPM_HOME}/bin"
 
 
 WORKDIR /var/www/arkscan
@@ -32,15 +33,13 @@ RUN adduser -S -h /var/www/arkscan -s /bin/bash -G www-data -u 1000 arkscan arks
     && curl -fsSLO --compressed "https://unofficial-builds.nodejs.org/download/release/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64-musl.tar.xz" \
     && tar -xJf "node-v$NODE_VERSION-linux-x64-musl.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
     && ln -s /usr/bin/node /usr/bin/nodejs \
-    && curl -fsSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
-    && mkdir -p /opt \
-    && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
-    && ln -s /opt/yarn-v$YARN_VERSION/bin/yarn /usr/local/bin/yarn \
-    && ln -s /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
-    && rm -f yarn-v$YARN_VERSION.tar.gz.asc yarn-v$YARN_VERSION.tar.gz \
+    && npm install -g npm@latest \
+    && su arkscan -c "npm config set allow-scripts=pnpm --location=user" \
+    && su arkscan -c "npm install --prefix=/var/www/arkscan/.pnpm -g pnpm" \
     && rm -f node-v$NODE_VERSION-linux-x64-musl.tar.xz \
     && echo '* * * * * php artisan schedule:run >> /dev/null 2>&1' > /etc/crontabs/arkscan \
-    && apk del .build-deps \ 
+    && apk del .build-deps \
     && rm -rf /tmp/*
-USER arkscan 
+
+USER arkscan
 ENTRYPOINT ["bash", "-c", "/entrypoint.sh \"$@\"", "--"]

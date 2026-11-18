@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Livewire\Concerns;
 
 use App\Facades\Network;
+use App\Models\Block;
+use App\Models\Transaction;
+use App\Models\Wallet;
 use App\Services\Search\BlockSearch;
 use App\Services\Search\TransactionSearch;
 use App\Services\Search\WalletSearch;
@@ -96,15 +99,15 @@ trait ManagesSearch
                 $indexUid = $result['indexUid'];
                 $hits     = $result['hits'];
 
-                if ($indexUid === 'wallets') {
+                if ($indexUid === (new Wallet())->searchableAs()) {
                     return WalletSearch::mapMeilisearchResults($hits);
                 }
 
-                if ($indexUid === 'transactions') {
+                if ($indexUid === (new Transaction())->searchableAs()) {
                     return TransactionSearch::mapMeilisearchResults($hits);
                 }
 
-                if ($indexUid === 'blocks') {
+                if ($indexUid === (new Block())->searchableAs()) {
                     return BlockSearch::mapMeilisearchResults($hits);
                 }
             });

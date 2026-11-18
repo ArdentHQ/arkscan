@@ -8,6 +8,30 @@
         @endif
     @endif
 >
+    @if (config('broadcasting.default') === 'reverb' && $this->isReady)
+        <div
+            wire:key="monitor-refresh-{{ now()->getTimestampMs() }}"
+            data-refresh-delay="{{ $refreshDelay }}"
+            data-retry-delay="{{ $retryDelay }}"
+            x-data="{
+                timeout: null,
+                init() {
+                    this.schedule(Number(this.$el.dataset.refreshDelay));
+                },
+                schedule(delay) {
+                    this.timeout = setTimeout(() => {
+                        $wire.pollData();
+
+                        this.schedule(Number(this.$el.dataset.retryDelay));
+                    }, delay);
+                },
+                destroy() {
+                    clearTimeout(this.timeout);
+                },
+            }"
+        ></div>
+    @endif
+
     <div class="px-6 pb-6 md:px-10 md:mx-auto md:max-w-7xl">
         <x-delegates.monitor.data-boxes
             :statistics="$statistics"
