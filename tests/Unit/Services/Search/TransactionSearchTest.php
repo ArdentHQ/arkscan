@@ -106,3 +106,11 @@ it('should handle a negative limit', function () {
         'filter'   => ['id = "a b"'],
     ]);
 });
+
+it('should prefix the index with the scout prefix', function () {
+    config(['scout.prefix' => 'testnet_']);
+
+    $query = TransactionSearch::buildSearchQueryForIndex('75604d72872f730d7c38b9d73c916e4a532408ea0074850a581f4b28bd62acdf', 5);
+
+    expect($query->toArray()['indexUid'])->toBe('testnet_transactions');
+});
