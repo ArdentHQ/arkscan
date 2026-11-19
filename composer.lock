@@ -123,12 +123,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "5c5ad285eb17cf7cdd412d53837d29959be2eb21"
+                "reference": "f7fcc5ea72049bfeaccbdacaf0ddb3b79005483d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/5c5ad285eb17cf7cdd412d53837d29959be2eb21",
-                "reference": "5c5ad285eb17cf7cdd412d53837d29959be2eb21",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/f7fcc5ea72049bfeaccbdacaf0ddb3b79005483d",
+                "reference": "f7fcc5ea72049bfeaccbdacaf0ddb3b79005483d",
                 "shasum": ""
             },
             "require": {
@@ -205,7 +205,7 @@
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
                 "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/chore/update-major-dependencies"
             },
-            "time": "2026-11-19T15:40:27+00:00"
+            "time": "2026-11-19T17:16:31+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
