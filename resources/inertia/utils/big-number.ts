@@ -1,5 +1,8 @@
 import BigNumber from "bignumber.js";
 
+// Formatters rely on invalid input producing NaN rather than throwing.
+BigNumber.config({ STRICT: false });
+
 export default BigNumber;
 
 export function toFloat(value: BigNumber.Value, divisor: number = 1e18, scale?: number): number {

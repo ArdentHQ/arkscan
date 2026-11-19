@@ -33,6 +33,10 @@ describe("networkCurrency", () => {
         expect(networkCurrency("0.9999999999999885", 8)).toBe("0.99999999");
     });
 
+    it("falls back to zero for a non-numeric value", () => {
+        expect(networkCurrency("not-a-number", 8)).toBe("0.00");
+    });
+
     it("rounds down to an integer when no decimals are requested", () => {
         expect(networkCurrency(176691523.54800001, 0)).toBe("176,691,523");
         expect(networkCurrency("176691523.99999999", 0)).toBe("176,691,523");

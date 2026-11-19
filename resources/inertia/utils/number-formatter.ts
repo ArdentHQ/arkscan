@@ -1,5 +1,5 @@
 import useSharedData from "@/hooks/use-shared-data";
-import BigNumber from "bignumber.js";
+import BigNumber from "@/utils/big-number";
 
 const FIAT_DECIMALS = 2;
 const FIAT_DECIMALS_SMALL = 4;

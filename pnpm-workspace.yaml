@@ -1,3 +1,4 @@
 allowBuilds:
   '@ardenthq/arkvault-url': true
   unrs-resolver: true
+  '@parcel/watcher': false

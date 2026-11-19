@@ -8,7 +8,7 @@ import { UnitConverter } from "@arkecosystem/typescript-crypto";
 import { currency } from "@/utils/number-formatter";
 import CompactAmount from "@/Components/Tokens/CompactAmount";
 import { Transaction } from "@/models/Transaction";
-import BigNumber from "bignumber.js";
+import BigNumber from "@/utils/big-number";
 
 export default function TransactionToken({
     transaction,
