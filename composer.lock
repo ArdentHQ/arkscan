@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b18e7cda46828b64a768b66f269435c3",
+    "content-hash": "20f2add1262a6e1aa4e8118cbae884f6",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -54,20 +54,20 @@
         },
         {
             "name": "arkecosystem/crypto",
-            "version": "dev-feat/mainsail",
+            "version": "dev-chore/mainsail-update-dependencies",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/php-crypto.git",
-                "reference": "e0e4d8559fb4b1ab3d8a9c2d80de3d05f0fe2e62"
+                "reference": "e60a26e1d45238c8b02ae2a6e869bb4b6132cf3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/e0e4d8559fb4b1ab3d8a9c2d80de3d05f0fe2e62",
-                "reference": "e0e4d8559fb4b1ab3d8a9c2d80de3d05f0fe2e62",
+                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/e60a26e1d45238c8b02ae2a6e869bb4b6132cf3f",
+                "reference": "e60a26e1d45238c8b02ae2a6e869bb4b6132cf3f",
                 "shasum": ""
             },
             "require": {
-                "brick/math": "^0.14.2",
+                "brick/math": "^1.0",
                 "ext-gmp": "*",
                 "kornrunner/keccak": "^1.1",
                 "php": "^8.2",
@@ -75,11 +75,11 @@
                 "simplito/elliptic-php": "^1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.59",
-                "graham-campbell/analyzer": "4.2.x-dev",
-                "illuminate/support": "^12.18",
-                "pestphp/pest": "^2.34",
-                "phpunit/phpunit": "^10.5"
+                "friendsofphp/php-cs-fixer": "^3.95",
+                "graham-campbell/analyzer": "^5.1",
+                "illuminate/support": "^13.0",
+                "pestphp/pest": "^5.3",
+                "phpunit/phpunit": "^13.4"
             },
             "type": "library",
             "extra": {
@@ -113,9 +113,9 @@
             ],
             "support": {
                 "issues": "https://github.com/ArkEcosystem/php-crypto/issues",
-                "source": "https://github.com/ArkEcosystem/php-crypto/tree/feat/mainsail"
+                "source": "https://github.com/ArkEcosystem/php-crypto/tree/chore/mainsail-update-dependencies"
             },
-            "time": "2026-11-05T11:31:53+00:00"
+            "time": "2026-11-20T04:24:41+00:00"
         },
         {
             "name": "arkecosystem/foundation",
@@ -484,24 +484,24 @@
         },
         {
             "name": "brick/math",
-            "version": "0.14.8",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/math.git",
-                "reference": "63422359a44b7f06cae63c3b429b59e8efcc0629"
+                "reference": "2effe05d2177c451b86c6a073196a4034c02f211"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/math/zipball/63422359a44b7f06cae63c3b429b59e8efcc0629",
-                "reference": "63422359a44b7f06cae63c3b429b59e8efcc0629",
+                "url": "https://api.github.com/repos/brick/math/zipball/2effe05d2177c451b86c6a073196a4034c02f211",
+                "reference": "2effe05d2177c451b86c6a073196a4034c02f211",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.2"
             },
             "require-dev": {
-                "php-coveralls/php-coveralls": "^2.2",
-                "phpstan/phpstan": "2.1.22",
+                "phpstan/phpstan": "2.2.13",
+                "phpstan/phpstan-phpunit": "2.0.18",
                 "phpunit/phpunit": "^11.5"
             },
             "type": "library",
@@ -532,7 +532,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/math/issues",
-                "source": "https://github.com/brick/math/tree/0.14.8"
+                "source": "https://github.com/brick/math/tree/1.0.0"
             },
             "funding": [
                 {
@@ -540,7 +540,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-10T14:33:43+00:00"
+            "time": "2026-09-12T10:28:18+00:00"
         },
         {
             "name": "calebporzio/sushi",

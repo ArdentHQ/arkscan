@@ -171,7 +171,7 @@ it('should format fee cards above threshold and convert chart datasets', functio
         ]));
     }
 
-    $expectedDataset = BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of($aboveThreshold), false))->toFloat();
+    $expectedDataset = BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of((string) $aboveThreshold), false))->toFloat();
 
     $this
         ->get(route('statistics'))

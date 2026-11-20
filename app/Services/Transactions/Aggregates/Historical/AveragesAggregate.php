@@ -50,7 +50,7 @@ final class AveragesAggregate
             'count'  => (int) round($count / $daysSinceEpoch),
             'amount' => (int) round($totalAmount / $daysSinceEpoch),
             'fee'    => UnitConverter::formatUnits(
-                (string) BigNumber::new($fee)->valueOf()->dividedBy($daysSinceEpoch, null, RoundingMode::Down),
+                (string) BigNumber::new($fee)->dividedBy($daysSinceEpoch, roundingMode: RoundingMode::Down),
                 'ark'
             )->toFloat(),
         ];
