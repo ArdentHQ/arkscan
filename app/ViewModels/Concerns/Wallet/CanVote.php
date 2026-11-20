@@ -54,6 +54,6 @@ trait CanVote
             return null;
         }
 
-        return $this->wallet->balance->valueOf()->multipliedBy(100)->dividedBy($validator->attributes['validatorVoteBalance'], 2, RoundingMode::Down)->toFloat();
+        return $this->wallet->balance->valueOf()->multipliedBy(100)->dividedBy((string) $validator->attributes['validatorVoteBalance'], 2, RoundingMode::Down)->toFloat();
     }
 }
