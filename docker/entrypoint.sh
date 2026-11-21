@@ -4,6 +4,8 @@ sudo chown -R arkscan:www-data /var/www/arkscan
 touch database/database.sqlite
 #--- run installs & build files
 composer install --no-interaction --prefer-dist --optimize-autoloader
+npm config set allow-scripts=pnpm --location=user
+npm install --prefix=/var/www/arkscan/.pnpm -g pnpm
 pnpm config set --global enable-global-virtual-store false
 pnpm install
 pnpm build
