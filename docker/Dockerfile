@@ -1,4 +1,4 @@
-FROM php:fpm-alpine
+FROM php:8.5-fpm-alpine
 
 ENV NODE_VERSION 24.22.2
 ENV PNPM_HOME=/var/www/arkscan/.pnpm
@@ -34,8 +34,6 @@ RUN adduser -S -h /var/www/arkscan -s /bin/bash -G www-data -u 1000 arkscan arks
     && tar -xJf "node-v$NODE_VERSION-linux-x64-musl.tar.xz" -C /usr/local --strip-components=1 --no-same-owner \
     && ln -s /usr/bin/node /usr/bin/nodejs \
     && npm install -g npm@latest \
-    && su arkscan -c "npm config set allow-scripts=pnpm --location=user" \
-    && su arkscan -c "npm install --prefix=/var/www/arkscan/.pnpm -g pnpm" \
     && rm -f node-v$NODE_VERSION-linux-x64-musl.tar.xz \
     && echo '* * * * * php artisan schedule:run >> /dev/null 2>&1' > /etc/crontabs/arkscan \
     && apk del .build-deps \
