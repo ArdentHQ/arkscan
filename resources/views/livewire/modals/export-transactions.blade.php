@@ -29,6 +29,7 @@
                 userCurrency: '{{ Settings::currency() }}',
                 rates: {{ ExchangeRate::rates() ?? '{}' }},
                 canBeExchanged: {{ Network::canBeExchanged() ? 'true' : 'false' }},
+                oldestTimestamp: {{ json_encode($this->oldestTimestamp) }},
             })"
             x-init="() => {
                 resetForm();
