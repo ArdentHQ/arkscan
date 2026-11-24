@@ -199,6 +199,46 @@ describe('transaction', function () {
         });
     });
 
+    it('should dispatch an event for multipayment recipients', function () {
+        Queue::fake();
+
+        $secureUrl = URL::signedRoute('webhooks');
+
+        $this
+            ->post($secureUrl, [
+                'event' => 'transaction.applied',
+                'data'  => [
+                    'recipientId'     => 'address',
+                    'senderPublicKey' => 'public-key',
+                    'asset'           => [
+                        'payments' => [
+                            ['amount' => '1', 'recipientId' => 'recipient-1'],
+                            ['amount' => '2', 'recipientId' => 'recipient-2'],
+                            ['amount' => '3', 'recipientId' => 'recipient-1'],
+                            ['amount' => '4', 'recipientId' => 'address'],
+                        ],
+                    ],
+                ],
+            ])
+            ->assertOk();
+
+        Queue::assertPushed(BroadcastEvent::class, 1);
+
+        Queue::assertPushed(BroadcastEvent::class, function ($event) {
+            $channels = $event->event->broadcastOn();
+
+            sort($channels);
+
+            return $channels === [
+                'transactions',
+                'transactions.address',
+                'transactions.public-key',
+                'transactions.recipient-1',
+                'transactions.recipient-2',
+            ];
+        });
+    });
+
     it('should not dispatch multiple times', function () {
         Queue::fake();
 
