@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20f2add1262a6e1aa4e8118cbae884f6",
+    "content-hash": "9084f48425ff00606b496d6f150939b0",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -119,16 +119,16 @@
         },
         {
             "name": "arkecosystem/foundation",
-            "version": "dev-chore/update-major-dependencies",
+            "version": "23.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/laravel-foundation.git",
-                "reference": "f7fcc5ea72049bfeaccbdacaf0ddb3b79005483d"
+                "reference": "d1f1a52dc03ddeffb40353f42e6c2aa3bdf173d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/f7fcc5ea72049bfeaccbdacaf0ddb3b79005483d",
-                "reference": "f7fcc5ea72049bfeaccbdacaf0ddb3b79005483d",
+                "url": "https://api.github.com/repos/ArkEcosystem/laravel-foundation/zipball/d1f1a52dc03ddeffb40353f42e6c2aa3bdf173d8",
+                "reference": "d1f1a52dc03ddeffb40353f42e6c2aa3bdf173d8",
                 "shasum": ""
             },
             "require": {
@@ -203,9 +203,10 @@
             "description": "User-Interface Scaffolding for Laravel. Powered by Tailwind CSS.",
             "support": {
                 "issues": "https://github.com/ArkEcosystem/laravel-foundation/issues",
-                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/chore/update-major-dependencies"
+                "source": "https://github.com/ArkEcosystem/laravel-foundation/tree/23.0.0"
             },
-            "time": "2026-11-19T17:16:31+00:00"
+            "time": "2026-11-20T09:12:14+00:00",
+            "published-time": "2026-11-20T09:13:30+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -18774,8 +18775,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "arkecosystem/crypto": 20,
-        "arkecosystem/foundation": 20
+        "arkecosystem/crypto": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
@@ -18784,5 +18784,5 @@
         "ext-gmp": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
