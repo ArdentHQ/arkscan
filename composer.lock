@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9084f48425ff00606b496d6f150939b0",
+    "content-hash": "233c1e987f8a6fdc5a7ac58acf84d3a0",
     "packages": [
         {
             "name": "ardenthq/arkvault-url",
@@ -54,16 +54,16 @@
         },
         {
             "name": "arkecosystem/crypto",
-            "version": "dev-chore/mainsail-update-dependencies",
+            "version": "dev-feat/mainsail",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ArkEcosystem/php-crypto.git",
-                "reference": "e60a26e1d45238c8b02ae2a6e869bb4b6132cf3f"
+                "reference": "d34cefe42d0e61f1239556ff852de069eea7c809"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/e60a26e1d45238c8b02ae2a6e869bb4b6132cf3f",
-                "reference": "e60a26e1d45238c8b02ae2a6e869bb4b6132cf3f",
+                "url": "https://api.github.com/repos/ArkEcosystem/php-crypto/zipball/d34cefe42d0e61f1239556ff852de069eea7c809",
+                "reference": "d34cefe42d0e61f1239556ff852de069eea7c809",
                 "shasum": ""
             },
             "require": {
@@ -113,9 +113,10 @@
             ],
             "support": {
                 "issues": "https://github.com/ArkEcosystem/php-crypto/issues",
-                "source": "https://github.com/ArkEcosystem/php-crypto/tree/chore/mainsail-update-dependencies"
+                "source": "https://github.com/ArkEcosystem/php-crypto/tree/feat/mainsail"
             },
-            "time": "2026-11-20T04:24:41+00:00"
+            "time": "2026-11-27T08:42:27+00:00",
+            "published-time": "2026-11-27T08:42:32+00:00"
         },
         {
             "name": "arkecosystem/foundation",
