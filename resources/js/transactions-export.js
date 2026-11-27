@@ -30,6 +30,7 @@ const TransactionsExport = ({
     rates,
     network,
     canBeExchanged,
+    oldestTimestamp = null,
 }) => {
     const csvColumns = {
         id: "TXID",
@@ -414,6 +415,7 @@ const TransactionsExport = ({
                     host: network.api,
                     limit,
                     query,
+                    oldestTimestamp,
                     timestamp:
                         query["timestamp.to"] ??
                         timeSinceEpoch(dayjs(), this.network),
