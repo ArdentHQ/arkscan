@@ -17,7 +17,7 @@ final class BigNumber implements Stringable
      */
     private function __construct($value)
     {
-        $this->value = BigDecimal::of($value);
+        $this->value = BigDecimal::of(self::toBrickValue($value));
     }
 
     /**
@@ -44,11 +44,11 @@ final class BigNumber implements Stringable
     }
 
     /**
-     * @param BigDecimal|int|string $value
+     * @param BigDecimal|int|float|string $value
      */
     public function plus($value): self
     {
-        $this->value = $this->value->plus($value);
+        $this->value = $this->value->plus(self::toBrickValue($value));
 
         return $this;
     }
@@ -58,13 +58,14 @@ final class BigNumber implements Stringable
      */
     public function multipliedBy($value): self
     {
-        $this->value = $this->value->multipliedBy($value);
+        $this->value = $this->value->multipliedBy(self::toBrickValue($value));
 
         return $this;
     }
 
     /**
      * @param BigNumber|BigDecimal|int|float|string $value
+     * @param int<0, max>|null                      $scale Defaults to the scale of the current value
      */
     public function dividedBy($value, ?int $scale = null, RoundingMode $roundingMode = RoundingMode::Unnecessary): self
     {
@@ -72,7 +73,11 @@ final class BigNumber implements Stringable
             $value = $value->valueOf();
         }
 
-        $this->value = $this->value->dividedBy($value, $scale, $roundingMode);
+        $this->value = $this->value->dividedBy(
+            self::toBrickValue($value),
+            $scale ?? $this->value->getScale(),
+            $roundingMode,
+        );
 
         return $this;
     }
@@ -93,7 +98,8 @@ final class BigNumber implements Stringable
     }
 
     /**
-     * @param float|null $divisor Defaults to 1e18 if not provided
+     * @param float|null       $divisor Defaults to 1e18 if not provided
+     * @param int<0, max>|null $scale
      *
      * @return float
      */
@@ -103,7 +109,7 @@ final class BigNumber implements Stringable
             $divisor = config('currencies.notation.crypto', 1e18);
         }
 
-        $value = $this->value->dividedBy($divisor, 18, RoundingMode::Down);
+        $value = $this->value->dividedBy(self::toBrickValue($divisor), 18, RoundingMode::Down);
 
         if ($scale !== null) {
             $value = $value->toScale($scale, RoundingMode::Down);
@@ -115,5 +121,19 @@ final class BigNumber implements Stringable
     public function valueOf(): BigDecimal
     {
         return $this->value;
+    }
+
+    /**
+     * Brick doesn't accept floats, so they're passed as their string representation.
+     *
+     * @param int|float|string|BigDecimal $value
+     */
+    private static function toBrickValue($value): int|string|BigDecimal
+    {
+        if (is_float($value)) {
+            return (string) $value;
+        }
+
+        return $value;
     }
 }

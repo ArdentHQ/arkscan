@@ -208,7 +208,7 @@ final class StatisticsController
     {
         $datasets = array_map(
             static function ($value): float {
-                return BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of($value), false))->toFloat();
+                return BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of((string) $value), false))->toFloat();
             },
             $chartData['datasets'] ?? [],
         );
@@ -221,7 +221,7 @@ final class StatisticsController
 
     private function weiToArk(float $value): float
     {
-        return BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of($value), false))->toFloat();
+        return BigDecimal::of(NumberFormatter::weiToArk((string) BigDecimal::of((string) $value), false))->toFloat();
     }
 
     private function chartTheme(string $color): array

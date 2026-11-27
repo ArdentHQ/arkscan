@@ -57,6 +57,9 @@ final class WalletViewModel implements ViewModel
         return $this->wallet->public_key;
     }
 
+    /**
+     * @param int<0, max> $scale
+     */
     public function balance(int $scale = 8): float
     {
         return $this->wallet->balance->toFloat(scale: $scale);

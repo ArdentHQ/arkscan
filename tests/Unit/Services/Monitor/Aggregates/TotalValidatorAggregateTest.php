@@ -37,7 +37,7 @@ it('should aggregate the total fee forged', function () {
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
     expect($result->toArray()[0]['proposer'])->toBe('generator');
-    expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(10 ** 18)->__toString());
 });
 
 it('should aggregate the total count forged', function () {
@@ -78,7 +78,7 @@ it('should aggregate the total rewards forged', function () {
     expect($result)->toBeInstanceOf(Collection::class);
     expect($result)->toHaveCount(1);
     expect($result->toArray()[0]['proposer'])->toBe('generator');
-    expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(10 ** 18)->__toString());
 });
 
 it('should aggregate all the forged data', function () {
@@ -101,6 +101,6 @@ it('should aggregate all the forged data', function () {
     expect($result)->toHaveCount(1);
     expect($result->toArray()[0]['proposer'])->toBe('generator');
     expect($result->toArray()[0]['count'])->toBe(10);
-    expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(1e18)->__toString());
-    expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(30)->valueOf()->multipliedBy(1e18)->__toString());
+    expect($result->toArray()[0]['fee'])->toBe(BigNumber::new(10)->valueOf()->multipliedBy(10 ** 18)->__toString());
+    expect($result->toArray()[0]['reward'])->toBe(BigNumber::new(30)->valueOf()->multipliedBy(10 ** 18)->__toString());
 });
